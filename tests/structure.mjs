@@ -1,0 +1,14 @@
+import { readFileSync } from 'node:fs';
+import assert from 'node:assert/strict';
+const html=readFileSync(new URL('../index.html', import.meta.url), 'utf8');
+const css=readFileSync(new URL('../src/styles.css', import.meta.url), 'utf8');
+const js=readFileSync(new URL('../src/portfolio.js', import.meta.url), 'utf8');
+for(const id of ['categorias','cap-runway','cap-stage','cap-track','trabalhos','campanhas','processo','contato']) assert(html.includes(`id="${id}"`),`Elemento obrigatório ausente: ${id}`);
+assert.equal((html.match(/class="cap-item/g)||[]).length,4);
+assert(html.includes('smiile-landing-preview.up.railway.app'));
+assert(html.includes('midia-kit-production-c234.up.railway.app'));
+assert(html.includes('/assets/portfolio.css') && html.includes('/assets/portfolio.js'));
+assert(css.includes('prefers-reduced-motion'));
+assert(js.includes('requestAnimationFrame') && js.includes('data-channel'));
+assert(!html.includes('<script>') && !html.includes('<style>'),'Source should be modular');
+console.log('PASS: estrutura, assets, interações e proveniência');
