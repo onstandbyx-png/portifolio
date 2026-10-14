@@ -43,3 +43,9 @@ Sem dependências em tempo de execução: HTML semântico, CSS e JavaScript com 
 ## Deploy
 
 O serviço Railway `portifolio-github` acompanha a branch `main`. Pushes autorizados acionam o processo de build e nova implantação. O serviço Railway Function anterior foi mantido como preview independente e não é necessário para esse repositório.
+
+## Hero com crachás físicos (smiile)
+
+Esta versão usa as cinco peças originais de física/Three do componente `HangingBadges` da smiile, commit `b6a2e0d8312f91268a4d190b1a7a082ee1b59b38`: `BadgeScene.ts`, `physics.ts`, `rig.ts`, `track.ts` e geometria/material do `art.ts`. O módulo é adaptado por `portfolioArt.ts` para ter impressões reais de Fatos e smiile, sem reproduzir a marca dos agentes. É carregado sob demanda; para animação reduzida, WebGL indisponível ou falha de imagem, permanece uma versão HTML/CSS de qualidade. A arrastabilidade lateral do crachá nunca intercepta o scroll vertical.
+
+O bundle Vite-free de esbuild fica em `public/assets/badge-build`; após `npm install`, executar `npm run build && npm run check`. O servidor expõe uma cópia cacheada do asset público da smiile para permitir seu uso em uma textura Canvas WebGL sem problemas de CORS.

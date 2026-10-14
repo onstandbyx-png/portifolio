@@ -11,6 +11,7 @@
   <link rel="preload" href="/assets/fatos-cover-detail.webp" as="image" type="image/webp">
   <link rel="stylesheet" href="/assets/portfolio.css">
   <script src="/assets/portfolio.js" defer></script>
+  <script type="module" src="/assets/badge-build/index.js"></script>
 </head>
 <body>
   <a class="skip" href="#trabalhos">Pular para trabalhos</a>
@@ -42,24 +43,35 @@
         <div class="hero-actions"><a class="button button-solid" href="#trabalhos">Explorar trabalhos <span>↗</span></a><a class="button button-text" href="#categorias">Descobrir o que faço <span>↓</span></a></div>
         <div class="hero-cred"><span>EDITORIAL</span><i></i><span>ADS</span><i></i><span>WEB & SISTEMAS</span><small>01 / 04</small></div>
       </div>
-      <div class="hero-exhibit" aria-label="Composição editorial com materiais do Fatos Desconhecidos e da smiile">
+
+      <div class="hero-exhibit hero-badge-exhibit" aria-label="Crachás interativos de trabalho editorial do Fatos e projeto digital smiile">
         <div class="hero-exhibit-bg" aria-hidden="true"></div>
-        <div class="exhibit-meta"><span>PEÇAS / INTERFACES</span><span>UM PORTFÓLIO EM MOVIMENTO</span></div>
-        <div class="exhibit-card exhibit-main" data-exhibit="editorial">
-          <img src="/assets/fatos-cover-detail.webp" alt="Página original do mídia kit Fatos Desconhecidos, com direção editorial de 2026" fetchpriority="high" width="720" height="980">
-          <span class="exhibit-tag">01 / EDITORIAL</span>
+        <div class="exhibit-meta"><span>PORTFÓLIO EM MOVIMENTO / 2026</span><span>PEÇAS & SISTEMAS REAIS</span></div>
+        <div class="hero-badge-stage" data-portfolio-badges data-state="idle">
+          <div class="hero-badge-standin" aria-hidden="true">
+            <div class="hero-badge-cords"><span></span><span></span><i></i></div>
+            <article class="hero-standin-card hero-standin-fatos">
+              <div class="hero-standin-hole"></div><div class="hero-standin-header"><strong>FATOS.</strong><small>01 / EDITORIAL</small></div>
+              <img src="/assets/fatos-editorial-detail.webp" alt="" width="700" height="820" fetchpriority="high">
+              <div class="hero-standin-foot"><span>REDAÇÃO E CONTEÚDO</span><strong>Uma ideia começa<br>com contexto.</strong></div>
+            </article>
+            <article class="hero-standin-card hero-standin-smiile">
+              <div class="hero-standin-hole"></div><div class="hero-standin-header"><strong>smiile.</strong><small>02 / DIGITAL</small></div>
+              <img src="https://smiile-landing-preview.up.railway.app/assets/architecture-coast.webp" alt="" loading="lazy">
+              <div class="hero-standin-foot"><span>UX / FRONTEND / SISTEMAS</span><strong>Uma ideia<br>ganha vida.</strong></div>
+            </article>
+          </div>
+          <canvas class="hero-badge-canvas" data-badge-canvas aria-hidden="true"></canvas>
+          <span class="sr-only">Duas credenciais suspensas: Fatos, redação e conteúdo; smiile, criação de sites e sistemas. A animação é decorativa, e o restante da página funciona sem ela.</span>
         </div>
-        <div class="exhibit-card exhibit-aside" data-exhibit="ads">
-          <img src="/assets/fatos-narrativa-detail.webp" alt="Estudo editorial Fatos sobre narrativa de campanha" width="900" height="540">
-          <span class="exhibit-tag">02 / CAMPANHAS</span>
+        <div class="hero-badge-legend">
+          <span class="badge-legend-item"><i></i>FATOS · EDITORIAL</span><span class="badge-legend-item"><i></i>SMIILE · DIGITAL</span>
         </div>
-        <div class="exhibit-card exhibit-device" data-exhibit="web">
-          <div class="exhibit-device-chrome"><i></i><i></i><i></i><span>smiile / preview</span></div>
-          <img src="https://smiile-landing-preview.up.railway.app/assets/architecture-coast.webp" alt="Imagem do projeto de site Casa Costa demonstrado pela smiile" width="640" height="580" loading="lazy">
-          <div class="device-copy"><small>PROJETO DIGITAL / SMIILE</small><strong>Uma ideia ganha forma.</strong></div>
+        <div class="hero-badge-controls">
+          <button class="badge-swing-button" data-badge-swing type="button" aria-label="Balançar os crachás interativos"><span aria-hidden="true">↔</span> Balançar os crachás</button>
+          <span class="badge-gesture-note" data-badge-hint>ARRASTE LATERALMENTE · ROLE NORMALMENTE</span>
         </div>
-        <div class="exhibit-seal" aria-hidden="true"><span>ESTRATÉGIA</span><span>CRIATIVIDADE</span><span>EXECUÇÃO</span><b>↗</b></div>
-        <div class="exhibit-bottom"><span>PEÇAS REAIS DAS REFERÊNCIAS</span><span>ARRASTE O OLHAR <b>↗</b></span></div>
+        <div class="exhibit-bottom"><span>MECÂNICA 3D ADAPTADA DA SMIILE</span><span>TRABALHOS REAIS ↗</span></div>
       </div>
       <a class="scroll-indicator" href="#trabalhos"><span class="mouse-glyph">↓</span> ROLE PARA EXPLORAR</a>
     </section>

@@ -16,4 +16,8 @@ assert(js.includes('requestAnimationFrame')&&js.includes('category-runway'),'Scr
 assert(js.includes('showModal()'),'Modal nativo ausente');
 assert(js.includes('navigator.clipboard.writeText'),'Preparação de briefing ausente');
 assert(!/\b(?:\d{2,})\s*(?:%|leads|ROAS)\b/i.test(h),'Possível métrica fictícia');
-console.log('PASS: estrutura, assets, acessibilidade, controles e proveniência');
+assert(h.includes('data-portfolio-badges'),'Hero sem área de crachás');
+assert(h.includes('/assets/badge-build/index.js'),'Módulo 3D ausente');
+assert(css.includes('.hero-badge-canvas')&&css.includes('.hero-badge-standin'),'Fallback ausente');
+assert(css.includes('touch-action:pan-y'),'Scroll mobile deveria continuar nativo');
+console.log('PASS: estrutura, assets, acessibilidade, controles, crachás e proveniência');

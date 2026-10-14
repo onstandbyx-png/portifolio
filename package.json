@@ -1,12 +1,17 @@
 {
   "name": "portifolio-ideia-execucao",
   "private": true,
-  "version": "0.1.0",
+  "version": "0.2.0",
   "type": "module",
   "scripts": {
-    "dev": "node server.mjs",
+    "dev": "npm run build && node server.mjs",
     "start": "node server.mjs",
+    "build": "node scripts/build-badges.mjs",
     "check": "node tests/structure.mjs && node --check src/portfolio.js && node --check server.mjs"
+  },
+  "dependencies": {
+    "three": "0.186.1",
+    "esbuild": "^0.25.0"
   },
   "engines": {
     "node": ">=20"
