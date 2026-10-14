@@ -62,6 +62,21 @@
   }
   function updateCategories(){
     if(!runway||!sticky||!stage)return;
+    // Keep the selected card stable while its reverse face is being read. Clicking a
+    // button must not inadvertently advance the scroll-controlled carousel.
+    const openCard=$('.category-card.is-flipped');
+    if(openCard && !media.matches){
+      const bounds=runway.getBoundingClientRect();
+      if(bounds.bottom>sticky.offsetHeight && bounds.top<innerHeight){
+        const index=Number(openCard.dataset.categoryIndex);
+        if(active!==index)setActive(index);
+        return;
+      }
+      openCard.classList.remove('is-flipped');
+      const front=$('[data-card-turn]',openCard),back=$('[data-card-return]',openCard);
+      if(front){front.setAttribute('aria-expanded','false');front.tabIndex=0}
+      if(back)back.tabIndex=-1;
+    }
     if(media.matches){
       let best=0,nearest=Infinity;
       const vCenter=innerHeight*.48;
@@ -107,6 +122,7 @@
     if(back)back.tabIndex=val?0:-1;
     const target=val?back:front;
     requestAnimationFrame(()=>target?.focus({preventScroll:true}));
+    requestUpdate();
   }
   cards.forEach((card)=>{
     const flip=$('[data-card-turn]',card),back=$('[data-card-return]',card);
