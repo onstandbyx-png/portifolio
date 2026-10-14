@@ -1,11 +1,11 @@
-import { BadgeScene } from "./badge/BadgeScene";
+import type { BadgeScene as BadgeSceneHandle } from "./badge/BadgeScene";
 const stage=document.querySelector<HTMLElement>("[data-portfolio-badges]");
 const canvas=stage?.querySelector<HTMLCanvasElement>("[data-badge-canvas]");
 const swingButton=document.querySelector<HTMLButtonElement>("[data-badge-swing]");
 const hint=document.querySelector<HTMLElement>("[data-badge-hint]");
 const reduced=matchMedia("(prefers-reduced-motion: reduce)");
 const motionToggle=document.querySelector<HTMLElement>(".motion-toggle");
-let instance:BadgeScene|null=null,near=false,inView=false,visible=!document.hidden,loaded=false,paused=false,disposed=false;
+let instance:BadgeSceneHandle|null=null,near=false,inView=false,visible=!document.hidden,loaded=false,paused=false,disposed=false;
 const setState=(value:string)=>{if(stage)stage.dataset.state=value;};
 function isPaused(){return paused||reduced.matches||motionToggle?.getAttribute("aria-pressed")==="true";}
 function sync(){instance?.setActive(inView&&visible&&!isPaused());}
@@ -17,6 +17,7 @@ async function load(){
  if(loaded||!canvas||reduced.matches||!near||disposed)return;loaded=true;
  setState("loading");
  try{
+  const { BadgeScene }=await import("./badge/BadgeScene");
   const scene=new BadgeScene(canvas,{enter:true,
    front:{name:"Fatos",label:"EDITORIAL",line:"Pesquisa, pautas, redação e criação."},
    back:{name:"smiile",label:"DIGITAL",line:"Interfaces, experiência e sistemas."},
