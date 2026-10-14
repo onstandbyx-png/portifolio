@@ -3,13 +3,28 @@ on:
   push:
     branches: [main]
   pull_request:
+permissions:
+  contents: read
 jobs:
   verify:
     runs-on: ubuntu-latest
+    timeout-minutes: 12
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - run: npm install --ignore-scripts
-      - run: npm run check
+      - run: npm install
+      - run: npm run check && npm run build
+      - name: Install browser validation
+        run: |
+          npm install --prefix /tmp/portfolio-qa --package-lock=false --no-save playwright@1.64.0
+          /tmp/portfolio-qa/node_modules/.bin/playwright install --with-deps chromium
+      - name: Validate real page interactions
+        run: node tests/browser-sections.mjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: section-interactions-evidence
+          path: qa/
+          retention-days: 7

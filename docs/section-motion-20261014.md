@@ -1,0 +1,7 @@
+# Movimento das demais seções
+
+O hero e a física dos crachás permanecem intactos. Esta extensão utiliza Web Animations API e o modelo analítico de molas e escolha da borda presentes na smiile, commit b6a2e0d8312f91268a4d190b1a7a082ee1b59b38, em src/motion/tokens.ts e src/components/ProjectCards.tsx. Narrativa por rolagem, formatos e quadros adaptam as referências CapabilityDeck, ScrollZoomPreview e vídeo. O Baralho do mídia kit Fatos orienta a apresentação manipulável dos materiais editoriais. Não há inclusão de código privado de terceiros ou de arquivos de fontes.
+
+Projetos: inversão direcional, inclinação, abertura espacial e miniaturas de materiais originais. Editorial: três capítulos com páginas originais e navegação por scroll no desktop, botões no celular. Sites: prévia navegável, desktop/mobile, páginas e tema. Ads: transição entre canais e storyboard finito. Sistemas: grafo e quatro estados didáticos, sem investigação externa. Contato: colaboração e briefing local, sem envio automático.
+
+Pausa global e prefers-reduced-motion preservam controles e estados finais. Sequências param fora da área visível. As camadas temporárias são inert/aria-hidden. O conteúdo é utilizável sem esta extensão. A instalação idempotente ocorre no build e injeta somente os assets adicionais. Os seis testes unitários de molas, bordas, capítulos e sequência são executados no build; testes de navegador são uma verificação separada.
