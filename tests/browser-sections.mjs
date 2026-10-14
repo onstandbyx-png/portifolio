@@ -32,6 +32,7 @@ try{
    check('Case dialog opens',await page.locator('#case-dialog').evaluate(d=>d.open));
    const thumbs=page.locator('.sm-case-thumbs button');
    if(await thumbs.count()){await thumbs.nth(1).click();check('Original Fatos page selectable',await page.locator('#dialog-image img').getAttribute('src')==='/assets/fatos-roteiro.webp');}
+   await page.locator('#dialog-image img').evaluate(im=>im.decode().catch(()=>{}));await page.waitForTimeout(750);
    await page.screenshot({path:`qa/case-${width}.png`});
    await page.locator('#dialog-close').click();
    await page.waitForFunction(()=>!document.querySelector('#case-dialog').open,{},{timeout:3000});
@@ -41,12 +42,19 @@ try{
    await page.screenshot({path:`qa/editorial-${width}.png`});
    await page.locator('[data-device="mobile"]').click();await page.waitForTimeout(700);
    check('Device changes to mobile',await page.locator('.sm-device').getAttribute('data-mode')==='mobile');
-   await page.locator('[data-demo-page="projeto"]').click();await page.locator('button[data-tone="dark"]').click();
+   await page.locator('[data-demo-page="projeto"]').click();await page.locator('button[data-tone="dark"]').click();await page.waitForTimeout(800);
    check('Specimen navigation and theme',await page.locator('.sm-device').getAttribute('data-tone')==='dark'&&await page.locator('.sm-experience').getAttribute('data-page')==='projeto');
+   const contrast=await page.locator('.sm-interactive-experience .immersive-content a').evaluate(el=>{
+    const s=getComputedStyle(el),l=c=>{const v=(c.match(/[\d.]+/g)||[]).slice(0,3).map(x=>Number(x)/255).map(x=>x<=.04045?x/12.92:((x+.055)/1.055)**2.4);return v[0]*.2126+v[1]*.7152+v[2]*.0722};
+    const f=l(s.color),b=l(s.backgroundColor);return(Math.max(f,b)+.05)/(Math.min(f,b)+.05);
+   });
+   check('Experience CTA contrast >=4.5',contrast>=4.5);
+   await page.locator('.sm-experience').evaluate(el=>window.scrollTo({top:window.scrollY+el.getBoundingClientRect().top-84,behavior:'instant'}));await page.waitForTimeout(300);
    await page.screenshot({path:`qa/experience-${width}.png`});
    await page.locator('[data-ad-tab="tiktok"]').click();await page.waitForTimeout(700);
-   await page.locator('[data-frame="2"]').click();
+   await page.locator('[data-frame="2"]').click();await page.waitForTimeout(750);
    check('Storyboard frame selected',await page.locator('.vertical-video').getAttribute('data-frame')==='2');
+   await page.locator('.vertical-video').evaluate(el=>window.scrollTo({top:window.scrollY+el.getBoundingClientRect().top-85,behavior:'instant'}));await page.waitForTimeout(200);
    await page.screenshot({path:`qa/ads-${width}.png`});
    await page.locator('[data-ad-tab="google"]').click();await page.waitForTimeout(700);
    check('Google channel selected',await page.locator('[data-ad-tab="google"]').getAttribute('aria-selected')==='true');
