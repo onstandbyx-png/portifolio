@@ -1,24 +1,45 @@
-# Portfólio · Ideia → Execução
+# Ideia & Execução | Portfólio
 
-Recriação orientada pelo código real de `onstandbyx-png/smiile-` no commit `b6a2e0d8312f91268a4d190b1a7a082ee1b59b38`, em especial `sites/smiile-landing/src/components/CapabilityDeck.tsx` e sua seção `#categorias`.
+Portfólio pessoal **mobile-first**, apresentando trabalhos e capacidades em redação, criação editorial, campanhas/gestão de mídia paga, sites e sistemas. O layout foi reconstruído a partir de elementos reais da smiile e dos materiais originais do Ecossistema Fatos 2026.
 
-## Original e adaptação
-- O mecanismo de categorias usa o scroll NATIVO da página, calculando o estado dos cards por progresso vertical, sem sequestrar wheel/touch.
-- Em dispositivos móveis, cartões aparecem em fluxo vertical em vez de travar o scroll.
-- Cartões têm frente/verso, navegação por etapas, progresso, animações de profundidade e alternativa de movimento reduzido.
-- A estrutura editorial e imagens são provenientes dos projetos do usuário: [smiile landing](https://smiile-landing-preview.up.railway.app/?v=b6a2e0d#categorias) e [mídia kit Fatos](https://midia-kit-production-c234.up.railway.app/).
-- Copy e imagens de campanha indicadas como *exemplos conceituais* não representam Ads veiculados ou resultados comprovados.
-- As fontes Fatos/smiile são referenciadas por URL pública no HTML para que as composições possam ser inspecionadas diretamente na origem. Para uso autônomo de longo prazo, vendorizá-las após definir licença/atribuição.
+## Preview publicado
 
-## Execução local
-```sh
+- GitHub: https://github.com/onstandbyx-png/portifolio
+- Railway (serviço conectado à branch `main`): https://portifolio-github-production.up.railway.app/
+- Referência de movimento da smiile: https://smiile-landing-preview.up.railway.app/?v=b6a2e0d#categorias
+- Referência editorial pública Fatos: https://midia-kit-production-c234.up.railway.app/
+
+## Componentes interativos
+
+1. Hero editorial com **páginas reais** dos documentos do Fatos e preview da smiile.
+2. Estudos de caso com expansão modal acessível, rótulos de autoria e links de origem.
+3. Quatro categorias em **rolagem nativa**, cards suspensos, efeitos de profundidade e flip acessível. Comportamento baseado em `CapabilityDeck.tsx` / `.css` da smiile, commit `b6a2e0d8312f91268a4d190b1a7a082ee1b59b38`.
+4. Processo editorial interativo com três capítulos, ilustrados por imagens originais do Fatos.
+5. Zoom durante o scroll, sem interceptar eventos de roda ou touch, inspirado em `ScrollZoomPreview` da smiile.
+6. Laboratório de mídia com layouts conceituais específicos para Meta, TikTok, Google e ChatGPT Ads.
+7. Representação didática navegável do fluxo CI: entrada, fonte, relações e dossiê.
+8. Menu mobile, opção de pausar movimento, suporte a `prefers-reduced-motion` e formulário local para preparar briefing.
+
+## Materiais e limites
+
+As imagens `public/assets/fatos-*.webp` foram extraídas dos PDFs originais de direção visual e mídia kit Fatos 2026 já fornecidos. As imagens de demonstração da smiile são referenciadas a partir da landing original pública, sob domínio Railway do mesmo operador. A interface de anúncio é **conceitual**, sem dados de conta ou campanhas reais. A participação editorial do Fatos não representa oferta de veiculação na rede.
+
+O portfólio é sobre a atuação profissional do operador. A origem de uma amostra não implica autoria individual integral de todos os elementos, nem aceitação técnica de todas as integrações demonstradas no produto original.
+
+## Execução
+
+```bash
 npm run check
 npm start
-# http://localhost:3000/
+# localhost:3000
 ```
 
-## Railway
-Aponte o Railway para `onstandbyx-png/portifolio` após conceder acesso da integração GitHub ao repositório e publicar esses arquivos. O projeto usa `npm start`, lê `PORT` e expõe `/health`. Alternativamente, a prévia está implantada como **Railway Function** no projeto `portifolio-preview`, serviço `portfolio-b6a2e0d-preview`. O Function usa o mesmo HTML incorporado ao código Bun e não sincroniza automaticamente com o repositório.
+Sem dependências em tempo de execução: HTML semântico, CSS e JavaScript com servidor Node 20+ e assets versionados. `PORT` é configurado pelo Railway.
 
-## Avisos
-O site é um portfolio em estágio de preview. Antes da publicação comercial, definir identidade e contato aprovados, dados reais de Ads e aprovação de uso comercial das marcas.
+## Checks
+
+`npm run check` valida a estrutura, estados e JavaScript. Além disso, o protótipo foi submetido localmente a teste com Chromium em larguras de 320, 390 e 1440 pixels por meio de um harness em que HTML, CSS, JS e imagens originais foram incorporados para inspeção offline. Não confundir isso com ensaio de navegadores físicos ou validação de conversões.
+
+## Deploy
+
+O serviço Railway `portifolio-github` acompanha a branch `main`. Pushes autorizados acionam o processo de build e nova implantação. O serviço Railway Function anterior foi mantido como preview independente e não é necessário para esse repositório.
