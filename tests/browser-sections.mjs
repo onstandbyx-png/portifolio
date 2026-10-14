@@ -15,6 +15,8 @@ try{
  for(const [width,height] of [[1440,900],[390,844],[320,740]]){
   const context=await browser.newContext({viewport:{width,height},hasTouch:width<500,isMobile:width<500});
   const page=await context.newPage();page.setDefaultTimeout(12000);
+  // The portfolio must not rely on the Fatos preview remaining online.
+  await page.route('https://midia-kit-production-c234.up.railway.app/**',route=>route.abort());
   const errors=[],checks=[],result={width,height,checks,errors};report.push(result);
   page.on('pageerror',e=>errors.push(String(e)));
   const check=(label,value)=>{checks.push({label,pass:!!value});assert(value,label)};
@@ -51,7 +53,14 @@ try{
    check('Experience CTA contrast >=4.5',contrast>=4.5);
    await page.locator('.sm-experience').evaluate(el=>window.scrollTo({top:window.scrollY+el.getBoundingClientRect().top-84,behavior:'instant'}));await page.waitForTimeout(300);
    await page.screenshot({path:`qa/experience-${width}.png`});
-   await page.locator('[data-ad-tab="tiktok"]').click();await page.waitForTimeout(700);
+   await page.locator('[data-ad-tab="meta"]').click();await page.waitForTimeout(700);
+   for(const channel of ['meta','tiktok']){
+    await page.locator(`[data-ad-tab="${channel}"]`).click();await page.waitForTimeout(700);
+    const image=page.locator(`#panel-${channel} img`).first();
+    const decoded=await image.evaluate(async im=>{im.loading='eager';try{await im.decode();return im.naturalWidth>0}catch{return false}});
+    check(`${channel}: local reference image decoded`,decoded);
+    check(`${channel}: independent of external preview`,(await image.getAttribute('src'))===({meta:'/assets/fatos-desconhecidos.webp',tiktok:'/assets/fatos-narrativa-detail.webp'})[channel]);
+   }
    await page.locator('[data-frame="2"]').click();await page.waitForTimeout(750);
    check('Storyboard frame selected',await page.locator('.vertical-video').getAttribute('data-frame')==='2');
    await page.locator('.vertical-video').evaluate(el=>window.scrollTo({top:window.scrollY+el.getBoundingClientRect().top-85,behavior:'instant'}));await page.waitForTimeout(200);
