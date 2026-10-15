@@ -1,5 +1,5 @@
 /* Portfolio visual evidence: Fatos source photos + smiile previews.
-   No LINHA/SOTA scenarios, paid campaign claims or PDF cover screenshots. */
+   Sources have clear attribution; paid results are never invented. */
 import {clamp,createMotion} from '../sections/motion.js';
 import {createDeviceFrame} from './device-frame.js';
 const $=(s,r=document)=>r.querySelector(s),$$=(s,r=document)=>[...r.querySelectorAll(s)];
@@ -61,23 +61,33 @@ function mountViewSwitcher(){
  $$('[data-rx-view]',ui).forEach(b=>b.addEventListener('click',()=>{const isTable=b.dataset.rxView==='table';gal.hidden=isTable;table.hidden=!isTable;$$('[data-rx-view]',ui).forEach(x=>x.setAttribute('aria-pressed',String(x===b)))}));
 }
 function mountScrollFilm(){
- const anchor=$('#experiencias');if(!anchor)return;
- const film=make('<section class="rx-film rv-reveal rx-evidence-film" id="narrativa-visual" data-phase="0" aria-labelledby="rx-evidence-title"><div class="rv-stage"><div class="rv-overline"><span>UMA IDEIA / FORMATOS DIFERENTES</span><span>PROJETOS REAIS · EXEMPLOS DEMONSTRATIVOS</span></div><div class="rv-compose"><span class="rv-copy rv-left">Uma <em>ideia.</em></span><div class="rv-window"><img src="/assets/portfolio/cena-desconhecidos.webp" alt="Conteúdo visual original Fatos Desconhecidos"><div class="rv-image-shade"></div><div class="rv-window-caption"><small>FATOS / CONTEÚDO</small><strong>Uma história prende a atenção.</strong><p>Pesquisa, escolha e narrativa.</p></div></div><span class="rv-copy rv-right">Muitas <em>formas.</em></span></div><div class="rv-footer"><div class="rv-format-switch" role="group" aria-label="Explorar formatos"><button type="button" data-rx-film-to="0" aria-pressed="true"><span>01</span> Conteúdo</button><button type="button" data-rx-film-to="1" aria-pressed="false"><span>02</span> Aplicativo</button><button type="button" data-rx-film-to="2" aria-pressed="false"><span>03</span> Vídeo</button></div><p class="rv-film-cue">ROLE PARA APROXIMAR · TOQUE PARA MUDAR O FORMATO</p></div></div></section>');
+ const anchor=$('#experiencias');if(!anchor)return null;
+ const film=make('<section class="rx-film rv-reveal rx-evidence-film" id="narrativa-visual" data-phase="0" aria-labelledby="rx-evidence-title"><div class="rv-stage"><div class="rv-overline"><span>UMA IDEIA / FORMATOS DIFERENTES</span><span>REFERÊNCIAS ATUAIS · FATOS & SMIILE</span></div><div class="rv-compose"><span class="rv-copy rv-left">Uma <em>ideia.</em></span><div class="rv-window"></div><span class="rv-copy rv-right">Muitas <em>formas.</em></span></div><div class="rv-footer"><div class="rv-format-switch" role="group" aria-label="Explorar formatos"><button type="button" data-rx-film-to="0" aria-pressed="true"><span>01</span> Conteúdo</button><button type="button" data-rx-film-to="1" aria-pressed="false"><span>02</span> App</button><button type="button" data-rx-film-to="2" aria-pressed="false"><span>03</span> Vídeo</button></div><p class="rv-film-cue">ROLE PARA SE APROXIMAR · TOQUE PARA MUDAR A PEÇA</p></div></div></section>');
  anchor.before(film);
+ const wrap=$('.rv-window',film),phone=createDeviceFrame({tone:'light',scheme:'dark',time:'10:09',label:'Mesmo dispositivo metálico interativo da smiile, com três peças de projetos recentes'});
+ phone.root.classList.add('pf-film-device');wrap.append(phone.root);
+ const inner=make('<div class="pf-film-inner"><img src="/assets/portfolio/cena-desconhecidos.webp" alt="Peça original da vertical Fatos Desconhecidos"><div class="pf-film-gradient"></div><div class="pf-film-copy"><small>FATOS / EDITORIAL</small><strong>Uma história chama atenção.</strong><p>Pesquisa, roteiro e direção visual.</p></div></div>');phone.screen.append(inner);
+ const tabs=$$('[data-rx-film-to]',film);
  const data=[
-  {image:'/assets/portfolio/cena-desconhecidos.webp',small:'FATOS / CONTEÚDO',title:'Uma história prende a atenção.',text:'Pesquisa, escolha e narrativa.'},
-  {image:'/assets/portfolio/smiile-architecture-coast.webp',small:'SMIILE / INTERFACE',title:'Uma ideia ganha forma.',text:'Do conceito a uma página que responde.'},
-  {image:'/assets/portfolio/smiile-creative-studio.webp',small:'VÍDEO / INTERAÇÃO',title:'Movimento transforma uma experiência.',text:'Materialidade, camadas e controle.'}
+  {image:'/assets/portfolio/cena-desconhecidos.webp',small:'FATOS / NARRATIVA',title:'Uma história chama atenção.',text:'Pesquisa, roteiro e direção visual.'},
+  {image:'/assets/portfolio/smiile-architecture-coast.webp',small:'SMIILE / APP E SITE',title:'Uma ideia ganha forma.',text:'Interface responsiva e demonstração navegável.'},
+  {image:'/assets/portfolio/smiile-creative-studio.webp',small:'VÍDEO / MOTION',title:'O movimento conta a história.',text:'Imagem, textura e interação.'}
  ];
- const windowEl=$('.rv-window',film),img=$('img',windowEl),title=$('strong',windowEl),desc=$('p',windowEl),small=$('small',windowEl),tabs=$$('[data-rx-film-to]',film);
- let active=0;
- function set(i){active=i;film.dataset.phase=String(i);const item=data[i];img.src=item.image;img.alt=item.title;title.textContent=item.title;desc.textContent=item.text;small.textContent=item.small;tabs.forEach((b,j)=>b.setAttribute('aria-pressed',String(i===j)))}
- tabs.forEach(b=>b.addEventListener('click',()=>set(Number(b.dataset.rxFilmTo))));
- // Use the normal browser scroll, never capture wheel or touch. Mobile uses explicit buttons.
- let visible=false,frame=0;const reduced=matchMedia('(prefers-reduced-motion:reduce)');
- function update(){frame=0;if(!visible||reduced.matches||motion.paused())return;const rect=film.getBoundingClientRect();const distance=Math.max(1,film.offsetHeight-innerHeight);const p=clamp(-rect.top/distance);const mobile=innerWidth<761;const zoom=mobile?1:1+Math.pow(p,1.25)*3.15;windowEl.style.width=mobile?'min(55vw,190px)':(95+zoom*35)+'px';windowEl.style.height=mobile?'min(80vw,315px)':(164+zoom*65)+'px';windowEl.style.setProperty('--rv-image-scale',String(1.07-.07*p));windowEl.style.setProperty('--rv-overlay',String(clamp((p-.38)*2.8)));if(!mobile){const i=p<.33?0:p<.66?1:2;if(i!==active)set(i)}}
- const req=()=>{if(!frame)frame=requestAnimationFrame(update)};new IntersectionObserver(([e])=>{visible=e.isIntersecting;if(visible)req()},{threshold:0}).observe(film);addEventListener('scroll',req,{passive:true});addEventListener('resize',req,{passive:true});reduced.addEventListener('change',req);set(0);film.dataset.ready='true';return film;
+ const img=$('img',inner),small=$('small',inner),title=$('strong',inner),desc=$('p',inner),reduced=matchMedia('(prefers-reduced-motion:reduce)');
+ let active=0,visible=false,frame=0,clickedUntil=0;
+ function set(i){active=i;film.dataset.phase=String(i);img.src=data[i].image;img.alt=data[i].title;small.textContent=data[i].small;title.textContent=data[i].title;desc.textContent=data[i].text;tabs.forEach((b,j)=>b.setAttribute('aria-pressed',String(i===j)));motion.animate(img,[{opacity:.4,transform:'scale(1.09)'},{opacity:1,transform:'scale(1)'}],{duration:410})}
+ tabs.forEach(b=>b.addEventListener('click',()=>{clickedUntil=performance.now()+2400;set(Number(b.dataset.rxFilmTo))}));
+ function update(){frame=0;if(!visible)return;const r=film.getBoundingClientRect(),travel=Math.max(1,film.offsetHeight-innerHeight),p=clamp(-r.top/travel),mobile=innerWidth<761;
+  if(reduced.matches||motion.paused()){wrap.style.setProperty('--pf-film-scale','1');return}
+  wrap.style.setProperty('--pf-film-scale',String(mobile?1:1+1.9*p*p));wrap.style.setProperty('--pf-film-opacity',String(clamp(1-.2*p)));
+  if(!mobile&&performance.now()>clickedUntil){const next=p<.33?0:p<.66?1:2;if(next!==active)set(next);}
+ }
+ const req=()=>{if(!frame)frame=requestAnimationFrame(update)};
+ new IntersectionObserver(([e])=>{visible=e.isIntersecting;if(visible)req()},{threshold:0}).observe(film);
+ addEventListener('scroll',req,{passive:true});addEventListener('resize',req,{passive:true});
+ reduced.addEventListener('change',req);set(0);film.dataset.ready='true';return film;
 }
+
 function mountSocial(){
  const panel=$('#panel-meta'),old=panel&&$('.mock-phone',panel);if(!panel||!old)return;
  const html=make('<div class="rx-instagram" role="region" aria-label="Carrossel editorial conceitual no formato de anúncio"><div class="rx-iphone"><div class="rx-iphone-inner"><div class="rx-device-status"><span>10:09</span><span class="rx-dynamic-island" aria-hidden="true"></span><span>▂ ▂ ▰</span></div><div class="rx-ig-topbar"><span>‹</span><strong>Posts</strong><span class="rx-follow">Estudo</span></div><div class="rx-ig-profile"><span class="rx-ig-avatar">F</span><div><b>fatosdesconhecidos</b><small>Estudo conceitual · não veiculado</small></div><span>≡</span></div><div class="rx-ig-photo"><img src="/assets/portfolio/cena-desconhecidos.webp" alt="Cena editorial do Ecossistema Fatos"><span class="rx-ig-count">1/3</span><div class="rx-ig-overlay"><small>FATOS / COMPOSIÇÃO VISUAL</small><h3>Uma história começa com uma pergunta.</h3></div><div class="rx-ig-nav"><button type="button" data-rx-social-prev aria-label="Imagem anterior">‹</button><button type="button" data-rx-social-next aria-label="Próxima imagem">›</button></div></div><div class="rx-ig-dots" role="group" aria-label="Selecionar imagem"><button type="button" data-rx-social="0" aria-current="true" aria-label="Imagem 1"></button><button type="button" data-rx-social="1" aria-current="false" aria-label="Imagem 2"></button><button type="button" data-rx-social="2" aria-current="false" aria-label="Imagem 3"></button></div><div class="rx-ig-actions"><span>♡ &nbsp; ◯ &nbsp; ↗</span><span>▯</span></div><p class="rx-ig-caption"><strong>fatosdesconhecidos</strong> Conteúdo, pesquisa e criatividade em uma sequência.</p><span class="rx-ig-date">ESTUDO DE FORMATO · NÃO PUBLICADO</span><div class="rx-ig-home"></div></div></div><p class="rx-social-caption">A EXPERIÊNCIA NA REDE É UMA CREDENCIAL, NÃO UMA OFERTA DE PUBLICAÇÃO</p></div>');
