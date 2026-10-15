@@ -151,8 +151,18 @@ try{
         await card.scrollIntoViewIfNeeded();
         check('Active gallery caption and case action remain inside their card',await card.evaluate(plane=>{const card=plane.querySelector('.work-tile'),caption=plane.querySelector('.tile-caption'),action=plane.querySelector('.tile-open');const a=card.getBoundingClientRect(),b=caption.getBoundingClientRect(),c=action.getBoundingClientRect();return b.bottom<=a.bottom+3&&b.left>=a.left-3&&b.right<=a.right+3&&c.bottom<=a.bottom+3;}));
         await capture('gallery');
-        const film=page.locator('#narrativa-visual');await film.locator('[data-rx-film-to="2"]').click();await page.waitForTimeout(700);
+        const film=page.locator('#narrativa-visual');await film.locator('[data-rx-film-to="2"]').click();
+        // Format selection scrolls smoothly to the final chapter. Wait for that
+        // destination before measuring a separate native gesture: a fixed delay
+        // can leave the wheel event competing with the unfinished smooth scroll.
+        await page.waitForFunction(()=>{
+          const film=document.querySelector('#narrativa-visual'),stage=film.querySelector('.rf-stage');
+          const header=matchMedia('(max-width:760px)').matches?64:76;
+          const target=scrollY+film.getBoundingClientRect().top+film.offsetHeight-stage.offsetHeight-header;
+          return film.dataset.phase==='2'&&Math.abs(scrollY-target)<2;
+        });
         const before=await page.evaluate(()=>scrollY);await nativeScroll(page,mobile,230,width*.1);
+        await page.waitForFunction(before=>scrollY>before+60,before);
         check('Film format selection also preserves native scrolling',await page.evaluate(()=>scrollY)>before+60&&await film.getAttribute('data-mode')!=='manual'&&await page.locator('[data-rf-resume]').count()===0);
         await capture('film');
       });

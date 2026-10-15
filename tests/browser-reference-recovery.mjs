@@ -164,7 +164,7 @@ try{
         await fatos.focus();await page.keyboard.press('Escape');
         check('Selection and flip controls have readable usable touch targets',await page.locator('[data-badge-select],[data-badge-flip]').evaluateAll(buttons=>buttons.length===3&&buttons.every(button=>{const r=button.getBoundingClientRect();return r.width>=44&&r.height>=44&&parseFloat(getComputedStyle(button).fontSize)>=14;})));
         check('Legacy impulse and duplicate flip controls are absent',await page.locator('[data-badge-swing],[data-badge-card-flip]').count()===0);
-        check('Selected card has readable HTML context',await page.locator('[data-badge-detail-body]').evaluate(el=>el.textContent.trim().length>30&&parseFloat(getComputedStyle(el).fontSize)>=16));
+        check('Removed explanatory blocks are absent from the hero',await page.locator('.hero-badge-detail,[data-badge-hint],.hero-support,.scroll-indicator').count()===0);
         await capture('badges');
       });
       await group('gallery',async()=>{

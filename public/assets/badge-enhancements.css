@@ -14,31 +14,19 @@
 .hero-badge-exhibit .hero-badge-stage{position:relative;inset:auto;flex:none;width:100%;height:auto;aspect-ratio:.82;max-height:none;margin:2px 0 0;isolation:isolate;touch-action:pan-y}
 .hero-badge-exhibit .hero-badge-canvas,.hero-badge-exhibit [data-badge-poster]{mask-image:none;-webkit-mask-image:none}
 .hero-badge-exhibit .hero-badge-standin picture{display:block;width:100%;height:100%}
-.hero-badge-exhibit .hero-badge-detail{position:relative;z-index:3;margin:0 24px;padding:22px 0 0;border-top:1px solid #bdcbbb;min-height:211px}
-.hero-badge-detail .badge-detail-kicker{color:#506350;font-size:13px;line-height:1.5;font-weight:550;margin-bottom:8px}
-.hero-badge-detail h2{font-family:Newsreader,Georgia,serif;font-style:italic;font-size:clamp(29px,2.6vw,37px);line-height:1.08;font-weight:450;letter-spacing:-.025em;margin-bottom:10px}
-.hero-badge-detail [data-badge-detail-body]{font-size:16px;line-height:1.55;color:#405343;max-width:47ch}
-.hero-badge-detail [data-badge-detail-link]{display:flex;gap:20px;justify-content:space-between;align-items:center;min-height:48px;padding-block:12px;margin-top:10px;font-size:16px;line-height:1.4;color:#203d2e;font-weight:650;text-decoration:underline;text-underline-offset:4px;text-decoration-color:#9aaf96}
-.hero-badge-detail [data-badge-detail-link]:hover{text-decoration-color:currentColor}
-.hero-badge-exhibit .badge-gesture-note{position:relative;z-index:2;max-width:none;margin:14px 24px 0;font-size:13px;line-height:1.5;color:#536852;letter-spacing:0;text-align:left}
 @container hero-badges (min-width:540px){
  .hero-badge-exhibit .hero-badge-stage{aspect-ratio:1.45}
- .hero-badge-exhibit .hero-badge-detail{min-height:189px}
 }
 @media(max-width:573px){
  .direction-v4 .hero-exhibit.hero-badge-exhibit{padding-top:17px;border-radius:16px}
  .hero-badge-exhibit .exhibit-meta{padding-inline:18px;margin-bottom:10px}
  .hero-badge-exhibit .hero-badge-controls{margin-inline:14px;gap:8px}
  .hero-badge-exhibit .hero-badge-controls button{padding:9px 13px;font-size:16px}
- .hero-badge-exhibit .hero-badge-detail{margin-inline:20px;padding-top:18px;min-height:240px}
- .hero-badge-exhibit .badge-gesture-note{margin-inline:20px}
 }
 @media(max-width:350px){
  .hero-badge-exhibit .hero-badge-controls{gap:5px;margin-inline:10px}
  .hero-badge-exhibit .hero-badge-controls button{padding-inline:9px}
  .hero-badge-controls .badge-selection{gap:1px;padding:3px}
- .hero-badge-exhibit .hero-badge-detail{margin-inline:17px}
- .hero-badge-detail h2{font-size:26px}
 }
 @media(prefers-reduced-motion:reduce){.hero-badge-controls button{transition:none}}
 

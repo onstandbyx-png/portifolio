@@ -7,12 +7,7 @@ const posterSource = stage?.querySelector<HTMLSourceElement>("[data-badge-poster
 const controls = document.querySelector<HTMLElement>(".hero-badge-controls");
 const selectButtons = [...document.querySelectorAll<HTMLButtonElement>("[data-badge-select]")];
 const flipButton = document.querySelector<HTMLButtonElement>("[data-badge-flip]");
-const hint = document.querySelector<HTMLElement>("[data-badge-hint]");
 const cardStatus = document.querySelector<HTMLElement>("[data-badge-status]");
-const detailKicker = document.querySelector<HTMLElement>("[data-badge-detail-kicker]");
-const detailTitle = document.querySelector<HTMLElement>("[data-badge-detail-title]");
-const detailBody = document.querySelector<HTMLElement>("[data-badge-detail-body]");
-const detailLink = document.querySelector<HTMLAnchorElement>("[data-badge-detail-link]");
 const reduced = matchMedia("(prefers-reduced-motion: reduce)");
 const motionToggle = document.querySelector<HTMLElement>(".motion-toggle");
 let instance: BadgeSceneHandle | null = null;
@@ -60,7 +55,7 @@ function reflectPoster() {
     if (revision === posterRevision) poster.dataset.error = key;
   });
 }
-function reflectDetail() {
+function reflectControls() {
   const card = cards[selectedCard];
   const flipped = cardFaces[selectedCard];
   selectButtons.forEach((button, index) => button.setAttribute("aria-pressed", String(index === selectedCard)));
@@ -69,10 +64,6 @@ function reflectDetail() {
     flipButton.setAttribute("aria-label", `Ver ${flipped ? "a frente" : "o verso"} do crachá ${card.name}`);
     flipButton.innerHTML = `${flipped ? "Ver frente" : "Ver verso"} <span aria-hidden="true">↻</span>`;
   }
-  if (detailKicker) detailKicker.textContent = card.kicker;
-  if (detailTitle) detailTitle.textContent = flipped ? card.back : card.front;
-  if (detailBody) detailBody.textContent = card.body;
-  if (detailLink) { detailLink.href = card.href; detailLink.innerHTML = `${card.link} <span aria-hidden="true">↗</span>`; }
 }
 function announce() {
   if (cardStatus) cardStatus.textContent = `${cards[selectedCard].name}: ${cardFaces[selectedCard] ? "verso" : "frente"} da peça. ${cards[selectedCard].body}`;
@@ -80,7 +71,7 @@ function announce() {
 function reflectSelection(index: 0 | 1) {
   selectedCard = index;
   if (stage) stage.dataset.selectedCard = String(index);
-  reflectDetail();
+  reflectControls();
   reflectPoster();
 }
 function selectCard(index: 0 | 1) {
@@ -101,7 +92,7 @@ function reflectCard(index: 0 | 1, flipped: boolean) {
     stage.dataset[index === 0 ? "fatosFace" : "smiileFace"] = flipped ? "back" : "front";
   }
   reflectPoster();
-  reflectDetail();
+  reflectControls();
 }
 function flipCard(index: 0 | 1, flipped: boolean) {
   reflectCard(index, flipped);
@@ -125,7 +116,6 @@ function sync() {
     // Reduced motion on first visit uses its exact poster without WebGL.
     if (ready) setState("ready");
   }
-  if (hint) hint.textContent = isPaused() || failed ? "Escolha a peça e explore a frente e o verso." : "Toque para virar ou use o botão. Arraste de leve para mover.";
 }
 function resize() {
   const nextLayout = (canvas?.clientWidth || 0) >= 540 ? "pair" : "single";

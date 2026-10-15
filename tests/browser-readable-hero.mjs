@@ -53,14 +53,12 @@ try{
    check('Resting card faces are upright',visible.every(card=>Math.abs(card.points[0].y-card.points[1].y)<2&&Math.abs(card.points[0].x-card.points[3].x)<2));
    check('Only a pair of selectors and one contextual flip are present',await page.locator('[data-badge-select]').count()===2&&await page.locator('[data-badge-flip]').count()===1&&await page.locator('[data-badge-swing],[data-badge-card-flip]').count()===0);
    check('Control text and hit areas are readable',await page.locator('[data-badge-select],[data-badge-flip]').evaluateAll(buttons=>buttons.every(el=>{const r=el.getBoundingClientRect();return parseFloat(getComputedStyle(el).fontSize)>=14&&r.width>=44&&r.height>=44;})));
-   check('The context is real 16px or larger HTML text',await page.locator('[data-badge-detail-body]').evaluate(el=>el.textContent.trim().length>30&&parseFloat(getComputedStyle(el).fontSize)>=16));
-   const firstTitle=await page.locator('[data-badge-detail-title]').innerText(),firstLink=await page.locator('[data-badge-detail-link]').getAttribute('href');
+   check('Removed explanatory blocks are absent from the hero',await page.locator('.hero-badge-detail,[data-badge-hint],.hero-support,.scroll-indicator').count()===0);
    await page.locator('.hero-badge-exhibit').screenshot({path:`${output}/front-${width}.png`,animations:'disabled'});
    await page.locator('[data-badge-flip]').click();await page.waitForFunction(()=>Math.abs(window.__badgeScene.flipAngles[0]-Math.PI)<.03);
    const firstBack=await geometry(page);check('The selected card turns without turning its neighbour',Math.abs(firstBack.angles[0]-Math.PI)<.03&&Math.abs(firstBack.angles[1])<.03);
    await page.locator('[data-badge-select="1"]').click();await page.waitForTimeout(150);
    const selected=await geometry(page);check('Selection preserves the first face and presents smiile',selected.selected==='1'&&Math.abs(selected.angles[0]-Math.PI)<.03&&(!single||selected.cards[1].visible&&!selected.cards[0].visible)&&await page.locator('[data-badge-select="1"]').getAttribute('aria-pressed')==='true');
-   check('Selection updates the visible project context and link',(await page.locator('[data-badge-detail-title]').innerText())!==firstTitle&&(await page.locator('[data-badge-detail-link]').getAttribute('href'))!==firstLink);
    for(let i=0;i<10;i++){await page.locator('[data-badge-flip]').click();row.samples.push(await geometry(page));}
    await page.waitForFunction(()=>Math.abs(window.__badgeScene.flipAngles[1])<.03,null,{timeout:8000});const settled=await geometry(page);row.settled=settled;
    check('Ten flip clicks add no energy to the suspension',row.samples.every(sample=>sample.bodies.every(body=>norm(body.v)<.05&&norm(body.w)<.05))&&settled.bodies.every(body=>norm(body.v)<.05&&norm(body.w)<.05));
