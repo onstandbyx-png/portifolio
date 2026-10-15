@@ -241,7 +241,9 @@ try{
         await explore.click();const dialog=page.locator('.df-explorer:modal');await dialog.waitFor();
         check('Exploration moves the live app into one native dialog',await page.locator('[data-testid="apps-demo"]').count()===1&&await mapNode.evaluate(el=>el===document.querySelector('.df-explorer [data-testid="apps-demo"]')));
         check('Exploration preserves the route screen and readable controls',await app.getAttribute('data-screen')==='map'&&await dialog.locator('.pd-app-filters button').count()===0&&await dialog.locator('.df-explorer-close').evaluate(el=>{const r=el.getBoundingClientRect();return r.width>=44&&r.height>=44;}));
-        await capture('app-exploration',dialog);await page.keyboard.press('Escape');await dialog.waitFor({state:'hidden'});
+        // :modal stops matching before the asynchronous close event restores
+        // the original DOM, scroll and focus. Detachment marks completed cleanup.
+        await capture('app-exploration',dialog);await page.keyboard.press('Escape');await page.locator('.df-explorer').waitFor({state:'detached'});
         check('Closing exploration preserves app state, scroll and focus',await app.getAttribute('data-screen')==='map'&&Math.abs((await page.evaluate(()=>scrollY))-beforeExplore)<=2&&await explore.evaluate(el=>el===document.activeElement));
         check('Exploration never recreates the metallic hardware',await device.evaluate(el=>el.isConnected&&el===document.querySelector('[data-testid="apps-demo"] .df-metal')));
 
@@ -333,7 +335,7 @@ try{
         check('Social exploration retains the live frame and readable caption',await page.locator('.rx-ig-count').innerText()==='2/3'&&await dialog.locator('.sa-ig-caption').evaluate(el=>parseFloat(getComputedStyle(el).fontSize)>=14)&&await socialNode.evaluate(el=>el===document.querySelector('.df-explorer .sa-social')));
         await dialog.locator('[data-rx-social-next]').click();
         check('The social carousel remains interactive in the enlarged view',await dialog.locator('.rx-ig-count').innerText()==='3/3');
-        await capture('social-exploration',dialog);await dialog.locator('.df-explorer-close').click();await dialog.waitFor({state:'hidden'});
+        await capture('social-exploration',dialog);await dialog.locator('.df-explorer-close').click();await page.locator('.df-explorer').waitFor({state:'detached'});
         check('Closing social exploration preserves its selected slide, page and focus',await page.locator('.rx-ig-count').innerText()==='3/3'&&Math.abs((await page.evaluate(()=>scrollY))-beforeExplore)<=2&&await explore.evaluate(el=>el===document.activeElement));
 
         await page.locator('[data-rx-social="0"]').click();
