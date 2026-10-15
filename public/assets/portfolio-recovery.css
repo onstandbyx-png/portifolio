@@ -134,3 +134,8 @@ body{padding-bottom:0!important}
 #narrativa-visual .pf-film-inner>img{object-position:center 76%}
 #narrativa-visual .pf-film-gradient{inset:56% 0 0;background:linear-gradient(transparent,#061008c4)}
 @media(max-width:760px){#editorial .pf-editorial-story .pf-story-controls{top:120px}}
+
+/* Legacy LINHA styling hid source photography behind CSS-only illustrations.
+   This portfolio now shows real local image assets and their editorial labels. */
+#panel-meta .rx-ig-photo>img,
+#panel-tiktok .vertical-video>img{opacity:1!important;visibility:visible!important}

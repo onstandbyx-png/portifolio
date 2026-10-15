@@ -44,8 +44,10 @@ try{
  pass('Social mock uses a metallic device',await page.locator('#panel-meta .pf-social-device .df-metal').count()===1);
  await page.locator('[data-rx-social-next]').click();pass('Social slide advances',await page.locator('.rx-ig-count').innerText()==='2/3');
  await page.locator('[data-rx-social="2"]').click();pass('Third slide selectable',await page.locator('.rx-ig-count').innerText()==='3/3');
+ pass('Meta artwork is really painted, not hidden by legacy CSS',await page.locator('#panel-meta .rx-ig-photo img').evaluate(async i=>{try{await i.decode()}catch{}return i.naturalWidth>0&&Number(getComputedStyle(i).opacity)>.95}));
  await page.screenshot({path:'qa/evidence/social-'+width+'.png'});
  await page.locator('#laboratorio [data-ad-tab="tiktok"]').click();await page.waitForTimeout(120);
+ pass('TikTok storyboard image is visible',await page.locator('#panel-tiktok .vertical-video>img').evaluate(async i=>{try{await i.decode()}catch{}return i.naturalWidth>0&&Number(getComputedStyle(i).opacity)>.95}));
  await page.locator('[data-frame="2"]').click();pass('Video story has navigable frames',await page.locator('.vertical-video').getAttribute('data-frame')==='2');
  await page.locator('#laboratorio [data-ad-tab="google"]').click();pass('Google search specimen selectable',await page.locator('#tab-google').getAttribute('aria-selected')==='true');
  await page.locator('#sistemas [data-system-step="3"]').click();pass('App demonstration reaches result',await page.locator('[data-app-stage]').innerText()!=='01 / IDEIA');
