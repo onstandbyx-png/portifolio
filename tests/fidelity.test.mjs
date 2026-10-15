@@ -3,11 +3,13 @@ import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 const read=p=>readFileSync(new URL('../'+p,import.meta.url),'utf8');
 test('The same physical smiile device is reused for editorial, social and cinematic stages',()=>{
- const d=read('public/assets/showcase/device-frame.js'),sections=read('public/assets/sections/interactions.js'),show=read('public/assets/showcase/experiences.js');
+ const d=read('public/assets/showcase/device-frame.js'),sections=read('public/assets/sections/interactions.js'),show=read('public/assets/showcase/experiences.js'),social=read('public/assets/showcase/social-ads.js');
  for(const marker of ['435','907','402','874','16.5','17'])assert(d.includes(marker));
  assert(sections.includes('createDeviceFrame('));
  assert(show.includes('createDeviceFrame('));
- assert(show.includes('pf-film-device')&&show.includes('pf-social-device'));
+ assert(show.includes('pf-film-device'));
+ assert(social.includes('createDeviceFrame('));
+ assert(social.includes('pf-social-device')&&social.includes('sa-tiktok-device'));
 });
 test('Visual proof uses local photographic assets from current projects',()=>{
  const h=read('index.html'),exp=read('public/assets/showcase/experiences.js');

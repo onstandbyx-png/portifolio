@@ -349,11 +349,13 @@ export class BadgeScene {
   private frame = 0;
   private dragging = -1;
   private dragPointer: number | null = null;
-  private pendingPointer: { event: PointerEvent; index: 0 | 1; x: number; y: number } | null = null;
+  private pendingPointer: { event: PointerEvent; index: 0 | 1; local: Vector3; x: number; y: number } | null = null;
   private readonly flipAngles = [0, 0];
   private readonly flipTargets = [0, 0];
   private focusedCard: 0 | 1 = 0;
   private readonly dragLocal = new Vector3();
+  private readonly dragPointerStart = new Vector3();
+  private readonly dragPhysicalStart = new Vector3();
   private disposed = false;
   private contextLost = false;
   private initialized = false;
@@ -525,6 +527,7 @@ export class BadgeScene {
   /** Inspect one card while its companion keeps its own face and motion. */
   setCardFlipped(index: 0 | 1, flipped: boolean, animate = true) {
     if (this.disposed || this.contextLost) return;
+    this.rig.inspect();
     this.flipTargets[index] = flipped ? Math.PI : 0;
     const companion = index === 0 ? 1 : 0;
     // Closing one reverse must not cover the companion still being inspected.
@@ -545,6 +548,7 @@ export class BadgeScene {
 
   /** Jumps straight to the resting badge without the entrance. */
   rest() {
+    this.releasePointer();
     this.rig = new BadgeRig(RIG, { enter: false });
     this.draw();
   }
@@ -602,9 +606,10 @@ export class BadgeScene {
     let turning = false;
     // A grabbed card keeps its inspection pose until release. No animation
     // changes the grabbed point underneath an active pointer.
-    if (this.dragging < 0) this.flipTargets.forEach((target, i) => {
+    if (this.dragging < 0 && !this.pendingPointer) this.flipTargets.forEach((target, i) => {
       const turn = target - this.flipAngles[i]!;
-      this.flipAngles[i] = Math.abs(turn) < .001 ? target : this.flipAngles[i]! + turn * (1 - Math.exp(-dt * 10));
+      const step = Math.min(Math.abs(turn) * (1 - Math.exp(-dt * 9)), dt * 4.8);
+      this.flipAngles[i] = Math.abs(turn) < .001 ? target : this.flipAngles[i]! + Math.sign(turn) * step;
       turning ||= Math.abs(turn) >= .001;
     });
     this.draw();
@@ -707,19 +712,23 @@ export class BadgeScene {
     this.options.onTouch?.();
   }
 
-  private beginDrag(event: PointerEvent) {
-    const hit = this.pick(event);
-    if (!hit) return;
+  private beginDrag(pending: NonNullable<BadgeScene["pendingPointer"]>) {
+    const { event, index } = pending;
     this.canvas.setPointerCapture(event.pointerId);
     this.dragPointer = event.pointerId;
-    // Unwrap the presentation turn before creating the physical drag joint.
-    // Its initial target is the same point on the unturned physical card.
-    this.dragLocal.copy(this.cardArt![hit.index].worldToLocal(hit.point.clone()));
-    const localPoint = this.cards![hit.index].localToWorld(this.dragLocal.clone());
-    this.model.worldToLocal(localPoint);
-    this.rig.grab(hit.index, this.dragLocal, { x: localPoint.x, y: localPoint.y, z: localPoint.z });
-    this.grabPlane.set(new Vector3(0, 0, 1), -hit.point.z);
-    this.dragging = hit.index;
+    this.dragLocal.copy(pending.local);
+    // Freeze the selected material point and pointer origin once. Recomputing
+    // a rotating visual offset for every move creates a feedback loop at the
+    // reverse face and can inject very large constraint impulses.
+    const visualPoint = this.cardArt![index].localToWorld(this.dragLocal.clone());
+    this.grabPlane.set(new Vector3(0, 0, 1), -visualPoint.z);
+    if (!this.ray(event).ray.intersectPlane(this.grabPlane, this.dragPointerStart)) {
+      this.releasePointer(); return;
+    }
+    this.dragPhysicalStart.copy(this.cards![index].localToWorld(this.dragLocal.clone()));
+    const target = this.model.worldToLocal(this.dragPhysicalStart.clone());
+    this.rig.grab(index, this.dragLocal, { x: target.x, y: target.y, z: target.z });
+    this.dragging = index;
     this.canvas.style.cursor = "grabbing";
     this.touch();
     this.wake();
@@ -729,7 +738,11 @@ export class BadgeScene {
     const hit = this.pick(event);
     // Defer capture until intent is known. A short click/tap turns a card;
     // touch pan-y remains the browser's gesture and never becomes a flip.
-    if (hit) this.pendingPointer = { event, index: hit.index, x: event.clientX, y: event.clientY };
+    if (hit) this.pendingPointer = {
+      event, index: hit.index,
+      local: this.cardArt![hit.index].worldToLocal(hit.point.clone()),
+      x: event.clientX, y: event.clientY,
+    };
   };
   private onMove = (event: PointerEvent) => {
     if (!this.active) return;
@@ -741,20 +754,15 @@ export class BadgeScene {
         this.pendingPointer = null;
       } else if (event.pointerType === "touch"
         ? Math.abs(dx) > 10 && Math.abs(dx) > Math.abs(dy) * 1.3
-        : Math.hypot(dx, dy) > 5) {
-        this.beginDrag(pending.event);
+        : Math.hypot(dx, dy) > 8) {
+        this.beginDrag(pending);
         this.pendingPointer = null;
       }
     }
     if (this.dragging >= 0 && event.pointerId === this.dragPointer) {
       const target = new Vector3();
       if (this.ray(event).ray.intersectPlane(this.grabPlane, target)) {
-        const index = this.dragging as 0 | 1;
-        // Remove the current visual inspection offset, including rotation, from
-        // the pointer's world target so a reverse can be dragged without a jump.
-        const visualPoint = this.cardArt![index].localToWorld(this.dragLocal.clone());
-        const physicalPoint = this.cards![index].localToWorld(this.dragLocal.clone());
-        target.sub(visualPoint.sub(physicalPoint));
+        target.sub(this.dragPointerStart).add(this.dragPhysicalStart);
         this.model.worldToLocal(target);
         this.rig.drag({ x: target.x, y: target.y, z: target.z });
       }
@@ -764,7 +772,7 @@ export class BadgeScene {
   };
   private onUp = (event: PointerEvent) => {
     const pending = this.pendingPointer;
-    this.pendingPointer = null;
+    if (pending?.event.pointerId === event.pointerId) this.pendingPointer = null;
     if (this.dragPointer === event.pointerId) {
       this.releasePointer();
       this.wake();
@@ -772,10 +780,10 @@ export class BadgeScene {
     }
     if (event.type !== "pointerup" || !pending || pending.event.pointerId !== event.pointerId) return;
     if (Math.hypot(event.clientX - pending.x, event.clientY - pending.y) > 10) return;
-    const hit = this.pick(event);
-    if (hit?.index !== pending.index) return;
     this.touch();
-    this.setCardFlipped(hit.index, this.flipTargets[hit.index] === 0);
+    // Selection belongs to pointerdown, even if another face passes underneath
+    // during the gesture. A tap never creates a drag joint or applies force.
+    this.setCardFlipped(pending.index, this.flipTargets[pending.index] === 0);
   };
   private releasePointer() {
     this.pendingPointer = null;

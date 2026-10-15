@@ -61,3 +61,57 @@
 @media(max-width:380px){.pf-fatos-stage{padding:22px 18px 24px}.pf-fatos-profile{inset:19px 17px auto;gap:8px}.pf-fatos-profile>img{width:34px;height:34px;flex-basis:34px}.pf-fatos-profile strong{font-size:14px}.pf-fatos-profile span{font-size:10px}.pf-fatos-question{left:18px;right:18px;top:23%}.pf-fatos-question h4{font-size:26px}.pf-fatos-rule{margin-bottom:13px}.pf-fatos-flip{left:16px;bottom:16px;width:calc(100% - 32px);font-size:13px;padding-inline:13px}.pf-fatos-back{padding:18px 18px 80px}.pf-fatos-back-heading{gap:10px;margin-bottom:17px}.pf-fatos-back-heading img{width:34px;height:34px}.pf-fatos-back-heading span{font-size:9px}.pf-fatos-back h4{font-size:23px;margin-bottom:12px}.pf-fatos-back .pf-fatos-approach{font-size:13px;line-height:1.55}.pf-fatos-formats{margin-top:17px;padding-top:15px}.pf-fatos-formats ul{gap:9px;margin-top:12px}.pf-fatos-formats li{font-size:12px}.pf-fatos-card,.pf-fatos-face{border-radius:20px}}
 @media(prefers-reduced-motion:reduce){.pf-fatos-card,.pf-fatos-rotor,.pf-fatos-flip,.pf-fatos-pips>button,.pf-fatos-pips img{transition:none!important}.pf-fatos-card[data-position="1"],.pf-fatos-card[data-position="2"],.pf-fatos-card[data-position="3"]{transform:translateY(6px) scale(.98)}}
 body.is-paused .pf-fatos-card,body.is-paused .pf-fatos-rotor{transition:none!important}
+/* Fit the complete deck + selectors + arrows inside Android's useful viewport.
+   Width follows the original art ratio; typography does not scale as an image. */
+.pf-fatos-display{scroll-margin-top:80px}
+.pf-fatos-stage[data-dragging="true"]{cursor:grabbing;user-select:none}
+.pf-fatos-stage[data-dragging="true"] .pf-fatos-card.is-active{will-change:transform}
+.pf-fatos-back-heading>div{min-width:0}
+.pf-fatos-back-heading span{display:block;max-width:none;margin-bottom:7px;font-size:9px}
+.pf-fatos-back-heading h4{margin:0;font-size:25px;line-height:1.15}
+.pf-fatos-back-heading{align-items:flex-start}
+@media(max-width:700px){
+ .pf-fatos-display{--fatos-view-height:100svh;max-width:410px}
+ .pf-fatos-stage{padding-block:18px 20px}
+ .pf-fatos-card{width:min(100%,calc((var(--fatos-view-height) - 252px) * .565593));max-width:340px}
+ .pf-fatos-controls{max-width:288px;gap:4px 10px}
+ .pf-fatos-pips{max-width:288px;gap:4px}
+ .pf-fatos-deck .pf-fatos-counter{margin-top:-44px;margin-bottom:0;min-height:44px}
+ .pf-fatos-profile{inset:18px 18px auto;gap:8px}
+ .pf-fatos-profile>img{width:35px;height:35px;flex-basis:35px}
+ .pf-fatos-profile strong{font-size:15px}
+ .pf-fatos-profile span{font-size:11px}
+ .pf-fatos-question{left:20px;right:20px;top:25%}
+ .pf-fatos-question h4{font-size:28px}
+ .pf-fatos-rule{margin-bottom:13px}
+ .pf-fatos-back{padding:18px 18px 76px}
+ .pf-fatos-back-heading{margin-bottom:17px;gap:10px}
+ .pf-fatos-back-heading img{width:32px;height:32px;flex:0 0 32px}
+ .pf-fatos-back-heading h4{font-size:22px}
+ .pf-fatos-back-heading span{font-size:8px;letter-spacing:.07em;margin-bottom:6px}
+ .pf-fatos-back .pf-fatos-approach{font-size:14px;line-height:1.5}
+ .pf-fatos-formats{margin-top:18px;padding-top:14px}
+ .pf-fatos-formats>span{font-size:9px}
+ .pf-fatos-formats ul{gap:8px;margin-top:11px}
+ .pf-fatos-formats li{font-size:13px;line-height:1.35}
+ .pf-fatos-flip{bottom:16px;left:16px;width:calc(100% - 32px);min-height:44px;padding:10px 13px;font-size:13px}
+}
+@media(max-width:380px),(max-width:700px) and (max-height:690px){
+ .pf-fatos-profile{inset:15px 14px auto;gap:7px}
+ .pf-fatos-profile>img{width:29px;height:29px;flex-basis:29px}
+ .pf-fatos-profile strong{font-size:13px;line-height:1.15}
+ .pf-fatos-profile span{font-size:10px}
+ .pf-fatos-question{left:16px;right:16px;top:26%}
+ .pf-fatos-question h4{font-size:24px}
+ .pf-fatos-rule{width:32px;height:3px;margin-bottom:11px}
+ .pf-fatos-back{padding:15px 15px 70px}
+ .pf-fatos-back-heading{margin-bottom:14px;gap:8px}
+ .pf-fatos-back-heading img{width:27px;height:27px;flex-basis:27px}
+ .pf-fatos-back-heading h4{font-size:19px}
+ .pf-fatos-back-heading span{font-size:7px;letter-spacing:.04em}
+ .pf-fatos-back .pf-fatos-approach{font-size:13px;line-height:1.45}
+ .pf-fatos-formats{margin-top:14px;padding-top:12px}
+ .pf-fatos-formats ul{gap:6px;margin-top:9px}
+ .pf-fatos-formats li{font-size:12px;line-height:1.35}
+ .pf-fatos-flip{left:13px;bottom:13px;width:calc(100% - 26px);font-size:12px}
+}

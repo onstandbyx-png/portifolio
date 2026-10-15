@@ -112,9 +112,9 @@ export function mountFatosDeck() {
   const bottom = anchor.querySelector('.editorial-bottom');
   if (bottom) bottom.before(shell); else anchor.append(shell);
   const stage = $('.pf-fatos-stage', shell), pips = $('.pf-fatos-pips', shell);
-  let active = 0, drag = null, lastSwipe = 0, arrival = null;
+  let active = 0, drag = null, lastSwipe = -Infinity, arrival = null, settlement = null;
   const cards = brands.map((brand, i) => {
-    const card = make(`<article class="pf-fatos-card" data-fatos-card="${brand.id}" aria-label="${i + 1} de ${brands.length}: ${brand.name}"><div class="pf-fatos-rotor"><div class="pf-fatos-face pf-fatos-front" data-fatos-front><img class="pf-fatos-art" src="${assets}cena-${brand.id}.webp" alt="Composição editorial de ${brand.name}" loading="lazy" decoding="async" width="720" height="1273" draggable="false"><div class="pf-fatos-shade" aria-hidden="true"></div><div class="pf-fatos-profile"><img src="${assets}avatar_${brand.id}.webp" alt="" width="48" height="48" loading="lazy" draggable="false"><div><strong>${brand.name}</strong><span>${brand.handle}</span></div></div><div class="pf-fatos-question"><span class="pf-fatos-rule" aria-hidden="true"></span><h4>${brand.question}</h4></div><button type="button" class="pf-fatos-flip" data-fatos-flip aria-expanded="false">Ver o contexto <span aria-hidden="true">↻</span></button></div><div class="pf-fatos-face pf-fatos-back" data-fatos-back aria-hidden="true" inert><div class="pf-fatos-back-heading"><img src="${assets}avatar_${brand.id}.webp" alt="" width="44" height="44" loading="lazy"><span>POR TRÁS DA PERGUNTA</span></div><h4>${brand.name}</h4><p class="pf-fatos-approach">${brand.approach}</p><div class="pf-fatos-formats"><span>DESDOBRAMENTOS</span><ul>${brand.formats.map(format => `<li>${format}</li>`).join('')}</ul></div><button type="button" class="pf-fatos-flip" data-fatos-return>Voltar à peça <span aria-hidden="true">↶</span></button></div></div></article>`);
+    const card = make(`<article class="pf-fatos-card" data-fatos-card="${brand.id}" aria-label="${i + 1} de ${brands.length}: ${brand.name}"><div class="pf-fatos-rotor"><div class="pf-fatos-face pf-fatos-front" data-fatos-front><img class="pf-fatos-art" src="${assets}cena-${brand.id}.webp" alt="Composição editorial de ${brand.name}" loading="lazy" decoding="async" width="720" height="1273" draggable="false"><div class="pf-fatos-shade" aria-hidden="true"></div><div class="pf-fatos-profile"><img src="${assets}avatar_${brand.id}.webp" alt="" width="48" height="48" loading="lazy" draggable="false"><div><strong>${brand.name}</strong><span>${brand.handle}</span></div></div><div class="pf-fatos-question"><span class="pf-fatos-rule" aria-hidden="true"></span><h4>${brand.question}</h4></div><button type="button" class="pf-fatos-flip" data-fatos-flip aria-expanded="false">Ver o contexto <span aria-hidden="true">↻</span></button></div><div class="pf-fatos-face pf-fatos-back" data-fatos-back aria-hidden="true" inert><div class="pf-fatos-back-heading"><img src="${assets}avatar_${brand.id}.webp" alt="" width="44" height="44" loading="lazy"><div><span>POR TRÁS DA PERGUNTA</span><h4>${brand.name}</h4></div></div><p class="pf-fatos-approach">${brand.approach}</p><div class="pf-fatos-formats"><span>DESDOBRAMENTOS</span><ul>${brand.formats.map(format => `<li>${format}</li>`).join('')}</ul></div><button type="button" class="pf-fatos-flip" data-fatos-return>Voltar à peça <span aria-hidden="true">↶</span></button></div></div></article>`);
     card.style.setProperty('--fatos-accent', brand.color);
     $('[data-fatos-flip]', card).addEventListener('click', () => flip(true, true));
     $('[data-fatos-return]', card).addEventListener('click', () => flip(false, true));
@@ -150,12 +150,21 @@ export function mountFatosDeck() {
     $('[data-fatos-territory]', shell).textContent = brands[active].territory;
     $('.pf-fatos-counter', shell).textContent = (active + 1) + ' de 6 · ' + brands[active].short;
   }
-  function go(index) {
+  function go(index, released = null) {
     const next = (index + brands.length) % brands.length;
     if (next === active) return;
     const hadCardFocus = cards[active].contains(document.activeElement);
     const direction = (next - active + brands.length) % brands.length <= brands.length / 2 ? 1 : -1;
-    arrival?.cancel(); active = next; paint();
+    arrival?.cancel(); settlement?.cancel();
+    const previous = cards[active], from = released?.transform;
+    cancelDrag(false);
+    active = next; paint();
+    if (from) {
+      previous.style.transition = 'none';
+      const destination = getComputedStyle(previous).transform;
+      previous.style.removeProperty('transition');
+      settlement = motion.animate(previous, [{ transform: from, opacity: 1 }, { transform: destination, opacity: getComputedStyle(previous).opacity }], { duration: 360 });
+    }
     arrival = motion.spring(cards[active], progress => ({ opacity: clamp(progress, .4, 1), transform: `translateX(${(1 - progress) * direction * 42}px) rotate(${(1 - progress) * direction * 5}deg)` }), { duration: 560 });
     if (hadCardFocus) $('[data-fatos-flip]', cards[active]).focus({ preventScroll: true });
   }
@@ -166,17 +175,57 @@ export function mountFatosDeck() {
     if (event.key in destinations) { event.preventDefault(); go(destinations[event.key]); if (event.target.closest('.pf-fatos-pips')) selectors[active].focus({ preventScroll: true }); }
     if (event.key === 'Escape' && cards[active].classList.contains('is-flipped')) { event.preventDefault(); flip(false, true); }
   });
+  function cancelDrag(animate = true) {
+    const current = drag;
+    drag = null; delete stage.dataset.dragging;
+    if (!current) return;
+    const from = current.card.style.transform;
+    current.card.style.removeProperty('transform');
+    current.card.style.removeProperty('transition');
+    if (stage.hasPointerCapture?.(current.id)) stage.releasePointerCapture(current.id);
+    if (animate && current.axis === 'horizontal' && from) {
+      settlement?.cancel();
+      settlement = motion.spring(current.card, progress => ({ transform: `translateX(${current.offset * (1 - progress)}px) rotate(${current.rotation * (1 - progress)}deg)` }), { duration: 380, name: 'smooth' });
+    }
+  }
   stage.addEventListener('pointerdown', event => {
-    if (event.target.closest('button, a') || (event.pointerType === 'mouse' && event.button !== 0)) return;
-    drag = { x: event.clientX, y: event.clientY, id: event.pointerId };
-    stage.setPointerCapture?.(event.pointerId);
+    if (drag || !event.isPrimary || event.target.closest('button, a') || !event.target.closest('.pf-fatos-card.is-active') || (event.pointerType === 'mouse' && event.button !== 0)) return;
+    arrival?.finish(); settlement?.finish();
+    const card = cards[active];
+    drag = { x: event.clientX, y: event.clientY, id: event.pointerId, card, axis: null, width: card.getBoundingClientRect().width, offset: 0, rotation: 0 };
+  });
+  stage.addEventListener('pointermove', event => {
+    if (!drag || drag.id !== event.pointerId) return;
+    const dx = event.clientX - drag.x, dy = event.clientY - drag.y;
+    if (!drag.axis) {
+      // Vertical intent belongs entirely to the document. A tap never captures.
+      if (Math.abs(dy) > 10 && Math.abs(dy) > Math.abs(dx) * 1.1) { cancelDrag(false); return; }
+      if (Math.abs(dx) < 12 || Math.abs(dx) < Math.abs(dy) * 1.35) return;
+      drag.axis = 'horizontal'; stage.dataset.dragging = 'true';
+      drag.card.style.transition = 'none'; stage.setPointerCapture?.(event.pointerId);
+    }
+    if (event.cancelable) event.preventDefault();
+    // Drag follows the finger within one card, with resistance near the edge.
+    const limit = drag.width * .3;
+    drag.offset = Math.sign(dx) * limit * (1 - Math.exp(-Math.abs(dx) / limit));
+    drag.rotation = drag.offset / drag.width * 8;
+    drag.card.style.transform = `translateX(${drag.offset}px) rotate(${drag.rotation}deg)`;
   });
   stage.addEventListener('pointerup', event => {
     if (!drag || drag.id !== event.pointerId) return;
-    const dx = event.clientX - drag.x, dy = event.clientY - drag.y; drag = null;
-    if (Math.abs(dx) >= 48 && Math.abs(dx) > Math.abs(dy) * 1.25) { lastSwipe = performance.now(); go(active + (dx < 0 ? 1 : -1)); }
+    const current = drag, dx = event.clientX - current.x, dy = event.clientY - current.y;
+    const threshold = Math.max(42, Math.min(72, current.width * .22));
+    const deliberate = current.axis === 'horizontal' && Math.abs(dx) >= threshold && Math.abs(dx) > Math.abs(dy) * 1.25;
+    if (deliberate) {
+      lastSwipe = performance.now();
+      const transform = current.card.style.transform;
+      go(active + (dx < 0 ? 1 : -1), { transform });
+    } else cancelDrag(true);
   });
-  stage.addEventListener('pointercancel', () => { drag = null; });
-  stage.addEventListener('lostpointercapture', () => { drag = null; });
+  stage.addEventListener('pointercancel', () => cancelDrag(true));
+  stage.addEventListener('lostpointercapture', event => { if (event.target === stage) cancelDrag(true); });
+  stage.addEventListener('pointerleave', () => { if (drag && !drag.axis) cancelDrag(false); });
+  stage.addEventListener('click', event => { if (performance.now() - lastSwipe < 300) { event.preventDefault(); event.stopPropagation(); } }, true);
+  motion.onStop(() => cancelDrag(false));
   paint(); shell.dataset.ready = 'true'; return shell;
 }

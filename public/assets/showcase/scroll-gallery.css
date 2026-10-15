@@ -7,6 +7,7 @@
 .rg-toolbar p{display:flex;align-items:center;gap:15px;margin:0;font-size:11px;color:#4c5e4c}
 .rg-toolbar [data-rg-count]{font-variant-numeric:tabular-nums;color:#818c7c;font-size:10px;white-space:nowrap}
 .rg-toolbar [data-rg-name]{font-size:10px;letter-spacing:.08em}
+.rg-scroll-cue{font-size:10px;color:#73806b;white-space:nowrap}
 .rg-resume,.rf-resume{font-family:inherit;font-size:12px;font-weight:600;line-height:1.3;border:1px solid #c1cdbc;border-radius:999px;background:#fffef9;color:#304c33;padding:8px 13px;min-height:44px;cursor:pointer}
 .rg-resume span{margin-left:8px}
 .rg-viewport{position:relative;min-height:0;overflow:clip;perspective:1450px;perspective-origin:50% 50%}
@@ -45,7 +46,7 @@
 .rg-natural .rg-toolbar,.rg-natural .rg-navigation{display:none}
 .rg-natural .rg-viewport{overflow:visible;perspective:none}
 #trabalhos .rg-natural .work-evidence-gallery.rg-gallery{position:relative;display:grid;gap:26px}
-.rg-natural .rg-plane{position:relative;left:auto;top:auto;width:100%;height:460px;transform:none;opacity:1;pointer-events:auto;will-change:auto}
+.rg-natural .rg-plane{position:relative;left:auto;top:auto;width:100%;height:460px;transform:perspective(1450px) rotateX(var(--rg-flow-angle,0deg));opacity:1;pointer-events:auto;will-change:auto}
 
 /* Three real visual planes: a campaign cover, the retained metallic phone and
    a composed desktop site. Each plane carries the same Casa Costa identity. */
@@ -108,10 +109,10 @@
 .rf-natural .rf-stage{position:relative;top:auto;height:auto;min-height:680px;grid-template-rows:610px auto}
 @media(max-width:760px){
  .rg-scroll-shell{--rg-header:64px;height:calc(var(--rg-count,4)*76svh)}
- .rg-sticky{grid-template-rows:52px minmax(0,1fr) 57px}
+ .rg-sticky{grid-template-rows:44px minmax(0,1fr) 54px}
  .rg-toolbar{gap:8px}.rg-toolbar p{gap:9px}.rg-toolbar [data-rg-name]{font-size:8px;letter-spacing:.03em;max-width:17ch}
  .rg-resume{font-size:10px;padding:6px 10px;white-space:nowrap}.rg-resume span{margin-left:3px}
- .rg-plane{width:100%;height:min(568px,calc(100svh - 205px))}
+ .rg-plane{width:100%;height:min(510px,calc(100svh - 170px))}
  #trabalhos .rg-gallery .work-tile{display:flex;flex-direction:column;padding:12px;gap:11px;border-radius:20px}
  #trabalhos .rg-gallery .work-context{position:static;width:100%;display:flex;justify-content:space-between;gap:12px;min-height:22px;padding:1px 2px;font-size:8px}
  #trabalhos .rg-gallery .work-context>span:last-child{font-size:7px;text-align:right;max-width:15ch}
@@ -128,7 +129,10 @@
  #trabalhos .rg-gallery .sm-back-lines>span{padding:6px 0;font-size:10px}
  #trabalhos .rg-gallery .sm-work-back>small{font-size:9px;line-height:1.35;margin:10px 0 0}
  .rg-navigation{gap:11px}.rg-navigation p{font-size:10px;max-width:25ch}
- .rg-natural .rg-plane{height:565px}
+ .rg-natural .rg-plane{height:auto}
+ #trabalhos .rg-natural .rg-gallery .work-tile{height:auto;min-height:0}
+ #trabalhos .rg-natural .rg-gallery .sm-work-stage{height:335px;flex:none;min-height:0}
+ .rg-scroll-shell:not(.rg-natural) .rg-plane:not(.rg-active) .tile-caption,.rg-scroll-shell:not(.rg-natural) .rg-plane:not(.rg-active) .work-context{visibility:hidden}
  .rf-film{--rf-header:64px;height:320svh}
  .rf-heading{display:block;padding:22px 20px 12px}
  .rf-heading>div>small{font-size:8px;letter-spacing:.09em}
@@ -157,7 +161,8 @@
  .rf-natural .rf-phone{--df-pt:min(.62px,calc((100vw - 64px)/435))}
 }
 @media(max-width:360px){
- .rg-toolbar [data-rg-name]{max-width:14ch;font-size:7px}
+ .rg-toolbar [data-rg-name]{max-width:18ch;font-size:7px}.rg-scroll-cue{font-size:8px}
+ #trabalhos .rg-natural .rg-gallery .sm-work-stage{height:320px}
  #trabalhos .rg-gallery .work-tile{padding:10px;gap:8px}
  #trabalhos .rg-gallery .sm-work-stage{min-height:310px}
  #trabalhos .rg-gallery .tile-caption h3{font-size:23px}
@@ -178,3 +183,15 @@
 
 #panel-meta .rx-ig-avatar{padding:0;overflow:hidden;background:#0d3065}
 #panel-meta .rx-ig-avatar>img{display:block;width:100%;height:100%;object-fit:cover;border-radius:50%}
+
+/* In a genuinely short viewport, retain all full-size formats in normal flow.
+   Each whole plane still enters/leaves with scroll; no clipped phone or trap. */
+.rf-natural .rf-stage{display:flex;flex-direction:column;height:auto;min-height:0;overflow:visible}
+.rf-natural .rf-camera{width:100%;overflow:visible;perspective:none}
+.rf-natural .rf-world{position:relative;inset:auto;display:grid;justify-items:center;gap:52px;padding:35px 16px 50px;transform:none;will-change:auto}
+.rf-natural .rf-plane{position:relative;left:auto;top:auto;max-width:100%;margin:0;transform:perspective(1100px) rotateX(var(--rf-flow-angle,0deg));filter:none;opacity:1;pointer-events:auto;will-change:auto}
+.rf-natural .rf-phone-plane{width:max-content}
+.rf-natural .rf-footer{order:-1;width:100%;padding-block:18px;gap:8px}
+.rf-natural .rf-cover{height:420px;max-height:none}
+.rf-natural .rf-web{height:390px;max-height:none}
+@media(prefers-reduced-motion:reduce){.rg-natural .rg-plane,.rf-natural .rf-plane{transform:none}}

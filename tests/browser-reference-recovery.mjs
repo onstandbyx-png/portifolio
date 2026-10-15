@@ -140,11 +140,12 @@ try{
           await page.locator('#motion-toggle').click();
           await scrollProgress(page,'.rg-scroll-shell',.08);
           await page.waitForFunction(()=>document.querySelector('.rg-active')?.dataset.rgIndex==='0');
-          await page.locator('[data-rg-next]').click();const chosen=await active();
+          await page.locator('[data-rg-next]').click();
+          await page.waitForFunction(()=>document.querySelector('.rg-active')?.dataset.rgIndex==='1');
           await scrollProgress(page,'.rg-scroll-shell',.85);
-          check('Manual gallery choice persists across subsequent scroll',await shell.getAttribute('data-mode')==='manual'&&await active()===chosen);
-          await page.locator('[data-rg-resume]').click();
-          check('Explicit resume returns gallery ownership to scroll',await shell.getAttribute('data-mode')==='scroll');
+          await page.waitForFunction(()=>Number(document.querySelector('.rg-active')?.dataset.rgIndex)>=2);
+          check('Gallery selection keeps subsequent scrolling active',await shell.getAttribute('data-mode')==='scroll'&&Number(await active())>=2);
+          check('Gallery requires no resume control',await page.locator('[data-rg-resume]').count()===0);
           await scrollProgress(page,'.rg-scroll-shell',.08);
           await page.waitForFunction(()=>document.querySelector('.rg-active')?.dataset.rgIndex==='0');
         }
@@ -178,15 +179,14 @@ try{
       await group('film',async()=>{
         const film=page.locator('#narrativa-visual.rf-film');
         await film.locator('[data-rx-film-to="2"]').click();
-        check('Film manual chapter selects a distinct social composition',await film.getAttribute('data-phase')==='2'&&await film.getAttribute('data-mode')==='manual');
-        await scrollProgress(page,'#narrativa-visual',.8);
-        check('Film retains manual choice when the visitor scrolls',await film.getAttribute('data-phase')==='2');
+        await page.waitForFunction(()=>document.querySelector('#narrativa-visual')?.dataset.phase==='2');
+        check('Film chapter selection reveals the social composition',await film.getAttribute('data-phase')==='2'&&await film.getAttribute('data-mode')!=='manual');
         await film.locator('[data-rx-film-to="3"]').click();
+        await page.waitForFunction(()=>document.querySelector('#narrativa-visual')?.dataset.phase==='3');
         check('Film exposes the real site chapter',await film.getAttribute('data-phase')==='3');
         await capture('film-site');
         if(!reduced){
-          await film.locator('[data-rf-resume]').click();
-          check('Film resumes scroll only after explicit action',await film.getAttribute('data-mode')==='scroll');
+          check('Film keeps scroll active without a resume control',await film.getAttribute('data-mode')==='scroll'&&await page.locator('[data-rf-resume]').count()===0);
           await scrollProgress(page,'#narrativa-visual',.08);
           await page.waitForFunction(()=>document.querySelector('#narrativa-visual')?.dataset.phase==='0');
           await scrollProgress(page,'#narrativa-visual',.8);
@@ -288,7 +288,7 @@ try{
         const media=[];
         for(const channel of ['meta','tiktok']){
           await page.locator(`[data-ad-tab="${channel}"]`).click();
-          const image=page.locator(channel==='meta'?'#panel-meta .rx-ig-photo img':'#panel-tiktok .vertical-video>img');
+          const image=page.locator(channel==='meta'?'#panel-meta .rx-ig-photo img':'#panel-tiktok .sa-tt-media>img');
           const decoded=await decodeVisibleImages(image);
           check(`${channel}: the social artwork is decoded and visibly painted`,decoded.length===1&&decoded[0].ok&&await image.evaluate(el=>Number(getComputedStyle(el).opacity)>.95&&getComputedStyle(el).display!=='none'));
           media.push(...decoded);
@@ -296,11 +296,11 @@ try{
         check('Social artwork is independent of authenticated or remote previews',media.every(image=>image.src.startsWith('/assets/')));
         await page.locator('[data-ad-tab="meta"]').click();
         await page.locator('[data-rx-social-next]').click();
+        await page.waitForFunction(()=>document.querySelector('.rx-ig-count')?.textContent==='2/3');
         check('Original social carousel still advances',await page.locator('.rx-ig-count').innerText()==='2/3');
         await page.locator('[data-rx-social="0"]').click();
         // Bring the first work into the gallery before clicking its case action.
         if(!reduced){
-          const resume=page.locator('[data-rg-resume]');if(await resume.isVisible())await resume.click();
           await scrollProgress(page,'.rg-scroll-shell',.15);
           await page.waitForFunction(()=>document.querySelector('.rg-active')?.dataset.rgIndex==='0');
         }

@@ -24,6 +24,8 @@ jobs:
           /tmp/portfolio-qa/node_modules/.bin/playwright install --with-deps chromium
       - name: Validate visual evidence on desktop and mobile
         run: node tests/browser-evidence.mjs
+      - name: Validate touch gestures and badge stability
+        run: node tests/browser-gestures.mjs
       - name: Validate preserved interactive video pass
         run: node tests/browser-kinetic-pass.mjs
       - uses: actions/upload-artifact@v4

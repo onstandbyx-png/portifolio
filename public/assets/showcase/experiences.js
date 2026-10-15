@@ -2,8 +2,9 @@
    Sources have clear attribution; paid results are never invented. */
 import {clamp,createMotion} from '../sections/motion.js';
 import {createDeviceFrame} from './device-frame.js';
-import {mountScrollGallery,createChapterState} from './scroll-gallery.js';
+import {mountScrollGallery,createChapterState,stableViewportHeight} from './scroll-gallery.js';
 import {mountFatosDeck} from './fatos-deck.js';
+import {mountSocialAds} from './social-ads.js';
 const $=(s,r=document)=>r.querySelector(s),$$=(s,r=document)=>[...r.querySelectorAll(s)];
 const motion=createMotion();
 const make=markup=>{const tpl=document.createElement('template');tpl.innerHTML=markup.trim();return tpl.content.firstElementChild;};
@@ -29,19 +30,19 @@ function mountScrollFilm(){
    <article class="rf-plane rf-cover" data-rf-plane="0" aria-label="Capa editorial Casa Costa"><img src="/assets/portfolio/smiile-architecture-coast.webp" alt="Casa junto à costa, integrada à vegetação" loading="lazy" decoding="async"><div class="rf-cover-top"><span>FORMA</span><span>CASA COSTA / 01</span></div><div class="rf-cover-copy"><small>ARQUITETURA PARA HABITAR</small><strong>O essencial<br>tem espaço.</strong><p>Luz natural, matéria e paisagem em uma mesma direção.</p></div></article>
    <div class="rf-plane rf-phone-plane" data-rf-plane="1"></div>
    <article class="rf-plane rf-web" data-rf-plane="2" aria-label="Composição do site Casa Costa"><div class="rf-web-chrome"><i></i><i></i><i></i><span>FORMA / CASA COSTA</span></div><div class="rf-web-nav"><strong>forma.</strong><span class="rf-nav-desktop">Arquitetura &nbsp; · &nbsp; Paisagem &nbsp; · &nbsp; Contato</span><span class="rf-nav-mobile">CASA COSTA / 01</span></div><div class="rf-web-hero"><div class="rf-web-copy"><small>CASA COSTA / ARQUITETURA</small><strong>Espaço para o essencial.</strong><p>Uma casa aberta à luz, ao tempo e à paisagem.</p><span>Conheça o projeto ↗</span></div><img src="/assets/portfolio/smiile-architecture-coast.webp" alt="Composição ampla da arquitetura Casa Costa" loading="lazy" decoding="async"></div></article>
-  </div></div><div class="rf-footer"><div class="rf-format-switch" role="group" aria-label="Explorar composição de formatos"><button type="button" data-rx-film-to="0" aria-pressed="true">Visão geral</button><button type="button" data-rx-film-to="1" aria-pressed="false">Capa</button><button type="button" data-rx-film-to="2" aria-pressed="false">Social</button><button type="button" data-rx-film-to="3" aria-pressed="false">Site</button><button type="button" data-rx-film-to="4" aria-pressed="false">Conjunto</button></div><div class="rf-footer-line"><p data-rf-status role="status" aria-live="polite">Role para percorrer a composição.</p><button type="button" class="rf-resume" data-rf-resume hidden>Retomar rolagem ↓</button><a href="#sistemas" data-product-target="site">Explorar o site ↗</a></div></div></div>
+  </div></div><div class="rf-footer"><div class="rf-format-switch" role="group" aria-label="Explorar composição de formatos"><button type="button" data-rx-film-to="0" aria-pressed="true">Visão geral</button><button type="button" data-rx-film-to="1" aria-pressed="false">Capa</button><button type="button" data-rx-film-to="2" aria-pressed="false">Social</button><button type="button" data-rx-film-to="3" aria-pressed="false">Site</button><button type="button" data-rx-film-to="4" aria-pressed="false">Conjunto</button></div><div class="rf-footer-line"><p data-rf-status role="status" aria-live="polite">Role para percorrer a composição.</p><a href="#sistemas" data-product-target="site">Explorar o site ↗</a></div></div></div>
  </section>`);
  anchor.before(film);
  const phone=createDeviceFrame({tone:'light',scheme:'light',time:'10:09',label:'Casa Costa: publicação social na moldura metálica da smiile'});
  phone.root.classList.add('rf-phone','pf-film-device');$('[data-rf-plane="1"]',film).append(phone.root);
  phone.screen.innerHTML='<div class="rf-phone-content"><div class="rf-phone-header"><b>f.</b><span><strong>forma.arquitetura</strong><small>Casa Costa · direção visual</small></span></div><div class="rf-phone-image"><img src="/assets/portfolio/smiile-architecture-coast.webp" alt="Casa Costa, adaptação vertical da mesma composição" loading="lazy" decoding="async"><strong>Entre a casa<br>e a paisagem.</strong></div><div class="rf-phone-caption"><span aria-hidden="true">♡ &nbsp; ◯ &nbsp; ↗</span><b>forma.arquitetura</b> Um projeto onde a natureza faz parte de cada escolha.</div></div>';
- const world=$('.rf-world',film),planes=$$('[data-rf-plane]',film),tabs=$$('[data-rx-film-to]',film),resume=$('[data-rf-resume]',film),status=$('[data-rf-status]',film);
- const state=createChapterState(5),small=matchMedia('(max-width:760px)'),short=matchMedia('(max-height:700px)'),reduced=matchMedia('(prefers-reduced-motion:reduce)');
- let visible=false,frame=0,scrollValue=0,lastPhase=-1;
+ const world=$('.rf-world',film),planes=$$('[data-rf-plane]',film),tabs=$$('[data-rx-film-to]',film),status=$('[data-rf-status]',film);
+ const state=createChapterState(5),small=matchMedia('(max-width:760px)'),reduced=matchMedia('(prefers-reduced-motion:reduce)');
+ let visible=false,frame=0,lastPhase=-1,natural=false;
  const lerp=(a,b,t)=>a+(b-a)*t;
  function paint(){
-  const mobile=small.matches,paused=motion.paused(),natural=short.matches||reduced.matches;
-  film.classList.toggle('rf-natural',natural);film.dataset.paused=String(paused);film.dataset.mode=state.mode;
+  const mobile=small.matches,paused=motion.paused();natural=stableViewportHeight()<700||reduced.matches;
+  film.classList.toggle('rf-natural',natural);film.dataset.paused=String(paused);film.dataset.mode=natural?'flow':'scroll';
   const progress=state.value,segment=Math.min(3,Math.floor(progress)),local=progress-segment;
   // Hold each reading state before the next camera movement. Reverse scroll
   // evaluates the same timeline, so planes never reset or jump to a timer.
@@ -60,69 +61,47 @@ function mountScrollFilm(){
    plane.style.setProperty('--rf-ry',`${overview?(i-1)*-13:mobile?0:(i-focus)*-9}deg`);
    plane.style.setProperty('--rf-blur',`${!mobile&&!active&&!paused?Math.min(2.5,distance*1.5):0}px`);
    plane.style.setProperty('--rf-alpha',String(mobile&&!active?.18:1));
-   plane.classList.toggle('rf-in-focus',active);plane.setAttribute('aria-hidden',String(!active));
+   plane.classList.toggle('rf-in-focus',natural||active);plane.setAttribute('aria-hidden',String(!natural&&!active));
+   if(natural){const rect=plane.getBoundingClientRect(),height=stableViewportHeight(),offset=clamp((rect.top+rect.height/2-height/2)/height,-1,1);plane.style.setProperty('--rf-flow-angle',`${paused?0:offset*-5}deg`)}
   });
-  resume.hidden=state.mode!=='manual';resume.disabled=paused||natural;
   if(index!==lastPhase){lastPhase=index;film.dataset.phase=String(index);film.dataset.format=String(index)}
   const selectedTab=mobile?Math.max(1,Math.min(3,index)):index;
   tabs.forEach((tab,i)=>{tab.hidden=mobile&&(i===0||i===4);tab.setAttribute('aria-pressed',String(i===selectedTab))});
-  status.textContent=natural?'Escolha um formato para explorar.':state.mode==='manual'?'Sua escolha permanece até retomar.':paused?'Movimento pausado · escolha um formato.':'Role para percorrer a composição.';
+  const message=natural?'Três formatos completos. Continue rolando.':paused?'Movimento pausado · escolha um formato.':'Role para percorrer a composição.';
+  if(status.textContent!==message)status.textContent=message;
  }
  function update(){
   frame=0;if(!visible)return;
-  const rect=film.getBoundingClientRect(),heading=$('.rf-heading',film).offsetHeight,header=small.matches?64:76;
-  const travel=Math.max(1,film.offsetHeight-heading-(innerHeight-header));
-  scrollValue=clamp((header-rect.top-heading)/travel)*4;
-  state.pause(motion.paused()||short.matches);state.scroll(scrollValue);paint();
+  natural=stableViewportHeight()<700||reduced.matches;film.classList.toggle('rf-natural',natural);
+  state.pause(motion.paused());
+  if(natural){
+   let nearest=0,distance=Infinity;planes.forEach((plane,i)=>{const rect=plane.getBoundingClientRect(),d=Math.abs(rect.top+rect.height/2-stableViewportHeight()/2);if(d<distance){distance=d;nearest=i}});state.choose(nearest+1);
+  }else{
+   const rect=film.getBoundingClientRect(),heading=$('.rf-heading',film).offsetHeight,header=small.matches?64:76;
+   const travel=Math.max(1,film.offsetHeight-heading-$('.rf-stage',film).offsetHeight);
+   state.scroll(clamp((header-rect.top-heading)/travel)*4);
+  }
+  paint();
  }
  const request=()=>{if(!frame)frame=requestAnimationFrame(update)};
- tabs.forEach(tab=>tab.addEventListener('click',()=>{state.choose(Number(tab.dataset.rxFilmTo));paint()}));
- resume.addEventListener('click',()=>{state.resume(scrollValue);paint()});
+ tabs.forEach(tab=>tab.addEventListener('click',()=>{
+  const next=Number(tab.dataset.rxFilmTo),behavior=motion.paused()?'instant':'smooth';
+  if(natural){planes[Math.max(0,Math.min(2,next-1))].scrollIntoView({behavior,block:'center'});return}
+  const heading=$('.rf-heading',film).offsetHeight,header=small.matches?64:76,start=scrollY+film.getBoundingClientRect().top+heading-header;
+  const travel=film.offsetHeight-heading-$('.rf-stage',film).offsetHeight;
+  if(motion.paused()){state.choose(next);paint()}
+  scrollTo({top:start+travel*next/4,behavior});
+ }));
  new IntersectionObserver(([entry])=>{visible=entry.isIntersecting;if(visible)request()},{rootMargin:'150px'}).observe(film);
  addEventListener('scroll',request,{passive:true});addEventListener('resize',request,{passive:true});
- reduced.addEventListener('change',request);short.addEventListener('change',request);small.addEventListener('change',request);
+ reduced.addEventListener('change',request);small.addEventListener('change',request);
  motion.onStop(()=>{state.pause(motion.paused());paint()});
  const pause=document.querySelector('.motion-toggle');if(pause)new MutationObserver(request).observe(pause,{attributes:true,attributeFilter:['aria-pressed']});
  paint();film.dataset.ready='true';return film;
 }
 
-function mountSocial(){
- const panel=$('#panel-meta'),old=panel&&$('.mock-phone',panel);if(!panel||!old)return;
- const html=make('<div class="rx-instagram" role="region" aria-label="Carrossel editorial conceitual no formato de anúncio"><div class="rx-iphone"><div class="rx-iphone-inner"><div class="rx-device-status"><span>10:09</span><span class="rx-dynamic-island" aria-hidden="true"></span><span>▂ ▂ ▰</span></div><div class="rx-ig-topbar"><span>‹</span><strong>Posts</strong><span class="rx-follow">Estudo</span></div><div class="rx-ig-profile"><span class="rx-ig-avatar"><img src="/assets/portfolio/recovered-fatos/avatar_desconhecidos.webp" alt="" loading="lazy" decoding="async"></span><div><b>fatosdesconhecidos</b><small>Estudo conceitual · não veiculado</small></div><span>≡</span></div><div class="rx-ig-photo"><img src="/assets/portfolio/campanha-desconhecidos.webp" alt="Tecnologia na comunicação, arte original Fatos"><span class="rx-ig-count">1/3</span><div class="rx-ig-overlay"><small>FATOS / COMPOSIÇÃO VISUAL</small><h3>Uma história começa com uma pergunta.</h3></div><div class="rx-ig-nav"><button type="button" data-rx-social-prev aria-label="Imagem anterior">‹</button><button type="button" data-rx-social-next aria-label="Próxima imagem">›</button></div></div><div class="rx-ig-dots" role="group" aria-label="Selecionar imagem"><button type="button" data-rx-social="0" aria-current="true" aria-label="Imagem 1"></button><button type="button" data-rx-social="1" aria-current="false" aria-label="Imagem 2"></button><button type="button" data-rx-social="2" aria-current="false" aria-label="Imagem 3"></button></div><div class="rx-ig-actions"><span>♡ &nbsp; ◯ &nbsp; ↗</span><span>▯</span></div><p class="rx-ig-caption"><strong>fatosdesconhecidos</strong> Conteúdo, pesquisa e criatividade em uma sequência.</p><span class="rx-ig-date">ESTUDO DE FORMATO · NÃO PUBLICADO</span><div class="rx-ig-home"></div></div></div><p class="rx-social-caption">A EXPERIÊNCIA NA REDE É UMA CREDENCIAL, NÃO UMA OFERTA DE PUBLICAÇÃO</p></div>');
- old.replaceWith(html);
- // Reuse the approved metallic device geometry, not another simulated phone skin.
- const legacy=$('.rx-iphone',html),inner=$('.rx-iphone-inner',legacy);const phone=createDeviceFrame({tone:'dark',scheme:'dark',time:'10:09',label:'Exemplo de carrossel de conteúdo dentro do dispositivo metálico'});
- phone.root.classList.add('pf-social-device');legacy.replaceWith(phone.root);$('.rx-device-status',inner)?.remove();$('.rx-ig-home',inner)?.remove();phone.screen.append(inner);
- const slides=[
-  {src:'/assets/portfolio/recovered-fatos/post-desconhecidos-600.webp',headline:'O que cabe hoje na palma da sua mão?',label:'FATOS DESCONHECIDOS / A PERGUNTA',position:'50% 50%'},
-  {src:'/assets/portfolio/campanha-desconhecidos.webp',headline:'De aparelho de voz a parte da rotina.',label:'FATOS DESCONHECIDOS / O CONTEXTO',position:'50% 50%'},
-  {src:'/assets/portfolio/cena-desconhecidos.webp',headline:'A tecnologia muda. A curiosidade continua.',label:'FATOS DESCONHECIDOS / A CONEXÃO',position:'68% 50%'}
- ];
- let ix=0,revision=0;const img=$('.rx-ig-photo img',html),heading=$('.rx-ig-overlay h3',html),count=$('.rx-ig-count',html),small=$('.rx-ig-overlay small',html),area=$('.rx-ig-photo',html),decoded=new Map();
- function ready(src){
-  if(decoded.has(src))return decoded.get(src);
-  const image=new Image();image.decoding='async';image.src=src;
-  const promise=(image.decode?image.decode():new Promise((resolve,reject)=>{if(image.complete&&image.naturalWidth)resolve();else{image.onload=resolve;image.onerror=reject}})).then(()=>{if(!image.naturalWidth)throw new Error('Imagem indisponível');return image});
-  decoded.set(src,promise);promise.catch(()=>decoded.delete(src));return promise;
- }
- async function show(n){
-  ix=(n+slides.length)%slides.length;const selected=ix,version=++revision,slide=slides[selected];area.setAttribute('aria-busy','true');
-  try{
-   await ready(slide.src);if(version!==revision)return;
-   // Retain the visible frame during network/decode. Metadata changes in the
-   // same commit; rapid clicks cannot let an old request overwrite a new one.
-   img.src=slide.src;img.alt='Fatos Desconhecidos: '+slide.headline;img.style.setProperty('--rx-social-position',slide.position);
-   heading.textContent=slide.headline;small.textContent=slide.label;count.textContent=(selected+1)+'/3';
-   $$('[data-rx-social]',html).forEach((button,i)=>button.setAttribute('aria-current',String(i===selected)));
-   motion.animate(img,[{opacity:.85},{opacity:1}],{duration:280});
-   ready(slides[(selected+1)%slides.length].src).catch(()=>{});
-  }catch{
-   if(version===revision)area.dataset.imageError='true';
-  }finally{if(version===revision)area.setAttribute('aria-busy','false')}
- }
- $('[data-rx-social-prev]',html).addEventListener('click',()=>show(ix-1));$('[data-rx-social-next]',html).addEventListener('click',()=>show(ix+1));$$('[data-rx-social]',html).forEach(btn=>btn.addEventListener('click',()=>show(Number(btn.dataset.rxSocial))));
- let start=null;area.style.touchAction='pan-y';area.addEventListener('pointerdown',e=>{if(!e.target.closest('button'))start={x:e.clientX,y:e.clientY}});area.addEventListener('pointerup',e=>{if(!start)return;let dx=e.clientX-start.x,dy=e.clientY-start.y;start=null;if(Math.abs(dx)>48&&Math.abs(dx)>Math.abs(dy)*1.25)show(ix+(dx<0?1:-1))});area.addEventListener('pointercancel',()=>start=null);show(0);html.dataset.ready='true';return html;
-}
+function mountSocial(){ return mountSocialAds(); }
+
 function init(){
  try{const one=mountFatosDeck(),two=mountScrollFilm(),three=mountSocial();mountScrollGallery();mountViewSwitcher();document.documentElement.dataset.rxShowcase=one&&two&&three?'ready':'partial'}
  catch(error){document.documentElement.dataset.rxShowcase='failed';console.error('Portfolio creative experience:',error)}

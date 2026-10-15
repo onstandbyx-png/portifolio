@@ -117,6 +117,9 @@ export class Body {
   kinematic = false;
   linearDamping = 0;
   angularDamping = 0;
+  /** Optional interaction limits, also enforced after constraint impulses. */
+  maxLinearSpeed = Infinity;
+  maxAngularSpeed = Infinity;
   /** External force and torque in world space, applied every substep. */
   force = v3();
   torque = v3();
@@ -359,6 +362,15 @@ function solvePlates(c: PlateOrder, h: number) {
   }
 }
 
+function limitSpeed(value: V3, maximum: number) {
+  const speed = Math.hypot(value.x, value.y, value.z);
+  if (!Number.isFinite(speed)) { value.x = value.y = value.z = 0; return; }
+  if (speed > maximum) {
+    const scale = maximum / speed;
+    value.x *= scale; value.y *= scale; value.z *= scale;
+  }
+}
+
 export class World {
   bodies: Body[] = [];
   joints: Joint[] = [];
@@ -400,6 +412,7 @@ export class World {
         b.v.y *= k;
         b.v.z *= k;
       }
+      limitSpeed(b.v, b.maxLinearSpeed);
       b.p.x += b.v.x * h;
       b.p.y += b.v.y * h;
       b.p.z += b.v.z * h;
@@ -422,6 +435,7 @@ export class World {
         b.w.y *= k;
         b.w.z *= k;
       }
+      limitSpeed(b.w, b.maxAngularSpeed);
       addRotation(b.q, b.w.x * h, b.w.y * h, b.w.z * h);
     }
     for (const j of this.joints) if (j.enabled) solveJoint(j, h);
@@ -430,6 +444,7 @@ export class World {
       b.v.x = (b.p.x - b.prevP.x) / h;
       b.v.y = (b.p.y - b.prevP.y) / h;
       b.v.z = (b.p.z - b.prevP.z) / h;
+      limitSpeed(b.v, b.maxLinearSpeed);
       if (!b.rotates) continue;
       sQ.x = -b.prevQ.x;
       sQ.y = -b.prevQ.y;
@@ -440,6 +455,7 @@ export class World {
       b.w.x = sQ.x * s;
       b.w.y = sQ.y * s;
       b.w.z = sQ.z * s;
+      limitSpeed(b.w, b.maxAngularSpeed);
     }
     this.time = t1;
   }

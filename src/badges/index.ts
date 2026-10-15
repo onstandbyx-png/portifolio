@@ -43,7 +43,7 @@ function flipCard(index: 0 | 1, flipped: boolean) {
   reflectCard(index, flipped);
   instance?.setCardFlipped(index, flipped, !isPaused());
   if (cardStatus) cardStatus.textContent = flipped ? `${cardNames[index]} — ${cardRoles[index]}` : `${cardNames[index]}: frente da peça.`;
-  if (hint) hint.textContent = "TOQUE PARA VIRAR · ARRASTE PARA BALANÇAR";
+  if (hint) hint.textContent = "TOQUE PARA VIRAR · ARRASTE PARA MOVER";
 }
 function restoreCardFaces() {
   cardFaces.forEach((flipped, index) => instance?.setCardFlipped(index as 0 | 1, flipped, false));
@@ -89,7 +89,7 @@ async function load() {
       front: { name: "Fatos", label: "DIREÇÃO CRIATIVA", line: "Narrativa e conteúdo para grandes audiências." },
       back: { name: "smiile", label: "PROJETO DIGITAL", line: "Da interface à experiência." },
       onRest() {
-        if (hint && !stage?.dataset.interacted) hint.textContent = "ARRASTE PARA EXPLORAR · VIRE PARA CONHECER";
+        if (hint && !stage?.dataset.interacted) hint.textContent = "TOQUE PARA VIRAR · ARRASTE PARA MOVER";
       },
       onTouch() {
         if (stage) stage.dataset.interacted = "true";
@@ -187,6 +187,7 @@ if (stage && canvas) {
       event.preventDefault();
       flipCard(0, false);
       flipCard(1, false);
+      instance?.rest();
     });
   }
   reflectCard(0, false);

@@ -21,6 +21,7 @@ import {
   multiplyQuat,
   quat,
   rotate,
+  rotateInv,
   v3,
   type Quat,
   type V3,
@@ -152,6 +153,17 @@ export class BadgeRig {
   /** True while the front card follows the tracked entrance. */
   performing = false;
   private grabJoint: Joint | null = null;
+  private readonly grabOrigin = v3();
+  private readonly grabRestOrigin = v3();
+  private grabRestCenterX = 0;
+  private readonly grabGoal = v3();
+  private restBodies: { p: V3; q: Quat }[] = [];
+  private readonly restingTorques = new Map<Body, V3>();
+  private settled = false;
+  private freeTime = 0;
+  private quietTime = 0;
+  private readonly recoveryQ = quat();
+  private readonly recoveryV = v3();
   private accumulator = 0;
   private readonly rest: { front: V3; frontQ: Quat; anchors: [V3, V3] };
   private readonly scratch = sample();
@@ -226,8 +238,26 @@ export class BadgeRig {
       frontQ: copyQuat(quat(), front.q),
       anchors: [copy(v3(), aL.p), copy(v3(), aR.p)],
     };
+    const entranceCards = this.cards.map(body => ({ p: copy(v3(), body.p), q: copyQuat(quat(), body.q) }));
+    // Display both pieces in a fan around their actual suspension slots. The
+    // counter-torque balances gravity at this readable resting pose; positions
+    // are never pulled sideways away from the hook to manufacture separation.
+    this.cards.forEach((body, index) => {
+      const pin = v3(index ? P.backPinX : 0, SLOT_Y, index ? gap : -gap);
+      const before = rotate(body.q, pin, v3());
+      multiplyQuat(body.q, axisAngle(0, 0, 1, index ? -.5 : .28), body.q);
+      const after = rotate(body.q, pin, v3());
+      body.p.x += before.x - after.x;
+      body.p.y += before.y - after.y;
+      body.p.z += before.z - after.z;
+      copy(body.prevP, body.p); copyQuat(body.prevQ, body.q);
+      const weight = P.gravity / body.invMass;
+      this.restingTorques.set(body, v3((after.z - before.z) * weight, 0, -(after.x - before.x) * weight));
+    });
+    this.restBodies = w.bodies.map(body => ({ p: copy(v3(), body.p), q: copyQuat(quat(), body.q) }));
     this.catchPose = trackAt(TRACK.catch);
-    if (options.enter ?? true) this.startPerformance();
+    if (options.enter ?? true) this.startPerformance(entranceCards);
+    else { this.configureInteraction(); this.settled = true; }
     w.time = 0;
   }
 
@@ -236,10 +266,16 @@ export class BadgeRig {
     return this.world.time + T0;
   }
 
-  private startPerformance() {
+  private startPerformance(cardPoses: { p: V3; q: Quat }[]) {
     this.performing = true;
     const w = this.world;
     const [front, back] = this.cards;
+    // The tracked entrance retains its original calibration. Only the settled
+    // inspection pose fans out; it does not rotate or translate the track.
+    this.cards.forEach((body, index) => {
+      copy(body.p, cardPoses[index]!.p); copyQuat(body.q, cardPoses[index]!.q);
+      copy(body.prevP, body.p); copyQuat(body.prevQ, body.q);
+    });
     // Back card pose relative to the front card at rest.
     const inv = quat(-front.q.x, -front.q.y, -front.q.z, front.q.w);
     const relQ = multiplyQuat(inv, back.q, quat());
@@ -359,13 +395,94 @@ export class BadgeRig {
     front.w.z = (b.roll - a.roll) / 0.02;
     this.anchors.forEach((anchor, i) => {
       const rest = this.rest.anchors[i]!;
-      anchor.drive = (_t, p, q) => {
-        copy(p, rest);
+      const from = copy(v3(), anchor.p), started = this.world.time;
+      const duration = Math.max(.35, Math.hypot(rest.x - from.x, rest.y - from.y, rest.z - from.z));
+      anchor.drive = (t, p, q) => {
+        // Interrupting the entrance preserves the current suspension points;
+        // they return smoothly instead of teleporting the whole lanyard.
+        const progress = Math.max(0, Math.min(1, (t - started) / duration));
+        const amount = progress * progress * (3 - 2 * progress);
+        p.x = from.x + (rest.x - from.x) * amount;
+        p.y = from.y + (rest.y - from.y) * amount;
+        p.z = from.z + (rest.z - from.z) * amount;
         q.x = q.y = q.z = 0;
         q.w = 1;
       };
     });
     this.world.gravity.y = -this.params.gravity;
+    this.configureInteraction();
+  }
+
+  /** Bounded input physics; the tracked reference entrance keeps its calibration. */
+  private configureInteraction() {
+    for (const body of this.world.bodies) {
+      if (body.kinematic) continue;
+      body.maxLinearSpeed = 1.6;
+      body.maxAngularSpeed = 2.4;
+      body.linearDamping = Math.max(body.linearDamping, 4.2);
+      body.angularDamping = Math.max(body.angularDamping, 5.5);
+    }
+  }
+
+  /** A soft physical return keeps the printed face readable after release. */
+  private prepareInteraction() {
+    if (this.performing) return;
+    this.freeTime = this.grabJoint ? 0 : this.freeTime + STEP;
+    if (this.grabJoint) {
+      const point = this.grabJoint.lb;
+      const dx = this.grabGoal.x - point.x, dy = this.grabGoal.y - point.y, dz = this.grabGoal.z - point.z;
+      const distance = Math.hypot(dx, dy, dz);
+      const amount = distance > 0 ? Math.min(1 - Math.exp(-18 * STEP), 1.4 * STEP / distance) : 0;
+      point.x += dx * amount; point.y += dy * amount; point.z += dz * amount;
+    }
+    this.world.bodies.forEach((body, index) => {
+      if (body.kinematic) return;
+      const rest = this.restBodies[index]!;
+      // Restore force is weaker while held; release keeps real momentum, with
+      // damping and a bounded return instead of an unbounded pendulum orbit.
+      const strength = this.grabJoint ? 1.2 : 7;
+      body.force.x = (rest.p.x - body.p.x) * strength / body.invMass;
+      body.force.y = (rest.p.y - body.p.y) * strength / body.invMass;
+      body.force.z = (rest.p.z - body.p.z) * strength / body.invMass;
+      if (!body.rotates) return;
+      const inverse = this.recoveryQ;
+      inverse.x = -body.q.x; inverse.y = -body.q.y; inverse.z = -body.q.z; inverse.w = body.q.w;
+      multiplyQuat(rest.q, inverse, inverse);
+      const factor = inverse.w < 0 ? -2 : 2;
+      this.recoveryV.x = inverse.x * factor; this.recoveryV.y = inverse.y * factor; this.recoveryV.z = inverse.z * factor;
+      rotateInv(body.q, this.recoveryV, this.recoveryV);
+      const gain = this.grabJoint ? 4 : 14;
+      this.recoveryV.x *= body.inertia.x * gain;
+      this.recoveryV.y *= body.inertia.y * gain;
+      this.recoveryV.z *= body.inertia.z * gain;
+      rotate(body.q, this.recoveryV, body.torque);
+      const support = this.restingTorques.get(body);
+      if (support) {
+        body.torque.x += support.x; body.torque.y += support.y; body.torque.z += support.z;
+      }
+    });
+  }
+
+  private settleIfQuiet() {
+    if (this.performing || this.grabJoint || this.freeTime < .4) { this.quietTime = 0; return; }
+    let quiet = true;
+    this.world.bodies.forEach((body, index) => {
+      if (body.kinematic) return;
+      const rest = this.restBodies[index]!;
+      const distance = Math.hypot(body.p.x - rest.p.x, body.p.y - rest.p.y, body.p.z - rest.p.z);
+      const dot = Math.abs(body.q.x * rest.q.x + body.q.y * rest.q.y + body.q.z * rest.q.z + body.q.w * rest.q.w);
+      if (distance > .012 || (body.rotates && dot < .9997)) quiet = false;
+    });
+    this.quietTime = quiet ? this.quietTime + STEP : 0;
+    if (this.quietTime < .25) return;
+    this.world.bodies.forEach((body, index) => {
+      const rest = this.restBodies[index]!;
+      copy(body.p, rest.p); copyQuat(body.q, rest.q);
+      copy(body.prevP, rest.p); copyQuat(body.prevQ, rest.q);
+      body.v.x = body.v.y = body.v.z = body.w.x = body.w.y = body.w.z = 0;
+      body.force.x = body.force.y = body.force.z = body.torque.x = body.torque.y = body.torque.z = 0;
+    });
+    this.settled = true;
   }
 
   /** Runs the resting rig with heavy damping until it hangs still. */
@@ -387,6 +504,7 @@ export class BadgeRig {
 
   /** Advances by real elapsed time in fixed steps, so every visit plays the same motion. */
   advance(dt: number) {
+    if (this.settled && !this.performing) return 0;
     this.accumulator = Math.min(this.accumulator + dt, 0.1);
     let steps = 0;
     while (this.accumulator >= STEP) {
@@ -398,17 +516,21 @@ export class BadgeRig {
   }
 
   tick() {
+    if (this.settled && !this.performing) { this.world.time += STEP; return; }
     if (this.performing) {
       const clip = this.clipTime;
       if (clip >= TRACK_END) this.endPerformance();
       else this.world.gravity.y = clip < TRACK.catch ? -TRACK.fall : -this.params.gravity;
     }
+    this.prepareInteraction();
     this.world.step(STEP);
+    this.settleIfQuiet();
   }
 
   /** True while anything still moves visibly. */
   get moving() {
     if (this.performing || this.grabJoint) return true;
+    if (this.settled) return false;
     for (const b of this.world.bodies) {
       if (b.kinematic) continue;
       if (Math.hypot(b.v.x, b.v.y, b.v.z) > 0.003 || Math.hypot(b.w.x, b.w.y, b.w.z) > 0.003) return true;
@@ -420,27 +542,54 @@ export class BadgeRig {
   grab(index: 0 | 1, local: V3, target: V3) {
     this.endPerformance();
     this.release();
-    this.grabJoint = this.world.join(new Joint(this.cards[index], local, null, target, { compliance: 0.002 }));
+    this.settled = false; this.freeTime = this.quietTime = 0;
+    copy(this.grabOrigin, target); copy(this.grabGoal, target);
+    const rest = this.restBodies[this.world.bodies.indexOf(this.cards[index])]!;
+    this.grabRestCenterX = rest.p.x;
+    rotate(rest.q, local, this.grabRestOrigin);
+    this.grabRestOrigin.x += rest.p.x; this.grabRestOrigin.y += rest.p.y; this.grabRestOrigin.z += rest.p.z;
+    this.grabJoint = this.world.join(new Joint(this.cards[index], local, null, target, { compliance: 0.006 }));
   }
   drag(target: V3) {
-    if (this.grabJoint) copy(this.grabJoint.lb, target);
+    if (!this.grabJoint || ![target.x, target.y, target.z].every(Number.isFinite)) return;
+    const within = (axis: "x" | "y" | "z", radius: number) => {
+      const initial = Math.max(this.grabOrigin[axis] - radius, Math.min(this.grabOrigin[axis] + radius, target[axis]));
+      return Math.max(this.grabRestOrigin[axis] - radius, Math.min(this.grabRestOrigin[axis] + radius, initial));
+    };
+    const centerX = within("x", .65) - this.grabRestOrigin.x + this.grabRestCenterX;
+    this.grabGoal.x = this.grabRestOrigin.x - this.grabRestCenterX + Math.max(-.65, Math.min(.65, centerX));
+    this.grabGoal.y = within("y", .28);
+    this.grabGoal.z = within("z", .08);
   }
   release() {
     if (!this.grabJoint) return;
     const list = this.world.joints;
     list.splice(list.indexOf(this.grabJoint), 1);
     this.grabJoint = null;
+    this.freeTime = this.quietTime = 0;
   }
   get grabbing() {
     return !!this.grabJoint;
   }
 
+  /** End a tracked intro without a pose jump or a new physical impulse. */
+  inspect() {
+    if (this.performing) this.endPerformance();
+  }
+
   /** A sideways push, for the keyboard and the swing button. */
   swing(direction: 1 | -1 = 1) {
     this.endPerformance();
+    this.settled = false; this.freeTime = this.quietTime = 0;
     const [front, back] = this.cards;
-    front.w.z += 0.9 * direction;
-    back.w.z += 0.6 * direction;
-    this.hook.w.z += 0.3 * direction;
+    // Repeated presses replace a small impulse; they never stack energy.
+    // Reduce a push toward the viewing edge, including sustained key repeats.
+    const room = Math.max(0, Math.min(1, (.65 - direction * (front.p.x - this.rest.front.x)) / .65));
+    front.w.z = .65 * direction * room;
+    back.w.z = .42 * direction * room;
+    this.hook.w.z = .2 * direction * room;
+    front.v.x = .8 * direction * room;
+    back.v.x = .65 * direction * room;
+    this.hook.v.x = .35 * direction * room;
   }
 }

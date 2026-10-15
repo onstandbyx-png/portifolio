@@ -1,5 +1,5 @@
 import {createDeviceFrame} from '../showcase/device-frame.js';
-import {createMotion,clamp,entryEdge,rotationForEdge,chapterAt,timelineStep} from './motion.js';
+import {createMotion,clamp,entryEdge,rotationForEdge,chapterAt} from './motion.js';
 const $=(s,r=document)=>r.querySelector(s),$$=(s,r=document)=>[...r.querySelectorAll(s)];
 const M=createMotion(),fine=matchMedia('(hover:hover) and (pointer:fine)');
 const copy=html=>{const t=document.createElement('template');t.innerHTML=html;return t.content.firstElementChild;};
@@ -128,15 +128,7 @@ mount('Ads',()=>{
  function indicator(tab){const t=tab.getBoundingClientRect(),p=list.getBoundingClientRect();marker.style.width=t.width+'px';marker.style.height=t.height+'px';marker.style.transform='translate('+(t.left-p.left)+'px,'+(t.top-p.top)+'px)';}
  function animatePanel(tab){const active=$('.ad-panel:not([hidden])',right);indicator(tab);if(!active)return;M.spring(active,p=>({opacity:clamp(p),transform:'translateY('+(23*(1-p))+'px) scale('+(.97+.03*p)+')'}),{duration:610});$$('.mock-aside>*',active).forEach((el,i)=>rise(el,15,80+i*35));}
  tabs.forEach(t=>t.addEventListener('click',()=>queueMicrotask(()=>animatePanel(t)),true));requestAnimationFrame(()=>indicator(tabs[0]));new ResizeObserver(()=>indicator(tabs.find(x=>x.getAttribute('aria-selected')==='true')||tabs[0])).observe(list);
- const v=$('#panel-tiktok .vertical-video'),play=$('[data-play-story]');if(!v||!play)return;
- let current=0,active=false,raf=0,start=0;const phrases=['Uma pergunta muda o jeito de olhar.','A pesquisa descobre o contexto.','O conteúdo ganha forma e ritmo.'];
- const bar=copy('<div class="sm-storyboard"><div class="sm-storyboard-title"><span>ROTEIRO EM TRÊS QUADROS</span><span data-frame-count>01 / 03</span></div><div class="sm-storyboard-frames" role="group" aria-label="Selecionar quadro do vídeo"><button type="button" data-frame="0" aria-pressed="true"><b>01</b><span>Gancho</span></button><button type="button" data-frame="1" aria-pressed="false"><b>02</b><span>Contexto</span></button><button type="button" data-frame="2" aria-pressed="false"><b>03</b><span>Mensagem</span></button></div><p>Exemplo de direção de vídeo. Não é material de campanha veiculada.</p></div>');play.after(bar);v.append(copy('<div class="sm-video-progress" aria-hidden="true"><i></i></div>'));
- function stop(){active=false;cancelAnimationFrame(raf);play.setAttribute('aria-pressed','false');play.innerHTML='Percorrer os quadros <span>▶</span>';}
- function show(i){current=i;v.dataset.frame=String(i);$('.video-text',v).textContent=phrases[i];$('[data-frame-count]',bar).textContent='0'+(i+1)+' / 03';$$('[data-frame]',bar).forEach(b=>b.setAttribute('aria-pressed',String(Number(b.dataset.frame)===i)));rise($('.video-text',v),12)}
- function loop(now){if(!active||!M.available()){stop();return}const elapsed=now-start;show(timelineStep(elapsed,3));$('.sm-video-progress i',v).style.transform='scaleX('+clamp(elapsed/4800)+')';if(elapsed>=4800){stop();return}raf=requestAnimationFrame(loop)}
- play.addEventListener('click',e=>{e.stopImmediatePropagation();e.preventDefault();if(active){stop();return}if(!M.available()){show((current+1)%3);return}active=true;start=performance.now();play.setAttribute('aria-pressed','true');play.innerHTML='Pausar sequência <span>Ⅱ</span>';raf=requestAnimationFrame(loop)},true);
- $$('[data-frame]',bar).forEach(b=>b.addEventListener('click',()=>{stop();show(Number(b.dataset.frame))}));
- new IntersectionObserver(([e])=>{if(!e.isIntersecting)stop()},{threshold:0}).observe(v);M.onStop(stop);show(0);
+
 });
 
 mount('Contact',()=>{
