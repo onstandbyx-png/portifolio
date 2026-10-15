@@ -72,12 +72,18 @@ function mountDeck(){
  }
  function navigate(to){
   to=(to+materials.length)%materials.length;
-  if(busy||to===selected)return;
-  setFlip(false);busy=true;
-  const old=cards[selected],direction=(to-selected+materials.length)%materials.length<=2?-1:1;
-  const a=motion.animate(old,[{transform:'translateX(0) rotate(0deg)',opacity:1},{transform:'translateX('+(direction*125)+'%) rotate('+(direction*16)+'deg)',opacity:.12}],{duration:320,easing:'cubic-bezier(.25,.85,.25,1)'});
-  const finish=()=>{selected=to;refresh();busy=false;const newCard=cards[selected];motion.spring(newCard,p=>({opacity:Math.min(1,p),transform:'translateX('+(-direction*34*(1-p))+'px) rotate('+(direction*5*(1-p))+'deg) scale('+(0.94+0.06*p)+')'}),{name:'bouncy',duration:750});};
-  if(a)a.finished.catch(()=>{}).then(finish);else finish();
+  if(to===selected)return;
+  // Interaction state must never depend on a decorative animation finishing.
+  // A cancelled/background-throttled WAAPI animation previously blocked desktop navigation.
+  setFlip(false);
+  const previous=cards[selected],direction=(to-selected+materials.length)%materials.length<=2?-1:1;
+  selected=to;
+  refresh();
+  const front=$('.rx-front',cards[selected]);
+  if(motion.available()){
+    motion.animate($('.rx-front',previous),[{opacity:1},{opacity:.42}],{duration:260});
+    motion.spring(front,p=>({opacity:clamp(p*1.65),transform:'translateX('+(direction*32*(1-p))+'px) scale('+(.95+.05*p)+')'}),{name:'snappy',duration:640});
+  }
  }
  cards.forEach((card,i)=>{
   $('[data-rx-flip]',card).addEventListener('click',()=>{if(selected!==i)return;setFlip(true);$('[data-rx-return]',card).focus({preventScroll:true});});
