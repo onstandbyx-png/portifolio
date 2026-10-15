@@ -1,4 +1,4 @@
-import {portfolioCopy, sectionCopy} from '/assets/content/portfolio-copy.js';
+import {sectionCopy} from '/assets/content/portfolio-copy.js';
 /* Site interactions: editorial chapters, channel specimens, professional context and contact. */
 (() => {
   'use strict';
@@ -58,141 +58,8 @@ import {portfolioCopy, sectionCopy} from '/assets/content/portfolio-copy.js';
     $$('.reveal').forEach(el=>io.observe(el));
   }else $$('.reveal').forEach(el=>el.classList.add('is-visible'));
 
-  // Channel-accurate specimen structures, intentionally illustrative and not live account dashboards.
-  const ads=$$('[data-ad-tab]');
-  function setChannel(name,focus=false){
-    const selected=ads.find(el=>el.dataset.adTab===name);
-    if(!selected)return;
-    ads.forEach(btn=>{
-      const chosen=btn===selected;
-      btn.classList.toggle('is-active',chosen);
-      btn.setAttribute('aria-selected',String(chosen));
-      btn.tabIndex=chosen?0:-1;
-    });
-    $$('.ad-panel').forEach(panel=>{panel.hidden=panel.id!==`panel-${name}`});
-    const descriptions=Object.fromEntries(sectionCopy('laboratorio').tabs.map(tab=>[tab.id,tab.context]));
-    const context=$('#ad-context');if(context)context.textContent=descriptions[name];
-    document.dispatchEvent(new CustomEvent('portfolio:channelchange',{detail:{channel:name}}));
-    if(focus)selected.focus({preventScroll:true});
-  }
-  ads.forEach((tab,index)=>{
-    tab.addEventListener('click',()=>setChannel(tab.dataset.adTab));
-    tab.addEventListener('keydown',e=>{
-      if(!['ArrowDown','ArrowRight','ArrowUp','ArrowLeft','Home','End'].includes(e.key))return;
-      e.preventDefault();let i=index;
-      if(e.key==='Home')i=0;else if(e.key==='End')i=ads.length-1;else i=(index+(e.key==='ArrowDown'||e.key==='ArrowRight'?1:ads.length-1))%ads.length;
-      setChannel(ads[i].dataset.adTab,true);
-    });
-  });
-  setChannel('meta');
-  // Cases separate professional background, authorial concepts and working demonstrations.
-  const caseContext={
-    fatos:{image:'/assets/portfolio/recovered-fatos/post-desconhecidos-600.webp',section:'#editorial',source:'https://www.instagram.com/fatosdesconhecidos/',service:'Direção criativa e conteúdo'},
-    ads:{image:'/assets/brands/smiile-campaign-editorial.svg',section:'#laboratorio',source:'#laboratorio',service:'Campanhas e gestão de mídia'},
-    smiile:{image:'/assets/portfolio/recovered-smiile/landscape.webp',section:'#sistemas',source:'https://smiile-landing-preview.up.railway.app/',service:'Sites, apps e sistemas'}
-  };
-  const cases=Object.fromEntries(Object.entries(caseContext).map(([id,extra])=>{
-    const detail=portfolioCopy.caseDetails[id],card=sectionCopy('trabalhos').cards.find(item=>item.id===id);
-    return [id,{...extra,kicker:card.label,title:detail.title,description:detail.context,status:detail.nature,challenge:detail.context,decision:card.body,contribution:detail.contribution,proof:detail.explore,imageAlt:card.label,sourceLabel:detail.sourceLabel,credit:detail.credit,cta:detail.cta,explore:card.cta}];
-  }));
-  const dialog=$('#case-dialog'),dialogImage=$('#dialog-image'),dialogClose=$('#dialog-close');
-  let focusOrigin=null,currentCase=null,contactCase='',contactCaseService='';
-  const caseKeys=Object.keys(cases);
-  const content=dialog?.querySelector('.dialog-content');
-  const source=$('#dialog-source');
-  let metadata=null,statusBadge=null,caseCTA=null,caseExplore=null,casePosition=null,caseCredits=null;
-  if(content){
-    dialog.setAttribute('aria-describedby','dialog-description');
-    metadata=document.createElement('dl');metadata.className='case-facts';
-    statusBadge=document.createElement('span');statusBadge.className='case-status';
-    $('#dialog-kicker')?.before(statusBadge);
-    $('#dialog-description')?.after(metadata);
-    const actions=document.createElement('div');actions.className='case-actions';
-    caseCTA=document.createElement('button');caseCTA.type='button';caseCTA.className='case-contact';
-    caseCTA.addEventListener('click',()=>{
-      const data=cases[currentCase];
-      if(!data)return;
-      contactCase=data.title;
-      contactCaseService=data.service;
-      const select=$('#service');
-      if(select){const option=Array.from(select.options).find(item=>item.value===data.service||item.textContent===data.service);if(option)select.value=option.value;select.dispatchEvent(new Event('change',{bubbles:true}));}
-      const context=$('#brief-context');
-      if(context){context.textContent=`Ponto de partida: ${data.title}`;context.hidden=false;}
-      recordInteraction('case_contact',{case:currentCase});
-      closeCase(false);
-      document.getElementById('contato')?.scrollIntoView({behavior:smooth(),block:'start'});
-      $('#brief')?.focus({preventScroll:true});
-    });
-    caseExplore=document.createElement('a');caseExplore.className='case-explore';
-    caseExplore.addEventListener('click',()=>{recordInteraction('case_explore',{case:currentCase});closeCase(false);const target=document.querySelector(caseExplore.getAttribute('href'));if(target){target.tabIndex=-1;target.focus({preventScroll:true});}});
-    actions.append(caseCTA,caseExplore);metadata?.after(actions);
-    const credits=document.createElement('details');credits.className='case-credits';
-    const summary=document.createElement('summary');summary.textContent=portfolioCopy.caseDetails.common.creditSummary;
-    caseCredits=document.createElement('p');credits.append(summary,caseCredits);
-    if(source)credits.append(source);
-    content.append(credits);
-    const nav=document.createElement('nav');nav.className='case-navigation';nav.setAttribute('aria-label','Navegar pelas demonstrações');
-    const previous=document.createElement('button');previous.type='button';previous.textContent='← Anterior';
-    const nextCase=document.createElement('button');nextCase.type='button';nextCase.textContent='Próximo →';
-    casePosition=document.createElement('span');casePosition.setAttribute('aria-live','polite');
-    function navigate(direction){const index=caseKeys.indexOf(currentCase);openCase(caseKeys[(index+direction+caseKeys.length)%caseKeys.length],true);}
-    previous.addEventListener('click',()=>navigate(-1));nextCase.addEventListener('click',()=>navigate(1));
-    nav.append(previous,casePosition,nextCase);content.append(nav);
-  }
-  function openCase(id,navigating=false){
-    const c=cases[id];if(!c||!dialog)return;
-    if(!dialog.open)focusOrigin=document.activeElement;
-    currentCase=id;
-    dialog.dataset.case=id;
-    dialogImage?.replaceChildren();
-    if(c.image){
-      const im=document.createElement('img');im.src=c.image;im.alt=c.imageAlt;im.loading='eager';
-      im.addEventListener('error',()=>{im.hidden=true;const fallback=document.createElement('div');fallback.className='dialog-ci';fallback.textContent=c.title;dialogImage?.append(fallback);},{once:true});
-      dialogImage?.appendChild(im);
-    }else if(c.visual==='trajectory'){
-      const panel=document.createElement('div');panel.className='dialog-trajectory';
-      const label=document.createElement('span');label.textContent='TRAJETÓRIA PROFISSIONAL';
-      const title=document.createElement('strong');title.textContent='Fatos Desconhecidos';
-      const role=document.createElement('p');role.textContent='Direção criativa';
-      const context=document.createElement('small');context.textContent='Experiência em criar conteúdo para grandes audiências.';
-      panel.append(label,title,role,context);dialogImage?.append(panel);
-    }else{
-      const div=document.createElement('div');div.className='dialog-ci';
-      for(const [index,label] of ['Ideia','Interface','Interação','Entrega'].entries()){
-        const row=document.createElement('span');row.textContent=`0${index+1} / ${label}`;div.append(row);
-      }
-      dialogImage?.appendChild(div);
-    }
-    $('#dialog-kicker').textContent=c.kicker;
-    $('#case-dialog-title').textContent=c.title;
-    $('#dialog-description').textContent=c.description;
-    $('#dialog-proof').textContent=c.proof;
-    const proofTitle=$('.dialog-proof > span');if(proofTitle)proofTitle.textContent='O QUE EXPLORAR';
-    if(statusBadge)statusBadge.textContent=c.status;
-    metadata?.replaceChildren();
-    for(const [term,description] of [['Minha contribuição',c.contribution]]){
-      const row=document.createElement('div'),dt=document.createElement('dt'),dd=document.createElement('dd');
-      dt.textContent=term;dd.textContent=description;row.append(dt,dd);metadata?.append(row);
-    }
-    if(source){source.href=c.source;source.textContent=`${c.sourceLabel} ↗`;if(c.source.startsWith('#')){source.removeAttribute('target')}else{source.target='_blank'}}
-    if(caseCredits)caseCredits.textContent=c.credit;
-    if(caseCTA)caseCTA.textContent=`${c.cta} ↗`;
-    if(caseExplore){caseExplore.href=currentCase==='smiile'?'#sistemas':c.section;caseExplore.dataset.productTarget=currentCase==='smiile'?'site':'';caseExplore.textContent=`${c.explore} ↓`;}
-    if(casePosition)casePosition.textContent=`${caseKeys.indexOf(id)+1} / ${caseKeys.length}`;
-    $('.case-credits',dialog)?.removeAttribute('open');
-    if(!dialog.open){dialog.showModal();dialogClose?.focus();}
-    if(content)content.scrollTop=0;
-    dialog.scrollTop=0;
-    if(navigating){const heading=$('#case-dialog-title');heading.tabIndex=-1;heading.focus({preventScroll:true});}
-    recordInteraction(navigating?'case_navigate':'case_open',{case:id});
-  }
-  let returnFocus=true;
-  function closeCase(restoreFocus=true){if(!dialog?.open)return;returnFocus=restoreFocus;dialog.close();}
-  source?.addEventListener('click',()=>{if(source.getAttribute('href')?.startsWith('#'))closeCase(false)});
-  document.addEventListener('click',event=>{const button=event.target.closest?.('[data-case]');if(button&&!button.closest('dialog'))openCase(button.dataset.case)});
-  dialogClose?.addEventListener('click',()=>closeCase());
-  dialog?.addEventListener('click',e=>{if(e.target===dialog){const bounds=dialog.getBoundingClientRect();if(e.clientX<bounds.left||e.clientX>bounds.right||e.clientY<bounds.top||e.clientY>bounds.bottom)closeCase();}});
-  dialog?.addEventListener('close',()=>{if(returnFocus)focusOrigin?.focus?.({preventScroll:true});returnFocus=true;});
+  // Work images link directly to their sections.
+  let contactCase='',contactCaseService='';
 
   // A contact click opens the chosen application. Only the visitor can send the message.
   const brief=$('#brief-form');
@@ -270,6 +137,9 @@ import {portfolioCopy, sectionCopy} from '/assets/content/portfolio-copy.js';
     const channel=link.dataset.contactDirect;
     if(channel==='whatsapp'||channel==='email')recordInteraction('contact_click',{channel,entry:'direct'});
     else if(link.getAttribute('href')==='#contato'){
+      const requested=link.dataset.contactService;
+      const service=$('#service');
+      if(requested&&service&&[...service.options].some(option=>option.value===requested)){service.value=requested;service.dispatchEvent(new Event('change',{bubbles:true}));}
       const entry=link.matches('[data-project-need]')?'project_need':link.matches('.mobile-project-cta')?'mobile':link.closest('.hero')?'hero':'navigation';
       recordInteraction('contact_intent',{entry});
     }

@@ -38,11 +38,6 @@ async function touchPath(page,start,end,{cancel=false,samples=12,observe}={}){
   await session.send('Input.dispatchTouchEvent',{type:cancel?'touchCancel':'touchEnd',touchPoints:[]});
   await session.detach();
 }
-async function nativeScroll(page,mobile,distance=220,x){
-  if(mobile){const {width,height}=page.viewportSize();const from={x:x||width*.53,y:height*.7};await touchPath(page,from,{x:from.x+2,y:from.y-distance});}
-  else await page.mouse.wheel(0,distance);
-  await page.waitForTimeout(120);
-}
 const metrics=page=>page.evaluate(()=>{
   const s=window.__badgeScene;if(!s)return null;
   const r=s.canvas.getBoundingClientRect();
@@ -84,7 +79,7 @@ try{
     const capture=async(name,locator=page)=>locator.screenshot({path:`${output}/${name}-${width}x${height}.png`,animations:'disabled'});
     const group=async(name,run)=>{if(groups&&!groups.includes(name))return;try{await run();}catch(error){row.failures.push({group:name,error:String(error)});await capture('failure-'+name).catch(()=>{});console.error(`[gestures ${width}/${name}] ${String(error)}`);}};
     try{
-      await page.goto(base,{waitUntil:'domcontentloaded'});await page.waitForSelector('html[data-rx-showcase="ready"]',{state:'attached',timeout:30000});
+      await page.goto(base,{waitUntil:'domcontentloaded'});await page.waitForSelector('html[data-static-presentations="ready"]',{state:'attached',timeout:30000});
       await group('hero-physics',async()=>{
         await align(page,'.hero-badge-exhibit');await page.waitForFunction(()=>window.__badgeScene?.initialized,null,{timeout:25000});
         await page.waitForTimeout(150);
@@ -135,98 +130,6 @@ try{
           check('Vertical touch on the hero scrolls the document without flipping a card',await page.evaluate(()=>scrollY)>before+60&&await page.locator('[data-portfolio-badges]').getAttribute('data-face')===faces);
           check('Touch regression uses trusted touch input, including cancellation',await page.evaluate(()=>window.__trustedGestureEvents.some(e=>e.type==='pointercancel'&&e.trusted&&e.pointer==='touch')));
         }
-      });
-      await group('scroll',async()=>{
-        const shell=page.locator('.rg-scroll-shell');await align(page,'.rg-scroll-shell');
-        const natural=await shell.evaluate(el=>el.classList.contains('rg-natural'));
-        check('Short viewport intentionally uses complete cards in document flow',height>=700||natural);
-        if(!natural){
-          await page.locator('[data-rg-next]').click();await page.waitForTimeout(700);const before=await page.evaluate(()=>scrollY);
-          await nativeScroll(page,mobile,260,width*.12);
-          check('A gallery control never locks subsequent native scrolling',await page.evaluate(()=>scrollY)>before+80&&await shell.getAttribute('data-mode')!=='manual'&&await page.locator('[data-rg-resume]').count()===0);
-        }else{
-          const before=await page.evaluate(()=>scrollY);await nativeScroll(page,mobile,240,width*.12);check('Short gallery scroll remains native after entry',await page.evaluate(()=>scrollY)>before+80);
-        }
-        const card=natural?page.locator('.rg-plane').first():page.locator('.rg-plane.rg-active');
-        await card.scrollIntoViewIfNeeded();
-        check('Active gallery caption and case action remain inside their card',await card.evaluate(plane=>{const card=plane.querySelector('.work-tile'),caption=plane.querySelector('.tile-caption'),action=plane.querySelector('.tile-open');const a=card.getBoundingClientRect(),b=caption.getBoundingClientRect(),c=action.getBoundingClientRect();return b.bottom<=a.bottom+3&&b.left>=a.left-3&&b.right<=a.right+3&&c.bottom<=a.bottom+3;}));
-        await capture('gallery');
-        const film=page.locator('#narrativa-visual');await film.locator('[data-rx-film-to="2"]').click();
-        // Format selection scrolls smoothly to the final chapter. Wait for that
-        // destination before measuring a separate native gesture: a fixed delay
-        // can leave the wheel event competing with the unfinished smooth scroll.
-        await page.waitForFunction(()=>{
-          const film=document.querySelector('#narrativa-visual'),stage=film.querySelector('.rf-stage');
-          const header=matchMedia('(max-width:760px)').matches?64:76;
-          const target=scrollY+film.getBoundingClientRect().top+film.offsetHeight-stage.offsetHeight-header;
-          return film.dataset.phase==='2'&&Math.abs(scrollY-target)<2;
-        });
-        const before=await page.evaluate(()=>scrollY);await nativeScroll(page,mobile,230,width*.1);
-        await page.waitForFunction(before=>scrollY>before+60,before);
-        check('Film format selection also preserves native scrolling',await page.evaluate(()=>scrollY)>before+60&&await film.getAttribute('data-mode')!=='manual'&&await page.locator('[data-rf-resume]').count()===0);
-        await capture('film');
-      });
-      await group('fatos',async()=>{
-        const deck=page.locator('#colecao');await deck.locator('[data-fatos-select="0"]').click();await align(page,'.pf-fatos-display');
-        check('Fatos active artwork fits the usable viewport',await deck.evaluate(root=>{const a=root.querySelector('.is-active').getBoundingClientRect();return a.top>=60&&a.bottom<=innerHeight-10;}));
-        check('Six named Fatos selectors stay within the page and have usable targets',await deck.locator('[data-fatos-select]').evaluateAll(buttons=>buttons.length===6&&buttons.every(button=>{const r=button.getBoundingClientRect();return r.width>=44&&r.height>=44&&r.left>=0&&r.right<=innerWidth+2&&button.textContent.trim().length>0;})));
-        const stage=deck.locator('.pf-fatos-stage'),box=await stage.boundingBox();const start={x:box.x+box.width*.76,y:box.y+box.height*.42},end={x:box.x+box.width*.25,y:start.y+5};
-        if(mobile)await touchPath(page,start,end);else{await page.mouse.move(start.x,start.y);await page.mouse.down();await page.mouse.move(end.x,end.y,{steps:12});await page.mouse.up();}
-        await page.waitForFunction(()=>document.querySelector('#colecao').dataset.active==='1');check('A genuine horizontal gesture advances exactly one Fatos piece',await deck.getAttribute('data-active')==='1');
-        await page.waitForTimeout(400);
-        if(mobile){
-          const previous=await deck.getAttribute('data-active');await touchPath(page,start,{x:end.x,y:end.y},{cancel:true});await page.waitForTimeout(100);
-          check('Cancelled Fatos gesture does not select another piece',await deck.getAttribute('data-active')===previous&&await stage.getAttribute('data-dragging')!=='true');
-          const before=await page.evaluate(()=>scrollY);await touchPath(page,{x:start.x,y:Math.min(height-60,start.y+90)},{x:start.x+2,y:Math.max(100,start.y-100)});await page.waitForTimeout(80);
-          check('Vertical touch over the deck scrolls the page without changing the piece',await page.evaluate(()=>scrollY)>before+50&&await deck.getAttribute('data-active')===previous);
-        }
-        await deck.locator('[data-fatos-select="4"]').click();await align(page,'.pf-fatos-display');await deck.locator('.is-active [data-fatos-flip]').click();
-        check('Longer Fatos reverse keeps its return action inside the card',await deck.locator('.is-active').evaluate(card=>{const button=card.querySelector('[data-fatos-return]');return button.getBoundingClientRect().bottom<=card.getBoundingClientRect().bottom+2;}));
-        await capture('fatos-reverse',deck.locator('.is-active'));
-      });
-      await group('social',async()=>{
-        for(const channel of ['meta','tiktok']){
-          await page.locator(`[data-ad-tab="${channel}"]`).click();const social=page.locator(`#panel-${channel} .sa-social`);await social.waitFor();
-          await page.waitForFunction(platform=>document.querySelector(`#panel-${platform} .sa-social`)?.dataset.socialReady==='true',channel);
-          await page.waitForTimeout(700);await align(page,`#panel-${channel} .sa-social`);
-          check(`${channel}: complete metallic hardware and home indicator are present`,await social.locator('.df-metal').count()===1&&await social.locator('.df-camera').count()===1&&await social.locator('.df-status').count()===1&&await social.locator('.df-home').count()===1);
-          check(`${channel}: phone fits below the header without clipping its bottom`,await social.locator('.sa-device').evaluate(el=>{const r=el.getBoundingClientRect();return r.top>=60&&r.bottom<=innerHeight-5&&r.left>=0&&r.right<=innerWidth;}));
-          check(`${channel}: frame navigation fits inside the same viewport`,await social.locator('.sa-frame-controls').evaluate(el=>{const r=el.getBoundingClientRect();return r.top>=60&&r.bottom<=innerHeight-5&&[...el.querySelectorAll('button')].every(button=>{const b=button.getBoundingClientRect();return b.width>=44&&b.height>=44;});}));
-          if(channel==='tiktok')check('TikTok play remains alongside the visible phone controls',await page.locator('#panel-tiktok [data-play-story]').evaluate(button=>{const r=button.getBoundingClientRect();return Boolean(button.closest('.sa-social'))&&r.top>=60&&r.bottom<=innerHeight-5;}));
-          const chrome=social.locator(channel==='meta'?'.sa-ig-actions':'.sa-tt-nav');
-          check(`${channel}: social actions remain inside the visible phone`,await chrome.evaluate(el=>{const r=el.getBoundingClientRect(),d=el.closest('.sa-device').getBoundingClientRect();return r.height>0&&r.top>=d.top&&r.bottom<=d.bottom&&r.bottom<=innerHeight;}));
-          const image=social.locator(channel==='meta'?'.rx-ig-photo>img':'.sa-tt-media>img');
-          check(`${channel}: the active artwork is decoded and painted`,await image.evaluate(async el=>{try{await el.decode();return el.naturalWidth>0&&getComputedStyle(el).opacity!=='0';}catch{return false;}}));
-          const before=await social.getAttribute('data-social-frame');
-          const media=social.locator('.sa-media');const b=await media.boundingBox(),start={x:b.x+b.width*.8,y:b.y+b.height*.45},end={x:b.x+b.width*.2,y:start.y+3};
-          if(mobile)await touchPath(page,start,end);else{await page.mouse.move(start.x,start.y);await page.mouse.down();await page.mouse.move(end.x,end.y,{steps:10});await page.mouse.up();}
-          await page.waitForFunction(({channel,before})=>document.querySelector(`#panel-${channel} .sa-social`).dataset.socialFrame!==before,{channel,before});
-          check(`${channel}: a swipe changes the rendered social frame`,await social.getAttribute('data-social-frame')!==before);
-          await capture('social-'+channel);
-        }
-      });
-      await group('social-playback',async()=>{
-        await page.locator('[data-ad-tab="tiktok"]').click();await page.waitForTimeout(700);
-        const play=page.locator('#panel-tiktok [data-play-story]'),progress=page.locator('#panel-tiktok [data-social-progress]');
-        await play.click();await page.waitForFunction(()=>document.querySelector('#panel-tiktok [data-play-story]').getAttribute('aria-pressed')==='true');
-        const initial=Number(await progress.getAttribute('aria-valuenow'));await page.waitForFunction(value=>Number(document.querySelector('#panel-tiktok [data-social-progress]').getAttribute('aria-valuenow'))>value,initial);
-        check('TikTok explicit play advances the actual sequence progress',Number(await progress.getAttribute('aria-valuenow'))>initial);
-        await play.click();const paused=Number(await progress.getAttribute('aria-valuenow'));await page.waitForTimeout(350);
-        check('TikTok pause preserves the elapsed sequence position',await play.getAttribute('aria-pressed')==='false'&&Number(await progress.getAttribute('aria-valuenow'))===paused);
-        await play.click();await page.waitForFunction(value=>Number(document.querySelector('#panel-tiktok [data-social-progress]').getAttribute('aria-valuenow'))>value,paused);
-        check('TikTok resume continues from the preserved position',Number(await progress.getAttribute('aria-valuenow'))>paused);
-        await page.locator('#motion-toggle').click();await play.click();const globalPaused=Number(await progress.getAttribute('aria-valuenow'));await page.waitForTimeout(350);
-        check('Global pause prevents a hidden TikTok timer from running',await play.getAttribute('aria-pressed')==='false'&&Number(await progress.getAttribute('aria-valuenow'))===globalPaused);
-        await page.locator('#motion-toggle').click();
-        await play.click();await page.waitForFunction(()=>document.querySelector('#panel-tiktok [data-play-story]').getAttribute('aria-pressed')==='true');
-        await nativeScroll(page,mobile,height*.55,width*.1);await nativeScroll(page,mobile,height*.55,width*.1);
-        await page.waitForFunction(()=>document.querySelector('#panel-tiktok [data-play-story]').getAttribute('aria-pressed')==='false');
-        const outside=Number(await progress.getAttribute('aria-valuenow'));await page.waitForTimeout(350);
-        check('Leaving the social device pauses playback without losing position',Number(await progress.getAttribute('aria-valuenow'))===outside);
-        await align(page,'#panel-tiktok .sa-social');await page.waitForTimeout(350);
-        check('Returning to the social device does not restart playback automatically',await play.getAttribute('aria-pressed')==='false'&&Number(await progress.getAttribute('aria-valuenow'))===outside);
-        await play.click();await page.waitForFunction(value=>Number(document.querySelector('#panel-tiktok [data-social-progress]').getAttribute('aria-valuenow'))>value,outside);
-        check('Explicit play after returning continues the paused sequence',Number(await progress.getAttribute('aria-valuenow'))>outside);await play.click();
       });
       await group('page',async()=>{check('No document overflow at the tested viewport',await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+2));check('No uncaught JavaScript errors',row.errors.length===0);});
     }finally{await context.close();}

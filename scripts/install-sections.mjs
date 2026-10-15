@@ -1,19 +1,19 @@
-/* Validate canonical section imports. Build never rewrites editorial source. */
+/* Validate current section imports. Build never rewrites editorial source. */
 import {readFile,access} from 'node:fs/promises';
 import {execFileSync} from 'node:child_process';
 import assert from 'node:assert/strict';
 const root=new URL('../',import.meta.url);
 const html=await readFile(new URL('index.html',root),'utf8');
-for(const marker of ['portfolio-sections-motion-v1','portfolio-immersive-reference-v2','portfolio-reference-fidelity-v3'])assert(html.includes(marker),`Missing canonical module ${marker}`);
+assert(html.includes('/assets/showcase/static-init.js'),'Static presentation entry missing');
 assert(!/\b(?:src|href)=["'][^"']*\/kinetic-pass\//.test(html),'Archived studio must not initialize or preload assets');
-const modules=['sections/motion.js','sections/interactions.js','showcase/experiences.js','showcase/device-frame.js','showcase/scroll-gallery.js','showcase/fatos-deck.js','showcase/product-demos.js','showcase/social-ads.js','showcase/recovery-init.js','kinetic-pass/kinetic-pass.js','kinetic-pass/kinetic-math.js','kinetic-pass/kinetic-curl.js','profile.js','direction.js','project-paths.js'];
-for(const path of modules){await access(new URL('public/assets/'+path,root));execFileSync(process.execPath,['--check',new URL('public/assets/'+path,root).pathname],{stdio:'inherit'});}
-for(const asset of ['badges/poster-pair-ff.webp','badges/poster-pair-bf.webp','badges/poster-pair-fb.webp','badges/poster-pair-bb.webp','badges/poster-single-0f.webp','badges/poster-single-0b.webp','badges/poster-single-1f.webp','badges/poster-single-1b.webp','sections/sections.css','showcase/experiences.css','showcase/social.css','showcase/device-frame.css','showcase/rebuild.css','showcase/scroll-gallery.css','showcase/fatos-deck.css','showcase/product-demos.css','showcase/social-ads.css','kinetic-pass/kinetic-pass.css','kinetic-pass/gold-material.svg','badge-enhancements.css','direction.css','contact.css','smiile-landscape.webp','project-paths.css','creative/linha-campanha.svg','creative/linha-interface.svg','creative/direcao-editorial.svg','creative/narrativa.svg','creative/hero-editorial.svg','creative/og-cover.png','creative/symbols.ttf'])await access(new URL('public/assets/'+asset,root));
+const aliases={'/assets/portfolio.js':'src/portfolio.js','/assets/portfolio.css':'src/styles.css'};
+const references=new Set([...html.matchAll(/(?:src|href)=["'](\/assets\/[^"']+)["']/g)].map(match=>match[1].split('?')[0]));
+for(const reference of references){
+ const file=new URL(aliases[reference]||'public'+reference,root);await access(file);
+ if(reference.endsWith('.js'))execFileSync(process.execPath,['--check',file.pathname],{stdio:'inherit'});
+}
+for(const module of ['sections/motion.js','content/portfolio-copy.js','showcase/scroll-gallery.js','showcase/static-presentations.js'])execFileSync(process.execPath,['--check',new URL('public/assets/'+module,root).pathname],{stdio:'inherit'});
+for(const asset of ['poster-pair-ff','poster-pair-bf','poster-pair-fb','poster-pair-bb','poster-single-0f','poster-single-0b','poster-single-1f','poster-single-1b'])await access(new URL(`public/assets/badges/${asset}.webp`,root));
 assert(!html.includes('src="https://midia-kit-production'),'Artwork must be served locally');
-assert(!html.includes('/assets/showcase/fidelity.js'),'Obsolete universal device layer must not return');
-const clip=await readFile(new URL('public/assets/kinetic-pass/material-loop.mp4',root));
-assert(clip.length>10000&&clip.subarray(4,8).toString()==='ftyp','Continuous source clip missing or invalid');
-const webm=await readFile(new URL('public/assets/kinetic-pass/material-loop.webm',root));
-assert(webm.length>10000&&webm.subarray(0,4).toString('hex')==='1a45dfa3','Open-codec texture clip missing or invalid');
-execFileSync(process.execPath,['--test',...['sections','fidelity','kinetic-pass','contact','scroll-gallery','badge-stability'].map(name=>new URL('tests/'+name+'.test.mjs',root).pathname)],{stdio:'inherit'});
-console.log('PASS: canonical HTML, local assets, native media and section contracts; source unchanged');
+execFileSync(process.execPath,['--test',...['sections','fidelity','contact','badge-stability'].map(name=>new URL('tests/'+name+'.test.mjs',root).pathname)],{stdio:'inherit'});
+console.log('PASS: current imports, static artwork, contact and badge contracts; source unchanged');

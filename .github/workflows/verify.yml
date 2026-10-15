@@ -24,14 +24,12 @@ jobs:
           /tmp/portfolio-qa/node_modules/.bin/playwright install --with-deps chromium
       - name: Validate badge loading and consistent fallback artwork
         run: node tests/browser-badge-loading.mjs
-      - name: Validate visual evidence on desktop and mobile
-        run: node tests/browser-evidence.mjs
+      - name: Validate static artwork, accessible navigation and local contact
+        run: node tests/browser-static-presentations.mjs
       - name: Validate touch gestures and badge stability
         run: node tests/browser-gestures.mjs
       - name: Validate readable hero layouts and independent interaction
         run: node tests/browser-readable-hero.mjs
-      - name: Validate hidden studio and active work links
-        run: node tests/browser-hidden-studio.mjs
       - uses: actions/upload-artifact@v4
         if: always()
         with:

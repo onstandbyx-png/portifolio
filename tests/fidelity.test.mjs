@@ -2,27 +2,26 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 const read=p=>readFileSync(new URL('../'+p,import.meta.url),'utf8');
-test('The same physical smiile device is reused for editorial, social and cinematic stages',()=>{
- const d=read('public/assets/showcase/device-frame.js'),sections=read('public/assets/sections/interactions.js'),show=read('public/assets/showcase/experiences.js'),social=read('public/assets/showcase/social-ads.js');
- for(const marker of ['435','907','402','874','16.5','17'])assert(d.includes(marker));
- assert(sections.includes('createDeviceFrame('));
- assert(show.includes('createDeviceFrame('));
- assert(show.includes('pf-film-device'));
- assert(social.includes('createDeviceFrame('));
- assert(social.includes('pf-social-device')&&social.includes('sa-tiktok-device'));
+
+test('Static presentation assets are local WebP files, including every campaign channel',()=>{
+ for(const name of ['fatos-editorial','fatos-esportes','fatos-crencas','fatos-sobrenaturais','fatos-nerd','fatos-negocios','campanha-meta','campanha-google','campanha-tiktok','casa-costa','trilhas']){
+  const art=readFileSync(new URL(`../public/assets/portfolio/static-r8/${name}.webp`,import.meta.url));
+  assert.equal(art.subarray(0,4).toString(),'RIFF',name);
+  assert.equal(art.subarray(8,12).toString(),'WEBP',name);
+  assert(art.length>1000,name);
+ }
 });
-test('Visual proof uses local photographic assets from current projects',()=>{
- const h=read('index.html'),exp=read('public/assets/showcase/experiences.js');
- assert(h.includes('/assets/portfolio/recovered-fatos/post-desconhecidos-600.webp'));
- assert(h.includes('/assets/portfolio/recovered-smiile/landscape.webp'));
- assert(!/SOTA CI|final_final|LINHA/i.test(h+exp));
+test('The active presentation mounts static artwork without retired nested interfaces',()=>{
+ const entry=read('public/assets/showcase/static-init.js'),show=read('public/assets/showcase/static-presentations.js'),interaction=read('public/assets/sections/interactions.js');
+ assert(entry.includes('mountStaticPresentations')&&entry.includes('mountScrollGallery'));
+ for(const source of [entry,show,interaction])assert(!/(?:createDeviceFrame|showModal|data-fatos-flip|data-product-tab|data-app-action|data-call-play)/.test(source));
+ assert(show.includes('data-sp-tab')&&show.includes('role="tabpanel"'),'Campaign navigation remains accessible');
 });
 test('Project services are navigable and do not send data',()=>{
  const s=read('public/assets/project-paths.js');
  for(const marker of ['<details','<summary','data-service-scope','href="#contato"','path-contact','data-service-id','select.dispatchEvent'])assert(s.includes(marker),marker);
- assert(!s.includes("XMLHttpRequest")&&!s.includes("window.open")&&!s.includes("fetch("),"Project exploration must not send visitors data");
+ assert(!s.includes('XMLHttpRequest')&&!s.includes('window.open')&&!s.includes('fetch('),'Service selection must not send visitor data');
 });
 test('No fixed contact CTA obscures reading on mobile',()=>{
  assert(!read('public/assets/direction.js').includes('createElement'));
- assert(read('public/assets/portfolio-recovery.css').includes('.mobile-project-cta'));
 });
