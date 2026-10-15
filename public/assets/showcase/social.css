@@ -26,7 +26,7 @@
 .rx-ig-nav button{display:grid;place-items:center;pointer-events:auto;width:35px;height:35px;min-height:35px;border:1px solid #ffffff48;border-radius:50%;background:#070d1688;color:#fff;font-size:23px;cursor:pointer;}
 .rx-ig-dots{height:22px;display:flex;gap:6px;align-items:center;justify-content:center;}
 .rx-ig-dots button{width:7px;height:7px;min-height:7px;padding:0;border:0;border-radius:50%;background:#485360;cursor:pointer;position:relative;}
-.rx-ig-dots button::before{content:"";position:absolute;inset:-15px;}
+.rx-ig-dots button::before{content:"";position:absolute;inset:auto;left:50%;top:50%;width:7px;height:7px;transform:translate(-50%,-50%);border-radius:50%;background:#485360;pointer-events:none;}
 .rx-ig-dots button[aria-current=true]{background:#3585ff;box-shadow:0 0 0 1px #3585ff30;}
 .rx-ig-actions{display:flex;justify-content:space-between;align-items:center;padding:1px 13px;color:#f4f7fd;font-size:22px;line-height:1.2;}
 .rx-ig-caption{padding:3px 13px 0;margin:0;font-size:9.5px!important;line-height:1.4!important;color:#f1f3f8!important;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
@@ -42,3 +42,11 @@
 @media(max-width:980px){#panel-meta .rx-instagram{max-width:340px}.rx-iphone{max-width:320px}.rx-ig-photo{aspect-ratio:4/4.6}}
 @media(max-width:620px){#panel-meta .rx-instagram{width:100%;max-width:330px}.rx-iphone{max-width:307px}.rx-ig-photo{aspect-ratio:4/4.5}.rx-ig-overlay h3{font-size:30px}.rx-ig-profile{min-height:46px;padding:6px 11px}.rx-ig-topbar{height:38px}.rx-device-status{height:38px}.rx-ig-dots{height:19px}.rx-ig-caption{font-size:9px!important}.rx-ig-overlay{bottom:32px}.rx-ig-actions{font-size:19px}.rx-ig-date{font-size:7px;}}
 @media(max-width:380px){.rx-iphone{max-width:286px}.rx-ig-overlay h3{font-size:26px}.rx-ig-photo{aspect-ratio:4/4.25}.rx-ig-overlay small{font-size:7px}}
+
+
+/* The original enlarged hit areas overlapped adjacent dots.
+   Each visible dot now lives inside its own non-overlapping 36px tap target. */
+.rx-ig-dots{height:38px;gap:0}
+.rx-ig-dots button{width:36px;height:36px;min-height:36px;background:transparent!important;border-radius:50%;box-shadow:none!important;touch-action:manipulation;}
+.rx-ig-dots button[aria-current=true]{background:transparent!important;box-shadow:none!important;transform:none;}
+.rx-ig-dots button[aria-current=true]::before{background:#3585ff;box-shadow:0 0 0 2px #3585ff30;transform:translate(-50%,-50%) scale(1.12);}
