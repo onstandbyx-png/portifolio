@@ -45,7 +45,7 @@ try{
    await page.locator('#ks-peel').evaluate(e=>{e.value='93';e.dispatchEvent(new Event('input',{bubbles:true}));});
    check('peel responds precisely, including while paused',Number(await root.getAttribute('data-peel'))>.9);
    check('fallback fold and physical curve have valid geometry',await page.locator('.ks-flap').getAttribute('d')?.then(d=>d.length>30)&&await page.locator('.ks-fold-hole').getAttribute('transform')?.then(x=>x.startsWith('matrix(')));
-   if(await root.getAttribute('data-curl')==='webgl')check('curved WebGL mesh stays active',await root.locator('.ks-curl-webgl').evaluate(c=>c.width>300&&getComputedStyle(c).display!=='none'));
+   if(await root.getAttribute('data-curl')==='webgl')check('curved WebGL mesh is active at device pixel ratio 1 or higher',await root.locator('.ks-curl-webgl').evaluate(c=>c.width>=300&&c.height>=500&&getComputedStyle(c).display!=='none'&&Boolean(c.getContext('webgl'))));
 
    await page.locator('.ks-stage').scrollIntoViewIfNeeded();await page.screenshot({path:`qa/kinetic-pass/peeled-${width}.png`});
    await page.locator('[data-ks-mode="layers"]').click();
