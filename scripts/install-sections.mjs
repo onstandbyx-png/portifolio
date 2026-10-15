@@ -39,5 +39,19 @@ for(const path of ['public/assets/showcase/experiences.js','public/assets/showca
   await access(new URL(path,root));
   if(path.endsWith('.js'))execFileSync(process.execPath,['--check',new URL(path,root).pathname],{stdio:'inherit'});
 }
+// Visual-fidelity assets: use the exact social iPhone shell for narrative and editorial.
+const fidelityMarker='<!-- portfolio-device-fidelity-v2 -->';
+if(!html.includes(fidelityMarker)) {
+  html=html.replace('</head>',fidelityMarker+'\n'
+    +'<link rel="stylesheet" href="/assets/showcase/fidelity.css">\n'
+    +'<script type="module" src="/assets/showcase/fidelity.js"></script>\n</head>');
+}
+for(const path of [
+  'public/assets/showcase/fidelity.js',
+  'public/assets/showcase/fidelity.css',
+  'public/assets/showcase/fatos-editorial-scene.webp'
+]) await access(new URL(path,root));
+execFileSync(process.execPath,['--check',new URL('public/assets/showcase/fidelity.js',root).pathname],{stdio:'inherit'});
+execFileSync(process.execPath,['--test',new URL('tests/fidelity.test.mjs',root).pathname],{stdio:'inherit'});
 await writeFile(file,html);
 console.log('PASS: módulos das seções instalados; hero original preservado');

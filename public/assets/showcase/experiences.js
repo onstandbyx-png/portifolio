@@ -111,7 +111,7 @@ function mountScrollFilm(){
  function phase(i){if(i===active)return;active=i;film.dataset.phase=String(i);const m=data[i];image.src=m.image;image.alt=m.alt;caption.innerHTML='<small>'+m.kind+'</small><b>'+m.text+'</b>';buttons.forEach((b,j)=>b.setAttribute('aria-current',String(i===j)));motion.animate(image,[{opacity:.45},{opacity:1}],{duration:450});}
  function progress(){
   scheduled=0;if(!visible||reduce.matches||motion.paused()){if(reduce.matches){film.style.setProperty('--rx-phone-scale','1');words.forEach(w=>w.style.setProperty('--rx-word-opacity','1'));}return;}
-  const rect=film.getBoundingClientRect(),travel=Math.max(1,film.offsetHeight-innerHeight),p=clamp(-rect.top/travel),scale=1+2.07*Math.pow(p,1.22);
+  const rect=film.getBoundingClientRect(),travel=Math.max(1,film.offsetHeight-innerHeight),p=clamp(-rect.top/travel),scale=1+(innerWidth<620?1.15:2.07)*Math.pow(p,1.22);
   phone.style.setProperty('--rx-phone-scale',String(scale));
   words.forEach((w,i)=>{w.style.setProperty('--rx-word-opacity',String(clamp(1-p*2.8)));w.style.setProperty('--rx-word-x',(i===0?-1:1)*p*70+'px');});
   const next=p<.34?0:p<.69?1:2;if(next!==active)phase(next);
