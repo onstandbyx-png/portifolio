@@ -21,11 +21,11 @@ try{
    await page.goto(base+'/?qa=kinetic#estudio-interativo',{waitUntil:'domcontentloaded'});
    const root=page.locator('#estudio-interativo');await root.waitFor();await page.waitForFunction(()=>document.querySelector('#estudio-interativo')?.dataset.ready==='true');
    await page.locator('.ks-stage').scrollIntoViewIfNeeded();
-   await page.waitForFunction(()=>document.querySelector('#estudio-interativo')?.dataset.texture==='flow');
+   await page.waitForFunction(()=>['video','flow'].includes(document.querySelector('#estudio-interativo')?.dataset.texture));
    check('isolated section is mounted once',await root.count()===1);
    check('existing hero and sections remain',await page.locator('[data-portfolio-badges]').count()===1&&await page.locator('#editorial').count()===1&&await page.locator('#narrativa-visual').count()===1);
    check('all 1536 source frames are recorded',await root.getAttribute('data-reference-frames')==='1536');
-   check('four separate material layers, no embedded demonstration video',await root.locator('[data-layer]').count()===4&&await root.locator('video,iframe').count()===0);
+   check('four editable layers and one native material texture',await root.locator('[data-layer]').count()===4&&await root.locator('.ks-material video.ks-video').count()===1&&await root.locator('iframe').count()===0);
    check('knockout uses actual blend mode',await page.locator('.ks-stencil').evaluate(e=>getComputedStyle(e).mixBlendMode==='multiply'));
    check('pass dimensions match 300x500',await page.locator('.ks-stack').evaluate(e=>e.offsetWidth===300&&e.offsetHeight===500));
    await page.waitForFunction(()=>{const r=document.querySelector('#estudio-interativo');return r.dataset.texture==='video'||r.dataset.texture==='flow'},null,{timeout:14000});
