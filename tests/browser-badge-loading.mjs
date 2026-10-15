@@ -54,7 +54,7 @@ try{
    if(mode==='entry-delayed')await page.route('**/assets/badge-build/index.js',async route=>{intercepted=true;await gate;await route.continue().catch(()=>{});});
    if(mode==='chunk-delayed'||mode==='chunk-failed')await page.route('**/assets/badge-build/**',async route=>{if(new URL(route.request().url()).pathname.endsWith('/index.js'))return route.continue();intercepted=true;if(mode==='chunk-failed')return route.abort('failed');await gate;await route.continue().catch(()=>{});});
    let blockedPoster=width<500?'single-0b':'pair-bf';
-   const heldPosters=/\/assets\/badges\/poster-(?:single-0b|pair-bf)\.webp$/;
+   const heldPosters=/\/assets\/badges\/poster-(?:single-0b|pair-bf)\.webp(?:\?.*)?$/;
    const flipCard=async index=>{await page.locator(`[data-badge-select="${index}"]`).click();await page.locator('[data-badge-flip]').click();};
    const posterMatches=async(faces,index)=>page.evaluate(({faces,index})=>{const stage=document.querySelector('[data-portfolio-badges]'),img=stage.querySelector('[data-badge-poster]'),key=stage.dataset.layout==='single'?`single-${index}${faces[index]}`:`pair-${faces}`;return img.dataset.faces===faces&&img.dataset.posterKey===key&&img.currentSrc===new URL(img.getAttribute('data-poster-'+key),location.href).href&&img.complete&&img.naturalWidth>0;},{faces,index});
    if(mode==='reduced'){
