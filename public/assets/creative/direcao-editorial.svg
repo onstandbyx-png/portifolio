@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1500" viewBox="0 0 1200 1500" role="img" aria-labelledby="title desc">
+  <title id="title">Dar forma ao que importa — estudo autoral de direção editorial</title>
+  <desc id="desc">Prancha editorial em papel, verde e cobre. A tipografia dialoga com uma esfera construída por curvas e com um grid de composição.</desc>
+  <defs>
+    <pattern id="grid" width="60" height="60" patternUnits="userSpaceOnUse"><path d="M60 0H0V60" fill="none" stroke="#274b38" stroke-opacity=".075"/></pattern>
+    <clipPath id="sphere"><circle cx="840" cy="1000" r="415"/></clipPath>
+    <linearGradient id="paper" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#f6f6f2"/><stop offset="1" stop-color="#e9e8dc"/></linearGradient>
+  </defs>
+  <rect width="1200" height="1500" fill="url(#paper)"/>
+  <rect width="1200" height="1500" fill="url(#grid)"/>
+  <path d="M72 78H1128M72 1422H1128" stroke="#16221c" stroke-opacity=".32"/>
+  <g fill="#16221c" font-family="Arial, Helvetica, sans-serif" font-size="18" letter-spacing="2.8">
+    <text x="72" y="57">IDEIA</text><path d="M148 56L159 45M148 45H159V56" fill="none" stroke="currentColor" stroke-width="1.7" color="#16221c"/><text x="174" y="57">EXECUÇÃO.</text><text x="1128" y="57" text-anchor="end">ESTUDO AUTORAL / 01</text>
+  </g>
+  <circle cx="88" cy="148" r="8" fill="#bc6748"/>
+  <text x="112" y="154" fill="#274b38" font-family="Arial, Helvetica, sans-serif" font-size="19" letter-spacing="3">DIREÇÃO EDITORIAL</text>
+  <g fill="#16221c" font-family="Georgia, 'Times New Roman', serif" font-size="176" letter-spacing="-9">
+    <text x="65" y="363">Dar forma</text><text x="65" y="527">ao que</text><text x="65" y="691" font-style="italic">importa.</text>
+  </g>
+  <circle cx="840" cy="1000" r="415" fill="#274b38"/>
+  <g clip-path="url(#sphere)" fill="none" stroke="#f6f6f2" stroke-width="1.6" opacity=".72">
+    <ellipse cx="840" cy="1000" rx="48" ry="415"/><ellipse cx="840" cy="1000" rx="116" ry="415"/><ellipse cx="840" cy="1000" rx="191" ry="415"/><ellipse cx="840" cy="1000" rx="267" ry="415"/><ellipse cx="840" cy="1000" rx="337" ry="415"/><ellipse cx="840" cy="1000" rx="389" ry="415"/>
+    <ellipse cx="840" cy="1000" rx="415" ry="48"/><ellipse cx="840" cy="1000" rx="415" ry="116"/><ellipse cx="840" cy="1000" rx="415" ry="191"/><ellipse cx="840" cy="1000" rx="415" ry="267"/><ellipse cx="840" cy="1000" rx="415" ry="337"/><ellipse cx="840" cy="1000" rx="415" ry="389"/>
+  </g>
+  <path d="M75 1209C291 1253 295 762 666 849S1099 1226 1199 766" fill="none" stroke="#bc6748" stroke-width="28"/>
+  <circle cx="76" cy="1209" r="18" fill="#bc6748"/>
+  <path d="M72 824H355" stroke="#16221c" stroke-opacity=".3"/>
+  <g fill="#274b38" font-family="Arial, Helvetica, sans-serif" font-size="23">
+    <text x="72" y="865">Uma mensagem.</text><text x="72" y="899">Uma escolha visual.</text><text x="72" y="933">Um motivo para ficar.</text>
+  </g>
+  <g fill="#16221c" font-family="Arial, Helvetica, sans-serif" font-size="17" letter-spacing="1.5">
+    <text x="72" y="1462">CONCEITO · COMPOSIÇÃO · LINGUAGEM</text><text x="1128" y="1462" text-anchor="end">EXPLORAÇÃO VISUAL</text>
+  </g>
+</svg>

@@ -5,13 +5,11 @@ import { extname, resolve, sep } from 'node:path';
 
 const root = resolve(fileURLToPath(new URL('.', import.meta.url)));
 const port = Number(process.env.PORT || 3000);
-const mime = {'.html':'text/html; charset=utf-8','.css':'text/css; charset=utf-8','.js':'text/javascript; charset=utf-8','.webp':'image/webp','.svg':'image/svg+xml','.png':'image/png','.jpg':'image/jpeg','.ico':'image/x-icon','.mp4':'video/mp4','.webm':'video/webm'};
+const mime = {'.html':'text/html; charset=utf-8','.css':'text/css; charset=utf-8','.js':'text/javascript; charset=utf-8','.webp':'image/webp','.svg':'image/svg+xml','.png':'image/png','.jpg':'image/jpeg','.ico':'image/x-icon','.mp4':'video/mp4','.webm':'video/webm','.woff2':'font/woff2','.ttf':'font/ttf'};
 const routes = new Map([
   ['/','index.html'],['/index.html','index.html'],
   ['/assets/portfolio.css','src/styles.css'],['/assets/portfolio.js','src/portfolio.js'],
 ]);
-const assetCache = new Map();
-const externalAssets = new Map([["/assets/smiile-landscape.webp", "https://smiile-landing-preview.up.railway.app/assets/architecture-coast.webp"]]);
 const headers = {
   'X-Content-Type-Options':'nosniff',
   'Referrer-Policy':'strict-origin-when-cross-origin',
@@ -21,13 +19,6 @@ createServer(async (req,res)=>{
   const url = new URL(req.url || '/', 'http://localhost');
   let path; try { path=decodeURIComponent(url.pathname); } catch { res.writeHead(400,headers); res.end('Invalid path'); return; }
   if(path==='/health'){res.writeHead(200,{'Content-Type':'text/plain; charset=utf-8',...headers});res.end('ok');return;}
-  if(externalAssets.has(path)) {
-    try {
-      let body=assetCache.get(path);
-      if(!body){const remote=await fetch(externalAssets.get(path),{signal:AbortSignal.timeout(9000)});if(!remote.ok)throw new Error("Upstream returned "+remote.status);body=Buffer.from(await remote.arrayBuffer());assetCache.set(path,body)}
-      res.writeHead(200,{'Content-Type':'image/webp','Cache-Control':'public, max-age=86400',...headers});res.end(body);return;
-    } catch(err){res.writeHead(503,headers);res.end('Asset temporarily unavailable');return;}
-  }
   const relative=routes.get(path) ?? (path.startsWith('/assets/') ? 'public'+path : null);
   if(!relative || relative.includes('\0')){res.writeHead(404,headers);res.end('Not found');return;}
   const full=resolve(root,relative);

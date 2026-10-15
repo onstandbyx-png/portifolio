@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1500" viewBox="0 0 1200 1500" role="img" aria-labelledby="title desc">
+  <title id="title">LINHA — Qual arquivo é o final_final?</title>
+  <desc id="desc">Peça de campanha de um produto conceito. Uma pilha de versões v01, v02 e v03 ilustra o problema de revisão criativa. Do briefing ao aprovado. No mesmo lugar. Explore o fluxo.</desc>
+  <defs>
+    <pattern id="grid" width="60" height="60" patternUnits="userSpaceOnUse"><path d="M60 0H0V60" fill="none" stroke="#274b38" stroke-opacity=".055"/></pattern>
+  </defs>
+  <rect width="1200" height="1500" fill="#f6f6f2"/><rect width="1200" height="1500" fill="url(#grid)"/>
+  <g font-family="Arial, Helvetica, sans-serif" fill="#16221c">
+    <text x="72" y="107" font-size="58" font-weight="700" letter-spacing="-2">LINHA</text>
+    <text x="1128" y="95" font-size="18" letter-spacing="2.4" text-anchor="end">PRODUTO CONCEITO</text>
+  </g>
+  <path d="M72 143H1128" stroke="#16221c" stroke-opacity=".25"/>
+  <g fill="#16221c" font-family="Arial, Helvetica, sans-serif" font-size="116" font-weight="700" letter-spacing="-6">
+    <text x="65" y="296">Qual arquivo</text><text x="65" y="416">é o</text>
+  </g>
+  <text x="64" y="550" fill="#274b38" font-family="Georgia, 'Times New Roman', serif" font-style="italic" font-size="138" letter-spacing="-7">final_final?</text>
+  <path d="M75 577C288 557 554 591 791 572" fill="none" stroke="#bc6748" stroke-width="8"/>
+  <g transform="translate(310 665) rotate(-9 300 180)">
+    <rect x="8" y="11" width="625" height="336" rx="8" fill="#16221c" opacity=".07"/>
+    <rect width="625" height="336" rx="8" fill="#ddded2" stroke="#274b38" stroke-opacity=".24"/>
+    <text x="470" y="81" font-family="Arial, Helvetica, sans-serif" font-size="53" fill="#64715e" letter-spacing="-2">v01</text>
+    <path d="M38 111H585" stroke="#274b38" stroke-opacity=".18"/>
+  </g>
+  <g transform="translate(197 765) rotate(6 320 170)">
+    <rect x="8" y="11" width="650" height="336" rx="8" fill="#16221c" opacity=".08"/>
+    <rect width="650" height="336" rx="8" fill="#bc6748"/>
+    <text x="38" y="81" font-family="Arial, Helvetica, sans-serif" font-size="53" fill="#f6f6f2" letter-spacing="-2">v02</text>
+    <path d="M38 111H610" stroke="#f6f6f2" stroke-opacity=".25"/>
+  </g>
+  <g transform="translate(308 822) rotate(-3 320 170)">
+    <rect x="10" y="14" width="650" height="336" rx="8" fill="#16221c" opacity=".12"/>
+    <rect width="650" height="336" rx="8" fill="#274b38"/>
+    <text x="38" y="98" font-family="Arial, Helvetica, sans-serif" font-size="83" font-weight="700" fill="#f6f6f2" letter-spacing="-4">v03</text>
+    <rect x="392" y="42" width="217" height="49" rx="25" fill="#f6f6f2" fill-opacity=".13"/><circle cx="419" cy="67" r="5" fill="#e0aa86"/><text x="436" y="75" fill="#f6f6f2" font-family="Arial, Helvetica, sans-serif" font-size="22">Em revisão</text>
+    <path d="M38 130H610" stroke="#f6f6f2" stroke-opacity=".24"/>
+    <g fill="#f6f6f2" font-family="Arial, Helvetica, sans-serif"><text x="38" y="204" font-size="42" letter-spacing="-1">Uma ideia.</text><text x="38" y="254" font-size="42" letter-spacing="-1">Um lugar para evoluir.</text></g>
+    <path d="M38 293H178M194 293H276M292 293H610" stroke="#f6f6f2" stroke-opacity=".28" stroke-width="2"/>
+  </g>
+  <g fill="#16221c" font-family="Arial, Helvetica, sans-serif" font-size="44" letter-spacing="-1.2"><text x="72" y="1261">Do briefing ao aprovado.</text><text x="72" y="1315" font-weight="700">No mesmo lugar.</text></g>
+  <rect x="72" y="1362" width="326" height="69" rx="35" fill="#16221c"/>
+  <text x="103" y="1406" fill="#f6f6f2" font-family="Arial, Helvetica, sans-serif" font-size="27">Explore o fluxo</text>
+  <path d="M350 1405L366 1389M350 1389H366V1405" fill="none" stroke="#f6f6f2" stroke-width="2"/>
+  <text x="1128" y="1410" fill="#526455" font-family="Arial, Helvetica, sans-serif" font-size="17" letter-spacing="1.6" text-anchor="end">ESTUDO AUTORAL</text>
+</svg>

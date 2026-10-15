@@ -1,5 +1,4 @@
-/* Site interactions: native-scroll capability deck, editorial chapters, functional channel specimens and cases.
-   Motion timings/ease are adapted from the user-owned smiile commit b6a2e0d. */
+/* Site interactions: editorial chapters, channel specimens, professional context and contact. */
 (() => {
   'use strict';
   const $ = (s, root=document) => root.querySelector(s);
@@ -10,18 +9,36 @@
   let reduced = preference.matches;
   let paused = false;
   const smooth=()=>reduced||paused?'auto':'smooth';
+  // Events describe actions only. Brief text and contact details never enter analytics.
+  function recordInteraction(event, details={}){
+    const payload=Object.freeze({event:`portfolio_${event}`, ...details});
+    window.dispatchEvent(new CustomEvent('portfolio:interaction',{detail:payload}));
+    try{if(Array.isArray(window.dataLayer))window.dataLayer.push({...payload});}catch{/* Optional analytics must not block a contact action. */}
+  }
 
   // Header and accessible mobile menu.
   const header = $('#site-header'), menuToggle = $('#menu-toggle'),mobileNav=$('#mobile-nav');
-  function closeMenu(){ if(!menuToggle) return; menuToggle.setAttribute('aria-expanded','false'); menuToggle.setAttribute('aria-label','Abrir menu');mobileNav.hidden=true; }
+  function closeMenu(restoreFocus=false){
+    if(!menuToggle||!mobileNav)return;
+    menuToggle.setAttribute('aria-expanded','false');menuToggle.setAttribute('aria-label','Abrir menu');mobileNav.hidden=true;
+    if(restoreFocus){
+      const target=matchMedia('(max-width:900px)').matches?menuToggle:$('.main-nav a');
+      target?.focus({preventScroll:true});
+    }
+  }
   menuToggle?.addEventListener('click',()=>{
     const opening=menuToggle.getAttribute('aria-expanded')!=='true';
     menuToggle.setAttribute('aria-expanded',String(opening));
     menuToggle.setAttribute('aria-label',opening?'Fechar menu':'Abrir menu');
     mobileNav.hidden=!opening;
+    if(opening)$('a',mobileNav)?.focus({preventScroll:true});
   });
-  $$('#mobile-nav a').forEach(a=>a.addEventListener('click',closeMenu));
-  addEventListener('keydown',e=>{if(e.key==='Escape')closeMenu()});
+  $$('#mobile-nav a').forEach(a=>a.addEventListener('click',()=>{
+    closeMenu();
+    const target=a.hash?document.getElementById(a.hash.slice(1)):null;
+    if(target){target.tabIndex=-1;target.focus({preventScroll:true});}
+  }));
+  addEventListener('keydown',e=>{if(e.key==='Escape'&&menuToggle?.getAttribute('aria-expanded')==='true')closeMenu(true)});
 
   // Global progress and on-screen motion, no wheel/touch hijacking.
   const progress=$('#reading-progress');let pending=false;
@@ -30,7 +47,7 @@
     header?.classList.toggle('is-scrolled',scrollY>12);
     const total=Math.max(1,document.documentElement.scrollHeight-innerHeight);
     if(progress)progress.style.transform=`scaleX(${clamp(scrollY/total)})`;
-    updateCategories();updateZoom();
+    updateZoom();
   }
   addEventListener('scroll',requestUpdate,{passive:true});
   addEventListener('resize',requestUpdate,{passive:true});
@@ -42,107 +59,11 @@
     $$('.reveal').forEach(el=>io.observe(el));
   }else $$('.reveal').forEach(el=>el.classList.add('is-visible'));
 
-  // smiile-style native scroll progress with one active hanging card.
-  const runway=$('#category-runway'),sticky=$('#category-sticky'),stage=$('#category-stage'),cards=$$('.category-card'),steps=$$('[data-category-go]'),counter=$('#category-counter'),bar=$('#category-progress-fill'),prev=$('#category-prev'),next=$('#category-next');
-  const categoryFlow=()=>media.matches&&(innerHeight<720||reduced||paused);
-  const zone=runway?.closest('.category-zone');
-  let active=0, mostRecentInput=-1;
-  function setActive(idx){
-    idx=clamp(idx,0,cards.length-1);
-    active=idx;
-    cards.forEach((card,i)=>{
-      const on=i===idx;
-      card.classList.toggle('is-active',on);
-      if(categoryFlow())card.inert=false;
-      else card.inert=!on;
-    });
-    steps.forEach((b,i)=>{b.classList.toggle('is-current',i===idx);b.setAttribute('aria-current',i===idx?'step':'false')});
-    if(counter)counter.textContent=`0${idx+1} / 0${cards.length}`;
-    if(prev)prev.disabled=idx<=0;
-    if(next)next.disabled=idx>=cards.length-1;
-    if(bar)bar.style.width=`${(idx+1)/cards.length*100}%`;
-  }
-  function updateCategories(){
-    if(!runway||!sticky||!stage)return;
-    // Keep the selected card stable while its reverse face is being read. Clicking a
-    // button must not inadvertently advance the scroll-controlled carousel.
-    const openCard=$('.category-card.is-flipped');
-    if(openCard && !categoryFlow()){
-      const bounds=runway.getBoundingClientRect();
-      if(bounds.bottom>sticky.offsetHeight && bounds.top<innerHeight){
-        const index=Number(openCard.dataset.categoryIndex);
-        if(active!==index)setActive(index);
-        return;
-      }
-      openCard.classList.remove('is-flipped');
-      const front=$('[data-card-turn]',openCard),back=$('[data-card-return]',openCard);
-      if(front){front.setAttribute('aria-expanded','false');front.tabIndex=0}
-      if(back)back.tabIndex=-1;
-    }
-    const flow=categoryFlow();
-    runway.dataset.layout=flow?'flow':'linked';
-    zone?.classList.toggle('pf-category-linked',!flow);
-    if(flow){
-      let best=0,nearest=Infinity;
-      const vCenter=innerHeight*.48;
-      cards.forEach((card,i)=>{const r=card.getBoundingClientRect();const d=Math.abs((r.top+r.height/2)-vCenter);if(d<nearest){nearest=d;best=i}
-        card.style.removeProperty('--slide');card.style.removeProperty('--shift-y');card.style.removeProperty('--scale');card.style.removeProperty('--rot');card.style.removeProperty('--alpha');card.style.removeProperty('--brightness');card.style.zIndex='';});
-      setActive(best);return;
-    }
-    const r=runway.getBoundingClientRect(),sr=sticky.getBoundingClientRect();
-    const travel=Math.max(1,runway.offsetHeight-sticky.offsetHeight);
-    const p=clamp((sr.top-r.top)/travel),position=p*(cards.length-1);
-    const idx=Math.round(position);
-    const span=media.matches?Math.min(innerWidth*.77,390):Math.min(innerWidth*.365,450);
-    cards.forEach((card,i)=>{
-      const delta=i-position,dist=Math.abs(delta);
-      card.style.setProperty('--slide',`${delta*span}px`);
-      card.style.setProperty('--shift-y',`${Math.min(92,dist*31)}px`);
-      card.style.setProperty('--rot',`${(-delta*7)+Number.parseFloat(card.style.getPropertyValue('--angle')||'0')}deg`);
-      card.style.setProperty('--scale',String(Math.max(.77,1-dist*.075)));
-      card.style.setProperty('--alpha',String(Math.max(.28,1-dist*.24)));
-      card.style.setProperty('--brightness',String(Math.max(.79,1-dist*.08)));
-      card.style.zIndex=String(50-Math.round(dist*10));
-    });
-    if(idx!==active)setActive(idx);
-  }
-  function goToCategory(n){
-    n=clamp(n,0,cards.length-1);
-    mostRecentInput=n;
-    if(categoryFlow()){cards[n].scrollIntoView({block:'center',behavior:smooth()});setActive(n);return;}
-    const top=scrollY+runway.getBoundingClientRect().top+(runway.offsetHeight-sticky.offsetHeight)*(n/(cards.length-1));
-    window.scrollTo({top,behavior:smooth()});
-    if(reduced)setActive(n);
-  }
-  steps.forEach((b,i)=>b.addEventListener('click',()=>goToCategory(i)));
-  prev?.addEventListener('click',()=>goToCategory(active-1));
-  next?.addEventListener('click',()=>goToCategory(active+1));
-  function flipCard(card,open){
-    const current=card.classList.contains('is-flipped');
-    const val=typeof open==='boolean'?open:!current;
-    card.classList.toggle('is-flipped',val);
-    const front=$('[data-card-turn]',card),back=$('[data-card-return]',card);
-    front?.setAttribute('aria-expanded',String(val));
-    if(front)front.tabIndex=val?-1:0;
-    if(back)back.tabIndex=val?0:-1;
-    const target=val?back:front;
-    requestAnimationFrame(()=>target?.focus({preventScroll:true}));
-    requestUpdate();
-  }
-  cards.forEach((card)=>{
-    const flip=$('[data-card-turn]',card),back=$('[data-card-return]',card);
-    flip?.addEventListener('click',()=>flipCard(card,true));
-    back?.addEventListener('click',()=>flipCard(card,false));
-    if(back)back.tabIndex=-1;
-    if(categoryFlow())card.inert=false;
-  });
-  addEventListener('keydown',e=>{if(e.key==='Escape'){const flipped=$('.category-card.is-flipped');if(flipped&&document.activeElement?.closest('.category-card'))flipCard(flipped,false)}});
-
-  // Native view transition fallback for editorial steps; source images from the original Fatos PDF.
+  // LINHA is a fictitious product: an independent demonstration of campaign reasoning.
   const editorial=[
-    {label:'01 / PERGUNTA',title:'Uma pergunta muda o ponto de partida.',description:'Um assunto familiar abre a conversa sem inventar uma promessa.',image:'/assets/showcase/scenes/materia-viva.svg',alt:'Matéria viva, composição botânica para o primeiro capítulo'},
-    {label:'02 / CONTEXTO',title:'A pesquisa transforma o olhar.',description:'Fontes, relações e contexto ajudam a compreender o tema.',image:'/assets/showcase/scenes/contexto.svg',alt:'Composição astronômica de pesquisa e conexões'},
-    {label:'03 / NARRATIVA',title:'Uma descoberta encontra seu formato.',description:'O roteiro e a direção visual tornam a ideia compreensível.',image:'/assets/showcase/scenes/narrativa.svg',alt:'Composição editorial em camadas para o desdobramento final'}
+    {label:'01 / GANCHO',title:'Qual arquivo é o final_final?',description:'Versões espalhadas, comentários em mensagens e uma aprovação que ninguém encontra: a campanha começa por um problema reconhecível.',image:'/assets/creative/linha-campanha.svg',alt:'LINHA, estudo autoral de campanha para um produto fictício de aprovação criativa'},
+    {label:'02 / PROVA',title:'Do briefing ao aprovado. No mesmo lugar.',description:'A demonstração reúne versões, comentários e status de aprovação em uma interface, tornando a proposta do produto visível.',image:'/assets/creative/linha-interface.svg',alt:'Interface conceitual LINHA com versões, comentários e status de aprovação'},
+    {label:'03 / AÇÃO',title:'Veja um projeto sair do briefing.',description:'O convite leva à demonstração: explore o fluxo de um projeto e entenda como cada etapa se conecta à próxima.',image:'/assets/creative/linha-interface.svg',alt:'LINHA, convite para explorar a demonstração conceitual de um projeto'}
   ];
   const editorialImg=$('#editorial-image'),editorialHead=$('#editorial-headline'),editorialCopy=$('#editorial-description'),editorialTag=$('#editorial-caption'),editorialNum=$('#editorial-num');
   let story=0;
@@ -207,7 +128,7 @@
     if(playback){stopPlayback();return}
     if(reduced)return;
     playBtn.setAttribute('aria-pressed','true');playBtn.innerHTML='Pausar sequência <span>Ⅱ</span>';
-    const text=$('.video-text');const lines=['E se o óbvio tiver<br>uma história melhor?','Tudo começa<br>com a pergunta.','O contexto dá<br>sentido à resposta.'];let i=0;
+    const text=$('.video-text');const lines=['Qual arquivo é<br>o final_final?','Do briefing ao aprovado.<br>No mesmo lugar.','Veja um projeto<br>sair do briefing.'];let i=0;
     playback=setInterval(()=>{i=(i+1)%lines.length;if(text)text.innerHTML=lines[i]},1550);
   });
   document.addEventListener('visibilitychange',()=>{if(document.hidden)stopPlayback()});
@@ -224,40 +145,223 @@
     $('#system-step-label').textContent=sys[i][0];$('#system-display-title').textContent=sys[i][1];$('#system-display-copy').textContent=sys[i][2];
   }));
 
-  // Expandable case studies: native dialog with focus return and fixed provenance.
+  // Cases separate professional background, authorial concepts and working demonstrations.
   const cases={
-    fatos:{kicker:'FATOS DESCONHECIDOS / EXPERIÊNCIA EDITORIAL',title:'Curiosidade com contexto.',description:'Pesquisa e desenvolvimento de linguagem editorial, pautas, narrativas e formas de apresentação. Material visual do Ecossistema Fatos 2026, incluindo peças identificadas como conceituais.',proof:'O estudo mostra direção e estrutura de conteúdo. Não comprova uma campanha veiculada, números de mídia nem atribui a uma única pessoa todo o trabalho da rede.',image:'/assets/showcase/scenes/materia-viva.svg',source:'https://midia-kit-production-c234.up.railway.app/'},
-    smiile:{kicker:'SMIILE / PRODUTO DIGITAL',title:'Da ideia à experiência navegável.',description:'Design de produto, interface interativa, cenas para demonstrar sites, aplicações, execução e orquestração. A seção de categorias deste portfólio adapta o mecanismo de rolagem natural da landing smiile.',proof:'A demonstração comprova a interface publicada no serviço de referência. Não representa todas as funcionalidades técnicas como homologadas ou disponíveis em produção.',image:'https://smiile-landing-preview.up.railway.app/assets/architecture-coast.webp',source:'https://smiile-landing-preview.up.railway.app/?v=b6a2e0d#categorias'},
-    ci:{kicker:'SOTA CI INTEL / ARQUITETURA',title:'Investigar sem perder o rastro.',description:'Sistema de investigação e inteligência apoiado em fontes, entidades, grafos e dossiês auditáveis, com distinção entre evidências e hipóteses.',proof:'É um esquema didático da arquitetura documentada, não uma operação real executada ao abrir o portfólio. Nenhum dado privado é consultado nesta demonstração.',source:'https://github.com/smil3nirvan4-beep/sota-ci-intel'}
+    fatos:{
+      kicker:'FATOS DESCONHECIDOS / DIREÇÃO CRIATIVA',title:'Experiência com grandes audiências.',
+      description:'Sou diretor criativo há anos na Fatos Desconhecidos. Essa experiência orienta a forma como penso narrativa, direção de arte e conteúdo para marcas: uma mensagem precisa dar a quem assiste uma razão para continuar.',
+      status:'Experiência profissional',
+      challenge:'Como transformar um assunto em uma história que o público queira acompanhar?',
+      decision:'Conectar o recorte, a estrutura narrativa, a direção de arte e o formato à mensagem central.',
+      contribution:'Minha atuação na Fatos Desconhecidos é a direção criativa. Esta apresentação registra essa experiência profissional, sem atribuir a mim a autoria de todas as peças da empresa.',
+      proof:'Para explorar meu raciocínio em uma demonstração independente, conheça LINHA: um produto fictício apresentado em gancho, prova e ação. O estudo autoral está identificado e não é uma campanha da Fatos.',
+      visual:'trajectory',
+      source:'https://midia-kit-production-c234.up.railway.app/',sourceLabel:'Referência institucional da Fatos Desconhecidos',
+      credit:'A referência institucional documenta a empresa como contexto da minha trajetória. Não representa uma oferta de mídia neste portfólio. LINHA é um estudo separado, sem vínculo com uma campanha publicada pela Fatos.',
+      service:'Redação e conteúdo',cta:'Conversar sobre conteúdo',section:'#editorial',explore:'Explorar estudo autoral LINHA'
+    },
+    smiile:{
+      kicker:'SMIILE / DEMONSTRAÇÃO DE INTERFACE',title:'Uma ideia que você consegue experimentar.',
+      description:'Uma demonstração navegável aproxima direção de arte e produto digital. Dispositivos, superfícies metálicas e transições ajudam a apresentar uma experiência; a interação permite entender como ela funciona.',
+      status:'Demonstração navegável',
+      challenge:'Como tornar uma proposta digital compreensível antes de uma explicação longa?',
+      decision:'Mostrar a interface em uso, com hierarquia visual, navegação natural e detalhes que respondem à interação.',
+      contribution:'Este portfólio integra e adapta a linguagem da demonstração smiile, incluindo o movimento entre cartões. A referência permite comparar o comportamento apresentado.',
+      proof:'Alterne entre desktop e mobile, explore as páginas e compare as direções visuais. A demonstração permite observar a interface e os estados de interação.',
+      image:'/assets/smiile-landscape.webp',imageAlt:'Cena de arquitetura da demonstração digital smiile',
+      source:'https://smiile-landing-preview.up.railway.app/?v=b6a2e0d#categorias',sourceLabel:'Abrir demonstração smiile',
+      credit:'Referência de interface: landing smiile. As imagens e os mecanismos de interação são demonstrações de produto; não representam um projeto de cliente ou integrações de backend homologadas.',
+      service:'Sites e experiências digitais',cta:'Conversar sobre uma experiência',section:'#experiencias',explore:'Explorar a interface'
+    },
+    ci:{
+      kicker:'CI INTEL / ARQUITETURA DE SISTEMA',title:'Da informação a uma decisão rastreável.',
+      description:'Quando uma tarefa envolve muitas fontes e etapas, a experiência também precisa de estrutura. Esta representação liga entrada, evidência, relações e síntese em um fluxo que pode ser compreendido e verificado.',
+      status:'Arquitetura documentada',
+      challenge:'Como reunir informação sem perder a origem, o contexto e os limites de cada conclusão?',
+      decision:'Organizar o fluxo em quatro etapas e manter a ligação entre a síntese e suas evidências.',
+      contribution:'A experiência visual traduz a arquitetura documentada no repositório de referência em uma sequência que pode ser explorada etapa por etapa.',
+      proof:'Percorra a lógica do sistema, da entrada à síntese. Os controles mostram o papel de cada etapa e a conexão entre informação, contexto e conclusão.',
+      source:'https://github.com/smil3nirvan4-beep/sota-ci-intel',sourceLabel:'Consultar arquitetura de referência',
+      credit:'Referência técnica: repositório SOTA CI Intel. Nesta página, o fluxo é uma demonstração didática: não executa uma investigação, consulta dados privados ou apresenta resultados de operações reais.',
+      service:'Sistemas e automações',cta:'Conversar sobre um sistema',section:'#sistemas',explore:'Explorar o fluxo'
+    }
   };
-  const dialog=$('#case-dialog'),dialogImage=$('#dialog-image'),dialogClose=$('#dialog-close');let focusOrigin=null;
-  function openCase(id){const c=cases[id];if(!c||!dialog)return;
-    focusOrigin=document.activeElement;
-    dialogImage.replaceChildren();
-    if(c.image){const im=document.createElement('img');im.src=c.image;im.alt=c.kicker;im.loading='eager';dialogImage.appendChild(im)}
-    else{const div=document.createElement('div');div.className='dialog-ci';div.textContent='ENTRADA  →  EVIDÊNCIA  →  RELAÇÃO  →  DOSSIÊ';dialogImage.appendChild(div)}
+  const dialog=$('#case-dialog'),dialogImage=$('#dialog-image'),dialogClose=$('#dialog-close');
+  let focusOrigin=null,currentCase=null,contactCase='',contactCaseService='';
+  const caseKeys=Object.keys(cases);
+  const content=dialog?.querySelector('.dialog-content');
+  const source=$('#dialog-source');
+  let metadata=null,statusBadge=null,caseCTA=null,caseExplore=null,casePosition=null,caseCredits=null;
+  if(content){
+    dialog.setAttribute('aria-describedby','dialog-description');
+    metadata=document.createElement('dl');metadata.className='case-facts';
+    statusBadge=document.createElement('span');statusBadge.className='case-status';
+    $('#dialog-kicker')?.before(statusBadge);
+    $('#dialog-description')?.after(metadata);
+    const actions=document.createElement('div');actions.className='case-actions';
+    caseCTA=document.createElement('button');caseCTA.type='button';caseCTA.className='case-contact';
+    caseCTA.addEventListener('click',()=>{
+      const data=cases[currentCase];
+      if(!data)return;
+      contactCase=data.title;
+      contactCaseService=data.service;
+      const select=$('#service');
+      if(select){const option=Array.from(select.options).find(item=>item.value===data.service||item.textContent===data.service);if(option)select.value=option.value;select.dispatchEvent(new Event('change',{bubbles:true}));}
+      const context=$('#brief-context');
+      if(context){context.textContent=`Ponto de partida: ${data.title}`;context.hidden=false;}
+      recordInteraction('case_contact',{case:currentCase});
+      closeCase(false);
+      document.getElementById('contato')?.scrollIntoView({behavior:smooth(),block:'start'});
+      $('#brief')?.focus({preventScroll:true});
+    });
+    caseExplore=document.createElement('a');caseExplore.className='case-explore';
+    caseExplore.addEventListener('click',()=>{recordInteraction('case_explore',{case:currentCase});closeCase(false);const target=document.querySelector(caseExplore.getAttribute('href'));if(target){target.tabIndex=-1;target.focus({preventScroll:true});}});
+    actions.append(caseCTA,caseExplore);$('#dialog-description')?.after(actions);
+    const credits=document.createElement('details');credits.className='case-credits';
+    const summary=document.createElement('summary');summary.textContent='Contexto e referências';
+    caseCredits=document.createElement('p');credits.append(summary,caseCredits);
+    if(source)credits.append(source);
+    content.append(credits);
+    const nav=document.createElement('nav');nav.className='case-navigation';nav.setAttribute('aria-label','Navegar pelas demonstrações');
+    const previous=document.createElement('button');previous.type='button';previous.textContent='← Anterior';
+    const nextCase=document.createElement('button');nextCase.type='button';nextCase.textContent='Próximo →';
+    casePosition=document.createElement('span');casePosition.setAttribute('aria-live','polite');
+    function navigate(direction){const index=caseKeys.indexOf(currentCase);openCase(caseKeys[(index+direction+caseKeys.length)%caseKeys.length],true);}
+    previous.addEventListener('click',()=>navigate(-1));nextCase.addEventListener('click',()=>navigate(1));
+    nav.append(previous,casePosition,nextCase);content.append(nav);
+  }
+  function openCase(id,navigating=false){
+    const c=cases[id];if(!c||!dialog)return;
+    if(!dialog.open)focusOrigin=document.activeElement;
+    currentCase=id;
+    dialog.dataset.case=id;
+    dialogImage?.replaceChildren();
+    if(c.image){
+      const im=document.createElement('img');im.src=c.image;im.alt=c.imageAlt;im.loading='eager';
+      im.addEventListener('error',()=>{im.hidden=true;const fallback=document.createElement('div');fallback.className='dialog-ci';fallback.textContent=c.title;dialogImage?.append(fallback);},{once:true});
+      dialogImage?.appendChild(im);
+    }else if(c.visual==='trajectory'){
+      const panel=document.createElement('div');panel.className='dialog-trajectory';
+      const label=document.createElement('span');label.textContent='TRAJETÓRIA PROFISSIONAL';
+      const title=document.createElement('strong');title.textContent='Fatos Desconhecidos';
+      const role=document.createElement('p');role.textContent='Direção criativa';
+      const context=document.createElement('small');context.textContent='Experiência em criar conteúdo para grandes audiências.';
+      panel.append(label,title,role,context);dialogImage?.append(panel);
+    }else{
+      const div=document.createElement('div');div.className='dialog-ci';
+      for(const [index,label] of ['Entrada','Evidência','Relações','Síntese'].entries()){
+        const row=document.createElement('span');row.textContent=`0${index+1} / ${label}`;div.append(row);
+      }
+      dialogImage?.appendChild(div);
+    }
     $('#dialog-kicker').textContent=c.kicker;
     $('#case-dialog-title').textContent=c.title;
     $('#dialog-description').textContent=c.description;
     $('#dialog-proof').textContent=c.proof;
-    $('#dialog-source').href=c.source;
-    dialog.showModal();dialogClose.focus();
+    const proofTitle=$('.dialog-proof > span');if(proofTitle)proofTitle.textContent='O QUE VOCÊ PODE EXPLORAR';
+    if(statusBadge)statusBadge.textContent=c.status;
+    metadata?.replaceChildren();
+    for(const [term,description] of [['O desafio',c.challenge],['A decisão',c.decision],['Participação e contexto',c.contribution]]){
+      const row=document.createElement('div'),dt=document.createElement('dt'),dd=document.createElement('dd');
+      dt.textContent=term;dd.textContent=description;row.append(dt,dd);metadata?.append(row);
+    }
+    if(source){source.href=c.source;source.textContent=`${c.sourceLabel} ↗`;}
+    if(caseCredits)caseCredits.textContent=c.credit;
+    if(caseCTA)caseCTA.textContent=`${c.cta} ↗`;
+    if(caseExplore){caseExplore.href=c.section;caseExplore.textContent=`${c.explore} ↓`;}
+    if(casePosition)casePosition.textContent=`${caseKeys.indexOf(id)+1} / ${caseKeys.length}`;
+    $('.case-credits',dialog)?.removeAttribute('open');
+    if(!dialog.open){dialog.showModal();dialogClose?.focus();}
+    if(content)content.scrollTop=0;
+    dialog.scrollTop=0;
+    if(navigating){const heading=$('#case-dialog-title');heading.tabIndex=-1;heading.focus({preventScroll:true});}
+    recordInteraction(navigating?'case_navigate':'case_open',{case:id});
   }
-  function closeCase(){if(!dialog?.open)return;dialog.close();focusOrigin?.focus?.({preventScroll:true});}
+  let returnFocus=true;
+  function closeCase(restoreFocus=true){if(!dialog?.open)return;returnFocus=restoreFocus;dialog.close();}
   $$('[data-case]').forEach(btn=>btn.addEventListener('click',()=>openCase(btn.dataset.case)));
-  dialogClose?.addEventListener('click',closeCase);
-  dialog?.addEventListener('click',e=>{if(e.target===dialog)closeCase()});
-  dialog?.addEventListener('close',()=>focusOrigin?.focus?.({preventScroll:true}));
+  dialogClose?.addEventListener('click',()=>closeCase());
+  dialog?.addEventListener('click',e=>{if(e.target===dialog){const bounds=dialog.getBoundingClientRect();if(e.clientX<bounds.left||e.clientX>bounds.right||e.clientY<bounds.top||e.clientY>bounds.bottom)closeCase();}});
+  dialog?.addEventListener('close',()=>{if(returnFocus)focusOrigin?.focus?.({preventScroll:true});returnFocus=true;});
 
-  // Prepare brief locally; nothing gets silently sent anywhere.
+  // A contact click opens the chosen application. Only the visitor can send the message.
   const brief=$('#brief-form');
-  brief?.addEventListener('submit',async e=>{
+  const profile=window.PORTFOLIO_PROFILE||{};
+  const contact=window.PORTFOLIO_CONTACT;
+  const destination=contact?.contactDestination(profile);
+  let copyButton=null,preparedBox=null;
+  if(brief){
+    const submit=$('button[type="submit"]',brief),status=$('#form-status');
+    const context=document.createElement('p');context.id='brief-context';context.className='brief-context';context.hidden=true;
+    $('#service')?.before(context);
+    $('#service')?.addEventListener('change',()=>{if(contactCase&&$('#service').value!==contactCaseService){contactCase='';contactCaseService='';context.hidden=true;context.textContent='';}});
+    brief.dataset.contactReady=String(Boolean(destination));
+    if(submit)submit.innerHTML=destination?`Continuar ${destination.channel==='whatsapp'?'no WhatsApp':'por e-mail'} <span aria-hidden="true">↗</span>`:'Copiar meu briefing <span aria-hidden="true">↗</span>';
+    if(status)status.textContent=destination?'Seu resumo será aberto no aplicativo escolhido. Revise a mensagem e envie quando quiser.':'O canal de contato está em configuração. Você pode preparar e copiar o briefing por aqui.';
+    if(destination){
+      copyButton=document.createElement('button');copyButton.type='button';copyButton.className='brief-copy';copyButton.textContent='Prefiro copiar o briefing';
+      submit?.after(copyButton);
+      if(destination.channel==='whatsapp'&&contact.contactDestination({...profile,whatsapp:''})){
+        const emailButton=document.createElement('button');emailButton.type='button';emailButton.className='brief-email';emailButton.textContent='Prefiro e-mail';
+        emailButton.addEventListener('click',()=>{
+          if(!brief.reportValidity())return;
+          const emailLink=contact.createContactHref({...profile,preferredChannel:'email'},getBrief());
+          if(!emailLink)return;
+          recordInteraction('contact_click',{channel:'email',entry:contactCase?'case':'form'});
+          if(status)status.textContent='Seu aplicativo de e-mail será aberto com o resumo. Revise e envie para iniciar a conversa. Se não abrir, use a opção de copiar.';
+          window.location.href=emailLink.href;
+        });
+        submit?.after(emailButton);
+      }
+      const direct=document.createElement('a');direct.className='brief-direct';direct.href=contact.createContactHref(profile).href;direct.textContent=destination.channel==='whatsapp'?'Abrir uma conversa sem preencher o formulário ↗':'Escrever um e-mail sem preencher o formulário ↗';
+      if(destination.channel==='whatsapp'){direct.target='_blank';direct.rel='noopener noreferrer';}
+      direct.addEventListener('click',()=>recordInteraction('contact_click',{channel:destination.channel,entry:'direct'}));
+      brief.append(direct);
+    }
+    if(profile.name){$$('[data-professional-name]').forEach(el=>{el.textContent=profile.name;});}
+  }
+  function getBrief(){
+    const service=$('#service')?.value||'',description=$('#brief')?.value.trim()||'';
+    return contact?contact.buildBrief(service,description,contactCase):`Olá! Quero conversar sobre um projeto.\n\nFrente: ${service}\nContexto: ${description}\n\nConheci seu trabalho no portfólio Ideia & Execução.`;
+  }
+  async function copyBrief(){
+    if(!brief?.reportValidity())return;
+    const message=getBrief(),status=$('#form-status');
+    try{
+      await navigator.clipboard.writeText(message);
+      if(status)status.textContent='Briefing copiado. Cole na conversa que preferir; a cópia não envia uma mensagem.';
+      if(preparedBox)preparedBox.hidden=true;
+      recordInteraction('brief_copied',{entry:contactCase?'case':'form'});
+    }catch{
+      if(!preparedBox){preparedBox=document.createElement('textarea');preparedBox.id='prepared-brief';preparedBox.readOnly=true;preparedBox.rows=8;preparedBox.className='prepared-brief';preparedBox.setAttribute('aria-label','Briefing pronto para copiar');status?.after(preparedBox);}
+      preparedBox.hidden=false;preparedBox.value=message;
+      if(status)status.textContent='Selecione e copie o texto abaixo. Nenhuma mensagem foi enviada.';
+      preparedBox.focus();preparedBox.select();
+    }
+  }
+  copyButton?.addEventListener('click',copyBrief);
+  brief?.addEventListener('submit',e=>{
     e.preventDefault();
-    const msg=`Olá! Quero conversar sobre um projeto.\n\nÁrea: ${$('#service').value}\nDescrição: ${$('#brief').value.trim()}\n\nEnviado a partir do portfólio Ideia & Execução.`;
+    if(!brief.reportValidity())return;
+    const link=contact?.createContactHref(profile,getBrief());
+    if(!link){copyBrief();return;}
+    recordInteraction('contact_click',{channel:link.channel,entry:contactCase?'case':'form'});
     const status=$('#form-status');
-    try{await navigator.clipboard.writeText(msg);status.textContent='Briefing copiado. Cole em uma mensagem para compartilhar.'}
-    catch{
-      const box=document.createElement('textarea');box.value=msg;box.style.cssText='width:100%;min-height:120px;margin-top:12px';box.setAttribute('aria-label','Briefing pronto para copiar');status.textContent='Selecione e copie o texto preparado abaixo:';status.after(box);box.select();
+    if(status)status.textContent=link.channel==='whatsapp'?'O WhatsApp será aberto com seu resumo. Revise e toque em enviar para iniciar a conversa.':'Seu aplicativo de e-mail será aberto com o resumo. Revise e envie para iniciar a conversa. Se não abrir, use a opção de copiar.';
+    if(link.channel==='whatsapp')window.open(link.href,'_blank','noopener,noreferrer');
+    else window.location.href=link.href;
+  });
+  // The HTML submit starts disabled, so a missing script cannot reload and discard a draft.
+  const contactSubmit=brief?.querySelector('button[type="submit"]');
+  if(contactSubmit)contactSubmit.disabled=false;
+  document.addEventListener('click',event=>{
+    const link=event.target.closest?.('a');
+    if(!link)return;
+    const channel=link.dataset.contactDirect;
+    if(channel==='whatsapp'||channel==='email')recordInteraction('contact_click',{channel,entry:'direct'});
+    else if(link.getAttribute('href')==='#contato'){
+      const entry=link.matches('[data-project-need]')?'project_need':link.matches('.mobile-project-cta')?'mobile':link.closest('.hero')?'hero':'navigation';
+      recordInteraction('contact_intent',{entry});
     }
   });
 
@@ -277,7 +381,6 @@
     img.addEventListener('error',()=>{img.style.opacity='.2';img.setAttribute('alt','Imagem da demonstração smiile indisponível neste momento')},{once:true});
   });
   // Ensure no focus remains behind the mobile nav when it is closed.
-  addEventListener('resize',()=>{if(!matchMedia('(max-width:900px)').matches)closeMenu()});
-  setActive(0);
+  addEventListener('resize',()=>{if(!matchMedia('(max-width:900px)').matches)closeMenu(Boolean(mobileNav?.contains(document.activeElement)))});
   requestAnimationFrame(()=>{requestUpdate();updateScroll()});
 })();

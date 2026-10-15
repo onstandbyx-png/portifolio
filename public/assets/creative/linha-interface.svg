@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="900" viewBox="0 0 1200 900" role="img" aria-labelledby="title desc">
+  <title id="title">LINHA — interface de revisão criativa, produto conceito</title>
+  <desc id="desc">Projeto Lançamento / coleção 01, versão v03 em revisão. O fluxo conecta briefing, revisão e aprovado. Um comentário pede: Trazer o benefício para a primeira linha. Interface ilustrativa de um produto fictício.</desc>
+  <defs>
+    <pattern id="grid" width="32" height="32" patternUnits="userSpaceOnUse"><path d="M32 0H0V32" fill="none" stroke="#f6f6f2" stroke-opacity=".055"/></pattern>
+    <clipPath id="art"><rect x="266" y="313" width="526" height="419" rx="8"/></clipPath>
+  </defs>
+  <rect width="1200" height="900" fill="#eeeee6"/>
+  <rect x="24" y="24" width="1152" height="852" rx="18" fill="#f6f6f2" stroke="#16221c" stroke-opacity=".16"/>
+  <path d="M42 24H218V876H42Q24 876 24 858V42Q24 24 42 24Z" fill="#16221c"/>
+  <g font-family="Arial, Helvetica, sans-serif">
+    <text x="53" y="92" font-size="38" font-weight="700" letter-spacing="-1" fill="#f6f6f2">LINHA</text>
+    <path d="M55 114H184" stroke="#bc6748" stroke-width="3"/>
+    <rect x="40" y="177" width="162" height="51" rx="7" fill="#f6f6f2" fill-opacity=".12"/>
+    <text x="58" y="210" fill="#f6f6f2" font-size="23">Projetos</text>
+    <text x="58" y="270" fill="#c9d0c9" font-size="23">Revisões</text>
+    <text x="58" y="330" fill="#c9d0c9" font-size="23">Biblioteca</text>
+    <circle cx="63" cy="807" r="6" fill="#bc6748"/>
+    <text x="80" y="814" fill="#c9d0c9" font-size="18">Conceito</text>
+    <text x="266" y="87" fill="#274b38" font-size="20" letter-spacing="1.5">PROJETO / 01</text>
+    <text x="266" y="143" fill="#16221c" font-size="39" font-weight="700" letter-spacing="-1.4">Lançamento / coleção 01</text>
+  </g>
+  <g font-family="Arial, Helvetica, sans-serif" font-size="22">
+    <rect x="266" y="188" width="210" height="61" rx="30" fill="#e9ece4"/>
+    <circle cx="300" cy="218" r="12" fill="#274b38"/><path d="M294 218L299 223L307 213" fill="none" stroke="#f6f6f2" stroke-width="2"/>
+    <text x="325" y="226" fill="#274b38">Briefing</text>
+    <path d="M487 218H523M515 210L523 218L515 226" fill="none" stroke="#274b38" stroke-width="2"/>
+    <rect x="536" y="188" width="264" height="61" rx="30" fill="#274b38"/>
+    <circle cx="568" cy="218" r="6" fill="#e9bd9e"/><text x="588" y="226" fill="#f6f6f2">Em revisão</text>
+    <path d="M811 218H847M839 210L847 218L839 226" fill="none" stroke="#274b38" stroke-width="2"/>
+    <rect x="860" y="188" width="268" height="61" rx="30" fill="none" stroke="#274b38" stroke-opacity=".3"/><text x="928" y="226" fill="#526455">Aprovado</text>
+  </g>
+  <path d="M266 283H1128" stroke="#16221c" stroke-opacity=".15"/>
+  <rect x="266" y="313" width="526" height="419" rx="8" fill="#274b38"/>
+  <g clip-path="url(#art)">
+    <rect x="266" y="313" width="526" height="419" fill="url(#grid)"/>
+    <circle cx="770" cy="690" r="177" fill="none" stroke="#f6f6f2" stroke-opacity=".25" stroke-width="1.5"/>
+    <circle cx="770" cy="690" r="140" fill="none" stroke="#f6f6f2" stroke-opacity=".25" stroke-width="1.5"/>
+    <circle cx="770" cy="690" r="103" fill="none" stroke="#f6f6f2" stroke-opacity=".25" stroke-width="1.5"/>
+    <path d="M600 766C515 665 615 559 714 608S805 576 840 510" fill="none" stroke="#bc6748" stroke-width="28"/>
+    <g font-family="Arial, Helvetica, sans-serif" fill="#f6f6f2">
+      <text x="301" y="361" font-size="20" letter-spacing="2">COLEÇÃO / 01</text>
+      <text x="299" y="464" font-size="63" font-weight="700" letter-spacing="-3">Menos ruído.</text>
+      <text x="299" y="536" font-size="63" font-weight="700" letter-spacing="-3">Mais ideia.</text>
+      <text x="301" y="689" font-size="23">Dar espaço ao que importa.</text>
+    </g>
+    <circle cx="757" cy="431" r="20" fill="#f6f6f2"/><text x="751" y="439" font-family="Arial, Helvetica, sans-serif" font-size="22" font-weight="700" fill="#274b38">1</text>
+  </g>
+  <rect x="818" y="313" width="310" height="419" rx="8" fill="#fff" stroke="#16221c" stroke-opacity=".14"/>
+  <g font-family="Arial, Helvetica, sans-serif">
+    <text x="842" y="357" font-size="25" font-weight="700" fill="#16221c">Comentário</text>
+    <rect x="842" y="382" width="123" height="40" rx="20" fill="#f0e4db"/><text x="863" y="409" font-size="21" fill="#77452f">1 ajuste</text>
+    <text x="842" y="475" font-size="25" fill="#16221c"><tspan x="842" dy="0">Trazer o benefício</tspan><tspan x="842" dy="36">para a primeira</tspan><tspan x="842" dy="36">linha.</tspan></text>
+    <path d="M842 591H1104" stroke="#16221c" stroke-opacity=".13"/>
+    <text x="842" y="632" fill="#526455" font-size="21">Sobre a versão</text>
+    <text x="842" y="685" fill="#274b38" font-size="36" font-weight="700" letter-spacing="-1">v03</text>
+  </g>
+  <g font-family="Arial, Helvetica, sans-serif" font-size="22">
+    <text x="266" y="795" fill="#526455">Versões</text>
+    <rect x="376" y="762" width="96" height="50" rx="8" fill="#e9ece4"/><text x="406" y="795" fill="#526455">v01</text>
+    <rect x="484" y="762" width="96" height="50" rx="8" fill="#e9ece4"/><text x="514" y="795" fill="#526455">v02</text>
+    <rect x="592" y="762" width="96" height="50" rx="8" fill="#274b38"/><text x="622" y="795" fill="#f6f6f2">v03</text>
+    <text x="1128" y="798" fill="#526455" font-size="18" text-anchor="end" letter-spacing="1">PRODUTO CONCEITO</text>
+  </g>
+</svg>

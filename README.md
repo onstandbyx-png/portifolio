@@ -1,51 +1,61 @@
-# Ideia & Execução | Portfólio
+# Smile N · ideia ↗ execução.
 
-Portfólio pessoal **mobile-first**, apresentando trabalhos e capacidades em redação, criação editorial, campanhas/gestão de mídia paga, sites e sistemas. O layout foi reconstruído a partir de elementos reais da smiile e dos materiais originais do Ecossistema Fatos 2026.
+Portfólio profissional de direção criativa para projetos de marcas e empresas. Apresenta narrativa, arte, copy, conteúdo, campanhas e desenvolvimento de experiências digitais. A atuação na Fatos Desconhecidos é uma credencial profissional; o portfólio não oferece inventário de mídia da empresa.
 
-## Preview publicado
+- Site: https://portifolio-github-production.up.railway.app/
+- Repositório: https://github.com/onstandbyx-png/portifolio
+- Contato público: `public/assets/profile.js`
 
-- GitHub: https://github.com/onstandbyx-png/portifolio
-- Railway (serviço conectado à branch `main`): https://portifolio-github-production.up.railway.app/
-- Referência de movimento da smiile: https://smiile-landing-preview.up.railway.app/?v=b6a2e0d#categorias
-- Referência editorial pública Fatos: https://midia-kit-production-c234.up.railway.app/
+## Percurso
 
-## Componentes interativos
+1. Proposta profissional e crachás físicos interativos, com imagem de fallback e controles por teclado/toque.
+2. Trabalhos com contexto, participação, natureza do material e referências. As explorações complementares ficam em um painel opcional.
+3. Estúdio “A ideia tem camadas”: tipografia, textura, luz, dobra e quatro camadas navegáveis.
+4. Campanha **Linha**: estudo autoral de um produto fictício para revisão e aprovação criativa. Problema, oferta, demonstração e ação se conectam entre conteúdo, vídeo, busca e contexto.
+5. Experiências digitais em dispositivos metálicos e demonstração de arquitetura de sistemas.
+6. Caminhos de projeto: lançar uma oferta, gerar demanda ou construir uma experiência, com exemplos e entregas específicas.
+7. Briefing com encaminhamento ao WhatsApp ou e-mail. O visitante revisa e envia no aplicativo de destino; não existe confirmação fictícia de envio.
 
-1. Hero editorial com **páginas reais** dos documentos do Fatos e preview da smiile.
-2. Estudos de caso com expansão modal acessível, rótulos de autoria e links de origem.
-3. Quatro categorias em **rolagem nativa**, cards suspensos, efeitos de profundidade e flip acessível. Comportamento baseado em `CapabilityDeck.tsx` / `.css` da smiile, commit `b6a2e0d8312f91268a4d190b1a7a082ee1b59b38`.
-4. Processo editorial interativo com três capítulos, ilustrados por imagens originais do Fatos.
-5. Zoom durante o scroll, sem interceptar eventos de roda ou touch, inspirado em `ScrollZoomPreview` da smiile.
-6. Laboratório de mídia com layouts conceituais específicos para Meta, TikTok, Google e ChatGPT Ads.
-7. Representação didática navegável do fluxo CI: entrada, fonte, relações e dossiê.
-8. Menu mobile, opção de pausar movimento, suporte a `prefers-reduced-motion` e formulário local para preparar briefing.
+## Desenvolvimento
 
-## Materiais e limites
+Node 20+ (CI usa Node 22):
 
-As imagens `public/assets/fatos-*.webp` foram extraídas dos PDFs originais de direção visual e mídia kit Fatos 2026 já fornecidos. As imagens de demonstração da smiile são referenciadas a partir da landing original pública, sob domínio Railway do mesmo operador. A interface de anúncio é **conceitual**, sem dados de conta ou campanhas reais. A participação editorial do Fatos não representa oferta de veiculação na rede.
-
-O portfólio é sobre a atuação profissional do operador. A origem de uma amostra não implica autoria individual integral de todos os elementos, nem aceitação técnica de todas as integrações demonstradas no produto original.
-
-## Execução
-
-```bash
+```sh
+npm ci
 npm run check
+npm run build
 npm start
-# localhost:3000
 ```
 
-Sem dependências em tempo de execução: HTML semântico, CSS e JavaScript com servidor Node 20+ e assets versionados. `PORT` é configurado pelo Railway.
+O servidor usa `PORT` (3000 por padrão). A build gera o bundle Three.js/esbuild em `public/assets/badge-build/`; os arquivos gerados não são versionados. O HTML é canônico e a build não reescreve conteúdo editorial. Imagens e fontes essenciais são locais, incluindo a paisagem da demonstração smiile.
 
-## Checks
+## Validação
 
-`npm run check` valida a estrutura, estados e JavaScript. Além disso, o protótipo foi submetido localmente a teste com Chromium em larguras de 320, 390 e 1440 pixels por meio de um harness em que HTML, CSS, JS e imagens originais foram incorporados para inspeção offline. Não confundir isso com ensaio de navegadores físicos ou validação de conversões.
+```sh
+npm run check && npm run build
+node tests/browser-conversion.mjs
+node tests/browser-sections.mjs
+node tests/browser-kinetic-pass.mjs
+```
 
-## Deploy
+Os runners precisam de Playwright e Chromium. `QA_PACKAGE` informa a instalação de Playwright; `CHROMIUM_PATH` seleciona o navegador e `BASE_URL` permite usar um servidor já iniciado. Sem `BASE_URL`, cada runner inicia o servidor local. Detalhes e limites em [docs/implementation-qa.md](docs/implementation-qa.md).
 
-O serviço Railway `portifolio-github` acompanha a branch `main`. Pushes autorizados acionam o processo de build e nova implantação. O serviço Railway Function anterior foi mantido como preview independente e não é necessário para esse repositório.
+Os testes verificam interações, foco, estados acessíveis, imagens, overflow, exceções e preparação dos destinos de contato. Nenhuma mensagem é enviada. Validação em Chromium emulado não substitui mensuração em aparelho físico ou dados reais de conversão.
 
-## Hero com crachás físicos (smiile)
+## Materiais e atribuição
 
-Esta versão usa as cinco peças originais de física/Three do componente `HangingBadges` da smiile, commit `b6a2e0d8312f91268a4d190b1a7a082ee1b59b38`: `BadgeScene.ts`, `physics.ts`, `rig.ts`, `track.ts` e geometria/material do `art.ts`. O módulo é adaptado por `portfolioArt.ts` para ter impressões reais de Fatos e smiile, sem reproduzir a marca dos agentes. É carregado sob demanda; para animação reduzida, WebGL indisponível ou falha de imagem, permanece uma versão HTML/CSS de qualidade. A arrastabilidade lateral do crachá nunca intercepta o scroll vertical.
+- A trajetória na Fatos Desconhecidos foi informada pelo profissional. Os recortes documentais Fatos têm origem identificada nos detalhes do case; não são apresentados como autoria individual integral.
+- **Linha** e as pranchas gráficas são estudos autorais, não campanhas publicadas nem evidência de resultados comerciais. A origem dos elementos está em [public/assets/creative/README.md](public/assets/creative/README.md).
+- A demonstração smiile preserva a referência pública e o trabalho original dos dispositivos e crachás. Sua base física vem do `HangingBadges`, commit `b6a2e0d8312f91268a4d190b1a7a082ee1b59b38`, adaptada para este portfólio.
+- A demonstração CI representa uma arquitetura de pesquisa. Não consulta dados privados.
+- Os vídeos enviados pelo profissional orientam materialidade, movimento e interatividade. Este ciclo não alega reprodução quadro a quadro dessas referências.
 
-O bundle Vite-free de esbuild fica em `public/assets/badge-build`; após `npm install`, executar `npm run build && npm run check`. O servidor expõe uma cópia cacheada do asset público da smiile para permitir seu uso em uma textura Canvas WebGL sem problemas de CORS.
+## Contato e eventos
+
+`window.PORTFOLIO_PROFILE` configura nome, WhatsApp e e-mail. Os links nativos funcionam sem JavaScript. O formulário só é habilitado após registrar os handlers; texto do briefing não é enviado a um backend do portfólio.
+
+Eventos `portfolio:interaction` registram escolhas e intenção de contato com valores categóricos. O texto do briefing, telefone e e-mail não integram os eventos. Se já existir `dataLayer`, eventos também são publicados nela. Não foi instalado um provedor de analytics; cliques não comprovam mensagens enviadas ou conversões.
+
+## Publicação
+
+O serviço Railway `portifolio-github` acompanha `main`. O workflow Verify Portfolio valida build e navegação antes da integração. A publicação deve ser seguida da confirmação de deployment `SUCCESS` e de uma verificação no site público.

@@ -8,13 +8,15 @@ permissions:
 jobs:
   verify:
     runs-on: ubuntu-latest
-    timeout-minutes: 12
+    timeout-minutes: 20
+    env:
+      QA_PACKAGE: /tmp/portfolio-qa/package.json
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - run: npm install
+      - run: npm ci
       - run: npm run check && npm run build
       - name: Install browser validation
         run: |
@@ -22,6 +24,8 @@ jobs:
           /tmp/portfolio-qa/node_modules/.bin/playwright install --with-deps chromium
       - name: Validate real page interactions
         run: node tests/browser-sections.mjs
+      - name: Validate project and contact journeys
+        run: node tests/browser-conversion.mjs
       - name: Validate reconstructed video pass
         run: node tests/browser-kinetic-pass.mjs
       - uses: actions/upload-artifact@v4
