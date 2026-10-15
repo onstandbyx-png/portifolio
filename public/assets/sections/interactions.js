@@ -139,17 +139,6 @@ mount('Ads',()=>{
  new IntersectionObserver(([e])=>{if(!e.isIntersecting)stop()},{threshold:0}).observe(v);M.onStop(stop);show(0);
 });
 
-mount('Systems',()=>{
- const el=$('.system-display');if(!el)return;
- const img=copy('<div class="pf-app-demonstration"><div class="pf-app-demo-heading"><span>PRODUTO DIGITAL / INTERFACE</span><span>ESTADOS 01–04</span></div><div class="pf-app-demo-preview"><img src="/assets/portfolio/smiile-creative-studio.webp" alt="Estúdio criativo da smiile demonstrando a linguagem de produto"><div class="pf-app-demo-message"><b>Um pedido pode virar uma interface.</b><span>Toque em uma etapa para explorar</span></div></div><div class="pf-app-demo-status"><span data-app-stage>01 / IDEIA</span><span>DEMONSTRAÇÃO LOCAL</span></div></div>');el.before(img);const states=[
-  {image:'/assets/portfolio/smiile-creative-studio.webp',title:'O que você quer criar?',sub:'A tarefa abre o projeto.'},
-  {image:'/assets/portfolio/smiile-architecture-coast.webp',title:'Uma página toma forma.',sub:'A interface organiza possibilidades.'},
-  {image:'/assets/portfolio/smiile-architecture-coast.webp',title:'A experiência responde.',sub:'Navegação, conteúdo e estados visíveis.'},
-  {image:'/assets/portfolio/smiile-creative-studio.webp',title:'Pronto para explorar.',sub:'Uma demonstração verificável.'}
- ];
- $$('[data-system-step]').forEach((b,i)=>b.addEventListener('click',()=>{const d=states[i],image=$('img',img);image.src=d.image;image.alt=d.title;$('.pf-app-demo-message b',img).textContent=d.title;$('.pf-app-demo-message span',img).textContent=d.sub;$('[data-app-stage]',img).textContent='0'+(i+1)+' / '+b.textContent.trim();M.animate(img,[{opacity:.6,transform:'translateY(12px)'},{opacity:1,transform:'translateY(0)'}],{duration:390})}));
-});
-
 mount('Contact',()=>{
  const group=$('.contact-formats'),form=$('#brief-form'),service=$('#service'),brief=$('#brief');if(!group||!form||!service||!brief)return;
  const notes=['Uma entrega definida, com escopo e revisão combinados.','Narrativa, campanha e desenvolvimento conectados pela mesma necessidade.','Uma colaboração contínua, com prioridades e responsabilidades claras.'];

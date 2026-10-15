@@ -7,14 +7,14 @@ for(const id of ['inicio','trabalhos','editorial','laboratorio','experiencias','
 assert.equal((h.match(/class="work-tile/g)||[]).length,4,'Four visually distinct proof cards expected');
 assert.equal((h.match(/data-ad-tab="/g)||[]).length,4,'Four paid-channel specimens expected');
 assert.equal((h.match(/data-story-step="/g)||[]).length,3,'Three editorial scenes expected');
-assert.equal((h.match(/data-system-step="/g)||[]).length,4,'Four app states expected');
+assert(h.includes('class="systems-demo"')&&h.includes('recovery-init.js'),'Navigable product demo host required');
 assert.equal((h.match(/data-case="/g)||[]).length,4,'Four study modals expected');
 for(const s of [h,js,showcase,services,motion])assert(!/\b(?:SOTA CI|final_final|LINHA)\b/i.test(s),'Obsolete fictional/technical narrative remains');
 assert(!/mobile-project-cta/.test(read('../public/assets/direction.js')),'Mobile contact overlay must not be created');
 assert(js.includes('showModal()')&&js.includes('navigator.clipboard.writeText'),'Accessible modal and contact retained');
 assert(h.includes('data-portfolio-badges')&&h.includes('/assets/badge-build/index.js'),'Physical badge hero retained');
 assert(showcase.includes('createDeviceFrame')&&showcase.includes('pf-film-device'),'Same smiile metallic hardware used across previews');
-assert(styles.includes('.work-evidence-gallery')&&styles.includes('.pf-app-demonstration'),'Responsive proof compositions required');
+assert(styles.includes('.work-evidence-gallery')&&styles.includes('.pd-static-preview'),'Responsive proof compositions required');
 for(const path of ['cena-desconhecidos.webp','cena-negocios.webp','cena-nerd.webp','cena-crencas.webp','smiile-creative-studio.webp','smiile-architecture-coast.webp'])assert(existsSync(new URL('../public/assets/portfolio/'+path,import.meta.url)),path);
 for(const target of ['#editorial','#laboratorio','#experiencias','#estudio-interativo'])assert(js.includes(target)||showcase.includes(target)||h.includes(target),target);
 assert(!/\\b\\d+(?:[.,]\\d+)?\\s*(?:%|leads|ROAS)\\b/i.test(h),'Unverified campaign performance metric');

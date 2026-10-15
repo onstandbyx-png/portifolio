@@ -9,13 +9,44 @@ const reduced = matchMedia("(prefers-reduced-motion: reduce)");
 const motionToggle = document.querySelector<HTMLElement>(".motion-toggle");
 let instance: BadgeSceneHandle | null = null;
 let near = false, inView = false, visible = !document.hidden, loading = false;
-let failed = false, flipped = false, ready = false;
+let failed = false, ready = false;
+const cardFaces: [boolean, boolean] = [false, false];
+const cardNames = ["Fatos", "smiile"] as const;
+const cardRoles = ["Direção criativa e narrativa: pesquisa, roteiro, arte e conteúdo para grandes audiências.", "Projeto digital: sites, apps, componentes interativos e sistemas."] as const;
+const cardButtons: HTMLButtonElement[] = [];
+let cardStatus: HTMLElement | null = null;
 let fallbackTimer: ReturnType<typeof setTimeout>;
 
 function setState(value: string) {
   if (!stage) return;
   stage.dataset.state = value;
   stage.setAttribute("aria-busy", String(value === "loading"));
+}
+function reflectCard(index: 0 | 1, flipped: boolean) {
+  cardFaces[index] = flipped;
+  const allBack = cardFaces.every(Boolean);
+  const allFront = cardFaces.every(face => !face);
+  if (stage) {
+    stage.dataset.face = allBack ? "back" : allFront ? "front" : "mixed";
+    stage.dataset[ index === 0 ? "fatosFace" : "smiileFace" ] = flipped ? "back" : "front";
+    stage.querySelector<HTMLElement>(index === 0 ? ".hero-standin-fatos" : ".hero-standin-smiile")?.setAttribute("data-face", flipped ? "back" : "front");
+  }
+  const button = cardButtons[index];
+  if (button) {
+    button.setAttribute("aria-pressed", String(flipped));
+    button.textContent = `${cardNames[index]} · ${flipped ? "ver frente" : "ver verso"}`;
+  }
+  flipButton?.setAttribute("aria-pressed", allBack ? "true" : allFront ? "false" : "mixed");
+  if (flipButton) flipButton.textContent = allBack ? "Ver as frentes" : "Ver os dois versos";
+}
+function flipCard(index: 0 | 1, flipped: boolean) {
+  reflectCard(index, flipped);
+  instance?.setCardFlipped(index, flipped, !isPaused());
+  if (cardStatus) cardStatus.textContent = flipped ? `${cardNames[index]} — ${cardRoles[index]}` : `${cardNames[index]}: frente da peça.`;
+  if (hint) hint.textContent = "TOQUE PARA VIRAR · ARRASTE PARA BALANÇAR";
+}
+function restoreCardFaces() {
+  cardFaces.forEach((flipped, index) => instance?.setCardFlipped(index as 0 | 1, flipped, false));
 }
 function isPaused() {
   return reduced.matches || motionToggle?.getAttribute("aria-pressed") === "true";
@@ -64,13 +95,17 @@ async function load() {
         if (stage) stage.dataset.interacted = "true";
         if (hint) hint.textContent = "DIREÇÃO CRIATIVA + EXPERIÊNCIAS DIGITAIS";
       },
+      onCardFlip(index, flipped) {
+        reflectCard(index, flipped);
+        if (cardStatus) cardStatus.textContent = flipped ? `${cardNames[index]} — ${cardRoles[index]}` : `${cardNames[index]}: frente da peça.`;
+      },
       onContextLost() {
         ready = false;
         setState("fallback");
       },
       onContextRestored() {
         ready = true;
-        instance?.setFlipped(flipped, false);
+        restoreCardFaces();
         sync();
       },
       onError: failure,
@@ -78,7 +113,7 @@ async function load() {
     await pending.init();
     if (failed) { pending.dispose(); return; }
     instance = pending;
-    instance.setFlipped(flipped, false);
+    restoreCardFaces();
     ready = true;
     sync();
     // One quiet introduction, after a complete frame; no perpetual idle loop.
@@ -127,13 +162,39 @@ if (stage && canvas) {
     event.preventDefault();
     instance?.swing(event.key === "ArrowLeft" ? -1 : 1);
   });
+  const controls = flipButton?.parentElement;
+  if (controls) {
+    cardNames.forEach((name, index) => {
+      const button = document.createElement("button");
+      button.type = "button";
+      button.className = "badge-swing-button badge-card-button";
+      button.dataset.badgeCardFlip = String(index);
+      button.setAttribute("aria-pressed", "false");
+      button.setAttribute("aria-label", `Virar o crachá ${name}`);
+      button.textContent = `${name} · ver verso`;
+      button.addEventListener("click", () => flipCard(index as 0 | 1, !cardFaces[index]));
+      cardButtons.push(button);
+      controls.insertBefore(button, swingButton);
+    });
+    cardStatus = document.createElement("span");
+    cardStatus.className = "sr-only";
+    cardStatus.setAttribute("role", "status");
+    cardStatus.setAttribute("aria-live", "polite");
+    cardStatus.setAttribute("aria-atomic", "true");
+    controls.append(cardStatus);
+    controls.addEventListener("keydown", event => {
+      if (event.key !== "Escape") return;
+      event.preventDefault();
+      flipCard(0, false);
+      flipCard(1, false);
+    });
+  }
+  reflectCard(0, false);
+  reflectCard(1, false);
   flipButton?.addEventListener("click", () => {
-    flipped = !flipped;
-    stage.dataset.face = flipped ? "back" : "front";
-    flipButton.setAttribute("aria-pressed", String(flipped));
-    flipButton.textContent = flipped ? "Ver a frente" : "Ver o verso";
-    instance?.setFlipped(flipped, !isPaused());
-    if (hint) hint.textContent = flipped ? "FATOS: DIREÇÃO CRIATIVA · SMIILE: PROJETO DIGITAL" : "ARRASTE PARA EXPLORAR · VIRE PARA CONHECER";
+    const flipped = !cardFaces.every(Boolean);
+    flipCard(0, flipped);
+    flipCard(1, flipped);
   });
   if (reduced.matches) setState("fallback");
 }

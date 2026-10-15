@@ -129,13 +129,6 @@
   });
   document.addEventListener('visibilitychange',()=>{if(document.hidden)stopPlayback()});
 
-  // CI sequence, explicitly illustrative.
-  const sys=[["01 / IDEIA","Começa pela necessidade.","Escolher uma tarefa e um resultado útil para quem está usando."],["02 / DESIGN","A interface organiza escolhas.","Tipografia, componentes e hierarquia orientam a navegação."],["03 / INTERAÇÃO","O toque produz uma resposta.","Cada ação deve gerar uma reação compreensível e coerente."],["04 / RESULTADO","A experiência ganha vida.","Estados, responsividade e navegação são testados antes da publicação."]];
-  $$('.system-step').forEach((b,i)=>b.addEventListener('click',()=>{
-    $$('.system-step').forEach((x,j)=>{x.classList.toggle('is-current',j===i);x.setAttribute('aria-pressed',String(j===i))});
-    $('#system-step-label').textContent=sys[i][0];$('#system-display-title').textContent=sys[i][1];$('#system-display-copy').textContent=sys[i][2];
-  }));
-
   // Cases separate professional background, authorial concepts and working demonstrations.
   const cases={"fatos":{"kicker":"FATOS / EXPERIÊNCIA PROFISSIONAL","title":"Redação, direção criativa e narrativa.","description":"Experiência editorial com grandes audiências e múltiplas verticais. A apresentação destaca o trabalho de pesquisar, escolher o recorte e contar histórias.","status":"Experiência profissional","challenge":"Como construir um assunto relevante?","decision":"Começar pelo que merece ser descoberto e organizar informação, roteiro e linguagem visual.","contribution":"Atuação em direção criativa e redação. As imagens da rede pertencem aos projetos Fatos e não são atribuídas integralmente a uma pessoa.","proof":"Veja a narrativa em três momentos e materiais fotográficos da marca.","image":"/assets/portfolio/cena-desconhecidos.webp","imageAlt":"Material de origem da Fatos Desconhecidos","source":"https://www.instagram.com/fatosdesconhecidos/","sourceLabel":"Fonte institucional Fatos","credit":"Conteúdo original da rede, sem oferta de publicação.","service":"Redação e conteúdo","cta":"Conversar sobre projeto","section":"#editorial","explore":"Explorar narrativa"},"ads":{"kicker":"CAMPANHAS / CRIAÇÃO E MÍDIA","title":"Campanhas com conceito e execução.","description":"Estratégia, criatividade, copy, configuração e otimização de anúncios. As peças visuais desta página são estudos de formatos, não anúncios veiculados.","status":"Estudo demonstrativo","challenge":"Como mudar a linguagem sem perder a mensagem?","decision":"Traduzir posicionamento, criativo, formato e ação para o canal certo.","contribution":"Conceitos, roteiros e composições visuais. A operação de Ads é apresentada como capacidade, sem dados financeiros não verificados.","proof":"Compare feed, vídeo, pesquisa paga e proposta contextual no laboratório.","image":"/assets/portfolio/cena-negocios.webp","imageAlt":"Composição de Fatos e Negócios","source":"https://portifolio-github-production.up.railway.app/#laboratorio","sourceLabel":"Laboratório de anúncios","credit":"Estudos conceituais sem métricas ou campanhas verificadas.","service":"Campanhas e criativos","cta":"Conversar sobre campanha","section":"#laboratorio","explore":"Explorar formatos"},"smiile":{"kicker":"SMIILE / SITES E APPS","title":"Experiências que respondem ao toque.","description":"Desenvolvimento de sites, aplicações e componentes interativos com demonstrações visuais reais da smiile.","status":"Produto próprio","challenge":"Como apresentar um produto antes da explicação longa?","decision":"Permitir que o visitante explore páginas, dispositivos e estados de interação.","contribution":"Direção visual, UX/UI, integração de interface e desenvolvimento de projetos próprios.","proof":"Alterne desktop/mobile e páginas; veja a landing smiile publicada.","image":"/assets/portfolio/smiile-architecture-coast.webp","imageAlt":"Experiência Casa Costa da smiile","source":"https://smiile-landing-preview.up.railway.app/","sourceLabel":"Landing smiile atual","credit":"Demonstração com interações locais.","service":"Sites e experiências digitais","cta":"Conversar sobre projeto","section":"#experiencias","explore":"Explorar interface"},"video":{"kicker":"MOTION / ESTÚDIO INTERATIVO","title":"Vídeo, matéria e movimento.","description":"Estudo visual com material em vídeo, recorte, dobra cinética, tipografia e exploração de camadas.","status":"Estudo demonstrativo","challenge":"Como deixar um material visual demonstrar a sua criação?","decision":"Fazer a imagem responder ao visitante por meio de interações verificáveis.","contribution":"Direção visual e desenvolvimento de animações, texturas e experiências com vídeo.","proof":"Explore o vídeo, a dobra de canto, os materiais e os controles manuais do estúdio.","image":"/assets/portfolio/smiile-creative-studio.webp","imageAlt":"Imagem da smiile de estúdio criativo","source":"https://portifolio-github-production.up.railway.app/#estudio-interativo","sourceLabel":"Estúdio de movimento","credit":"Demonstração com interações locais.","service":"Sites e experiências digitais","cta":"Conversar sobre vídeo","section":"#estudio-interativo","explore":"Explorar estúdio"}};
   const dialog=$('#case-dialog'),dialogImage=$('#dialog-image'),dialogClose=$('#dialog-close');
@@ -220,7 +213,7 @@
     if(source){source.href=c.source;source.textContent=`${c.sourceLabel} ↗`;}
     if(caseCredits)caseCredits.textContent=c.credit;
     if(caseCTA)caseCTA.textContent=`${c.cta} ↗`;
-    if(caseExplore){caseExplore.href=c.section;caseExplore.textContent=`${c.explore} ↓`;}
+    if(caseExplore){caseExplore.href=currentCase==='smiile'?'#sistemas':c.section;caseExplore.dataset.productTarget=currentCase==='smiile'?'site':'';caseExplore.textContent=`${c.explore} ↓`;}
     if(casePosition)casePosition.textContent=`${caseKeys.indexOf(id)+1} / ${caseKeys.length}`;
     $('.case-credits',dialog)?.removeAttribute('open');
     if(!dialog.open){dialog.showModal();dialogClose?.focus();}
@@ -323,6 +316,9 @@
     paused=!paused;
     document.body.classList.toggle('is-paused',paused);
     pauseBtn.setAttribute('aria-pressed',String(paused));
+    const motionLabel=paused?'Retomar movimento':'Pausar movimento e reprodução';
+    pauseBtn.setAttribute('aria-label',motionLabel);
+    pauseBtn.setAttribute('title',motionLabel);
     pauseBtn.innerHTML=paused?'▶ <span>Retomar movimento</span>':'Ⅱ <span>Pausar movimento</span>';
     if(paused)stopPlayback();
     updateZoom();
