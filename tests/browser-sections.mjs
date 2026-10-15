@@ -26,10 +26,22 @@ try{
    check('All section modules initialized',await page.evaluate(()=>['smWorks','smEditorial','smExperience','smAds','smSystems','smContact','smNavigation'].every(k=>document.documentElement.dataset[k]==='ready')));
    check('Existing badge hero retained',await page.locator('[data-portfolio-badges]').count()===1);
    await page.waitForSelector('html[data-rx-showcase="ready"]');
-   await page.waitForSelector('html[data-pf-fidelity="v2"]');
-   check('Same orange iPhone shell reused across stages',await page.locator('#narrativa-visual .rx-iphone.pf-matched-phone').count()===1&&await page.locator('#editorial .pf-editorial-device .rx-iphone-inner').count()===1);
-   check('Immersive collection, scroll film and social mock mounted',await page.locator('#colecao .rx-deck-card').count()===4&&await page.locator('#narrativa-visual .rx-film-phone').count()===1&&await page.locator('#panel-meta .rx-iphone').count()===1);
+   await page.waitForSelector('#editorial .pf-reference-device .df-camera');
+   check('Reference metallic phone is mounted, aperture contains no chassis',await page.locator('#editorial .df-realistic .df-metal').count()===1&&await page.locator('#editorial .df-camera').count()===1&&await page.locator('#narrativa-visual .rx-iphone').count()===0);
+   check('Immersive collection, scroll film and social mock mounted',await page.locator('#colecao .rx-deck-card').count()===4&&await page.locator('#narrativa-visual .rv-window').count()===1&&await page.locator('#panel-meta .rx-iphone').count()===1);
    await page.locator('#colecao').scrollIntoViewIfNeeded();
+   if(width<760&&height>=720){
+     await page.locator('#category-runway').scrollIntoViewIfNeeded();
+     await page.waitForTimeout(280);
+     check('Roomy mobile deck has linked scroll mode',await page.locator('#category-runway').getAttribute('data-layout')==='linked');
+     await page.evaluate(()=>{
+       const r=document.querySelector('#category-runway'),s=document.querySelector('#category-sticky');
+       window.scrollTo({top:scrollY+r.getBoundingClientRect().top+Math.max(1,r.offsetHeight-s.offsetHeight)*.48,behavior:'instant'});
+     });
+     await page.waitForTimeout(280);
+     check('Card positions respond horizontally to vertical scroll',
+       await page.evaluate(()=>Math.abs(parseFloat(document.querySelector('.category-card').style.getPropertyValue('--slide'))||0)>50));
+   }
    await page.locator('[data-rx-next]').click();
    await page.waitForTimeout(1000);
    check('Fatos baralho advances',await page.locator('.rx-deck-counter').innerText()==='2 de 4');
@@ -47,7 +59,13 @@ try{
    check('Work switches back to cards',await page.locator('.work-gallery').isVisible());
    await page.locator('#narrativa-visual').scrollIntoViewIfNeeded();
    await page.locator('[data-rx-film-to="2"]').click();await page.waitForTimeout(850);
-   check('Scroll film updates to smiile project',await page.locator('#narrativa-visual').getAttribute('data-phase')==='2');
+   check('Scroll reveal changes coherent Fatos narrative',await page.locator('#narrativa-visual').getAttribute('data-format')==='2'&&await page.locator('[data-rv-title]').innerText()==='A descoberta vira história.');
+   check('Cinematic window does not intersect footer or header',await page.evaluate(()=>{
+     const w=document.querySelector('#narrativa-visual .rv-window').getBoundingClientRect();
+     const f=document.querySelector('#narrativa-visual .rv-footer').getBoundingClientRect();
+     const h=document.querySelector('#site-header').getBoundingClientRect();
+     return w.bottom<=f.top+2 && w.top>=h.bottom-4 && w.width>=70;
+   }));
    await page.screenshot({path:'qa/smiile-scroll-film-'+width+'.png'});
 
    await page.locator('#trabalhos').scrollIntoViewIfNeeded();
@@ -60,8 +78,8 @@ try{
    const thumbs=page.locator('.sm-case-thumbs button');
    if(await thumbs.count()){
      await thumbs.nth(1).click();
-     await page.waitForFunction(()=>document.querySelector('#dialog-image img')?.getAttribute('src')==='/assets/showcase/fatos-editorial-scene.webp');
-     check('Editorial case selection preserved with new artwork',await thumbs.nth(1).getAttribute('aria-pressed')==='true'&&await page.locator('#dialog-image img').getAttribute('src')==='/assets/showcase/fatos-editorial-scene.webp');
+     await page.waitForFunction(()=>document.querySelector('#dialog-image img')?.getAttribute('src')==='/assets/showcase/scenes/contexto.svg');
+     check('Editorial case selection preserved with new artwork',await thumbs.nth(1).getAttribute('aria-pressed')==='true'&&await page.locator('#dialog-image img').getAttribute('src')==='/assets/showcase/scenes/contexto.svg');
    }
    await page.locator('#dialog-image img').evaluate(im=>im.decode().catch(()=>{}));await page.waitForTimeout(750);
    await page.screenshot({path:`qa/case-${width}.png`});
@@ -70,7 +88,7 @@ try{
    check('Dialog closes after the transition',!(await page.locator('#case-dialog').evaluate(d=>d.open)));
    await page.locator('.editorial-step').nth(1).click();await page.waitForTimeout(1000);
    check('Editorial chapter changes',await page.locator('.sm-story-count').innerText()==='02 / 03');
-   check('Chapter synchronizes inside the matched iPhone',await page.locator('[data-pf-count]').innerText()==='02 / 03');
+   check('Chapter synchronizes inside the metallic frame',await page.locator('[data-pf-count]').innerText()==='02 / 03'&&await page.locator('.pf-story-image').getAttribute('src')==='/assets/showcase/scenes/contexto.svg');
    await page.screenshot({path:`qa/editorial-${width}.png`});
    await page.locator('[data-device="mobile"]').click();await page.waitForTimeout(700);
    check('Device changes to mobile',await page.locator('.sm-device').getAttribute('data-mode')==='mobile');
@@ -84,12 +102,12 @@ try{
    await page.locator('.sm-experience').evaluate(el=>window.scrollTo({top:window.scrollY+el.getBoundingClientRect().top-84,behavior:'instant'}));await page.waitForTimeout(300);
    await page.screenshot({path:`qa/experience-${width}.png`});
    await page.locator('[data-ad-tab="meta"]').click();await page.waitForTimeout(700);
-   check('Fatos social preview is a full mobile device',await page.locator('#panel-meta .rx-iphone .rx-ig-photo img').count()===1);
+   check('Fatos social preview has scalable local media',await page.locator('#panel-meta .rx-iphone .rx-ig-photo img').count()===1&&await page.locator('#panel-meta .rx-ig-photo img').evaluate(i=>i.naturalWidth>=1000));
    await page.locator('[data-rx-social-next]').click();await page.waitForTimeout(400);
    check('Social carousel changes frame',await page.locator('.rx-ig-count').innerText()==='2/3');
    await page.locator('[data-rx-social="0"]').click();
-   await page.waitForFunction(()=>document.querySelector('.rx-ig-photo img')?.getAttribute('src')==='/assets/showcase/fatos-editorial-scene.webp');
-   check('Social carousel uses new authored artwork',await page.locator('.rx-ig-photo img').getAttribute('src')==='/assets/showcase/fatos-editorial-scene.webp');
+   await page.waitForFunction(()=>document.querySelector('.rx-ig-photo img')?.getAttribute('src')==='/assets/showcase/scenes/materia-viva.svg');
+   check('Social carousel shows first distinct frame',await page.locator('.rx-ig-photo img').getAttribute('src')==='/assets/showcase/scenes/materia-viva.svg');
    await page.screenshot({path:'qa/fatos-social-'+width+'.png'});
 
    for(const channel of ['meta','tiktok']){
@@ -97,7 +115,7 @@ try{
     const image=page.locator(`#panel-${channel} img`).first();
     const decoded=await image.evaluate(async im=>{im.loading='eager';try{await im.decode();return im.naturalWidth>0}catch{return false}});
     check(`${channel}: local reference image decoded`,decoded);
-    check(`${channel}: new image independent of PDFs and external preview`,(await image.getAttribute('src'))==='/assets/showcase/fatos-editorial-scene.webp');
+    check(`${channel}: new image independent of PDFs and external preview`,(await image.getAttribute('src'))===({meta:'/assets/showcase/scenes/materia-viva.svg',tiktok:'/assets/showcase/scenes/campanha.svg'})[channel]);
    }
    await page.locator('[data-frame="2"]').click();await page.waitForTimeout(750);
    check('Storyboard frame selected',await page.locator('.vertical-video').getAttribute('data-frame')==='2');

@@ -44,6 +44,8 @@
 
   // smiile-style native scroll progress with one active hanging card.
   const runway=$('#category-runway'),sticky=$('#category-sticky'),stage=$('#category-stage'),cards=$$('.category-card'),steps=$$('[data-category-go]'),counter=$('#category-counter'),bar=$('#category-progress-fill'),prev=$('#category-prev'),next=$('#category-next');
+  const categoryFlow=()=>media.matches&&(innerHeight<720||reduced||paused);
+  const zone=runway?.closest('.category-zone');
   let active=0, mostRecentInput=-1;
   function setActive(idx){
     idx=clamp(idx,0,cards.length-1);
@@ -51,7 +53,7 @@
     cards.forEach((card,i)=>{
       const on=i===idx;
       card.classList.toggle('is-active',on);
-      if(media.matches)card.inert=false;
+      if(categoryFlow())card.inert=false;
       else card.inert=!on;
     });
     steps.forEach((b,i)=>{b.classList.toggle('is-current',i===idx);b.setAttribute('aria-current',i===idx?'step':'false')});
@@ -65,7 +67,7 @@
     // Keep the selected card stable while its reverse face is being read. Clicking a
     // button must not inadvertently advance the scroll-controlled carousel.
     const openCard=$('.category-card.is-flipped');
-    if(openCard && !media.matches){
+    if(openCard && !categoryFlow()){
       const bounds=runway.getBoundingClientRect();
       if(bounds.bottom>sticky.offsetHeight && bounds.top<innerHeight){
         const index=Number(openCard.dataset.categoryIndex);
@@ -77,7 +79,10 @@
       if(front){front.setAttribute('aria-expanded','false');front.tabIndex=0}
       if(back)back.tabIndex=-1;
     }
-    if(media.matches){
+    const flow=categoryFlow();
+    runway.dataset.layout=flow?'flow':'linked';
+    zone?.classList.toggle('pf-category-linked',!flow);
+    if(flow){
       let best=0,nearest=Infinity;
       const vCenter=innerHeight*.48;
       cards.forEach((card,i)=>{const r=card.getBoundingClientRect();const d=Math.abs((r.top+r.height/2)-vCenter);if(d<nearest){nearest=d;best=i}
@@ -88,7 +93,7 @@
     const travel=Math.max(1,runway.offsetHeight-sticky.offsetHeight);
     const p=clamp((sr.top-r.top)/travel),position=p*(cards.length-1);
     const idx=Math.round(position);
-    const span=Math.min(innerWidth*.365,450);
+    const span=media.matches?Math.min(innerWidth*.77,390):Math.min(innerWidth*.365,450);
     cards.forEach((card,i)=>{
       const delta=i-position,dist=Math.abs(delta);
       card.style.setProperty('--slide',`${delta*span}px`);
@@ -104,7 +109,7 @@
   function goToCategory(n){
     n=clamp(n,0,cards.length-1);
     mostRecentInput=n;
-    if(media.matches){cards[n].scrollIntoView({block:'center',behavior:smooth()});setActive(n);return;}
+    if(categoryFlow()){cards[n].scrollIntoView({block:'center',behavior:smooth()});setActive(n);return;}
     const top=scrollY+runway.getBoundingClientRect().top+(runway.offsetHeight-sticky.offsetHeight)*(n/(cards.length-1));
     window.scrollTo({top,behavior:smooth()});
     if(reduced)setActive(n);
@@ -129,15 +134,15 @@
     flip?.addEventListener('click',()=>flipCard(card,true));
     back?.addEventListener('click',()=>flipCard(card,false));
     if(back)back.tabIndex=-1;
-    if(media.matches)card.inert=false;
+    if(categoryFlow())card.inert=false;
   });
   addEventListener('keydown',e=>{if(e.key==='Escape'){const flipped=$('.category-card.is-flipped');if(flipped&&document.activeElement?.closest('.category-card'))flipCard(flipped,false)}});
 
   // Native view transition fallback for editorial steps; source images from the original Fatos PDF.
   const editorial=[
-    {label:'01 / PERGUNTA',title:'Uma pergunta muda o ponto de partida.',description:'Um assunto familiar abre a conversa sem precisar inventar uma promessa.',image:'/assets/fatos-roteiro.webp',alt:'Página original do roteiro conceitual, pergunta, contexto e participação'},
-    {label:'02 / CONTEXTO',title:'Antes da solução, existe uma necessidade.',description:'Fontes e contexto organizam o que o público precisa entender primeiro.',image:'/assets/fatos-desconhecidos.webp',alt:'Página original sobre Fatos Desconhecidos e contexto editorial'},
-    {label:'03 / NARRATIVA',title:'Uma ideia se desdobra sem perder a mensagem.',description:'Roteiro, carrossel e direção visual seguem uma função, não uma lista indiscriminada de canais.',image:'/assets/fatos-narrativa-detail.webp',alt:'Prancha original de narrativa de campanha do Ecossistema Fatos'}
+    {label:'01 / PERGUNTA',title:'Uma pergunta muda o ponto de partida.',description:'Um assunto familiar abre a conversa sem inventar uma promessa.',image:'/assets/showcase/scenes/materia-viva.svg',alt:'Matéria viva, composição botânica para o primeiro capítulo'},
+    {label:'02 / CONTEXTO',title:'A pesquisa transforma o olhar.',description:'Fontes, relações e contexto ajudam a compreender o tema.',image:'/assets/showcase/scenes/contexto.svg',alt:'Composição astronômica de pesquisa e conexões'},
+    {label:'03 / NARRATIVA',title:'Uma descoberta encontra seu formato.',description:'O roteiro e a direção visual tornam a ideia compreensível.',image:'/assets/showcase/scenes/narrativa.svg',alt:'Composição editorial em camadas para o desdobramento final'}
   ];
   const editorialImg=$('#editorial-image'),editorialHead=$('#editorial-headline'),editorialCopy=$('#editorial-description'),editorialTag=$('#editorial-caption'),editorialNum=$('#editorial-num');
   let story=0;
@@ -221,7 +226,7 @@
 
   // Expandable case studies: native dialog with focus return and fixed provenance.
   const cases={
-    fatos:{kicker:'FATOS DESCONHECIDOS / EXPERIÊNCIA EDITORIAL',title:'Curiosidade com contexto.',description:'Pesquisa e desenvolvimento de linguagem editorial, pautas, narrativas e formas de apresentação. Material visual do Ecossistema Fatos 2026, incluindo peças identificadas como conceituais.',proof:'O estudo mostra direção e estrutura de conteúdo. Não comprova uma campanha veiculada, números de mídia nem atribui a uma única pessoa todo o trabalho da rede.',image:'/assets/fatos-editorial-detail.webp',source:'https://midia-kit-production-c234.up.railway.app/'},
+    fatos:{kicker:'FATOS DESCONHECIDOS / EXPERIÊNCIA EDITORIAL',title:'Curiosidade com contexto.',description:'Pesquisa e desenvolvimento de linguagem editorial, pautas, narrativas e formas de apresentação. Material visual do Ecossistema Fatos 2026, incluindo peças identificadas como conceituais.',proof:'O estudo mostra direção e estrutura de conteúdo. Não comprova uma campanha veiculada, números de mídia nem atribui a uma única pessoa todo o trabalho da rede.',image:'/assets/showcase/scenes/materia-viva.svg',source:'https://midia-kit-production-c234.up.railway.app/'},
     smiile:{kicker:'SMIILE / PRODUTO DIGITAL',title:'Da ideia à experiência navegável.',description:'Design de produto, interface interativa, cenas para demonstrar sites, aplicações, execução e orquestração. A seção de categorias deste portfólio adapta o mecanismo de rolagem natural da landing smiile.',proof:'A demonstração comprova a interface publicada no serviço de referência. Não representa todas as funcionalidades técnicas como homologadas ou disponíveis em produção.',image:'https://smiile-landing-preview.up.railway.app/assets/architecture-coast.webp',source:'https://smiile-landing-preview.up.railway.app/?v=b6a2e0d#categorias'},
     ci:{kicker:'SOTA CI INTEL / ARQUITETURA',title:'Investigar sem perder o rastro.',description:'Sistema de investigação e inteligência apoiado em fontes, entidades, grafos e dossiês auditáveis, com distinção entre evidências e hipóteses.',proof:'É um esquema didático da arquitetura documentada, não uma operação real executada ao abrir o portfólio. Nenhum dado privado é consultado nesta demonstração.',source:'https://github.com/smil3nirvan4-beep/sota-ci-intel'}
   };

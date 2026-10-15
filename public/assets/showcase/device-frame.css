@@ -1,0 +1,326 @@
+/* DeviceFrame: the one generic phone. Every measure is in pt via --df-pt.
+   Geometry (pt): screen 402 × 874, radius 62; realistic bezel 16.5 per side
+   (metal 6 · line 1 · bevel 1 · glass 8.5), concentric radii 78.5 · 72.5 · 71.5 · 70.5 · 62. */
+
+@property --df-pt {
+  syntax: "<length>";
+  inherits: true;
+  initial-value: 1px;
+}
+
+/* Defaults and layout at zero specificity, so a consumer class always wins. */
+:where(.df) {
+  --df-tm: 1;
+  --df-tint: 29 51 84;
+  --df-fade-pt: 72;
+  --df-glow: transparent;
+  --df-vh: min(calc(var(--df-dh) * var(--df-crop, 1)), var(--df-max-h, 100000px));
+  --df-fl: min(calc(var(--df-dh) - var(--df-vh)), calc(var(--df-fade-pt) * var(--df-pt)));
+  position: relative;
+  display: block;
+  flex: none;
+  width: var(--df-dw);
+  height: var(--df-dh);
+}
+:where(.df-cropped) {
+  height: var(--df-vh);
+}
+.df-realistic {
+  --df-dw: calc(435 * var(--df-pt));
+  --df-dh: calc(907 * var(--df-pt));
+  --df-r: calc(78.5 * var(--df-pt));
+  --df-in: calc(16.5 * var(--df-pt));
+}
+:where(.df-outline) {
+  --df-ow: 4px;
+  --df-stroke: #3a3a3c;
+  --df-inner-line: rgba(255, 255, 255, 0.28);
+}
+:where(.df-outline.df-tone-dark) {
+  --df-stroke: #c9c9cd;
+  --df-inner-line: rgba(0, 0, 0, 0.35);
+}
+.df-outline {
+  --df-dw: calc(402 * var(--df-pt) + 2 * var(--df-ow));
+  --df-dh: calc(874 * var(--df-pt) + 2 * var(--df-ow));
+  --df-r: calc(62 * var(--df-pt) + var(--df-ow));
+  --df-in: var(--df-ow);
+}
+
+/* Crop: a padded wrapper keeps the side and top shadows; the bottom fades into the stage. */
+.df-crop {
+  position: absolute;
+  left: calc(-160 * var(--df-pt));
+  right: calc(-160 * var(--df-pt));
+  top: calc(-160 * var(--df-pt));
+  height: calc(160 * var(--df-pt) + var(--df-vh));
+  padding: calc(160 * var(--df-pt)) calc(160 * var(--df-pt)) 0;
+  overflow: clip;
+  pointer-events: none;
+  -webkit-mask-image: linear-gradient(to bottom, #000 calc(100% - var(--df-fl)), transparent);
+  mask-image: linear-gradient(to bottom, #000 calc(100% - var(--df-fl)), transparent);
+}
+
+.df-body {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: var(--df-dw);
+  height: var(--df-dh);
+  border-radius: var(--df-r);
+  --df-sh-halo: 0 0 0 calc(3px * var(--df-glow-a, 0)) var(--df-glow), 0 0 calc(28px * var(--df-glow-a, 0)) var(--df-glow);
+  box-shadow:
+    0 1.8px 8.5px rgba(0, 0, 0, 0.15),
+    var(--df-sh-halo);
+}
+.df-crop > .df-body {
+  position: relative;
+  pointer-events: auto;
+}
+.df-realistic .df-body {
+  /* contact (Arc), key and ambient, tinted by the scene */
+  box-shadow:
+    0 1.8px 8.5px rgba(0, 0, 0, 0.15),
+    0 calc(32 * var(--df-pt)) calc(64 * var(--df-pt)) calc(-32 * var(--df-pt)) rgb(var(--df-tint) / 0.45),
+    0 calc(80 * var(--df-pt)) calc(160 * var(--df-pt)) calc(-54 * var(--df-pt)) rgb(var(--df-tint) / 0.3),
+    var(--df-sh-halo);
+}
+.df-realistic.df-rim .df-body {
+  box-shadow:
+    0 1.8px 8.5px rgba(0, 0, 0, 0.15),
+    0 calc(32 * var(--df-pt)) calc(64 * var(--df-pt)) calc(-32 * var(--df-pt)) rgb(var(--df-tint) / 0.45),
+    0 calc(80 * var(--df-pt)) calc(160 * var(--df-pt)) calc(-54 * var(--df-pt)) rgb(var(--df-tint) / 0.3),
+    var(--df-sh-halo),
+    0 calc(-8 * var(--df-pt)) calc(36 * var(--df-pt)) calc(-18 * var(--df-pt))
+      color-mix(in srgb, var(--df-rim) 35%, transparent);
+}
+
+/* Realistic material stack, outside in. */
+.df-metal,
+.df-line,
+.df-bevel,
+.df-glass {
+  position: absolute;
+  display: block;
+}
+.df-metal {
+  inset: 0;
+  border-radius: calc(78.5 * var(--df-pt));
+  background: linear-gradient(145deg, #dfe1e6, #a7abb3 32%, #f2f3f6 52%, #8e929a 78%, #d3d6db);
+  box-shadow:
+    inset 0 0 0 calc(0.75 * var(--df-pt)) rgba(0, 0, 0, 0.28),
+    inset 0 0 1px 1px rgba(0, 0, 0, 0.12);
+}
+.df-tone-dark .df-metal {
+  background: linear-gradient(145deg, #3d4048, #1a1c21 34%, #4d515a 54%, #15171b 80%, #34373e);
+}
+.df-line {
+  inset: calc(6 * var(--df-pt));
+  border-radius: calc(72.5 * var(--df-pt));
+  background: #1b1d22;
+  /* highlight on the inner side of the metal */
+  box-shadow: 0 0 0 calc(1.1 * var(--df-pt)) rgba(255, 255, 255, 0.62);
+}
+.df-tone-dark .df-line {
+  box-shadow: 0 0 0 calc(1.1 * var(--df-pt)) rgba(255, 255, 255, 0.16);
+}
+.df-bevel {
+  inset: calc(7 * var(--df-pt));
+  border-radius: calc(71.5 * var(--df-pt));
+  background: linear-gradient(180deg, #4b4e56, #25272c);
+}
+.df-glass {
+  inset: calc(8 * var(--df-pt));
+  border-radius: calc(70.5 * var(--df-pt));
+  background: linear-gradient(160deg, #262626, #060606 42%, #000);
+}
+/* Outline: the stroke colour fills behind the screen so its curved edge has no seam. */
+.df-outline .df-body {
+  background: var(--df-stroke);
+}
+
+.df-screen {
+  position: absolute;
+  left: var(--df-in);
+  top: var(--df-in);
+  width: calc(402 * var(--df-pt));
+  height: calc(874 * var(--df-pt));
+  border-radius: calc(62 * var(--df-pt));
+  overflow: hidden;
+  clip-path: inset(0 round calc(62 * var(--df-pt)));
+  contain: paint;
+  isolation: isolate;
+  background: #fff;
+  color: #000;
+  font-family: "Inter Variable", Inter, Arial, sans-serif;
+  text-align: left;
+}
+.df-screen[data-scheme="dark"] {
+  background: #000;
+  color: #fff;
+}
+.df-content {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.df-status {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: calc(9 * var(--df-pt));
+  height: calc(44 * var(--df-pt));
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 calc(34 * var(--df-pt)) 0 calc(36 * var(--df-pt));
+  color: #000;
+  pointer-events: none;
+  transition: color var(--dur-base, 0.16s) var(--ease-out-quad, ease-out);
+}
+.df-screen[data-scheme="dark"] .df-status {
+  color: #fff;
+}
+.df-time {
+  font-size: calc(17 * var(--df-pt));
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: -0.01em;
+  font-variant-numeric: tabular-nums;
+}
+.df-glyphs {
+  display: flex;
+  align-items: center;
+  gap: calc(6 * var(--df-pt));
+}
+.df-glyphs .sg-signal {
+  width: calc(18 * var(--df-pt));
+  height: calc(12 * var(--df-pt));
+}
+.df-glyphs .sg-wifi {
+  width: calc(16 * var(--df-pt));
+  height: calc(12 * var(--df-pt));
+}
+.df-glyphs .sg-battery {
+  width: calc(26 * var(--df-pt));
+  height: calc(12.5 * var(--df-pt));
+}
+
+/* Round camera hole. Nothing may surround it. */
+.df-camera {
+  position: absolute;
+  left: 50%;
+  top: calc(13 * var(--df-pt));
+  width: calc(17 * var(--df-pt));
+  height: calc(17 * var(--df-pt));
+  margin-left: calc(-8.5 * var(--df-pt));
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #1d2230 0 18%, #050507 42%);
+  box-shadow: inset 0 0 0 calc(0.75 * var(--df-pt)) rgba(255, 255, 255, 0.05);
+  pointer-events: none;
+}
+
+.df-home {
+  position: absolute;
+  left: 50%;
+  bottom: calc(8 * var(--df-pt));
+  width: calc(134 * var(--df-pt));
+  height: calc(5 * var(--df-pt));
+  margin-left: calc(-67 * var(--df-pt));
+  border-radius: calc(2.5 * var(--df-pt));
+  background: rgba(0, 0, 0, 0.85);
+  pointer-events: none;
+  transition: background-color var(--dur-base, 0.16s) var(--ease-out-quad, ease-out);
+}
+.df-home[data-tone="light"] {
+  background: rgba(255, 255, 255, 0.9);
+}
+
+/* The frame sits above the content (Arc): it covers the screen's outer 0.5 pt, so no antialias seam shows. */
+.df-edge {
+  position: absolute;
+  pointer-events: none;
+}
+.df-realistic .df-edge {
+  inset: calc(16 * var(--df-pt));
+  border: calc(1 * var(--df-pt)) solid #000;
+  border-radius: calc(62.5 * var(--df-pt));
+}
+.df-outline .df-edge {
+  inset: 0;
+  border: var(--df-ow) solid var(--df-stroke);
+  border-radius: var(--df-r);
+  box-shadow: inset 0 0 0 1px var(--df-inner-line);
+}
+
+.df-overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.df-overlay > * {
+  pointer-events: auto;
+}
+
+/* Rim light (dark tone): a thin gradient border lit from the top edge. */
+.df-rim .df-body::after {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  padding: 1.5px;
+  border-radius: calc(var(--df-r) + 1px);
+  background: linear-gradient(
+    180deg,
+    var(--df-rim),
+    color-mix(in srgb, var(--df-rim) 30%, transparent) 22%,
+    transparent 48%
+  );
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask:
+    linear-gradient(#000 0 0) content-box exclude,
+    linear-gradient(#000 0 0);
+  pointer-events: none;
+}
+
+/* Glass for floating controls inside screens (navigation layer only, never content). */
+.df-glass-ui {
+  background: rgba(255, 255, 255, 0.55);
+  -webkit-backdrop-filter: blur(16px) saturate(170%);
+  backdrop-filter: blur(16px) saturate(170%);
+  box-shadow: inset 0 0 0 calc(0.75 * var(--df-pt)) rgba(255, 255, 255, 0.6);
+}
+.df-glass-ui.is-dark {
+  background: rgba(30, 30, 34, 0.45);
+  box-shadow: inset 0 0 0 calc(0.75 * var(--df-pt)) rgba(255, 255, 255, 0.18);
+}
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .df-glass-ui {
+    background: rgba(255, 255, 255, 0.92);
+  }
+  .df-glass-ui.is-dark {
+    background: rgba(30, 30, 34, 0.9);
+  }
+}
+@media (prefers-reduced-transparency: reduce) {
+  .df-glass-ui {
+    background: rgba(255, 255, 255, 0.92);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+  .df-glass-ui.is-dark {
+    background: rgba(30, 30, 34, 0.9);
+  }
+}
+@media (prefers-contrast: more) {
+  .df-glass-ui {
+    border: 1px solid color-mix(in srgb, currentColor 50%, transparent);
+  }
+}
+
+/* Vanilla-JS integration: view-scaled screen in the portfolio. */
+.df .df-content{overflow:hidden}
+.df button:focus-visible{outline:calc(3 * var(--df-pt)) solid #527cff;outline-offset:2px}
