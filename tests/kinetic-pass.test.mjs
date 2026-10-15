@@ -43,3 +43,10 @@ test('native MP4 has an ISO media header and a non-empty decoded source',()=>{
  assert(source.includes('video.play()')&&source.includes('video.pause()'));
  assert(source.includes('createRadialGradient'),'Canvas fallback retained');
 });
+
+test('multi-element handlers use selectorAll, not an individual element',()=>{
+ const src=readFileSync(new URL('../public/assets/kinetic-pass/kinetic-pass.js',import.meta.url),'utf8');
+ assert.doesNotMatch(src,/(?<!\$)\$\('[^'\n]+',root\)\.forEach/g);
+ assert(src.includes("$$('[data-layer]',root).forEach"));
+ assert(src.includes("$$('[data-ks-inspect]',root).forEach"));
+});

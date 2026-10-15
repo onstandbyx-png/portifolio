@@ -101,7 +101,7 @@ function mount(){
   const rx=pitch*(1-depth)+58*depth,ry=yaw*(1-depth),rz=-1.2*(1-depth)-27*depth;
   const shift=(w>600?90:w<340?-10:0)*depth,dy=210*(h/680)*depth;
   assembly.style.transform='translate3d(calc(-50% + '+shift+'px),calc(-50% + '+dy+'px),'+(-180*depth)+'px) scale('+(scale*(1-(w<340?.39:.30)*depth))+') rotateX('+rx+'deg) rotateY('+ry+'deg) rotateZ('+rz+'deg)';
-  $('[data-layer]',root).forEach((el,i)=>{
+  $$('[data-layer]',root).forEach((el,i)=>{
     el.style.transform='translateZ('+(i*210*depth+i*.15+(i===inspecting?40*depth:0))+'px)';
     el.style.opacity=String(inspecting<0||i===inspecting||depth<.15?1:.69);
   });
@@ -146,11 +146,11 @@ function mount(){
   }
   root.dataset.motion=disabled?'paused':'running';
  }
- $('[data-ks-mode]',root).forEach(b=>b.addEventListener('click',()=>setMode(b.dataset.ksMode)));
+ $$('[data-ks-mode]',root).forEach(b=>b.addEventListener('click',()=>setMode(b.dataset.ksMode)));
  const descriptions=['Matéria-prima: vídeo contínuo, com Canvas interpolado de reserva.','Base preta: o substrato que torna a tipografia legível.','Tipografia: letras reveladas pela composição multiply.','Impressão: identidade, retícula, código e selo holográfico.'];
- $('[data-ks-inspect]',root).forEach(b=>b.addEventListener('click',()=>{
+ $$('[data-ks-inspect]',root).forEach(b=>b.addEventListener('click',()=>{
   inspecting=Number(b.dataset.ksInspect);root.dataset.inspect=String(inspecting);
-  $('[data-ks-inspect]',root).forEach(x=>x.setAttribute('aria-pressed',String(x===b)));
+  $$('[data-ks-inspect]',root).forEach(x=>x.setAttribute('aria-pressed',String(x===b)));
   $('.ks-inspector-label',root).textContent=descriptions[inspecting];render();
  }));
  peel.addEventListener('input',()=>movePeel(Number(peel.value)/100,true));
