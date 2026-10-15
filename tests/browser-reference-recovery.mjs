@@ -32,6 +32,20 @@ async function scrollProgress(page,selector,progress){
 }
 async function swipe(page,locator,mobile){
   await locator.scrollIntoViewIfNeeded();
+  // aria-expanded describes the requested face before the 670ms CSS turn has
+  // finished. A swipe during that turn can hit the moving return button and
+  // correctly be ignored. Wait for the actual frontal pose and a usable hit.
+  const surface=await locator.elementHandle();
+  await page.waitForFunction(stage=>{
+    const card=stage.querySelector('.pf-fatos-card.is-active');
+    const rotor=card?.querySelector('.pf-fatos-rotor');
+    if(!card||!rotor||card.classList.contains('is-flipped'))return false;
+    const matrix=new DOMMatrixReadOnly(getComputedStyle(rotor).transform);
+    if(Math.abs(matrix.m11-1)>.0001||Math.abs(matrix.m33-1)>.0001||Math.abs(matrix.m13)>.001||Math.abs(matrix.m31)>.001)return false;
+    const box=stage.getBoundingClientRect(),x=box.x+box.width*.8,y=Math.max(100,Math.min(innerHeight-110,box.y+box.height*.33));
+    const hit=document.elementFromPoint(x,y);
+    return hit?.closest('.pf-fatos-card.is-active')===card&&!hit.closest('button,a');
+  },surface);
   const box=await locator.boundingBox();
   const start={x:box.x+box.width*.8,y:Math.max(100,Math.min(page.viewportSize().height-110,box.y+box.height*.33))};
   const end={x:box.x+box.width*.2,y:start.y+4};
