@@ -137,8 +137,8 @@ try{
       check('Studio offers a direct project CTA',await studio.locator('a[href="#contato"]').count()>0);
 
       await page.emulateMedia({reducedMotion:'reduce'});
-      await page.waitForFunction(()=>document.querySelector('[data-portfolio-badges]')?.dataset.state==='fallback');
-      check('Reduced motion keeps a visible static hero',await page.locator('.hero-badge-standin').evaluate(el=>Number(getComputedStyle(el).opacity)>.95));
+      await page.waitForFunction(()=>document.querySelector('[data-badge-swing]')?.disabled);
+      check('Reduced motion keeps exactly one static hero representation',await page.locator('[data-portfolio-badges]').evaluate(stage=>{const visible=selector=>{const el=stage.querySelector(selector),style=el&&getComputedStyle(el);return !!style&&style.visibility!=='hidden'&&style.display!=='none'&&Number(style.opacity)>.95;};return visible('.hero-badge-standin')!==visible('.hero-badge-canvas');}));
       await page.locator('[data-ks-mode="layers"]').click();
       await page.waitForFunction(()=>Number(document.querySelector('#estudio-interativo')?.dataset.layers)>.99);
       check('Reduced motion preserves manual studio controls',Number(await studio.getAttribute('data-layers'))>.99);

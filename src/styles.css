@@ -36,25 +36,12 @@
 .hero-badge-exhibit::before{opacity:.27}
 .hero-badge-exhibit .hero-exhibit-bg{background:radial-gradient(circle at 52% 50%,#fffdf7 0,transparent 53%),radial-gradient(circle at 85% 80%,#bed2ba88 0,transparent 43%),#e5e9df}
 .hero-badge-stage{position:absolute;inset:35px 2px 54px;isolation:isolate;touch-action:pan-y}
-.hero-badge-canvas{position:absolute;inset:0;width:100%;height:100%;display:block;opacity:0;pointer-events:none;transition:opacity .65s cubic-bezier(.18,1,.32,1);touch-action:pan-y;mask-image:linear-gradient(to bottom,transparent 0,#000 10%,#000 100%);-webkit-mask-image:linear-gradient(to bottom,transparent 0,#000 10%,#000 100%)}
-.hero-badge-stage[data-state="ready"] .hero-badge-canvas{opacity:1;pointer-events:auto}
-.hero-badge-standin{position:absolute;inset:0;opacity:1;transition:opacity .55s;pointer-events:none;filter:drop-shadow(0 24px 26px #253d2e23)}
-.hero-badge-stage[data-state="ready"] .hero-badge-standin{opacity:0}
-.hero-badge-cords{position:absolute;top:-60px;left:50%;transform:translateX(-50%);width:240px;height:210px;z-index:1}
-.hero-badge-cords span{position:absolute;top:0;left:50%;width:9px;height:230px;background:repeating-linear-gradient(90deg,#424d47 0 1px,#687c6e 2px 3px,#39443d 5px);border-radius:7px;transform-origin:top}
-.hero-badge-cords span:first-child{transform:rotate(-15deg)}
-.hero-badge-cords span:nth-child(2){transform:rotate(15deg)}
-.hero-badge-cords i{position:absolute;top:159px;left:calc(50% - 16px);width:32px;height:43px;border:8px solid #aeb8b0;border-radius:13px;box-shadow:inset 0 0 0 3px #d6e0d8}
-.hero-standin-card{position:absolute;top:24%;left:50%;width:47%;height:62%;padding:12px;background:#f6f7f1;border:1px solid #d4d9d0;border-radius:17px;box-shadow:0 12px 28px #20362631;overflow:hidden;transform-origin:50% -25%}
-.hero-standin-fatos{z-index:3;transform:translateX(-67%) rotate(-11deg)}
-.hero-standin-smiile{z-index:2;background:#233b2e;color:#fff;transform:translateX(-15%) rotate(10deg)}
-.hero-standin-hole{width:32px;height:8px;border-radius:9px;background:#879c89;margin:0 auto 12px;box-shadow:inset 0 1px 3px #132f2080}
-.hero-standin-header{display:flex;align-items:center;justify-content:space-between;gap:9px;margin-bottom:10px}
-.hero-standin-header strong{font-size:18px;letter-spacing:-.06em}.hero-standin-header small{font-size:8px;letter-spacing:.12em;white-space:nowrap}
-.hero-standin-card img{width:100%;height:50%;object-fit:cover;border-radius:9px;background:#dde6d6}
-.hero-standin-foot{padding-top:11px}.hero-standin-foot span{display:block;font-size:8px;letter-spacing:.13em;color:#779276;font-weight:740}
-.hero-standin-smiile .hero-standin-foot span{color:#c0d1b9}
-.hero-standin-foot strong{display:block;margin-top:6px;font:600 clamp(17px,1.9vw,27px)/1.1 Georgia,serif}
+.hero-badge-canvas,.hero-badge-standin [data-badge-poster]{position:absolute;inset:0;width:100%;height:100%;display:block;mask-image:linear-gradient(to bottom,transparent 0,#000 10%,#000 100%);-webkit-mask-image:linear-gradient(to bottom,transparent 0,#000 10%,#000 100%)}
+.hero-badge-canvas{opacity:0;visibility:hidden;pointer-events:none;touch-action:pan-y}
+.hero-badge-stage[data-state="ready"] .hero-badge-canvas{opacity:1;visibility:visible;pointer-events:auto}
+.hero-badge-standin{position:absolute;inset:0;opacity:1;visibility:visible;pointer-events:none}
+.hero-badge-standin [data-badge-poster]{object-fit:contain;object-position:center}
+.hero-badge-stage[data-state="ready"] .hero-badge-standin{opacity:0;visibility:hidden}
 .hero-badge-legend{position:absolute;bottom:87px;left:22px;right:22px;z-index:3;display:flex;justify-content:space-between;gap:8px;pointer-events:none}
 .badge-legend-item{display:inline-flex;align-items:center;gap:8px;font-size:8px;font-weight:750;letter-spacing:.14em;color:#45624b}
 .badge-legend-item i{display:inline-block;width:7px;height:7px;border-radius:50%;background:#8caf84}
@@ -66,12 +53,7 @@
 .badge-gesture-note{font-size:8px;letter-spacing:.11em;font-weight:700;color:#5d7362;text-align:right;max-width:168px}
 .hero-badge-exhibit .exhibit-bottom{bottom:12px;left:18px;right:18px;color:#66806a}
 .hero-badge-exhibit .exhibit-meta{z-index:5}
-.badge-fallback-bounce .hero-standin-fatos{animation:badge-standin-left .85s cubic-bezier(.23,.9,.33,1)}
-.badge-fallback-bounce .hero-standin-smiile{animation:badge-standin-right .85s cubic-bezier(.23,.9,.33,1)}
-@keyframes badge-standin-left{0%,100%{transform:translateX(-67%) rotate(-11deg)}42%{transform:translateX(-67%) rotate(-3deg)}67%{transform:translateX(-67%) rotate(-14deg)}}
-@keyframes badge-standin-right{0%,100%{transform:translateX(-15%) rotate(10deg)}40%{transform:translateX(-15%) rotate(3deg)}72%{transform:translateX(-15%) rotate(12deg)}}
 .sr-only{position:absolute!important;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important;border:0!important}
-@media(max-width:900px){.hero-badge-exhibit{min-height:620px}.hero-standin-card{width:43%;height:60%}}
-@media(max-width:760px){.hero-badge-exhibit{min-height:490px}.hero-badge-stage{inset:22px 0 55px}.hero-standin-card{top:24%;height:63%;width:51%;padding:9px;border-radius:11px}.hero-badge-cords{top:-56px}.hero-standin-header strong{font-size:15px}.hero-standin-header small{font-size:6px}.hero-standin-hole{height:6px;margin-bottom:6px}.hero-standin-card img{height:49%}.hero-standin-foot strong{font-size:20px}.hero-standin-foot span{font-size:7px}.hero-badge-legend{bottom:89px;left:14px;right:14px}.badge-legend-item{font-size:7px;letter-spacing:.08em}.hero-badge-controls{bottom:45px;left:11px;right:11px}.badge-gesture-note{max-width:125px;font-size:7px;line-height:1.45}.badge-swing-button{font-size:10px;min-height:37px;padding:6px 9px}.hero-badge-exhibit .exhibit-bottom{font-size:7px;left:11px;right:11px}}
-@media(max-width:380px){.hero-standin-card{width:54%;top:26%}.hero-standin-header strong{font-size:14px}.hero-standin-foot strong{font-size:17px}.badge-gesture-note{max-width:102px}}
-@media(prefers-reduced-motion:reduce){.hero-badge-canvas,.hero-badge-standin{transition:none}.badge-fallback-bounce .hero-standin-card{animation:none!important}}
+@media(max-width:900px){.hero-badge-exhibit{min-height:620px}}
+@media(max-width:760px){.hero-badge-exhibit{min-height:490px}.hero-badge-stage{inset:22px 0 55px}.hero-badge-legend{bottom:89px;left:14px;right:14px}.badge-legend-item{font-size:7px;letter-spacing:.08em}.hero-badge-controls{bottom:45px;left:11px;right:11px}.badge-gesture-note{max-width:125px;font-size:7px;line-height:1.45}.badge-swing-button{font-size:10px;min-height:37px;padding:6px 9px}.hero-badge-exhibit .exhibit-bottom{font-size:7px;left:11px;right:11px}}
+@media(max-width:380px){.badge-gesture-note{max-width:102px}}

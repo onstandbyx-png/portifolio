@@ -67,3 +67,13 @@ O estúdio independente “A ideia tem camadas” foi retirado da inicializaçã
 Branch: `feat/portfolio-reference-recovery-20261015`.
 
 A prévia usa o serviço existente `portfolio-visual-review`, separadamente do serviço principal. A revisão precisa ser observada em movimento: um teste aprovado não comprova, por si só, fidelidade visual.
+
+## R4 — mesmo crachá desde o primeiro carregamento
+
+Os screenshots de 15:32 mostraram um problema distinto da sobreposição: o HTML de inicialização ainda usava a arte azul e cordões separados, antes de ser substituído pelo crachá verde com um único fecho. O handoff exclusivo da R3 não eliminava essa troca de design.
+
+O HTML antigo foi removido. Carregamento, movimento reduzido e fallback agora usam imagens transparentes da própria cena de produção, com a mesma arte, geometria, fecho, sombra, posição e câmera. São quatro estados de frente/verso, renderizados em 720 × 960 por `scripts/render-badge-posters.mjs`, sem redesenhar os cartões. `object-fit: contain` reproduz o enquadramento responsivo da câmera 3:4. O poster frontal tem preload prioritário.
+
+O canvas assume a apresentação após o primeiro frame completo, na mesma pose do poster. O balanço inicial automático foi retirado; as ações de virar, arrastar e balançar continuam explícitas. Ao ativar movimento reduzido depois da inicialização, o próprio canvas permanece congelado. Na perda de contexto, o fallback mantém as faces escolhidas.
+
+A validação dedicada cobre carregamento sem JavaScript, chunk atrasado ou indisponível, movimento reduzido, troca de faces e perda/restauração de contexto. A comparação do poster com o primeiro frame considera as diferenças de rasterização e compressão.

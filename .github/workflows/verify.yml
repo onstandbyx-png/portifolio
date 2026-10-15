@@ -22,6 +22,8 @@ jobs:
         run: |
           npm install --prefix /tmp/portfolio-qa --package-lock=false --no-save playwright@1.64.0
           /tmp/portfolio-qa/node_modules/.bin/playwright install --with-deps chromium
+      - name: Validate badge loading and consistent fallback artwork
+        run: node tests/browser-badge-loading.mjs
       - name: Validate visual evidence on desktop and mobile
         run: node tests/browser-evidence.mjs
       - name: Validate touch gestures and badge stability
