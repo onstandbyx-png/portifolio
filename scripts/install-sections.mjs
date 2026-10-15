@@ -71,10 +71,12 @@ const kineticMarker='<!-- portfolio-kinetic-pass-v1 -->';
 if(!html.includes(kineticMarker))html=html.replace('</head>',kineticMarker+'\n'
  +'<link rel="stylesheet" href="/assets/kinetic-pass/kinetic-pass.css">\n'
  +'<script type="module" src="/assets/kinetic-pass/kinetic-pass.js"></script>\n</head>');
-for(const path of ['kinetic-pass.js','kinetic-math.js','kinetic-curl.js','kinetic-pass.css','gold-material.svg']){
+for(const path of ['kinetic-pass.js','kinetic-math.js','kinetic-curl.js','kinetic-pass.css','gold-material.svg','material-loop.mp4']){
  await access(new URL('public/assets/kinetic-pass/'+path,root));
  if(path.endsWith('.js'))execFileSync(process.execPath,['--check',new URL('public/assets/kinetic-pass/'+path,root).pathname],{stdio:'inherit'});
 }
 execFileSync(process.execPath,['--test',new URL('tests/kinetic-pass.test.mjs',root).pathname],{stdio:'inherit'});
+const clip=await readFile(new URL('public/assets/kinetic-pass/material-loop.mp4',root));
+assert(clip.length>10000&&clip.subarray(4,8).toString()==='ftyp','Continuous source clip missing or invalid');
 await writeFile(file,html);
 console.log('PASS: módulos das seções instalados; hero original preservado');

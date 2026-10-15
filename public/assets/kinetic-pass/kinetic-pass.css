@@ -149,3 +149,13 @@
 }
 @media(max-width:355px){.ks-legend button{font-size:9px}}
 
+
+/* Native high-frequency source texture, with the interpolated Canvas as fallback. */
+.ks-material{position:relative;overflow:hidden}
+.ks-material .ks-canvas,.ks-material .ks-video{position:absolute;inset:0;width:100%;height:100%;display:block}
+.ks-material .ks-video{z-index:1;opacity:0;object-fit:fill;filter:saturate(1.16) contrast(1.09);pointer-events:none}
+.ks-has-video .ks-material .ks-video{opacity:1}
+.ks-has-video .ks-material .ks-canvas{opacity:0}
+.ks-section[data-texture=video] .ks-material{background:#5d1609}
+.ks-section .ks-video::-webkit-media-controls{display:none!important}
+@media(prefers-reduced-motion:reduce){.ks-material .ks-video{transition:none!important}}

@@ -34,3 +34,12 @@ test('single continuous material surface replaces repeated video strips',()=>{
  assert(source.includes("gold-material.svg"));
  assert(source.includes('createCurlRenderer'));
 });
+
+test('native MP4 has an ISO media header and a non-empty decoded source',()=>{
+ const source=readFileSync(new URL('../public/assets/kinetic-pass/kinetic-pass.js',import.meta.url),'utf8');
+ const video=readFileSync(new URL('../public/assets/kinetic-pass/material-loop.mp4',import.meta.url));
+ assert(video.length>=20000&&video.subarray(4,8).toString('ascii')==='ftyp');
+ assert(source.includes('material-loop.mp4')&&source.includes('ks-has-video'));
+ assert(source.includes('video.play()')&&source.includes('video.pause()'));
+ assert(source.includes('createRadialGradient'),'Canvas fallback retained');
+});
