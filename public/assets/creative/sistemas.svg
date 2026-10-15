@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1500" viewBox="0 0 1200 1500" role="img" aria-labelledby="title desc">
+  <title id="title">Uma ideia que funciona — estudo autoral de experiência digital</title>
+  <desc id="desc">Diagrama editorial em papel com três módulos conectados: entrada, lógica e resposta. Os controles são ilustrações de interface.</desc>
+  <defs>
+    <pattern id="grid" width="48" height="48" patternUnits="userSpaceOnUse"><circle cx="1" cy="1" r="1.2" fill="#274b38" opacity=".16"/></pattern>
+    <linearGradient id="panel" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#274b38"/><stop offset="1" stop-color="#16221c"/></linearGradient>
+  </defs>
+  <rect width="1200" height="1500" fill="#f6f6f2"/><rect width="1200" height="1500" fill="url(#grid)"/>
+  <path d="M72 78H1128M72 1422H1128" stroke="#16221c" stroke-opacity=".32"/>
+  <g fill="#16221c" font-family="Arial, Helvetica, sans-serif" font-size="18" letter-spacing="2.8"><text x="72" y="57">IDEIA</text><path d="M148 56L159 45M148 45H159V56" fill="none" stroke="currentColor" stroke-width="1.7" color="#16221c"/><text x="174" y="57">EXECUÇÃO.</text><text x="1128" y="57" text-anchor="end">ESTUDO AUTORAL / 03</text></g>
+  <circle cx="88" cy="148" r="8" fill="#bc6748"/><text x="112" y="154" fill="#274b38" font-family="Arial, Helvetica, sans-serif" font-size="19" letter-spacing="3">EXPERIÊNCIA DIGITAL</text>
+  <g fill="#16221c" font-family="Georgia, 'Times New Roman', serif" font-size="154" letter-spacing="-7"><text x="65" y="354">Uma ideia</text><text x="65" y="503">que <tspan font-style="italic">funciona.</tspan></text></g>
+  <text x="72" y="572" fill="#274b38" font-family="Arial, Helvetica, sans-serif" font-size="25">Menos atrito entre a intenção e a ação.</text>
+  <g fill="none" stroke="#bc6748" stroke-width="4"><path d="M365 857H541Q588 857 588 904V946"/><path d="M864 1058H1049Q1098 1058 1098 1107V1244Q1098 1282 1060 1282H670"/></g>
+  <rect x="82" y="710" width="454" height="300" rx="12" fill="#16221c" opacity=".07"/>
+  <rect x="72" y="696" width="454" height="300" rx="12" fill="#fff" stroke="#16221c" stroke-opacity=".15"/>
+  <g font-family="Arial, Helvetica, sans-serif"><text x="104" y="745" font-size="17" fill="#bc6748" letter-spacing="2">01 / ENTRADA</text><text x="104" y="797" font-size="36" fill="#16221c" letter-spacing="-1">Qual é o objetivo?</text></g>
+  <rect x="104" y="831" width="390" height="59" rx="7" fill="#f6f6f2" stroke="#274b38" stroke-opacity=".14"/><text x="123" y="868" fill="#274b38" font-family="Arial, Helvetica, sans-serif" font-size="21">Dar forma a uma nova ideia</text>
+  <rect x="104" y="917" width="191" height="46" rx="23" fill="#274b38"/><text x="127" y="947" fill="#f6f6f2" font-family="Arial, Helvetica, sans-serif" font-size="19">Explorar caminhos</text>
+  <rect x="598" y="883" width="480" height="301" rx="12" fill="#16221c" opacity=".07"/>
+  <rect x="588" y="869" width="480" height="301" rx="12" fill="url(#panel)"/>
+  <g font-family="Arial, Helvetica, sans-serif"><text x="620" y="918" font-size="17" fill="#cda088" letter-spacing="2">02 / LÓGICA</text><text x="620" y="970" font-size="36" fill="#f6f6f2" letter-spacing="-1">Conectar as partes.</text></g>
+  <g fill="#f6f6f2" fill-opacity=".1" stroke="#f6f6f2" stroke-opacity=".2"><rect x="620" y="1005" width="182" height="53" rx="6"/><rect x="820" y="1005" width="216" height="53" rx="6"/><rect x="620" y="1074" width="416" height="53" rx="6"/></g>
+  <g fill="#f6f6f2" font-family="Arial, Helvetica, sans-serif" font-size="21"><text x="642" y="1039">Contexto</text><text x="842" y="1039">Possibilidades</text><text x="642" y="1108">Decisão + direção + execução</text></g>
+  <rect x="82" y="1129" width="590" height="242" rx="12" fill="#16221c" opacity=".07"/><rect x="72" y="1115" width="590" height="242" rx="12" fill="#fff" stroke="#16221c" stroke-opacity=".15"/>
+  <g font-family="Arial, Helvetica, sans-serif"><text x="104" y="1164" font-size="17" fill="#bc6748" letter-spacing="2">03 / RESPOSTA</text><text x="104" y="1216" font-size="36" fill="#16221c" letter-spacing="-1">O próximo passo, claro.</text><text x="104" y="1273" font-size="22" fill="#274b38">Uma interface com intenção.</text></g>
+  <circle cx="609" cy="1305" r="23" fill="#bc6748"/><path d="M598 1305H620M610 1295L620 1305L610 1315" fill="none" stroke="#f6f6f2" stroke-width="2.2"/>
+  <g fill="#16221c" font-family="Arial, Helvetica, sans-serif" font-size="17" letter-spacing="1.5"><text x="72" y="1462">ESTRATÉGIA · INTERFACE · IMPLEMENTAÇÃO</text><text x="1128" y="1462" text-anchor="end">FLUXO ILUSTRATIVO</text></g>
+</svg>

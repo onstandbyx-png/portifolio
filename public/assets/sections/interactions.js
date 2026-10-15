@@ -15,7 +15,7 @@ mount('Works',()=>{
   const art=$('.tile-art',tile);if(!art)return;
   const stage=copy('<div class="sm-work-stage"><div class="sm-work-rotor"></div></div>');
   art.before(stage);const rotor=$('.sm-work-rotor',stage);rotor.append(art);art.classList.add('sm-work-front');
-  const back=copy(`<div class="sm-work-back" id="sm-back-${kind}" aria-hidden="true"><span class="sm-overline">0${i+1} / PROCESSO E CONTRIBUIÇÃO</span><h3>${details[0]}</h3><p>${details[1]}</p><div class="sm-back-lines">${details.slice(2).map((v,j)=>`<span><i>0${j+1}</i>${v}</span>`).join('')}</div><small>Abra o estudo para ver materiais, contexto e limites.</small><span class="sm-back-sign">ideia ↗ execução.</span></div>`);
+  const back=copy(`<div class="sm-work-back" id="sm-back-${kind}" aria-hidden="true"><span class="sm-overline">0${i+1} / PROCESSO E CONTRIBUIÇÃO</span><h3>${details[0]}</h3><p>${details[1]}</p><div class="sm-back-lines">${details.slice(2).map((v,j)=>`<span><i>0${j+1}</i>${v}</span>`).join('')}</div><small>Abra o case para conhecer o contexto e a minha contribuição.</small><span class="sm-back-sign">ideia ↗ execução.</span></div>`);
   back.inert=true;rotor.append(back);
   const peek=copy(`<button type="button" class="sm-work-peek" aria-expanded="false" aria-controls="sm-back-${kind}"><span>Ver bastidores</span><b aria-hidden="true">↶</b></button>`);stage.append(peek);
   stage.append(copy('<span class="sm-work-sheen" aria-hidden="true"></span>'));
@@ -49,99 +49,48 @@ mount('Works',()=>{
   if(a)a.finished.catch(()=>{}).then(done);else done();
  }
  close.addEventListener('click',animateClose,true);dialog.addEventListener('cancel',animateClose,true);
- dialog.addEventListener('click',e=>{if(e.target===dialog)animateClose(e);},true);
+ dialog.addEventListener('click',e=>{const r=dialog.getBoundingClientRect();if(e.target===dialog&&(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom))animateClose(e);},true);
  new MutationObserver(()=>{
   if(!dialog.open)return;
   const b=dialog.getBoundingClientRect(),from=origin;
   if(from)M.spring($('.dialog-layout',dialog),p=>({opacity:clamp(p*1.8),transform:`translate(${(from.left-b.left)*(1-p)}px,${(from.top-b.top)*(1-p)}px) scale(${from.width/b.width+(1-from.width/b.width)*p},${from.height/b.height+(1-from.height/b.height)*p})`,transformOrigin:'0 0'}),{duration:600});
-  const image=$('#dialog-image');if(image){
-   $('.sm-case-thumbs',dialog)?.remove();
-   if($('#dialog-kicker').textContent.includes('FATOS')){
-    const list=copy('<div class="sm-case-thumbs" role="group" aria-label="Explorar materiais do Fatos"></div>');
-    const sheets=[['A pergunta','showcase/scenes/materia-viva.svg'],['O contexto','showcase/scenes/contexto.svg'],['A narrativa','showcase/scenes/narrativa.svg']];
-    sheets.forEach(([label,file],i)=>{const btn=copy(`<button type="button" aria-pressed="${i===0}">${label}</button>`);list.append(btn);btn.addEventListener('click',()=>{const img=$('img',image);if(img){img.src='/assets/'+file;img.alt='Estudo editorial conceitual Fatos: '+label;rise(img,12);}$$('button',list).forEach(x=>x.setAttribute('aria-pressed',String(x===btn)));});});
-    image.append(list);
-   }
-  }
+  $('.sm-case-thumbs',dialog)?.remove();
   $$('.dialog-kicker,.dialog-content h2,.dialog-content>p,.dialog-proof',dialog).forEach((n,i)=>rise(n,18,70+i*45));
- }).observe(dialog,{attributes:true,attributeFilter:['open']});
+ }).observe(dialog,{attributes:true,attributeFilter:['open','data-case']});
 });
 
 mount('Editorial',()=>{
  const feature=$('.editorial-feature'),page=$('.editorial-page'),buttons=$$('.editorial-step');
  if(!feature||!page||buttons.length!==3)return;
- const runway=document.createElement('div');
- runway.className='sm-editorial-runway pf-story-runway';feature.before(runway);runway.append(feature);
+ const runway=document.createElement('div');runway.className='sm-editorial-runway pf-story-runway';feature.before(runway);runway.append(feature);runway.dataset.linked='false';
  page.classList.add('pf-new-device-stage');
  const stories=[
-  {label:'01 / A PERGUNTA',title:'Por que isso faz parte do seu dia?',description:'Uma pergunta abre a conversa e desperta curiosidade.',insight:'Comece pelo que merece ser entendido.',image:'/assets/showcase/scenes/materia-viva.svg',alt:'Matéria viva: macroilustração botânica'},
-  {label:'02 / O CONTEXTO',title:'O que a pesquisa revela?',description:'Fontes e relações permitem enxergar além do óbvio.',insight:'Contexto antes de qualquer conclusão.',image:'/assets/showcase/scenes/contexto.svg',alt:'Composição astronômica que representa a pesquisa'},
-  {label:'03 / A NARRATIVA',title:'Uma descoberta. Muitas formas.',description:'Roteiro, imagem e desdobramento trabalham juntos.',insight:'A forma acompanha a mensagem.',image:'/assets/showcase/scenes/narrativa.svg',alt:'Composição editorial em tons terrosos'}
+  {label:'01 / GANCHO',before:'Uma plataforma completa para sua equipe.',title:'Qual arquivo é o final_final?',reason:'Uma fricção reconhecível abre a conversa. O visitante entende o problema antes de conhecer o produto.',image:'/assets/creative/linha-campanha.svg'},
+  {label:'02 / PROVA',before:'Mais controle para os seus projetos.',title:'Do briefing ao aprovado. No mesmo lugar.',reason:'A promessa ganha funções que podem ser exploradas: briefing, comentário e versão aprovada.',image:'/assets/creative/linha-interface.svg'},
+  {label:'03 / AÇÃO',before:'Saiba mais.',title:'Explorar o fluxo.',reason:'Um próximo passo específico. A pessoa sabe o que encontrará ao clicar: uma demonstração do produto.',image:'/assets/creative/linha-campanha.svg'}
  ];
- const content='<div class="pf-story-screen" data-scene="0"><img class="pf-story-image" src="'+stories[0].image+'" alt="'+stories[0].alt+'"><div class="pf-story-gradient" aria-hidden="true"></div><div class="pf-story-profile"><b class="pf-story-avatar" aria-hidden="true">F</b><span><strong>Fatos Desconhecidos</strong><small>Estúdio editorial · demonstração</small></span></div><div class="pf-story-description"><span class="pf-story-kicker">'+stories[0].label+'</span><h3 class="pf-story-title">'+stories[0].title+'</h3><p class="pf-story-explain">'+stories[0].description+'</p></div><div class="pf-story-lower"><small>DA PERGUNTA AO DESDOBRAMENTO</small><p class="pf-story-insight">'+stories[0].insight+'</p><div class="pf-story-progress" aria-hidden="true"><i></i></div></div><nav class="pf-story-controls" aria-label="Capítulos do estudo editorial"><button type="button" data-pf-prev aria-label="Capítulo anterior">‹</button><span data-pf-count>01 / 03</span><button type="button" data-pf-next aria-label="Capítulo seguinte">›</button></nav></div>';
- const device=createDeviceFrame({tone:'light',scheme:'dark',time:'10:47',label:'Dispositivo metálico interativo com estudo editorial de três capítulos',content});
- page.append(device.root);const shell=device.root;
- const strip=copy('<div class="sm-editorial-controls"><span class="sm-editorial-cue">EXPLORE O PROCESSO ↓</span><div role="group" aria-label="Navegar entre capítulos"><button type="button" data-story-prev aria-label="Capítulo anterior">←</button><span class="sm-story-count">01 / 03</span><button type="button" data-story-next aria-label="Próximo capítulo">→</button></div></div>');
- feature.append(strip);
- let active=0,lockedUntil=0,linked=false,scheduled=0,auto=false;
+ const content='<div class="pf-story-screen pf-linha-studio" data-scene="0"><img class="pf-story-image" src="'+stories[0].image+'" alt="Direção de arte autoral LINHA"><div class="pf-story-profile"><b class="pf-story-avatar" aria-hidden="true">l</b><span><strong>LINHA / COPY EM AÇÃO</strong><small>Estudo autoral · produto fictício</small></span></div><div class="pf-copy-lab"><span class="pf-story-kicker">01 / GANCHO</span><div class="pf-copy-before"><small>RASCUNHO GENÉRICO</small><p>Uma plataforma completa para sua equipe.</p></div><div class="pf-copy-after"><small>COPY FINAL</small><h3 class="pf-story-title">Qual arquivo é o final_final?</h3></div><button type="button" class="pf-copy-decision" aria-expanded="false">Ver a decisão criativa <span aria-hidden="true">+</span></button><p class="pf-story-explain" hidden></p></div><div class="pf-story-lower"><small>PROBLEMA → PROVA → PRÓXIMO PASSO</small><div class="pf-story-progress" aria-hidden="true"><i></i></div></div><nav class="pf-story-controls" aria-label="Etapas da construção da copy"><button type="button" data-pf-prev aria-label="Capítulo anterior">‹</button><span data-pf-count>01 / 03</span><button type="button" data-pf-next aria-label="Capítulo seguinte">›</button></nav></div>';
+ const device=createDeviceFrame({tone:'light',scheme:'dark',time:'10:47',label:'Estúdio interativo de copy LINHA: gancho, prova e ação',content});page.append(device.root);const shell=device.root;
+ const strip=copy('<div class="sm-editorial-controls"><span class="sm-editorial-cue">COMPARE O RASCUNHO E A COPY FINAL</span><div role="group" aria-label="Navegar entre capítulos"><button type="button" data-story-prev aria-label="Capítulo anterior">←</button><span class="sm-story-count">01 / 03</span><button type="button" data-story-next aria-label="Próximo capítulo">→</button></div></div>');feature.append(strip);
+ let active=0;
  function render(i){
-  i=Math.max(0,Math.min(2,i));active=i;
-  const story=stories[i];const scene=$('.pf-story-screen',shell);
-  scene.dataset.scene=String(i);
-  const image=$('.pf-story-image',shell);
-  image.src=story.image;image.alt=story.alt;
-  $('.pf-story-kicker',shell).textContent=story.label;
-  $('.pf-story-title',shell).textContent=story.title;
-  $('.pf-story-explain',shell).textContent=story.description;
-  $('.pf-story-insight',shell).textContent=story.insight;
-  $('.pf-story-progress i',shell).style.transform='scaleX('+((i+1)/3)+')';
-  $('[data-pf-count]',shell).textContent='0'+(i+1)+' / 03';
-  $('.sm-story-count',strip).textContent='0'+(i+1)+' / 03';
-  $('[data-story-prev]',strip).disabled=i===0;$('[data-story-next]',strip).disabled=i===2;
-  $('[data-pf-prev]',shell).disabled=i===0;$('[data-pf-next]',shell).disabled=i===2;
-  feature.style.setProperty('--story-progress',String((i+1)/3));
-  if(M.available())M.animate(image,[{opacity:.55,transform:'scale(1.035)'},{opacity:1,transform:'scale(1)'}],{duration:490});
+  active=clamp(i,0,2);const story=stories[active];$('.pf-story-screen',shell).dataset.scene=String(active);
+  const image=$('.pf-story-image',shell);image.src=story.image;image.alt='Estudo autoral LINHA: '+story.label;
+  $('.pf-story-kicker',shell).textContent=story.label;$('.pf-copy-before p',shell).textContent=story.before;$('.pf-story-title',shell).textContent=story.title;$('.pf-story-explain',shell).textContent=story.reason;$('.pf-story-explain',shell).hidden=true;
+  $('.pf-copy-decision',shell).setAttribute('aria-expanded','false');
+  $('.pf-story-progress i',shell).style.transform='scaleX('+((active+1)/3)+')';$('[data-pf-count]',shell).textContent='0'+(active+1)+' / 03';$('.sm-story-count',strip).textContent='0'+(active+1)+' / 03';
+  $('[data-story-prev]',strip).disabled=active===0;$('[data-story-next]',strip).disabled=active===2;$('[data-pf-prev]',shell).disabled=active===0;$('[data-pf-next]',shell).disabled=active===2;
+  feature.style.setProperty('--story-progress',String((active+1)/3));rise($('.pf-copy-after',shell),10);
  }
- buttons.forEach((button,i)=>button.addEventListener('click',()=>{
-  render(i);
-  if(linked&&!auto){
-   lockedUntil=performance.now()+950;
-   const travel=Math.max(1,runway.offsetHeight-feature.offsetHeight);
-   const top=scrollY+runway.getBoundingClientRect().top-84+travel*(i+.12)/3;
-   scrollTo({top,behavior:M.paused()?'auto':'smooth'});
-  }
- },true));
- $('[data-pf-prev]',shell).addEventListener('click',()=>buttons[Math.max(0,active-1)]?.click());
- $('[data-pf-next]',shell).addEventListener('click',()=>buttons[Math.min(2,active+1)]?.click());
- $('[data-story-prev]',strip).addEventListener('click',()=>buttons[Math.max(0,active-1)]?.click());
- $('[data-story-next]',strip).addEventListener('click',()=>buttons[Math.min(2,active+1)]?.click());
- const screen=$('.pf-story-screen',shell);let drag=null;
- screen.addEventListener('pointerdown',e=>{if(e.target.closest('button'))return;drag={x:e.clientX,y:e.clientY};});
- screen.addEventListener('pointerup',e=>{if(!drag)return;const dx=e.clientX-drag.x,dy=e.clientY-drag.y;drag=null;if(Math.abs(dx)>48&&Math.abs(dx)>Math.abs(dy)*1.3)buttons[Math.max(0,Math.min(2,active+(dx<0?1:-1)))]?.click();});
- screen.addEventListener('pointercancel',()=>{drag=null;});
- function measure(){
-  linked=innerWidth>=1000&&innerHeight>=720&&M.available();
-  runway.dataset.linked=String(linked);
-  runway.style.height=linked?Math.ceil(feature.offsetHeight+innerHeight*1.55)+'px':'auto';
-  $('.sm-editorial-cue',strip).textContent=linked?'ROLE PARA PERCORRER OS CAPÍTULOS ↓':'USE AS SETAS OU DESLIZE SOBRE A TELA';
- }
- function update(){
-  scheduled=0;if(!linked||performance.now()<lockedUntil)return;
-  const r=runway.getBoundingClientRect(),travel=Math.max(1,runway.offsetHeight-feature.offsetHeight);
-  if(r.top>85||r.bottom<120)return;
-  const n=chapterAt((85-r.top)/travel,3);
-  if(n!==active){auto=true;buttons[n].click();auto=false;}
- }
- const request=()=>{if(!scheduled)scheduled=requestAnimationFrame(update);};
- addEventListener('scroll',request,{passive:true});
- addEventListener('resize',()=>{measure();request();},{passive:true});
- M.onStop(()=>{measure();});
- render(0);measure();
+ buttons.forEach((button,i)=>button.addEventListener('click',()=>render(i),true));
+ $('.pf-copy-decision',shell).addEventListener('click',e=>{const button=e.currentTarget,open=button.getAttribute('aria-expanded')!=='true';button.setAttribute('aria-expanded',String(open));$('.pf-story-explain',shell).hidden=!open;});
+ $('[data-pf-prev]',shell).addEventListener('click',()=>buttons[Math.max(0,active-1)].click());$('[data-pf-next]',shell).addEventListener('click',()=>buttons[Math.min(2,active+1)].click());$('[data-story-prev]',strip).addEventListener('click',()=>buttons[Math.max(0,active-1)].click());$('[data-story-next]',strip).addEventListener('click',()=>buttons[Math.min(2,active+1)].click());
+ const screen=$('.pf-story-screen',shell);let drag=null;screen.addEventListener('pointerdown',e=>{if(e.target.closest('button'))return;drag={x:e.clientX,y:e.clientY};});screen.addEventListener('pointerup',e=>{if(!drag)return;const dx=e.clientX-drag.x,dy=e.clientY-drag.y;drag=null;if(Math.abs(dx)>48&&Math.abs(dx)>Math.abs(dy)*1.3)buttons[clamp(active+(dx<0?1:-1),0,2)].click();});screen.addEventListener('pointercancel',()=>{drag=null;});render(0);
 });
 
 mount('Experience',()=>{
  const frame=$('#immersive-frame');if(!frame)return;frame.classList.add('sm-interactive-experience');
- const preview=copy(`<div class="sm-experience"><div class="sm-device-tools"><span>EXPERIMENTE A INTERFACE</span><div role="group" aria-label="Formato da prévia"><button type="button" data-device="desktop" aria-pressed="true">Desktop</button><button type="button" data-device="mobile" aria-pressed="false">Mobile</button></div></div><div class="sm-device" data-mode="desktop" data-tone="light"><div class="sm-browser-chrome"><span>● ● ●</span><span>casa costa / prévia local</span><span>↗</span></div><div class="sm-demo-nav"><strong>Casa Costa</strong><div role="group" aria-label="Navegação da prévia"><button type="button" data-demo-page="inicio" aria-pressed="true">Início</button><button type="button" data-demo-page="projeto" aria-pressed="false">Projeto</button></div></div><div class="sm-demo-body"><div class="sm-demo-picture"><img src="/assets/smiile-landscape.webp" alt="Casa Costa, composição original demonstrada na smiile" loading="lazy"><span>UM LUGAR PARA EXISTIR.</span></div><div class="sm-demo-copy"><small>ARQUITETURA / EXPERIÊNCIA</small><h3>Entre a casa<br>e o horizonte.</h3><p>Imagem, mensagem e navegação trabalhando juntas.</p><button type="button" class="sm-demo-action">Conhecer o projeto <span>↗</span></button></div></div><div class="sm-demo-footer"><span>CONCEITO DA SMIILE</span><div role="group" aria-label="Direção visual da prévia"><button type="button" data-tone="light" aria-pressed="true">Clara</button><button type="button" data-tone="dark" aria-pressed="false">Grafite</button></div></div></div><div class="sm-experience-note"><span>MUDE O FORMATO. EXPLORE AS PÁGINAS.</span><span>INTERAÇÃO LOCAL / SEM ENVIO</span></div></div>`);
+ const preview=copy(`<div class="sm-experience"><div class="sm-device-tools"><span>EXPERIMENTE A INTERFACE</span><div role="group" aria-label="Formato da prévia"><button type="button" data-device="desktop" aria-pressed="true">Desktop</button><button type="button" data-device="mobile" aria-pressed="false">Mobile</button></div></div><div class="sm-device" data-mode="desktop" data-tone="light"><div class="sm-browser-chrome"><span>● ● ●</span><span>casa costa / demonstração</span><span>↗</span></div><div class="sm-demo-nav"><strong>Casa Costa</strong><div role="group" aria-label="Navegação da prévia"><button type="button" data-demo-page="inicio" aria-pressed="true">Início</button><button type="button" data-demo-page="projeto" aria-pressed="false">Projeto</button></div></div><div class="sm-demo-body"><div class="sm-demo-picture"><img src="/assets/smiile-landscape.webp" alt="Casa Costa, conceito de arquitetura para demonstração da smiile" loading="lazy"><span>UM LUGAR PARA EXISTIR.</span></div><div class="sm-demo-copy"><small>ARQUITETURA / EXPERIÊNCIA</small><h3>Entre a casa<br>e o horizonte.</h3><p>Um refúgio imaginado entre a natureza e o tempo de estar presente.</p><button type="button" class="sm-demo-action">Conhecer o projeto <span>↗</span></button></div></div><div class="sm-demo-footer"><span>DEMONSTRAÇÃO SMIILE</span><div role="group" aria-label="Direção visual da prévia"><button type="button" data-tone="light" aria-pressed="true">Clara</button><button type="button" data-tone="dark" aria-pressed="false">Grafite</button></div></div></div><div class="sm-experience-note"><span>MUDE O FORMATO. EXPLORE AS PÁGINAS.</span><span>CASA COSTA / PROJETO CONCEITUAL</span></div></div>`);
  frame.append(preview);const device=$('.sm-device',preview);let activePage='inicio';
  const host=device.parentElement;
  const phone=createDeviceFrame({tone:'light',scheme:'light',time:'10:47',label:'Prévia interativa Casa Costa dentro do dispositivo metálico'});
@@ -167,17 +116,34 @@ mount('Experience',()=>{
  function setPage(page){
   activePage=page;const isHome=page==='inicio';$$('[data-demo-page]',preview).forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.demoPage===page)));
   $('.sm-demo-copy h3',preview).innerHTML=isHome?'Entre a casa<br>e o horizonte.':'O espaço.<br>A experiência.';
-  $('.sm-demo-copy p',preview).textContent=isHome?'Imagem, mensagem e navegação trabalhando juntas.':'Uma demonstração de direção visual, leitura responsiva e navegação clara.';
+  $('.sm-demo-copy p',preview).textContent=isHome?'Um refúgio imaginado entre a natureza e o tempo de estar presente.':'Luz natural, linhas abertas e materiais que aproximam a casa da paisagem.';
   $('.sm-demo-action',preview).innerHTML=isHome?'Conhecer o projeto <span>↗</span>':'Voltar ao início <span>↶</span>';
-  preview.dataset.page=page;M.animate($('.sm-demo-picture img',preview),[{transform:'scale(1.12)',opacity:.6},{transform:'scale(1)',opacity:1}],{duration:700});rise($('.sm-demo-copy',preview),22);
+  preview.dataset.page=page;$('.sm-demo-picture>span',preview).textContent=isHome?'UM LUGAR PARA EXISTIR.':'LUZ · MATÉRIA · PAISAGEM';$('.sm-demo-picture img',preview).style.objectPosition=isHome?'50% 50%':'76% 50%';M.animate($('.sm-demo-picture img',preview),[{transform:'scale(1.12)',opacity:.6},{transform:'scale(1)',opacity:1}],{duration:700});rise($('.sm-demo-copy',preview),22);
  }
  $$('[data-demo-page]',preview).forEach(b=>b.addEventListener('click',()=>setPage(b.dataset.demoPage)));
  $('.sm-demo-action',preview).addEventListener('click',()=>setPage(activePage==='inicio'?'projeto':'inicio'));
- $$('button[data-tone]',preview).forEach(b=>b.addEventListener('click',()=>{device.dataset.tone=b.dataset.tone;$$('button[data-tone]',preview).forEach(t=>t.setAttribute('aria-pressed',String(t===b)));rise($('.sm-demo-copy',preview),10);}));
+ $$('button[data-tone]',preview).forEach(b=>b.addEventListener('click',()=>{device.dataset.tone=b.dataset.tone;$('.df-screen',phone.root).dataset.scheme=b.dataset.tone==='dark'?'dark':'light';$('.df-home',phone.root).dataset.tone=b.dataset.tone==='dark'?'light':'dark';$$('button[data-tone]',preview).forEach(t=>t.setAttribute('aria-pressed',String(t===b)));rise($('.sm-demo-copy',preview),10);}));
 });
 
 mount('Ads',()=>{
  const tabs=$$('[data-ad-tab]'),right=$('.ads-right'),list=$('.ads-tablist');if(!right||!list||!tabs.length)return;
+ const campaign={
+  meta:{label:'FEED / CARROSSEL',title:'Um problema que dispensa apresentação.',copy:'Reconhecimento primeiro. Produto depois. A sequência conduz a uma demonstração que cumpre a promessa.',hook:'Qual arquivo é o final_final?',script:'Quadro 1: versões espalhadas. Quadro 2: briefing, comentário e aprovação juntos. Quadro 3: convite para experimentar.',cta:'Explorar o fluxo',reason:'A pergunta cria identificação. Em seguida, a peça mostra o que muda e oferece um próximo passo concreto.'},
+  tiktok:{label:'VÍDEO / STORYBOARD 9:16',title:'A fricção vira demonstração.',copy:'Um roteiro de seis segundos: a confusão das versões dá lugar a um fluxo com começo, revisão e aprovação.',hook:'final_final_agora-vai.pdf?',script:'0–2 s: versões em conflito. 2–4 s: um comentário no lugar certo. 4–6 s: aprovação e convite para explorar.',cta:'Explorar o fluxo',reason:'A transição mostra a função do produto. Storyboard autoral: uma proposta de roteiro, anterior à produção audiovisual.'},
+  google:{label:'BUSCA / INTENÇÃO',title:'A resposta cabe na intenção de busca.',copy:'Quem procura organizar a aprovação precisa entender a função do produto antes de clicar.',hook:'Aprovação criativa, do briefing à versão final.',script:'Busca: ferramenta para aprovação de peças. Título responde à necessidade; descrição explicita o fluxo; CTA abre a demonstração.',cta:'Explorar o fluxo',reason:'A copy evita uma promessa vaga de produtividade. Apresenta funções que a pessoa pode verificar na interface.'},
+  chatgpt:{label:'CONTEXTO / DESCOBERTA',title:'Uma oferta ligada ao problema da conversa.',copy:'A mensagem apresenta o produto depois de estabelecer o contexto, com identificação clara de publicidade conceitual.',hook:'O feedback precisa estar perto da peça.',script:'Contexto: comentários em lugares diferentes. Orientação útil → proposta relacionada → demonstração opcional.',cta:'Explorar o fluxo',reason:'Relevância vem da relação com a necessidade. A oferta explica por que está ali e deixa a decisão com o visitante.'}
+ };
+ const brief=copy('<div class="sm-campaign-brief"><span>UM PRODUTO. UMA OFERTA. QUATRO FORMATOS.</span><strong>LINHA</strong><p>Do briefing ao aprovado. No mesmo lugar.</p><small>Estudo autoral · produto fictício</small></div>');list.after(brief);
+ Object.entries(campaign).forEach(([key,data])=>{
+  const panel=$('#panel-'+key),aside=panel&&$('.mock-aside',panel);if(!aside)return;
+  aside.dataset.linhaHost='';$('span',aside).textContent=data.label;$('h3',aside).textContent=data.title;$('p',aside).textContent=data.copy;
+  const decision=copy('<details class="sm-creative-decision"><summary>Por dentro da criação <span aria-hidden="true">+</span></summary><dl><div><dt>Gancho</dt><dd>'+data.hook+'</dd></div><div><dt>Roteiro / estrutura</dt><dd>'+data.script+'</dd></div><div><dt>Próximo passo</dt><dd>'+data.cta+'</dd></div></dl><p>'+data.reason+'</p></details>');aside.append(decision);
+  aside.append(copy('<button type="button" class="linha-primary linha-ad-cta" data-linha-open aria-expanded="false">Explorar o fluxo <span aria-hidden="true">→</span></button>'));
+ });
+ const search=$('.search-mock');if(search)search.innerHTML='<div class="search-mock-bar">ferramenta para aprovação de peças <span aria-hidden="true">⌕</span></div><div class="search-result"><small>Publicidade · estudo autoral</small><span>linha / aprovação criativa</span><h3>Do briefing ao aprovado. No mesmo lugar.</h3><p>Organize o briefing, revise com comentários e identifique a versão aprovada. Explore uma demonstração do fluxo LINHA.</p><div>Briefing · Revisão · Aprovação</div></div>';
+ const contextual=$('.context-mock');if(contextual)contextual.innerHTML='<span>CONTEXTO / ESTUDO AUTORAL</span><p class="context-question">Como evitar que a equipe aprove uma versão e o cliente comente em outra?</p><div class="context-reply"><i aria-hidden="true">✳</i><p>Centralize a revisão em uma versão identificada. Mantenha os comentários junto da peça e registre a decisão de aprovação.</p></div><div class="context-sponsored"><small>Publicidade · produto fictício</small><h3>O feedback precisa estar perto da peça.</h3><p>LINHA reúne briefing, revisão e aprovação no mesmo fluxo. Veja como uma versão chega ao aprovado.</p><span>Explore a demonstração ao lado.</span></div>';
+ const videoArt=$('.vertical-video img');if(videoArt){videoArt.src='/assets/creative/linha-campanha.svg';videoArt.alt='LINHA, direção de arte do storyboard de produto';}
+ const videoMeta=$('.video-meta');if(videoMeta)videoMeta.textContent='LINHA / STORYBOARD · PRODUTO FICTÍCIO';
  const marker=copy('<span class="sm-tab-marker" aria-hidden="true"></span>');list.prepend(marker);list.classList.add('sm-tabs-live');
  let from=0,ghost=null;const animations=[];
  function mark(tab){const a=tab.getBoundingClientRect(),b=list.getBoundingClientRect();marker.style.cssText=`width:${a.width}px;height:${a.height}px;transform:translate(${a.left-b.left}px,${a.top-b.top}px)`;}
@@ -191,27 +157,31 @@ mount('Ads',()=>{
  },true));
  requestAnimationFrame(()=>mark(tabs.find(t=>t.getAttribute('aria-selected')==='true')||tabs[0]));
  new ResizeObserver(()=>mark(tabs.find(t=>t.getAttribute('aria-selected')==='true')||tabs[0])).observe(list);
- const video=$('.vertical-video'),play=$('[data-play-story]');let step=0,start=0,raf=0,running=false;
- function stopStory(){running=false;cancelAnimationFrame(raf);if(play){play.setAttribute('aria-pressed','false');play.innerHTML='Percorrer os quadros <span>▶</span>';}}
+ const selectedTabObserver=new MutationObserver(()=>{const current=tabs.find(t=>t.getAttribute('aria-selected')==='true')||tabs[0];mark(current);if(current.dataset.adTab!=='tiktok')stopStory();});tabs.forEach(tab=>selectedTabObserver.observe(tab,{attributes:true,attributeFilter:['aria-selected']}));
+ const video=$('.vertical-video'),play=$('[data-play-story]');let step=0,start=0,elapsed=0,raf=0,running=false;
+ function stopStory(){
+  if(running)elapsed=Math.min(6000,performance.now()-start);running=false;cancelAnimationFrame(raf);
+  if(play){play.setAttribute('aria-pressed','false');play.innerHTML=M.paused()?'Próximo quadro <span>→</span>':elapsed>0&&elapsed<6000?'Continuar sequência <span>▶</span>':'Percorrer os quadros <span>▶</span>';}
+ }
  if(!video||!play)return;
- const lines=['E se o óbvio tiver<br>uma história melhor?','Tudo começa<br>com a pergunta.','O contexto dá<br>sentido à resposta.'];
- const controls=copy('<div class="sm-storyboard"><div class="sm-storyboard-title"><span>ROTEIRO EM 3 QUADROS</span><span data-frame-count>01 / 03</span></div><div class="sm-storyboard-frames" role="group" aria-label="Quadros do roteiro"><button type="button" data-frame="0" aria-pressed="true"><b>01</b><span>Gancho</span></button><button type="button" data-frame="1" aria-pressed="false"><b>02</b><span>Contexto</span></button><button type="button" data-frame="2" aria-pressed="false"><b>03</b><span>Mensagem</span></button></div><p>Storyboard de imagens e texto. Não é uma campanha veiculada.</p></div>');
- play.after(controls);video.append(copy('<div class="sm-video-progress" aria-hidden="true"><i></i></div>'));
+ const lines=['Qual é o<br>final_final?','Do briefing<br>ao aprovado.','No mesmo lugar.<br>Explore o fluxo.'];
+ const controls=copy('<div class="sm-storyboard"><div class="sm-storyboard-title"><span>ROTEIRO EM 3 QUADROS</span><span data-frame-count role="status">01 / 03</span></div><div class="sm-storyboard-frames" role="group" aria-label="Quadros do roteiro LINHA"><button type="button" data-frame="0" aria-pressed="true"><b>01</b><span>Problema</span></button><button type="button" data-frame="1" aria-pressed="false"><b>02</b><span>Produto</span></button><button type="button" data-frame="2" aria-pressed="false"><b>03</b><span>Ação</span></button></div><p>Storyboard autoral. Etapa de criação anterior à produção.</p></div>');
+ play.after(controls);video.append(copy('<div class="linha-video-stage" aria-hidden="true"></div>'));video.append(copy('<div class="sm-video-progress" aria-hidden="true"><i></i></div>'));
  function showFrame(index){
-  if(index===step&&video.dataset.frame)return;step=index;video.dataset.frame=String(index);$('.video-text',video).innerHTML=lines[index];
+  if(index===step&&video.dataset.frame)return;step=index;video.dataset.frame=String(index);$('.video-text',video).innerHTML=lines[index];$('img',video).src=index===1?'/assets/creative/linha-interface.svg':'/assets/creative/linha-campanha.svg';$('.linha-video-stage',video).innerHTML=index===0?'<span class="linha-media-brand">linha.</span><div class="linha-file-pile"><span>v01 <b>final.pdf</b></span><span>v02 <b>final_final.pdf</b></span><span>v03 <b>final_agora-vai.pdf</b></span></div>':index===1?'<span class="linha-media-brand">linha.</span><div class="linha-media-review"><small>V03 / EM REVISÃO</small><strong>Do briefing<br>ao aprovado.</strong><p>● Traga o benefício para a primeira linha.</p></div>':'<span class="linha-media-brand">linha.</span><div class="linha-media-approved"><b>✓</b><strong>v03</strong><span>APROVADO</span></div>';
   $('[data-frame-count]',controls).textContent=`0${index+1} / 03`;$$('[data-frame]',controls).forEach(b=>b.setAttribute('aria-pressed',String(Number(b.dataset.frame)===index)));
   M.animate($('img',video),[{transform:`scale(1.12) translateX(${index===1?-8:8}px)`},{transform:'scale(1) translateX(0)'}],{duration:1100});rise($('.video-text',video),20);
  }
- function tick(now){if(!running||!M.available()){stopStory();return;}const elapsed=now-start;showFrame(timelineStep(elapsed,3));$('.sm-video-progress i',video).style.transform=`scaleX(${clamp(elapsed/4800)})`;if(elapsed>=4800){stopStory();return;}raf=requestAnimationFrame(tick);}
- play.addEventListener('click',e=>{e.preventDefault();e.stopImmediatePropagation();if(running){stopStory();return;}if(!M.available()){showFrame((step+1)%3);return;}running=true;start=performance.now();showFrame(0);play.setAttribute('aria-pressed','true');play.innerHTML='Pausar sequência <span>Ⅱ</span>';raf=requestAnimationFrame(tick);},true);
- $$('[data-frame]',controls).forEach(b=>b.addEventListener('click',()=>{stopStory();showFrame(Number(b.dataset.frame));}));
+ function tick(now){if(!running||!M.available()){stopStory();return;}elapsed=now-start;showFrame(timelineStep(elapsed,3,2000));$('.sm-video-progress i',video).style.transform=`scaleX(${clamp(elapsed/6000)})`;if(elapsed>=6000){stopStory();return;}raf=requestAnimationFrame(tick);}
+ play.addEventListener('click',e=>{e.preventDefault();e.stopImmediatePropagation();if(running){stopStory();return;}if(!M.available()){showFrame((step+1)%3);return;}if(elapsed>=6000)elapsed=0;running=true;start=performance.now()-elapsed;showFrame(timelineStep(elapsed,3,2000));play.setAttribute('aria-pressed','true');play.innerHTML='Pausar sequência <span>Ⅱ</span>';raf=requestAnimationFrame(tick);},true);
+ $$('[data-frame]',controls).forEach(b=>b.addEventListener('click',()=>{stopStory();showFrame(Number(b.dataset.frame));elapsed=step*2000;$('.sm-video-progress i',video).style.transform=`scaleX(${step/3})`;stopStory();}));
  new IntersectionObserver(([entry])=>{if(!entry.isIntersecting)stopStory();},{threshold:.01}).observe(video);
- M.onStop(()=>{stopStory();ghost?.remove();});showFrame(0);
+ M.onStop(()=>{stopStory();ghost?.remove();});showFrame(0);stopStory();
 });
 
 mount('Systems',()=>{
  const display=$('.system-display'),steps=$$('.system-step');if(!display||steps.length!==4)return;
- const board=copy(`<div class="sm-network" data-step="0"><div class="sm-network-label"><span>CI / PROVENIÊNCIA</span><span>FLUXO DIDÁTICO</span></div><svg viewBox="0 0 620 220" aria-hidden="true"><g class="sm-grid"><path d="M0 40H620M0 90H620M0 140H620M0 190H620M60 0V220M180 0V220M300 0V220M420 0V220M540 0V220"/></g><g class="sm-network-paths"><path data-link="1" d="M88 114C150 114 127 54 215 54" pathLength="1"/><path data-link="2" d="M245 54C315 54 285 142 369 142" pathLength="1"/><path data-link="3" d="M395 142C458 142 442 82 520 82" pathLength="1"/><path class="sm-branch" data-link="2" d="M215 75C245 140 262 196 368 165" pathLength="1"/></g><g class="sm-network-node" data-node="0" transform="translate(34 76)"><rect width="114" height="78" rx="13"/><text x="14" y="26">01 / ENTRADA</text><text class="sm-node-word" x="14" y="53">Pergunta</text></g><g class="sm-network-node" data-node="1" transform="translate(180 16)"><rect width="114" height="78" rx="13"/><text x="14" y="26">02 / FONTE</text><text class="sm-node-word" x="14" y="53">Evidência</text></g><g class="sm-network-node" data-node="2" transform="translate(330 108)"><rect width="114" height="78" rx="13"/><text x="14" y="26">03 / RELAÇÃO</text><text class="sm-node-word" x="14" y="53">Contexto</text></g><g class="sm-network-node" data-node="3" transform="translate(486 44)"><rect width="114" height="78" rx="13"/><text x="14" y="26">04 / DOSSIÊ</text><text class="sm-node-word" x="14" y="53">Síntese</text></g></svg><div class="sm-network-footer"><span>ORIGEM → RELAÇÃO → CONCLUSÃO</span><button type="button" data-flow-play aria-pressed="false">Percorrer fluxo <span>▶</span></button></div></div>`);
+ const board=copy(`<div class="sm-network" data-step="0"><div class="sm-network-label"><span>PESQUISA / DECISÃO</span><span>DEMONSTRAÇÃO INTERATIVA</span></div><svg viewBox="0 0 620 220" aria-hidden="true"><g class="sm-grid"><path d="M0 40H620M0 90H620M0 140H620M0 190H620M60 0V220M180 0V220M300 0V220M420 0V220M540 0V220"/></g><g class="sm-network-paths"><path data-link="1" d="M88 114C150 114 127 54 215 54" pathLength="1"/><path data-link="2" d="M245 54C315 54 285 142 369 142" pathLength="1"/><path data-link="3" d="M395 142C458 142 442 82 520 82" pathLength="1"/><path class="sm-branch" data-link="2" d="M215 75C245 140 262 196 368 165" pathLength="1"/></g><g class="sm-network-node" data-node="0" transform="translate(34 76)"><rect width="114" height="78" rx="13"/><text x="14" y="26">01 / ENTRADA</text><text class="sm-node-word" x="14" y="53">Pergunta</text></g><g class="sm-network-node" data-node="1" transform="translate(180 16)"><rect width="114" height="78" rx="13"/><text x="14" y="26">02 / FONTE</text><text class="sm-node-word" x="14" y="53">Evidência</text></g><g class="sm-network-node" data-node="2" transform="translate(330 108)"><rect width="114" height="78" rx="13"/><text x="14" y="26">03 / RELAÇÃO</text><text class="sm-node-word" x="14" y="53">Contexto</text></g><g class="sm-network-node" data-node="3" transform="translate(486 44)"><rect width="114" height="78" rx="13"/><text x="14" y="26">04 / SÍNTESE</text><text class="sm-node-word" x="14" y="53">Síntese</text></g></svg><div class="sm-network-footer"><span>ORIGEM → RELAÇÃO → CONCLUSÃO</span><button type="button" data-flow-play aria-pressed="false">Percorrer fluxo <span>▶</span></button></div></div>`);
  display.before(board);let active=0,timer=null,running=false,programmatic=false;const play=$('[data-flow-play]',board);
  function stop(){clearTimeout(timer);running=false;play.setAttribute('aria-pressed','false');play.innerHTML='Percorrer fluxo <span>▶</span>';}
  function setStep(i){
@@ -228,7 +198,7 @@ mount('Systems',()=>{
 
 mount('Contact',()=>{
  const group=$('.contact-formats'),form=$('#brief-form'),service=$('#service'),brief=$('#brief');if(!group||!form||!service||!brief)return;
- const notes=['Uma entrega definida, com escopo e revisão combinados.','Criação, mídia e desenvolvimento conectados pela mesma necessidade.','Uma colaboração contínua, com prioridades e responsabilidades claras.'];
+ const notes=['Uma entrega definida, com escopo e revisão combinados.','Narrativa, campanha e desenvolvimento conectados pela mesma necessidade.','Uma colaboração contínua, com prioridades e responsabilidades claras.'];
  const explanation=copy('<p class="sm-collaboration-note" role="status"></p>');group.after(explanation);group.setAttribute('role','group');group.setAttribute('aria-label','Forma de colaboração');
  $$('span',group).forEach((span,i)=>{const b=document.createElement('button');b.type='button';b.textContent=span.textContent;b.setAttribute('aria-pressed',String(i===0));span.replaceWith(b);b.addEventListener('click',()=>{$$('button',group).forEach(x=>x.setAttribute('aria-pressed',String(x===b)));explanation.textContent=notes[i];rise(explanation,8);if(i===1){service.value='Projeto integrado';service.dispatchEvent(new Event('change',{bubbles:true}));}});});
  explanation.textContent=notes[0];

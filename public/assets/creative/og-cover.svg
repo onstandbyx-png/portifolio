@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-labelledby="title desc">
+  <title id="title">Smile N — Direção criativa</title>
+  <desc id="desc">Capa do portfólio Ideia ↗ Execução. Tipografia em papel com curvas verdes e uma linha de cobre.</desc>
+  <defs>
+    <pattern id="grid" width="45" height="45" patternUnits="userSpaceOnUse"><path d="M45 0H0V45" fill="none" stroke="#274b38" stroke-opacity=".06"/></pattern>
+    <clipPath id="orb"><circle cx="1090" cy="300" r="355"/></clipPath>
+  </defs>
+  <rect width="1200" height="630" fill="#f6f6f2"/><rect width="1200" height="630" fill="url(#grid)"/>
+  <path d="M56 96H675M56 554H675" stroke="#274b38" stroke-opacity=".25"/>
+  <text x="56" y="65" fill="#16221c" font-family="Arial, Helvetica, sans-serif" font-size="27" font-weight="700" letter-spacing="1.8">SMILE N</text>
+  <g fill="#16221c" font-family="Georgia, 'Times New Roman', serif" font-size="110" letter-spacing="-5"><text x="51" y="240">Direção</text><text x="51" y="354" font-style="italic">criativa.</text></g>
+  <text x="56" y="416" fill="#274b38" font-family="Arial, Helvetica, sans-serif" font-size="25">Narrativa, conteúdo e tecnologia.</text>
+  <g fill="#16221c" font-family="Arial, Helvetica, sans-serif" font-size="32" font-weight="700" letter-spacing="-1"><text x="56" y="519">ideia</text><path d="M138 516L155 499M138 499H155V516" fill="none" stroke="#16221c" stroke-width="2.4"/><text x="170" y="519">execução.</text></g>
+  <text x="56" y="594" fill="#274b38" font-family="Arial, Helvetica, sans-serif" font-size="16" letter-spacing="1.7">PROJETOS PARA MARCAS E EMPRESAS</text>
+  <circle cx="1090" cy="300" r="355" fill="#274b38"/>
+  <g clip-path="url(#orb)" stroke="#f6f6f2" stroke-width="1.1" opacity=".62" fill="none">
+    <ellipse cx="1090" cy="300" rx="38" ry="355"/><ellipse cx="1090" cy="300" rx="98" ry="355"/><ellipse cx="1090" cy="300" rx="162" ry="355"/><ellipse cx="1090" cy="300" rx="225" ry="355"/><ellipse cx="1090" cy="300" rx="285" ry="355"/><ellipse cx="1090" cy="300" rx="328" ry="355"/>
+    <ellipse cx="1090" cy="300" rx="355" ry="38"/><ellipse cx="1090" cy="300" rx="355" ry="98"/><ellipse cx="1090" cy="300" rx="355" ry="162"/><ellipse cx="1090" cy="300" rx="355" ry="225"/><ellipse cx="1090" cy="300" rx="355" ry="285"/><ellipse cx="1090" cy="300" rx="355" ry="328"/>
+  </g>
+  <path d="M685 590C900 533 657 182 939 149S1120 501 1271 434" fill="none" stroke="#bc6748" stroke-width="25"/>
+  <circle cx="685" cy="590" r="13" fill="#bc6748"/>
+</svg>

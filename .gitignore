@@ -4,3 +4,7 @@ node_modules/
 !.env.example
 .DS_Store
 coverage/
+
+# Build outputs and local browser evidence
+public/assets/badge-build/
+qa/

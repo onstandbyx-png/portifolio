@@ -1,16 +1,20 @@
 import {createRequire} from 'node:module';
 import {spawn} from 'node:child_process';
 import {mkdir,writeFile} from 'node:fs/promises';
+import {existsSync} from 'node:fs';
 import assert from 'node:assert/strict';
-const require=createRequire(process.env.QA_PACKAGE||'/tmp/portfolio-qa/package.json');
-const {chromium}=require('playwright');
-const base=process.env.QA_URL||'http://127.0.0.1:4174';
+const require=createRequire(process.env.QA_PACKAGE||import.meta.url);
+let chromium;try{({chromium}=require('playwright'));}catch{({chromium}=require('/opt/codex/runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright'));}
+const port=process.env.PORT||'4174';
+const base=(process.env.BASE_URL||process.env.QA_URL||`http://127.0.0.1:${port}`).replace(/\/$/,'');
 await mkdir('qa/kinetic-pass',{recursive:true});
-const server=process.env.QA_URL?null:spawn(process.execPath,['server.mjs'],{env:{...process.env,PORT:'4174'},stdio:'inherit'});
+const server=process.env.BASE_URL||process.env.QA_URL?null:spawn(process.execPath,['server.mjs'],{env:{...process.env,PORT:port},stdio:'inherit'});
 for(let i=0;i<55;i++){try{if((await fetch(base+'/health')).ok)break;}catch{}await new Promise(r=>setTimeout(r,180));}
-const browser=await chromium.launch({headless:true,args:['--no-sandbox']});const report=[];
+const executablePath=process.env.CHROMIUM_PATH||(existsSync('/usr/bin/chromium')?'/usr/bin/chromium':undefined);
+const browser=await chromium.launch({headless:true,executablePath,args:['--no-sandbox','--use-gl=angle','--use-angle=swiftshader','--enable-unsafe-swiftshader']});const report=[];
 try{
- for(const [width,height] of [[1440,1000],[390,844],[320,740],[844,390]]){
+ const selectedWidths=process.env.QA_WIDTHS?.split(',').map(Number);
+ for(const [width,height] of [[1440,1000],[390,844],[320,740],[844,390]].filter(([width])=>!selectedWidths||selectedWidths.includes(width))){
   const context=await browser.newContext({viewport:{width,height},isMobile:width<500,hasTouch:width<500,deviceScaleFactor:1});
   const page=await context.newPage();page.setDefaultTimeout(14000);
   const errors=[],checks=[],row={width,height,checks,errors};report.push(row);
@@ -29,13 +33,14 @@ try{
    check('knockout uses actual blend mode',await page.locator('.ks-stencil').evaluate(e=>getComputedStyle(e).mixBlendMode==='multiply'));
    check('pass dimensions match 300x500',await page.locator('.ks-stack').evaluate(e=>e.offsetWidth===300&&e.offsetHeight===500));
    await page.waitForFunction(()=>{const r=document.querySelector('#estudio-interativo');return r.dataset.texture==='video'||r.dataset.texture==='flow'},null,{timeout:14000});
+   await page.waitForFunction(()=>{const video=document.querySelector('#estudio-interativo .ks-video');return video.readyState>=2&&!video.error&&document.querySelector('#estudio-interativo').dataset.texture==='video';},null,{timeout:14000});
    const videoAvailable=await root.locator('.ks-video').evaluate(v=>v.readyState>=2&&!v.error);
    check('native H264 clip decodes and plays locally',videoAvailable&&await root.getAttribute('data-texture')==='video');
    const range=await page.request.get(base+'/assets/kinetic-pass/material-loop.mp4',{headers:{Range:'bytes=0-127'}});
    check('MP4 supports HTTP byte-range requests',range.status()===206&&range.headers()['content-type']?.startsWith('video/mp4'));
    check('curved WebGL or SVG fallback is available',['webgl','svg'].includes(await root.getAttribute('data-curl')));
    const firstVideoTime=await root.locator('.ks-video').evaluate(v=>v.currentTime);
-   await page.waitForTimeout(440);
+   await page.waitForFunction(time=>{const video=document.querySelector('#estudio-interativo .ks-video');return video.currentTime>time&&!video.paused;},firstVideoTime,{timeout:7000});
    check('video advances while the section is visible',await root.locator('.ks-video').evaluate((v,t)=>v.currentTime>t&&!v.paused,firstVideoTime));
    await page.locator('[data-ks-pause]').click();await page.locator('.ks-stage').scrollIntoViewIfNeeded();
    const pausedTime=await root.locator('.ks-video').evaluate(v=>v.currentTime);
@@ -46,6 +51,19 @@ try{
    check('peel responds precisely, including while paused',Number(await root.getAttribute('data-peel'))>.9);
    check('fallback fold and physical curve have valid geometry',await page.locator('.ks-flap').getAttribute('d')?.then(d=>d.length>30)&&await page.locator('.ks-fold-hole').getAttribute('transform')?.then(x=>x.startsWith('matrix(')));
    if(await root.getAttribute('data-curl')==='webgl')check('curved WebGL mesh is active at device pixel ratio 1 or higher',await root.locator('.ks-curl-webgl').evaluate(c=>c.width>=300&&c.height>=500&&getComputedStyle(c).display!=='none'&&Boolean(c.getContext('webgl'))));
+   if(width===1440&&await root.getAttribute('data-curl')==='webgl'){
+     await page.locator('[data-ks-pause]').click();
+     await page.locator('.ks-stage').scrollIntoViewIfNeeded();
+     const bounds=await page.locator('.ks-stage').boundingBox();
+     await page.mouse.move(bounds.x+bounds.width*.2,bounds.y+bounds.height*.35);
+     await page.waitForTimeout(120);
+     const lighting=await root.locator('.ks-curl-webgl').evaluate(canvas=>canvas.toDataURL());
+     const heldPeel=await root.getAttribute('data-peel');
+     await page.mouse.move(bounds.x+bounds.width*.8,bounds.y+bounds.height*.65);
+     await page.waitForTimeout(120);
+     check('Curved material lighting responds while fold geometry stays fixed',heldPeel===await root.getAttribute('data-peel')&&lighting!==await root.locator('.ks-curl-webgl').evaluate(canvas=>canvas.toDataURL()));
+     await page.locator('[data-ks-pause]').click();
+   }
 
    await page.locator('.ks-stage').scrollIntoViewIfNeeded();await page.screenshot({path:`qa/kinetic-pass/peeled-${width}.png`});
    await page.locator('[data-ks-mode="layers"]').click();
@@ -58,22 +76,28 @@ try{
    check('text editing changes real knockout type',await page.locator('.ks-word').innerText()==='crie!');
    await page.locator('[data-ks-finish]').selectOption('silver');
    check('finish changes the material',await root.getAttribute('data-finish')==='silver');
+   check('Silver finish applies to the playing material video',await root.locator('.ks-video').evaluate(video=>getComputedStyle(video).filter.includes('grayscale(1)')));
    await page.locator('[data-ks-text]').fill('<x>');
    check('user text is not interpreted as HTML',await page.locator('.ks-word').innerText()==='x'&&await root.locator('x').count()===0);
    await page.locator('[data-ks-reset]').click();await page.locator('.ks-stage').scrollIntoViewIfNeeded();await page.waitForTimeout(600);
    check('reset restores piece and content',await page.locator('.ks-word').innerText()==='ideia'&&await root.getAttribute('data-finish')==='gold'&&Number(await root.getAttribute('data-peel'))<.02);
-   await page.locator('.ks-grab').focus();await page.keyboard.press('Enter');await page.waitForTimeout(700);
+   await page.locator('.ks-grab').focus();await page.keyboard.press('Enter');
+   await page.waitForFunction(()=>Number(document.querySelector('#estudio-interativo')?.dataset.peel)>.75,null,{timeout:7000});
    check('corner has a working keyboard equivalent',Number(await root.getAttribute('data-peel'))>.75);
    await page.locator('[data-ks-reset]').click();await page.locator('.ks-stage').scrollIntoViewIfNeeded();await page.waitForTimeout(500);
    const grab=await page.locator('.ks-grab').boundingBox();
    await page.mouse.move(grab.x+grab.width*.6,grab.y+grab.height*.55);await page.mouse.down();await page.mouse.move(grab.x+grab.width*.4,grab.y+grab.height*.55+115,{steps:8});
    check('pointer drag physically reveals the material',Number(await root.getAttribute('data-peel'))>.2);
-   await page.mouse.up();await page.waitForTimeout(1000);
+   await page.mouse.up();
+   await page.waitForFunction(()=>Number(document.querySelector('#estudio-interativo')?.dataset.peel)<.035,null,{timeout:7000});
    check('release returns the fold to the corner',Number(await root.getAttribute('data-peel'))<.035);
-   await page.locator('[data-ks-replay]').click();await page.locator('.ks-stage').scrollIntoViewIfNeeded();await page.waitForTimeout(450);
+   await page.locator('[data-ks-replay]').click();await page.locator('.ks-stage').scrollIntoViewIfNeeded();
+   await page.waitForFunction(()=>Number(document.querySelector('[data-ks-time]')?.value)>0,null,{timeout:7000});
    check('reference sequence has a real seekable timeline',await page.locator('.ks-playback').isVisible()&&Number(await page.locator('[data-ks-time]').inputValue())>0);
    await page.locator('[data-ks-time]').evaluate(e=>{e.value='12';e.dispatchEvent(new Event('input',{bubbles:true}));});
    check('reference 12 second frame corresponds to exploded layers',Number(await root.getAttribute('data-layers'))>.99);
+   await page.locator('[data-ks-time]').evaluate(e=>{e.value='7.5';e.dispatchEvent(new Event('input',{bubbles:true}));});
+   check('Sequence annotation explains the creative decision',await root.getAttribute('data-notes')==='true'&&await root.locator('[data-ks-insight-title]').innerText()==='A mensagem organiza a atenção.');
    await page.locator('[data-ks-time]').evaluate(e=>{e.value='3.6';e.dispatchEvent(new Event('input',{bubbles:true}));});
    check('reference 3.6 second frame corresponds to full peel',Number(await root.getAttribute('data-peel'))>.9);
    await page.locator('[data-ks-reset]').click();await page.locator('.ks-stage').scrollIntoViewIfNeeded();await page.waitForTimeout(500);
@@ -84,14 +108,16 @@ try{
    check('no document horizontal overflow',await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+2));
    check('controls never overlay the stage',await page.evaluate(()=>{const s=document.querySelector('.ks-stage').getBoundingClientRect(),c=document.querySelector('.ks-controls').getBoundingClientRect();return c.top>=s.bottom-1;}));
    check('no JavaScript exceptions',errors.length===0);
-   // Twelve reference checkpoints. Capture the genuine interaction state,
+   // Thirteen reference checkpoints, including the final secondary fold.
+   // Capture the genuine interaction state,
    // not the recorded desktop chrome from the supplied screen capture.
-   const checkpoints=[0,.8,1.8,2.7,3.6,4.9,7.5,10.2,12.3,14.7,19.5,25.1];
+   const checkpoints=[0,.8,1.8,2.7,3.6,4.9,7.5,10.2,12.3,14.7,19.5,23.55,25.1];
    for(const second of checkpoints){
      await page.locator('[data-ks-time]').evaluate((e,t)=>{e.value=String(t);e.dispatchEvent(new Event('input',{bubbles:true}));},second);
      await root.locator('.ks-stage').screenshot({path:'qa/kinetic-pass/frames/state-'+width+'-'+String(second).replace('.','_')+'.png'});
    }
-  }catch(error){row.failure=String(error);await page.screenshot({path:`qa/kinetic-pass/failure-${width}.png`});}
+  }catch(error){row.failure=String(error);console.error(`[kinetic ${width}×${height}] ${row.failure}`);await page.screenshot({path:`qa/kinetic-pass/failure-${width}.png`});}
+  console.log(`[kinetic ${width}×${height}] ${checks.filter(item=>item.pass).length} checks passed${row.failure?' · failed':''}`);
   await context.close();
  }
 }finally{await writeFile('qa/kinetic-pass/results.json',JSON.stringify(report,null,2));await browser.close();server?.kill();}
