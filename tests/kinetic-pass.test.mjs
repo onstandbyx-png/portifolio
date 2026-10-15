@@ -29,7 +29,7 @@ test('single continuous material surface replaces repeated video strips',()=>{
  const path=new URL('../public/assets/kinetic-pass/kinetic-pass.js',import.meta.url);
  const source=readFileSync(path,'utf8');
  assert(source.includes('crossfade adjacent original-image samples'));
- assert(source.includes('radialGradient'));
+ assert(source.includes('createRadialGradient'));
  assert(!source.includes('for(let k=0;k<4;k++)'));
  assert(source.includes("gold-material.svg"));
  assert(source.includes('createCurlRenderer'));
