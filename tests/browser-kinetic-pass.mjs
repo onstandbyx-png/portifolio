@@ -12,18 +12,45 @@ const server=process.env.BASE_URL||process.env.QA_URL?null:spawn(process.execPat
 for(let i=0;i<55;i++){try{if((await fetch(base+'/health')).ok)break;}catch{}await new Promise(r=>setTimeout(r,180));}
 const executablePath=process.env.CHROMIUM_PATH||(existsSync('/usr/bin/chromium')?'/usr/bin/chromium':undefined);
 const browser=await chromium.launch({headless:true,executablePath,args:['--no-sandbox','--use-gl=angle','--use-angle=swiftshader','--enable-unsafe-swiftshader']});const report=[];
+const browserInfo={version:browser.version(),executablePath:executablePath||'Playwright bundled headless default'};
+console.log(`Kinetic browser: ${JSON.stringify(browserInfo)}`);
 try{
  const selectedWidths=process.env.QA_WIDTHS?.split(',').map(Number);
  for(const [width,height] of [[1440,1000],[390,844],[320,740],[844,390]].filter(([width])=>!selectedWidths||selectedWidths.includes(width))){
   const context=await browser.newContext({viewport:{width,height},isMobile:width<500,hasTouch:width<500,deviceScaleFactor:1});
   const page=await context.newPage();page.setDefaultTimeout(14000);
-  const errors=[],checks=[],row={width,height,checks,errors};report.push(row);
+  const errors=[],checks=[],row={width,height,browser:browserInfo,checks,errors};report.push(row);
   page.on('pageerror',e=>errors.push(String(e)));
+  // The hero has its own browser coverage. Isolate this suite's GPU work to the
+  // studio so an unrelated hero shader compilation cannot delay media events.
+  await page.route('**/assets/badge-build/**',route=>route.abort());
+  if(width===390)await page.addInitScript(()=>{
+   const original=HTMLMediaElement.prototype.play;
+   HTMLMediaElement.prototype.play=function(...args){
+    if(this.classList.contains('ks-video')&&!window.__kineticAbortInjected){
+     window.__kineticAbortInjected=true;
+     return Promise.reject(new DOMException('QA: transient media play interruption','AbortError'));
+    }
+    return original.apply(this,args);
+   };
+  });
+  const mediaResponses=[];
+  page.on('response',response=>{if(/\/material-loop\.(mp4|webm)(?:[?#]|$)/.test(response.url()))mediaResponses.push({url:response.url(),status:response.status(),type:response.headers()['content-type']});});
+  const inspectMedia=()=>page.evaluate(()=>{
+   const video=document.querySelector('#estudio-interativo .ks-video');
+   if(!video)return {missing:true};
+   return {currentSrc:video.currentSrc,error:video.error?{code:video.error.code,message:video.error.message}:null,
+    readyState:video.readyState,networkState:video.networkState,paused:video.paused,currentTime:video.currentTime,
+    duration:Number.isFinite(video.duration)?video.duration:null,texture:document.querySelector('#estudio-interativo')?.dataset.texture,
+    playback:document.querySelector('#estudio-interativo')?.dataset.videoPlayback,motion:document.querySelector('#estudio-interativo')?.dataset.motion,documentHidden:document.hidden,
+    canPlayType:{mp4:video.canPlayType('video/mp4; codecs="avc1.42E01E"'),webm:video.canPlayType('video/webm; codecs="vp9"')},
+    sources:[...video.querySelectorAll('source')].map(source=>({src:source.src,type:source.type}))};
+  });
   await page.route('https://midia-kit-production-c234.up.railway.app/**',r=>r.abort());
   const check=(label,value)=>{checks.push({label,pass:!!value});assert(value,label);};
   try{
    await page.goto(base+'/?qa=kinetic#estudio-interativo',{waitUntil:'domcontentloaded'});
-   const root=page.locator('#estudio-interativo');await root.waitFor();await page.waitForFunction(()=>document.querySelector('#estudio-interativo')?.dataset.ready==='true');
+   const root=page.locator('#estudio-interativo');await root.waitFor({state:'attached',timeout:60000});await page.waitForFunction(()=>document.querySelector('#estudio-interativo')?.dataset.ready==='true');
    await page.locator('.ks-stage').scrollIntoViewIfNeeded();
    await page.waitForFunction(()=>['video','flow'].includes(document.querySelector('#estudio-interativo')?.dataset.texture));
    check('isolated section is mounted once',await root.count()===1);
@@ -35,9 +62,19 @@ try{
    await page.waitForFunction(()=>{const r=document.querySelector('#estudio-interativo');return r.dataset.texture==='video'||r.dataset.texture==='flow'},null,{timeout:14000});
    await page.waitForFunction(()=>{const video=document.querySelector('#estudio-interativo .ks-video');return video.readyState>=2&&!video.error&&document.querySelector('#estudio-interativo').dataset.texture==='video';},null,{timeout:14000});
    const videoAvailable=await root.locator('.ks-video').evaluate(v=>v.readyState>=2&&!v.error);
-   check('native H264 clip decodes and plays locally',videoAvailable&&await root.getAttribute('data-texture')==='video');
-   const range=await page.request.get(base+'/assets/kinetic-pass/material-loop.mp4',{headers:{Range:'bytes=0-127'}});
-   check('MP4 supports HTTP byte-range requests',range.status()===206&&range.headers()['content-type']?.startsWith('video/mp4'));
+   row.media=await inspectMedia();
+   check('Selected native media decodes locally',videoAvailable&&await root.getAttribute('data-texture')==='video'&&new URL(row.media.currentSrc).origin===new URL(base).origin&&/\/material-loop\.(mp4|webm)$/.test(new URL(row.media.currentSrc).pathname));
+   if(width===390){
+    await page.waitForFunction(()=>window.__kineticAbortInjected===true);
+    await page.locator('.hero').scrollIntoViewIfNeeded();
+    await page.waitForFunction(()=>document.querySelector('#estudio-interativo .ks-video').paused);
+    await page.locator('.ks-stage').scrollIntoViewIfNeeded();
+    check('A transient play AbortError preserves native media for a new attempt',await root.getAttribute('data-texture')==='video'&&await root.locator('.ks-video').evaluate(video=>video.readyState>=2&&!video.error));
+   }
+   for(const [extension,type] of [['mp4','video/mp4'],['webm','video/webm']]){
+    const range=await page.request.get(`${base}/assets/kinetic-pass/material-loop.${extension}`,{headers:{Range:'bytes=0-127'}});
+    check(`${extension.toUpperCase()} supports exact HTTP byte-range requests`,range.status()===206&&range.headers()['content-type']?.startsWith(type)&&/^bytes 0-127\/\d+$/.test(range.headers()['content-range']||'')&&(await range.body()).length===128);
+   }
    check('curved WebGL or SVG fallback is available',['webgl','svg'].includes(await root.getAttribute('data-curl')));
    const firstVideoTime=await root.locator('.ks-video').evaluate(v=>v.currentTime);
    await page.waitForFunction(time=>{const video=document.querySelector('#estudio-interativo .ks-video');return video.currentTime>time&&!video.paused;},firstVideoTime,{timeout:7000});
@@ -116,7 +153,7 @@ try{
      await page.locator('[data-ks-time]').evaluate((e,t)=>{e.value=String(t);e.dispatchEvent(new Event('input',{bubbles:true}));},second);
      await root.locator('.ks-stage').screenshot({path:'qa/kinetic-pass/frames/state-'+width+'-'+String(second).replace('.','_')+'.png'});
    }
-  }catch(error){row.failure=String(error);console.error(`[kinetic ${width}×${height}] ${row.failure}`);await page.screenshot({path:`qa/kinetic-pass/failure-${width}.png`});}
+  }catch(error){row.failure=String(error);row.media=await inspectMedia().catch(cause=>({diagnosticError:String(cause)}));row.mediaResponses=mediaResponses;console.error(`[kinetic ${width}×${height}] ${row.failure}\nMedia diagnostics: ${JSON.stringify(row.media)}\nMedia responses: ${JSON.stringify(mediaResponses)}`);await page.screenshot({path:`qa/kinetic-pass/failure-${width}.png`}).catch(cause=>{row.screenshotFailure=String(cause);});}
   console.log(`[kinetic ${width}×${height}] ${checks.filter(item=>item.pass).length} checks passed${row.failure?' · failed':''}`);
   await context.close();
  }

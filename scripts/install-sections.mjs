@@ -12,5 +12,7 @@ assert(!html.includes('src="https://midia-kit-production'),'Artwork must be serv
 assert(!html.includes('/assets/showcase/fidelity.js'),'Obsolete universal device layer must not return');
 const clip=await readFile(new URL('public/assets/kinetic-pass/material-loop.mp4',root));
 assert(clip.length>10000&&clip.subarray(4,8).toString()==='ftyp','Continuous source clip missing or invalid');
+const webm=await readFile(new URL('public/assets/kinetic-pass/material-loop.webm',root));
+assert(webm.length>10000&&webm.subarray(0,4).toString('hex')==='1a45dfa3','Open-codec texture clip missing or invalid');
 execFileSync(process.execPath,['--test',...['sections','fidelity','kinetic-pass','contact'].map(name=>new URL('tests/'+name+'.test.mjs',root).pathname)],{stdio:'inherit'});
 console.log('PASS: canonical HTML, local assets, native media and section contracts; source unchanged');

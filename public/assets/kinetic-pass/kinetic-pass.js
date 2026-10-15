@@ -32,7 +32,7 @@ function mount(){
    <div class="ks-toolbar"><div class="ks-modes" role="group" aria-label="Modo de exploração"><button type="button" data-ks-mode="piece" aria-pressed="true">A peça</button><button type="button" data-ks-mode="layers" aria-pressed="false">Por dentro</button><button type="button" data-ks-mode="custom" aria-pressed="false">Sua versão</button></div><span class="ks-live"><i aria-hidden="true"></i> ESTUDO AUTORAL</span></div>
    <div class="ks-stage" aria-label="Passe criativo com dobra interativa e quatro camadas">
     <div class="ks-floor" aria-hidden="true"></div><div class="ks-assembly"><div class="ks-stack">
-     <div class="ks-plane ks-material" data-layer="0"><video class="ks-video" muted loop playsinline preload="metadata" aria-hidden="true" tabindex="-1"><source src="/assets/kinetic-pass/material-loop.mp4" type="video/mp4"></video><canvas class="ks-canvas" width="480" height="800" aria-hidden="true"></canvas></div>
+     <div class="ks-plane ks-material" data-layer="0"><video class="ks-video" muted loop playsinline preload="metadata" aria-hidden="true" tabindex="-1"><source src="/assets/kinetic-pass/material-loop.webm" type='video/webm; codecs="vp9"'><source src="/assets/kinetic-pass/material-loop.mp4" type="video/mp4"></video><canvas class="ks-canvas" width="480" height="800" aria-hidden="true"></canvas></div>
      <div class="ks-plane ks-base" data-layer="1" aria-hidden="true"></div><div class="ks-plane ks-stencil" data-layer="2" aria-hidden="true"><span class="ks-word">ideia</span></div><div class="ks-plane ks-print" data-layer="3">${printArtwork()}</div>
      <canvas class="ks-curl-webgl" width="600" height="1000" aria-hidden="true"></canvas><svg class="ks-fold" viewBox="0 0 300 500" aria-hidden="true"><defs><linearGradient id="ks-fold-light" gradientUnits="userSpaceOnUse" x1="260" y1="0" x2="290" y2="30"><stop offset="0" stop-color="#222529"/><stop offset=".26" stop-color="#8a8271"/><stop offset=".42" stop-color="#444442"/><stop offset="1" stop-color="#2c2e32"/></linearGradient><filter id="ks-fold-shadow" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="4"/></filter><mask id="ks-fold-mask"><path class="ks-flap-mask" fill="white"/><rect class="ks-fold-hole" x="120" y="21" width="60" height="12" rx="6" fill="black"/></mask></defs><path class="ks-flap-shadow" fill="#000" opacity=".42" filter="url(#ks-fold-shadow)"/><path class="ks-flap" fill="url(#ks-fold-light)" mask="url(#ks-fold-mask)"/><path class="ks-fold-edge" fill="none" stroke="#d7d9d7" stroke-opacity=".28" stroke-width=".65"/></svg>
      <button type="button" class="ks-grab" aria-label="Puxar ou recolher o canto do passe" aria-pressed="false"><span class="sr-only">Puxar canto</span></button>
@@ -53,14 +53,18 @@ function mount(){
  const stage=$('.ks-stage',root),assembly=$('.ks-assembly',root),stack=$('.ks-stack',root),stencil=$('.ks-stencil',root),print=$('.ks-print',root),fold=$('.ks-fold',root),grab=$('.ks-grab',root),peel=$('#ks-peel',root),words=$$('.ks-word',root);
  const ctx=$('.ks-canvas',root).getContext('2d',{alpha:false});
  const video=$('.ks-video',root);
- let videoUsable=false,videoAttempted=false;
+ let videoUsable=false,videoPending=null,videoBlocked=false,videoUnavailable=false;
  const curlCanvas=$('.ks-curl-webgl',root),curl=createCurlRenderer(curlCanvas);
  curlCanvas.addEventListener('webglcontextlost',()=>{root.classList.remove('ks-has-curl');root.dataset.curl='svg';});
  root.dataset.curl=curl?'webgl':'svg';
  if(curl)root.classList.add('ks-has-curl');
  const atlas=new Image();atlas.decoding='async';atlas.src='/assets/kinetic-pass/gold-material.svg';
- function videoFailed(){videoUsable=false;root.classList.remove('ks-has-video');root.dataset.texture=atlas.complete&&atlas.naturalWidth?'flow':'fallback';drawTexture(true);}
- video.addEventListener('loadeddata',()=>{if(!video.error){videoUsable=true;root.classList.add('ks-has-video');root.dataset.texture='video';reconcile();}});
+ function videoFailed(){videoUsable=false;videoUnavailable=true;root.classList.remove('ks-has-video');root.dataset.texture=atlas.complete&&atlas.naturalWidth?'flow':'fallback';root.dataset.videoPlayback='unavailable';drawTexture(true);}
+ function retainDecodedVideo(){
+  if(videoUnavailable||video.error||video.readyState<2)return;
+  videoUsable=true;root.classList.add('ks-has-video');root.dataset.texture='video';
+ }
+ video.addEventListener('loadeddata',()=>{if(!video.error){videoUnavailable=false;retainDecodedVideo();reconcile();}});
  video.addEventListener('error',videoFailed);
  const media=matchMedia('(prefers-reduced-motion: reduce)');
  let visible=false,raf=0,last=0,clock=900,localPaused=false,playing=false,time=0,mode='piece',title='ideia',current=0,target=0,velocity=0,depth=0,depthTarget=0,pitch=2,yaw=-6,drag=null,userTitle='ideia',lastRender='',lastGeometry='',lastLight='',inspecting=-1,timelineNotes=false,lastPaint=0;
@@ -175,21 +179,48 @@ function mount(){
   if(now-lastPaint>=32){drawTexture();render();lastPaint=now;}schedule();
  }
  function schedule(){if(!raf&&visible&&!stopped())raf=requestAnimationFrame(tick);}
+ function handlePlayFailure(error){
+  // pause() and load() normally reject an in-flight play() with AbortError.
+  // They do not invalidate an already decoded frame or its next playback attempt.
+  if(video.error||error?.name==='NotSupportedError'){videoFailed();return;}
+  retainDecodedVideo();
+  if(error?.name==='NotAllowedError'){
+   videoBlocked=true;root.dataset.videoPlayback='awaiting-interaction';return;
+  }
+  root.dataset.videoPlayback='interrupted';
+  if(error?.name==='AbortError'&&visible&&!stopped())requestAnimationFrame(()=>reconcile());
+ }
+ function playVideo(){
+  if(!videoUsable||!video.paused||videoPending||videoBlocked)return;
+  try{
+   const attempt=video.play();
+   if(!attempt?.then)return;
+   videoPending=attempt;
+   attempt.then(()=>{
+    if(videoPending===attempt)videoPending=null;
+    root.dataset.videoPlayback=video.paused?'paused':'playing';
+   },error=>{
+    if(videoPending===attempt)videoPending=null;
+    handlePlayFailure(error);
+   });
+  }catch(error){handlePlayFailure(error);}
+ }
  function reconcile(){
+  retainDecodedVideo();
   const disabled=stopped()||!visible;
   if(disabled){cancelAnimationFrame(raf);raf=0;last=0;video.pause();}
   else{
-   if(videoUsable&&!videoAttempted){
-     videoAttempted=true;
-     const p=video.play();
-     p?.catch(()=>{videoAttempted=false;videoFailed();});
-   }else if(videoUsable&&video.paused){
-     video.play()?.catch(()=>videoFailed());
-   }
+   playVideo();
    schedule();
   }
   root.dataset.motion=disabled?'paused':'running';
  }
+ function retryVideoAfterInteraction(event){
+  if(!videoBlocked||!event.isTrusted||!event.target.closest('button,input,select'))return;
+  videoBlocked=false;reconcile();
+ }
+ root.addEventListener('click',retryVideoAfterInteraction);
+ root.addEventListener('keydown',retryVideoAfterInteraction);
  $$('[data-ks-mode]',root).forEach(b=>b.addEventListener('click',()=>setMode(b.dataset.ksMode)));
  const descriptions=['Curiosidade: luz e textura criam o primeiro motivo para parar e explorar.','Contraste: uma base silenciosa destaca a mensagem e organiza a atenção.','Mensagem: uma palavra forte orienta a leitura, mesmo quando a peça se move.','Identidade: linhas, selo e acabamento dão consistência e personalidade ao conjunto.'];
  $$('[data-ks-inspect]',root).forEach(b=>b.addEventListener('click',()=>{

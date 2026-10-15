@@ -26,4 +26,4 @@ Essas decisões são hipóteses de melhoria, não resultados de conversão medid
 
 ## Resiliência
 
-Conteúdo essencial e contatos permanecem nativos. O hero apresenta fallback antes do primeiro frame WebGL e após perda de contexto. Movimento reduzido e pausa são respeitados; o estúdio oferece fallback de dobra. Assets principais são locais. A build valida o conteúdo em vez de reescrevê-lo.
+Conteúdo essencial e contatos permanecem nativos. O hero apresenta fallback antes do primeiro frame WebGL e após perda de contexto. Movimento reduzido e pausa são respeitados; o estúdio oferece fallback de dobra. Assets principais são locais. A textura nativa oferece WebM e MP4 para navegadores com capacidades de decodificação diferentes, além do fallback em canvas. A build valida o conteúdo em vez de reescrevê-lo.

@@ -35,10 +35,15 @@ test('single continuous material surface replaces repeated video strips',()=>{
  assert(source.includes('createCurlRenderer'));
 });
 
-test('native MP4 has an ISO media header and a non-empty decoded source',()=>{
+test('native WebM and MP4 provide valid containers with an open-codec source first',()=>{
  const source=readFileSync(new URL('../public/assets/kinetic-pass/kinetic-pass.js',import.meta.url),'utf8');
  const video=readFileSync(new URL('../public/assets/kinetic-pass/material-loop.mp4',import.meta.url));
+ const webm=readFileSync(new URL('../public/assets/kinetic-pass/material-loop.webm',import.meta.url));
  assert(video.length>=20000&&video.subarray(4,8).toString('ascii')==='ftyp');
+ assert(webm.length>=20000&&webm.subarray(0,4).toString('hex')==='1a45dfa3','WebM has an EBML container header');
+ const sourceOrder=[...source.matchAll(/<source\b([^>]+)>/g)].map(([,attributes])=>({src:attributes.match(/\bsrc=(["'])(.*?)\1/)?.[2],type:attributes.match(/\btype=(["'])(.*?)\1/)?.[2]}));
+ assert(sourceOrder[0]?.src?.endsWith('material-loop.webm')&&sourceOrder[0]?.type?.startsWith('video/webm'),'Open-codec source is selected before H.264 when supported');
+ assert(sourceOrder[1]?.src?.endsWith('material-loop.mp4')&&sourceOrder[1]?.type?.startsWith('video/mp4'),'MP4 remains available as a native fallback');
  assert(source.includes('material-loop.mp4')&&source.includes('ks-has-video'));
  assert(source.includes('video.play()')&&source.includes('video.pause()'));
  assert(source.includes('createRadialGradient'),'Canvas fallback retained');
