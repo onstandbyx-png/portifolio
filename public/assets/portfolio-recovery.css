@@ -1,0 +1,141 @@
+/* Visual evidence recovery, 2026-10-15.
+   Sources: recent Fatos canonical media assets and the currently published smiile.
+   Does not change the 3D badge or kinetic video internals. */
+.mobile-project-cta{display:none!important}
+body{padding-bottom:0!important}
+#trabalhos .work-evidence-gallery{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:34px!important}
+#trabalhos .work-evidence-gallery .work-tile{grid-column:auto!important;grid-row:auto!important;min-width:0}
+#trabalhos .work-evidence-gallery .sm-work-rotor{height:clamp(365px,36vw,580px)!important}
+#trabalhos .work-evidence-gallery .tile-art{height:100%;min-height:0;overflow:hidden}
+#trabalhos .work-evidence-gallery .tile-art>img{width:100%;height:100%;object-fit:cover;object-position:center;filter:contrast(1.08) saturate(1.08)}
+#trabalhos .work-evidence-gallery .work-ads .tile-art>img{object-position:50% 36%}
+#trabalhos .work-evidence-gallery .work-video .tile-art>img{object-position:50% 33%}
+#trabalhos .work-evidence-gallery .work-fatos .tile-art>img{object-position:center center}
+#trabalhos .work-evidence-gallery .work-cover-copy{z-index:3;position:absolute;left:25px;right:25px;bottom:26px;pointer-events:none}
+#trabalhos .work-evidence-gallery .work-cover-copy strong{font-size:clamp(32px,3.8vw,54px)!important;line-height:1.02;text-wrap:balance}
+#trabalhos .work-evidence-gallery .tile-caption{display:flex;gap:20px;justify-content:space-between}
+#trabalhos .work-evidence-gallery .tile-caption h3{font-size:clamp(27px,2.7vw,39px);line-height:1.11}
+#trabalhos .work-evidence-gallery .tile-caption p{max-width:43ch}
+#trabalhos .work-evidence-gallery .work-context{display:flex;gap:16px;justify-content:space-between;font-size:9px;line-height:1.4;letter-spacing:.08em}
+.sm-sections-ready .work-ads .sm-work-back{background:#2f3e37}
+.sm-sections-ready .work-video .sm-work-back{background:#3a2d2d}
+#trabalhos .work-evidence-gallery .tile-chip{z-index:3;max-width:calc(100% - 70px)}
+#trabalhos .work-evidence-gallery .sm-work-peek{z-index:5}
+#trabalhos .work-evidence-gallery .work-tile:hover .tile-art img{transform:scale(1.045);transition:transform .8s cubic-bezier(.17,.85,.2,1)}
+#trabalhos .work-evidence-gallery .work-tile .tile-art::after{content:"";position:absolute;inset:35% 0 0;pointer-events:none;background:linear-gradient(transparent,#000c);z-index:1}
+#trabalhos .work-evidence-gallery .work-video .tile-art::after{background:linear-gradient(transparent,#06171ca6)}
+/* Editorial: original photographic cards in the same metallic hardware. */
+#editorial .editorial-heading>p{max-width:670px}
+#editorial .pf-editorial-story{position:absolute;inset:0;touch-action:pan-y;background:#10211a}
+#editorial .pf-editorial-story .pf-story-image{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(.64) saturate(1.08);z-index:0}
+#editorial .pf-editorial-story .pf-story-profile,#editorial .pf-editorial-story .pf-copy-lab,#editorial .pf-editorial-story .pf-story-lower,#editorial .pf-editorial-story .pf-story-controls{z-index:3}
+#editorial .pf-editorial-story .pf-copy-lab{background:linear-gradient(transparent,#0a1011d1);padding:22px 17px 26px;top:auto;bottom:57px;left:0;right:0;position:absolute}
+#editorial .pf-editorial-story .pf-copy-after h3{font:600 clamp(26px,4vw,43px)/1.08 Georgia,serif;letter-spacing:-.04em;color:#fff;margin:12px 0 15px}
+#editorial .pf-editorial-story .pf-copy-decision{display:flex;justify-content:space-between;gap:8px;align-items:center;background:#f6f7f1e8;color:#18301f;min-height:40px;border:0;border-radius:7px;padding:9px 11px;font-size:10px;font-weight:700}
+#editorial .pf-editorial-story .pf-story-explain{font-size:10px;line-height:1.5;color:#eff1df;margin-top:9px}
+#editorial .pf-editorial-story .pf-story-lower{position:absolute;bottom:9px;left:16px;right:16px}
+#editorial .pf-editorial-story .pf-story-lower small{font-size:7px;letter-spacing:.11em}
+#editorial .pf-editorial-story .pf-story-controls{position:absolute;top:70px;right:13px;left:auto;width:auto;display:flex;align-items:center;gap:11px}
+#editorial .pf-editorial-story .pf-story-controls button{width:37px;height:37px;border:1px solid #fff8;border-radius:50%;background:#15271ba6;color:#fff;font-size:20px}
+#editorial .pf-editorial-story .pf-story-controls button:disabled{opacity:.35}
+#editorial .pf-editorial-story .pf-story-controls span{font-size:9px;color:#fff}
+#editorial .editorial-step:focus-visible{outline:3px solid #497958;outline-offset:3px}
+/* Screen made from original visual content rather than documents. */
+.pf-app-demonstration{border-radius:14px;background:#e8efe3;border:1px solid #d0ddc5;margin-bottom:18px;overflow:hidden}
+.pf-app-demo-heading{padding:14px 16px;display:flex;justify-content:space-between;gap:8px;color:#596f57;letter-spacing:.1em;font-size:8px;font-weight:750}
+.pf-app-demo-preview{height:clamp(240px,28vw,375px);position:relative;overflow:hidden;background:#a3b6a0}
+.pf-app-demo-preview img{width:100%;height:100%;object-fit:cover}
+.pf-app-demo-preview::after{position:absolute;inset:45% 0 0;content:"";background:linear-gradient(transparent,#0d2017da);pointer-events:none}
+.pf-app-demo-message{position:absolute;bottom:23px;left:22px;right:20px;z-index:2;display:grid;gap:7px;color:#fff}
+.pf-app-demo-message b{font:500 clamp(24px,3vw,43px)/1.07 Georgia,serif;letter-spacing:-.045em;max-width:20ch}
+.pf-app-demo-message span{font-size:11px;color:#e4efdb}
+.pf-app-demo-status{display:flex;justify-content:space-between;padding:13px 17px;color:#62775f;font-size:8px;font-weight:700;letter-spacing:.12em}
+/* Replace the tiny unframed image with exactly the metallic device used by smiile. */
+#narrativa-visual.rx-evidence-film .rv-window{position:relative;display:grid;place-items:center;width:calc(435 * .31px)!important;height:calc(907 * .31px)!important;overflow:visible!important;contain:none!important;border-radius:0!important;background:transparent!important;box-shadow:none!important;transform:scale(var(--pf-film-scale,1));transform-origin:50% 50%;transition:none}
+#narrativa-visual .pf-film-device{--df-pt:.31px;--df-tint:30 56 43}
+#narrativa-visual .pf-film-device .df-screen{background:#0a100d}
+#narrativa-visual .pf-film-inner{position:absolute;inset:0;overflow:hidden;isolation:isolate;background:#111d16}
+#narrativa-visual .pf-film-inner>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+#narrativa-visual .pf-film-gradient{position:absolute;inset:30% 0 0;background:linear-gradient(transparent,#08100ce9)}
+#narrativa-visual .pf-film-copy{position:absolute;left:calc(27 * var(--df-pt));right:calc(23 * var(--df-pt));bottom:calc(94 * var(--df-pt));z-index:2;color:#fff}
+#narrativa-visual .pf-film-copy small{display:block;font:750 calc(12 * var(--df-pt))/1.5 Arial,sans-serif;letter-spacing:.12em;margin-bottom:calc(11 * var(--df-pt))}
+#narrativa-visual .pf-film-copy strong{display:block;font:600 calc(39 * var(--df-pt))/1.07 Georgia,serif;letter-spacing:-.05em}
+#narrativa-visual .pf-film-copy p{font:400 calc(17 * var(--df-pt))/1.3 Arial,sans-serif;margin-top:calc(12 * var(--df-pt));color:#f1f5eb}
+#narrativa-visual .rv-compose{overflow:visible}
+#narrativa-visual .rv-copy{font-size:clamp(30px,4.6vw,69px)}
+#narrativa-visual .rv-copy.rv-left{right:calc(50% + 91px)}
+#narrativa-visual .rv-copy.rv-right{left:calc(50% + 91px)}
+/* Source-led portfolio service selection */
+.path-portfolio-demo{width:100%;display:grid;gap:20px;min-width:0}
+.path-portfolio-image{position:relative;isolation:isolate;overflow:hidden;height:clamp(290px,34vw,520px);background:#b7cabb;border:1px solid #ffffff55;border-radius:19px}
+.path-portfolio-image img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .75s cubic-bezier(.16,1,.3,1);transform:scale(1.01)}
+.path-portfolio-image[data-step="1"] img{transform:scale(1.11) translateX(-3%)}
+.path-portfolio-image[data-step="2"] img{transform:scale(1.17) translateX(3%)}
+.path-portfolio-gradient{position:absolute;inset:35% 0 0;background:linear-gradient(transparent,#07140cde);pointer-events:none}
+.path-portfolio-caption{position:absolute;left:24px;bottom:25px;right:20px;z-index:2;color:#fff}
+.path-portfolio-caption small{font-size:9px;font-weight:750;letter-spacing:.12em;color:#e0edda}
+.path-portfolio-caption h4{font:500 clamp(35px,4vw,62px)/1.04 Georgia,serif;letter-spacing:-.05em;max-width:18ch;margin-top:14px}
+.path-portfolio-steps{display:grid;grid-template-columns:repeat(3,1fr);gap:7px}
+.path-portfolio-steps button{display:grid;align-content:start;gap:14px;text-align:left;border:1px solid #a5b9aa7a;border-radius:10px;min-height:85px;background:#19352825;color:#eff8ef;padding:12px 10px;font-size:10px;line-height:1.35}
+.path-portfolio-steps b{font-size:10px;color:#a8cda7;letter-spacing:.1em}
+.path-portfolio-steps [aria-pressed=true]{background:#e9f2e1;color:#1a3b25;border-color:#e9f2e1}.path-portfolio-steps [aria-pressed=true] b{color:#376741}
+.path-portfolio-demo+.path-decisions{padding-top:14px}
+.path-portfolio-demo+.path-decisions p{line-height:1.6;color:#dce9d2;font-size:13px}
+#project-paths .path-tabs svg{width:18px;height:18px}
+#project-paths .path-delivery h3{line-height:1.04;letter-spacing:-.045em}
+#project-paths .path-demonstration{min-width:0}
+#project-paths .path-example-label{display:flex;align-items:center;justify-content:space-between;gap:16px;color:#f0f6e8;font-size:9px;letter-spacing:.1em;margin-bottom:12px}
+#project-paths .path-panel[hidden]{display:none!important}
+/* Tiny editorial assets are not treated as source PDFs or as individual campaign performance. */
+#panel-meta .rx-ig-photo>img{object-fit:cover;object-position:center}
+#panel-meta .rx-ig-overlay{pointer-events:none}
+#panel-meta .rx-social-caption{font-size:8px;letter-spacing:.09em}
+@media(max-width:980px){#trabalhos .work-evidence-gallery{gap:24px!important}#narrativa-visual.rx-evidence-film .rv-window{width:calc(435 * .27px)!important;height:calc(907 * .27px)!important}#narrativa-visual .pf-film-device{--df-pt:.27px}#narrativa-visual .rv-copy.rv-left{right:calc(50% + 82px)}#narrativa-visual .rv-copy.rv-right{left:calc(50% + 82px)}}
+@media(max-width:760px){
+ #trabalhos .work-evidence-gallery{grid-template-columns:1fr!important;gap:30px!important}
+ #trabalhos .work-evidence-gallery .sm-work-rotor{height:clamp(380px,112vw,490px)!important}
+ #trabalhos .work-evidence-gallery .work-cover-copy{left:19px;right:19px;bottom:19px}
+ #trabalhos .work-evidence-gallery .work-cover-copy strong{font-size:clamp(29px,8vw,43px)!important}
+ #trabalhos .work-evidence-gallery .tile-caption h3{font-size:clamp(25px,7vw,34px)}
+ #trabalhos .work-evidence-gallery .work-context{font-size:8px}
+ #narrativa-visual.rx-evidence-film{height:auto!important;min-height:0!important;overflow:visible!important}
+ #narrativa-visual.rx-evidence-film .rv-stage{position:relative!important;top:0;height:clamp(620px,88svh,790px);display:grid;grid-template-rows:39px minmax(0,1fr) 112px}
+ #narrativa-visual .rv-compose{overflow:hidden!important}
+ #narrativa-visual .rv-copy{font-size:clamp(24px,6vw,33px)!important;max-width:30vw;white-space:normal}
+ #narrativa-visual .rv-copy.rv-left{right:calc(50% + 72px)}
+ #narrativa-visual .rv-copy.rv-right{left:calc(50% + 72px)}
+ #narrativa-visual.rx-evidence-film .rv-window{width:calc(435 * .29px)!important;height:calc(907 * .29px)!important;transform:none!important}
+ #narrativa-visual .pf-film-device{--df-pt:.29px}
+ #narrativa-visual .rv-format-switch button{font-size:10px;padding:7px 10px;min-height:44px}
+ #narrativa-visual .rv-format-switch button span{font-size:8px}
+ #narrativa-visual .rv-overline{font-size:8px}
+ #narrativa-visual .rv-overline span:last-child{display:none}
+ .path-portfolio-image{height:350px}
+ .path-portfolio-caption h4{font-size:33px}
+ .path-portfolio-steps button{min-height:82px;font-size:9px}
+ .path-portfolio-caption{left:17px;right:16px;bottom:17px}
+ .pf-app-demo-preview{height:290px}
+ #editorial .pf-editorial-story .pf-copy-after h3{font-size:30px}
+}
+@media(max-width:380px){#narrativa-visual.rx-evidence-film .rv-window{width:calc(435 * .25px)!important;height:calc(907 * .25px)!important}#narrativa-visual .pf-film-device{--df-pt:.25px}#narrativa-visual .rv-copy.rv-left{right:calc(50% + 62px)}#narrativa-visual .rv-copy.rv-right{left:calc(50% + 62px)}#trabalhos .work-evidence-gallery .sm-work-rotor{height:400px!important}.path-portfolio-image{height:300px}}
+@media(prefers-reduced-motion:reduce){#narrativa-visual .rv-window{transform:none!important}.path-portfolio-image img{transition:none}}
+
+/* Sources were art-directed with negative space for titles. Reframe on devices. */
+#editorial .pf-editorial-story .pf-story-image{transform:scale(1.19);transform-origin:center 80%;object-position:center 74%;filter:brightness(.78) saturate(1.07)}
+#editorial .pf-editorial-story .pf-story-profile{z-index:4}
+#editorial .pf-editorial-story .pf-story-controls{top:117px;right:13px;gap:9px}
+#editorial .pf-editorial-story .pf-story-controls button{width:39px;height:39px;min-width:39px;min-height:39px}
+#panel-meta .rx-ig-photo>img{object-position:center 80%!important;filter:contrast(1.09) saturate(1.12)}
+#panel-meta .rx-ig-photo::after{inset:50% 0 0;background:linear-gradient(transparent,#020707df)}
+#panel-tiktok .vertical-video>img{object-position:center 82%!important;filter:brightness(.67) saturate(1.07)}
+#trabalhos .work-evidence-gallery .work-fatos .tile-art>img{object-position:center 75%}
+#trabalhos .work-evidence-gallery .work-ads .tile-art>img{object-position:center 72%}
+#trabalhos .work-evidence-gallery .work-video .tile-art>img{object-position:center}
+#narrativa-visual .pf-film-inner>img{object-position:center 76%}
+#narrativa-visual .pf-film-gradient{inset:56% 0 0;background:linear-gradient(transparent,#061008c4)}
+@media(max-width:760px){#editorial .pf-editorial-story .pf-story-controls{top:120px}}
+
+/* Legacy LINHA styling hid source photography behind CSS-only illustrations.
+   This portfolio now shows real local image assets and their editorial labels. */
+#panel-meta .rx-ig-photo>img,
+#panel-tiktok .vertical-video>img{opacity:1!important;visibility:visible!important}

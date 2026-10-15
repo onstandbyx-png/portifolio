@@ -8,7 +8,7 @@ permissions:
 jobs:
   verify:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 25
     env:
       QA_PACKAGE: /tmp/portfolio-qa/package.json
     steps:
@@ -18,19 +18,17 @@ jobs:
           node-version: '22'
       - run: npm ci
       - run: npm run check && npm run build
-      - name: Install browser validation
+      - name: Install Chromium
         run: |
           npm install --prefix /tmp/portfolio-qa --package-lock=false --no-save playwright@1.64.0
           /tmp/portfolio-qa/node_modules/.bin/playwright install --with-deps chromium
-      - name: Validate real page interactions
-        run: node tests/browser-sections.mjs
-      - name: Validate project and contact journeys
-        run: node tests/browser-conversion.mjs
-      - name: Validate reconstructed video pass
+      - name: Validate visual evidence on desktop and mobile
+        run: node tests/browser-evidence.mjs
+      - name: Validate preserved interactive video pass
         run: node tests/browser-kinetic-pass.mjs
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: section-interactions-evidence
+          name: portfolio-evidence-review
           path: qa/
           retention-days: 7

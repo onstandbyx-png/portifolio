@@ -59,12 +59,8 @@
     $$('.reveal').forEach(el=>io.observe(el));
   }else $$('.reveal').forEach(el=>el.classList.add('is-visible'));
 
-  // LINHA is a fictitious product: an independent demonstration of campaign reasoning.
-  const editorial=[
-    {label:'01 / GANCHO',title:'Qual arquivo é o final_final?',description:'Versões espalhadas, comentários em mensagens e uma aprovação que ninguém encontra: a campanha começa por um problema reconhecível.',image:'/assets/creative/linha-campanha.svg',alt:'LINHA, estudo autoral de campanha para um produto fictício de aprovação criativa'},
-    {label:'02 / PROVA',title:'Do briefing ao aprovado. No mesmo lugar.',description:'A demonstração reúne versões, comentários e status de aprovação em uma interface, tornando a proposta do produto visível.',image:'/assets/creative/linha-interface.svg',alt:'Interface conceitual LINHA com versões, comentários e status de aprovação'},
-    {label:'03 / AÇÃO',title:'Veja um projeto sair do briefing.',description:'O convite leva à demonstração: explore o fluxo de um projeto e entenda como cada etapa se conecta à próxima.',image:'/assets/creative/linha-interface.svg',alt:'LINHA, convite para explorar a demonstração conceitual de um projeto'}
-  ];
+  // Present verified source contexts rather than a repeated fictitious product.
+  const editorial=[{"label":"01 / ASSUNTO","title":"O que merece ser contado?","description":"A pergunta que abre uma história nasce da curiosidade e da pesquisa.","image":"/assets/portfolio/cena-desconhecidos.webp","alt":"Material visual da marca Fatos Desconhecidos"},{"label":"02 / CONTEXTO","title":"O contexto muda a perspectiva.","description":"Fontes, repertório e a escolha do recorte ajudam a explicar o que é relevante.","image":"/assets/portfolio/cena-negocios.webp","alt":"Composição editorial da vertical Fatos e Negócios"},{"label":"03 / NARRATIVA","title":"Uma mensagem encontra seu formato.","description":"O roteiro e a direção visual traduzem uma ideia para posts, vídeos e outras experiências.","image":"/assets/portfolio/cena-nerd.webp","alt":"Composição editorial da vertical Fatos Nerd"}];
   const editorialImg=$('#editorial-image'),editorialHead=$('#editorial-headline'),editorialCopy=$('#editorial-description'),editorialTag=$('#editorial-caption'),editorialNum=$('#editorial-num');
   let story=0;
   function setStory(i){
@@ -128,64 +124,20 @@
     if(playback){stopPlayback();return}
     if(reduced)return;
     playBtn.setAttribute('aria-pressed','true');playBtn.innerHTML='Pausar sequência <span>Ⅱ</span>';
-    const text=$('.video-text');const lines=['Qual arquivo é<br>o final_final?','Do briefing ao aprovado.<br>No mesmo lugar.','Veja um projeto<br>sair do briefing.'];let i=0;
+    const text=$('.video-text');const lines=['Uma pergunta abre<br>a história.','A informação ganha<br>contexto.','A narrativa encontra<br>seu formato.'];let i=0;
     playback=setInterval(()=>{i=(i+1)%lines.length;if(text)text.innerHTML=lines[i]},1550);
   });
   document.addEventListener('visibilitychange',()=>{if(document.hidden)stopPlayback()});
 
   // CI sequence, explicitly illustrative.
-  const sys=[
-    ['ETAPA 01 / ENTRADA','Tudo começa por uma pergunta verificável.','Uma entrada autorizada define o objetivo da investigação e os critérios que precisam ser comprovados.'],
-    ['ETAPA 02 / FONTE','A informação precisa de uma origem.','Coleta, contexto, cobertura e identificação das fontes são registrados antes de qualquer conclusão.'],
-    ['ETAPA 03 / RELAÇÕES','Conectar entidades sem perder a evidência.','A construção de relações permite explorar hipóteses, proveniência e evolução temporal.'],
-    ['ETAPA 04 / DOSSIÊ','O resultado mantém seus limites explícitos.','O dossiê liga a síntese às evidências utilizadas, ao grau de cobertura e às lacunas que ainda restam.']
-  ];
+  const sys=[["01 / IDEIA","Começa pela necessidade.","Escolher uma tarefa e um resultado útil para quem está usando."],["02 / DESIGN","A interface organiza escolhas.","Tipografia, componentes e hierarquia orientam a navegação."],["03 / INTERAÇÃO","O toque produz uma resposta.","Cada ação deve gerar uma reação compreensível e coerente."],["04 / RESULTADO","A experiência ganha vida.","Estados, responsividade e navegação são testados antes da publicação."]];
   $$('.system-step').forEach((b,i)=>b.addEventListener('click',()=>{
     $$('.system-step').forEach((x,j)=>{x.classList.toggle('is-current',j===i);x.setAttribute('aria-pressed',String(j===i))});
     $('#system-step-label').textContent=sys[i][0];$('#system-display-title').textContent=sys[i][1];$('#system-display-copy').textContent=sys[i][2];
   }));
 
   // Cases separate professional background, authorial concepts and working demonstrations.
-  const cases={
-    fatos:{
-      kicker:'FATOS DESCONHECIDOS / DIREÇÃO CRIATIVA',title:'Experiência com grandes audiências.',
-      description:'Sou diretor criativo há anos na Fatos Desconhecidos. Essa experiência orienta a forma como penso narrativa, direção de arte e conteúdo para marcas: uma mensagem precisa dar a quem assiste uma razão para continuar.',
-      status:'Experiência profissional',
-      challenge:'Como transformar um assunto em uma história que o público queira acompanhar?',
-      decision:'Conectar o recorte, a estrutura narrativa, a direção de arte e o formato à mensagem central.',
-      contribution:'Minha atuação na Fatos Desconhecidos é a direção criativa. Esta apresentação registra essa experiência profissional, sem atribuir a mim a autoria de todas as peças da empresa.',
-      proof:'Para explorar meu raciocínio em uma demonstração independente, conheça LINHA: um produto fictício apresentado em gancho, prova e ação. O estudo autoral está identificado e não é uma campanha da Fatos.',
-      visual:'trajectory',
-      source:'https://midia-kit-production-c234.up.railway.app/',sourceLabel:'Referência institucional da Fatos Desconhecidos',
-      credit:'A referência institucional documenta a empresa como contexto da minha trajetória. Não representa uma oferta de mídia neste portfólio. LINHA é um estudo separado, sem vínculo com uma campanha publicada pela Fatos.',
-      service:'Redação e conteúdo',cta:'Conversar sobre conteúdo',section:'#editorial',explore:'Explorar estudo autoral LINHA'
-    },
-    smiile:{
-      kicker:'SMIILE / DEMONSTRAÇÃO DE INTERFACE',title:'Uma ideia que você consegue experimentar.',
-      description:'Uma demonstração navegável aproxima direção de arte e produto digital. Dispositivos, superfícies metálicas e transições ajudam a apresentar uma experiência; a interação permite entender como ela funciona.',
-      status:'Demonstração navegável',
-      challenge:'Como tornar uma proposta digital compreensível antes de uma explicação longa?',
-      decision:'Mostrar a interface em uso, com hierarquia visual, navegação natural e detalhes que respondem à interação.',
-      contribution:'Este portfólio integra e adapta a linguagem da demonstração smiile, incluindo o movimento entre cartões. A referência permite comparar o comportamento apresentado.',
-      proof:'Alterne entre desktop e mobile, explore as páginas e compare as direções visuais. A demonstração permite observar a interface e os estados de interação.',
-      image:'/assets/smiile-landscape.webp',imageAlt:'Cena de arquitetura da demonstração digital smiile',
-      source:'https://smiile-landing-preview.up.railway.app/?v=b6a2e0d#categorias',sourceLabel:'Abrir demonstração smiile',
-      credit:'Referência de interface: landing smiile. As imagens e os mecanismos de interação são demonstrações de produto; não representam um projeto de cliente ou integrações de backend homologadas.',
-      service:'Sites e experiências digitais',cta:'Conversar sobre uma experiência',section:'#experiencias',explore:'Explorar a interface'
-    },
-    ci:{
-      kicker:'CI INTEL / ARQUITETURA DE SISTEMA',title:'Da informação a uma decisão rastreável.',
-      description:'Quando uma tarefa envolve muitas fontes e etapas, a experiência também precisa de estrutura. Esta representação liga entrada, evidência, relações e síntese em um fluxo que pode ser compreendido e verificado.',
-      status:'Arquitetura documentada',
-      challenge:'Como reunir informação sem perder a origem, o contexto e os limites de cada conclusão?',
-      decision:'Organizar o fluxo em quatro etapas e manter a ligação entre a síntese e suas evidências.',
-      contribution:'A experiência visual traduz a arquitetura documentada no repositório de referência em uma sequência que pode ser explorada etapa por etapa.',
-      proof:'Percorra a lógica do sistema, da entrada à síntese. Os controles mostram o papel de cada etapa e a conexão entre informação, contexto e conclusão.',
-      source:'https://github.com/smil3nirvan4-beep/sota-ci-intel',sourceLabel:'Consultar arquitetura de referência',
-      credit:'Referência técnica: repositório SOTA CI Intel. Nesta página, o fluxo é uma demonstração didática: não executa uma investigação, consulta dados privados ou apresenta resultados de operações reais.',
-      service:'Sistemas e automações',cta:'Conversar sobre um sistema',section:'#sistemas',explore:'Explorar o fluxo'
-    }
-  };
+  const cases={"fatos":{"kicker":"FATOS / EXPERIÊNCIA PROFISSIONAL","title":"Redação, direção criativa e narrativa.","description":"Experiência editorial com grandes audiências e múltiplas verticais. A apresentação destaca o trabalho de pesquisar, escolher o recorte e contar histórias.","status":"Experiência profissional","challenge":"Como construir um assunto relevante?","decision":"Começar pelo que merece ser descoberto e organizar informação, roteiro e linguagem visual.","contribution":"Atuação em direção criativa e redação. As imagens da rede pertencem aos projetos Fatos e não são atribuídas integralmente a uma pessoa.","proof":"Veja a narrativa em três momentos e materiais fotográficos da marca.","image":"/assets/portfolio/cena-desconhecidos.webp","imageAlt":"Material de origem da Fatos Desconhecidos","source":"https://www.instagram.com/fatosdesconhecidos/","sourceLabel":"Fonte institucional Fatos","credit":"Conteúdo original da rede, sem oferta de publicação.","service":"Redação e conteúdo","cta":"Conversar sobre projeto","section":"#editorial","explore":"Explorar narrativa"},"ads":{"kicker":"CAMPANHAS / CRIAÇÃO E MÍDIA","title":"Campanhas com conceito e execução.","description":"Estratégia, criatividade, copy, configuração e otimização de anúncios. As peças visuais desta página são estudos de formatos, não anúncios veiculados.","status":"Estudo demonstrativo","challenge":"Como mudar a linguagem sem perder a mensagem?","decision":"Traduzir posicionamento, criativo, formato e ação para o canal certo.","contribution":"Conceitos, roteiros e composições visuais. A operação de Ads é apresentada como capacidade, sem dados financeiros não verificados.","proof":"Compare feed, vídeo, pesquisa paga e proposta contextual no laboratório.","image":"/assets/portfolio/cena-negocios.webp","imageAlt":"Composição de Fatos e Negócios","source":"https://portifolio-github-production.up.railway.app/#laboratorio","sourceLabel":"Laboratório de anúncios","credit":"Estudos conceituais sem métricas ou campanhas verificadas.","service":"Campanhas e criativos","cta":"Conversar sobre campanha","section":"#laboratorio","explore":"Explorar formatos"},"smiile":{"kicker":"SMIILE / SITES E APPS","title":"Experiências que respondem ao toque.","description":"Desenvolvimento de sites, aplicações e componentes interativos com demonstrações visuais reais da smiile.","status":"Produto próprio","challenge":"Como apresentar um produto antes da explicação longa?","decision":"Permitir que o visitante explore páginas, dispositivos e estados de interação.","contribution":"Direção visual, UX/UI, integração de interface e desenvolvimento de projetos próprios.","proof":"Alterne desktop/mobile e páginas; veja a landing smiile publicada.","image":"/assets/portfolio/smiile-architecture-coast.webp","imageAlt":"Experiência Casa Costa da smiile","source":"https://smiile-landing-preview.up.railway.app/","sourceLabel":"Landing smiile atual","credit":"Demonstração com interações locais.","service":"Sites e experiências digitais","cta":"Conversar sobre projeto","section":"#experiencias","explore":"Explorar interface"},"video":{"kicker":"MOTION / ESTÚDIO INTERATIVO","title":"Vídeo, matéria e movimento.","description":"Estudo visual com material em vídeo, recorte, dobra cinética, tipografia e exploração de camadas.","status":"Estudo demonstrativo","challenge":"Como deixar um material visual demonstrar a sua criação?","decision":"Fazer a imagem responder ao visitante por meio de interações verificáveis.","contribution":"Direção visual e desenvolvimento de animações, texturas e experiências com vídeo.","proof":"Explore o vídeo, a dobra de canto, os materiais e os controles manuais do estúdio.","image":"/assets/portfolio/smiile-creative-studio.webp","imageAlt":"Imagem da smiile de estúdio criativo","source":"https://portifolio-github-production.up.railway.app/#estudio-interativo","sourceLabel":"Estúdio de movimento","credit":"Demonstração com interações locais.","service":"Sites e experiências digitais","cta":"Conversar sobre vídeo","section":"#estudio-interativo","explore":"Explorar estúdio"}};
   const dialog=$('#case-dialog'),dialogImage=$('#dialog-image'),dialogClose=$('#dialog-close');
   let focusOrigin=null,currentCase=null,contactCase='',contactCaseService='';
   const caseKeys=Object.keys(cases);
@@ -249,7 +201,7 @@
       panel.append(label,title,role,context);dialogImage?.append(panel);
     }else{
       const div=document.createElement('div');div.className='dialog-ci';
-      for(const [index,label] of ['Entrada','Evidência','Relações','Síntese'].entries()){
+      for(const [index,label] of ['Ideia','Interface','Interação','Entrega'].entries()){
         const row=document.createElement('span');row.textContent=`0${index+1} / ${label}`;div.append(row);
       }
       dialogImage?.appendChild(div);
