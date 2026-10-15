@@ -41,7 +41,8 @@ export function mountScrollFilm(){
    plane.style.setProperty('--rf-x',`${(i-1)*spacing}px`);
    plane.style.setProperty('--rf-z',`${paused?0:-Math.min(1,Math.abs(distance))*(mobile?32:110)}px`);
    plane.style.setProperty('--rf-ry',`${paused?0:clamp(distance,-1,1)*(mobile?-5:-11)}deg`);
-   plane.style.setProperty('--rf-alpha',String(natural||active?1:.26));
+   const fade=clamp(Math.abs(distance));
+   plane.style.setProperty('--rf-alpha',String(natural?1:1-.74*fade*fade*(3-2*fade)));
    plane.classList.toggle('rf-in-focus',natural||active);plane.setAttribute('aria-hidden',String(!natural&&!active));
    const planeBox=plane.getBoundingClientRect();
    if(visible&&active&&(natural||Math.abs(distance)<.03)&&planeBox.top<stableViewportHeight()-80&&planeBox.bottom>header()&&!revealed.has(i)){

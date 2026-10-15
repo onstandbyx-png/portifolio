@@ -15,10 +15,10 @@ export function createChapterState(count,initial=0){
  };
 }
 
-// Seventy percent of each chapter interval belongs to a still reading pose.
-// The remaining interval is a reversible passage, shared by both compositions.
+// Reading poses keep 44% of each chapter interval. The 56% passage stays
+// continuous and reversible instead of compressing every movement into a flick.
 export function readingProgress(cursor){
- const whole=Math.floor(cursor),phase=clamp((cursor-whole-.35)/.3);
+ const whole=Math.floor(cursor),phase=clamp((cursor-whole-.22)/.56);
  return whole+phase*phase*(3-2*phase);
 }
 
@@ -30,7 +30,7 @@ export function stableViewportHeight(){
 
 export function galleryPose(index,cursor,mobile=false){
  const distance=index-readingProgress(cursor),amount=clamp(Math.abs(distance)),sign=Math.sign(distance);
- return {y:distance*(mobile?69:73),angle:-sign*amount*68,scale:1-.12*amount,
+ return {y:distance*(mobile?94:100),angle:-sign*amount*68,scale:1-.12*amount,
   z:-amount*(mobile?100:180),opacity:clamp(1-Math.max(0,Math.abs(distance)-.8)*2.5),active:Math.round(cursor)===index};
 }
 

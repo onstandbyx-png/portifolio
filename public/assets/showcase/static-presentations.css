@@ -8,14 +8,14 @@
   object-fit: contain;
   border-radius: 3px;
 }
-body.portfolio-r6 #laboratorio { padding-block: 100px; }
+body.portfolio-r6 #laboratorio { padding-block: 112px; }
 body.portfolio-r6 #laboratorio .ads-heading { padding-top: 0; }
-.sp-campaign { width: min(100%, 680px); margin: 22px auto 0; }
+.sp-campaign { width: min(100%, 680px); margin: 36px auto 0; }
 .sp-platforms {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 8px;
-  margin-bottom: 20px;
+  margin-bottom: 28px;
   border-bottom: 1px solid #d0d6c9;
 }
 .sp-platforms > button {
@@ -54,9 +54,11 @@ body.portfolio-r6 #laboratorio .ads-heading { padding-top: 0; }
 .sp-platforms > button:hover { color: #193827; background: #e9ede180; }
 .sp-platforms .sp-platform-logo { width: 30px; height: 30px; object-fit: contain; flex: none; }
 .sp-platforms .sp-platform-logo--meta { width: 88px; }
-.sp-campaign-art { overflow: clip; }
-.sp-campaign-panel { min-width: 0; }
+.sp-campaign-art { display: grid; align-items: start; overflow: clip; isolation: isolate; }
+.sp-campaign-panel { grid-area: 1 / 1; position: relative; min-width: 0; }
 .sp-campaign-panel[hidden] { display: none !important; }
+/* Exit-only painting never restores focus or screen-reader ownership. */
+.sp-campaign-panel[hidden][data-leaving='true'] { display: block !important; pointer-events: none; }
 .sp-campaign-panel > figure { margin: 0; }
 .sp-platforms > button:focus-visible, .sp-campaign-panel:focus-visible {
   outline: 3px solid #406fca;
@@ -111,7 +113,7 @@ body.portfolio-r6 .sa-campaign-credit {
 }
 body.portfolio-r6 .sa-campaign-credit summary { min-height: 44px; padding-block: 12px; cursor: pointer; }
 body.portfolio-r6 .sa-campaign-credit p { margin-top: 4px; }
-body.portfolio-r6 #sistemas { padding: 88px 0; background: #182d24; color: #edf0e5; }
+body.portfolio-r6 #sistemas { padding: 104px 0; background: #182d24; color: #edf0e5; }
 .sp-products-shell { display: block; }
 .sp-products { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 40px; }
 .sp-products > figure { min-width: 0; margin: 0; }
@@ -125,20 +127,32 @@ body.portfolio-r6 #sistemas { padding: 88px 0; background: #182d24; color: #edf0
   line-height: 1.13;
   letter-spacing: -.045em;
 }
+/* R10: travel and reading space belong to the existing native-scroll scenes. */
+.rg-scroll-shell:not(.rg-natural) { height: calc(var(--rg-count,3) * 110svh); }
+.rf-film:not(.rf-natural) { height: calc(var(--rf-heading-height,200px) + 300svh); }
+body.portfolio-r6 #trabalhos { padding-bottom: 104px; }
+body.portfolio-r6 #editorial { padding-bottom: 96px; }
+.pf-fatos-deck { margin-top: 72px; padding-top: 64px; gap: 40px 80px; }
+.pf-fatos-context { min-height: 280px; align-content: start; }
+.rf-caption p { min-height: 3em; }
 @media (max-width: 760px) {
-  body.portfolio-r6 #laboratorio { padding-block: 72px; }
-  .sp-campaign { margin-top: 12px; }
-  .sp-platforms { gap: 4px; margin-bottom: 16px; }
+  body.portfolio-r6 #laboratorio { padding-block: 88px; }
+  .sp-campaign { margin-top: 32px; }
+  .sp-platforms { gap: 4px; margin-bottom: 24px; }
   .sp-platforms > button { min-height: 88px; padding: 12px 8px 16px; font-size: 13px; }
   .sp-platforms .sp-platform-logo--meta { width: 76px; }
   body.portfolio-r6 .sa-campaign-services { grid-template-columns: minmax(0, 1fr); gap: 24px; margin-top: 40px; padding-top: 32px; }
   body.portfolio-r6 .sa-campaign-services h3 { font-size: 29px; }
   body.portfolio-r6 .sa-campaign-services p { font-size: 16px; }
-  body.portfolio-r6 #sistemas { padding: 56px 0; }
-  .sp-products { grid-template-columns: minmax(0, 1fr); gap: 48px; }
+  body.portfolio-r6 #sistemas { padding: 80px 0; }
+  .sp-products { grid-template-columns: minmax(0, 1fr); gap: 64px; }
   .sp-products figcaption { padding-top: 18px; }
   .sp-products h3 { font-size: clamp(27px, 7.4vw, 36px); }
+  body.portfolio-r6 #trabalhos { padding-bottom: 80px; }
+  body.portfolio-r6 #editorial { padding-bottom: 80px; }
+  .pf-fatos-deck { margin-top: 56px; padding-top: 48px; gap: 32px; }
 }
+@media (max-width: 360px) { .pf-fatos-context { min-height: 340px; } }
 @media (prefers-reduced-motion: reduce) {
   .sp-platforms > button, .sp-platforms > button::after { transition: none; }
 }
