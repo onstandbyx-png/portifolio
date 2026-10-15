@@ -26,7 +26,7 @@ try{
  pass('Original photographic assets load',art.length===4&&art.every(Boolean));await page.locator('#trabalhos .work-fatos').evaluate(el=>window.scrollTo({top:scrollY+el.getBoundingClientRect().top-115,behavior:'instant'}));
  await page.waitForTimeout(700);
  const rect=await page.locator('#trabalhos .work-fatos').evaluate(el=>{const img=el.querySelector('.tile-art img'),r=el.getBoundingClientRect();return{top:r.top,bottom:r.bottom,opacity:Number(getComputedStyle(el).opacity),naturalWidth:img?.naturalWidth||0}});
- pass('First work card is painted inside the viewport',rect.naturalWidth>0&&rect.opacity>.9&&rect.top<innerHeight-70&&rect.bottom>140);
+ pass('First work card is painted inside the viewport',rect.naturalWidth>0&&rect.opacity>.9&&rect.top<height-70&&rect.bottom>140);
  await page.screenshot({path:'qa/evidence/work-'+width+'.png'});
  await page.locator('#trabalhos .work-fatos .sm-work-stage').screenshot({path:'qa/evidence/work-tile-'+width+'.png'});
  await page.locator('.work-fatos [data-case]').click();await page.waitForTimeout(180);
