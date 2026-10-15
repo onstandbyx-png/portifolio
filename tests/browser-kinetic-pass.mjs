@@ -21,25 +21,38 @@ try{
    await page.goto(base+'/?qa=kinetic#estudio-interativo',{waitUntil:'domcontentloaded'});
    const root=page.locator('#estudio-interativo');await root.waitFor();await page.waitForFunction(()=>document.querySelector('#estudio-interativo')?.dataset.ready==='true');
    await page.locator('.ks-stage').scrollIntoViewIfNeeded();
-   await page.waitForFunction(()=>document.querySelector('#estudio-interativo')?.dataset.texture==='sampled');
+   await page.waitForFunction(()=>['video','flow'].includes(document.querySelector('#estudio-interativo')?.dataset.texture));
    check('isolated section is mounted once',await root.count()===1);
    check('existing hero and sections remain',await page.locator('[data-portfolio-badges]').count()===1&&await page.locator('#editorial').count()===1&&await page.locator('#narrativa-visual').count()===1);
    check('all 1536 source frames are recorded',await root.getAttribute('data-reference-frames')==='1536');
-   check('four real layers, not a video embedded as an interaction',await root.locator('[data-layer]').count()===4&&await root.locator('video,iframe').count()===0);
+   check('four editable layers and one native material texture',await root.locator('[data-layer]').count()===4&&await root.locator('.ks-material video.ks-video').count()===1&&await root.locator('iframe').count()===0);
    check('knockout uses actual blend mode',await page.locator('.ks-stencil').evaluate(e=>getComputedStyle(e).mixBlendMode==='multiply'));
    check('pass dimensions match 300x500',await page.locator('.ks-stack').evaluate(e=>e.offsetWidth===300&&e.offsetHeight===500));
-   check('sampled material decoded locally',await root.getAttribute('data-texture')==='sampled');
+   await page.waitForFunction(()=>{const r=document.querySelector('#estudio-interativo');return r.dataset.texture==='video'||r.dataset.texture==='flow'},null,{timeout:14000});
+   const videoAvailable=await root.locator('.ks-video').evaluate(v=>v.readyState>=2&&!v.error);
+   check('native H264 clip decodes and plays locally',videoAvailable&&await root.getAttribute('data-texture')==='video');
+   const range=await page.request.get(base+'/assets/kinetic-pass/material-loop.mp4',{headers:{Range:'bytes=0-127'}});
+   check('MP4 supports HTTP byte-range requests',range.status()===206&&range.headers()['content-type']?.startsWith('video/mp4'));
+   check('curved WebGL or SVG fallback is available',['webgl','svg'].includes(await root.getAttribute('data-curl')));
+   const firstVideoTime=await root.locator('.ks-video').evaluate(v=>v.currentTime);
+   await page.waitForTimeout(440);
+   check('video advances while the section is visible',await root.locator('.ks-video').evaluate((v,t)=>v.currentTime>t&&!v.paused,firstVideoTime));
    await page.locator('[data-ks-pause]').click();await page.locator('.ks-stage').scrollIntoViewIfNeeded();
-   const png1=await page.locator('.ks-canvas').evaluate(c=>c.toDataURL());await page.waitForTimeout(180);
-   check('local pause freezes the texture',png1===await page.locator('.ks-canvas').evaluate(c=>c.toDataURL()));
+   const pausedTime=await root.locator('.ks-video').evaluate(v=>v.currentTime);
+   await page.waitForTimeout(240);
+   check('local pause freezes video without losing its frame',Math.abs(pausedTime-await root.locator('.ks-video').evaluate(v=>v.currentTime))<.015);
    await page.screenshot({path:`qa/kinetic-pass/closed-${width}.png`});
    await page.locator('#ks-peel').evaluate(e=>{e.value='93';e.dispatchEvent(new Event('input',{bubbles:true}));});
    check('peel responds precisely, including while paused',Number(await root.getAttribute('data-peel'))>.9);
-   check('paper fold has reflected geometry and cutout',await page.locator('.ks-flap').getAttribute('d')?.then(d=>d.length>30)&&await page.locator('.ks-fold-hole').getAttribute('transform')?.then(x=>x.startsWith('matrix(')));
+   check('fallback fold and physical curve have valid geometry',await page.locator('.ks-flap').getAttribute('d')?.then(d=>d.length>30)&&await page.locator('.ks-fold-hole').getAttribute('transform')?.then(x=>x.startsWith('matrix(')));
+   if(await root.getAttribute('data-curl')==='webgl')check('curved WebGL mesh is active at device pixel ratio 1 or higher',await root.locator('.ks-curl-webgl').evaluate(c=>c.width>=300&&c.height>=500&&getComputedStyle(c).display!=='none'&&Boolean(c.getContext('webgl'))));
+
    await page.locator('.ks-stage').scrollIntoViewIfNeeded();await page.screenshot({path:`qa/kinetic-pass/peeled-${width}.png`});
    await page.locator('[data-ks-mode="layers"]').click();
    check('exploded view separates all four layers',Number(await root.getAttribute('data-layers'))>.99&&await page.locator('[data-ks-mode="layers"]').getAttribute('aria-pressed')==='true');
    await page.locator('.ks-stage').scrollIntoViewIfNeeded();await page.screenshot({path:`qa/kinetic-pass/layers-${width}.png`});
+   await root.locator('[data-ks-inspect="2"]').click();
+   check('individual layer inspection selects typography',await root.getAttribute('data-inspect')==='2'&&await root.locator('[data-ks-inspect="2"]').getAttribute('aria-pressed')==='true');
    check('layer projection stays inside stage horizontally',await page.evaluate(()=>{const r=document.querySelector('.ks-stage').getBoundingClientRect();return [...document.querySelectorAll('#estudio-interativo [data-layer]')].every(e=>{const b=e.getBoundingClientRect();return b.left>=r.left-3&&b.right<=r.right+3;});}));
    await page.locator('[data-ks-mode="custom"]').click();await page.locator('[data-ks-text]').fill('crie!');
    check('text editing changes real knockout type',await page.locator('.ks-word').innerText()==='crie!');
@@ -64,13 +77,20 @@ try{
    await page.locator('[data-ks-time]').evaluate(e=>{e.value='3.6';e.dispatchEvent(new Event('input',{bubbles:true}));});
    check('reference 3.6 second frame corresponds to full peel',Number(await root.getAttribute('data-peel'))>.9);
    await page.locator('[data-ks-reset]').click();await page.locator('.ks-stage').scrollIntoViewIfNeeded();await page.waitForTimeout(500);
-   await page.locator('#motion-toggle').click();const before=await page.locator('.ks-canvas').evaluate(c=>c.toDataURL());await page.waitForTimeout(180);
-   check('global motion control freezes new scene',before===await page.locator('.ks-canvas').evaluate(c=>c.toDataURL()));
+   await page.locator('#motion-toggle').click();const before=await root.locator('.ks-video').evaluate(v=>v.currentTime);await page.waitForTimeout(180);
+   check('global motion control freezes native video',Math.abs(before-await root.locator('.ks-video').evaluate(v=>v.currentTime))<.015);
    await page.emulateMedia({reducedMotion:'reduce'});await page.locator('[data-ks-mode="layers"]').click();
    check('reduced motion preserves manual exploration',Number(await root.getAttribute('data-layers'))===1);
    check('no document horizontal overflow',await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+2));
    check('controls never overlay the stage',await page.evaluate(()=>{const s=document.querySelector('.ks-stage').getBoundingClientRect(),c=document.querySelector('.ks-controls').getBoundingClientRect();return c.top>=s.bottom-1;}));
    check('no JavaScript exceptions',errors.length===0);
+   // Twelve reference checkpoints. Capture the genuine interaction state,
+   // not the recorded desktop chrome from the supplied screen capture.
+   const checkpoints=[0,.8,1.8,2.7,3.6,4.9,7.5,10.2,12.3,14.7,19.5,25.1];
+   for(const second of checkpoints){
+     await page.locator('[data-ks-time]').evaluate((e,t)=>{e.value=String(t);e.dispatchEvent(new Event('input',{bubbles:true}));},second);
+     await root.locator('.ks-stage').screenshot({path:'qa/kinetic-pass/frames/state-'+width+'-'+String(second).replace('.','_')+'.png'});
+   }
   }catch(error){row.failure=String(error);await page.screenshot({path:`qa/kinetic-pass/failure-${width}.png`});}
   await context.close();
  }
