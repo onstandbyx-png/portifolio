@@ -209,3 +209,49 @@ html{scroll-padding-top:var(--rv-header)}
 @media(max-width:480px){
  .pf-experience-device{--df-pt:min(.59px,calc((100vw - 74px)/435))}
 }
+
+/* One actual frame for Ads social as well as editorial and mobile site previews. */
+#panel-meta .rx-instagram{max-width:350px}
+#panel-meta .pf-social-device{
+  --df-pt:min(.765px,calc((100vw - 54px)/435));
+  margin:0 auto;
+}
+#panel-meta .pf-social-device .df-screen{background:#0b1015;color:#f9fbff}
+#panel-meta .pf-social-device .df-content{position:absolute;inset:0}
+#panel-meta .pf-social-device .rx-iphone-inner{
+  position:relative;width:100%;height:100%;min-height:0;
+  padding-top:calc(55 * var(--df-pt));
+  padding-bottom:calc(25 * var(--df-pt));
+  border:0;border-radius:0;box-shadow:none;
+  overflow:hidden;display:flex;flex-direction:column;
+  background:#0b1015;color:#f7f8fc;
+}
+#panel-meta .pf-social-device .rx-ig-topbar{
+  min-height:calc(48 * var(--df-pt));height:calc(48 * var(--df-pt));
+  padding:0 calc(15 * var(--df-pt));flex:none;
+}
+#panel-meta .pf-social-device .rx-ig-profile{
+  padding:calc(8 * var(--df-pt)) calc(13 * var(--df-pt));
+  min-height:calc(58 * var(--df-pt));flex:none;
+}
+#panel-meta .pf-social-device .rx-ig-photo{
+  position:relative;flex:1 1 auto;min-height:0;aspect-ratio:auto;
+  width:100%;height:auto;overflow:hidden;touch-action:pan-y;
+}
+#panel-meta .pf-social-device .rx-ig-photo img{
+  height:100%;width:100%;object-fit:cover;object-position:center;
+}
+#panel-meta .pf-social-device .rx-ig-overlay h3{
+  font-size:calc(39 * var(--df-pt));line-height:1.04;
+}
+#panel-meta .pf-social-device .rx-ig-dots{
+  height:calc(44 * var(--df-pt));flex:none;
+}
+#panel-meta .pf-social-device .rx-ig-actions{height:calc(36 * var(--df-pt));flex:none}
+#panel-meta .pf-social-device .rx-ig-caption{flex:none;max-height:calc(47 * var(--df-pt));font-size:calc(13 * var(--df-pt))!important;line-height:1.4!important}
+#panel-meta .pf-social-device .rx-ig-date{flex:none;padding-top:calc(4 * var(--df-pt));font-size:calc(10 * var(--df-pt))}
+#panel-meta .pf-social-device button:focus-visible{outline:3px solid #80b5f4;outline-offset:2px}
+@media(max-width:380px){
+ #panel-meta .pf-social-device{--df-pt:min(.70px,calc((100vw - 36px)/435))}
+ #panel-meta .pf-social-device .rx-ig-overlay h3{font-size:calc(35 * var(--df-pt))}
+}

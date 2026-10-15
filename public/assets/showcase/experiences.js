@@ -1,6 +1,7 @@
 /* Showcase interactions based on the source Fatos baralho, mobile social studio,
    and smiile "Uma ideia. Muitas formas." scroll stage. No account credentials or ad delivery. */
 import {clamp,createMotion} from '../sections/motion.js';
+import {createDeviceFrame} from './device-frame.js';
 const $=(selector,root=document)=>root.querySelector(selector);
 const $$=(selector,root=document)=>Array.from(root.querySelectorAll(selector));
 const motion=createMotion();
@@ -188,7 +189,16 @@ function mountScrollFilm(){
 function mountSocial(){
  const panel=$('#panel-meta'),old=panel&&$('.mock-phone',panel);if(!panel||!old)return;
  const scene=parse('<div class="rx-instagram" role="region" aria-label="Estudo de publicação em formato social, não veiculada"><div class="rx-iphone"><div class="rx-iphone-inner"><div class="rx-device-status"><span>10:09</span><span class="rx-dynamic-island" aria-hidden="true"></span><span>▂ ▂ ▰</span></div><div class="rx-ig-topbar"><span>‹</span><strong>Posts</strong><span class="rx-follow">Seguir</span></div><div class="rx-ig-profile"><span class="rx-ig-avatar">F</span><div><b>fatosdesconhecidos <span aria-hidden="true">✦</span></b><small>Estudo autoral · não veiculado</small></div><span>≡</span></div><div class="rx-ig-photo"><img src="/assets/showcase/scenes/materia-viva.svg" alt="Composição botânica conceitual Matéria viva" loading="lazy"><span class="rx-ig-count">1/3</span><div class="rx-ig-overlay"><small>ESTUDO DE LINGUAGEM / FATOS</small><h3>Por que isso faz parte do seu dia?</h3></div><div class="rx-ig-nav"><button type="button" data-rx-social-prev aria-label="Imagem anterior">‹</button><button type="button" data-rx-social-next aria-label="Próxima imagem">›</button></div></div><div class="rx-ig-dots" role="group" aria-label="Selecionar quadro"><button type="button" data-rx-social="0" aria-current="true" aria-label="Imagem 1"></button><button type="button" data-rx-social="1" aria-current="false" aria-label="Imagem 2"></button><button type="button" data-rx-social="2" aria-current="false" aria-label="Imagem 3"></button></div><div class="rx-ig-actions"><span>♡ &nbsp; ◯ &nbsp; ↗</span><span>▯</span></div><p class="rx-ig-caption"><strong>fatosdesconhecidos</strong> O começo é uma pergunta. A narrativa organiza o contexto e o formato.</p><span class="rx-ig-date">ESTUDO CONCEITUAL / 2026</span><div class="rx-ig-home"></div></div></div><p class="rx-social-caption">ESTRUTURA DE POST SOCIAL · COMPOSIÇÃO AUTORAL · NÃO REPRESENTA MÍDIA VEICULADA</p></div>');
- old.replaceWith(scene);const image=$('.rx-ig-photo img',scene),title=$('.rx-ig-overlay h3',scene),cap=$('.rx-ig-caption',scene),count=$('.rx-ig-count',scene);
+ old.replaceWith(scene);
+ // Reuse the exact smiile metallic frame instead of maintaining a conflicting orange shell.
+ const legacy=$('.rx-iphone',scene),inner=$('.rx-iphone-inner',legacy);
+ const socialDevice=createDeviceFrame({tone:'dark',scheme:'dark',time:'10:09',label:'Dispositivo metálico com carrossel social interativo'});
+ socialDevice.root.classList.add('pf-social-device');
+ legacy.replaceWith(socialDevice.root);
+ $('.rx-device-status',inner)?.remove();
+ $('.rx-ig-home',inner)?.remove();
+ socialDevice.screen.append(inner);
+ const image=$('.rx-ig-photo img',scene),title=$('.rx-ig-overlay h3',scene),cap=$('.rx-ig-caption',scene),count=$('.rx-ig-count',scene);
  const slides=[
  {image:'/assets/showcase/scenes/materia-viva.svg',headline:'Por que isso faz parte do seu dia?',copy:'O começo é uma pergunta. A narrativa organiza o contexto e o formato.'},
  {image:'/assets/showcase/scenes/contexto.svg',headline:'Que pergunta revela o contexto?',copy:'Pesquisa e contexto sustentam o roteiro.'},

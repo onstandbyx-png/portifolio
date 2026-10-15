@@ -28,7 +28,7 @@ try{
    await page.waitForSelector('html[data-rx-showcase="ready"]');
    await page.waitForSelector('#editorial .pf-reference-device .df-camera');
    check('Reference metallic phone is mounted, aperture contains no chassis',await page.locator('#editorial .df-realistic .df-metal').count()===1&&await page.locator('#editorial .df-camera').count()===1&&await page.locator('#narrativa-visual .rx-iphone').count()===0);
-   check('Immersive collection, scroll film and social mock mounted',await page.locator('#colecao .rx-deck-card').count()===4&&await page.locator('#narrativa-visual .rv-window').count()===1&&await page.locator('#panel-meta .rx-iphone').count()===1);
+   check('Immersive collection, scroll film and social mock mounted',await page.locator('#colecao .rx-deck-card').count()===4&&await page.locator('#narrativa-visual .rv-window').count()===1&&await page.locator('#panel-meta .pf-social-device').count()===1);
    await page.locator('#colecao').scrollIntoViewIfNeeded();
    if(width<760&&height>=720){
      await page.locator('#category-runway').scrollIntoViewIfNeeded();
@@ -102,7 +102,8 @@ try{
    await page.locator('.sm-experience').evaluate(el=>window.scrollTo({top:window.scrollY+el.getBoundingClientRect().top-84,behavior:'instant'}));await page.waitForTimeout(300);
    await page.screenshot({path:`qa/experience-${width}.png`});
    await page.locator('[data-ad-tab="meta"]').click();await page.waitForTimeout(700);
-   check('Fatos social preview has scalable local media',await page.locator('#panel-meta .rx-iphone .rx-ig-photo img').count()===1&&await page.locator('#panel-meta .rx-ig-photo img').evaluate(i=>i.naturalWidth>=1000));
+   check('Social uses the smiile metallic device geometry',await page.locator('#panel-meta .pf-social-device .df-metal').count()===1&&await page.locator('#panel-meta .pf-social-device .df-camera').count()===1);
+   check('Fatos social preview has scalable local media',await page.locator('#panel-meta .pf-social-device .rx-ig-photo img').count()===1&&await page.locator('#panel-meta .rx-ig-photo img').evaluate(i=>i.naturalWidth>=1000));
    await page.locator('[data-rx-social-next]').click();await page.waitForTimeout(400);
    check('Social carousel changes frame',await page.locator('.rx-ig-count').innerText()==='2/3');
    await page.locator('[data-rx-social="0"]').click();

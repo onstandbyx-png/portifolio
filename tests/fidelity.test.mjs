@@ -13,6 +13,8 @@ test('original smiile physical geometry is preserved without orange universal ph
  for(const s of ['435','907','402','874','16.5','17'])assert(device.includes(s),'Device dimension '+s);
  for(const s of ['.df-metal','.df-line','.df-bevel','.df-glass','.df-camera','.df-status','.df-home'])assert(css.includes(s),s);
  assert(render.includes("createDeviceFrame("),'editorial and experience use the reference device');
+ const showcase=await read('public/assets/showcase/experiences.js');
+ assert(showcase.includes('socialDevice=createDeviceFrame('),'Social must share the same frame');
  assert(installer.includes('portfolio-reference-fidelity-v3'));
  assert(installer.includes("replace(/<script type=\"module\" src=\"\\/assets\\/showcase\\/fidelity\\.js\">"));
 });
