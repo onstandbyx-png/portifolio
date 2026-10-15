@@ -18,7 +18,7 @@ test('Visual proof uses local photographic assets from current projects',()=>{
 test('Project services are navigable and do not send data',()=>{
  const s=read('public/assets/project-paths.js');
  for(const marker of ['role','data-path-tab','aria-selected','ArrowRight','ArrowLeft','href','path-contact'])assert(s.includes(marker),marker);
- assert(!/fetch\\s*\\(|XMLHttpRequest|window\\.open/.test(s));
+ assert(!s.includes("XMLHttpRequest")&&!s.includes("window.open")&&!s.includes("fetch("),"Project exploration must not send visitors data");
 });
 test('No fixed contact CTA obscures reading on mobile',()=>{
  assert(!read('public/assets/direction.js').includes('createElement'));
