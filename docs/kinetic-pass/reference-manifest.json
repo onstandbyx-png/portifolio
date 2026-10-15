@@ -1,0 +1,30 @@
+{
+  "source": "sssx.io_1792031061213.mp4",
+  "sha256": "03fa8b52efb24388ef5979c952b70a4857985b296c873e0695f7faf34b83c102",
+  "video_duration_seconds": 25.6,
+  "video_fps": 60,
+  "width": 1080,
+  "height": 1080,
+  "decoded_frames": 1536,
+  "extraction": "PNG lossless, one decoded frame per file, no frame-rate conversion",
+  "first_timestamp": 0,
+  "last_timestamp": 25.583333,
+  "phase_ranges": [
+    {"from": 0, "to": 1.2, "phase": "assembled pass and pointer tilt"},
+    {"from": 1.2, "to": 4.9, "phase": "corner peel and return"},
+    {"from": 5.8, "to": 10, "phase": "knockout explanation"},
+    {"from": 10, "to": 14.75, "phase": "layer decomposition and assembly"},
+    {"from": 16, "to": 22.7, "phase": "configuration and title editing"},
+    {"from": 22.7, "to": 25.6, "phase": "final corner interaction"}
+  ],
+  "material_atlas": {
+    "source_frames": [188,191,194,197,200,203,206,209,212,215,218,221,224,227,230,233],
+    "crop_pixels": [344,289,720,412],
+    "columns": 4,
+    "rows": 4,
+    "cell_width": 128,
+    "cell_height": 64,
+    "use": "small looped texture in real editable lettering; not an embedded reproduction video"
+  },
+  "adaptation": "Independent DOM, SVG and canvas implementation; content changed to ideia & execucao. Browser chrome and original author identity were not reproduced."
+}

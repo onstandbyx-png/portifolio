@@ -1,0 +1,118 @@
+/* Isolated scene: all type, sizes and motion belong to this one portfolio section. */
+.ks-section{background:#222526;color:#f4f4ed;padding:90px 0 65px;position:relative;isolation:isolate;scroll-margin-top:78px;overflow:clip}
+.ks-section .ks-intro{display:flex;justify-content:space-between;align-items:flex-end;gap:42px;margin-bottom:32px}
+.ks-eyebrow{font:700 10px/1.4 Arial,sans-serif;letter-spacing:.19em;color:#b8bcb4;margin-bottom:18px}
+.ks-intro h2{font:650 clamp(36px,4.5vw,69px)/1.02 var(--sans,Arial,sans-serif);letter-spacing:-.057em;margin:0;color:#f4f4ed}
+.ks-intro h2 em{font:italic 400 1em Georgia,serif;color:#f0c357}
+.ks-intro>p{max-width:360px;font-size:14px;line-height:1.65;color:#b7bcb8;margin:0 0 4px}
+.ks-lab{border:1px solid #ffffff21;border-radius:20px;background:#2d2f31;overflow:hidden;position:relative;box-shadow:0 20px 60px #0002}
+.ks-toolbar{height:73px;display:flex;align-items:center;justify-content:space-between;gap:20px;padding:14px 24px;border-bottom:1px solid #ffffff13;background:#292b2d;position:relative;z-index:2}
+.ks-modes{display:flex;gap:4px;padding:4px;background:#1c1e20;border:1px solid #ffffff13;border-radius:12px}
+.ks-modes button{min-height:40px;padding:8px 19px;border:0;border-radius:8px;background:transparent;color:#a9aeaf;font:650 12px/1.3 var(--sans,Arial,sans-serif);cursor:pointer;transition:background .2s,color .2s}
+.ks-modes button[aria-pressed=true]{background:#45494b;color:#fff;box-shadow:0 1px 2px #0003,inset 0 1px #ffffff20}
+.ks-live{display:flex;gap:8px;align-items:center;font-size:8px;font-weight:600;letter-spacing:.14em;color:#bec4bf}
+.ks-live i{height:5px;width:5px;border-radius:50%;background:#dccc9c;box-shadow:0 0 0 3px #d6c69310}
+.ks-stage{position:relative;height:680px;width:100%;perspective:1800px;perspective-origin:50% 50%;isolation:isolate;overflow:clip;background:#2d2f31;touch-action:pan-y}
+.ks-stage:before{content:"";position:absolute;inset:0;background-image:linear-gradient(#afb9b314 1px,transparent 1px),linear-gradient(90deg,#afb9b314 1px,transparent 1px);background-size:48px 48px;mask-image:radial-gradient(ellipse at 12% 0,#000,transparent 82%);pointer-events:none}
+.ks-floor{position:absolute;left:50%;top:calc(50% + 253px);width:290px;height:27px;translate:-50% 0;filter:blur(19px);background:#0009;border-radius:50%;pointer-events:none}
+.ks-assembly{position:absolute;left:50%;top:48%;width:300px;height:500px;transform-style:preserve-3d;transform-origin:center;will-change:transform}
+.ks-stack{position:absolute;inset:0;transform-style:preserve-3d;isolation:auto}
+.ks-plane{position:absolute;inset:0;width:300px;height:500px;mask-image:var(--ks-shape);mask-size:100% 100%;mask-repeat:no-repeat;backface-visibility:visible;pointer-events:none}
+.ks-material{background:#ebae2c;box-shadow:0 30px 35px #0008;border-radius:19px;z-index:0}
+.ks-canvas{display:block;width:300px;height:500px;filter:contrast(1.06) saturate(1.09)}
+.ks-section[data-finish=silver] .ks-canvas{filter:grayscale(1) contrast(1.03) brightness(1.24)}
+.ks-section[data-finish=copper] .ks-canvas{filter:hue-rotate(-27deg) saturate(.85) contrast(1.04)}
+.ks-base{background:#020202;opacity:0;z-index:1}
+.ks-stencil{background:#000;color:#fff;mix-blend-mode:multiply;z-index:2;transform-origin:center;will-change:clip-path;isolation:auto}
+
+.ks-word{position:absolute;top:88px;left:18px;right:18px;height:110px;display:flex;align-items:center;justify-content:center;white-space:nowrap;font-weight:900;font-family:Inter,Arial,Helvetica,sans-serif;line-height:1;font-style:normal;color:#fff}
+.ks-print{z-index:3;box-shadow:inset 0 0 0 .65px #b6bdbe69;border-radius:19px;will-change:clip-path}
+.ks-print-art{width:300px;height:500px;display:block;overflow:visible;transform:none}
+.ks-foil{filter:hue-rotate(var(--ks-hologram,0deg));transform-origin:247px 259px}
+.ks-fold{position:absolute;inset:0;width:300px;height:500px;overflow:visible;z-index:5;pointer-events:none;transform-style:preserve-3d}
+.ks-grab{position:absolute;top:-8px;right:-8px;width:64px;height:64px;border:0;border-radius:15px;background:transparent;color:transparent;cursor:grab;z-index:9;transform:translateZ(5px);touch-action:none}
+.ks-grab:active{cursor:grabbing}
+.ks-grab:disabled{pointer-events:none}
+.ks-grab:focus-visible{outline:2px solid #f6d782!important;outline-offset:4px!important;background:#fff1}
+.ks-gesture{position:absolute;left:calc(50% + 172px);top:15%;width:148px;color:#bdc1bf;font-size:11px;line-height:1.6;pointer-events:none;transition:opacity .15s}
+.ks-gesture>span{display:block;font-size:42px;line-height:1;color:#c8ccc8;font-family:Georgia,serif;margin-left:-10px;rotate:-12deg;margin-bottom:8px}
+.ks-annotations{position:absolute;inset:0;opacity:0;pointer-events:none;transition:opacity .08s linear}
+.ks-note{position:absolute;left:max(24px,calc(50% - 370px));width:205px;text-align:right;color:#9da5a4;font-size:11px;line-height:1.6;transform:none}
+.ks-note:after{content:"";position:absolute;top:11px;right:-67px;width:51px;height:1px;background:#d57b58;box-shadow:5px 0 0 #d57b58}
+.ks-note:before{content:"";position:absolute;top:8px;right:-72px;width:6px;height:6px;border-radius:50%;background:#d88765}
+.ks-note b{font-size:13px;font-weight:650;display:block;color:#e4e7e2;margin-bottom:8px;letter-spacing:-.02em}
+.ks-note span{display:block}
+.ks-note-print{top:9%}.ks-note-type{top:34%}.ks-note-mask{top:58%}.ks-note-film{top:78%}
+.ks-stage-label{position:absolute;left:24px;right:24px;bottom:17px;display:flex;justify-content:space-between;gap:10px;font:600 8px/1.4 var(--sans,Arial,sans-serif);color:#b2b8b1;letter-spacing:.13em;pointer-events:none}
+.ks-stage-label span:last-child{color:#e1dac4;letter-spacing:.06em}
+.ks-controls{display:flex;align-items:center;justify-content:space-between;gap:35px;padding:23px 26px;border-top:1px solid #ffffff18;background:#252829;position:relative;z-index:1}
+.ks-peel-label{display:grid;grid-template-columns:1fr auto;gap:8px 20px;font-size:11px;font-weight:600;color:#d5d9d4;width:280px;max-width:100%;margin:0}
+.ks-peel-label>span{color:#a8ada8;font-variant-numeric:tabular-nums}
+.ks-peel-label input{grid-column:1/-1;width:100%;min-height:28px;margin:0;accent-color:#e7c876;cursor:ew-resize;touch-action:pan-y}
+.ks-buttons{display:flex;align-items:center;gap:7px;flex:none}
+.ks-buttons button{display:flex;align-items:center;justify-content:center;gap:9px;min-height:44px;min-width:44px;padding:10px 13px;border:1px solid #ffffff27;border-radius:11px;background:#323638;color:#e9ece7;font-size:11px;font-weight:600;cursor:pointer;transition:background .2s}
+.ks-buttons button:first-child{padding-inline:15px}.ks-buttons button:first-child>span{font-size:17px;font-weight:400}
+.ks-buttons button:hover{background:#4b514e}.ks-buttons button[aria-pressed=true]{border-color:#d7c384;color:#f2dca8}
+.ks-legend{display:none;grid-template-columns:repeat(4,1fr);padding:0 20px 17px;gap:9px;background:#2d2f31;color:#cdd2ce;font-size:10px;line-height:1.5}
+.ks-legend b{display:block;font-size:9px;color:#d7be7a;margin-bottom:2px}
+.ks-custom{padding:22px 26px;display:grid;grid-template-columns:1fr 1fr 1.2fr;gap:24px;align-items:center;background:#303335;border-top:1px solid #ffffff19}
+.ks-custom[hidden],.ks-legend[hidden],.ks-playback[hidden]{display:none!important}
+.ks-custom label{display:grid;gap:9px;font-size:11px;font-weight:600;color:#d6dad5}
+.ks-custom input,.ks-custom select{width:100%;min-height:44px;padding:10px 13px;color:#fff;background:#212526;border:1px solid #69716d;border-radius:9px;font:500 14px/1.3 var(--sans,Arial,sans-serif)}
+.ks-custom>p{font-size:11px;line-height:1.7;color:#b3bdb6;max-width:310px}
+.ks-playback{display:flex;align-items:center;gap:18px;padding:0 26px 16px;background:#252829}
+.ks-playback input{flex:1;min-width:0;accent-color:#e7c876;min-height:28px;margin:0}
+.ks-playback span{font:500 10px/1.3 Arial,sans-serif;font-variant-numeric:tabular-nums;color:#bfc5c0;flex:none}
+.ks-footnote{display:flex;justify-content:space-between;gap:14px;padding:14px 26px;background:#222526;color:#a3aca5;font-size:9px;line-height:1.5}
+.ks-footnote span:first-child{font-size:8px;letter-spacing:.11em}
+.ks-section button:focus-visible,.ks-section input:focus-visible,.ks-section select:focus-visible{outline:3px solid #f4d585;outline-offset:3px}
+.ks-dragging{user-select:none}
+@media(max-width:1000px){
+ .ks-section .ks-intro{gap:26px}.ks-intro>p{font-size:12px;max-width:290px}.ks-stage{height:630px}
+ .ks-note{left:18px;width:167px;font-size:10px}.ks-note b{font-size:11px}.ks-note:after{right:-35px;width:25px}.ks-note:before{right:-39px}
+}
+@media(max-width:760px){
+ .ks-section{padding:65px 0 48px;scroll-margin-top:64px}.ks-section .ks-intro{display:block;margin-bottom:26px}
+ .ks-eyebrow{font-size:8px;margin-bottom:14px}.ks-intro h2{font-size:clamp(35px,7.5vw,50px)}
+ .ks-intro>p{font-size:12px;line-height:1.65;margin-top:16px;max-width:390px}
+ .ks-lab{border-radius:14px;width:calc(100% - 24px)!important}
+ .ks-toolbar{height:65px;padding:10px 12px}.ks-live{display:none}.ks-modes{width:100%;gap:3px;padding:3px;border-radius:10px}
+ .ks-modes button{flex:1;padding:8px 7px;min-height:40px;font-size:10px;white-space:nowrap}
+ .ks-stage{height:520px;perspective:1500px}.ks-stage:before{background-size:35px 35px}
+ .ks-assembly{top:47%}.ks-floor{top:calc(47% + 205px);width:220px;height:18px;filter:blur(13px)}
+ .ks-gesture{display:none}.ks-stage-label{left:15px;right:15px;font-size:7px;bottom:14px}
+ .ks-annotations{display:none}.ks-legend:not([hidden]){display:grid}
+ .ks-controls{padding:18px 15px;gap:12px;flex-direction:column;align-items:stretch}
+ .ks-peel-label{width:100%;font-size:11px}.ks-peel-label input{min-height:34px}
+ .ks-buttons{width:100%}.ks-buttons button{min-height:44px;font-size:10px}.ks-buttons button:first-child{flex:1}
+ .ks-custom{padding:19px 15px;grid-template-columns:1fr 1fr;gap:17px 12px}.ks-custom>p{grid-column:1/-1;max-width:none;font-size:10px}
+ .ks-footnote{padding:13px 15px;flex-direction:column;gap:5px;font-size:8px}.ks-footnote span:first-child{font-size:7px}
+ .ks-playback{padding:0 15px 14px;gap:10px}.ks-playback span{font-size:9px}
+}
+@media(max-width:355px){.ks-stage{height:475px}.ks-section .ks-intro h2{font-size:35px}.ks-controls{padding:15px 12px}.ks-toolbar{padding:9px}.ks-modes button{font-size:9px}.ks-floor{top:calc(47% + 184px)}}
+@media(prefers-reduced-motion:reduce){.ks-section *, .ks-section *:before,.ks-section *:after{animation:none!important;transition:none!important}.ks-assembly,.ks-print,.ks-stencil{will-change:auto}}
+
+/* Fixed-size print layout in HTML: the same ink stays registered to all SVG details. */
+.ks-ink{position:absolute;inset:0;color:white;font-family:Inter,Arial,sans-serif;pointer-events:none;line-height:1.25}
+.ks-pass-meta{position:absolute;top:46px;left:24px;right:24px;display:flex;justify-content:space-between;gap:15px;font-size:7.5px;letter-spacing:.7px;white-space:nowrap}
+.ks-pass-meta b{font-weight:750}
+.ks-pass-meta b:last-child{font-size:6.9px;letter-spacing:.45px}
+.ks-pass-name{position:absolute;top:232px;left:25px;right:63px}
+.ks-pass-name strong{display:block;font-size:20.5px;line-height:1.08;letter-spacing:-1px;font-weight:800;white-space:nowrap}
+.ks-pass-name>span{display:flex;align-items:center;gap:6px;margin-top:8px;white-space:nowrap}
+.ks-pass-name>span>b{display:inline-block;background:#fff;color:#111;border-radius:9px;padding:2px 5px 1px;font-size:6.7px;letter-spacing:.6px;line-height:1.25}
+.ks-pass-name i{font-style:normal;font-size:8.1px;letter-spacing:-.3px;color:#a7afab}
+.ks-pass-data{position:absolute;top:331px;left:25px;right:25px;display:flex;justify-content:space-between;gap:10px}
+.ks-pass-data span{display:grid;gap:4px}
+.ks-pass-data small{font-size:6.8px;letter-spacing:.8px;color:#9b9f9b;font-weight:600}
+.ks-pass-data b{font-size:9.6px;font-weight:650}
+.ks-pass-serial{position:absolute;top:463px;left:31px;right:27px;display:flex;justify-content:space-between;gap:15px;font-size:7.3px;letter-spacing:.7px;font-weight:650;white-space:nowrap}
+.ks-pass-serial span:last-child{font-size:6.7px;letter-spacing:.5px}
+
+/* A short landscape viewport must still leave the pull handle reachable. */
+@media(max-height:550px) and (min-width:761px){
+ .ks-stage{height:max(250px,calc(100svh - 106px))}
+ .ks-gesture,.ks-annotations{display:none}
+ .ks-legend:not([hidden]){display:grid}
+ .ks-floor{top:85%;width:170px;height:12px;filter:blur(12px)}
+}

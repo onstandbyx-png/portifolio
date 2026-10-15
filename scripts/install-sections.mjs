@@ -66,5 +66,15 @@ for(const path of ['public/assets/showcase/device-frame.js','public/assets/showc
  await access(new URL(path,root));
 execFileSync(process.execPath,['--check',new URL('public/assets/showcase/device-frame.js',root).pathname],{stdio:'inherit'});
 execFileSync(process.execPath,['--test',new URL('tests/fidelity.test.mjs',root).pathname],{stdio:'inherit'});
+// Independent interactive pass reconstructed from all 1,536 source frames.
+const kineticMarker='<!-- portfolio-kinetic-pass-v1 -->';
+if(!html.includes(kineticMarker))html=html.replace('</head>',kineticMarker+'\n'
+ +'<link rel="stylesheet" href="/assets/kinetic-pass/kinetic-pass.css">\n'
+ +'<script type="module" src="/assets/kinetic-pass/kinetic-pass.js"></script>\n</head>');
+for(const path of ['kinetic-pass.js','kinetic-math.js','kinetic-pass.css','gold-material.svg']){
+ await access(new URL('public/assets/kinetic-pass/'+path,root));
+ if(path.endsWith('.js'))execFileSync(process.execPath,['--check',new URL('public/assets/kinetic-pass/'+path,root).pathname],{stdio:'inherit'});
+}
+execFileSync(process.execPath,['--test',new URL('tests/kinetic-pass.test.mjs',root).pathname],{stdio:'inherit'});
 await writeFile(file,html);
 console.log('PASS: módulos das seções instalados; hero original preservado');
