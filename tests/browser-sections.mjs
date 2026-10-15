@@ -25,6 +25,29 @@ try{
    await page.waitForSelector('html.sm-sections-ready');
    check('All section modules initialized',await page.evaluate(()=>['smWorks','smEditorial','smExperience','smAds','smSystems','smContact','smNavigation'].every(k=>document.documentElement.dataset[k]==='ready')));
    check('Existing badge hero retained',await page.locator('[data-portfolio-badges]').count()===1);
+   await page.waitForSelector('html[data-rx-showcase="ready"]');
+   check('Immersive collection, scroll film and social mock mounted',await page.locator('#colecao .rx-deck-card').count()===4&&await page.locator('#narrativa-visual .rx-film-phone').count()===1&&await page.locator('#panel-meta .rx-iphone').count()===1);
+   await page.locator('#colecao').scrollIntoViewIfNeeded();
+   await page.locator('[data-rx-next]').click();
+   await page.waitForTimeout(1000);
+   check('Fatos baralho advances',await page.locator('.rx-deck-counter').innerText()==='2 de 4');
+   await page.locator('.rx-deck-card[data-pos="0"] [data-rx-flip]').click();
+   check('Baralho reverses with usable content',await page.locator('.rx-deck-card[data-pos="0"]').getAttribute('class')?.then(c=>c.includes('is-flipped')));
+   await page.screenshot({path:'qa/fatos-deck-back-'+width+'.png'});
+   await page.locator('.rx-deck-card[data-pos="0"] [data-rx-return]').click();
+   check('Baralho returns to the front',await page.locator('.rx-deck-card[data-pos="0"] [data-rx-flip]').getAttribute('aria-expanded')==='false');
+   await page.locator('[data-rx-prev]').click();await page.waitForTimeout(850);
+   check('Fatos baralho can return to first',await page.locator('.rx-deck-counter').innerText()==='1 de 4');
+   await page.screenshot({path:'qa/fatos-deck-front-'+width+'.png'});
+   await page.locator('[data-rx-view="table"]').click();
+   check('Work switches to genuine table view',await page.locator('.rx-table-view').isVisible()&&!(await page.locator('.work-gallery').isVisible()));
+   await page.locator('[data-rx-view="cards"]').click();
+   check('Work switches back to cards',await page.locator('.work-gallery').isVisible());
+   await page.locator('#narrativa-visual').scrollIntoViewIfNeeded();
+   await page.locator('[data-rx-film-to="2"]').click();await page.waitForTimeout(850);
+   check('Scroll film updates to smiile project',await page.locator('#narrativa-visual').getAttribute('data-phase')==='2');
+   await page.screenshot({path:'qa/smiile-scroll-film-'+width+'.png'});
+
    await page.locator('#trabalhos').scrollIntoViewIfNeeded();
    await page.locator('.sm-work-peek').first().click();await page.waitForTimeout(750);
    check('Project reverses to meaningful back',await page.locator('.sm-work-peek').first().getAttribute('aria-expanded')==='true');
@@ -54,6 +77,13 @@ try{
    await page.locator('.sm-experience').evaluate(el=>window.scrollTo({top:window.scrollY+el.getBoundingClientRect().top-84,behavior:'instant'}));await page.waitForTimeout(300);
    await page.screenshot({path:`qa/experience-${width}.png`});
    await page.locator('[data-ad-tab="meta"]').click();await page.waitForTimeout(700);
+   check('Fatos social preview is a full mobile device',await page.locator('#panel-meta .rx-iphone .rx-ig-photo img').count()===1);
+   await page.locator('[data-rx-social-next]').click();await page.waitForTimeout(400);
+   check('Social carousel changes frame',await page.locator('.rx-ig-count').innerText()==='2/3');
+   await page.locator('[data-rx-social="0"]').click();
+   check('Social carousel returns to original Fatos material',await page.locator('.rx-ig-photo img').getAttribute('src')==='/assets/fatos-desconhecidos.webp');
+   await page.screenshot({path:'qa/fatos-social-'+width+'.png'});
+
    for(const channel of ['meta','tiktok']){
     await page.locator(`[data-ad-tab="${channel}"]`).click();await page.waitForTimeout(700);
     const image=page.locator(`#panel-${channel} img`).first();

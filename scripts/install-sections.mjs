@@ -28,5 +28,16 @@ if(!html.includes('id="sm-section-refinements"'))html=html.replace('</head>',`<s
 .sm-sections-ready .vertical-video>img{filter:brightness(.28) saturate(.65);object-position:50% 50%}
 .sm-sections-ready .mock-phone-image>img{object-position:50% 12%}
 </style>\n</head>`);
+const showcaseMarker='<!-- portfolio-immersive-reference-v2 -->';
+if(!html.includes(showcaseMarker)) {
+  html=html.replace('</head>',showcaseMarker+'\n'
+    +'<link rel="stylesheet" href="/assets/showcase/experiences.css">\n'
+    +'<link rel="stylesheet" href="/assets/showcase/social.css">\n'
+    +'<script type="module" src="/assets/showcase/experiences.js"></script>\n</head>');
+}
+for(const path of ['public/assets/showcase/experiences.js','public/assets/showcase/experiences.css','public/assets/showcase/social.css']) {
+  await access(new URL(path,root));
+  if(path.endsWith('.js'))execFileSync(process.execPath,['--check',new URL(path,root).pathname],{stdio:'inherit'});
+}
 await writeFile(file,html);
 console.log('PASS: módulos das seções instalados; hero original preservado');

@@ -1,0 +1,44 @@
+/* Social creative specimen inspired by Fatos mobile studio,
+   adapted to showcase the operator's writing and campaign thinking, not paid reach. */
+#panel-meta .rx-instagram{margin-inline:auto;max-width:350px;min-width:0;display:grid;justify-items:center;gap:16px;}
+.rx-iphone{width:min(100%,337px);height:auto;aspect-ratio:412 / 825;border-radius:clamp(29px,3vw,49px);padding:7px;background:linear-gradient(145deg,#ffb789,#e57536 32%,#b65b2f 73%,#f4a26d);box-shadow:0 25px 65px -13px #16241e5f,inset 0 0 0 2px #ffdeac;position:relative;}
+.rx-iphone::before{content:"";position:absolute;left:-5px;top:17%;height:11%;width:5px;background:#bc5f31;border-radius:4px 0 0 4px;box-shadow:0 56px 0 #bc5f31;}
+.rx-iphone::after{content:"";position:absolute;right:-5px;top:22%;height:14%;width:5px;background:#bc5f31;border-radius:0 4px 4px 0;}
+.rx-iphone-inner{height:100%;width:100%;border-radius:clamp(23px,2.5vw,42px);overflow:hidden;background:#0b1015;color:#f7f8fc;position:relative;display:flex;flex-direction:column;border:3px solid #121414;isolation:isolate;}
+.rx-device-status{height:43px;padding:16px 27px 6px;display:flex;justify-content:space-between;align-items:center;gap:13px;font-size:12px;font-weight:780;flex:none;}
+.rx-device-status>span:last-child{font-size:9px;letter-spacing:1px;white-space:nowrap;}
+.rx-dynamic-island{position:absolute;top:10px;left:50%;transform:translateX(-50%);width:30%;height:20px;border-radius:99px;background:#000;box-shadow:0 1px 1px #343638;}
+.rx-ig-topbar{height:42px;display:flex;align-items:center;gap:12px;padding:7px 14px;color:#fff;flex:none;}
+.rx-ig-topbar>span:first-child{font-size:30px;font-weight:300;line-height:1}
+.rx-ig-topbar strong{font-size:15px;font-weight:780;letter-spacing:-.02em}
+.rx-follow{margin-left:auto;font-size:10px;font-weight:700;border-radius:8px;padding:9px 13px;background:#252c35;}
+.rx-ig-profile{display:flex;align-items:center;gap:9px;padding:8px 12px;min-height:54px;flex:none;}
+.rx-ig-avatar{display:grid;place-items:center;border-radius:50%;width:30px;height:30px;flex:none;background:linear-gradient(135deg,#4aa4ff,#064da8);border:2px solid #b5d6ff;box-shadow:0 0 0 2px #22384c;font-size:19px;font-weight:850;color:#fff;}
+.rx-ig-profile>div{display:grid;gap:2px;min-width:0}.rx-ig-profile b{font-size:10px;white-space:nowrap;font-weight:760}.rx-ig-profile b span{font-size:10px;color:#4a9aff}.rx-ig-profile small{font-size:8px;color:#b1b8c5}.rx-ig-profile>span:last-child{margin-left:auto;font-size:23px}
+.rx-ig-photo{position:relative;flex:none;width:100%;aspect-ratio:4/4.45;overflow:hidden;background:#183668;touch-action:pan-y;}
+.rx-ig-photo img{width:100%;height:100%;object-fit:cover;object-position:center 25%;filter:contrast(1.05) saturate(1.08);}
+.rx-ig-photo::after{position:absolute;inset:40% 0 0;content:"";background:linear-gradient(0deg,#030507f7,transparent);pointer-events:none;}
+.rx-ig-count{position:absolute;z-index:2;right:12px;top:10px;padding:5px 9px;border-radius:999px;background:#080d17ad;font-size:10px;font-weight:700;letter-spacing:.04em;}
+.rx-ig-overlay{position:absolute;z-index:2;left:19px;bottom:34px;right:18px;}
+.rx-ig-overlay small{font-size:8px;font-weight:770;letter-spacing:.15em;color:#d0ebff;display:block;margin-bottom:13px;}
+.rx-ig-overlay h3{font-size:clamp(25px,4vw,37px);line-height:1.05;letter-spacing:-.055em;color:#fff;font-weight:850;text-shadow:0 2px 4px #0003;}
+.rx-ig-nav{position:absolute;z-index:3;bottom:2px;left:9px;right:9px;display:flex;justify-content:space-between;pointer-events:none;}
+.rx-ig-nav button{display:grid;place-items:center;pointer-events:auto;width:35px;height:35px;min-height:35px;border:1px solid #ffffff48;border-radius:50%;background:#070d1688;color:#fff;font-size:23px;cursor:pointer;}
+.rx-ig-dots{height:22px;display:flex;gap:6px;align-items:center;justify-content:center;}
+.rx-ig-dots button{width:7px;height:7px;min-height:7px;padding:0;border:0;border-radius:50%;background:#485360;cursor:pointer;position:relative;}
+.rx-ig-dots button::before{content:"";position:absolute;inset:-15px;}
+.rx-ig-dots button[aria-current=true]{background:#3585ff;box-shadow:0 0 0 1px #3585ff30;}
+.rx-ig-actions{display:flex;justify-content:space-between;align-items:center;padding:1px 13px;color:#f4f7fd;font-size:22px;line-height:1.2;}
+.rx-ig-caption{padding:3px 13px 0;margin:0;font-size:9.5px!important;line-height:1.4!important;color:#f1f3f8!important;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
+.rx-ig-caption strong{font-weight:800;}
+.rx-ig-date{font-size:7px;letter-spacing:.1em;color:#8491a1;padding:6px 13px 0;}
+.rx-ig-home{position:absolute;width:31%;height:4px;border-radius:9px;background:#fff;bottom:6px;left:50%;transform:translateX(-50%);}
+.rx-social-caption{font-size:8px!important;line-height:1.5!important;letter-spacing:.08em;text-align:center;color:#74866f!important;max-width:320px;}
+/* Shared refinements for the Fatos mock and controls inside the ad variants. */
+#panel-tiktok .vertical-video{border-color:#f29056;background:#0b1018;box-shadow:0 24px 55px #18231a45;}
+#panel-tiktok .vertical-video::before{content:"● ••  10:09";position:absolute;left:17px;top:10px;z-index:5;letter-spacing:.13em;color:#ffffffc9;font-size:8px;}
+#panel-tiktok .video-meta{color:#fff7dc;font-weight:650;}
+.rx-instagram button:focus-visible,.rx-collection button:focus-visible,.rx-film button:focus-visible,.rx-view-controls button:focus-visible{outline:3px solid #72aafa;outline-offset:3px;}
+@media(max-width:980px){#panel-meta .rx-instagram{max-width:340px}.rx-iphone{max-width:320px}.rx-ig-photo{aspect-ratio:4/4.6}}
+@media(max-width:620px){#panel-meta .rx-instagram{width:100%;max-width:330px}.rx-iphone{max-width:307px}.rx-ig-photo{aspect-ratio:4/4.5}.rx-ig-overlay h3{font-size:30px}.rx-ig-profile{min-height:46px;padding:6px 11px}.rx-ig-topbar{height:38px}.rx-device-status{height:38px}.rx-ig-dots{height:19px}.rx-ig-caption{font-size:9px!important}.rx-ig-overlay{bottom:32px}.rx-ig-actions{font-size:19px}.rx-ig-date{font-size:7px;}}
+@media(max-width:380px){.rx-iphone{max-width:286px}.rx-ig-overlay h3{font-size:26px}.rx-ig-photo{aspect-ratio:4/4.25}.rx-ig-overlay small{font-size:7px}}

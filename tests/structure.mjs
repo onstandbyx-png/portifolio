@@ -20,4 +20,6 @@ assert(h.includes('data-portfolio-badges'),'Hero sem área de crachás');
 assert(h.includes('/assets/badge-build/index.js'),'Módulo 3D ausente');
 assert(css.includes('.hero-badge-canvas')&&css.includes('.hero-badge-standin'),'Fallback ausente');
 assert(css.includes('touch-action:pan-y'),'Scroll mobile deveria continuar nativo');
+assert(h.includes('portfolio-immersive-reference-v2'), 'Falta integração do showcase cinematográfico');
+assert(h.includes('/assets/showcase/experiences.js'), 'Falta módulo de interação');
 console.log('PASS: estrutura, assets, acessibilidade, controles, crachás e proveniência');
