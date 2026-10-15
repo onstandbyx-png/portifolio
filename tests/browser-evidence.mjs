@@ -23,7 +23,12 @@ try{
  pass('The Fatos hero badge preserved',await page.locator('[data-portfolio-badges]').count()===1);
  pass('No fixed mobile CTA',await page.locator('.mobile-project-cta').count()===0);
  const art=await page.locator('.work-evidence-gallery .tile-art>img').evaluateAll(async images=>Promise.all(images.map(async i=>{i.loading='eager';try{await i.decode();return i.naturalWidth>0}catch{return false}})));
- pass('Original photographic assets load',art.length===4&&art.every(Boolean));await page.locator('#trabalhos').scrollIntoViewIfNeeded();await page.screenshot({path:'qa/evidence/work-'+width+'.png'});
+ pass('Original photographic assets load',art.length===4&&art.every(Boolean));await page.locator('#trabalhos .work-fatos').evaluate(el=>window.scrollTo({top:scrollY+el.getBoundingClientRect().top-115,behavior:'instant'}));
+ await page.waitForTimeout(700);
+ const rect=await page.locator('#trabalhos .work-fatos').evaluate(el=>{const img=el.querySelector('.tile-art img'),r=el.getBoundingClientRect();return{top:r.top,bottom:r.bottom,opacity:Number(getComputedStyle(el).opacity),naturalWidth:img?.naturalWidth||0}});
+ pass('First work card is painted inside the viewport',rect.naturalWidth>0&&rect.opacity>.9&&rect.top<innerHeight-70&&rect.bottom>140);
+ await page.screenshot({path:'qa/evidence/work-'+width+'.png'});
+ await page.locator('#trabalhos .work-fatos .sm-work-stage').screenshot({path:'qa/evidence/work-tile-'+width+'.png'});
  await page.locator('.work-fatos [data-case]').click();await page.waitForTimeout(180);
  pass('Fatos case opens with image',await page.locator('#case-dialog').evaluate(d=>d.open)&&await page.locator('#dialog-image img').count()===1);
  await page.locator('#dialog-close').click();await page.waitForFunction(()=>!document.querySelector('#case-dialog').open,null,{timeout:4500});

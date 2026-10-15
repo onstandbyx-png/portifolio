@@ -119,3 +119,18 @@ body{padding-bottom:0!important}
 }
 @media(max-width:380px){#narrativa-visual.rx-evidence-film .rv-window{width:calc(435 * .25px)!important;height:calc(907 * .25px)!important}#narrativa-visual .pf-film-device{--df-pt:.25px}#narrativa-visual .rv-copy.rv-left{right:calc(50% + 62px)}#narrativa-visual .rv-copy.rv-right{left:calc(50% + 62px)}#trabalhos .work-evidence-gallery .sm-work-rotor{height:400px!important}.path-portfolio-image{height:300px}}
 @media(prefers-reduced-motion:reduce){#narrativa-visual .rv-window{transform:none!important}.path-portfolio-image img{transition:none}}
+
+/* Sources were art-directed with negative space for titles. Reframe on devices. */
+#editorial .pf-editorial-story .pf-story-image{transform:scale(1.19);transform-origin:center 80%;object-position:center 74%;filter:brightness(.78) saturate(1.07)}
+#editorial .pf-editorial-story .pf-story-profile{z-index:4}
+#editorial .pf-editorial-story .pf-story-controls{top:117px;right:13px;gap:9px}
+#editorial .pf-editorial-story .pf-story-controls button{width:39px;height:39px;min-width:39px;min-height:39px}
+#panel-meta .rx-ig-photo>img{object-position:center 80%!important;filter:contrast(1.09) saturate(1.12)}
+#panel-meta .rx-ig-photo::after{inset:50% 0 0;background:linear-gradient(transparent,#020707df)}
+#panel-tiktok .vertical-video>img{object-position:center 82%!important;filter:brightness(.67) saturate(1.07)}
+#trabalhos .work-evidence-gallery .work-fatos .tile-art>img{object-position:center 75%}
+#trabalhos .work-evidence-gallery .work-ads .tile-art>img{object-position:center 72%}
+#trabalhos .work-evidence-gallery .work-video .tile-art>img{object-position:center}
+#narrativa-visual .pf-film-inner>img{object-position:center 76%}
+#narrativa-visual .pf-film-gradient{inset:56% 0 0;background:linear-gradient(transparent,#061008c4)}
+@media(max-width:760px){#editorial .pf-editorial-story .pf-story-controls{top:120px}}
