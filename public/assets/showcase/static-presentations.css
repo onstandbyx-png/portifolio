@@ -1,87 +1,12 @@
-/* R8: generous static artwork, readable captions, and one purposeful tab list. */
-body.portfolio-r6 #editorial {
-  padding: 112px 0 88px;
-  color: #193b2b;
-  background: #e9ede3;
-}
-body.portfolio-r6 .es-heading {
-  display: grid;
-  grid-template-columns: 1.2fr .8fr;
-  gap: 24px 64px;
-  align-items: end;
-  margin-bottom: 52px;
-}
-body.portfolio-r6 .es-heading .eyebrow {
-  grid-column: 1 / -1;
-  color: #596a5d;
-  font-size: 12px;
-  line-height: 1.5;
-  letter-spacing: .08em;
-}
-body.portfolio-r6 .es-heading h2 {
-  margin: 0;
-  font-size: clamp(42px, 5.3vw, 78px);
-  font-weight: 500;
-  line-height: 1.04;
-  letter-spacing: -.055em;
-  text-wrap: balance;
-}
-body.portfolio-r6 .es-heading h2 em {
-  font-family: var(--serif, Georgia, serif);
-  font-weight: 400;
-  color: #526850;
-}
-body.portfolio-r6 .es-heading > p {
-  max-width: 440px;
-  margin: 0;
-  color: #56665a;
-  font-size: 17px;
-  line-height: 1.65;
-}
-.sp-editorial, .sp-fatos-collection, .sp-campaign, .sp-products-shell { min-width: 0; }
-.sp-editorial-art {
-  width: min(100%, 680px);
-  margin: 0 auto;
-}
-.sp-editorial-art > img, .sp-campaign-panel img, .sp-products figure > img {
+/* Static image content, with transitions and scroll entrances on its container. */
+.sp-campaign, .sp-products-shell { min-width: 0; }
+.sp-campaign-panel img, .sp-products figure > img {
   display: block;
   width: 100%;
   height: auto;
   aspect-ratio: 4 / 5;
   object-fit: contain;
   border-radius: 3px;
-}
-.sp-editorial-art > figcaption {
-  display: flex;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 6px 20px;
-  margin-top: 16px;
-  color: #294334;
-  font-size: 14px;
-  line-height: 1.5;
-  font-weight: 550;
-}
-.sp-editorial-art > figcaption > span { color: #63715f; font-weight: 400; }
-.sp-fatos-collection { margin-top: 72px; }
-.sp-fatos-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 32px 24px; }
-.sp-fatos-grid > figure { min-width: 0; margin: 0; }
-.sp-fatos-scene {
-  display: block;
-  width: 100%;
-  height: auto;
-  aspect-ratio: 4 / 5;
-  object-fit: cover;
-  object-position: center;
-  border-radius: 3px;
-  background: #d5ded1;
-}
-.sp-fatos-grid figcaption {
-  padding-top: 12px;
-  font-size: 14px;
-  line-height: 1.4;
-  font-weight: 550;
-  color: #294334;
 }
 body.portfolio-r6 #laboratorio { padding-block: 100px; }
 body.portfolio-r6 #laboratorio .ads-heading { padding-top: 0; }
@@ -112,6 +37,7 @@ body.portfolio-r6 #laboratorio .ads-heading { padding-top: 0; }
   font-weight: 550;
   line-height: 1.3;
   cursor: pointer;
+  transition: color 180ms ease, background-color 180ms ease;
 }
 .sp-platforms > button::after {
   content: '';
@@ -121,12 +47,14 @@ body.portfolio-r6 #laboratorio .ads-heading { padding-top: 0; }
   left: 0;
   height: 3px;
   background: transparent;
+  transition: background-color 220ms ease;
 }
 .sp-platforms > button[aria-selected='true'] { background: #e9ede1; color: #1b3627; }
 .sp-platforms > button[aria-selected='true']::after { background: #294c36; }
 .sp-platforms > button:hover { color: #193827; background: #e9ede180; }
 .sp-platforms .sp-platform-logo { width: 30px; height: 30px; object-fit: contain; flex: none; }
 .sp-platforms .sp-platform-logo--meta { width: 88px; }
+.sp-campaign-art { overflow: clip; }
 .sp-campaign-panel { min-width: 0; }
 .sp-campaign-panel[hidden] { display: none !important; }
 .sp-campaign-panel > figure { margin: 0; }
@@ -198,15 +126,6 @@ body.portfolio-r6 #sistemas { padding: 88px 0; background: #182d24; color: #edf0
   letter-spacing: -.045em;
 }
 @media (max-width: 760px) {
-  body.portfolio-r6 #editorial { padding: 72px 0 64px; }
-  body.portfolio-r6 .es-heading { grid-template-columns: minmax(0, 1fr); gap: 20px; margin-bottom: 32px; }
-  body.portfolio-r6 .es-heading h2 { font-size: clamp(38px, 9.5vw, 58px); }
-  body.portfolio-r6 .es-heading > p { font-size: 16px; }
-  body.portfolio-r6 .es-heading .eyebrow { font-size: 11px; }
-  .sp-editorial-art > figcaption { font-size: 13px; margin-top: 12px; }
-  .sp-fatos-collection { margin-top: 44px; }
-  .sp-fatos-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px 14px; }
-  .sp-fatos-grid figcaption { font-size: 12px; }
   body.portfolio-r6 #laboratorio { padding-block: 72px; }
   .sp-campaign { margin-top: 12px; }
   .sp-platforms { gap: 4px; margin-bottom: 16px; }
@@ -220,3 +139,7 @@ body.portfolio-r6 #sistemas { padding: 88px 0; background: #182d24; color: #edf0
   .sp-products figcaption { padding-top: 18px; }
   .sp-products h3 { font-size: clamp(27px, 7.4vw, 36px); }
 }
+@media (prefers-reduced-motion: reduce) {
+  .sp-platforms > button, .sp-platforms > button::after { transition: none; }
+}
+body.is-paused .sp-platforms > button, body.is-paused .sp-platforms > button::after { transition: none; }

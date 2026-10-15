@@ -24,7 +24,7 @@ jobs:
           /tmp/portfolio-qa/node_modules/.bin/playwright install --with-deps chromium
       - name: Validate badge loading and consistent fallback artwork
         run: node tests/browser-badge-loading.mjs
-      - name: Validate static artwork, accessible navigation and local contact
+      - name: Validate reversible presentations, static mock artwork and local contact
         run: node tests/browser-static-presentations.mjs
       - name: Validate touch gestures and badge stability
         run: node tests/browser-gestures.mjs

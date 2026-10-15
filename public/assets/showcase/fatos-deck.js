@@ -54,17 +54,15 @@ export function mountFatosDeck() {
   const existing = anchor.querySelector('#colecao');
   if (existing) return existing;
   const motion = createMotion();
-  const shell = make(`<section id="colecao" class="pf-fatos-deck shell" aria-labelledby="pf-fatos-title" data-active="0">
-    <div class="pf-fatos-intro"><span class="pf-fatos-kicker">${escape(copy.eyebrow)}</span><h3 id="pf-fatos-title">${escape(copy.title).replace(/\n/g, '<br>')}</h3><p>${escape(copy.body)}</p>
-      <div class="pf-fatos-pips" role="group" aria-label="Escolher universo editorial"></div>
+  const shell = make(`<section id="colecao" class="pf-fatos-deck shell" aria-label="Composições editoriais Fatos" data-active="0">
+    <div class="pf-fatos-intro">
       <div class="pf-fatos-context"><span data-fatos-index>01 / 06</span><strong data-fatos-name></strong><h4 data-fatos-question></h4><p data-fatos-territory></p></div>
     </div>
-    <div class="pf-fatos-display"><div class="pf-fatos-stage" role="region" aria-roledescription="carrossel" aria-label="Seis universos editoriais Fatos" tabindex="0"></div><p class="pf-fatos-counter" role="status" aria-live="polite"></p></div>
-    <details class="pf-fatos-source"><summary>Origem das composições</summary><p>${escape(copy.credit)}</p></details>
+    <div class="pf-fatos-display"><div class="pf-fatos-stage" role="region" aria-roledescription="carrossel" aria-label="Seis universos editoriais Fatos" tabindex="0"></div><div class="pf-fatos-navigation" role="group" aria-label="Navegar pelas composições"><button type="button" data-fatos-prev aria-label="Composição anterior"><span aria-hidden="true">←</span></button><p class="pf-fatos-counter" role="status" aria-live="polite"></p><button type="button" data-fatos-next aria-label="Próxima composição"><span aria-hidden="true">→</span></button></div></div>
   </section>`);
   const bottom = anchor.querySelector('.editorial-bottom');
   if (bottom) bottom.before(shell); else anchor.append(shell);
-  const stage = $('.pf-fatos-stage', shell), pips = $('.pf-fatos-pips', shell);
+  const stage = $('.pf-fatos-stage', shell);
   let active = 0, drag = null, lastSwipe = -Infinity, arrival = null, settlement = null;
   const cards = brands.map((brand, i) => {
     const card = make(`<article class="pf-fatos-card" data-fatos-card="${brand.id}" aria-label="${i + 1} de ${brands.length}: ${brand.name}"><div class="pf-fatos-rotor"><div class="pf-fatos-face pf-fatos-front" data-fatos-front><img class="pf-fatos-art" src="${assets}cena-${brand.id}.webp" alt="Composição editorial de ${brand.name}" loading="lazy" decoding="async" width="720" height="1273" draggable="false"><div class="pf-fatos-shade" aria-hidden="true"></div><div class="pf-fatos-profile"><img src="${assets}avatar_${brand.id}.webp" alt="" width="48" height="48" loading="lazy" draggable="false"><div><strong>${brand.name}</strong><span>${brand.handle}</span></div></div><div class="pf-fatos-question"><span class="pf-fatos-rule" aria-hidden="true"></span><h4>${brand.question}</h4></div><button type="button" class="pf-fatos-flip" data-fatos-flip aria-expanded="false">${escape(copy.controls.front)} <span aria-hidden="true">↻</span></button></div><div class="pf-fatos-face pf-fatos-back" data-fatos-back aria-hidden="true" inert><div class="pf-fatos-back-heading"><img src="${assets}avatar_${brand.id}.webp" alt="" width="44" height="44" loading="lazy"><div><span>RECORTE EDITORIAL</span><h4>${brand.name}</h4></div></div><p class="pf-fatos-approach">${brand.approach}</p><div class="pf-fatos-formats"><span>DESDOBRAMENTOS</span><ul>${brand.formats.map(format => `<li>${format}</li>`).join('')}</ul></div><button type="button" class="pf-fatos-flip" data-fatos-return>${escape(copy.controls.back)} <span aria-hidden="true">↶</span></button></div></div></article>`);
@@ -73,11 +71,8 @@ export function mountFatosDeck() {
     $('[data-fatos-return]', card).addEventListener('click', () => flip(false, true));
     stage.append(card); return card;
   });
-  const selectors = brands.map((brand, i) => {
-    const button = make(`<button type="button" data-fatos-select="${i}" aria-label="Selecionar ${brand.name}" aria-pressed="false"><img src="${assets}avatar_${brand.id}.webp" alt="" width="32" height="32" loading="lazy"><span>${brand.short}</span></button>`);
-    button.style.setProperty('--fatos-accent', brand.color);
-    button.addEventListener('click', () => go(i)); pips.append(button); return button;
-  });
+  $('[data-fatos-prev]', shell).addEventListener('click', () => go(active - 1));
+  $('[data-fatos-next]', shell).addEventListener('click', () => go(active + 1));
   function setFace(card, open) {
     card.classList.toggle('is-flipped', open);
     const front = $('[data-fatos-front]', card), back = $('[data-fatos-back]', card);
@@ -97,7 +92,6 @@ export function mountFatosDeck() {
       card.dataset.position = String(position); card.classList.toggle('is-active', i === active);
       card.inert = i !== active; card.setAttribute('aria-hidden', String(i !== active)); setFace(card, false);
     });
-    selectors.forEach((button, i) => button.setAttribute('aria-pressed', String(i === active)));
     $('[data-fatos-index]', shell).textContent = String(active + 1).padStart(2, '0') + ' / 06';
     $('[data-fatos-name]', shell).textContent = brands[active].name;
     $('[data-fatos-question]', shell).textContent = brands[active].question;
@@ -124,7 +118,7 @@ export function mountFatosDeck() {
   }
   shell.addEventListener('keydown', event => {
     const destinations = { ArrowRight: active + 1, ArrowLeft: active - 1, Home: 0, End: brands.length - 1 };
-    if (event.key in destinations) { event.preventDefault(); go(destinations[event.key]); if (event.target.closest('.pf-fatos-pips')) selectors[active].focus({ preventScroll: true }); }
+    if (event.key in destinations) { event.preventDefault(); go(destinations[event.key]); }
     if (event.key === 'Escape' && cards[active].classList.contains('is-flipped')) { event.preventDefault(); flip(false, true); }
   });
   function cancelDrag(animate = true) {

@@ -6,8 +6,8 @@ const services=read('../public/assets/project-paths.js');
 for(const id of ['inicio','trabalhos','editorial','laboratorio','sistemas','contato','reading-progress'])assert(h.includes('id="'+id+'"'),id);
 assert.deepEqual([...h.matchAll(/data-work-card="([^"]+)"/g)].map(match=>match[1]),['fatos','ads','smiile'],'Three independent work cards provide static HTML fallback');
 assert(h.includes('/assets/showcase/static-init.js')&&h.includes('/assets/showcase/static-presentations.css'),'Static presentation entry and responsive stylesheet required');
-assert(!/(?:data-case=|id="case-dialog"|data-editorial-step=|data-product-tab=|data-fatos-flip=)/.test(h),'Retired nested demo controls must not return');
-assert(!/<script[^>]+src="[^"]*(?:experiences|recovery-init|social-ads|fatos-deck|product-demos)\.js/.test(h),'Retired showcase modules must not initialize');
+assert(!/(?:data-case=|id="case-dialog"|data-product-tab=|data-app-action=|data-call-play=)/.test(h),'Retired nested product demos must not return');
+assert(!/<script[^>]+src="[^"]*(?:recovery-init|social-ads|product-demos)\.js/.test(h),'Retired product demo modules must not initialize');
 for(const s of [h,js,showcase,services])assert(!/\b(?:SOTA CI|final_final|LINHA)\b/i.test(s),'Obsolete fictional or technical narrative remains');
 assert(!/mobile-project-cta/.test(read('../public/assets/direction.js')),'Mobile contact overlay must not be created');
 assert(js.includes('navigator.clipboard.writeText')&&js.includes('contact.createContactHref'),'Editable local briefing and real contact destinations retained');
@@ -15,4 +15,4 @@ assert(h.includes('data-portfolio-badges')&&h.includes('/assets/badge-build/inde
 for(const name of ['fatos-editorial','fatos-esportes','fatos-crencas','fatos-sobrenaturais','fatos-nerd','fatos-negocios','campanha-meta','campanha-google','campanha-tiktok','casa-costa','trilhas'])assert(existsSync(new URL(`../public/assets/portfolio/static-r8/${name}.webp`,import.meta.url)),name);
 for(const target of ['#editorial','#laboratorio','#sistemas','#contato'])assert(h.includes(target),target);
 for(const source of [h,js,showcase])assert(!source.includes('#estudio-interativo'),'Hidden studio has no public navigation');
-console.log('PASS: static visual proof, native navigation, badge hero and local contact');
+console.log('PASS: static mock artwork, native navigation, badge hero and local contact');

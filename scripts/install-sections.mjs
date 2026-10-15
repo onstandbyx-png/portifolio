@@ -12,8 +12,8 @@ for(const reference of references){
  const file=new URL(aliases[reference]||'public'+reference,root);await access(file);
  if(reference.endsWith('.js'))execFileSync(process.execPath,['--check',file.pathname],{stdio:'inherit'});
 }
-for(const module of ['sections/motion.js','content/portfolio-copy.js','showcase/scroll-gallery.js','showcase/static-presentations.js'])execFileSync(process.execPath,['--check',new URL('public/assets/'+module,root).pathname],{stdio:'inherit'});
+for(const module of ['sections/motion.js','content/portfolio-copy.js','showcase/scroll-gallery.js','showcase/static-presentations.js','showcase/editorial-story.js','showcase/fatos-deck.js','showcase/scroll-film.js'])execFileSync(process.execPath,['--check',new URL('public/assets/'+module,root).pathname],{stdio:'inherit'});
 for(const asset of ['poster-pair-ff','poster-pair-bf','poster-pair-fb','poster-pair-bb','poster-single-0f','poster-single-0b','poster-single-1f','poster-single-1b'])await access(new URL(`public/assets/badges/${asset}.webp`,root));
 assert(!html.includes('src="https://midia-kit-production'),'Artwork must be served locally');
-execFileSync(process.execPath,['--test',...['sections','fidelity','contact','badge-stability'].map(name=>new URL('tests/'+name+'.test.mjs',root).pathname)],{stdio:'inherit'});
+execFileSync(process.execPath,['--test',...['sections','fidelity','contact','badge-stability','scroll-gallery'].map(name=>new URL('tests/'+name+'.test.mjs',root).pathname)],{stdio:'inherit'});
 console.log('PASS: current imports, static artwork, contact and badge contracts; source unchanged');

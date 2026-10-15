@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="theme-color" content="#f6f6f2">
-  <meta name="portfolio-version" content="static-portfolio-20261015-r8">
+  <meta name="portfolio-version" content="motion-restored-20261015-r9">
   <meta name="description" content="Direção criativa, conteúdo e campanhas com Smile N. Experiência com Fatos Desconhecidos, projeto próprio smiile e criação de sites, apps e sistemas.">
   <meta property="og:title" content="Criatividade com direção. Do conceito à entrega.">
   <meta property="og:description" content="Conheça a atuação de Smile N em conteúdo, campanhas e experiências digitais. Explore os trabalhos e converse sobre o seu projeto.">
@@ -32,6 +32,9 @@
   <link rel="stylesheet" href="/assets/project-paths.css">
   <link rel="stylesheet" href="/assets/portfolio-recovery.css">
   <link rel="stylesheet" href="/assets/showcase/scroll-gallery.css">
+  <link rel="stylesheet" href="/assets/showcase/device-frame.css">
+  <link rel="stylesheet" href="/assets/showcase/editorial-story.css">
+  <link rel="stylesheet" href="/assets/showcase/fatos-deck.css">
   <link rel="stylesheet" href="/assets/badge-enhancements.css?v=editorial-r6">
   <link rel="stylesheet" href="/assets/portfolio-r6.css">
   <link rel="stylesheet" href="/assets/editorial-motion.css">
@@ -46,7 +49,7 @@
   <script type="module" src="/assets/project-paths.js"></script>
   <script type="module" src="/assets/showcase/static-init.js"></script>
 </head>
-<body class="direction-v4 portfolio-r6 portfolio-r8">
+<body class="direction-v4 portfolio-r6 portfolio-r9">
   <a class="skip" href="#trabalhos">Pular para trabalhos</a>
   <div id="reading-progress" aria-hidden="true"></div>
   <header class="site-header" id="site-header">
@@ -116,7 +119,23 @@
     <p>Meu trabalho conecta pesquisa, texto e direção visual: encontrar um recorte, organizar a história e dar a ela uma forma que faça sentido para o público.</p>
   </header>
   <div class="shell es-workbench">
-    <figure class="sp-editorial-art"><img src="/assets/portfolio/static-r8/fatos-editorial.webp" width="960" height="1200" alt="Fatos Desconhecidos. O que existe por trás do que parece comum? Composição editorial com fotografia de tecnologia." loading="lazy" decoding="async"></figure>
+    <div class="es-tabs" role="tablist" aria-label="Etapas da mesma história">
+      <button type="button" id="editorial-tab-hook" data-editorial-step="0" role="tab" aria-controls="editorial-story-panel" aria-selected="true"><span>01</span><strong>Abertura</strong></button>
+      <button type="button" id="editorial-tab-context" data-editorial-step="1" role="tab" aria-controls="editorial-story-panel" aria-selected="false" tabindex="-1"><span>02</span><strong>Contexto</strong></button>
+      <button type="button" id="editorial-tab-closing" data-editorial-step="2" role="tab" aria-controls="editorial-story-panel" aria-selected="false" tabindex="-1"><span>03</span><strong>Fechamento</strong></button>
+    </div>
+    <div class="es-panel" id="editorial-story-panel" role="tabpanel" aria-labelledby="editorial-tab-hook" tabindex="0">
+      <div class="es-stage" data-editorial-stage>
+        <div class="es-phone-placeholder" aria-hidden="true"><img src="/assets/portfolio/recovered-fatos/post-desconhecidos-600.webp" alt="" loading="lazy"><p>O que cabe na palma da sua mão?</p></div>
+      </div>
+      <article class="es-context" data-editorial-context>
+        <span data-es-label>01 / Abertura</span>
+        <h3 data-es-title>Começar pelo que a pessoa reconhece.</h3>
+        <p data-es-body>Uma pergunta próxima da rotina cria o ponto de entrada para um assunto maior.</p>
+        <div class="es-transcript"><span>A peça, em palavras</span><blockquote data-es-quote>O que cabe na palma da sua mão?</blockquote><p data-es-copy>Um objeto cotidiano pode abrir uma história sobre como a nossa forma de viver mudou.</p></div>
+      </article>
+    </div>
+    <p class="es-status" data-es-status role="status" aria-live="polite">Abertura · 1 de 3</p>
   </div>
 </section>
 
