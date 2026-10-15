@@ -1,5 +1,6 @@
 import {createDeviceFrame} from '../showcase/device-frame.js';
 import {createMotion,clamp,entryEdge,rotationForEdge,chapterAt} from './motion.js';
+import {sectionCopy} from '../content/portfolio-copy.js';
 const $=(s,r=document)=>r.querySelector(s),$$=(s,r=document)=>[...r.querySelectorAll(s)];
 const M=createMotion(),fine=matchMedia('(hover:hover) and (pointer:fine)');
 const copy=html=>{const t=document.createElement('template');t.innerHTML=html;return t.content.firstElementChild;};
@@ -8,6 +9,7 @@ function rise(node,distance=24,delay=0){return M.spring(node,p=>({opacity:clamp(
 function mount(name,fn){try{fn();document.documentElement.dataset[`sm${name}`]='ready';}catch(e){document.documentElement.dataset[`sm${name}`]='failed';console.error(`Seção ${name}:`,e);}}
 
 mount('Works',()=>{
+ const workLabels=sectionCopy('trabalhos').controls;
  const data={fatos:['Por trás de cada pauta.','Pesquisa, roteiro e direção editorial.','Assunto e recorte','Texto e storytelling','Peças em diferentes formatos'],ads:['Por trás do anúncio.','Estratégia, criação e mídia paga.','Conceito e público','Formatos e copy','Operação e melhoria'],smiile:['Por trás do produto.','Sites, apps e experiências digitais.','Direção visual','Interação real','Desenvolvimento frontend'],video:['Por trás do movimento.','Vídeo, textura e materialidade.','Cena e narrativa','Camadas e animações','Experiência interativa']};
  let origin=null;
  $$('.work-tile').forEach((tile,i)=>{
@@ -17,12 +19,12 @@ mount('Works',()=>{
   art.before(stage);const rotor=$('.sm-work-rotor',stage);rotor.append(art);art.classList.add('sm-work-front');
   const back=copy(`<div class="sm-work-back" id="sm-back-${kind}" aria-hidden="true"><span class="sm-overline">0${i+1} / PROCESSO E CONTRIBUIÇÃO</span><h3>${details[0]}</h3><p>${details[1]}</p><div class="sm-back-lines">${details.slice(2).map((v,j)=>`<span><i>0${j+1}</i>${v}</span>`).join('')}</div><small>Abra o case para conhecer o contexto e a minha contribuição.</small><span class="sm-back-sign">ideia ↗ execução.</span></div>`);
   back.inert=true;rotor.append(back);
-  const peek=copy(`<button type="button" class="sm-work-peek" aria-expanded="false" aria-controls="sm-back-${kind}"><span>Ver bastidores</span><b aria-hidden="true">↶</b></button>`);stage.append(peek);
+  const peek=copy(`<button type="button" class="sm-work-peek" aria-expanded="false" aria-controls="sm-back-${kind}"><span>${workLabels.reveal}</span><b aria-hidden="true">↶</b></button>`);stage.append(peek);
   stage.append(copy('<span class="sm-work-sheen" aria-hidden="true"></span>'));
   let edge='right',flipped=false,raf=0,turn=null;
   function flip(){
    turn?.cancel();flipped=!flipped;const r=rotationForEdge(edge);stage.dataset.face=flipped?'back':'front';
-   peek.setAttribute('aria-expanded',String(flipped));$('span',peek).textContent=flipped?'Voltar à capa':'Ver bastidores';
+   peek.setAttribute('aria-expanded',String(flipped));$('span',peek).textContent=flipped?workLabels.return:workLabels.reveal;
    art.inert=flipped;art.setAttribute('aria-hidden',String(flipped));back.inert=!flipped;back.setAttribute('aria-hidden',String(!flipped));
    back.style.transform=`rotateX(${r.x}deg) rotateY(${r.y}deg)`;
    rotor.style.transform=flipped?`rotateX(${r.x}deg) rotateY(${r.y}deg)`:'rotateX(0deg) rotateY(0deg)';
@@ -33,7 +35,7 @@ mount('Works',()=>{
   stage.addEventListener('pointerenter',e=>{if(!flipped){const b=stage.getBoundingClientRect();edge=entryEdge(e.clientX-b.left,e.clientY-b.top,b.width,b.height);}});
   stage.addEventListener('pointermove',e=>{
    if(!fine.matches||!M.available())return;cancelAnimationFrame(raf);
-   const x=e.clientX,y=e.clientY;raf=requestAnimationFrame(()=>{const b=stage.getBoundingClientRect(),nx=clamp((x-b.left)/b.width),ny=clamp((y-b.top)/b.height);stage.style.setProperty('--tilt-x',`${(ny-.5)*-7}deg`);stage.style.setProperty('--tilt-y',`${(nx-.5)*9}deg`);stage.style.setProperty('--shine-x',`${nx*100}%`);stage.style.setProperty('--shine-y',`${ny*100}%`);});
+   const x=e.clientX,y=e.clientY;raf=requestAnimationFrame(()=>{const b=stage.getBoundingClientRect(),nx=clamp((x-b.left)/b.width),ny=clamp((y-b.top)/b.height);stage.style.setProperty('--tilt-x',`${(ny-.5)*-4}deg`);stage.style.setProperty('--tilt-y',`${(nx-.5)*4}deg`);stage.style.setProperty('--shine-x',`${nx*100}%`);stage.style.setProperty('--shine-y',`${ny*100}%`);});
   });
   const reset=()=>{cancelAnimationFrame(raf);stage.style.setProperty('--tilt-x','0deg');stage.style.setProperty('--tilt-y','0deg');};
   stage.addEventListener('pointerleave',reset);M.onStop(reset);
@@ -59,31 +61,7 @@ mount('Works',()=>{
  }).observe(dialog,{attributes:true,attributeFilter:['open','data-case']});
 });
 
-mount('Editorial',()=>{
- const feature=$('.editorial-feature'),page=$('.editorial-page'),buttons=$$('.editorial-step');if(!feature||!page||buttons.length!==3)return;
- const stories=[
-  {label:'01 / ASSUNTO',title:'O que merece ser contado?',reason:'A primeira decisão é o assunto, a pergunta e o público que precisa entender o contexto.',image:'/assets/portfolio/cena-desconhecidos.webp'},
-  {label:'02 / CONTEXTO',title:'O que existe por trás disso?',reason:'Pesquisa, fontes e recorte oferecem perspectiva, não apenas um gancho superficial.',image:'/assets/portfolio/cena-negocios.webp'},
-  {label:'03 / NARRATIVA',title:'Como essa história ganha forma?',reason:'Roteiro, design e uma peça visual tornam a informação mais interessante e compreensível.',image:'/assets/portfolio/cena-nerd.webp'}
- ];
- const stage=copy('<div class="pf-story-screen pf-editorial-story" data-scene="0"><img class="pf-story-image" src="/assets/portfolio/cena-desconhecidos.webp" alt="Cena original de Fatos Desconhecidos"><div class="pf-story-profile"><b class="pf-story-avatar" aria-hidden="true">F</b><span><strong>FATOS / NARRATIVA</strong><small>Imagens dos projetos editoriais</small></span></div><div class="pf-copy-lab pf-evidence-lab"><span class="pf-story-kicker">01 / ASSUNTO</span><div class="pf-copy-after"><h3 class="pf-story-title">O que merece ser contado?</h3></div><button type="button" class="pf-copy-decision" aria-expanded="false">Por trás da decisão <span aria-hidden="true">+</span></button><p class="pf-story-explain" hidden></p></div><div class="pf-story-lower"><small>ASSUNTO → CONTEXTO → NARRATIVA</small><div class="pf-story-progress" aria-hidden="true"><i></i></div></div><nav class="pf-story-controls" aria-label="Navegação da peça editorial"><button type="button" data-pf-prev aria-label="Voltar">‹</button><span data-pf-count>01 / 03</span><button type="button" data-pf-next aria-label="Avançar">›</button></nav></div>');
- page.classList.add('pf-new-device-stage');
- const device=createDeviceFrame({tone:'light',scheme:'dark',time:'10:09',label:'Peças editoriais Fatos em um dispositivo interativo',content:stage.outerHTML});
- page.append(device.root);const shell=device.root;
- const ribbon=copy('<div class="sm-editorial-controls"><span class="sm-editorial-cue">ESCOLHA O ASSUNTO · VEJA A PEÇA</span><div role="group" aria-label="Etapas editoriais"><button type="button" data-story-prev aria-label="Anterior">←</button><span class="sm-story-count">01 / 03</span><button type="button" data-story-next aria-label="Próximo">→</button></div></div>');feature.append(ribbon);
- let active=0,drag=null;
- function render(i){
-  active=clamp(i,0,2);const d=stories[active];$('.pf-story-screen',shell).dataset.scene=String(active);const img=$('.pf-story-image',shell);img.src=d.image;img.alt='Imagem da marca Fatos: '+d.title;
-  $('.pf-story-kicker',shell).textContent=d.label;$('.pf-story-title',shell).textContent=d.title;$('.pf-story-explain',shell).textContent=d.reason;$('.pf-story-explain',shell).hidden=true;$('.pf-copy-decision',shell).setAttribute('aria-expanded','false');$('.pf-story-progress i',shell).style.transform='scaleX('+((active+1)/3)+')';
-  $('[data-pf-count]',shell).textContent='0'+(active+1)+' / 03';$('.sm-story-count',ribbon).textContent='0'+(active+1)+' / 03';for(const name of ['pf','story']){const root=name==='pf'?shell:ribbon;$('[data-'+name+'-prev]',root).disabled=active===0;$('[data-'+name+'-next]',root).disabled=active===2;}
-  feature.style.setProperty('--story-progress',String((active+1)/3));rise($('.pf-copy-after',shell),14);
- }
- buttons.forEach((b,i)=>b.addEventListener('click',()=>render(i),true));
- $('.pf-copy-decision',shell).addEventListener('click',e=>{const open=e.currentTarget.getAttribute('aria-expanded')!=='true';e.currentTarget.setAttribute('aria-expanded',String(open));$('.pf-story-explain',shell).hidden=!open;});
- for(const root of [shell,ribbon]){const prefix=root===shell?'pf':'story';$('[data-'+prefix+'-prev]',root).addEventListener('click',()=>buttons[Math.max(0,active-1)].click());$('[data-'+prefix+'-next]',root).addEventListener('click',()=>buttons[Math.min(2,active+1)].click());}
- const screen=$('.pf-story-screen',shell);screen.addEventListener('pointerdown',e=>{if(!e.target.closest('button'))drag={x:e.clientX,y:e.clientY}});screen.addEventListener('pointerup',e=>{if(!drag)return;const dx=e.clientX-drag.x,dy=e.clientY-drag.y;drag=null;if(Math.abs(dx)>50&&Math.abs(dx)>Math.abs(dy)*1.25)buttons[clamp(active+(dx<0?1:-1),0,2)].click()});screen.addEventListener('pointercancel',()=>drag=null);
- render(0);
-});
+// R6: editorial-story.js owns the editorial scene and its controls.
 
 mount('Experience',()=>{
  const frame=$('#immersive-frame');if(!frame)return;frame.classList.add('sm-interactive-experience');
@@ -122,14 +100,7 @@ mount('Experience',()=>{
  $$('button[data-tone]',preview).forEach(b=>b.addEventListener('click',()=>{device.dataset.tone=b.dataset.tone;$('.df-screen',phone.root).dataset.scheme=b.dataset.tone==='dark'?'dark':'light';$('.df-home',phone.root).dataset.tone=b.dataset.tone==='dark'?'light':'dark';$$('button[data-tone]',preview).forEach(t=>t.setAttribute('aria-pressed',String(t===b)));rise($('.sm-demo-copy',preview),10);}));
 });
 
-mount('Ads',()=>{
- const tabs=$$('[data-ad-tab]'),right=$('.ads-right'),list=$('.ads-tablist');if(!right||tabs.length!==4||!list)return;
- const marker=copy('<span class="sm-tab-marker" aria-hidden="true"></span>');list.prepend(marker);list.classList.add('sm-tabs-live');
- function indicator(tab){const t=tab.getBoundingClientRect(),p=list.getBoundingClientRect();marker.style.width=t.width+'px';marker.style.height=t.height+'px';marker.style.transform='translate('+(t.left-p.left)+'px,'+(t.top-p.top)+'px)';}
- function animatePanel(tab){const active=$('.ad-panel:not([hidden])',right);indicator(tab);if(!active)return;M.spring(active,p=>({opacity:clamp(p),transform:'translateY('+(23*(1-p))+'px) scale('+(.97+.03*p)+')'}),{duration:610});$$('.mock-aside>*',active).forEach((el,i)=>rise(el,15,80+i*35));}
- tabs.forEach(t=>t.addEventListener('click',()=>queueMicrotask(()=>animatePanel(t)),true));requestAnimationFrame(()=>indicator(tabs[0]));new ResizeObserver(()=>indicator(tabs.find(x=>x.getAttribute('aria-selected')==='true')||tabs[0])).observe(list);
-
-});
+// R6: platform panels own their transitions; do not stack a second spring.
 
 mount('Contact',()=>{
  const group=$('.contact-formats'),form=$('#brief-form'),service=$('#service'),brief=$('#brief');if(!group||!form||!service||!brief)return;
@@ -148,7 +119,8 @@ mount('Navigation',()=>{
  const io=new IntersectionObserver(entries=>{for(const e of entries)if(e.isIntersecting){links.forEach(a=>{const on=a.hash==='#'+e.target.id;a.classList.toggle('sm-nav-active',on);if(on)a.setAttribute('aria-current','location');else a.removeAttribute('aria-current')});}},{rootMargin:'-15% 0px -65% 0px',threshold:0});
  sections.forEach(s=>io.observe(s));
  const reveal=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('sm-revealed');rise(e.target,28);reveal.unobserve(e.target);}}),{threshold:.12});
- $$('.work-heading,.editorial-heading,.systems-copy,.contact-intro,.source-note').forEach(s=>reveal.observe(s));
+ // R6: editorial-motion.js exclusively owns section heading reveals.
+ $$('.source-note').forEach(s=>reveal.observe(s));
  $$('.category-card').forEach(c=>{const flip=$('.category-flipper',c),front=$('.category-front',c),back=$('.category-back',c);if(!flip||!front||!back)return;function sync(){const open=c.classList.contains('is-flipped');front.inert=open;back.inert=!open;front.setAttribute('aria-hidden',String(open));back.setAttribute('aria-hidden',String(!open));}new MutationObserver(sync).observe(c,{attributes:true,attributeFilter:['class']});sync();});
 });
 document.documentElement.classList.add('sm-sections-ready');

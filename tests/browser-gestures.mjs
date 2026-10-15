@@ -158,7 +158,8 @@ try{
       });
       await group('fatos',async()=>{
         const deck=page.locator('#colecao');await deck.locator('[data-fatos-select="0"]').click();await align(page,'.pf-fatos-display');
-        check('Fatos active artwork and navigation fit the usable viewport',await deck.evaluate(root=>{const a=root.querySelector('.is-active').getBoundingClientRect(),b=root.querySelector('.pf-fatos-controls').getBoundingClientRect();return a.top>=60&&a.bottom<=innerHeight-10&&b.top>=60&&b.bottom<=innerHeight-8;}));
+        check('Fatos active artwork fits the usable viewport',await deck.evaluate(root=>{const a=root.querySelector('.is-active').getBoundingClientRect();return a.top>=60&&a.bottom<=innerHeight-10;}));
+        check('Six named Fatos selectors stay within the page and have usable targets',await deck.locator('[data-fatos-select]').evaluateAll(buttons=>buttons.length===6&&buttons.every(button=>{const r=button.getBoundingClientRect();return r.width>=44&&r.height>=44&&r.left>=0&&r.right<=innerWidth+2&&button.textContent.trim().length>0;})));
         const stage=deck.locator('.pf-fatos-stage'),box=await stage.boundingBox();const start={x:box.x+box.width*.76,y:box.y+box.height*.42},end={x:box.x+box.width*.25,y:start.y+5};
         if(mobile)await touchPath(page,start,end);else{await page.mouse.move(start.x,start.y);await page.mouse.down();await page.mouse.move(end.x,end.y,{steps:12});await page.mouse.up();}
         await page.waitForFunction(()=>document.querySelector('#colecao').dataset.active==='1');check('A genuine horizontal gesture advances exactly one Fatos piece',await deck.getAttribute('data-active')==='1');

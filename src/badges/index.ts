@@ -23,8 +23,8 @@ let restoringCardState = false;
 let layout: "pair" | "single" = "single";
 const cardFaces: [boolean, boolean] = [false, false];
 const cards = [
-  { name: "Fatos", kicker: "Fatos Desconhecidos", front: "Histórias que ficam.", back: "Da pesquisa à narrativa.", body: "Direção criativa e narrativa: pesquisa, roteiro, arte e conteúdo para grandes audiências.", href: "#trabalhos", link: "Explorar o trabalho editorial" },
-  { name: "smiile", kicker: "smiile · Projeto digital", front: "Uma ideia ganha vida.", back: "Da interface à experiência.", body: "Sites, apps, componentes interativos e sistemas. Do conceito à experiência digital.", href: "#experiencias", link: "Explorar os projetos digitais" },
+  { name: "Fatos", kicker: "Fatos Desconhecidos · Experiência profissional", front: "Pesquisa, conteúdo e direção criativa.", back: "O recorte dá forma à história.", body: "Experiência em pesquisa, texto e direção criativa para construir narrativas e conteúdos.", href: "#editorial", link: "Conhecer a atuação editorial" },
+  { name: "smiile", kicker: "smiile · Projeto próprio", front: "Interfaces, produtos e novas possibilidades.", back: "Do visual ao que acontece depois.", body: "Direção visual e desenvolvimento de experiências para sites, aplicativos e sistemas.", href: "#sistemas", link: "Explorar as experiências digitais" },
 ] as const;
 let posterRevision = 0;
 const posterDecodes = new Map<string, Promise<void>>();
@@ -125,7 +125,7 @@ function sync() {
     // Reduced motion on first visit uses its exact poster without WebGL.
     if (ready) setState("ready");
   }
-  if (hint) hint.textContent = isPaused() || failed ? "Escolha a peça e explore a frente e o verso." : "Toque na peça para virar. Arraste de leve para mover.";
+  if (hint) hint.textContent = isPaused() || failed ? "Escolha a peça e explore a frente e o verso." : "Toque para virar ou use o botão. Arraste de leve para mover.";
 }
 function resize() {
   const nextLayout = (canvas?.clientWidth || 0) >= 540 ? "pair" : "single";

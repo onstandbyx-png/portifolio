@@ -1,10 +1,10 @@
+import {portfolioCopy, sectionCopy} from '/assets/content/portfolio-copy.js';
 /* Site interactions: editorial chapters, channel specimens, professional context and contact. */
 (() => {
   'use strict';
   const $ = (s, root=document) => root.querySelector(s);
   const $$ = (s, root=document) => Array.from(root.querySelectorAll(s));
   const clamp = (x,a=0,b=1)=>Math.max(a,Math.min(b,x));
-  const media = matchMedia('(max-width:760px)');
   const preference = matchMedia('(prefers-reduced-motion: reduce)');
   let reduced = preference.matches;
   let paused = false;
@@ -47,7 +47,6 @@
     header?.classList.toggle('is-scrolled',scrollY>12);
     const total=Math.max(1,document.documentElement.scrollHeight-innerHeight);
     if(progress)progress.style.transform=`scaleX(${clamp(scrollY/total)})`;
-    updateZoom();
   }
   addEventListener('scroll',requestUpdate,{passive:true});
   addEventListener('resize',requestUpdate,{passive:true});
@@ -58,38 +57,6 @@
     const io=new IntersectionObserver(entries=>entries.forEach(entry=>{if(entry.isIntersecting){entry.target.classList.add('is-visible');io.unobserve(entry.target)}}),{threshold:.07,rootMargin:'0px 0px 40px 0px'});
     $$('.reveal').forEach(el=>io.observe(el));
   }else $$('.reveal').forEach(el=>el.classList.add('is-visible'));
-
-  // Present verified source contexts rather than a repeated fictitious product.
-  const editorial=[{"label":"01 / ASSUNTO","title":"O que merece ser contado?","description":"A pergunta que abre uma história nasce da curiosidade e da pesquisa.","image":"/assets/portfolio/cena-desconhecidos.webp","alt":"Material visual da marca Fatos Desconhecidos"},{"label":"02 / CONTEXTO","title":"O contexto muda a perspectiva.","description":"Fontes, repertório e a escolha do recorte ajudam a explicar o que é relevante.","image":"/assets/portfolio/cena-negocios.webp","alt":"Composição editorial da vertical Fatos e Negócios"},{"label":"03 / NARRATIVA","title":"Uma mensagem encontra seu formato.","description":"O roteiro e a direção visual traduzem uma ideia para posts, vídeos e outras experiências.","image":"/assets/portfolio/cena-nerd.webp","alt":"Composição editorial da vertical Fatos Nerd"}];
-  const editorialImg=$('#editorial-image'),editorialHead=$('#editorial-headline'),editorialCopy=$('#editorial-description'),editorialTag=$('#editorial-caption'),editorialNum=$('#editorial-num');
-  let story=0;
-  function setStory(i){
-    if(i<0||i>=editorial.length)return;
-    story=i;const data=editorial[i];
-    $$('.editorial-step').forEach((el,j)=>{el.classList.toggle('is-current',j===i);el.setAttribute('aria-pressed',String(j===i))});
-    if(editorialImg){editorialImg.src=data.image;editorialImg.alt=data.alt;}
-    if(editorialHead)editorialHead.textContent=data.title;
-    if(editorialCopy)editorialCopy.textContent=data.description;
-    if(editorialTag)editorialTag.textContent=data.label;
-    if(editorialNum)editorialNum.textContent=`0${i+1} / 03`;
-  }
-  $$('.editorial-step').forEach((btn,i)=>btn.addEventListener('click',()=>setStory(i)));
-  setStory(0);
-
-  // Scroll-zoom frame. Scroll always stays owned by the browser.
-  const zoomTrack=$('#immersive-track'),zoomFrame=$('#immersive-frame');
-  function updateZoom(){
-    if(!zoomTrack||!zoomFrame)return;
-    if(media.matches||reduced||paused){zoomFrame.style.removeProperty('--frame-width');zoomFrame.style.removeProperty('--frame-height');zoomFrame.style.removeProperty('--frame-radius');zoomFrame.style.removeProperty('--frame-scale');zoomFrame.style.removeProperty('--image-zoom');return;}
-    const r=zoomTrack.getBoundingClientRect(),distance=zoomTrack.offsetHeight-innerHeight;
-    const p=clamp(-r.top/Math.max(1,distance));
-    const eased=p*p*(3-2*p);
-    zoomFrame.style.setProperty('--frame-width',`${85+15*eased}%`);
-    zoomFrame.style.setProperty('--frame-height',`${74+26*eased}%`);
-    zoomFrame.style.setProperty('--frame-radius',`${20-20*eased}px`);
-    zoomFrame.style.setProperty('--frame-scale',String(.92+.08*eased));
-    zoomFrame.style.setProperty('--image-zoom',String(1.08-.08*eased));
-  }
 
   // Channel-accurate specimen structures, intentionally illustrative and not live account dashboards.
   const ads=$$('[data-ad-tab]');
@@ -103,9 +70,10 @@
       btn.tabIndex=chosen?0:-1;
     });
     $$('.ad-panel').forEach(panel=>{panel.hidden=panel.id!==`panel-${name}`});
-    const descriptions={meta:'META / FEED 4:5',tiktok:'TIKTOK / VÍDEO 9:16',google:'GOOGLE / SEARCH',chatgpt:'CHATGPT / REPRESENTAÇÃO CONCEITUAL'};
+    const descriptions=Object.fromEntries(sectionCopy('laboratorio').tabs.map(tab=>[tab.id,tab.context]));
     const context=$('#ad-context');if(context)context.textContent=descriptions[name];
-    if(focus)selected.focus();
+    document.dispatchEvent(new CustomEvent('portfolio:channelchange',{detail:{channel:name}}));
+    if(focus)selected.focus({preventScroll:true});
   }
   ads.forEach((tab,index)=>{
     tab.addEventListener('click',()=>setChannel(tab.dataset.adTab));
@@ -118,7 +86,15 @@
   });
   setChannel('meta');
   // Cases separate professional background, authorial concepts and working demonstrations.
-  const cases={"fatos":{"kicker":"FATOS / EXPERIÊNCIA PROFISSIONAL","title":"Redação, direção criativa e narrativa.","description":"Experiência editorial com grandes audiências e múltiplas verticais. A apresentação destaca o trabalho de pesquisar, escolher o recorte e contar histórias.","status":"Experiência profissional","challenge":"Como construir um assunto relevante?","decision":"Começar pelo que merece ser descoberto e organizar informação, roteiro e linguagem visual.","contribution":"Atuação em direção criativa e redação. As imagens da rede pertencem aos projetos Fatos e não são atribuídas integralmente a uma pessoa.","proof":"Veja a narrativa em três momentos e materiais fotográficos da marca.","image":"/assets/portfolio/cena-desconhecidos.webp","imageAlt":"Material de origem da Fatos Desconhecidos","source":"https://www.instagram.com/fatosdesconhecidos/","sourceLabel":"Fonte institucional Fatos","credit":"Conteúdo original da rede, sem oferta de publicação.","service":"Redação e conteúdo","cta":"Conversar sobre projeto","section":"#editorial","explore":"Explorar narrativa"},"ads":{"kicker":"CAMPANHAS / CRIAÇÃO E MÍDIA","title":"Campanhas com conceito e execução.","description":"Estratégia, criatividade, copy, configuração e otimização de anúncios. As peças visuais desta página são estudos de formatos, não anúncios veiculados.","status":"Estudo demonstrativo","challenge":"Como mudar a linguagem sem perder a mensagem?","decision":"Traduzir posicionamento, criativo, formato e ação para o canal certo.","contribution":"Conceitos, roteiros e composições visuais. A operação de Ads é apresentada como capacidade, sem dados financeiros não verificados.","proof":"Compare feed, vídeo, pesquisa paga e proposta contextual no laboratório.","image":"/assets/portfolio/cena-negocios.webp","imageAlt":"Composição de Fatos e Negócios","source":"https://portifolio-github-production.up.railway.app/#laboratorio","sourceLabel":"Laboratório de anúncios","credit":"Estudos conceituais sem métricas ou campanhas verificadas.","service":"Campanhas e criativos","cta":"Conversar sobre campanha","section":"#laboratorio","explore":"Explorar formatos"},"smiile":{"kicker":"SMIILE / SITES E APPS","title":"Experiências que respondem ao toque.","description":"Desenvolvimento de sites, aplicações e componentes interativos com demonstrações visuais reais da smiile.","status":"Produto próprio","challenge":"Como apresentar um produto antes da explicação longa?","decision":"Permitir que o visitante explore páginas, dispositivos e estados de interação.","contribution":"Direção visual, UX/UI, integração de interface e desenvolvimento de projetos próprios.","proof":"Alterne desktop/mobile e páginas; veja a landing smiile publicada.","image":"/assets/portfolio/smiile-architecture-coast.webp","imageAlt":"Experiência Casa Costa da smiile","source":"https://smiile-landing-preview.up.railway.app/","sourceLabel":"Landing smiile atual","credit":"Demonstração com interações locais.","service":"Sites e experiências digitais","cta":"Conversar sobre projeto","section":"#experiencias","explore":"Explorar interface"},"video":{"kicker":"MOTION / DIREÇÃO VISUAL","title":"Composição, ritmo e movimento.","description":"Uma mesma ideia se transforma em capa, publicação e site, com transições guiadas pela rolagem.","status":"Estudo demonstrativo","challenge":"Como conduzir o olhar entre diferentes formatos?","decision":"Usar profundidade, enquadramento e ritmo para dar continuidade à mesma identidade.","contribution":"Direção visual e desenvolvimento das transições e interações desta demonstração.","proof":"Percorra a composição ou escolha capa, social e site pelos controles.","image":"/assets/portfolio/smiile-creative-studio.webp","imageAlt":"Imagem da smiile de estúdio criativo","source":"https://smiile-landing-preview.up.railway.app/","sourceLabel":"Referência smiile","credit":"Demonstração com interações locais.","service":"Sites e experiências digitais","cta":"Conversar sobre vídeo","section":"#narrativa-visual","explore":"Explorar composição"}};
+  const caseContext={
+    fatos:{image:'/assets/portfolio/recovered-fatos/post-desconhecidos-600.webp',section:'#editorial',source:'https://www.instagram.com/fatosdesconhecidos/',service:'Direção criativa e conteúdo'},
+    ads:{image:'/assets/brands/smiile-campaign-editorial.svg',section:'#laboratorio',source:'#laboratorio',service:'Campanhas e gestão de mídia'},
+    smiile:{image:'/assets/portfolio/recovered-smiile/landscape.webp',section:'#sistemas',source:'https://smiile-landing-preview.up.railway.app/',service:'Sites, apps e sistemas'}
+  };
+  const cases=Object.fromEntries(Object.entries(caseContext).map(([id,extra])=>{
+    const detail=portfolioCopy.caseDetails[id],card=sectionCopy('trabalhos').cards.find(item=>item.id===id);
+    return [id,{...extra,kicker:card.label,title:detail.title,description:detail.context,status:detail.nature,challenge:detail.context,decision:card.body,contribution:detail.contribution,proof:detail.explore,imageAlt:card.label,sourceLabel:detail.sourceLabel,credit:detail.credit,cta:detail.cta,explore:card.cta}];
+  }));
   const dialog=$('#case-dialog'),dialogImage=$('#dialog-image'),dialogClose=$('#dialog-close');
   let focusOrigin=null,currentCase=null,contactCase='',contactCaseService='';
   const caseKeys=Object.keys(cases);
@@ -149,9 +125,9 @@
     });
     caseExplore=document.createElement('a');caseExplore.className='case-explore';
     caseExplore.addEventListener('click',()=>{recordInteraction('case_explore',{case:currentCase});closeCase(false);const target=document.querySelector(caseExplore.getAttribute('href'));if(target){target.tabIndex=-1;target.focus({preventScroll:true});}});
-    actions.append(caseCTA,caseExplore);$('#dialog-description')?.after(actions);
+    actions.append(caseCTA,caseExplore);metadata?.after(actions);
     const credits=document.createElement('details');credits.className='case-credits';
-    const summary=document.createElement('summary');summary.textContent='Contexto e referências';
+    const summary=document.createElement('summary');summary.textContent=portfolioCopy.caseDetails.common.creditSummary;
     caseCredits=document.createElement('p');credits.append(summary,caseCredits);
     if(source)credits.append(source);
     content.append(credits);
@@ -191,14 +167,14 @@
     $('#case-dialog-title').textContent=c.title;
     $('#dialog-description').textContent=c.description;
     $('#dialog-proof').textContent=c.proof;
-    const proofTitle=$('.dialog-proof > span');if(proofTitle)proofTitle.textContent='O QUE VOCÊ PODE EXPLORAR';
+    const proofTitle=$('.dialog-proof > span');if(proofTitle)proofTitle.textContent='O QUE EXPLORAR';
     if(statusBadge)statusBadge.textContent=c.status;
     metadata?.replaceChildren();
-    for(const [term,description] of [['O desafio',c.challenge],['A decisão',c.decision],['Participação e contexto',c.contribution]]){
+    for(const [term,description] of [['Minha contribuição',c.contribution]]){
       const row=document.createElement('div'),dt=document.createElement('dt'),dd=document.createElement('dd');
       dt.textContent=term;dd.textContent=description;row.append(dt,dd);metadata?.append(row);
     }
-    if(source){source.href=c.source;source.textContent=`${c.sourceLabel} ↗`;}
+    if(source){source.href=c.source;source.textContent=`${c.sourceLabel} ↗`;if(c.source.startsWith('#')){source.removeAttribute('target')}else{source.target='_blank'}}
     if(caseCredits)caseCredits.textContent=c.credit;
     if(caseCTA)caseCTA.textContent=`${c.cta} ↗`;
     if(caseExplore){caseExplore.href=currentCase==='smiile'?'#sistemas':c.section;caseExplore.dataset.productTarget=currentCase==='smiile'?'site':'';caseExplore.textContent=`${c.explore} ↓`;}
@@ -212,7 +188,8 @@
   }
   let returnFocus=true;
   function closeCase(restoreFocus=true){if(!dialog?.open)return;returnFocus=restoreFocus;dialog.close();}
-  $$('[data-case]').forEach(btn=>btn.addEventListener('click',()=>openCase(btn.dataset.case)));
+  source?.addEventListener('click',()=>{if(source.getAttribute('href')?.startsWith('#'))closeCase(false)});
+  document.addEventListener('click',event=>{const button=event.target.closest?.('[data-case]');if(button&&!button.closest('dialog'))openCase(button.dataset.case)});
   dialogClose?.addEventListener('click',()=>closeCase());
   dialog?.addEventListener('click',e=>{if(e.target===dialog){const bounds=dialog.getBoundingClientRect();if(e.clientX<bounds.left||e.clientX>bounds.right||e.clientY<bounds.top||e.clientY>bounds.bottom)closeCase();}});
   dialog?.addEventListener('close',()=>{if(returnFocus)focusOrigin?.focus?.({preventScroll:true});returnFocus=true;});
@@ -230,7 +207,7 @@
     $('#service')?.addEventListener('change',()=>{if(contactCase&&$('#service').value!==contactCaseService){contactCase='';contactCaseService='';context.hidden=true;context.textContent='';}});
     brief.dataset.contactReady=String(Boolean(destination));
     if(submit)submit.innerHTML=destination?`Continuar ${destination.channel==='whatsapp'?'no WhatsApp':'por e-mail'} <span aria-hidden="true">↗</span>`:'Copiar meu briefing <span aria-hidden="true">↗</span>';
-    if(status)status.textContent=destination?'Seu resumo será aberto no aplicativo escolhido. Revise a mensagem e envie quando quiser.':'O canal de contato está em configuração. Você pode preparar e copiar o briefing por aqui.';
+    if(status)status.textContent=destination?sectionCopy('contato').submitHint:'O canal de contato está em configuração. Você pode preparar e copiar o briefing por aqui.';
     if(destination){
       copyButton=document.createElement('button');copyButton.type='button';copyButton.className='brief-copy';copyButton.textContent='Prefiro copiar o briefing';
       submit?.after(copyButton);
@@ -308,7 +285,6 @@
     pauseBtn.setAttribute('aria-label',motionLabel);
     pauseBtn.setAttribute('title',motionLabel);
     pauseBtn.innerHTML=paused?'▶ <span>Retomar movimento</span>':'Ⅱ <span>Pausar movimento</span>';
-    updateZoom();
   });
 
   // Missing cross-origin previews degrade to intentional graphic fallback, not fake artwork.

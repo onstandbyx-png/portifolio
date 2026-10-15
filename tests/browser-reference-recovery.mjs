@@ -23,9 +23,11 @@ let browser;
 
 async function scrollProgress(page,selector,progress){
   await page.locator(selector).evaluate((el,p)=>{
-    const header=parseFloat(getComputedStyle(el).getPropertyValue('--rg-header'))||76;
-    const start=scrollY+el.getBoundingClientRect().top-header;
-    const travel=Math.max(1,el.offsetHeight-(innerHeight-header));
+    const header=parseFloat(getComputedStyle(el).getPropertyValue('--rg-header'))||(innerWidth<=760?64:76);
+    const heading=el.querySelector('.rf-heading')?.offsetHeight||0;
+    const stage=el.querySelector('.rf-stage,.rg-sticky')?.offsetHeight||(innerHeight-header);
+    const start=scrollY+el.getBoundingClientRect().top+heading-header;
+    const travel=Math.max(1,el.offsetHeight-heading-stage);
     scrollTo({top:start+travel*p,behavior:'instant'});
   },progress);
   await page.evaluate(()=>new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve))));
@@ -94,18 +96,18 @@ try{
     const capture=async(name,locator=page)=>locator.screenshot({path:`${output}/${name}-${label}.png`,animations:'disabled'});
     const group=async(name,run)=>{
       if(selectedGroups&&!selectedGroups.includes(name))return;
-      try{await run();}
+      try{await run();console.log(`[reference ${label}/${name}] PASS`);}
       catch(error){record.failures.push({group:name,error:String(error)});await capture('failure-'+name).catch(()=>{});console.error(`[reference ${label}/${name}] ${String(error)}`);}
     };
     try{
       await page.goto(base,{waitUntil:'domcontentloaded'});
       await page.waitForSelector('html[data-rx-showcase="ready"]',{state:'attached',timeout:30000});
       await group('baseline',async()=>{
-        check('Hero and original editorial device remain mounted',await page.locator('[data-portfolio-badges]').count()===1&&await page.locator('#editorial .pf-reference-device .df-metal').count()===1);
+        check('Hero and one editorial story device remain mounted',await page.locator('[data-portfolio-badges]').count()===1&&await page.locator('#editorial .es-device .df-metal').count()===1);
         check('The archived layered studio section is not visible',!await page.locator('#estudio-interativo').isVisible()&&!/A ideia tem camadas/i.test(await page.locator('main').innerText()));
         check('No navigation link targets the archived layered studio',await page.locator('a[href$="#estudio-interativo"]').count()===0);
         check('The archived studio does not request its video assets',studioMediaRequests.length===0&&await page.locator('video.ks-video').count()===0);
-        check('Four original work pieces remain inside gallery planes',await page.locator('#trabalhos .rg-plane .work-tile').count()===4);
+        check('Three distinct cases remain inside gallery planes',await page.locator('#trabalhos .rg-plane .work-tile').count()===3);
         check('No obsolete LINHA or SOTA CI narrative is visible',!/(?:\bLINHA\b|SOTA CI)/i.test(await page.locator('main').innerText()));
         check('Only one project-path heading is visible',(await page.locator('main').innerText()).split('Escolha o desafio. Veja a entrega.').length-1<=1);
       });
@@ -119,6 +121,33 @@ try{
           check('Escape closes the mobile menu and returns its focus',await page.locator('#menu-toggle').getAttribute('aria-expanded')==='false'&&await page.locator('#menu-toggle').evaluate(button=>button===document.activeElement));
         }
         await capture('header');
+      });
+      await group('editorial',async()=>{
+        const story=page.locator('#editorial'),tabs=story.locator('[data-editorial-step]');
+        const device=await story.locator('.es-device').elementHandle();
+        check('One story has three moments and one persistent device',await tabs.count()===3&&await story.locator('.es-device').count()===1&&await story.locator('[data-es-piece]:not([hidden])').count()===1);
+        await tabs.nth(0).focus();await page.keyboard.press('ArrowRight');
+        check('Keyboard selects the context and updates the matching readable text',await story.getAttribute('data-editorial-active')==='context'&&await tabs.nth(1).getAttribute('aria-selected')==='true'&&await tabs.nth(1).evaluate(el=>el===document.activeElement)&&(await story.locator('[data-es-copy]').innerText()).includes('Câmera, mapa, mensagens'));
+        check('The selected story panel is labelled by its active tab',await story.locator('[role="tabpanel"]').getAttribute('aria-labelledby')===await tabs.nth(1).getAttribute('id'));
+        await page.keyboard.press('End');
+        check('The closing moment follows the same story and keeps only one piece visible',await story.getAttribute('data-editorial-active')==='closing'&&(await story.locator('[data-es-copy]').innerText()).includes('Qual função do celular')&&await story.locator('[data-es-piece]:not([hidden])').count()===1);
+        await page.keyboard.press('Home');
+        check('Returning to the opening preserves the physical device',await story.getAttribute('data-editorial-active')==='hook'&&await device.evaluate(el=>el.isConnected&&el===document.querySelector('#editorial .es-device')));
+        const images=await decodeVisibleImages(story.locator('.es-piece:not([hidden]) img'));
+        check('Editorial imagery decodes locally',images.length>0&&images.every(image=>image.ok&&image.src.startsWith('/assets/')));
+        await capture('editorial',story);
+      });
+      await group('services',async()=>{
+        const scopes=page.locator('#project-paths [data-service-scope]');
+        check('Three service scopes use native disclosure controls',await scopes.count()===3&&await scopes.evaluateAll(items=>items.every(item=>item.tagName==='DETAILS'&&item.querySelector('summary'))));
+        for(const id of ['content','campaigns','digital']){
+          const scope=page.locator(`[data-service-scope="${id}"]`);
+          if(!await scope.evaluate(el=>el.open))await scope.locator('summary').click();
+          const link=scope.locator('.path-contact');
+          const expected=await link.getAttribute('data-project-need'),before=mutations.length;
+          await link.click();
+          check(`${id}: scope prefills the local briefing without sending data`,await page.locator('#service').inputValue()===expected&&mutations.length===before);
+        }
       });
       await group('badges',async()=>{
         const stage=page.locator('[data-portfolio-badges]');
@@ -141,20 +170,25 @@ try{
       await group('gallery',async()=>{
         const shell=page.locator('.rg-scroll-shell[data-ready="true"]');
         const active=()=>page.locator('.rg-plane.rg-active').getAttribute('data-rg-index');
-        if(reduced){
-          check('Reduced motion presents all four works in normal flow',await shell.evaluate(el=>el.classList.contains('rg-natural'))&&await page.locator('.rg-plane').evaluateAll(planes=>planes.every(plane=>!plane.inert&&getComputedStyle(plane).visibility!=='hidden')));
-          check('Reduced motion exposes a direct case action for every work',await page.locator('.rg-plane .tile-open').evaluateAll(buttons=>buttons.length===4&&buttons.every(button=>!button.disabled&&!button.closest('[inert]')&&getComputedStyle(button).visibility!=='hidden')));
+        if(reduced||width<=760){
+          check('Mobile and reduced motion present all three works in normal flow',await shell.evaluate(el=>el.classList.contains('rg-natural'))&&await page.locator('.rg-plane').evaluateAll(planes=>planes.length===3&&planes.every(plane=>!plane.inert&&getComputedStyle(plane).visibility!=='hidden')));
+          check('Natural flow exposes a direct case action for every work',await page.locator('.rg-plane .tile-open').evaluateAll(buttons=>buttons.length===3&&buttons.every(button=>!button.disabled&&!button.closest('[inert]')&&getComputedStyle(button).visibility!=='hidden')));
+          for(const index of [2,0]){
+            await page.locator(`.rg-plane[data-rg-index="${index}"]`).evaluate(el=>el.scrollIntoView({block:'center',behavior:'instant'}));
+            await page.waitForFunction(value=>document.querySelector('.rg-active')?.dataset.rgIndex===String(value),index);
+            check(`Native flow reaches work ${index+1} in either direction`,Number(await active())===index);
+          }
         }else{
           await scrollProgress(page,'.rg-scroll-shell',.08);
           await page.waitForFunction(()=>document.querySelector('.rg-active')?.dataset.rgIndex==='0');
-          await scrollProgress(page,'.rg-scroll-shell',.72);
+          await scrollProgress(page,'.rg-scroll-shell',.9);
           await page.waitForFunction(()=>Number(document.querySelector('.rg-active')?.dataset.rgIndex)>=2);
           check('Native forward scroll reveals later projects',Number(await active())>=2);
           await scrollProgress(page,'.rg-scroll-shell',.08);
           await page.waitForFunction(()=>document.querySelector('.rg-active')?.dataset.rgIndex==='0');
           check('Reverse scroll restores the earlier project',await active()==='0');
           await page.locator('#motion-toggle').click();
-          await scrollProgress(page,'.rg-scroll-shell',.72);
+          await scrollProgress(page,'.rg-scroll-shell',.9);
           await page.waitForFunction(()=>Number(document.querySelector('.rg-active')?.dataset.rgIndex)>=2);
           check('Global pause preserves scroll navigation and a frontal active card',Number(await active())>=2&&await shell.getAttribute('data-paused')==='true'&&await page.locator('.rg-plane.rg-active').evaluate(el=>parseFloat(getComputedStyle(el).getPropertyValue('--rg-angle'))===0&&parseFloat(getComputedStyle(el).getPropertyValue('--rg-y'))===0&&parseFloat(getComputedStyle(el).getPropertyValue('--rg-scale'))===1));
           await page.locator('#motion-toggle').click();
@@ -177,8 +211,8 @@ try{
         const deck=page.locator('#colecao.pf-fatos-deck');
         check('Six Fatos universes are directly visible without an accordion',await deck.count()===1&&await deck.locator('[data-fatos-card]').count()===6&&await deck.evaluate(el=>el.tagName!=='DETAILS'));
         await deck.locator('[data-fatos-select="0"]').click();
-        await deck.locator('[data-fatos-next]').click();
-        check('Fatos next button changes the complete editorial piece',await deck.getAttribute('data-active')==='1'&&await deck.locator('.is-active').getAttribute('data-fatos-card')==='esportes');
+        await deck.locator('.pf-fatos-stage').focus();await page.keyboard.press('ArrowRight');
+        check('Fatos keyboard navigation changes the complete editorial piece',await deck.getAttribute('data-active')==='1'&&await deck.locator('.is-active').getAttribute('data-fatos-card')==='esportes');
         const selected=deck.locator('.is-active');
         await selected.locator('[data-fatos-flip]').click();
         check('Active Fatos card exposes its editorial context and accessible return action',await selected.evaluate(el=>el.classList.contains('is-flipped'))&&await selected.locator('[data-fatos-back]').getAttribute('aria-hidden')==='false'&&(await selected.locator('.pf-fatos-approach').innerText()).length>30);
@@ -190,7 +224,7 @@ try{
         check('Horizontal pointer or touch swipe advances Fatos',await deck.getAttribute('data-active')==='2');
         await deck.locator('[data-fatos-select="5"]').click();
         check('All six Fatos universes have a direct selector',await deck.getAttribute('data-active')==='5'&&await deck.locator('.is-active').getAttribute('data-fatos-card')==='negocios');
-        await deck.locator('[data-fatos-next]').click();
+        await deck.locator('.pf-fatos-stage').focus();await page.keyboard.press('ArrowRight');
         check('Fatos wraps back to the initial universe',await deck.getAttribute('data-active')==='0');
         const images=await decodeVisibleImages(deck.locator('.pf-fatos-art'));
         check('All six original editorial photographs decode locally',images.length===6&&images.every(image=>image.ok&&image.src.startsWith('/assets/')));
@@ -198,20 +232,20 @@ try{
       });
       await group('film',async()=>{
         const film=page.locator('#narrativa-visual.rf-film');
+        await film.locator('[data-rx-film-to="1"]').click();
+        await page.waitForFunction(()=>document.querySelector('#narrativa-visual')?.dataset.phase==='1');
+        check('Film chapter selection reveals the social composition',await film.getAttribute('data-phase')==='1'&&await film.getAttribute('data-mode')!=='manual');
         await film.locator('[data-rx-film-to="2"]').click();
         await page.waitForFunction(()=>document.querySelector('#narrativa-visual')?.dataset.phase==='2');
-        check('Film chapter selection reveals the social composition',await film.getAttribute('data-phase')==='2'&&await film.getAttribute('data-mode')!=='manual');
-        await film.locator('[data-rx-film-to="3"]').click();
-        await page.waitForFunction(()=>document.querySelector('#narrativa-visual')?.dataset.phase==='3');
-        check('Film exposes the real site chapter',await film.getAttribute('data-phase')==='3');
+        check('Film exposes the real site chapter',await film.getAttribute('data-phase')==='2');
         await capture('film-site');
         if(!reduced){
           check('Film keeps scroll active without a resume control',await film.getAttribute('data-mode')==='scroll'&&await page.locator('[data-rf-resume]').count()===0);
           await scrollProgress(page,'#narrativa-visual',.08);
           await page.waitForFunction(()=>document.querySelector('#narrativa-visual')?.dataset.phase==='0');
           await scrollProgress(page,'#narrativa-visual',.8);
-          await page.waitForFunction(()=>Number(document.querySelector('#narrativa-visual')?.dataset.phase)>=3);
-          check('Film advances through native scroll',Number(await film.getAttribute('data-phase'))>=3);
+          await page.waitForFunction(()=>Number(document.querySelector('#narrativa-visual')?.dataset.phase)>=2);
+          check('Film advances through native scroll',Number(await film.getAttribute('data-phase'))>=2);
           await scrollProgress(page,'#narrativa-visual',.08);
           await page.waitForFunction(()=>document.querySelector('#narrativa-visual')?.dataset.phase==='0');
           check('Film reverse scroll restores its initial composition',await film.getAttribute('data-phase')==='0');
@@ -284,7 +318,7 @@ try{
         await site.locator('[data-site-form] button[type="submit"]').click();
         const confirmation=site.locator('[data-testid="site-confirmation"]');
         check('Local booking confirms the exact chosen day and time',(await confirmation.innerText()).includes(chosenDay)&&(await confirmation.innerText()).includes('16h'));
-        check('Booking is clearly local and makes no external mutation',(await confirmation.innerText()).includes('Nenhuma visita foi enviada')&&mutations.length===mutationsBefore);
+        check('Booking is clearly local and makes no external mutation',(await confirmation.innerText()).includes('Nenhuma visita foi reservada')&&mutations.length===mutationsBefore);
         check('Booking confirmation receives keyboard focus',await confirmation.evaluate(el=>el===document.activeElement));
         await capture('site-confirmation');
         await site.locator('[data-site-action="change"]').click();
@@ -298,7 +332,7 @@ try{
         check('Entering the voice tab does not start audio',await audio.evaluate(el=>el.paused&&el.currentTime===0));
         await page.locator('#motion-toggle').click();
         await voice.locator('[data-call-play]').click();
-        check('Global pause prevents a new audio start',await audio.evaluate(el=>el.paused&&el.currentTime===0)&&(await voice.locator('.pd-call-feedback').innerText()).includes('Retomar movimento'));
+        check('Global pause prevents a new audio start',await audio.evaluate(el=>el.paused&&el.currentTime===0)&&(await voice.locator('.pd-call-feedback').innerText()).includes('Retomar animações e reprodução'));
         await page.locator('#motion-toggle').click();
         await voice.locator('[data-call-play]').click();
         await page.waitForFunction(()=>{const audio=document.querySelector('[data-call-audio]');return audio&&!audio.paused&&audio.currentTime>0;});
@@ -312,7 +346,7 @@ try{
         check('Updated proposal adds the requested item and revised total',await voice.locator('.pd-proposal-body').getAttribute('data-total')==='13900'&&(await voice.locator('.pd-proposal-body').innerText()).includes('Banco da mesa'));
         const mutationsBefore=mutations.length;
         await voice.locator('[data-proposal-approve]').click();
-        check('Proposal approval changes local state without sending anything',await voice.locator('[data-proposal-approve]').isDisabled()&&(await voice.locator('.pd-proposal-status').innerText()).includes('Nenhum envio realizado')&&mutations.length===mutationsBefore);
+        check('Proposal approval changes local state without sending anything',await voice.locator('[data-proposal-approve]').isDisabled()&&(await voice.locator('.pd-proposal-status').innerText()).includes('Esta ação não envia a proposta.')&&mutations.length===mutationsBefore);
         await capture('voice-proposal');
       });
       await group('retained-interactions',async()=>{

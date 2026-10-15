@@ -1,6 +1,7 @@
 /* Whole-plane folds follow native scroll. Controls navigate the actual page;
    neither focus nor touch changes ownership of the scroll position. */
 import {clamp,createMotion} from '../sections/motion.js';
+import {sectionCopy} from '../content/portfolio-copy.js';
 
 export function createChapterState(count,initial=0){
  let progress=clamp(initial,0,count-1),held=false,settled=false;
@@ -36,9 +37,30 @@ export function galleryPose(index,cursor,mobile=false){
 export function mountScrollGallery(){
  const gallery=document.querySelector('#trabalhos .work-gallery');
  if(!gallery||gallery.classList.contains('rg-gallery'))return null;
- const cards=[...gallery.querySelectorAll(':scope > .work-tile')];if(!cards.length)return null;
+ const copy=sectionCopy('trabalhos'),entries=copy.cards;
+ const cards=[...gallery.querySelectorAll(':scope > .work-tile')].filter(card=>{
+  if(entries.some(entry=>entry.id===card.dataset.workCard))return true;
+  card.remove();return false;
+ });if(!cards.length)return null;
+ const escape=value=>String(value).replace(/[&<>"']/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
+ cards.forEach((card,index)=>{
+  const entry=entries.find(item=>item.id===card.dataset.workCard),caption=card.querySelector('.tile-caption');
+  if(!entry||!caption)return;
+  caption.querySelector('h3').innerHTML=entry.title.split('\n').map(line=>`<span class="rg-title-line"><span>${escape(line)}</span></span>`).join('');
+  caption.querySelector('p').textContent=entry.body;
+  const context=card.querySelector('.work-context');context.innerHTML=`<span>${String(index+1).padStart(2,'0')} / ${escape(entry.label)}</span><span>${escape(entry.nature)}</span>`;
+  const action=card.querySelector('.tile-open');if(action){action.setAttribute('aria-label',entry.cta);action.innerHTML='<span>'+escape(entry.cta)+'</span><i aria-hidden="true">↗</i>';}
+  card.querySelector('.tile-chip')?.remove();card.querySelector('.tile-num')?.remove();
+  const back=card.querySelector('.sm-work-back');if(back){back.querySelector('h3').textContent=entry.contribution;back.querySelector('p').textContent=entry.body;back.querySelector('.sm-back-lines')?.remove();const label=back.querySelector('small');if(label)label.textContent=entry.nature;}
+  if(entry.id==='fatos'){
+   const art=card.querySelector('.tile-art'),img=art?.querySelector('img');if(img){img.src='/assets/portfolio/recovered-fatos/post-desconhecidos-600.webp';img.alt='Composição demonstrativa de tecnologia: um telefone diante da cidade';}
+   if(art){const editorial=sectionCopy('editorial'),copy=document.createElement('div');copy.className='rg-fatos-copy';copy.innerHTML=`<span class="rg-fatos-label"><i aria-hidden="true"></i>Fatos Desconhecidos</span><div><small>${escape(editorial.studyLabel)}</small><strong>${escape(editorial.steps[0].pieceTitle)}</strong></div>`;art.append(copy);}
+  }
+  if(entry.id==='ads'){const art=card.querySelector('.tile-art');if(art){art.classList.add('rg-campaign-art');const img=art.querySelector('img');if(img){img.src='/assets/brands/smiile-campaign-editorial.svg';img.alt='Campanha conceitual smiile: Sua ideia ganha vida, com site e aplicativo';}}}
+  if(entry.id==='smiile'){const img=card.querySelector('.tile-art>img');if(img){img.src='/assets/badges/smiile-interface.webp';img.alt='Interface do aplicativo Trilha do Arco, projeto próprio smiile';}}
+ });
  const shell=document.createElement('div');shell.className='rg-scroll-shell';
- shell.innerHTML='<div class="rg-sticky"><div class="rg-toolbar"><p><span data-rg-count>01 / 04</span> <span data-rg-name>Conteúdo editorial</span></p><span class="rg-scroll-cue" aria-hidden="true">Continue rolando ↓</span></div><div class="rg-viewport"></div><div class="rg-navigation"><button type="button" data-rg-prev aria-label="Trabalho anterior">←</button><p data-rg-status role="status" aria-live="polite">Role para explorar os trabalhos</p><button type="button" data-rg-next aria-label="Próximo trabalho">→</button></div></div>';
+ shell.innerHTML='<div class="rg-sticky"><div class="rg-toolbar"><p><span data-rg-count>01 / 03</span> <span data-rg-name>Fatos Desconhecidos</span></p><span class="rg-scroll-cue" aria-hidden="true">Continue rolando ↓</span></div><div class="rg-viewport"></div><div class="rg-navigation"><button type="button" data-rg-prev aria-label="Trabalho anterior">←</button><p data-rg-status role="status" aria-live="polite">Role para explorar os trabalhos</p><button type="button" data-rg-next aria-label="Próximo trabalho">→</button></div></div>';
  gallery.before(shell);shell.querySelector('.rg-viewport').append(gallery);gallery.classList.add('rg-gallery');
  gallery.setAttribute('role','region');gallery.setAttribute('aria-label','Trabalhos em perspectiva');
  shell.style.setProperty('--rg-count',String(cards.length));
@@ -49,6 +71,11 @@ export function mountScrollGallery(){
  const motion=createMotion(),state=createChapterState(cards.length),mobile=matchMedia('(max-width:760px)'),reduced=matchMedia('(prefers-reduced-motion:reduce)');
  const sticky=shell.querySelector('.rg-sticky'),count=shell.querySelector('[data-rg-count]'),name=shell.querySelector('[data-rg-name]'),status=shell.querySelector('[data-rg-status]');
  let visible=false,frame=0,lastIndex=-1,natural=false;
+ const revealed=new Set();
+ function revealTitle(card,index){
+  if(revealed.has(index))return;revealed.add(index);card.dataset.read='true';
+  card.querySelectorAll('.rg-title-line>span').forEach((line,i)=>{const animation=motion.animate(line,[{opacity:0,transform:'translateY(105%)'},{opacity:1,transform:'translateY(0)'}],{duration:620,delay:i*75});animation?.effect.updateTiming({fill:'backwards'});});
+ }
  const header=()=>mobile.matches?64:76;
  function render(){
   const index=Math.round(state.value);shell.dataset.mode=natural?'flow':'scroll';shell.dataset.paused=String(motion.paused());
@@ -58,6 +85,8 @@ export function mountScrollGallery(){
    plane.style.setProperty('--rg-scale',String(pose.scale));plane.style.setProperty('--rg-z',`${pose.z}px`);
    plane.style.setProperty('--rg-opacity',String(pose.opacity));plane.style.zIndex=String(cards.length-Math.abs(i-index));
    plane.classList.toggle('rg-active',pose.active);plane.inert=!natural&&!pose.active;
+   const titleBox=cards[i].querySelector('.tile-caption h3').getBoundingClientRect();
+   if(visible&&pose.active&&(natural||Math.abs(pose.angle)<2)&&titleBox.top<stableViewportHeight()-60&&titleBox.bottom>header())revealTitle(cards[i],i);
    plane.setAttribute('aria-hidden',String(!natural&&!pose.active));
    if(natural){
     const rect=plane.getBoundingClientRect(),height=stableViewportHeight(),offset=clamp((rect.top+rect.height/2-height/2)/height,-1,1);
@@ -66,13 +95,13 @@ export function mountScrollGallery(){
   });
   shell.querySelector('[data-rg-prev]').disabled=index===0;
   shell.querySelector('[data-rg-next]').disabled=index===cards.length-1;
-  if(index!==lastIndex){lastIndex=index;count.textContent=String(index+1).padStart(2,'0')+' / '+String(cards.length).padStart(2,'0');name.textContent=cards[index].querySelector('.tile-caption small')?.textContent||'Trabalho selecionado'}
-  const message=natural?'Os trabalhos continuam abaixo':motion.paused()?'Sem animação · role ou use as setas':'Role para continuar · ou use as setas';
+  if(index!==lastIndex){lastIndex=index;count.textContent=String(index+1).padStart(2,'0')+' / '+String(cards.length).padStart(2,'0');name.textContent=entries.find(entry=>entry.id===cards[index].dataset.workCard)?.label||'Trabalho selecionado'}
+  const message=natural?copy.controls.scroll:motion.paused()?copy.controls.paused:copy.controls.scroll;
   if(status.textContent!==message)status.textContent=message;
  }
  function update(){
   frame=0;if(!visible||shell.hidden)return;
-  natural=stableViewportHeight()<700||reduced.matches;shell.classList.toggle('rg-natural',natural);
+  natural=mobile.matches||reduced.matches;shell.classList.toggle('rg-natural',natural);
   state.pause(motion.paused());
   if(natural){
    let nearest=0,distance=Infinity;planes.forEach((plane,i)=>{const r=plane.getBoundingClientRect(),d=Math.abs(r.top+r.height/2-stableViewportHeight()/2);if(d<distance){distance=d;nearest=i}});state.choose(nearest);
@@ -102,6 +131,6 @@ export function mountScrollGallery(){
  mobile.addEventListener('change',request);reduced.addEventListener('change',request);
  motion.onStop(()=>{state.pause(motion.paused());render()});
  const pause=document.querySelector('.motion-toggle');if(pause)new MutationObserver(request).observe(pause,{attributes:true,attributeFilter:['aria-pressed']});
- natural=stableViewportHeight()<700||reduced.matches;shell.classList.toggle('rg-natural',natural);
+ natural=mobile.matches||reduced.matches;shell.classList.toggle('rg-natural',natural);
  render();shell.dataset.ready='true';return shell;
 }

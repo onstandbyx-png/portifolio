@@ -1,195 +1,176 @@
-/**
- * Fatos social studio, adapted from onstandbyx-png/roblox @ b9c8270:
- * src/components/islands/estudio/{Instagram,TikTok}.tsx + src/lib/estudio.ts.
- * The 3-frame editorial story uses original local art and the source's phone
- * chronology. No invented engagement counts, publication or advertiser claims.
+/** R6: one smiile campaign, three native formats, one honest destination.
+ * Marks are unmodified official assets; campaign art uses the existing smiile
+ * projects. No network integrations, ad metrics or publication are simulated.
  */
 import { createDeviceFrame, installDemoExplorer } from './device-frame.js';
+import { sectionCopy } from '../content/portfolio-copy.js';
 
 const $ = (selector, root = document) => root.querySelector(selector);
 const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
-const AVATAR = '/assets/portfolio/recovered-fatos/avatar_desconhecidos.webp';
-const frames = [
-  { src: '/assets/portfolio/recovered-fatos/post-desconhecidos-600.webp', position: '50% 28%', label: 'Gancho', title: 'O que cabe hoje na palma da mão?', detail: 'Um objeto cotidiano abre uma história sobre a transformação da comunicação.', caption: 'Um objeto cotidiano. Quatro décadas de transformação.' },
-  { src: '/assets/portfolio/cena-desconhecidos.webp', position: '50% 40%', label: 'Contexto', title: 'Em 1983: cerca de 800 g e 10 horas para recarregar.', detail: 'O primeiro celular de mão à venda dava cerca de 30 minutos de conversa. O contexto explica a dimensão da mudança.', caption: 'Cerca de 30 minutos de conversa. Dez horas para recarregar.' },
-  { src: '/assets/portfolio/campanha-desconhecidos.webp', position: '50% 32%', label: 'Conexão', title: 'Hoje: câmera, mapa, carteira e tradutor.', detail: 'A mesma história volta à rotina: funções que antes dependiam de objetos diferentes agora cabem no celular.', caption: 'A tecnologia mudou. A curiosidade continua.' }
-];
-const paths = {
-  back: 'M15 4 7 12l8 8', next: 'm9 4 8 8-8 8', search: 'M10.6 18a7.4 7.4 0 1 0 0-14.8 7.4 7.4 0 0 0 0 14.8zM16 16l5 5',
-  heart: 'M12 20.3s-7.6-4.6-9.4-9.4C1.4 7.6 3.5 4.3 6.9 4.3c2.2 0 3.7 1.3 5.1 3 1.4-1.7 2.9-3 5.1-3 3.4 0 5.5 3.3 4.3 6.6-1.8 4.8-9.4 9.4-9.4 9.4z',
-  comment: 'M20.6 16.2A9.3 9.3 0 1 0 17 19.9l4.3 1.4z', repost: 'M5.5 10.5V8.2a3 3 0 0 1 3-3h10M15.5 2.2l3 3-3 3M18.5 13.5v2.3a3 3 0 0 1-3 3h-10M8.5 21.8l-3-3 3-3',
-  send: 'M3 4.5 21 5.6 10.6 20.6zM10 12.2 16.6 8.4', save: 'M5.5 3h13v18L12 15.2 5.5 21z',
-  share: 'M13.4 3.6c0-.7.8-1 1.3-.6l7.6 7.2c.4.4.4 1 0 1.3l-7.6 7.3c-.5.5-1.3.1-1.3-.6v-3.6C7.6 14.5 4.6 16.7 2.4 20.4 2.6 13.3 6 8.5 13.4 7.6z',
-  home: 'M3.6 10.1 12 3.4l8.4 6.7V20.6H14.6v-6.1H9.4v6.1H3.6z', friends: 'M9.2 11.4a3.9 3.9 0 1 0 0-7.8 3.9 3.9 0 0 0 0 7.8zM2.2 20.6c.5-4 3.3-6.2 7-6.2s6.5 2.2 7 6.2M15.6 3.8a3.9 3.9 0 0 1 0 7.4M17.8 14.6c2.3.7 3.6 2.8 4 6',
-  inbox: 'M4.6 4h14.8c.9 0 1.6.7 1.6 1.6v10.6c0 .9-.7 1.6-1.6 1.6h-5.2L12 20.6l-2.2-2.8H4.6c-.9 0-1.6-.7-1.6-1.6V5.6C3 4.7 3.7 4 4.6 4z',
-  user: 'M12 12.2a4.3 4.3 0 1 0 0-8.6 4.3 4.3 0 0 0 0 8.6zM4.2 21c.6-4.3 3.6-6.6 7.8-6.6s7.2 2.3 7.8 6.6',
-  note: 'M9 17.6V5.4l10-2v12.2M9 17.6a2.6 2.6 0 1 1-5.2 0 2.6 2.6 0 0 1 5.2 0zM19 15.6a2.6 2.6 0 1 1-5.2 0 2.6 2.6 0 0 1 5.2 0z',
-  play: 'M8 4v16l12-8Z', pause: 'M8 4v16M16 4v16', plus: 'M12 4v16M4 12h16', menu: 'M3 7h18M3 16h13',
-  live: 'm8 2 4 4 4-4M4 6h16v15H4Z M8 11v5h8v-5Z'
+const campaign = sectionCopy('laboratorio');
+const tabCopy = id => campaign.tabs.find(tab => tab.id === id);
+const esc = value => String(value ?? '').replace(/[&<>"']/g, char => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
+const lines = value => esc(value).replace(/\n/g, '<br>');
+const HOUSE = '/assets/portfolio/smiile-architecture-coast.webp';
+const COAST = '/assets/portfolio/recovered-smiile/landscape.webp';
+const MAP = '/assets/portfolio/recovered-smiile/trail-map.svg';
+const MARKS = {
+  meta: '/assets/brands/meta-official-primary.webp',
+  google: '/assets/brands/google-ads-official-reference.webp',
+  tiktok: '/assets/brands/tiktok-official-icon-black-circle.png'
 };
-function icon(name, fill = false) { return `<svg viewBox="0 0 24 24" aria-hidden="true" fill="${fill ? 'currentColor' : 'none'}" stroke="${fill ? 'none' : 'currentColor'}" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="${paths[name]}"/></svg>`; }
-const decodeCache = new Map();
-function decoded(src) {
-  if (decodeCache.has(src)) return decodeCache.get(src);
-  const image = new Image(); image.decoding = 'async'; image.src = src;
-  const promise = (image.decode ? image.decode() : new Promise((resolve, reject) => { if (image.complete && image.naturalWidth) resolve(); else { image.onload = resolve; image.onerror = reject; } })).then(() => { if (!image.naturalWidth) throw Error('Imagem indisponível'); return image; });
-  decodeCache.set(src, promise); promise.catch(() => decodeCache.delete(src)); return promise;
-}
+const reduced = matchMedia('(prefers-reduced-motion:reduce)');
 const paused = () => document.body.classList.contains('is-paused');
-
-function upgradeTabIcons(root) {
-  const logos = {
-    meta: '<svg viewBox="0 0 32 24" aria-hidden="true"><path d="M3 16c0-6 3-12 7-12 5 0 9 16 14 16 3 0 5-3 5-7 0-5-2-9-5-9-4 0-8 10-11 14-2 3-5 3-7 1-2-1-3-2-3-3Z" fill="none" stroke="currentColor" stroke-width="2.4"/></svg>',
-    tiktok: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 3h3c.3 3 1.5 4.4 4 4.7v3a9.7 9.7 0 0 1-4-1.2V17a6 6 0 1 1-7-5.9v3.2a2.7 2.7 0 1 0 4 2.4V3Z" fill="currentColor"/></svg>',
-    google: '<svg viewBox="0 0 26 24" aria-hidden="true"><path d="m11 4-9 15a4 4 0 0 0 7 4L18 8Z" fill="currentColor" opacity=".45"/><path d="m11 8 9 15a4 4 0 0 0 7-4L18 4a4 4 0 1 0-7 4Z" transform="translate(-2 -2)" fill="currentColor"/><circle cx="5" cy="19" r="4" fill="currentColor"/></svg>',
-    chatgpt: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h16v12H9l-5 4V4Z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="m9 10 2 2 4-5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>'
-  };
-  for (const [key, svg] of Object.entries(logos)) { const holder = $(`[data-ad-tab="${key}"] .ads-tab-icon`, root); if (holder) holder.innerHTML = svg; }
+const motionAllowed = () => !reduced.matches && !paused();
+const paths = {
+  back: 'm15 4-8 8 8 8', next: 'm9 4 8 8-8 8', search: 'M10.6 18a7.4 7.4 0 1 0 0-14.8 7.4 7.4 0 0 0 0 14.8zM16 16l5 5',
+  heart: 'M12 20.3S2.5 15 2.5 8.7c0-5.5 6.5-6 9.5-1.4 3-4.6 9.5-4.1 9.5 1.4 0 6.3-9.5 11.6-9.5 11.6Z',
+  comment: 'M20.6 16.2A9.3 9.3 0 1 0 17 19.9l4.3 1.4z', send: 'M3 4.5 21 5.6 10.6 20.6zM10 12.2 16.6 8.4',
+  save: 'M5.5 3h13v18L12 15.2 5.5 21z', home: 'M3.6 10.1 12 3.4l8.4 6.7V20.6H14.6v-6.1H9.4v6.1H3.6z',
+  play: 'M8 4v16l12-8Z', pause: 'M8 4v16M16 4v16', check: 'm5 12 4 4L20 5', arrow: 'M5 19 19 5M5 5h14v14',
+  plus: 'M12 4v16M4 12h16', menu: 'M3 7h18M3 16h13', user: 'M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8ZM4 21c1-9 15-9 16 0'
+};
+const icon = (name, fill = false) => `<svg viewBox="0 0 24 24" aria-hidden="true" fill="${fill ? 'currentColor' : 'none'}" stroke="${fill ? 'none' : 'currentColor'}" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="${paths[name]}"/></svg>`;
+const link = (copy, target = 'site', className = '') => `<a class="${className}" href="${esc(copy.href)}" data-campaign-destination data-product-target="${target}">${esc(copy.label)} ${icon('arrow')}</a>`;
+const cache = new Map();
+function decoded(src) {
+  if (cache.has(src)) return cache.get(src);
+  const image = new Image(); image.src = src;
+  const promise = image.decode().then(() => { if (!image.naturalWidth) throw Error('Imagem indisponível'); });
+  cache.set(src, promise); promise.catch(() => cache.delete(src)); return promise;
 }
-
+function reveal(element) {
+  element.getAnimations().forEach(animation => animation.cancel());
+  if (motionAllowed()) element.animate([{opacity:.35, transform:'translateY(8px)'},{opacity:1, transform:'translateY(0)'}], {duration:220, easing:'cubic-bezier(.2,.7,.2,1)'});
+}
+function brandImages(root) {
+  for (const [id, src] of Object.entries(MARKS)) {
+    const holder = $(`[data-ad-tab="${id}"] .ads-tab-icon`, root);
+    if (holder) { holder.className = `ads-tab-icon sa-brand sa-brand--${id}`; holder.innerHTML = `<img src="${src}" alt="" aria-hidden="true" decoding="async">`; }
+  }
+}
 function fitPhone(host, frame) {
-  const resize = () => {
+  function resize() {
     if (!host.clientWidth) return;
-    const mobile = matchMedia('(max-width:900px)').matches;
-    // The hidden CSS probe resolves 100svh to pixels. Browser chrome expanding
-    // on Android must not repeatedly resize the phone while the user scrolls.
-    const stableViewport = parseFloat(getComputedStyle(host, '::before').height) || innerHeight;
-    // Reserve the header, spacing and full 44px frame controls as one unit.
+    const viewport = parseFloat(getComputedStyle(host, '::before').height) || innerHeight;
     const exploring = !!host.closest('.is-exploring');
-    const height = Math.max(420, Math.min(exploring ? 860 : 720, stableViewport - (exploring ? 100 : mobile ? 140 : 170)));
-    const width = Math.min(host.clientWidth, height * 435 / 907, exploring ? 400 : 350);
+    const height = Math.max(400, Math.min(exploring ? 900 : 730, viewport - (exploring ? 125 : 160)));
+    const width = Math.min(host.clientWidth, height * 435 / 907, exploring ? 430 : 355);
     frame.root.style.setProperty('--df-pt', `${width / 435}px`);
-    host.style.setProperty('--sa-phone-width', `${width}px`);
     host.parentElement.style.setProperty('--sa-phone-width', `${width}px`);
-  };
-  new ResizeObserver(resize).observe(host); addEventListener('resize', resize, { passive: true }); resize();
+  }
+  new ResizeObserver(resize).observe(host); addEventListener('resize', resize, {passive:true}); resize();
 }
-
-function createAside(platform) {
-  const aside = document.createElement('div'); aside.className = 'mock-aside sa-story-aside';
-  aside.innerHTML = `<span>${platform === 'meta' ? 'INSTAGRAM / CARROSSEL' : 'TIKTOK / VÍDEO VERTICAL'}</span><h3>A mesma história.<br>Outro ritmo.</h3><p class="sa-story-detail">${frames[0].detail}</p><div class="sa-sequence" role="group" aria-label="Etapas da história">${frames.map((frame, index) => `<button type="button" ${platform === 'meta' ? `data-rx-social="${index}" aria-current="${!index}"` : `data-frame="${index}" aria-pressed="${!index}"`}><small>0${index + 1}</small><span>${frame.label}</span></button>`).join('')}</div><p class="sa-story-feedback" role="status" aria-live="polite">${platform === 'meta' ? 'Deslize a imagem ou escolha um quadro.' : 'Três quadros, em uma sequência de 12 segundos.'}</p>`;
-  return aside;
+function aside(id) {
+  const copy = tabCopy(id), node = document.createElement('div'); node.className = 'mock-aside sa-story-aside';
+  node.innerHTML = `<span>${esc(copy.context)}</span><h3>${lines(copy.title)}</h3><p>${esc(copy.body)}</p>${copy.frames ? `<div class="sa-sequence" role="group" aria-label="Etapas do criativo">${copy.frames.map((frame, index) => `<button type="button" ${id === 'meta' ? `data-rx-social="${index}" aria-current="${!index}"` : `data-frame="${index}" aria-pressed="${!index}"`}><small>0${index+1}</small><span>${esc(frame.label)}</span></button>`).join('')}</div>` : ''}<div class="sa-story-current"><span class="sa-story-kicker">${copy.frames ? '01 / '+esc(copy.frames[0].label) : 'Intenção da busca'}</span><p class="sa-story-detail">${esc(copy.frames?.[0].support || copy.query || copy.body)}</p></div>${link(copy.cta, id === 'tiktok' ? 'app' : 'site', 'sa-destination')}<p class="sa-story-feedback" role="status" aria-live="polite">${id === 'meta' ? 'Escolha um quadro ou deslize a peça.' : id === 'tiktok' ? 'Reproduza a cena ou experimente a escolha no app.' : 'A mesma proposta continua nas experiências abaixo.'}</p>`;
+  return node;
 }
-
-function addExplorer(panel, label) {
-  const aside = $('.sa-story-aside', panel);
-  const trigger = document.createElement('button');
-  trigger.type = 'button'; trigger.className = 'df-explore-trigger';
-  trigger.innerHTML = 'Explorar em tamanho maior <span aria-hidden="true">↗</span>';
-  aside.prepend(trigger);
-  return installDemoExplorer({ source: panel, trigger, title: label, onChange: () => panel.dispatchEvent(new Event('demo:explorationchange')) });
+function explorer(panel, title) {
+  const trigger = document.createElement('button'); trigger.type = 'button'; trigger.className = 'df-explore-trigger';
+  trigger.innerHTML = `${esc(campaign.controls.enlarge)} <span aria-hidden="true">↗</span>`; $('.sa-story-aside', panel).append(trigger);
+  const instance = installDemoExplorer({source:panel, trigger, title, onChange:() => panel.dispatchEvent(new Event('demo:explorationchange'))});
+  panel.addEventListener('click', event => {
+    const anchor = event.target.closest('[data-campaign-destination]'), dialog = panel.closest('.df-explorer');
+    if (!anchor || !dialog?.open) return;
+    event.preventDefault();
+    dialog.addEventListener('close', () => requestAnimationFrame(() => {
+      $(`[data-product-tab="${anchor.dataset.productTarget}"]`)?.click();
+      document.querySelector(anchor.hash)?.scrollIntoView({behavior:motionAllowed()?'smooth':'instant', block:'start'});
+      history.replaceState(null, '', anchor.hash);
+    }), {once:true}); instance.close();
+  });
 }
-
+function controls(platform) {
+  return `<div class="sa-frame-controls ${platform === 'tiktok' ? 'sa-frame-controls--playback' : ''}"><button type="button" ${platform==='meta'?'data-rx-social-prev':'data-tt-prev'} aria-label="${esc(campaign.controls.previous)}">${icon('back')}</button>${platform==='meta'?'<span class="sa-frame-label">01 / 03 · Abrir</span>':`<button type="button" class="sa-play" data-play-story aria-pressed="false" aria-label="${esc(campaign.controls.play)}"><span class="sa-play-icon">${icon('play')}</span><span class="sa-play-copy"><span class="sa-play-action">Reproduzir</span><span class="sa-frame-label" aria-hidden="true">01 / 03</span></span></button>`}<button type="button" ${platform==='meta'?'data-rx-social-next':'data-tt-next'} aria-label="${esc(campaign.controls.next)}">${icon('next')}</button></div>`;
+}
+function createPhone(panel, platform, label, markup) {
+  const root = document.createElement('div'); root.className = 'sa-social'; root.dataset.platform = platform; root.dataset.socialFrame = '0';
+  root.innerHTML = `<div class="sa-device-host"></div>${controls(platform)}`;
+  const frame = createDeviceFrame({tone:'light', scheme:platform==='meta'?'light':'dark', time:'10:09', label});
+  frame.root.classList.add('sa-device', platform==='meta'?'pf-social-device':'sa-tiktok-device');
+  frame.screen.innerHTML = markup; $('.sa-device-host', root).append(frame.root);
+  panel.replaceChildren(root, aside(platform)); panel.classList.add('sa-panel', 'sa-campaign-panel');
+  fitPhone($('.sa-device-host', root), frame); return {root, frame};
+}
+function metaArtwork(index) {
+  const copy = tabCopy('meta'), data = copy.frames[index];
+  return `<img src="${index===2?COAST:HOUSE}" alt="${index===2?'Paisagem do projeto Trilha do Arco':'Projeto Casa Costa da smiile'}" decoding="async"><div class="sa-meta-shade"></div><div class="rx-ig-overlay"><small>smiile <span>IDEIA → EXPERIÊNCIA</span></small><h3>${lines(data.headline)}</h3><p>${esc(data.support)}</p></div>${index===0?'<div class="sa-site-preview"><span>CASA COSTA <i>↗</i></span><strong>Um lugar<br>para existir.</strong><small>ARQUITETURA · SITE</small></div>':index===1?`<div class="sa-interface-pair"><div class="sa-mini-site"><div><i></i><i></i><i></i><span>Casa Costa</span></div><img src="${HOUSE}" alt=""><strong>A casa.<br>A paisagem.</strong><small>Conhecer →</small></div><div class="sa-mini-app"><img src="${COAST}" alt=""><small>EXPLORAR</small><b>Trilha<br>do Arco</b><span>Ver percurso ↗</span></div></div>`:`<div class="sa-meta-invite">${link(copy.cta, 'site')}<span>Sites · Aplicativos · Experiências</span></div>`}<span class="rx-ig-count">${index+1}/3</span>`;
+}
 function createMeta(panel) {
-  const root = document.createElement('div'); root.className = 'sa-social rx-instagram'; root.dataset.platform = 'meta'; root.dataset.socialFrame = '0';
-  root.innerHTML = `<div class="sa-device-host"></div><div class="sa-frame-controls"><button type="button" data-rx-social-prev aria-label="Imagem anterior">${icon('back')}</button><span class="sa-frame-label">01 / 03 · Gancho</span><button type="button" data-rx-social-next aria-label="Próxima imagem">${icon('next')}</button></div>`;
-  const frame = createDeviceFrame({ tone: 'light', scheme: 'dark', time: '10:09', label: 'Instagram: carrossel editorial Fatos Desconhecidos em três quadros' });
-  frame.root.classList.add('sa-device', 'pf-social-device'); $('.sa-device-host', root).append(frame.root);
-  frame.screen.innerHTML = `<div class="sa-instagram"><div class="sa-ig-topbar" aria-hidden="true">${icon('back')}<strong>Posts</strong><span>Seguir</span></div><div class="sa-ig-profile"><img src="${AVATAR}" alt="" width="40" height="40" loading="lazy"><div><b>fatosdesconhecidos</b><small>Tecnologia no dia a dia</small></div><span aria-hidden="true">${icon('menu')}</span></div><div class="sa-media rx-ig-photo" role="group" aria-label="Imagem do carrossel"><img src="${frames[0].src}" alt="${frames[0].title}" decoding="async" loading="lazy"><span class="rx-ig-count">1/3</span><div class="rx-ig-overlay"><small>FATOS DESCONHECIDOS</small><h3>${frames[0].title}</h3></div></div><div class="sa-ig-dots" aria-hidden="true"><i data-dot="0" class="is-current"></i><i data-dot="1"></i><i data-dot="2"></i></div><div class="sa-ig-actions" aria-hidden="true">${icon('heart')}${icon('comment')}${icon('repost')}${icon('send')}<span>${icon('save')}</span></div><p class="sa-ig-caption"><b>fatosdesconhecidos</b> <span>${frames[0].caption}</span></p></div>`;
-  panel.replaceChildren(root, createAside('meta')); panel.classList.add('sa-panel'); fitPhone($('.sa-device-host', root), frame);
-  return { root, frame, area: $('.sa-media', root), image: $('.sa-media>img', root), title: $('.rx-ig-overlay h3', root), caption: $('.sa-ig-caption>span', root) };
-}
-
-function createTikTok(panel) {
-  const root = document.createElement('div'); root.className = 'sa-social'; root.dataset.platform = 'tiktok'; root.dataset.socialFrame = '0';
-  root.innerHTML = `<div class="sa-device-host"></div><div class="sa-frame-controls sa-frame-controls--playback"><button type="button" data-tt-prev aria-label="Quadro anterior">${icon('back')}</button><button type="button" class="sa-play" data-play-story aria-pressed="false" aria-label="Reproduzir sequência"><span class="sa-play-icon">${icon('play')}</span><span class="sa-play-copy"><span class="sa-play-action">Reproduzir</span><span class="sa-frame-label" aria-hidden="true">01 / 03</span></span></button><button type="button" data-tt-next aria-label="Próximo quadro">${icon('next')}</button></div>`;
-  const frame = createDeviceFrame({ tone: 'light', scheme: 'dark', time: '10:09', label: 'TikTok: sequência editorial Fatos Desconhecidos, com três quadros controláveis' });
-  frame.root.classList.add('sa-device', 'sa-tiktok-device'); $('.sa-device-host', root).append(frame.root);
-  frame.screen.innerHTML = `<div class="sa-tiktok"><div class="sa-media sa-tt-media" role="group" aria-label="Quadro do vídeo"><img src="${frames[0].src}" alt="${frames[0].title}" decoding="async" loading="lazy"><div class="sa-tt-copy"><span>FATOS <small>DESCONHECIDOS</small></span><h3>${frames[0].title}</h3></div></div><div class="sa-tt-top" aria-hidden="true">${icon('live')}<span>Seguindo</span><b>Para você</b>${icon('search')}</div><div class="sa-tt-rail" aria-hidden="true"><span class="sa-tt-avatar"><img src="${AVATAR}" alt="" width="40" height="40"><i>${icon('plus')}</i></span>${icon('heart', true)}${icon('comment', true)}${icon('save', true)}${icon('share', true)}<span class="sa-tt-record"><img src="${AVATAR}" alt="" width="30" height="30"></span></div><div class="sa-tt-info"><b>@fatosdesconhecidos</b><p>${frames[0].caption}</p><span>${icon('note')}Histórias do cotidiano · Fatos</span></div><div class="sa-tt-progress" data-social-progress role="progressbar" aria-label="Progresso da sequência" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><i></i></div><div class="sa-tt-nav" aria-hidden="true"><span>${icon('home', true)}<small>Início</small></span><span>${icon('friends')}<small>Amigos</small></span><span class="sa-tt-create">${icon('plus')}</span><span>${icon('inbox')}<small>Caixa de entrada</small></span><span>${icon('user')}<small>Perfil</small></span></div></div>`;
-  panel.replaceChildren(root, createAside('tiktok')); panel.classList.add('sa-panel'); fitPhone($('.sa-device-host', root), frame);
-  return { root, frame, area: $('.sa-media', root), image: $('.sa-media>img', root), title: $('.sa-tt-copy h3', root), caption: $('.sa-tt-info>p', root) };
-}
-
-function wireStory(panel, specimen, platform) {
-  const { root, area, image, title, caption } = specimen;
-  const reduced = matchMedia('(prefers-reduced-motion:reduce)');
-  let requested = 0, committed = 0, revision = 0, pointer = null, playing = false, pending = false, raf = 0, elapsed = 0, lastTime = 0, preparing = 0;
-  const duration = 12000, step = duration / frames.length;
-  const feedback = $('.sa-story-feedback', panel), play = $('[data-play-story]', panel), progress = $('[data-social-progress]', panel);
-  const setFeedback = text => { if (feedback.textContent !== text) feedback.textContent = text; };
-  function paintProgress(value) { if (!progress) return; const p = Math.max(0, Math.min(1, value)); progress.setAttribute('aria-valuenow', String(Math.round(p * 100))); $('i', progress).style.transform = `scaleX(${p})`; }
-  function paintPlay() {
-    if (!play) return;
-    const action = playing ? 'Pausar' : elapsed >= duration ? 'Rever' : elapsed > 0 ? 'Retomar' : 'Reproduzir';
-    play.setAttribute('aria-pressed', String(playing));
-    play.setAttribute('aria-label', `${action} sequência`);
-    $('.sa-play-icon', play).innerHTML = icon(playing ? 'pause' : 'play');
-    $('.sa-play-action', play).textContent = action;
-  }
-  function stop(message) { const active = playing || pending; preparing++; playing = false; pending = false; cancelAnimationFrame(raf); raf = 0; paintPlay(); if (active && message) setFeedback(message); }
-  async function show(index, manual = true) {
-    const next = (index + frames.length) % frames.length;
-    requested = next;
-    const ticket = ++revision, data = frames[next]; area.setAttribute('aria-busy', 'true');
+  const copy = tabCopy('meta');
+  const specimen = createPhone(panel, 'meta', 'Instagram: carrossel conceitual da campanha smiile, em três peças', `<div class="sa-instagram"><div class="sa-ig-topbar" aria-hidden="true">${icon('back')}<strong>Publicação</strong>${icon('menu')}</div><div class="sa-ig-profile"><span class="sa-smiile-avatar" aria-hidden="true">s.</span><div><b>smiile</b><small>Patrocinado · Estudo de campanha</small></div></div><div class="sa-media rx-ig-photo" role="group" aria-label="Peça do carrossel">${metaArtwork(0)}</div><div class="sa-ig-cta">${link(copy.cta, 'site')}</div><div class="sa-ig-dots" aria-hidden="true">${[0,1,2].map(i=>`<i data-dot="${i}" class="${i===0?'is-current':''}"></i>`).join('')}</div><div class="sa-ig-actions" aria-hidden="true">${icon('heart')}${icon('comment')}${icon('send')}<span>${icon('save')}</span></div><p class="sa-ig-caption"><b>smiile</b> ${esc(copy.caption)}</p></div>`);
+  let current=0, revision=0;
+  const area=$('.rx-ig-photo', specimen.root), feedback=$('.sa-story-feedback',panel);
+  async function show(index) {
+    const next=(index+3)%3, ticket=++revision; area.setAttribute('aria-busy','true');
     try {
-      await decoded(data.src); if (ticket !== revision) return false;
-      image.src = data.src; image.alt = `Fatos Desconhecidos: ${data.title}`; image.style.objectPosition = data.position;
-      title.textContent = data.title; caption.textContent = data.caption; committed = next;
-      root.dataset.socialFrame = String(next); root.dataset.socialReady = 'true'; area.removeAttribute('data-image-error');
-      $('.sa-frame-label', root).textContent = `0${next + 1} / 03${platform === 'meta' ? ` · ${data.label}` : ''}`;
-      $('.sa-story-detail', panel).textContent = data.detail;
-      if (platform === 'meta') {
-        $('.rx-ig-count', root).textContent = `${next + 1}/3`;
-        $$('[data-rx-social]', panel).forEach(button => button.setAttribute('aria-current', String(Number(button.dataset.rxSocial) === next)));
-        $$('[data-dot]', root).forEach(dot => dot.classList.toggle('is-current', Number(dot.dataset.dot) === next));
-      } else {
-        $$('[data-frame]', panel).forEach(button => button.setAttribute('aria-pressed', String(Number(button.dataset.frame) === next)));
-        if (manual) { elapsed = next * step; paintProgress(elapsed / duration); paintPlay(); }
-      }
-      if (manual) setFeedback(`Quadro ${next + 1} de 3: ${data.label}. ${platform === 'meta' ? 'Deslize para explorar.' : 'Escolha outro quadro ou reproduza a sequência.'}`);
-      decoded(frames[(next + 1) % frames.length].src).catch(() => {}); return true;
-    } catch { if (ticket === revision) { requested = committed; area.dataset.imageError = 'true'; setFeedback('A imagem anterior foi mantida. Tente novamente.'); } return false; }
-    finally { if (ticket === revision) area.setAttribute('aria-busy', 'false'); }
+      await decoded(next===2?COAST:HOUSE); if(ticket!==revision)return;
+      current=next; area.innerHTML=metaArtwork(next); specimen.root.dataset.socialFrame=String(next); specimen.root.dataset.socialReady='true';
+      $('.sa-frame-label',specimen.root).textContent=`0${next+1} / 03 · ${copy.frames[next].label}`;
+      $('.sa-story-kicker',panel).textContent=`0${next+1} / ${copy.frames[next].label}`;
+      $('.sa-story-detail',panel).textContent=copy.frames[next].support;
+      $$('[data-rx-social]',panel).forEach(button=>button.setAttribute('aria-current',String(Number(button.dataset.rxSocial)===next)));
+      $$('[data-dot]',panel).forEach(dot=>dot.classList.toggle('is-current',Number(dot.dataset.dot)===next));
+      feedback.textContent=`Quadro ${next+1} de 3: ${copy.frames[next].label}.`;
+      reveal(area);
+    } catch { feedback.textContent='A peça anterior foi mantida. Tente novamente.'; }
+    finally { if(ticket===revision)area.setAttribute('aria-busy','false'); }
   }
-  const navigate = index => { stop(); show(index); };
-  $('[data-rx-social-prev],[data-tt-prev]', root).addEventListener('click', () => navigate(requested - 1));
-  $('[data-rx-social-next],[data-tt-next]', root).addEventListener('click', () => navigate(requested + 1));
-  $$('[data-rx-social],[data-frame]', panel).forEach(button => button.addEventListener('click', () => navigate(Number(button.dataset.rxSocial ?? button.dataset.frame))));
-  area.style.touchAction = 'pan-y';
-  area.addEventListener('pointerdown', event => { if (event.isPrimary) pointer = { x: event.clientX, y: event.clientY }; });
-  area.addEventListener('pointerup', event => { if (!pointer) return; const dx = event.clientX - pointer.x, dy = event.clientY - pointer.y; pointer = null; if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy) * 1.25) navigate(requested + (dx < 0 ? 1 : -1)); });
-  area.addEventListener('pointercancel', () => { pointer = null; });
-  if (play) {
-    function tick(now) {
-      if (!playing) return;
-      if (paused() || document.hidden || panel.hidden || reduced.matches) { stop('Sequência pausada. Retome de onde parou.'); return; }
-      elapsed = Math.min(duration, elapsed + Math.min(100, now - lastTime)); lastTime = now;
-      const target = Math.min(2, Math.floor(elapsed / step)); if (target !== requested) show(target, false);
-      paintProgress(elapsed / duration);
-      if (elapsed >= duration) { stop(); setFeedback('Sequência concluída: gancho, contexto e conexão.'); return; }
-      raf = requestAnimationFrame(tick);
-    }
-    play.addEventListener('click', async () => {
-      if (playing) { stop(); setFeedback('Sequência pausada. Continue de onde parou.'); return; }
-      if (paused()) { setFeedback('Use Retomar movimento no controle da página para reproduzir. Os quadros continuam disponíveis.'); return; }
-      if (reduced.matches) { navigate((committed + 1) % 3); return; }
-      const generation = ++preparing; pending = true; setFeedback('Preparando a sequência…');
-      try { await Promise.all(frames.map(frame => decoded(frame.src))); }
-      catch { if (generation === preparing) { pending = false; setFeedback('Não foi possível preparar a sequência. Explore os quadros individualmente.'); } return; }
-      if (generation !== preparing || paused() || panel.hidden || document.hidden) return;
-      if (elapsed >= duration) elapsed = 0;
-      await show(Math.min(2, Math.floor(elapsed / step)), false);
-      if (generation !== preparing || paused() || panel.hidden || document.hidden) return;
-      pending = false; playing = true; lastTime = performance.now(); paintPlay(); setFeedback('Reproduzindo a sequência de 12 segundos.'); raf = requestAnimationFrame(tick);
-    });
-  }
-  // The observed unit includes the phone and its playback controls. Clicking
-  // play must never scroll away from the unit whose visibility owns playback.
-  new IntersectionObserver(([entry]) => { if (!entry.isIntersecting) stop('Sequência pausada ao sair do aparelho. Retome de onde parou.'); }, { threshold: .01 }).observe(root);
-  new MutationObserver(() => { if (panel.hidden) stop('Sequência pausada ao trocar de formato.'); }).observe(panel, { attributes: true, attributeFilter: ['hidden'] });
-  new MutationObserver(() => { if (paused()) stop('Sequência pausada pelo controle da página.'); }).observe(document.body, { attributes: true, attributeFilter: ['class'] });
-  document.addEventListener('visibilitychange', () => { if (document.hidden) stop('Sequência pausada ao sair da página.'); }); reduced.addEventListener('change', () => stop('Sequência pausada. Os quadros continuam disponíveis.'));
-  panel.addEventListener('demo:explorationchange', () => stop('Sequência pausada. Retome de onde parou.'));
-  show(0, false);
+  $('[data-rx-social-prev]',panel).addEventListener('click',()=>show(current-1));
+  $('[data-rx-social-next]',panel).addEventListener('click',()=>show(current+1));
+  $$('[data-rx-social]',panel).forEach(button=>button.addEventListener('click',()=>show(Number(button.dataset.rxSocial))));
+  swipe(area,direction=>show(current+direction));
+  show(0); explorer(panel, 'smiile · Criativo para Instagram'); return specimen.root;
 }
-
-export function mountSocialAds(root = document) {
-  const meta = $('#panel-meta', root), tiktok = $('#panel-tiktok', root); if (!meta || !tiktok) return null;
-  if ($('.sa-social', meta)) return $('.sa-social', meta);
-  upgradeTabIcons(root);
-  const instagram = createMeta(meta), video = createTikTok(tiktok);
-  wireStory(meta, instagram, 'meta'); wireStory(tiktok, video, 'tiktok');
-  addExplorer(meta, 'Instagram · Fatos Desconhecidos');
-  addExplorer(tiktok, 'TikTok · Fatos Desconhecidos');
-  return instagram.root;
+function swipe(area, navigate) {
+  let point=null;
+  area.addEventListener('pointerdown',event=>{ if(event.isPrimary&&!event.target.closest('a,button'))point={x:event.clientX,y:event.clientY}; });
+  area.addEventListener('pointerup',event=>{if(!point)return;const dx=event.clientX-point.x,dy=event.clientY-point.y;point=null;if(Math.abs(dx)>42&&Math.abs(dx)>Math.abs(dy)*1.3)navigate(dx<0?1:-1);});
+  area.addEventListener('pointercancel',()=>{point=null;});
+}
+function createTikTok(panel) {
+  const copy=tabCopy('tiktok');
+  const {root}=createPhone(panel,'tiktok','TikTok: cena vertical smiile, uma escolha na Trilha do Arco e sua consequência',`<div class="sa-tiktok"><div class="sa-media sa-tt-media" role="group" aria-label="Cena da campanha"><img src="${COAST}" alt="Paisagem da Trilha do Arco" decoding="async"><div class="sa-tt-shade"></div><div class="sa-tt-copy"><small>smiile</small><h3>${lines(copy.frames[0].headline)}</h3></div><div class="sa-app-scene" data-app-state="discover"><div class="sa-app-header"><b>arco.</b><span>Seu próximo caminho</span></div><div class="sa-app-discover"><img src="${COAST}" alt=""><div><small>UMA ESCOLHA</small><strong>Trilha do Arco</strong><p>Um caminho. Outra perspectiva.</p><button type="button" data-ad-app-action>${icon('arrow')}<span>Ver percurso</span></button></div></div><div class="sa-app-outcome" hidden><img src="${MAP}" alt="Mapa ilustrativo do percurso da Trilha do Arco"><svg class="sa-route-reveal" viewBox="0 0 240 180" aria-hidden="true"><path d="M40 146C42 123 97 132 94 101S171 109 164 74 208 48 196 26" pathLength="1"/></svg><div class="sa-app-result"><span>${icon('check')}Percurso selecionado</span><strong>Trilha do Arco</strong><button type="button" data-ad-app-reset>Escolher de novo</button></div></div><i class="sa-touch-cursor" aria-hidden="true"></i></div><div class="sa-tt-endcard" hidden><strong>smiile.</strong><p>Sua ideia<br>ganha vida.</p>${link(copy.cta,'app')}</div></div><div class="sa-tt-top" aria-hidden="true"><span>Seguindo</span><b>Para você</b>${icon('search')}</div><div class="sa-tt-rail" aria-hidden="true"><span class="sa-smiile-avatar">s.</span>${icon('heart',true)}${icon('comment',true)}${icon('save',true)}${icon('send')}</div><div class="sa-tt-info"><b>@smiile</b><small>Patrocinado · Estudo de campanha</small><p>${esc(copy.caption)}</p></div><div class="sa-tt-progress" data-social-progress role="progressbar" aria-label="Progresso da cena" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><i></i></div><div class="sa-tt-nav" aria-hidden="true">${icon('home')}<span>Explorar</span>${icon('plus')}<span>Caixa de entrada</span>${icon('user')}</div></div>`);
+  const scene=$('.sa-app-scene',root),outcome=$('.sa-app-outcome',root),discover=$('.sa-app-discover',root),end=$('.sa-tt-endcard',root),heading=$('.sa-tt-copy h3',root),progress=$('[data-social-progress]',root),play=$('[data-play-story]',root),feedback=$('.sa-story-feedback',panel);
+  const duration=13500,boundaries=[0,4200,10000];
+  let elapsed=0,playing=false,last=0,raf=0,frame=0,chosen=false;
+  const label=()=>playing?'Pausar':elapsed>=duration?'Rever':elapsed>0?'Retomar':'Reproduzir';
+  function paintPlay(){play.setAttribute('aria-pressed',String(playing));play.setAttribute('aria-label',`${label()} sequência`);$('.sa-play-icon',play).innerHTML=icon(playing?'pause':'play');$('.sa-play-action',play).textContent=label();root.classList.toggle('is-playing',playing);}
+  function stop(message){const wasPlaying=playing;playing=false;cancelAnimationFrame(raf);paintPlay();if(wasPlaying&&message)feedback.textContent=message;}
+  function choose(value){chosen=value;scene.dataset.appState=value?'route':'discover';outcome.hidden=!value;discover.hidden=value;scene.style.setProperty('--route-progress',value?'1':'0');}
+  function paint(manual=false){
+    const next=elapsed>=10000?2:elapsed>=4200?1:0;
+    if(next!==frame||manual){frame=next;root.dataset.socialFrame=String(next);heading.innerHTML=lines(copy.frames[next].headline);$('.sa-frame-label',root).textContent=`0${next+1} / 03`;$('.sa-story-kicker',panel).textContent=`0${next+1} / ${copy.frames[next].label}`;$('.sa-story-detail',panel).textContent=copy.frames[next].support || copy.frames[next].headline.replace(/\n/g, ' ');$$('[data-frame]',panel).forEach(button=>button.setAttribute('aria-pressed',String(Number(button.dataset.frame)===next)));}
+    const amount=elapsed/duration;progress.setAttribute('aria-valuenow',String(Math.round(amount*100)));$('i',progress).style.transform=`scaleX(${amount})`;
+    scene.classList.toggle('is-featured',elapsed>=2800);scene.classList.toggle('is-tapping',elapsed>=5500&&elapsed<6250);
+    if(playing)choose(elapsed>=6250);
+    if(chosen&&playing)scene.style.setProperty('--route-progress',String(Math.max(0,Math.min(1,(elapsed-6250)/1500))));
+    end.hidden=next!==2;scene.inert=next===2;scene.setAttribute('aria-hidden',String(next===2));
+  }
+  function seek(index){stop();elapsed=boundaries[(index+3)%3];choose(index===2);paint(true);feedback.textContent=`Cena ${frame+1} de 3: ${copy.frames[frame].label}.`;}
+  function tick(now){if(!playing)return;if(paused()||reduced.matches||document.hidden||panel.hidden){stop('Cena pausada. Continue de onde parou.');return;}elapsed=Math.min(duration,elapsed+Math.min(now-last,100));last=now;paint();if(elapsed>=duration){stop();feedback.textContent='Da ideia à escolha: explore agora o aplicativo completo.';return;}raf=requestAnimationFrame(tick);}
+  play.addEventListener('click',()=>{if(playing){stop('Cena pausada. Continue de onde parou.');return;}if(paused()){feedback.textContent='O movimento da página está pausado. As etapas e a escolha continuam disponíveis.';return;}if(reduced.matches){seek(frame+1);return;}if(elapsed>=duration){elapsed=0;choose(false);}playing=true;last=performance.now();paintPlay();feedback.textContent='Reproduzindo a cena: pergunta, escolha e percurso.';raf=requestAnimationFrame(tick);});
+  $('[data-ad-app-action]',root).addEventListener('click',()=>{stop();elapsed=7100;choose(true);paint(true);feedback.textContent='Você escolheu a trilha. O cartão agora mostra o percurso correspondente.';$('.sa-app-result button',root).focus({preventScroll:true});});
+  $('[data-ad-app-reset]',root).addEventListener('click',()=>{stop();elapsed=4200;choose(false);paint(true);feedback.textContent='Escolha restaurada. Experimente Ver percurso.';$('[data-ad-app-action]',root).focus({preventScroll:true});});
+  $('[data-tt-prev]',root).addEventListener('click',()=>seek(frame-1));$('[data-tt-next]',root).addEventListener('click',()=>seek(frame+1));
+  $$('[data-frame]',panel).forEach(button=>button.addEventListener('click',()=>seek(Number(button.dataset.frame))));swipe($('.sa-media',root),direction=>seek(frame+direction));
+  new IntersectionObserver(([entry])=>{if(!entry.isIntersecting)stop('Cena pausada ao sair do aparelho.');},{threshold:.01}).observe(root);
+  new MutationObserver(()=>{if(panel.hidden)stop();}).observe(panel,{attributes:true,attributeFilter:['hidden']});
+  new MutationObserver(()=>{if(paused())stop('Cena pausada pelo controle da página.');}).observe(document.body,{attributes:true,attributeFilter:['class']});
+  document.addEventListener('visibilitychange',()=>{if(document.hidden)stop();});reduced.addEventListener('change',()=>stop());panel.addEventListener('demo:explorationchange',()=>stop());
+  decoded(COAST).then(()=>{root.dataset.socialReady='true';}).catch(()=>{feedback.textContent='A paisagem não carregou. A escolha da trilha continua disponível.';});
+  paint(true);explorer(panel,'smiile · Cena para TikTok');return root;
+}
+function createGoogle(panel){
+  const copy=tabCopy('google');panel.classList.add('sa-panel','sa-campaign-panel','sa-google-panel');
+  panel.innerHTML=`<div class="sa-search-scene"><div class="sa-browser-chrome" aria-hidden="true"><span><i></i><i></i><i></i></span><b>Pesquisa · Prévia do criativo</b><span>↗</span></div><div class="sa-query">${icon('search')}<span>${esc(copy.query)}</span></div><div class="sa-search-label"><span>Resultado patrocinado</span><small>Estudo conceitual</small></div><article class="sa-search-result"><div class="sa-search-advertiser"><span class="sa-smiile-avatar">s.</span><div><b>${esc(copy.displayName)}</b><span>Experiências digitais</span></div></div><h3><a href="#sistemas" data-campaign-destination data-product-target="site">${esc(copy.headlines.join(' · '))}</a></h3>${copy.descriptions.map(text=>`<p>${esc(text)}</p>`).join('')}<div class="sa-search-links">${copy.links.map((label,index)=>`<a href="#sistemas" data-campaign-destination data-product-target="${index===1?'app':'site'}">${esc(label)}</a>`).join('')}</div></article><div class="sa-search-connection"><span>O próximo passo</span>${icon('next')}</div><a class="sa-landing-preview" href="#sistemas" data-campaign-destination data-product-target="site"><img src="${HOUSE}" alt="Casa Costa, experiência apresentada no destino do anúncio" loading="lazy"><div><small>SMIILE · PROJETO DIGITAL</small><strong>Uma ideia.<br>Uma experiência.</strong><span>${esc(copy.cta.label)} ↗</span></div></a></div>`;
+  panel.append(aside('google'));explorer(panel,'smiile · Criativo para pesquisa');
+}
+export function mountSocialAds(root=document){
+  const meta=$('#panel-meta',root),tiktok=$('#panel-tiktok',root),google=$('#panel-google',root);if(!meta||!tiktok||!google)return null;
+  if(meta.dataset.campaignReady)return $('.sa-social',meta);
+  brandImages(root);const instagram=createMeta(meta);createTikTok(tiktok);createGoogle(google);
+  for(const panel of [meta,tiktok,google]){panel.dataset.campaignReady='true';new MutationObserver(()=>{if(!panel.hidden)reveal(panel);}).observe(panel,{attributes:true,attributeFilter:['hidden']});}
+  return instagram;
 }

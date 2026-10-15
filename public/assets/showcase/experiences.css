@@ -67,6 +67,7 @@
 .rx-table-view th{text-align:left;padding:19px 20px;font-size:10px;letter-spacing:.14em;color:#6a7a6f;text-transform:uppercase;background:#e9eee5;}
 .rx-table-view td{padding:22px 20px;border-top:1px solid #d9e1d7;font-size:13px;color:#394c41}
 .rx-table-view td:first-child{font-weight:800}.rx-table-view a{color:#235995;text-decoration:underline;text-underline-offset:4px;font-weight:700}
+.portfolio-r6 .rx-view-controls>span{font-size:12px;letter-spacing:0;text-transform:none;font-weight:500}.portfolio-r6 .rx-view-switch{border-radius:6px}.portfolio-r6 .rx-view-switch button{font-size:14px;min-height:44px;border-radius:4px;font-weight:500}.portfolio-r6 .rx-table-view{border-radius:8px}.portfolio-r6 .rx-table-view th{font-size:12px;letter-spacing:.03em;text-transform:none}.portfolio-r6 .rx-table-view td{font-size:14px;line-height:1.5}.portfolio-r6 .rx-table-view td:first-child{font-weight:600}.portfolio-r6 .rx-table-view a{font-weight:500;display:inline-block;padding-block:8px}
 
 /* Cinematic scroll film, same idea -> many directions mechanic without hijacking scroll */
 .rx-film{height:310svh;background:#f8f8f7;position:relative;color:#1d2621;isolation:isolate;}

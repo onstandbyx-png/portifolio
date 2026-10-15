@@ -4,21 +4,23 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="theme-color" content="#f6f6f2">
-  <meta name="portfolio-version" content="hero-readable-20261015-r5">
-  <meta name="description" content="Smile N, diretor criativo com experiência na Fatos Desconhecidos. Narrativa, arte, copy, campanhas e experiências digitais para marcas. Da ideia à execução.">
-  <meta property="og:title" content="Smile N · Direção criativa, da ideia à execução">
-  <meta property="og:description" content="Histórias, campanhas e experiências digitais. Conheça o trabalho, o raciocínio e as possibilidades para sua marca.">
+  <meta name="portfolio-version" content="editorial-motion-20261015-r6">
+  <meta name="description" content="Direção criativa, conteúdo e campanhas com Smile N. Experiência com Fatos Desconhecidos, projeto próprio smiile e criação de sites, apps e sistemas.">
+  <meta property="og:title" content="Criatividade com direção. Do conceito à entrega.">
+  <meta property="og:description" content="Conheça a atuação de Smile N em conteúdo, campanhas e experiências digitais. Explore os trabalhos e converse sobre o seu projeto.">
   <meta property="og:type" content="website">
   <meta property="og:locale" content="pt_BR">
-  <meta property="og:url" content="https://portifolio-github-production.up.railway.app/">
-  <meta property="og:image" content="https://portifolio-github-production.up.railway.app/assets/creative/og-cover.png">
+  <meta property="og:url" content="https://portfolio-visual-review-production.up.railway.app/">
+  <meta property="og:image" content="https://portfolio-visual-review-production.up.railway.app/assets/creative/og-cover.png">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="author" content="Smile N">
-  <link rel="canonical" href="https://portifolio-github-production.up.railway.app/">
-  <title>Smile N · Direção criativa | ideia ↗ execução.</title>
+  <link rel="canonical" href="https://portfolio-visual-review-production.up.railway.app/">
+  <title>Smile N · Direção criativa, conteúdo e experiências digitais</title>
   <link rel="icon" href="/assets/creative/favicon.svg" type="image/svg+xml">
   <link rel="preload" href="/assets/badges/poster-single-0f.webp" as="image" type="image/webp" media="(max-width: 573px)" fetchpriority="high">
   <link rel="preload" href="/assets/badges/poster-pair-ff.webp" as="image" type="image/webp" media="(min-width: 574px)" fetchpriority="high">
+  <link rel="preload" href="/assets/fonts/InterVariable.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/assets/fonts/Newsreader-Italic-Variable.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="/assets/portfolio.css">
   <!-- portfolio-sections-motion-v1 -->
   <link rel="stylesheet" href="/assets/sections/sections.css">
@@ -37,9 +39,13 @@
   <link rel="stylesheet" href="/assets/showcase/fatos-deck.css">
   <link rel="stylesheet" href="/assets/showcase/product-demos.css">
   <link rel="stylesheet" href="/assets/showcase/social-ads.css">
-  <link rel="stylesheet" href="/assets/badge-enhancements.css?v=hero-r5">
+  <link rel="stylesheet" href="/assets/badge-enhancements.css?v=editorial-r6">
+  <link rel="stylesheet" href="/assets/portfolio-r6.css">
+  <link rel="stylesheet" href="/assets/showcase/editorial-story.css">
+  <link rel="stylesheet" href="/assets/editorial-motion.css">
   <script src="/assets/profile.js" defer></script>
-  <script src="/assets/portfolio.js" defer></script>
+  <script type="module" src="/assets/portfolio.js"></script>
+  <script type="module" src="/assets/editorial-motion.js"></script>
   <script type="module" src="/assets/badge-build/index.js"></script>
   <script type="module" src="/assets/sections/interactions.js"></script>
   <script type="module" src="/assets/showcase/experiences.js"></script>
@@ -47,39 +53,31 @@
   <script type="module" src="/assets/project-paths.js"></script>
   <script type="module" src="/assets/showcase/recovery-init.js"></script>
 </head>
-<body class="direction-v4">
+<body class="direction-v4 portfolio-r6">
   <a class="skip" href="#trabalhos">Pular para trabalhos</a>
   <div id="reading-progress" aria-hidden="true"></div>
   <header class="site-header" id="site-header">
     <div class="shell header-inner">
-      <a href="#inicio" class="wordmark" aria-label="Ideia e Execução, início"><span>ideia</span><span class="wordmark-arrow">↗</span><span>execução.</span></a>
-      <nav class="main-nav" aria-label="Navegação principal">
-        <a href="#trabalhos">Projetos <span>02</span></a>
-        <a href="#categorias">Atuação <span>07</span></a>
-        <a href="#editorial">Processo <span>04</span></a>
-        <a href="#laboratorio">Laboratório <span>05</span></a>
-      </nav>
+      <a href="#inicio" class="wordmark" aria-label="Smile N, início"><span class="wordmark-name">Smile N</span><span class="wordmark-signature">ideia ↗ execução.</span></a>
+      <nav class="main-nav" aria-label="Navegação principal"><a href="#trabalhos">Trabalhos</a><a href="#editorial">Conteúdo</a><a href="#laboratorio">Campanhas</a><a href="#sistemas">Digital</a><a href="#contato">Contato</a></nav>
       <a class="header-cta" href="#contato">Conversar sobre um projeto <span aria-hidden="true">↗</span></a>
       <button id="motion-toggle" class="motion-toggle" type="button" aria-pressed="false" aria-label="Pausar movimento e reprodução" title="Pausar movimento e reprodução">Ⅱ <span>Pausar movimento</span></button>
       <button class="menu-toggle" id="menu-toggle" type="button" aria-label="Abrir menu" aria-controls="mobile-nav" aria-expanded="false"><span></span><span></span></button>
     </div>
-    <nav class="mobile-nav" id="mobile-nav" aria-label="Navegação móvel" hidden>
-      <a href="#trabalhos">Trabalhos <span>↗</span></a><a href="#categorias">Atuação <span>↗</span></a><a href="#editorial">Processo <span>↗</span></a><a href="#laboratorio">Laboratório <span>↗</span></a><a href="#contato">Contato <span>↗</span></a>
-      <p>Smile N · Direção criativa<br>Narrativa, conteúdo e tecnologia.</p>
-    </nav>
+    <nav class="mobile-nav" id="mobile-nav" aria-label="Navegação móvel" hidden><a href="#trabalhos">Trabalhos</a><a href="#editorial">Conteúdo</a><a href="#laboratorio">Campanhas</a><a href="#sistemas">Digital</a><a href="#contato">Contato</a><p>Smile N · Direção criativa<br>Conteúdo, campanhas e experiências digitais.</p></nav>
   </header>
 
   <main id="inicio">
     <section class="hero shell" aria-labelledby="hero-title">
   <div class="hero-copy">
-    <div class="eyebrow hero-issue"><span class="issue-dot"></span> SMILE N / DIRETOR CRIATIVO <span class="issue-year">PORTFÓLIO 2026</span></div>
-    <h1 id="hero-title">Uma ideia.<br><em>Muitas formas<span class="title-point">.</span></em></h1>
-    <p class="hero-description">Transformo ideias em <strong>histórias, campanhas e experiências digitais.</strong></p>
-    <div class="hero-actions"><a class="button button-solid" href="#trabalhos">Ver trabalhos <span aria-hidden="true">↗</span></a><a class="button button-text" href="#contato">Vamos criar <span aria-hidden="true">↗</span></a></div>
+    <div class="eyebrow hero-issue"><span class="issue-dot"></span> SMILE N / DIREÇÃO CRIATIVA <span class="issue-year">PORTFÓLIO 2026</span></div>
+    <h1 id="hero-title">Criatividade com direção. <br><em>Do conceito à entrega.</em></h1>
+    <p class="hero-description">Dou forma à mensagem da sua marca — nos conteúdos que ela publica, nas campanhas que coloca no mundo e nas experiências digitais que oferece.</p>
+    <div class="hero-actions"><a class="button button-solid" href="#trabalhos">Conhecer os trabalhos <span aria-hidden="true">↗</span></a><a class="button button-text" href="#contato">Conversar sobre um projeto <span aria-hidden="true">↗</span></a></div>
   </div>
   <div class="hero-exhibit hero-badge-exhibit" aria-label="Experiência editorial e projetos digitais de Smile N">
     <div class="hero-exhibit-bg" aria-hidden="true"></div>
-    <div class="exhibit-meta"><span>Do repertório à prática</span></div>
+    <div class="exhibit-meta"><span>Duas frentes do meu trabalho</span></div>
     <div class="hero-badge-controls" aria-label="Escolha a peça para explorar">
       <div class="badge-selection" role="group" aria-label="Projeto selecionado">
         <button type="button" data-badge-select="0" aria-pressed="true">Fatos</button>
@@ -97,71 +95,72 @@
       <canvas class="hero-badge-canvas" data-badge-canvas aria-hidden="true"></canvas>
     </div>
     <div class="hero-badge-detail">
-      <p class="badge-detail-kicker" data-badge-detail-kicker>Fatos Desconhecidos</p>
-      <h2 data-badge-detail-title>Histórias que ficam.</h2>
-      <p data-badge-detail-body>Direção criativa e narrativa: pesquisa, roteiro, arte e conteúdo para grandes audiências.</p>
-      <a data-badge-detail-link href="#trabalhos">Explorar o trabalho editorial <span aria-hidden="true">↗</span></a>
+      <p class="badge-detail-kicker" data-badge-detail-kicker>Fatos Desconhecidos · Experiência profissional</p>
+      <h2 data-badge-detail-title>Pesquisa, conteúdo e direção criativa.</h2>
+      <p data-badge-detail-body>Experiência em pesquisa, texto e direção criativa para construir narrativas e conteúdos.</p>
+      <a data-badge-detail-link href="#editorial">Conhecer a atuação editorial <span aria-hidden="true">↗</span></a>
     </div>
     <p class="badge-gesture-note" data-badge-hint>Toque na peça para virar. Arraste de leve para mover.</p>
     <span class="sr-only" data-badge-status role="status" aria-live="polite" aria-atomic="true"></span>
   </div>
   <div class="hero-support">
-    <div class="hero-authority"><span class="authority-mark" aria-hidden="true">F.</span><p>Há anos na direção criativa da <strong>Fatos Desconhecidos.</strong><br><span>Experiência criando conteúdo para grandes audiências.</span></p></div>
-    <p class="hero-scope">Da narrativa e da direção de arte ao site, app ou sistema.</p>
-    <div class="hero-cred"><span>NARRATIVA</span><i></i><span>DIREÇÃO DE ARTE</span><i></i><span>TECNOLOGIA</span></div>
+    <div class="hero-authority"><img class="authority-logo" src="/assets/portfolio/recovered-fatos/avatar_desconhecidos.webp" width="48" height="48" alt="Fatos Desconhecidos"><p><strong>Experiência com Fatos Desconhecidos.</strong><br><span>Criador do projeto smiile.</span></p></div>
+    <p class="hero-scope">Minha atuação reúne direção criativa, texto, design e desenvolvimento.</p>
+    <div class="hero-cred"><span>CONTEÚDO</span><i></i><span>CAMPANHAS</span><i></i><span>PRODUTOS DIGITAIS</span></div>
   </div>
   <a class="scroll-indicator" href="#trabalhos"><span class="mouse-glyph" aria-hidden="true">↓</span> O TRABALHO CONTINUA ABAIXO</a>
 </section>
 
-    <div class="discipline-rail" aria-label="Da narrativa ao produto"><div class="rail-track"><span>UMA HISTÓRIA QUE FAZ SENTIDO</span><b aria-hidden="true">✳</b><span>UMA CAMPANHA COM DIREÇÃO</span><b aria-hidden="true">✳</b><span>UMA EXPERIÊNCIA QUE FUNCIONA</span><b aria-hidden="true">✳</b></div></div>
+    <div class="discipline-rail" aria-label="Conteúdo, campanhas e experiências digitais"><div class="rail-track"><span>Conteúdo.</span><span>Campanhas.</span><span>Experiências.</span></div></div>
 
-    <section id="trabalhos" class="selected-work section-block shell" aria-labelledby="work-title">
-  <div class="section-kicker"><span>02 / TRABALHOS E CAPACIDADES REAIS</span><span>CONTEXTO · DECISÃO · EXECUÇÃO</span></div>
-  <div class="work-heading"><h2 id="work-title">O trabalho.<br><em>E o que há por trás.</em></h2><p>Posts e narrativas, criativos e anúncios, sites, apps e vídeo. Explore os trabalhos antes de ler as decisões por trás deles.</p></div>
-  <div class="work-gallery work-evidence-gallery"><article class="work-tile work-fatos reveal" data-work-card="fatos">
- <div class="work-context"><span>01 / NARRATIVA & CONTEÚDO</span><span>EXPERIÊNCIA EDITORIAL</span></div>
- <div class="tile-art"><img src="/assets/portfolio/cena-desconhecidos.webp" alt="NARRATIVA & CONTEÚDO: material visual proveniente dos projetos Fatos e smiile" loading="lazy"><span class="tile-chip">FATOS DESCONHECIDOS</span><span class="tile-num">01</span><div class="work-cover-copy"><small>NARRATIVA & CONTEÚDO</small><strong>Da curiosidade<br>à história.</strong></div></div>
- <div class="tile-caption"><div><small>NARRATIVA & CONTEÚDO</small><h3>Da curiosidade<br>à história.</h3><p>Direção criativa, pesquisa, pautas, posts e roteiros.</p></div><button type="button" class="tile-open" data-case="fatos" aria-label="Explorar caso NARRATIVA & CONTEÚDO">↗</button></div></article>
-<article class="work-tile work-ads reveal" data-work-card="ads">
- <div class="work-context"><span>02 / CAMPANHAS & ANÚNCIOS</span><span>ESTUDOS DE FORMATOS</span></div>
- <div class="tile-art"><img src="/assets/portfolio/cena-negocios.webp" alt="CAMPANHAS & ANÚNCIOS: material visual proveniente dos projetos Fatos e smiile" loading="lazy"><span class="tile-chip">CRIAÇÃO + MÍDIA PAGA</span><span class="tile-num">02</span><div class="work-cover-copy"><small>CAMPANHAS & ANÚNCIOS</small><strong>Uma ideia.<br>Vários formatos.</strong></div></div>
- <div class="tile-caption"><div><small>CAMPANHAS & ANÚNCIOS</small><h3>Uma ideia.<br>Vários formatos.</h3><p>Conceito, criativos, operação de campanhas e adaptação por canal.</p></div><button type="button" class="tile-open" data-case="ads" aria-label="Explorar caso CAMPANHAS & ANÚNCIOS">↗</button></div></article>
-<article class="work-tile work-smiile reveal" data-work-card="smiile">
- <div class="work-context"><span>03 / SITES & APLICATIVOS</span><span>PROJETO DIGITAL</span></div>
- <div class="tile-art"><img src="/assets/portfolio/smiile-architecture-coast.webp" alt="SITES & APLICATIVOS: material visual proveniente dos projetos Fatos e smiile" loading="lazy"><span class="tile-chip">SMIILE / PRODUTO DIGITAL</span><span class="tile-num">03</span><div class="work-cover-copy"><small>SITES & APLICATIVOS</small><strong>Da ideia à interface<br>que responde.</strong></div></div>
- <div class="tile-caption"><div><small>SITES & APLICATIVOS</small><h3>Da ideia à interface<br>que responde.</h3><p>UX/UI, sites, apps e demonstrações interativas.</p></div><button type="button" class="tile-open" data-case="smiile" aria-label="Explorar caso SITES & APLICATIVOS">↗</button></div></article>
-<article class="work-tile work-video reveal" data-work-card="video">
- <div class="work-context"><span>04 / VÍDEO & EXPERIÊNCIA</span><span>DEMONSTRAÇÃO AUTORAL</span></div>
- <div class="tile-art"><img src="/assets/portfolio/smiile-creative-studio.webp" alt="VÍDEO & EXPERIÊNCIA: material visual proveniente dos projetos Fatos e smiile" loading="lazy"><span class="tile-chip">DIREÇÃO E MOVIMENTO</span><span class="tile-num">04</span><div class="work-cover-copy"><small>VÍDEO & EXPERIÊNCIA</small><strong>Movimento<br>que apresenta.</strong></div></div>
- <div class="tile-caption"><div><small>VÍDEO & EXPERIÊNCIA</small><h3>Movimento<br>que apresenta.</h3><p>Ritmo, composição e transições que acompanham a rolagem.</p></div><button type="button" class="tile-open" data-case="video" aria-label="Explorar caso VÍDEO & EXPERIÊNCIA">↗</button></div></article></div>
-<div class="source-note"><span>AUTORIA E CONTEXTO</span><p>Experiência profissional, projetos digitais e estudos autorais têm papéis diferentes neste portfólio. Cada detalhe identifica a natureza do material, a participação e a origem.</p></div>
+    <section id="trabalhos" class="selected-work section-block shell" aria-labelledby="work-title"><div class="section-kicker"><span>01 / TRABALHOS SELECIONADOS</span><span>CONTRIBUIÇÃO · ENTREGA</span></div><div class="work-heading"><h2 id="work-title">A direção aparece <br><em>no que é entregue.</em></h2><p>Conteúdo editorial, criação de campanha e produto digital. Veja as peças e conheça a minha contribuição em cada frente.</p></div><div class="work-gallery work-evidence-gallery"><article class="work-tile work-fatos reveal" data-work-card="fatos"><div class="work-context"><span>01 / Fatos Desconhecidos</span><span>Experiência profissional</span></div><div class="tile-art"><img src="/assets/portfolio/recovered-fatos/post-desconhecidos-600.webp" alt="Fatos Desconhecidos" loading="lazy"><div class="work-cover-copy"><small>Direção criativa e conteúdo</small><strong>Conteúdo começa <br><em>com uma boa pergunta.</em></strong></div></div><div class="tile-caption"><div><h3>Conteúdo começa <br><em>com uma boa pergunta.</em></h3><p>Pesquisa, texto e direção criativa para desenvolver narrativas.</p></div><button type="button" class="tile-open" data-case="fatos" aria-label="Ver atuação editorial">↗</button></div></article><article class="work-tile work-ads reveal" data-work-card="ads"><div class="work-context"><span>02 / smiile · Criação de campanha</span><span>Estudo conceitual</span></div><div class="tile-art"><img src="/assets/brands/smiile-campaign-editorial.svg" alt="smiile · Criação de campanha" loading="lazy"><div class="work-cover-copy"><small>Conceito, copy e direção de arte</small><strong>Uma proposta clara. <br><em>Uma linguagem para cada canal.</em></strong></div></div><div class="tile-caption"><div><h3>Uma proposta clara. <br><em>Uma linguagem para cada canal.</em></h3><p>Um estudo que conecta mensagem, criativo e próximo passo em Meta, Google e TikTok.</p></div><button type="button" class="tile-open" data-case="ads" aria-label="Ver a campanha">↗</button></div></article><article class="work-tile work-smiile reveal" data-work-card="smiile"><div class="work-context"><span>03 / smiile · Experiências digitais</span><span>Projeto próprio</span></div><div class="tile-art"><img src="/assets/portfolio/recovered-smiile/landscape.webp" alt="smiile · Experiências digitais" loading="lazy"><div class="work-cover-copy"><small>Direção visual, UX/UI e desenvolvimento</small><strong>O design também está <br><em>no que acontece depois.</em></strong></div></div><div class="tile-caption"><div><h3>O design também está <br><em>no que acontece depois.</em></h3><p>Sites, aplicativos e fluxos que você pode explorar aqui.</p></div><button type="button" class="tile-open" data-case="smiile" aria-label="Explorar o projeto">↗</button></div></article></div></section>
+
+
+
+<section class="editorial-section" id="editorial" data-editorial-story aria-labelledby="editorial-title">
+  <header class="shell es-heading">
+    <span class="eyebrow">02 / Fatos Desconhecidos · Conteúdo e direção criativa</span>
+    <h2 id="editorial-title">A curiosidade abre.<br><em>A narrativa conduz.</em></h2>
+    <p>Meu trabalho conecta pesquisa, texto e direção visual: encontrar um recorte, organizar a história e dar a ela uma forma que faça sentido para o público.</p>
+  </header>
+  <div class="shell es-workbench">
+    <div class="es-tabs" role="tablist" aria-label="Etapas da mesma história">
+      <button type="button" id="editorial-tab-hook" data-editorial-step="0" role="tab" aria-controls="editorial-story-panel" aria-selected="true"><span>01</span><strong>Abertura</strong></button>
+      <button type="button" id="editorial-tab-context" data-editorial-step="1" role="tab" aria-controls="editorial-story-panel" aria-selected="false" tabindex="-1"><span>02</span><strong>Contexto</strong></button>
+      <button type="button" id="editorial-tab-closing" data-editorial-step="2" role="tab" aria-controls="editorial-story-panel" aria-selected="false" tabindex="-1"><span>03</span><strong>Fechamento</strong></button>
+    </div>
+    <div class="es-panel" id="editorial-story-panel" role="tabpanel" aria-labelledby="editorial-tab-hook" tabindex="0">
+      <div class="es-stage" data-editorial-stage>
+        <div class="es-phone-placeholder" aria-hidden="true"><img src="/assets/portfolio/recovered-fatos/post-desconhecidos-600.webp" alt="" loading="lazy"><p>O que cabe na palma da sua mão?</p></div>
+      </div>
+      <article class="es-context" data-editorial-context>
+        <span data-es-label>01 / Abertura</span>
+        <h3 data-es-title>Começar pelo que a pessoa reconhece.</h3>
+        <p data-es-body>Uma pergunta próxima da rotina cria o ponto de entrada para um assunto maior.</p>
+        <div class="es-transcript"><span>A peça, em palavras</span><blockquote data-es-quote>O que cabe na palma da sua mão?</blockquote><p data-es-copy>Um objeto cotidiano pode abrir uma história sobre como a nossa forma de viver mudou.</p></div>
+      </article>
+    </div>
+    <p class="es-status" data-es-status role="status" aria-live="polite">Abertura · 1 de 3</p>
+  </div>
+  <div class="shell editorial-bottom es-bottom">
+    <details><summary>Autoria e contexto</summary><p>Estudo editorial · Tecnologia no cotidiano. Atuação profissional em direção criativa e conteúdo. As composições de origem pertencem ao mídia kit Ecossistema Fatos; a sequência foi organizada para esta apresentação.</p></details>
+    <a href="#contato" data-project-need="Direção criativa e conteúdo">Conversar sobre conteúdo <span aria-hidden="true">↗</span></a>
+  </div>
 </section>
 
-
-
-    <section class="editorial-section" id="editorial" aria-labelledby="editorial-title">
- <div class="shell editorial-heading"><span class="eyebrow">04 / PESQUISA, ROTEIRO, DIREÇÃO EDITORIAL</span><h2 id="editorial-title">A história começa<br><em>com a pergunta certa.</em></h2><p>Explore assuntos, enquadramentos e histórias com peças visuais provenientes dos projetos Fatos. Em vez de recortes de PDF, a demonstração usa composições editoriais.</p></div>
- <div class="editorial-feature shell"><div class="editorial-list" role="group" aria-label="Etapas de criação editorial">
- <button type="button" class="editorial-step is-current" data-story-step="0"><span>01</span><strong>Assunto</strong><small>Identificar o que chama atenção</small><i>↗</i></button>
- <button type="button" class="editorial-step" data-story-step="1"><span>02</span><strong>Contexto</strong><small>Pesquisar e escolher o recorte</small><i>↗</i></button>
- <button type="button" class="editorial-step" data-story-step="2"><span>03</span><strong>Narrativa</strong><small>Transformar em uma peça</small><i>↗</i></button></div>
- <div class="editorial-media"><div class="editorial-page"><img id="editorial-image" src="/assets/portfolio/cena-desconhecidos.webp" alt="Cena fotográfica editorial da marca Fatos Desconhecidos" loading="lazy"><div class="editorial-page-caption"><span>FATOS / REFERÊNCIA EDITORIAL</span><span id="editorial-num">01 / 03</span></div></div><div class="editorial-text" aria-live="polite"><span id="editorial-caption">01 / ASSUNTO</span><h3 id="editorial-headline">O que merece ser contado?</h3><p id="editorial-description">Uma pergunta chama atenção. A pesquisa decide o que vale continuar lendo.</p></div></div></div>
- <div class="editorial-bottom shell"><span>PAUTA → CONTEXTO → PEÇA</span><a href="#laboratorio">Veja os desdobramentos em formatos ↗</a></div></section>
 <section class="ads-section shell section-block" id="laboratorio" aria-labelledby="ads-title">
- <div class="section-kicker"><span>05 / CAMPANHAS E MÍDIA PAGA</span><span>ESTRATÉGIA · CRIAÇÃO · OPERAÇÃO</span></div>
- <div class="work-heading ads-heading"><h2 id="ads-title">Uma mensagem.<br><em>Formatos diferentes.</em></h2><p>Explore como um conceito muda no feed, no vídeo, na busca e em publicidade contextual. A operação inclui configuração, veiculação e otimização; as peças abaixo são demonstrações conceituais, sem resultados inventados.</p></div>
- <div class="ads-lab"><div class="ads-left"><div class="ads-tablist" role="tablist" aria-label="Plataformas publicitárias">
- <button type="button" class="ads-tab is-active" id="tab-meta" role="tab" aria-controls="panel-meta" aria-selected="true" data-ad-tab="meta"><span class="ads-tab-icon">M</span><span><strong>Meta Ads</strong><small>Feed / carrossel</small></span><i>↗</i></button><button type="button" class="ads-tab" id="tab-tiktok" role="tab" aria-controls="panel-tiktok" aria-selected="false" tabindex="-1" data-ad-tab="tiktok"><span class="ads-tab-icon">♪</span><span><strong>TikTok Ads</strong><small>Roteiro 9:16</small></span><i>↗</i></button><button type="button" class="ads-tab" id="tab-google" role="tab" aria-controls="panel-google" aria-selected="false" tabindex="-1" data-ad-tab="google"><span class="ads-tab-icon">G</span><span><strong>Google Ads</strong><small>Busca / intenção</small></span><i>↗</i></button><button type="button" class="ads-tab" id="tab-chatgpt" role="tab" aria-controls="panel-chatgpt" aria-selected="false" tabindex="-1" data-ad-tab="chatgpt"><span class="ads-tab-icon">✳</span><span><strong>Contextual</strong><small>Conceito ilustrativo</small></span><i>↗</i></button>
- </div><div class="ads-metrics"><span>GESTÃO DE CAMPANHAS</span><div><b>Estratégia e público</b><b>Configuração e distribuição</b><b>Mensuração e melhoria</b></div><p>Demonstração de formatos, não campanha publicada nem relatório de mídia.</p></div></div>
- <div class="ads-right"><div class="ads-preview-head"><span id="ad-context">META / FEED 4:5</span><span>ESTUDO CONCEITUAL</span></div>
- <div class="ad-panel ad-panel-meta" id="panel-meta" role="tabpanel" aria-labelledby="tab-meta"><div class="mock-phone"><div class="mock-phone-header"><i>◉</i><b>fatosdesconhecidos</b><span>•••</span></div><div class="mock-phone-image"><img src="/assets/portfolio/cena-desconhecidos.webp" alt="Cena editorial original Fatos Desconhecidos" loading="lazy"><span>ESTUDO VISUAL</span></div><div class="mock-phone-controls">♡ &nbsp; ◇ &nbsp; ↗ <span>▣</span></div><div class="mock-phone-copy"><b>Uma pergunta pode começar uma história.</b><p>Do assunto à composição, com ritmo e contexto.</p></div></div><div class="mock-aside"><span>CRIATIVO / FEED</span><h3>O recorte certo muda a história.</h3><p>Um formato visual para contar a ideia. A rede Fatos é experiência editorial, não inventário oferecido.</p></div></div>
- <div class="ad-panel ad-panel-tiktok" id="panel-tiktok" role="tabpanel" aria-labelledby="tab-tiktok" hidden><div class="vertical-video"><img src="/assets/portfolio/campanha-nerd.webp" alt="Arte original da vertical Fatos Nerd para estudo de vídeo" loading="lazy"><div class="video-play">▶</div><div class="video-text">Toda descoberta<br>começa com uma pergunta.</div><div class="video-meta">ROTEIRO CONCEITUAL / 9:16</div></div><div class="mock-aside"><span>ROTEIRO / VÍDEO 9:16</span><h3>Um gancho. Três quadros.</h3><p>Gancho, descoberta e conclusão: uma demonstração navegável de ritmo e mensagem.</p><button type="button" class="play-story" data-play-story aria-pressed="false">Percorrer os quadros <span>▶</span></button></div></div>
- <div class="ad-panel ad-panel-google" id="panel-google" role="tabpanel" aria-labelledby="tab-google" hidden><div class="search-mock"><div class="search-mock-bar">criar site ou aplicativo com inteligência artificial <span>⌕</span></div><div class="search-result"><small>Publicidade · Exemplo conceitual</small><span>smiile / produtos digitais</span><h3>Crie sites, apps e experiências com IA</h3><p>Da ideia à interface: explore projetos, demonstrações e o que sua criação pode se tornar.</p><div>Exemplos · Como funciona · Explorar</div></div></div><div class="mock-aside"><span>SEARCH / INTENÇÃO</span><h3>O texto responde ao que a pessoa procura.</h3><p>O anúncio, a mensagem e a página seguem uma mesma intenção. Nenhuma veiculação é alegada.</p></div></div>
- <div class="ad-panel ad-panel-chatgpt" id="panel-chatgpt" role="tabpanel" aria-labelledby="tab-chatgpt" hidden><div class="context-mock"><span>REPRESENTAÇÃO CONCEITUAL</span><p class="context-question">Como apresentar melhor meu produto online?</p><div class="context-reply"><i>✳</i><p>Organize a mensagem, explique a diferença do produto e mostre uma interface que a pessoa consiga explorar.</p></div><div class="context-sponsored"><small>Exemplo ilustrativo de publicidade</small><h3>Transforme sua ideia em experiência digital</h3><p>Explore as demonstrações da smiile. Esta peça não é um anúncio oficial ou veiculado.</p></div></div><div class="mock-aside"><span>CONTEXTO / FORMATO</span><h3>Uma oferta no momento pertinente.</h3><p>Comunicação clara, proposição útil e continuação coerente com o interesse do usuário.</p></div></div>
- </div></div></section>
-<section class="immersive" id="experiencias" aria-labelledby="immersive-title"><div class="immersive-track" id="immersive-track"><div class="immersive-sticky"><div class="immersive-caption shell"><span>06 / EXPERIÊNCIAS DIGITAIS</span><span>DA MENSAGEM À INTERFACE</span></div><div class="immersive-frame" id="immersive-frame"><div class="immersive-image"><img src="/assets/smiile-landscape.webp" alt="Imagem real do projeto Casa Costa apresentada na smiile" loading="lazy"></div><div class="immersive-shade"></div><div class="immersive-content"><span>SMIILE · SITE / PREVIEW INTERATIVO</span><h2 id="immersive-title">O interesse vira<br><em>experiência.</em></h2><p>Conteúdo, direção visual e desenvolvimento no mesmo percurso. Explore os estados desta demonstração de interface da smiile.</p><a href="#sistemas" data-product-target="site">Explorar o site aqui ↗</a></div></div><div class="immersive-foot shell"><span>DE UM CONCEITO A UMA PÁGINA NAVEGÁVEL</span><span>SMIILE / 2026</span></div></div></div></section>
+  <div class="section-kicker"><span>03 / Campanhas · Estratégia, criação e mídia</span><span>Estudo de campanha · smiile</span></div>
+  <div class="work-heading ads-heading"><h2 id="ads-title">Da atenção<br>ao próximo passo.</h2><p>Uma campanha conecta mensagem, público e ação. Desenvolvo o conceito, os criativos e seus desdobramentos para que cada canal tenha uma função clara.</p></div>
+  <div class="ads-lab">
+    <div class="ads-left"><div class="ads-tablist" role="tablist" aria-label="Canais da campanha smiile"><button type="button" class="ads-tab is-active" id="tab-meta" role="tab" aria-controls="panel-meta" aria-selected="true" tabindex="0" data-ad-tab="meta"><span class="ads-tab-icon sa-brand sa-brand--meta"><img src="/assets/brands/meta-official-primary.webp" alt="" aria-hidden="true"></span><span><strong>Meta Ads</strong><small>Feed e carrossel</small></span></button><button type="button" class="ads-tab " id="tab-google" role="tab" aria-controls="panel-google" aria-selected="false" tabindex="-1" data-ad-tab="google"><span class="ads-tab-icon sa-brand sa-brand--google"><img src="/assets/brands/google-ads-official-reference.webp" alt="" aria-hidden="true"></span><span><strong>Google Ads</strong><small>Pesquisa</small></span></button><button type="button" class="ads-tab " id="tab-tiktok" role="tab" aria-controls="panel-tiktok" aria-selected="false" tabindex="-1" data-ad-tab="tiktok"><span class="ads-tab-icon sa-brand sa-brand--tiktok"><img src="/assets/brands/tiktok-official-icon-black-circle.png" alt="" aria-hidden="true"></span><span><strong>TikTok Ads</strong><small>Vídeo vertical</small></span></button></div><div class="ads-metrics"><span>UMA CAMPANHA · TRÊS LINGUAGENS</span><strong>Sua ideia ganha vida.</strong><p>Apresentar possibilidades de sites e aplicativos e levar o público a explorar os projetos.</p></div></div>
+    <div class="ads-right"><div class="ads-preview-head"><span id="ad-context">Criativo para Instagram · Carrossel</span><span>Estudo de campanha · smiile</span></div><div class="ad-panel ad-panel-meta" id="panel-meta" role="tabpanel" aria-labelledby="tab-meta" ><div class="sa-static-campaign"><img src="/assets/brands/smiile-campaign-editorial.svg" alt="Campanha smiile. Sua ideia ganha vida: site Casa Costa e aplicativo Trilha do Arco" loading="lazy"></div><div class="mock-aside"><span>Criativo para Instagram · Carrossel</span><h3>A proposta aparece<br>antes da explicação.</h3><p>Uma sequência apresenta a ideia, mostra a interface e convida a explorar o projeto.</p><a href="#sistemas" data-product-target="site">Explorar projetos ↗</a></div></div><div class="ad-panel ad-panel-google" id="panel-google" role="tabpanel" aria-labelledby="tab-google" hidden><div class="sa-static-campaign"><img src="/assets/brands/smiile-campaign-editorial.svg" alt="Campanha smiile. Sua ideia ganha vida: site Casa Costa e aplicativo Trilha do Arco" loading="lazy"></div><div class="mock-aside"><span>Criativo para pesquisa · Prévia de texto</span><h3>Responder<br>a uma intenção clara.</h3><p>A mensagem parte do que a pessoa procura e continua em uma página relacionada à oferta.</p><a href="#sistemas" data-product-target="site">Conhecer as experiências ↗</a></div></div><div class="ad-panel ad-panel-tiktok" id="panel-tiktok" role="tabpanel" aria-labelledby="tab-tiktok" hidden><div class="sa-static-campaign"><img src="/assets/brands/smiile-campaign-editorial.svg" alt="Campanha smiile. Sua ideia ganha vida: site Casa Costa e aplicativo Trilha do Arco" loading="lazy"></div><div class="mock-aside"><span>Roteiro visual · Vídeo 9:16</span><h3>Uma abertura direta.<br>Um ritmo para continuar.</h3><p>O conceito aparece em movimento: pergunta, experiência e convite, com texto pensado para a tela vertical.</p><a href="#sistemas" data-product-target="app">Conheça as experiências ↗</a></div></div></div>
+  </div>
+  <div class="sa-campaign-services"><div><h3>Criação e gestão de mídia</h3><p>O trabalho pode incluir planejamento, configuração, publicação e acompanhamento das campanhas, com ajustes orientados aos objetivos definidos para o projeto.</p></div><div><ul><li>Objetivo, público e plano de mídia</li><li>Criativos, textos e variações</li><li>Configuração e publicação</li><li>Mensuração, análise e otimização</li></ul><a href="#contato" data-contact-service="Campanhas e gestão de mídia">Conversar sobre uma campanha ↗</a></div></div>
+  <details class="sa-campaign-credit"><summary>Sobre este estudo</summary><p>Campanha conceitual criada para apresentar linguagem, formatos e direção de arte. Os criativos não são um relatório de veiculação.</p></details>
+</section>
+<div id="experiencias" class="digital-anchor" aria-hidden="true"></div>
 
-    <section class="systems-section" id="sistemas" aria-labelledby="systems-title"><div class="shell systems-grid"><div class="systems-copy"><span class="eyebrow">07 / APLICATIVOS E INTERAÇÕES</span><h2 id="systems-title">Uma interface<br><em>que responde.</em></h2><p>Escolha uma trilha, descubra o percurso e guarde seus favoritos. Uma interface completa para experimentar aqui.</p><div class="systems-notice">Trilha do Arco · projeto de interface da smiile</div></div><div class="systems-demo"><div class="system-head"><span>APP / TRILHA DO ARCO</span><span>SMIILE</span></div><div class="pd-static-preview"><img src="/assets/portfolio/recovered-smiile/landscape.webp" alt="Costa da Trilha do Arco" loading="lazy"><h3>O lado de fora te espera.</h3><p>Vila do Farol → Praia do Arco. Explore o caminho, salve a trilha e acompanhe o percurso.</p><a href="https://smiile-landing-preview.up.railway.app/#categorias" target="_blank" rel="noopener noreferrer">Conhecer o projeto ↗</a></div></div></div></section>
+<section class="systems-section" id="sistemas" aria-labelledby="systems-title"><div class="shell systems-grid"><div class="systems-copy"><span class="eyebrow">04 / smiile · Projeto próprio</span><h2 id="systems-title">A mensagem continua<br>na experiência.</h2><p>Também projeto e desenvolvo o que acontece depois do clique: páginas, aplicativos e fluxos que ajudam uma pessoa a encontrar, escolher ou resolver algo.</p><div class="systems-notice">Direção visual · UX/UI · Desenvolvimento</div></div><div class="systems-demo"><div class="pd-static-preview"><img src="/assets/portfolio/smiile-architecture-coast.webp" alt="Casa Costa: estudo de interface do projeto smiile" loading="lazy"><h3>Apresentar um lugar.<br>Conduzir uma escolha.</h3><p>Uma página de arquitetura conecta apresentação, galeria e agendamento. Explore o caminho entre conhecer o projeto e escolher uma visita.</p><a href="https://smiile-landing-preview.up.railway.app/#categorias" target="_blank" rel="noopener noreferrer">Conhecer a smiile ↗</a></div></div></div></section>
 <section id="categorias" class="project-paths-section" aria-labelledby="project-paths-title">
       <div id="project-paths" class="shell"></div>
       <noscript><h2>O próximo projeto começa aqui.</h2><p>Redação, campanhas, sites e aplicativos.</p><a href="#contato">Conversar sobre um projeto</a></noscript>
@@ -169,13 +168,13 @@
 
     <section class="contact-section" id="contato" aria-labelledby="contact-title">
  <div class="shell contact-grid">
-  <div class="contact-intro"><span class="eyebrow">08 / VAMOS CRIAR O PRÓXIMO</span><h2 id="contact-title">O que sua marca<br>precisa <em>fazer acontecer?</em></h2><p>Me conte o contexto, o que precisa ser entregue e o prazo que você tem em mente. Podemos começar por uma demanda específica.</p><div class="contact-person"><span class="contact-monogram" aria-hidden="true">S<span>↗</span></span><div><strong>Smile N</strong><span>Diretor criativo · ideia ↗ execução.</span></div></div><div class="contact-direct"><a href="https://wa.me/5511985568208" target="_blank" rel="noopener noreferrer" data-contact-direct="whatsapp">Conversar pelo WhatsApp <span aria-hidden="true">↗</span><small>+55 11 98556-8208</small></a><a href="mailto:smillepls@gmail.com" data-contact-direct="email">smillepls@gmail.com <span aria-hidden="true">↗</span></a></div><div class="contact-formats"><span>PROJETO FECHADO</span><span>EXECUÇÃO INTEGRADA</span><span>PARCERIA RECORRENTE</span></div></div>
-  <form id="brief-form" class="contact-form"><div class="brief-heading"><span class="eyebrow">UM PONTO DE PARTIDA</span><h3>Vamos dar contexto<br>à sua ideia.</h3></div><label for="service">Por onde começamos?</label><select id="service" required><option value="">Escolha uma necessidade</option><option>Redação e conteúdo</option><option>Campanhas e criativos</option><option>Sites e experiências digitais</option><option>Sistemas e automações</option><option>Projeto integrado</option></select><label for="brief">Conte um pouco sobre o projeto</label><textarea id="brief" rows="4" minlength="8" maxlength="3000" placeholder="O que sua empresa faz, o que você precisa criar e o que já existe hoje?" required></textarea><button type="submit" class="form-submit" disabled>Continuar no WhatsApp <span aria-hidden="true">↗</span></button><p id="form-status" role="status">Seu resumo abre no WhatsApp. Você revisa e confirma o envio por lá.</p><noscript><p>Use o WhatsApp ou o e-mail ao lado para conversar diretamente com Smile N.</p></noscript></form>
+  <div class="contact-intro"><span class="eyebrow">Vamos conversar</span><h2 id="contact-title">Qual é o próximo <br><em>projeto da sua marca?</em></h2><p>Me conte o que precisa sair do papel, o que já existe e o prazo que você tem em mente.</p><div class="contact-person"><span class="contact-monogram" aria-hidden="true">S<span>↗</span></span><div><strong>Smile N</strong><span>Diretor criativo · ideia ↗ execução.</span></div></div><div class="contact-direct"><a href="https://wa.me/5511985568208" target="_blank" rel="noopener noreferrer" data-contact-direct="whatsapp">Conversar pelo WhatsApp <span aria-hidden="true">↗</span><small>+55 11 98556-8208</small></a><a href="mailto:smillepls@gmail.com" data-contact-direct="email">smillepls@gmail.com <span aria-hidden="true">↗</span></a></div><div class="contact-formats"><span>PROJETO PONTUAL</span><span>EXECUÇÃO INTEGRADA</span><span>COLABORAÇÃO RECORRENTE</span></div></div>
+  <form id="brief-form" class="contact-form"><div class="brief-heading"><span class="eyebrow">UM PONTO DE PARTIDA</span><h3>Comece pelo contexto.</h3></div><label for="service">O que você precisa criar?</label><select id="service" required><option value="">Escolha uma frente de trabalho</option><option>Direção criativa e conteúdo</option><option>Campanhas e gestão de mídia</option><option>Sites, apps e sistemas</option><option>Projeto integrado</option><option>Ainda estou definindo</option></select><label for="brief">Conte um pouco sobre o projeto</label><textarea id="brief" rows="4" minlength="8" maxlength="3000" placeholder="O que sua marca faz? O que você precisa entregar? Existe um prazo?" required></textarea><button type="submit" class="form-submit" disabled>Continuar no WhatsApp <span aria-hidden="true">↗</span></button><p id="form-status" role="status">Você revisa a mensagem e confirma o envio no WhatsApp.</p><noscript><p>Use o WhatsApp ou o e-mail ao lado para conversar diretamente com Smile N.</p></noscript></form>
  </div>
  <footer class="shell site-footer"><a class="wordmark" href="#inicio">ideia<span class="wordmark-arrow" aria-hidden="true">↗</span>execução.</a><span>SMILE N · DIREÇÃO CRIATIVA / 2026</span><div><a href="#trabalhos">Projetos</a><a href="#inicio">Voltar ao topo ↑</a></div></footer>
 </section>
   </main>
 
-  <dialog class="case-dialog" id="case-dialog" aria-labelledby="case-dialog-title"><div class="dialog-layout"><div class="dialog-image" id="dialog-image"></div><div class="dialog-content"><div class="dialog-toolbar"><span>ESTUDO DE CASO / PORTFÓLIO</span><button type="button" id="dialog-close" aria-label="Fechar estudo de caso">✕</button></div><span class="dialog-kicker" id="dialog-kicker"></span><h2 id="case-dialog-title"></h2><p id="dialog-description"></p><div class="dialog-proof"><span>CONTEXTO E EVIDÊNCIAS</span><p id="dialog-proof"></p></div><a id="dialog-source" target="_blank" rel="noopener noreferrer" href="#trabalhos">Abrir material de referência ↗</a></div></div></dialog>
+  <dialog class="case-dialog" id="case-dialog" aria-labelledby="case-dialog-title"><div class="dialog-layout"><div class="dialog-image" id="dialog-image"></div><div class="dialog-content"><div class="dialog-toolbar"><span>SOBRE O TRABALHO</span><button type="button" id="dialog-close" aria-label="Fechar estudo de caso">✕</button></div><span class="dialog-kicker" id="dialog-kicker"></span><h2 id="case-dialog-title"></h2><p id="dialog-description"></p><div class="dialog-proof"><span>O QUE EXPLORAR</span><p id="dialog-proof"></p></div><a id="dialog-source" target="_blank" rel="noopener noreferrer" href="#trabalhos">Abrir material de referência ↗</a></div></div></dialog>
 </body>
 </html>

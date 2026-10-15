@@ -29,12 +29,12 @@ try{
    await page.waitForSelector('html[data-rx-showcase="ready"]',{state:'attached'});
    check('Old hash does not mount the studio',await page.locator('#estudio-interativo,.ks-section').count()===0);
    check('No public link targets the hidden studio',await page.locator('a[href*="#estudio-interativo"]').count()===0);
-   check('Hero and all four work categories remain',await page.locator('[data-portfolio-badges]').count()===1&&await page.locator('[data-work-card]').count()===4);
-   await page.locator('[data-case="video"]').click();
-   const link=page.locator('#case-dialog .case-explore[href="#narrativa-visual"]');
-   check('Fourth case points to the active composition',await link.count()>0);
+   check('Hero and all three work categories remain',await page.locator('[data-portfolio-badges]').count()===1&&await page.locator('[data-work-card]').count()===3);
+   await page.locator('[data-case="smiile"]').click();
+   const link=page.locator('#case-dialog .case-explore[href="#sistemas"]');
+   check('Digital case points to the active workbench',await link.count()>0);
    await link.click();
-   check('Composition opens and the dialog closes',await page.locator('#narrativa-visual').isVisible()&&!await page.locator('#case-dialog').evaluate(dialog=>dialog.open));
+   check('Workbench opens and the dialog closes',await page.locator('#sistemas').isVisible()&&!await page.locator('#case-dialog').evaluate(dialog=>dialog.open));
    check('No archived scripts, styles or video are requested',archivedRequests.length===0);
    check('No page errors',errors.length===0);
   }catch(error){row.failure=String(error);throw error;}

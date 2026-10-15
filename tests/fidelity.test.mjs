@@ -13,13 +13,13 @@ test('The same physical smiile device is reused for editorial, social and cinema
 });
 test('Visual proof uses local photographic assets from current projects',()=>{
  const h=read('index.html'),exp=read('public/assets/showcase/experiences.js');
- assert(h.includes('/assets/portfolio/cena-desconhecidos.webp'));
- assert(h.includes('/assets/portfolio/smiile-architecture-coast.webp'));
+ assert(h.includes('/assets/portfolio/recovered-fatos/post-desconhecidos-600.webp'));
+ assert(h.includes('/assets/portfolio/recovered-smiile/landscape.webp'));
  assert(!/SOTA CI|final_final|LINHA/i.test(h+exp));
 });
 test('Project services are navigable and do not send data',()=>{
  const s=read('public/assets/project-paths.js');
- for(const marker of ['role','data-path-tab','aria-selected','ArrowRight','ArrowLeft','href','path-contact'])assert(s.includes(marker),marker);
+ for(const marker of ['<details','<summary','data-service-scope','href="#contato"','path-contact','data-service-id','select.dispatchEvent'])assert(s.includes(marker),marker);
  assert(!s.includes("XMLHttpRequest")&&!s.includes("window.open")&&!s.includes("fetch("),"Project exploration must not send visitors data");
 });
 test('No fixed contact CTA obscures reading on mobile',()=>{

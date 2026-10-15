@@ -21,11 +21,14 @@ try{
  browser=await chromium.launch({headless:true,executablePath:process.env.CHROMIUM_PATH,args:['--no-sandbox','--disable-dev-shm-usage','--use-gl=angle','--use-angle=swiftshader','--enable-unsafe-swiftshader']});
  const page=await browser.newPage({viewport:{width:870,height:600},deviceScaleFactor:2});
  await page.route('**/assets/poster-renderer.js',route=>route.fulfill({body:bundle.outputFiles[0].text,contentType:'text/javascript'}));
- await page.route(base+'/poster-render',route=>route.fulfill({contentType:'text/html',body:'<!doctype html><link rel="stylesheet" href="/assets/portfolio.css"><style>html,body{margin:0;width:100%;height:100%;background:transparent}canvas{display:block;width:100vw;height:100vh}</style><canvas></canvas>'}));
+ await page.route(base+'/poster-render',route=>route.fulfill({contentType:'text/html',body:'<!doctype html><link rel="stylesheet" href="/assets/portfolio.css"><link rel="stylesheet" href="/assets/portfolio-r6.css"><style>html,body{margin:0;width:100%;height:100%;background:transparent}canvas{display:block;width:100vw;height:100vh}</style><canvas></canvas>'}));
  await page.goto(base+'/poster-render');
  await page.evaluate(async()=>{
+  await Promise.all([
+   document.fonts.load('650 64px "Inter Variable"'),
+   document.fonts.load('italic 450 96px Newsreader'),
+  ]);
   await document.fonts.ready;
-  await document.fonts.load('600 32px Inter');
   const {BadgeScene}=await import('/assets/poster-renderer.js');
   window.scene=new BadgeScene(document.querySelector('canvas'),{
    enter:false,

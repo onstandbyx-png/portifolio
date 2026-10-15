@@ -128,8 +128,8 @@ function cardMesh(art: CardArt, edge: string, renderer: WebGLRenderer) {
     geometry.setAttribute("uv", new BufferAttribute(uv, 2));
     geometry.translate(0, 0, back ? -CARD.d / 2 - 0.0005 : CARD.d / 2 + 0.0005);
     const mesh = new Mesh(geometry, new MeshPhysicalMaterial({
-      map: texture(canvas, renderer), roughness: 0.66,
-      clearcoat: 0.16, clearcoatRoughness: 0.48,
+      map: texture(canvas, renderer), roughness: 0.72,
+      clearcoat: 0.22, clearcoatRoughness: 0.52,
     }));
     mesh.castShadow = true;
     mesh.receiveShadow = true;
@@ -354,6 +354,8 @@ export class BadgeScene {
   private pendingPointer: { event: PointerEvent; index: 0 | 1; local: Vector3; x: number; y: number } | null = null;
   private readonly flipAngles = [0, 0];
   private readonly flipTargets = [0, 0];
+  private readonly sheen = [0, 0];
+  private readonly sheenTargets = [0, 0];
   private focusedCard: 0 | 1 = 0;
   private readonly dragLocal = new Vector3();
   private readonly dragPointerStart = new Vector3();
@@ -436,7 +438,7 @@ export class BadgeScene {
     this.cards.forEach((card, i) => card.add(this.cardArt![i]!));
     this.rigRoots.forEach((root, i) => root.add(this.cards![i]!));
 
-    const metal = new MeshStandardMaterial({ color: "#6e727b", metalness: 0.78, roughness: 0.34, envMapIntensity: 1.5 });
+    const metal = new MeshStandardMaterial({ color: "#9baba3", metalness: 0.72, roughness: 0.38, envMapIntensity: 1.5 });
     const bright = new MeshStandardMaterial({ color: "#e4e6ea", metalness: 1, roughness: 0.25, envMapIntensity: 1.6 });
     const brushedTexture = texture(brushed(), renderer);
     this.textures.push(brushedTexture);
@@ -470,13 +472,13 @@ export class BadgeScene {
     this.crimps[1] = this.crimps[0].clone(true);
     this.hooks[1] = this.hooks[0].clone(true);
     this.straps = [
-      [new StrapMesh(fabric, SHORT_STRAP.width), new StrapMesh(fabric, SHORT_STRAP.width)],
-      [new StrapMesh(fabric, SHORT_STRAP.width), new StrapMesh(fabric, SHORT_STRAP.width)],
+      [new StrapMesh(fabric, SHORT_STRAP.width * .58), new StrapMesh(fabric, SHORT_STRAP.width * .58)],
+      [new StrapMesh(fabric, SHORT_STRAP.width * .58), new StrapMesh(fabric, SHORT_STRAP.width * .58)],
     ];
     this.rigRoots.forEach((root, i) => {
       const scale = this.rigs[i]!.suspensionScale;
-      this.crimps[i]!.scale.setScalar(scale);
-      this.hooks[i]!.scale.setScalar(scale);
+      this.crimps[i]!.scale.set(scale * .76, scale, scale);
+      this.hooks[i]!.scale.set(scale * .84, scale, scale);
       root.add(this.crimps[i]!, this.hooks[i]!, this.straps![i]![0].mesh, this.straps![i]![1].mesh);
     });
 
@@ -519,6 +521,8 @@ export class BadgeScene {
     else {
       this.releasePointer();
       this.sleep();
+      this.sheen.fill(0);
+      this.sheenTargets.fill(0);
       this.flipTargets.forEach((target, i) => { this.flipAngles[i] = target; });
       // A paused reading view rests frontally instead of freezing mid-drag.
       if (this.initialized) this.rest();
@@ -629,6 +633,12 @@ export class BadgeScene {
     this.last = now;
     this.rigs.forEach(rig => rig.advance(dt));
     let turning = false;
+    let highlighting = false;
+    this.sheenTargets.forEach((target, index) => {
+      const difference = target - this.sheen[index]!;
+      this.sheen[index] = Math.abs(difference) < .005 ? target : this.sheen[index]! + difference * (1 - Math.exp(-dt * 12));
+      highlighting ||= Math.abs(difference) >= .005;
+    });
     // A grabbed card keeps its inspection pose until release. No animation
     // changes the grabbed point underneath an active pointer.
     if (this.dragging < 0 && !this.pendingPointer) this.flipTargets.forEach((target, i) => {
@@ -638,7 +648,7 @@ export class BadgeScene {
       turning ||= Math.abs(turn) >= .001;
     });
     this.draw();
-    if (this.rigs.some(rig => rig.moving) || this.dragging >= 0 || turning) this.frame = requestAnimationFrame(this.tick);
+    if (this.rigs.some(rig => rig.moving) || this.dragging >= 0 || turning || highlighting) this.frame = requestAnimationFrame(this.tick);
     else {
       this.running = false;
       this.options.onRest?.();
@@ -689,6 +699,9 @@ export class BadgeScene {
       root.position.x = this.layout === "pair" ? (index === 0 ? -1.01 : 1.01) : 0;
       toThree(rig.cards[0], this.cards![index]!);
       const art = this.cardArt![index]!;
+      art.children.forEach(child => {
+        if (child instanceof Mesh && child.material instanceof MeshPhysicalMaterial) child.material.clearcoat = .22 + this.sheen[index]! * .22;
+      });
       art.rotation.y = this.flipAngles[index]!;
       // Lift through the turn so the printed edge never crosses the shadow wall.
       art.position.z = Math.sin(this.flipAngles[index]!) * .46;
@@ -793,7 +806,12 @@ export class BadgeScene {
       }
       return;
     }
-    if (event.pointerType === "mouse") this.canvas.style.cursor = this.pick(event) ? "grab" : "";
+    if (event.pointerType === "mouse") {
+      const hit = this.pick(event);
+      this.canvas.style.cursor = hit ? "grab" : "";
+      this.sheenTargets.forEach((_, index) => { this.sheenTargets[index] = hit?.index === index ? 1 : 0; });
+      this.wake();
+    }
   };
   private onUp = (event: PointerEvent) => {
     const pending = this.pendingPointer;
@@ -809,7 +827,7 @@ export class BadgeScene {
     // Selection belongs to pointerdown, even if another face passes underneath
     // during the gesture. A tap never creates a drag joint or applies force.
     if (pending.index !== this.focusedCard) this.setSelectedCard(pending.index);
-    else this.setCardFlipped(pending.index, this.flipTargets[pending.index] === 0);
+    this.setCardFlipped(pending.index, this.flipTargets[pending.index] === 0);
   };
   private releasePointer() {
     this.pendingPointer = null;
@@ -824,6 +842,8 @@ export class BadgeScene {
     if (this.dragging < 0) {
       this.pendingPointer = null;
       this.canvas.style.cursor = "";
+      this.sheenTargets.fill(0);
+      this.wake();
     }
   };
 }
