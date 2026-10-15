@@ -26,6 +26,8 @@ try{
    check('All section modules initialized',await page.evaluate(()=>['smWorks','smEditorial','smExperience','smAds','smSystems','smContact','smNavigation'].every(k=>document.documentElement.dataset[k]==='ready')));
    check('Existing badge hero retained',await page.locator('[data-portfolio-badges]').count()===1);
    await page.waitForSelector('html[data-rx-showcase="ready"]');
+   await page.waitForSelector('html[data-pf-fidelity="v2"]');
+   check('Same orange iPhone shell reused across stages',await page.locator('#narrativa-visual .rx-iphone.pf-matched-phone').count()===1&&await page.locator('#editorial .pf-editorial-device .rx-iphone-inner').count()===1);
    check('Immersive collection, scroll film and social mock mounted',await page.locator('#colecao .rx-deck-card').count()===4&&await page.locator('#narrativa-visual .rx-film-phone').count()===1&&await page.locator('#panel-meta .rx-iphone').count()===1);
    await page.locator('#colecao').scrollIntoViewIfNeeded();
    await page.locator('[data-rx-next]').click();
@@ -56,7 +58,11 @@ try{
    await page.locator('[data-case="fatos"]').click();await page.waitForTimeout(700);
    check('Case dialog opens',await page.locator('#case-dialog').evaluate(d=>d.open));
    const thumbs=page.locator('.sm-case-thumbs button');
-   if(await thumbs.count()){await thumbs.nth(1).click();check('Original Fatos page selectable',await page.locator('#dialog-image img').getAttribute('src')==='/assets/fatos-roteiro.webp');}
+   if(await thumbs.count()){
+     await thumbs.nth(1).click();
+     await page.waitForFunction(()=>document.querySelector('#dialog-image img')?.getAttribute('src')==='/assets/showcase/fatos-editorial-scene.webp');
+     check('Editorial case selection preserved with new artwork',await thumbs.nth(1).getAttribute('aria-pressed')==='true'&&await page.locator('#dialog-image img').getAttribute('src')==='/assets/showcase/fatos-editorial-scene.webp');
+   }
    await page.locator('#dialog-image img').evaluate(im=>im.decode().catch(()=>{}));await page.waitForTimeout(750);
    await page.screenshot({path:`qa/case-${width}.png`});
    await page.locator('#dialog-close').click();
@@ -64,6 +70,7 @@ try{
    check('Dialog closes after the transition',!(await page.locator('#case-dialog').evaluate(d=>d.open)));
    await page.locator('.editorial-step').nth(1).click();await page.waitForTimeout(1000);
    check('Editorial chapter changes',await page.locator('.sm-story-count').innerText()==='02 / 03');
+   check('Chapter synchronizes inside the matched iPhone',await page.locator('[data-pf-count]').innerText()==='02 / 03');
    await page.screenshot({path:`qa/editorial-${width}.png`});
    await page.locator('[data-device="mobile"]').click();await page.waitForTimeout(700);
    check('Device changes to mobile',await page.locator('.sm-device').getAttribute('data-mode')==='mobile');
@@ -81,7 +88,8 @@ try{
    await page.locator('[data-rx-social-next]').click();await page.waitForTimeout(400);
    check('Social carousel changes frame',await page.locator('.rx-ig-count').innerText()==='2/3');
    await page.locator('[data-rx-social="0"]').click();
-   check('Social carousel returns to original Fatos material',await page.locator('.rx-ig-photo img').getAttribute('src')==='/assets/fatos-desconhecidos.webp');
+   await page.waitForFunction(()=>document.querySelector('.rx-ig-photo img')?.getAttribute('src')==='/assets/showcase/fatos-editorial-scene.webp');
+   check('Social carousel uses new authored artwork',await page.locator('.rx-ig-photo img').getAttribute('src')==='/assets/showcase/fatos-editorial-scene.webp');
    await page.screenshot({path:'qa/fatos-social-'+width+'.png'});
 
    for(const channel of ['meta','tiktok']){
@@ -89,7 +97,7 @@ try{
     const image=page.locator(`#panel-${channel} img`).first();
     const decoded=await image.evaluate(async im=>{im.loading='eager';try{await im.decode();return im.naturalWidth>0}catch{return false}});
     check(`${channel}: local reference image decoded`,decoded);
-    check(`${channel}: independent of external preview`,(await image.getAttribute('src'))===({meta:'/assets/fatos-desconhecidos.webp',tiktok:'/assets/fatos-narrativa-detail.webp'})[channel]);
+    check(`${channel}: new image independent of PDFs and external preview`,(await image.getAttribute('src'))==='/assets/showcase/fatos-editorial-scene.webp');
    }
    await page.locator('[data-frame="2"]').click();await page.waitForTimeout(750);
    check('Storyboard frame selected',await page.locator('.vertical-video').getAttribute('data-frame')==='2');
