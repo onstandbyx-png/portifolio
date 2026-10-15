@@ -111,3 +111,54 @@
 @media(max-width:370px),(max-height:680px){.sa-tt-top{gap:8px;left:10px;right:10px;font-size:10px}.sa-tt-top>svg{width:17px;height:17px}.sa-tt-top>svg:last-child{width:15px;height:15px}.sa-tt-rail{right:10px;gap:12px;bottom:92px}.sa-tt-rail>svg{width:21px;height:21px}.sa-tt-rail>svg:nth-child(3){width:22px;height:22px}.sa-tt-rail>svg:nth-child(4){width:18px;height:21px}.sa-tt-avatar>img{width:29px;height:29px}.sa-tt-record{width:29px;height:29px}.sa-tt-record>img{width:19px;height:19px}.sa-tt-copy{left:14px;right:49px;bottom:115px}.sa-tt-copy>h3{font-size:20px;line-height:1.1}.sa-tt-copy>span{font-size:11px;margin-bottom:8px}.sa-tt-info{left:12px;right:45px;bottom:60px}.sa-tt-info>b{font-size:10px;margin-bottom:6px}.sa-tt-info>p{font-size:9px;margin-bottom:7px}.sa-tt-info>span{font-size:7px;gap:4px}.sa-tt-info>span svg{width:11px;height:11px}.sa-tt-nav{height:44px;padding-inline:7px;gap:3px}.sa-tt-nav>span svg{width:15px;height:15px}.sa-tt-nav small{font-size:5.5px}.sa-tt-nav>.sa-tt-create{width:25px;height:18px;margin-inline:3px}.sa-tt-progress{bottom:44px}.sa-tt-media{bottom:44px}.sa-ig-topbar{padding-inline:10px;min-height:29px}.sa-ig-topbar>strong{font-size:13px}.sa-ig-profile{padding:6px 9px;gap:6px;min-height:39px}.sa-ig-profile>img{width:25px;height:25px}.sa-ig-profile b{font-size:9px}.sa-ig-profile small{font-size:8px}.sa-ig-profile svg{width:14px;height:14px}#panel-meta .sa-social .rx-ig-overlay{left:13px;right:13px;bottom:17px}#panel-meta .sa-social .rx-ig-overlay h3{font-size:20px}#panel-meta .sa-social .rx-ig-overlay>small{font-size:6px;margin-bottom:8px}.sa-ig-dots{height:16px}.sa-ig-actions{gap:10px;height:29px;padding:1px 10px 4px}.sa-ig-actions>svg{width:18px;height:18px}.sa-ig-actions>span svg{width:16px;height:18px}.sa-ig-caption{padding:4px 10px 0;font-size:9px;min-height:34px;max-height:43px}.sa-story-aside h3{font-size:31px!important}}
 @media(prefers-reduced-motion:reduce){.sa-panel *{transition:none!important;animation:none!important}.sa-panel button:active{transform:none}}
 body.is-paused .sa-panel *{transition:none!important;animation:none!important}
+
+/* R5: actual CSS-pixel type, with editorial copy reflowed in exploration. */
+.sa-story-aside>.df-explore-trigger{margin:0 0 24px;font-size:14px}
+.sa-frame-label,.sa-play-action{font-size:13px}
+.sa-play-copy>.sa-frame-label{font-size:11px}
+.sa-story-aside .sa-story-detail{font-size:15px;line-height:1.65}
+.sa-story-aside .sa-story-feedback{font-size:13px;line-height:1.55;color:#5f7255}
+.sa-story-aside>span{font-size:11px;color:#53674b}
+.sa-sequence>button>span{font-size:14px}
+.sa-sequence small{font-size:11px}
+.sa-tt-nav small{font-size:9px;line-height:1.1;white-space:normal;text-align:center}
+.sa-tt-nav>span{min-width:0}
+.sa-ig-profile b{font-size:11px}
+.sa-ig-profile small,.sa-ig-caption{font-size:11px}
+.sa-tt-info>b{font-size:12px}
+.sa-tt-info>p{font-size:11px}
+.sa-tt-copy>span>small{font-size:8px}
+#panel-meta.sa-panel.is-exploring,#panel-tiktok.sa-panel.is-exploring{grid-template-columns:minmax(0,400px) minmax(250px,1fr);justify-content:center;align-items:start;gap:32px;padding:16px}
+.is-exploring .sa-social{max-width:400px!important}
+.is-exploring .sa-frame-controls{max-width:400px}
+.is-exploring .sa-story-aside{max-width:420px;padding-block:24px;position:sticky;top:12px}
+.is-exploring .sa-ig-topbar>strong{font-size:18px}
+.is-exploring .sa-ig-topbar>span{font-size:12px}
+.is-exploring .sa-ig-profile{min-height:64px;gap:10px;padding:10px 14px}
+.is-exploring .sa-ig-profile>img{width:34px;height:34px}
+.is-exploring .sa-ig-profile b{font-size:14px}
+.is-exploring .sa-ig-profile small{font-size:12px}
+.is-exploring .sa-ig-caption{font-size:14px;line-height:1.45;min-height:0;max-height:none;padding:10px 14px 4px}
+#panel-meta.is-exploring .sa-social .rx-ig-overlay>small{font-size:10px;letter-spacing:.06em}
+#panel-meta.is-exploring .sa-social .rx-ig-overlay h3{font-size:clamp(23px,3.5vw,31px);line-height:1.1}
+#panel-meta.is-exploring .sa-social .rx-ig-count{font-size:12px}
+.is-exploring .sa-tiktok{display:grid;grid-template-columns:minmax(0,1fr);grid-template-rows:40px minmax(180px,1fr) auto 54px}
+.is-exploring .sa-tt-top{position:relative;inset:auto;grid-row:1;grid-column:1;gap:10px;margin:0 14px;font-size:13px}
+.is-exploring .sa-tt-media{position:relative;inset:auto;grid-row:2;grid-column:1;min-height:0}
+.is-exploring .sa-tt-copy{left:16px;right:58px;bottom:20px}
+.is-exploring .sa-tt-copy>span{font-size:16px}
+.is-exploring .sa-tt-copy>span>small{font-size:9px}
+.is-exploring .sa-tt-copy>h3{font-size:clamp(23px,3.5vw,31px);line-height:1.1}
+.is-exploring .sa-tt-rail{position:relative;inset:auto;grid-row:2;grid-column:1;justify-self:end;align-self:end;margin:0 12px 18px 0;gap:15px}
+.is-exploring .sa-tt-info{position:relative;inset:auto;grid-row:3;grid-column:1;padding:14px 14px 11px;background:#090d12}
+.is-exploring .sa-tt-info>b{font-size:14px;margin-bottom:7px}
+.is-exploring .sa-tt-info>p{font-size:14px;line-height:1.4;margin-bottom:7px}
+.is-exploring .sa-tt-info>span{font-size:11px;line-height:1.4}
+.is-exploring .sa-tt-nav{position:relative;inset:auto;grid-row:4;grid-column:1;height:54px;padding-inline:8px}
+.is-exploring .sa-tt-nav small{font-size:10px}
+.is-exploring .sa-tt-progress{bottom:54px}
+@media(max-width:760px){
+ #panel-meta.sa-panel.is-exploring,#panel-tiktok.sa-panel.is-exploring{grid-template-columns:minmax(0,1fr);gap:26px;padding:12px 6px 24px}
+ .is-exploring .sa-story-aside{position:static;padding:0 8px!important}
+ .is-exploring .sa-frame-controls{gap:10px}
+}

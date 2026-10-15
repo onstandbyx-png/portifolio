@@ -3,14 +3,22 @@
 import {clamp,createMotion} from '../sections/motion.js';
 
 export function createChapterState(count,initial=0){
- let value=initial,held=false;
+ let progress=clamp(initial,0,count-1),held=false,settled=false;
  return {
-  get value(){return value},get mode(){return 'scroll'},get held(){return held},
-  scroll(next){if(!held)value=clamp(next,0,count-1);return value},
-  choose(next){value=clamp(next,0,count-1);return value},
-  resume(next){if(!held)value=clamp(next,0,count-1);return value},
-  pause(next){held=Boolean(next);return value}
+  get value(){return held||settled?Math.round(progress):progress},get mode(){return 'scroll'},get held(){return held},
+  scroll(next){next=clamp(next,0,count-1);if(Math.abs(next-progress)>.0001)settled=false;progress=next;return this.value},
+  choose(next){progress=clamp(next,0,count-1);settled=false;return this.value},
+  resume(next){return this.scroll(next)},
+  pause(next){next=Boolean(next);if(next!==held)settled=true;held=next;return this.value},
+  settle(){settled=true;return this.value}
  };
+}
+
+// Seventy percent of each chapter interval belongs to a still reading pose.
+// The remaining interval is a reversible passage, shared by both compositions.
+export function readingProgress(cursor){
+ const whole=Math.floor(cursor),phase=clamp((cursor-whole-.35)/.3);
+ return whole+phase*phase*(3-2*phase);
 }
 
 let viewportProbe;
@@ -20,8 +28,7 @@ export function stableViewportHeight(){
 }
 
 export function galleryPose(index,cursor,mobile=false){
- const whole=Math.floor(cursor),phase=clamp((cursor-whole-.25)/.5),eased=phase*phase*(3-2*phase);
- const distance=index-(whole+eased),amount=clamp(Math.abs(distance)),sign=Math.sign(distance);
+ const distance=index-readingProgress(cursor),amount=clamp(Math.abs(distance)),sign=Math.sign(distance);
  return {y:distance*(mobile?69:73),angle:-sign*amount*68,scale:1-.12*amount,
   z:-amount*(mobile?100:180),opacity:clamp(1-Math.max(0,Math.abs(distance)-.8)*2.5),active:Math.round(cursor)===index};
 }
@@ -44,7 +51,7 @@ export function mountScrollGallery(){
  let visible=false,frame=0,lastIndex=-1,natural=false;
  const header=()=>mobile.matches?64:76;
  function render(){
-  const index=Math.round(state.value);shell.dataset.mode=natural?'flow':'scroll';
+  const index=Math.round(state.value);shell.dataset.mode=natural?'flow':'scroll';shell.dataset.paused=String(motion.paused());
   planes.forEach((plane,i)=>{
    const pose=galleryPose(i,state.value,mobile.matches);
    plane.style.setProperty('--rg-y',`${pose.y}%`);plane.style.setProperty('--rg-angle',`${pose.angle}deg`);
@@ -60,7 +67,7 @@ export function mountScrollGallery(){
   shell.querySelector('[data-rg-prev]').disabled=index===0;
   shell.querySelector('[data-rg-next]').disabled=index===cards.length-1;
   if(index!==lastIndex){lastIndex=index;count.textContent=String(index+1).padStart(2,'0')+' / '+String(cards.length).padStart(2,'0');name.textContent=cards[index].querySelector('.tile-caption small')?.textContent||'Trabalho selecionado'}
-  const message=natural?'Os trabalhos continuam abaixo':motion.paused()?'Movimento pausado · use as setas':'Role para continuar · ou use as setas';
+  const message=natural?'Os trabalhos continuam abaixo':motion.paused()?'Sem animação · role ou use as setas':'Role para continuar · ou use as setas';
   if(status.textContent!==message)status.textContent=message;
  }
  function update(){
@@ -85,6 +92,9 @@ export function mountScrollGallery(){
  }
  shell.querySelector('[data-rg-prev]').addEventListener('click',()=>navigate(Math.round(state.value)-1));
  shell.querySelector('[data-rg-next]').addEventListener('click',()=>navigate(Math.round(state.value)+1));
+ // Settle only after activation, never between pointer-down and pointer-up.
+ // A subsequent native scroll immediately returns ownership to its timeline.
+ gallery.addEventListener('click',event=>{if(event.target.closest('.sm-work-peek')){state.settle();render()}});
  // No pointerdown/focusin handler: a card action must never change its pose
  // between mouse-down and mouse-up, and a vertical gesture always stays native.
  new IntersectionObserver(([entry])=>{visible=entry.isIntersecting;if(visible)request()},{rootMargin:'100px'}).observe(shell);

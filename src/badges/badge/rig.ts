@@ -1,4 +1,8 @@
 /*
+ * The portfolio uses two independent `single` rigs: one card per short
+ * suspension, frontal rest and bounded manipulation. The original coupled
+ * rig below remains available for the tracked reference and its regressions.
+ *
  * The badge rig: two straps in a V, a metal crimp, a swivel snap hook and two
  * cards hanging from the same pin. Units are card widths of 1.6, y up, the
  * resting front card centred near the origin and the camera on +z.
@@ -36,6 +40,8 @@ export const CRIMP = { w: 0.285, h: 0.34, d: 0.08, y: 1.835, loop: -0.31 };
 /** Swivel snap hook: eye bar joined to the crimp loop at `top`, bar through the slots at `pin`. */
 export const HOOK = { y: 1.345, top: 0.18, pin: -0.415 };
 /** Straps enter the crimp almost on top of each other, one slightly in front. */
+export const SHORT_SUSPENSION_SCALE = 0.42;
+export const SHORT_STRAP = { anchorX: 0.045, anchorY: 1.62, points: 4, width: 0.12 };
 export const STRAP = { anchorX: 0.71, anchorY: 4.6, attachX: 0.035, attachZ: 0.015, points: 7, width: 0.25, thickness: 0.014 };
 
 export type RigParams = {
@@ -143,6 +149,8 @@ const tmpQ = quat();
 
 export class BadgeRig {
   readonly params: RigParams;
+  readonly single: boolean;
+  readonly suspensionScale: number;
   readonly world = new World();
   readonly anchors: [Body, Body];
   readonly straps: [Body[], Body[]];
@@ -169,26 +177,31 @@ export class BadgeRig {
   private readonly scratch = sample();
   private readonly catchPose: Sample;
 
-  constructor(params: RigParams = RIG, options: { enter?: boolean } = {}) {
+  constructor(params: RigParams = RIG, options: { enter?: boolean; single?: boolean } = {}) {
+    this.single = options.single ?? false;
+    const scale = this.suspensionScale = this.single ? SHORT_SUSPENSION_SCALE : 1;
+    const S = this.single ? { ...STRAP, ...SHORT_STRAP } : STRAP;
+    const hookY = this.single ? SLOT_Y - HOOK.pin * scale : HOOK.y;
+    const crimpY = this.single ? hookY + (HOOK.top - CRIMP.loop) * scale : CRIMP.y;
     const P = (this.params = params);
     const w = this.world;
     w.substeps = SUBSTEPS;
     w.gravity = v3(0, -P.gravity, 0);
 
-    const aL = w.add(new Body(0, null, v3(-STRAP.anchorX, STRAP.anchorY, 0)));
-    const aR = w.add(new Body(0, null, v3(STRAP.anchorX, STRAP.anchorY, 0)));
+    const aL = w.add(new Body(0, null, v3(-S.anchorX, S.anchorY, 0)));
+    const aR = w.add(new Body(0, null, v3(S.anchorX, S.anchorY, 0)));
     this.anchors = [aL, aR];
 
     const crimp = (this.crimp = w.add(
-      new Body(P.crimpMass, boxInertia(P.crimpMass, CRIMP.w, CRIMP.h, CRIMP.d), v3(0, CRIMP.y, 0)),
+      new Body(P.crimpMass, boxInertia(P.crimpMass, CRIMP.w * scale, CRIMP.h * scale, CRIMP.d * scale), v3(0, crimpY, 0)),
     ));
     crimp.linearDamping = P.hookLinearDamping;
     crimp.angularDamping = P.hookAngularDamping;
 
     const strap = (anchor: Body, attachX: number, attachZ: number) => {
       const from = anchor.p;
-      const to = v3(attachX, CRIMP.y + CRIMP.h / 2, attachZ);
-      const n = STRAP.points;
+      const to = v3(attachX, crimpY + CRIMP.h * scale / 2, attachZ);
+      const n = S.points;
       const list: Body[] = [];
       for (let i = 1; i <= n; i++) {
         const s = i / (n + 1);
@@ -202,15 +215,15 @@ export class BadgeRig {
       const options = { length: segment, rope: true };
       w.join(new Joint(list[0]!, v3(), anchor, v3(), options));
       for (let i = 1; i < n; i++) w.join(new Joint(list[i]!, v3(), list[i - 1]!, v3(), options));
-      w.join(new Joint(list[n - 1]!, v3(), crimp, v3(attachX, CRIMP.h / 2, attachZ), options));
+      w.join(new Joint(list[n - 1]!, v3(), crimp, v3(attachX, CRIMP.h * scale / 2, attachZ), options));
       return list;
     };
-    this.straps = [strap(aL, -STRAP.attachX, STRAP.attachZ), strap(aR, STRAP.attachX, -STRAP.attachZ)];
+    this.straps = [strap(aL, -STRAP.attachX * scale, STRAP.attachZ * scale), strap(aR, STRAP.attachX * scale, -STRAP.attachZ * scale)];
 
-    const hook = (this.hook = w.add(new Body(P.hookMass, boxInertia(P.hookMass, 0.3, 0.7, 0.05), v3(0, HOOK.y, 0))));
+    const hook = (this.hook = w.add(new Body(P.hookMass, boxInertia(P.hookMass, 0.3 * scale, 0.7 * scale, 0.05 * scale), v3(0, hookY, 0))));
     hook.linearDamping = P.hookLinearDamping;
     hook.angularDamping = P.hookAngularDamping;
-    w.join(new Joint(hook, v3(0, HOOK.top, 0), crimp, v3(0, CRIMP.loop, 0)));
+    w.join(new Joint(hook, v3(0, HOOK.top * scale, 0), crimp, v3(0, CRIMP.loop * scale, 0)));
 
     // The hook's bar runs through both slots along the view axis, so each card
     // hangs on a hinge: two points along the bar. Cards swing about it and turn
@@ -220,17 +233,19 @@ export class BadgeRig {
     const card = (mass: number, z: number, pinX: number, hookX: number, compliance: number) => {
       const body = w.add(new Body(mass, boxInertia(mass, CARD.w, CARD.h, CARD.d), v3(hookX - pinX, 0, z)));
       for (const side of [-1, 1])
-        w.join(new Joint(body, v3(pinX, SLOT_Y, -z + side * bar), hook, v3(hookX, HOOK.pin, side * bar), { compliance }));
+        w.join(new Joint(body, v3(pinX, SLOT_Y, -z + side * bar), hook, v3(hookX, HOOK.pin * scale, side * bar), { compliance }));
       return body;
     };
     const front = card(P.cardMass, gap, 0, 0, 0.00005);
     front.angularDamping = P.cardAngularDamping;
     front.linearDamping = P.cardLinearDamping;
-    const back = card(P.backMass, -gap, P.backPinX, P.backHookX, 0);
+    // In the readable layout there is one physical card per suspension.
+    // The unused tuple slot is never added to the world or to a joint.
+    const back = this.single ? new Body(0, null, v3()) : card(P.backMass, -gap, P.backPinX, P.backHookX, 0);
     back.angularDamping = P.backAngularDamping;
     back.linearDamping = P.backLinearDamping;
     this.cards = [front, back];
-    w.plates.push(new PlateOrder(front, back, CARD.w / 2, CARD.h / 2, CARD.d / 2));
+    if (!this.single) w.plates.push(new PlateOrder(front, back, CARD.w / 2, CARD.h / 2, CARD.d / 2));
 
     this.relax(1.5);
     this.rest = {
@@ -242,7 +257,7 @@ export class BadgeRig {
     // Display both pieces in a fan around their actual suspension slots. The
     // counter-torque balances gravity at this readable resting pose; positions
     // are never pulled sideways away from the hook to manufacture separation.
-    this.cards.forEach((body, index) => {
+    if (!this.single) this.cards.forEach((body, index) => {
       const pin = v3(index ? P.backPinX : 0, SLOT_Y, index ? gap : -gap);
       const before = rotate(body.q, pin, v3());
       multiplyQuat(body.q, axisAngle(0, 0, 1, index ? -.5 : .28), body.q);
@@ -256,7 +271,7 @@ export class BadgeRig {
     });
     this.restBodies = w.bodies.map(body => ({ p: copy(v3(), body.p), q: copyQuat(quat(), body.q) }));
     this.catchPose = trackAt(TRACK.catch);
-    if (options.enter ?? true) this.startPerformance(entranceCards);
+    if (!this.single && (options.enter ?? true)) this.startPerformance(entranceCards);
     else { this.configureInteraction(); this.settled = true; }
     w.time = 0;
   }
@@ -440,7 +455,7 @@ export class BadgeRig {
       const rest = this.restBodies[index]!;
       // Restore force is weaker while held; release keeps real momentum, with
       // damping and a bounded return instead of an unbounded pendulum orbit.
-      const strength = this.grabJoint ? 1.2 : 7;
+      const strength = this.single ? (this.grabJoint ? 12 : 18) : (this.grabJoint ? 1.2 : 7);
       body.force.x = (rest.p.x - body.p.x) * strength / body.invMass;
       body.force.y = (rest.p.y - body.p.y) * strength / body.invMass;
       body.force.z = (rest.p.z - body.p.z) * strength / body.invMass;
@@ -451,7 +466,7 @@ export class BadgeRig {
       const factor = inverse.w < 0 ? -2 : 2;
       this.recoveryV.x = inverse.x * factor; this.recoveryV.y = inverse.y * factor; this.recoveryV.z = inverse.z * factor;
       rotateInv(body.q, this.recoveryV, this.recoveryV);
-      const gain = this.grabJoint ? 4 : 14;
+      const gain = this.single ? 26 : (this.grabJoint ? 4 : 14);
       this.recoveryV.x *= body.inertia.x * gain;
       this.recoveryV.y *= body.inertia.y * gain;
       this.recoveryV.z *= body.inertia.z * gain;
@@ -556,9 +571,10 @@ export class BadgeRig {
       const initial = Math.max(this.grabOrigin[axis] - radius, Math.min(this.grabOrigin[axis] + radius, target[axis]));
       return Math.max(this.grabRestOrigin[axis] - radius, Math.min(this.grabRestOrigin[axis] + radius, initial));
     };
-    const centerX = within("x", .65) - this.grabRestOrigin.x + this.grabRestCenterX;
-    this.grabGoal.x = this.grabRestOrigin.x - this.grabRestCenterX + Math.max(-.65, Math.min(.65, centerX));
-    this.grabGoal.y = within("y", .28);
+    const lateralLimit = this.single ? .16 : .65;
+    const centerX = within("x", lateralLimit) - this.grabRestOrigin.x + this.grabRestCenterX;
+    this.grabGoal.x = this.grabRestOrigin.x - this.grabRestCenterX + Math.max(-lateralLimit, Math.min(lateralLimit, centerX));
+    this.grabGoal.y = within("y", this.single ? .10 : .28);
     this.grabGoal.z = within("z", .08);
   }
   release() {

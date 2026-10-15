@@ -20,3 +20,58 @@ export function createDeviceFrame({tone='light',scheme='dark',time='10:47',label
   else if(content instanceof Node)screen.append(content);
   return {root,screen};
 }
+
+let explorerSequence = 0;
+/** Enlarge the live demo, not a cloned screenshot. State and event handlers stay
+ * on the same nodes; native dialog owns focus, Escape and background inertness. */
+export function installDemoExplorer({ source, trigger, title, onChange = () => {} }) {
+  const dialog = document.createElement('dialog');
+  dialog.className = 'df-explorer';
+  const titleId = `df-explorer-title-${++explorerSequence}`;
+  dialog.setAttribute('aria-labelledby', titleId);
+  dialog.innerHTML = `<header class="df-explorer-header"><div><span>EXPLORAR O PROJETO</span><h2 id="${titleId}"></h2></div><button type="button" class="df-explorer-close" aria-label="Fechar exploração e voltar ao portfólio">Fechar <span aria-hidden="true">×</span></button></header><div class="df-explorer-content"></div>`;
+  dialog.querySelector('h2').textContent = title;
+  const content = dialog.querySelector('.df-explorer-content');
+  const close = dialog.querySelector('.df-explorer-close');
+  let placeholder, scrollPosition = 0, overflow = '', padding = '';
+  trigger.setAttribute('aria-haspopup', 'dialog');
+  trigger.addEventListener('click', () => {
+    if (dialog.open) return;
+    scrollPosition = window.scrollY;
+    placeholder = document.createElement('div');
+    placeholder.setAttribute('aria-hidden', 'true');
+    placeholder.style.cssText = `height:${source.getBoundingClientRect().height}px;min-width:0;flex:1`;
+    source.replaceWith(placeholder);
+    content.append(source);
+    source.classList.add('is-exploring');
+    document.body.append(dialog);
+    overflow = document.body.style.overflow;
+    padding = document.body.style.paddingRight;
+    const gutter = window.innerWidth - document.documentElement.clientWidth;
+    if (gutter > 0) document.body.style.paddingRight = `${gutter}px`;
+    document.body.style.overflow = 'hidden';
+    dialog.showModal();
+    onChange(true);
+    window.dispatchEvent(new Event('resize'));
+    close.focus({ preventScroll: true });
+  });
+  close.addEventListener('click', () => dialog.close());
+  dialog.addEventListener('keydown', event => event.stopPropagation());
+  dialog.addEventListener('click', event => {
+    if (event.target !== dialog) return;
+    const box = dialog.getBoundingClientRect();
+    if (event.clientX < box.left || event.clientX > box.right || event.clientY < box.top || event.clientY > box.bottom) dialog.close();
+  });
+  dialog.addEventListener('close', () => {
+    onChange(false);
+    source.classList.remove('is-exploring');
+    placeholder.replaceWith(source);
+    document.body.style.overflow = overflow;
+    document.body.style.paddingRight = padding;
+    dialog.remove();
+    window.dispatchEvent(new Event('resize'));
+    window.scrollTo({ top: scrollPosition, behavior: 'instant' });
+    trigger.focus({ preventScroll: true });
+  });
+  return { close: () => { if (dialog.open) dialog.close(); } };
+}

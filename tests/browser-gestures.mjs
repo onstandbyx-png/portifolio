@@ -50,9 +50,9 @@ const metrics=page=>page.evaluate(()=>{
     const point=(x,y,z=.02)=>{const p=art.position.clone().set(x,y,z);art.localToWorld(p);p.project(s.camera);return{x:r.x+(p.x+1)*r.width/2,y:r.y+(1-p.y)*r.height/2};};
     const geometry=art.children[0].geometry;geometry.computeBoundingBox();const box=geometry.boundingBox;
     const corners=[point(box.min.x,box.min.y),point(box.max.x,box.min.y),point(box.max.x,box.max.y),point(box.min.x,box.max.y)];
-    return{center:point(0,-.2),corners,bounds:{left:Math.min(...corners.map(p=>p.x)),right:Math.max(...corners.map(p=>p.x)),top:Math.min(...corners.map(p=>p.y)),bottom:Math.max(...corners.map(p=>p.y))}};
+    return{visible:art.visible&&s.rigRoots[s.cardArt.indexOf(art)].visible,center:point(0,-.2),corners,bounds:{left:Math.min(...corners.map(p=>p.x)),right:Math.max(...corners.map(p=>p.x)),top:Math.min(...corners.map(p=>p.y)),bottom:Math.max(...corners.map(p=>p.y))}};
   });
-  return{time:performance.now(),dragging:s.dragging,pending:Boolean(s.pendingPointer),running:s.running,moving:s.rig.moving,angles:[...s.flipAngles],targets:[...s.flipTargets],cards:s.rig.cards.map(b=>({p:{...b.p},q:{...b.q},v:{...b.v},w:{...b.w}})),projected,rect:{left:r.left,top:r.top,right:r.right,bottom:r.bottom,width:r.width,height:r.height}};
+  return{time:performance.now(),dragging:s.dragging,pending:Boolean(s.pendingPointer),running:s.running,moving:s.rigs.some(rig=>rig.moving),angles:[...s.flipAngles],targets:[...s.flipTargets],cards:s.rigs.map(rig=>rig.cards[0]).map(b=>({p:{...b.p},q:{...b.q},v:{...b.v},w:{...b.w}})),projected,rect:{left:r.left,top:r.top,right:r.right,bottom:r.bottom,width:r.width,height:r.height}};
 });
 const norm=v=>Math.hypot(v.x,v.y,v.z);
 const signedArea=points=>points.reduce((sum,p,i)=>{const next=points[(i+1)%points.length];return sum+p.x*next.y-p.y*next.x;},0)/2;
@@ -94,12 +94,12 @@ try{
         if(mobile)await page.touchscreen.tap(firstPoint.x,firstPoint.y);else await page.mouse.click(firstPoint.x,firstPoint.y);
         await page.waitForFunction(previous=>window.__badgeScene.flipTargets.some((target,index)=>target!==previous[index]),beforeTargets);
         check('A tap on the actual canvas turns a physical card mesh',await page.evaluate(previous=>window.__badgeScene.flipTargets.some((target,index)=>target!==previous[index]),beforeTargets));
-        await page.locator('[data-badge-card-flip="0"]').focus();await page.keyboard.press('Escape');
-        for(let i=0;i<12;i++){await page.locator('[data-badge-card-flip="0"]').click();await page.waitForTimeout(24);await collect('rapid-flip-'+i);}
-        // Repeated impulse requests must stay bounded instead of accumulating.
-        for(let i=0;i<12;i++){await page.locator('[data-badge-swing]').click();await collect('rapid-swing-'+i);}
-        await page.locator('[data-badge-card-flip="0"]').focus();await page.keyboard.press('Escape');await align(page,'.hero-badge-exhibit');
-        await page.locator('[data-badge-card-flip="0"]').click();
+        await page.locator('[data-badge-flip]').focus();await page.keyboard.press('Escape');
+        for(let i=0;i<12;i++){await page.locator('[data-badge-flip]').click();await page.waitForTimeout(24);await collect('rapid-flip-'+i);}
+        check('Repeated flipping does not add physical impulses',row.physics.filter(s=>s.label.startsWith('rapid-flip-')).every(s=>s.cards.every(c=>norm(c.v)<.05&&norm(c.w)<.05)));
+        check('No separate push control competes with the contextual flip',await page.locator('[data-badge-swing],[data-badge-card-flip]').count()===0);
+        await page.locator('[data-badge-flip]').focus();await page.keyboard.press('Escape');await align(page,'.hero-badge-exhibit');
+        await page.locator('[data-badge-flip]').click();
         await page.waitForFunction(()=>Math.abs(window.__badgeScene.flipAngles[0]-Math.PI)<.03,null,{timeout:6000});
         state=await collect('reverse-before-drag');
         check('The actual card mesh has turned to its reverse',Math.abs(state.angles[0]-Math.PI)<.03);
@@ -114,15 +114,16 @@ try{
         }
         for(let i=0;i<18;i++){await page.waitForTimeout(80);await collect('release-'+i);}
         check('The real pointer gesture acquired and released the physical drag joint',row.physics.some(s=>s.dragging>=0)&&(await metrics(page)).dragging===-1);
-        check('Rapid flips, pushes and reverse dragging keep finite physical poses',row.physics.every(finiteSample));
+        check('Rapid flips and reverse dragging keep finite physical poses',row.physics.every(finiteSample));
         check('Linear speed remains within the 1.6 unit/s solver limit',Math.max(...row.physics.flatMap(s=>s.cards.map(c=>norm(c.v))))<=1.6001);
         check('Angular speed remains within the 2.4 rad/s solver limit',Math.max(...row.physics.flatMap(s=>s.cards.map(c=>norm(c.w))))<=2.4001);
-        check('Card centers stay inside the canvas throughout the gesture',row.physics.every(s=>s.projected.every(p=>p.center.x>=s.rect.left-10&&p.center.x<=s.rect.right+10&&p.center.y>=s.rect.top-10&&p.center.y<=s.rect.bottom+10)));
-        await page.waitForFunction(()=>!window.__badgeScene.rig.moving,null,{timeout:18000});
+        check('Card centers stay inside the canvas throughout the gesture',row.physics.every(s=>s.projected.filter(p=>p.visible).every(p=>p.center.x>=s.rect.left-10&&p.center.x<=s.rect.right+10&&p.center.y>=s.rect.top-10&&p.center.y<=s.rect.bottom+10)));
+        await page.waitForFunction(()=>window.__badgeScene.rigs.every(rig=>!rig.moving),null,{timeout:18000});
         state=await collect('settled');
         check('The rig settles after release without drifting indefinitely',!state.moving&&state.cards.every(c=>norm(c.v)<.05&&norm(c.w)<.05));
-        const [first,second]=state.projected.map(p=>p.corners),overlap=intersectionArea(first,second);
-        check('Both resting badge silhouettes retain at least 20% uncovered area',1-overlap/Math.min(Math.abs(signedArea(first)),Math.abs(signedArea(second)))>=.2);
+        const visible=state.projected.filter(p=>p.visible);
+        if(mobile)check('Mobile shows a single readable card silhouette',visible.length===1);
+        else {const [first,second]=visible.map(p=>p.corners),overlap=intersectionArea(first,second);check('Desktop badge faces remain entirely uncovered',visible.length===2&&overlap<1);}
         await capture('hero-after-gestures',page.locator('.hero-badge-exhibit'));
         if(mobile){
           const cancelStart=state.projected[0].center;

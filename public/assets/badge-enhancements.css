@@ -1,36 +1,43 @@
-/* Posters and WebGL share the same artwork, framing and face state. */
-.hero-badge-exhibit .hero-badge-controls{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:8px;bottom:36px}
-.hero-badge-controls .badge-swing-button,.hero-badge-controls [data-badge-flip]{min-height:44px;white-space:nowrap}
-.hero-badge-controls [data-badge-flip]{display:inline-flex;align-items:center;justify-content:center;padding:9px 14px;border:1px solid #9bab99;border-radius:99px;background:#f6f8ef;color:#263c2e;font-size:11px;font-weight:750;transition:background .2s,border-color .2s}
-.hero-badge-controls [data-badge-flip]:hover{background:#fffdf6;border-color:#536f53}
-.hero-badge-controls [data-badge-flip][aria-pressed="true"]{background:#244331;color:#fffdf6;border-color:#244331}
+/* One composition per viewport, shared by the real scene and its decoded poster. */
+.direction-v4 .hero-exhibit.hero-badge-exhibit{container:hero-badges / inline-size;min-height:0;max-width:none;display:flex;flex-direction:column;align-self:start;border-radius:20px;padding:22px 0 20px;overflow:hidden}
+.hero-badge-exhibit .exhibit-meta{position:relative;inset:auto;padding:0 24px;margin-bottom:14px;color:#486052;font-size:13px;line-height:1.5;letter-spacing:.03em;text-transform:none;font-weight:650}
+.hero-badge-exhibit .hero-badge-controls{position:relative;inset:auto;display:flex;align-items:center;justify-content:space-between;flex-wrap:nowrap;gap:12px;margin:0 24px;z-index:4}
+.hero-badge-controls .badge-selection{display:flex;align-items:center;gap:4px;padding:4px;border:1px solid #c3cfbf;background:#dce4d7;border-radius:99px}
+.hero-badge-exhibit .hero-badge-controls button{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-width:44px;min-height:44px;border:1px solid transparent;border-radius:99px;padding:9px 18px;font:650 16px/1.25 var(--sans);white-space:nowrap;transition:background .18s,color .18s,border-color .18s}
+.hero-badge-controls [data-badge-select]{background:transparent;color:#465c4a}
+.hero-badge-controls [data-badge-select][aria-pressed="true"]{background:#fffdf6;color:#203d2e;border-color:#c5cfbf;box-shadow:0 2px 5px #152c1d0d}
+.hero-badge-controls [data-badge-select]:hover{background:#f6f8f1}
+.hero-badge-controls [data-badge-flip]{background:#294735;color:#fffdf5;border-color:#294735}
+.hero-badge-controls [data-badge-flip]:hover{background:#36583f}
+.hero-badge-controls [data-badge-flip] span{font-size:21px;font-weight:400;line-height:1}
 .hero-badge-controls button:focus-visible{outline:3px solid #507652;outline-offset:4px}
-.hero-badge-controls .badge-gesture-note{flex:1 1 100%;max-width:none;text-align:left;font-size:9px;line-height:1.5}
-.hero-badge-exhibit .hero-badge-legend{bottom:142px;pointer-events:auto}
-.hero-badge-exhibit .hero-badge-stage{bottom:137px}
-@media(max-width:760px){
- .direction-v4 .hero-badge-exhibit .hero-badge-controls{bottom:38px}
- .hero-badge-controls .badge-swing-button,.hero-badge-controls [data-badge-flip]{font-size:10px;padding:8px 12px}
- .hero-badge-controls .badge-gesture-note{font-size:8px;letter-spacing:.06em}
- .hero-badge-exhibit .hero-badge-legend{bottom:143px}
- .hero-badge-exhibit .hero-badge-stage{bottom:141px}
+.hero-badge-exhibit .hero-badge-stage{position:relative;inset:auto;flex:none;width:100%;height:auto;aspect-ratio:.82;max-height:none;margin:2px 0 0;isolation:isolate;touch-action:pan-y}
+.hero-badge-exhibit .hero-badge-canvas,.hero-badge-exhibit [data-badge-poster]{mask-image:none;-webkit-mask-image:none}
+.hero-badge-exhibit .hero-badge-standin picture{display:block;width:100%;height:100%}
+.hero-badge-exhibit .hero-badge-detail{position:relative;z-index:3;margin:0 24px;padding:22px 0 0;border-top:1px solid #bdcbbb;min-height:211px}
+.hero-badge-detail .badge-detail-kicker{color:#506350;font-size:13px;line-height:1.5;font-weight:650;margin-bottom:6px}
+.hero-badge-detail h2{font-size:clamp(25px,2.5vw,33px);line-height:1.12;font-weight:650;letter-spacing:-.045em;margin-bottom:10px}
+.hero-badge-detail [data-badge-detail-body]{font-size:16px;line-height:1.55;color:#405343;max-width:47ch}
+.hero-badge-detail [data-badge-detail-link]{display:flex;gap:20px;justify-content:space-between;align-items:center;min-height:48px;padding-block:12px;margin-top:10px;font-size:16px;line-height:1.4;color:#203d2e;font-weight:650;text-decoration:underline;text-underline-offset:4px;text-decoration-color:#9aaf96}
+.hero-badge-detail [data-badge-detail-link]:hover{text-decoration-color:currentColor}
+.hero-badge-exhibit .badge-gesture-note{position:relative;z-index:2;max-width:none;margin:14px 24px 0;font-size:13px;line-height:1.5;color:#536852;letter-spacing:0;text-align:left}
+@container hero-badges (min-width:540px){
+ .hero-badge-exhibit .hero-badge-stage{aspect-ratio:1.45}
+ .hero-badge-exhibit .hero-badge-detail{min-height:189px}
 }
-@media(max-width:380px){
- .hero-badge-controls .badge-swing-button,.hero-badge-controls [data-badge-flip]{padding-inline:10px}
+@media(max-width:573px){
+ .direction-v4 .hero-exhibit.hero-badge-exhibit{padding-top:17px;border-radius:16px}
+ .hero-badge-exhibit .exhibit-meta{padding-inline:18px;margin-bottom:10px}
+ .hero-badge-exhibit .hero-badge-controls{margin-inline:14px;gap:8px}
+ .hero-badge-exhibit .hero-badge-controls button{padding:9px 13px;font-size:16px}
+ .hero-badge-exhibit .hero-badge-detail{margin-inline:20px;padding-top:18px;min-height:240px}
+ .hero-badge-exhibit .badge-gesture-note{margin-inline:20px}
 }
-@media(prefers-reduced-motion:reduce){
- .hero-badge-controls [data-badge-flip]{transition:none}
+@media(max-width:350px){
+ .hero-badge-exhibit .hero-badge-controls{gap:5px;margin-inline:10px}
+ .hero-badge-exhibit .hero-badge-controls button{padding-inline:9px}
+ .hero-badge-controls .badge-selection{gap:1px;padding:3px}
+ .hero-badge-exhibit .hero-badge-detail{margin-inline:17px}
+ .hero-badge-detail h2{font-size:26px}
 }
-
-/* Independent inspection controls keep a predictable two-column footprint. */
-.hero-badge-controls button:disabled{opacity:.5;cursor:default;transform:none}
-.hero-badge-exhibit .hero-badge-controls button{min-width:0;min-height:44px;justify-content:center;white-space:normal;font-size:10px;padding:8px 10px}
-.hero-badge-exhibit .badge-card-button{background:#fffdf6;border-color:#9bab99}
-.hero-badge-exhibit .badge-card-button[aria-pressed="true"]{background:#244331;color:#fffdf6;border-color:#244331}
-.direction-v4 .hero-exhibit.hero-badge-exhibit{min-height:665px}
-@media(max-width:760px){
- .direction-v4 .hero-exhibit.hero-badge-exhibit{min-height:545px}
-}
-@media(prefers-reduced-motion:reduce){
- .hero-badge-exhibit .badge-card-button{transition:none}
-}
+@media(prefers-reduced-motion:reduce){.hero-badge-controls button{transition:none}}

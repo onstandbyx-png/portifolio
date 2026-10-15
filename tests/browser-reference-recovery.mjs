@@ -108,18 +108,20 @@ try{
       });
       await group('badges',async()=>{
         const stage=page.locator('[data-portfolio-badges]');
-        const fatos=page.locator('[data-badge-card-flip="0"]'),smiile=page.locator('[data-badge-card-flip="1"]');
+        const fatos=page.locator('[data-badge-select="0"]'),smiile=page.locator('[data-badge-select="1"]'),flip=page.locator('[data-badge-flip]');
         await fatos.focus();await page.keyboard.press('Escape');
-        await fatos.click();
+        await fatos.click();await flip.click();
         check('Fatos badge flips independently',await stage.getAttribute('data-fatos-face')==='back'&&await stage.getAttribute('data-smiile-face')==='front'&&await fatos.getAttribute('aria-pressed')==='true'&&await smiile.getAttribute('aria-pressed')==='false');
-        await smiile.focus();await page.keyboard.press('Space');
-        check('Second badge responds to keyboard without resetting the first',await stage.getAttribute('data-fatos-face')==='back'&&await stage.getAttribute('data-smiile-face')==='back');
+        await smiile.focus();await page.keyboard.press('Space');await flip.focus();await page.keyboard.press('Space');
+        check('Second badge responds to keyboard without resetting the first',await stage.getAttribute('data-fatos-face')==='back'&&await stage.getAttribute('data-smiile-face')==='back'&&await stage.getAttribute('data-selected-card')==='1');
         await page.keyboard.press('Escape');
-        check('Escape restores both badge fronts and keeps keyboard focus',await stage.getAttribute('data-fatos-face')==='front'&&await stage.getAttribute('data-smiile-face')==='front'&&await smiile.evaluate(el=>el===document.activeElement));
-        await page.locator('[data-badge-flip]').click();
-        check('Original global badge control remains functional',await stage.getAttribute('data-fatos-face')==='back'&&await stage.getAttribute('data-smiile-face')==='back');
+        check('Escape restores both badge fronts and keeps keyboard focus',await stage.getAttribute('data-fatos-face')==='front'&&await stage.getAttribute('data-smiile-face')==='front'&&await flip.evaluate(el=>el===document.activeElement));
+        await fatos.click();await flip.click();
+        check('One contextual flip control affects only the selected card',await flip.count()===1&&await stage.getAttribute('data-fatos-face')==='back'&&await stage.getAttribute('data-smiile-face')==='front');
         await fatos.focus();await page.keyboard.press('Escape');
-        check('Badge buttons have usable touch targets',await page.locator('[data-badge-card-flip]').evaluateAll(buttons=>buttons.every(button=>{const r=button.getBoundingClientRect();return r.width>=44&&r.height>=44;})));
+        check('Selection and flip controls have readable usable touch targets',await page.locator('[data-badge-select],[data-badge-flip]').evaluateAll(buttons=>buttons.length===3&&buttons.every(button=>{const r=button.getBoundingClientRect();return r.width>=44&&r.height>=44&&parseFloat(getComputedStyle(button).fontSize)>=14;})));
+        check('Legacy impulse and duplicate flip controls are absent',await page.locator('[data-badge-swing],[data-badge-card-flip]').count()===0);
+        check('Selected card has readable HTML context',await page.locator('[data-badge-detail-body]').evaluate(el=>el.textContent.trim().length>30&&parseFloat(getComputedStyle(el).fontSize)>=16));
         await capture('badges');
       });
       await group('gallery',async()=>{
@@ -139,7 +141,8 @@ try{
           check('Reverse scroll restores the earlier project',await active()==='0');
           await page.locator('#motion-toggle').click();
           await scrollProgress(page,'.rg-scroll-shell',.72);
-          check('Global pause freezes the gallery during scroll',await active()==='0');
+          await page.waitForFunction(()=>Number(document.querySelector('.rg-active')?.dataset.rgIndex)>=2);
+          check('Global pause preserves scroll navigation and a frontal active card',Number(await active())>=2&&await shell.getAttribute('data-paused')==='true'&&await page.locator('.rg-plane.rg-active').evaluate(el=>parseFloat(getComputedStyle(el).getPropertyValue('--rg-angle'))===0&&parseFloat(getComputedStyle(el).getPropertyValue('--rg-y'))===0&&parseFloat(getComputedStyle(el).getPropertyValue('--rg-scale'))===1));
           await page.locator('#motion-toggle').click();
           await scrollProgress(page,'.rg-scroll-shell',.08);
           await page.waitForFunction(()=>document.querySelector('.rg-active')?.dataset.rgIndex==='0');
@@ -219,6 +222,15 @@ try{
         check('Trail opens a distinct detail screen',await app.getAttribute('data-screen')==='detail'&&await app.locator('.pd-elevation').count()===1);
         await app.locator('[data-app-action="map"]').first().click();
         check('App map is an interactive route with progress',await app.getAttribute('data-screen')==='map'&&await app.locator('.pd-route-position').count()===1);
+        const explore=page.locator('.pd-explore-trigger');await explore.scrollIntoViewIfNeeded();
+        const beforeExplore=await page.evaluate(()=>scrollY),mapNode=await app.elementHandle();
+        await explore.click();const dialog=page.locator('.df-explorer:modal');await dialog.waitFor();
+        check('Exploration moves the live app into one native dialog',await page.locator('[data-testid="apps-demo"]').count()===1&&await mapNode.evaluate(el=>el===document.querySelector('.df-explorer [data-testid="apps-demo"]')));
+        check('Exploration preserves the route screen and readable controls',await app.getAttribute('data-screen')==='map'&&await dialog.locator('.pd-app-filters button').count()===0&&await dialog.locator('.df-explorer-close').evaluate(el=>{const r=el.getBoundingClientRect();return r.width>=44&&r.height>=44;}));
+        await capture('app-exploration',dialog);await page.keyboard.press('Escape');await dialog.waitFor({state:'hidden'});
+        check('Closing exploration preserves app state, scroll and focus',await app.getAttribute('data-screen')==='map'&&Math.abs((await page.evaluate(()=>scrollY))-beforeExplore)<=2&&await explore.evaluate(el=>el===document.activeElement));
+        check('Exploration never recreates the metallic hardware',await device.evaluate(el=>el.isConnected&&el===document.querySelector('[data-testid="apps-demo"] .df-metal')));
+
         await app.locator('[data-app-action="run"]').click();
         await page.waitForFunction(()=>Number(document.querySelector('[data-testid="apps-demo"] .pd-progress')?.getAttribute('aria-valuenow'))>0);
         check('Starting the route changes actual progress',Number(await app.locator('.pd-progress').getAttribute('aria-valuenow'))>0);
@@ -301,6 +313,15 @@ try{
         await page.locator('[data-rx-social-next]').click();
         await page.waitForFunction(()=>document.querySelector('.rx-ig-count')?.textContent==='2/3');
         check('Original social carousel still advances',await page.locator('.rx-ig-count').innerText()==='2/3');
+        const explore=page.locator('#panel-meta .df-explore-trigger');await explore.scrollIntoViewIfNeeded();
+        const beforeExplore=await page.evaluate(()=>scrollY),socialNode=await page.locator('#panel-meta .sa-social').elementHandle();
+        await explore.click();const dialog=page.locator('.df-explorer:modal');await dialog.waitFor();
+        check('Social exploration retains the live frame and readable caption',await page.locator('.rx-ig-count').innerText()==='2/3'&&await dialog.locator('.sa-ig-caption').evaluate(el=>parseFloat(getComputedStyle(el).fontSize)>=14)&&await socialNode.evaluate(el=>el===document.querySelector('.df-explorer .sa-social')));
+        await dialog.locator('[data-rx-social-next]').click();
+        check('The social carousel remains interactive in the enlarged view',await dialog.locator('.rx-ig-count').innerText()==='3/3');
+        await capture('social-exploration',dialog);await dialog.locator('.df-explorer-close').click();await dialog.waitFor({state:'hidden'});
+        check('Closing social exploration preserves its selected slide, page and focus',await page.locator('.rx-ig-count').innerText()==='3/3'&&Math.abs((await page.evaluate(()=>scrollY))-beforeExplore)<=2&&await explore.evaluate(el=>el===document.activeElement));
+
         await page.locator('[data-rx-social="0"]').click();
         // Bring the first work into the gallery before clicking its case action.
         if(!reduced){

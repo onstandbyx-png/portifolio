@@ -1,7 +1,7 @@
 import { TEX, type CardArt } from "./art";
 type MaybeImage = HTMLImageElement | null;
 type Ctx = CanvasRenderingContext2D;
-const SANS='Inter, "Segoe UI", Arial, sans-serif';
+const SANS='"Inter Variable", Inter, "Segoe UI", Arial, sans-serif';
 const SERIF='Georgia, "Times New Roman", serif';
 const cache=new Map<string, Promise<MaybeImage>>();
 function img(src:string):Promise<MaybeImage>{
@@ -38,18 +38,25 @@ function cover(ctx:Ctx,image:MaybeImage,x:number,y:number,w:number,h:number,colo
 }
 function top(ctx:Ctx,brand:string,count:string,dark=false){
   const c=dark?"#f3f5ed":"#203529";
-  word(ctx,brand,72,151,80,c,800);
-  word(ctx,count,706,139,29,dark?"#b7c5bb":"#708273",700);
+  word(ctx,brand,72,165,112,c,800);
+  word(ctx,count.slice(0,2),850,157,64,dark?"#b7c5bb":"#708273",600);
   ctx.strokeStyle=dark?"#ffffff3b":"#cbd4c9";ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(70,184);ctx.lineTo(952,184);ctx.stroke();
 }
+function wrapped(ctx:Ctx,str:string,x:number,y:number,width:number,size:number,color:string){
+  ctx.font=`500 ${size}px ${SANS}`;
+  const words=str.split(" ");let line="",row=0;
+  words.forEach(value=>{const next=line?`${line} ${value}`:value;if(ctx.measureText(next).width>width && line){word(ctx,line,x,y+row*72,size,color,500);line=value;row++}else line=next});
+  word(ctx,line,x,y+row*72,size,color,500);
+}
 function backInfo(ctx:Ctx,label:string,title:string,details:string[],dark=false){
-  const fg=dark?"#f0f2e9":"#20352c",muted=dark?"#b9c8bc":"#6f8377";
-  word(ctx,label,73,325,32,muted,700);
-  const parts=title.split("\n");parts.forEach((p,i)=>word(ctx,p,72,418+i*90,77,fg,700,SERIF));
-  let y=745;for(const detail of details){ctx.fillStyle=dark?"#30493c":"#e8ede6";rr(ctx,69,y-51,887,79,15);ctx.fill();word(ctx,detail,100,y,38,fg,500);y+=103}
-  ctx.strokeStyle=dark?"#52675a":"#cbd4c9";ctx.beginPath();ctx.moveTo(74,1125);ctx.lineTo(950,1125);ctx.stroke();
-  word(ctx,"SMILE N",73,1200,47,fg,800);
-  word(ctx,"DIREÇÃO CRIATIVA / IDEIA & EXECUÇÃO",73,1263,26,muted,700);
+  const fg=dark?"#f0f2e9":"#20352c",muted=dark?"#c8d5ca":"#506b58";
+  word(ctx,label,73,302,54,muted,650);
+  title.split("\n").forEach((p,i)=>word(ctx,p,72,414+i*108,96,fg,600,SERIF));
+  let y=664;for(const detail of details){
+    ctx.fillStyle=dark?"#30493c":"#dce7d8";rr(ctx,69,y-62,887,163,18);ctx.fill();
+    wrapped(ctx,detail,100,y,820,61,fg);y+=190;
+  }
+  word(ctx,"SMILE N",73,1270,67,fg,750);
 }
 /** Original portfolio artwork: a visual idea, not a screenshot of a published project. */
 function editorialCover(ctx:Ctx){
@@ -60,16 +67,16 @@ function editorialCover(ctx:Ctx){
   ctx.strokeStyle="#6e8f7145";ctx.lineWidth=1;
   for(let x=118;x<952;x+=76){ctx.beginPath();ctx.moveTo(x,214);ctx.lineTo(x,876);ctx.stroke()}
   for(let y=264;y<876;y+=76){ctx.beginPath();ctx.moveTo(72,y);ctx.lineTo(952,y);ctx.stroke()}
-  const glow=ctx.createRadialGradient(766,440,12,766,440,243);
+  const glow=ctx.createRadialGradient(766,350,12,766,350,200);
   glow.addColorStop(0,"#e1e8b2");glow.addColorStop(.6,"#97ac70");glow.addColorStop(1,"#496e4c");
-  ctx.fillStyle=glow;ctx.beginPath();ctx.arc(766,440,168,0,Math.PI*2);ctx.fill();
+  ctx.fillStyle=glow;ctx.beginPath();ctx.arc(766,350,130,0,Math.PI*2);ctx.fill();
   ctx.strokeStyle="#e7ebcb80";ctx.lineWidth=2;
-  ctx.beginPath();ctx.ellipse(766,440,233,76,-.38,0,Math.PI*2);ctx.stroke();
-  word(ctx,"PONTO DE PARTIDA",120,290,26,"#cbdbbe",600);
-  word(ctx,"Histórias",117,610,116,"#fffef3",500,SERIF);
-  word(ctx,"que ficam.",117,729,116,"#fffef3",500,SERIF);
+  ctx.beginPath();ctx.ellipse(766,350,195,66,-.38,0,Math.PI*2);ctx.stroke();
+
+  word(ctx,"Histórias",117,610,132,"#fffef3",500,SERIF);
+  word(ctx,"que ficam.",117,749,132,"#fffef3",500,SERIF);
   ctx.fillStyle="#d6e7aa";ctx.fillRect(122,797,46,4);
-  word(ctx,"CONTEXTO → NARRATIVA → CONTEÚDO",187,809,25,"#d7e4c7",600);
+
   ctx.restore();
 }
 export async function editorialCard(copy:{name:string;label:string;line:string}):Promise<CardArt>{
@@ -77,10 +84,9 @@ export async function editorialCard(copy:{name:string;label:string;line:string})
   const [front,ctx]=surface("#f6f7f2");
   top(ctx,"FATOS.","01 / EDITORIAL");
   editorialCover(ctx);
-  word(ctx,copy.label,73,957,32,"#52755a",750);
-  word(ctx,"Da pesquisa",72,1061,79,"#203529",600,SERIF);
-  word(ctx,"à narrativa.",72,1147,79,"#203529",600,SERIF);
-  word(ctx,"SMILE N • EXPERIÊNCIA EDITORIAL",73,1252,27,"#52755a",650);
+  word(ctx,"Direção criativa",72,1005,76,"#203529",650);
+  word(ctx,"Pesquisa e narrativa",73,1100,58,"#52755a",500);
+  word(ctx,"SMILE N",73,1242,64,"#52755a",650);
   const [back,b]=surface("#e7eee3");top(b,"FATOS.","01 / EDITORIAL");
   backInfo(b,"MINHA ATUAÇÃO","Direção criativa\ne narrativa.",["Pesquisa e recorte editorial","Roteiro, arte e conteúdo","Conteúdo para grandes audiências"]);
   return{front,back};
@@ -91,10 +97,9 @@ export async function digitalCard(copy:{name:string;label:string;line:string}):P
   const [front,ctx]=surface("#1b2c25");
   top(ctx,"smiile.","02 / DIGITAL",true);
   cover(ctx,picture,62,210,900,670,"#2c4a35");
-  word(ctx,copy.label,73,971,31,"#bfd6ac",750);
-  word(ctx,"Uma ideia",72,1072,80,"#f6f5ed",600,SERIF);
-  word(ctx,"ganha vida.",72,1164,80,"#f6f5ed",600,SERIF);
-  word(ctx,"SMILE N • DEMONSTRAÇÃO DE PRODUTO",73,1252,25,"#b1c7b5",650);
+  word(ctx,"Uma ideia",72,1008,100,"#f6f5ed",600,SERIF);
+  word(ctx,"ganha vida.",72,1116,100,"#f6f5ed",600,SERIF);
+  word(ctx,"Sites, apps e sistemas",73,1242,58,"#cbdcc5",600);
   const[back,b]=surface("#243a2e");top(b,"smiile.","02 / DIGITAL",true);
   backInfo(b,"PROJETO DIGITAL","Da interface\nà experiência.",["Sites e aplicativos","Componentes interativos","Sistemas e automações"],true);
   return{front,back};

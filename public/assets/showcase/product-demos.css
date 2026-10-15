@@ -255,3 +255,116 @@
 @media(prefers-reduced-motion:reduce){.pd-workbench *,.pd-workbench *:before,.pd-workbench *:after{animation:none!important;transition:none!important;scroll-behavior:auto!important}.pd-workbench button:active,.pd-trail-open:hover img{transform:none}}
 
 body.is-paused .pd-workbench *,body.is-paused .pd-workbench *:before,body.is-paused .pd-workbench *:after{animation:none!important;transition:none!important}
+
+/* R5: preview preserves the full hardware; exploration enlarges actual type
+   and reflows controls/content without scaling the whole interface. */
+.pd-device-host:before{content:'';position:fixed;left:0;top:0;width:0;height:100svh;visibility:hidden;pointer-events:none}
+.pd-workbench>.pd-explore-trigger{width:calc(100% - 40px);margin:16px 20px 0;font-size:14px}
+.pd-product-tabs button{font-size:13px;min-height:52px}
+.pd-demo-context>p,.pd-site-intro>p,.pd-voice-intro>p{font-size:15px;line-height:1.65}
+.pd-journey li{font-size:14px;color:#617057}
+.pd-small,.pd-demo-context .pd-small{font-size:12px;line-height:1.6;color:#637159}
+.pd-overline{font-size:11px;color:#58684d}
+.pd-workbench-foot,.pd-workbench-top{font-size:10px}
+.pd-workbench-foot a{font-size:13px}
+.pd-app-viewport,.pd-transcript{overscroll-behavior-y:auto}
+.is-exploring.pd-workbench .pd-stage{padding:24px 20px}
+.is-exploring .pd-demo-layout{grid-template-columns:minmax(0,400px) minmax(250px,1fr);gap:36px;max-width:none;align-items:start}
+.is-exploring .pd-device-host{max-width:400px}
+.is-exploring .pd-demo-context{padding-top:24px}
+.is-exploring .pd-voice-layout{grid-template-columns:minmax(0,400px) minmax(250px,1fr);gap:30px;max-width:none;align-items:start}
+.is-exploring .pd-app-viewport{inset:calc(62 * var(--df-pt)) 0 calc(34 * var(--df-pt));scrollbar-width:thin;scrollbar-gutter:stable;overscroll-behavior-y:contain}
+.is-exploring .pd-transcript{overscroll-behavior-y:contain}
+.is-exploring .pd-trail-list{padding:16px 18px 24px}
+.is-exploring .pd-app-intro{margin:24px 0}
+.is-exploring .pd-app-intro>span,.is-exploring .pd-trail-photo>span,.is-exploring .pd-photo-caption>span{font-size:12px}
+.is-exploring .pd-app-intro p{font-size:15px;line-height:1.5;color:#58684e}
+.is-exploring .pd-search input{font-size:16px}
+.is-exploring .pd-app-filters button{font-size:14px;min-height:44px}
+.is-exploring .pd-result-heading,.is-exploring .pd-result-heading b{font-size:14px;line-height:1.4}
+.is-exploring .pd-result-heading>span{font-size:12px;color:#627356}
+.is-exploring .pd-trail-copy h4{font-size:21px}
+.is-exploring .pd-trail-copy p,.is-exploring .pd-trail-copy>div{font-size:14px;line-height:1.5;color:#586b4e}
+.is-exploring .pd-trail-copy>div{flex-wrap:wrap;gap:6px}
+.is-exploring .pd-save{width:44px;height:44px;bottom:88px}
+.is-exploring .pd-list-foot{font-size:12px;line-height:1.5;color:#637456}
+.is-exploring .pd-trail-empty p,.is-exploring .pd-trail-empty button{font-size:14px}
+.is-exploring .pd-photo-nav button,.is-exploring .pd-map-heading>button,.is-exploring .pd-back{width:44px;height:44px}
+.is-exploring .pd-photo-caption p{font-size:14px;line-height:1.4}
+.is-exploring .pd-trail-stats dt{font-size:12px;color:#5c6f4e}
+.is-exploring .pd-trail-stats dd{font-size:20px}
+.is-exploring .pd-detail-body>p{font-size:15px;line-height:1.6;color:#586b4d}
+.is-exploring .pd-map-preview>span{font-size:14px;min-height:44px}
+.is-exploring .pd-elevation>div,.is-exploring .pd-elevation b{font-size:12px;color:#5b6e4f}
+.is-exploring .pd-primary,.is-exploring .pd-secondary{font-size:14px;min-height:48px;line-height:1.4}
+.is-exploring .pd-text-button{font-size:14px;min-height:44px}
+.is-exploring .pd-map-heading>div>span{font-size:11px}
+.is-exploring .pd-map-heading h3{font-size:24px}
+.is-exploring .pd-live-map>span{font-size:11px;max-width:calc(100% - 20px);white-space:normal;text-align:center}
+.is-exploring .pd-route-title>span{font-size:11px;color:#5c704d}
+.is-exploring .pd-route-metrics b{font-size:22px}
+.is-exploring .pd-route-metrics span{font-size:12px;color:#5e7350}
+.is-exploring .pd-route-panel .pd-small,.is-exploring .pd-trail-summary .pd-small{font-size:12px}
+.is-exploring .pd-trail-summary>.pd-overline{font-size:11px}
+.is-exploring .pd-trail-summary>p{font-size:15px;line-height:1.6;color:#607450}
+.is-exploring .pd-site-intro,.is-exploring .pd-voice-intro{max-width:600px}
+.is-exploring .pd-site-nav{padding:18px;flex-wrap:wrap}
+.is-exploring .pd-site-nav>strong{font-size:26px}
+.is-exploring .pd-site-nav button{font-size:14px;min-height:44px;padding:10px 16px}
+.is-exploring .pd-browser-chrome small{font-size:11px}
+.is-exploring .pd-house-photo{height:370px}
+.is-exploring .pd-house-photo span{font-size:12px}
+.is-exploring .pd-house-intro p{font-size:16px;line-height:1.6;color:#626c56;max-width:430px}
+.is-exploring .pd-house-intro button{font-size:14px;min-height:44px}
+.is-exploring .pd-site-foot{font-size:12px;color:#68775b}
+.is-exploring .pd-site-foot b{font-size:17px}
+.is-exploring .pd-gallery-controls button{font-size:14px;min-height:44px}
+.is-exploring .pd-house-gallery>p{font-size:14px;color:#647453}
+.is-exploring .pd-visit-form,.is-exploring .pd-visit-confirmation{max-width:520px;padding:28px}
+.is-exploring .pd-visit-form>p,.is-exploring .pd-visit-confirmation>p{font-size:16px;line-height:1.6;color:#647553}
+.is-exploring .pd-visit-form legend{font-size:14px}
+.is-exploring .pd-visit-days span,.is-exploring .pd-visit-days small{font-size:12px}
+.is-exploring .pd-visit-times button,.is-exploring .pd-site-submit{font-size:15px;min-height:48px}
+.is-exploring .pd-visit-confirmation>small{font-size:13px;color:#667957}
+.is-exploring .pd-visit-confirmation>button{font-size:14px;min-height:44px}
+.is-exploring .pd-call{padding:calc(84 * var(--df-pt)) 18px 26px}
+.is-exploring .pd-call-state{font-size:13px;color:#f0e5ec}
+.is-exploring .pd-call h4{font-size:32px}
+.is-exploring .pd-call>p{font-size:15px;color:#efdfeb}
+.is-exploring .pd-transcript{min-height:120px;margin:20px 0;padding:16px}
+.is-exploring .pd-transcript>span{font-size:12px;color:#e1d3df}
+.is-exploring .pd-transcript>p{font-size:16px;line-height:1.5;color:#eadfe7;margin:15px 0}
+.is-exploring .pd-transcript b{font-size:13px;color:#e0c6d7}
+.is-exploring .pd-call-play{font-size:15px;min-height:48px}
+.is-exploring .pd-call .pd-call-feedback{font-size:12px;color:#eadbe5}
+.is-exploring .pd-call>small{font-size:11px;line-height:1.5;color:#deced8}
+.is-exploring .pd-proposal{max-width:none;padding:24px}
+.is-exploring .pd-proposal-heading,.is-exploring .pd-proposal-heading>span,.is-exploring .pd-proposal-heading>b{font-size:12px;color:#61734f}
+.is-exploring .pd-version-picker button{font-size:14px;min-height:44px}
+.is-exploring .pd-proposal-body>.pd-overline{font-size:11px}
+.is-exploring .pd-proposal-body h4{font-size:34px}
+.is-exploring .pd-proposal-item{flex-wrap:wrap;gap:8px}
+.is-exploring .pd-proposal-item b{font-size:15px;line-height:1.5}
+.is-exploring .pd-proposal-item small{font-size:13px;color:#667952}
+.is-exploring .pd-proposal-item strong{font-size:14px}
+.is-exploring .pd-proposal-total{font-size:14px}
+.is-exploring .pd-proposal-total strong{font-size:30px}
+.is-exploring .pd-proposal-body>p,.is-exploring .pd-proposal-status{font-size:13px;line-height:1.6;color:#64764f}
+.is-exploring .pd-proposal>.pd-primary{font-size:14px}
+@media(max-width:760px){
+ .pd-product-tabs button{font-size:12px;line-height:1.4;padding:10px 5px}
+ .pd-workbench>.pd-explore-trigger{width:calc(100% - 24px);margin:14px 12px 0}
+ .is-exploring.pd-workbench .pd-stage{padding:22px 6px}
+ .is-exploring .pd-product-tabs{margin-inline:4px}
+ .is-exploring .pd-demo-layout,.is-exploring .pd-voice-layout{display:flex;flex-direction:column;gap:30px;max-width:none}
+ .is-exploring .pd-demo-context{max-width:430px;padding:0 10px}
+ .is-exploring .pd-site-nav{padding:16px 12px;gap:12px}
+ .is-exploring .pd-site-nav button{padding-inline:12px}
+ .is-exploring .pd-house-photo{height:330px}
+ .is-exploring .pd-house-intro{padding:22px 16px}
+ .is-exploring .pd-house-intro p{font-size:15px}
+ .is-exploring .pd-gallery-controls{flex-wrap:wrap}
+ .is-exploring .pd-gallery-controls button{flex:1 1 120px}
+ .is-exploring .pd-visit-form,.is-exploring .pd-visit-confirmation{padding:24px 16px}
+ .is-exploring .pd-proposal{padding:24px 16px;max-width:430px}
+}

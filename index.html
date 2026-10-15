@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="theme-color" content="#f6f6f2">
-  <meta name="portfolio-version" content="hero-single-design-20261015-r4">
+  <meta name="portfolio-version" content="hero-readable-20261015-r5">
   <meta name="description" content="Smile N, diretor criativo com experiência na Fatos Desconhecidos. Narrativa, arte, copy, campanhas e experiências digitais para marcas. Da ideia à execução.">
   <meta property="og:title" content="Smile N · Direção criativa, da ideia à execução">
   <meta property="og:description" content="Histórias, campanhas e experiências digitais. Conheça o trabalho, o raciocínio e as possibilidades para sua marca.">
@@ -17,7 +17,8 @@
   <link rel="canonical" href="https://portifolio-github-production.up.railway.app/">
   <title>Smile N · Direção criativa | ideia ↗ execução.</title>
   <link rel="icon" href="/assets/creative/favicon.svg" type="image/svg+xml">
-  <link rel="preload" href="/assets/badges/poster-ff.webp" as="image" type="image/webp" fetchpriority="high">
+  <link rel="preload" href="/assets/badges/poster-single-0f.webp" as="image" type="image/webp" media="(max-width: 573px)" fetchpriority="high">
+  <link rel="preload" href="/assets/badges/poster-pair-ff.webp" as="image" type="image/webp" media="(min-width: 574px)" fetchpriority="high">
   <link rel="stylesheet" href="/assets/portfolio.css">
   <!-- portfolio-sections-motion-v1 -->
   <link rel="stylesheet" href="/assets/sections/sections.css">
@@ -28,7 +29,6 @@
   <link rel="stylesheet" href="/assets/showcase/device-frame.css">
   <link rel="stylesheet" href="/assets/showcase/rebuild.css">
   <!-- The standalone kinetic studio is archived; the hero owns the badge experience. -->
-  <link rel="stylesheet" href="/assets/badge-enhancements.css">
   <link rel="stylesheet" href="/assets/contact.css">
   <link rel="stylesheet" href="/assets/direction.css">
   <link rel="stylesheet" href="/assets/project-paths.css">
@@ -37,6 +37,7 @@
   <link rel="stylesheet" href="/assets/showcase/fatos-deck.css">
   <link rel="stylesheet" href="/assets/showcase/product-demos.css">
   <link rel="stylesheet" href="/assets/showcase/social-ads.css">
+  <link rel="stylesheet" href="/assets/badge-enhancements.css?v=hero-r5">
   <script src="/assets/profile.js" defer></script>
   <script src="/assets/portfolio.js" defer></script>
   <script type="module" src="/assets/badge-build/index.js"></script>
@@ -72,25 +73,42 @@
     <section class="hero shell" aria-labelledby="hero-title">
   <div class="hero-copy">
     <div class="eyebrow hero-issue"><span class="issue-dot"></span> SMILE N / DIRETOR CRIATIVO <span class="issue-year">PORTFÓLIO 2026</span></div>
-    <h1 id="hero-title">Uma ideia.<br><em>Muitas formas</em><br>de fazer acontecer<span class="title-point">.</span></h1>
-    <p class="hero-description">Transformo ideias em <strong>histórias, campanhas e experiências digitais.</strong> Da narrativa e da direção de arte ao site, app ou sistema.</p>
-    <div class="hero-authority"><span class="authority-mark" aria-hidden="true">F.</span><p>Há anos na direção criativa da <strong>Fatos Desconhecidos.</strong><br><span>Experiência criando conteúdo para grandes audiências.</span></p></div>
-    <div class="hero-actions"><a class="button button-solid" href="#trabalhos">Conheça meu trabalho <span aria-hidden="true">↗</span></a><a class="button button-text" href="#contato">Vamos criar algo <span aria-hidden="true">↗</span></a></div>
-    <div class="hero-cred"><span>NARRATIVA</span><i></i><span>DIREÇÃO DE ARTE</span><i></i><span>TECNOLOGIA</span></div>
+    <h1 id="hero-title">Uma ideia.<br><em>Muitas formas<span class="title-point">.</span></em></h1>
+    <p class="hero-description">Transformo ideias em <strong>histórias, campanhas e experiências digitais.</strong></p>
+    <div class="hero-actions"><a class="button button-solid" href="#trabalhos">Ver trabalhos <span aria-hidden="true">↗</span></a><a class="button button-text" href="#contato">Vamos criar <span aria-hidden="true">↗</span></a></div>
   </div>
   <div class="hero-exhibit hero-badge-exhibit" aria-label="Experiência editorial e projetos digitais de Smile N">
     <div class="hero-exhibit-bg" aria-hidden="true"></div>
-    <div class="exhibit-meta"><span>DO REPERTÓRIO À PRÁTICA</span><span>EXPLORE AS PEÇAS</span></div>
-    <div class="hero-badge-stage" data-portfolio-badges data-state="idle">
+    <div class="exhibit-meta"><span>Do repertório à prática</span></div>
+    <div class="hero-badge-controls" aria-label="Escolha a peça para explorar">
+      <div class="badge-selection" role="group" aria-label="Projeto selecionado">
+        <button type="button" data-badge-select="0" aria-pressed="true">Fatos</button>
+        <button type="button" data-badge-select="1" aria-pressed="false">smiile</button>
+      </div>
+      <button type="button" data-badge-flip aria-pressed="false" aria-label="Ver o verso do crachá Fatos">Ver verso <span aria-hidden="true">↻</span></button>
+    </div>
+    <div class="hero-badge-stage" data-portfolio-badges data-state="idle" data-selected-card="0">
       <div class="hero-badge-standin" aria-hidden="true">
-        <img data-badge-poster src="/assets/badges/poster-ff.webp" data-poster-ff="/assets/badges/poster-ff.webp" data-poster-bf="/assets/badges/poster-bf.webp" data-poster-fb="/assets/badges/poster-fb.webp" data-poster-bb="/assets/badges/poster-bb.webp" width="720" height="960" alt="" fetchpriority="high" decoding="async">
+        <picture>
+          <source data-badge-poster-source media="(min-width: 574px)" srcset="/assets/badges/poster-pair-ff.webp" type="image/webp">
+          <img data-badge-poster src="/assets/badges/poster-single-0f.webp" data-poster-pair-ff="/assets/badges/poster-pair-ff.webp" data-poster-pair-bf="/assets/badges/poster-pair-bf.webp" data-poster-pair-fb="/assets/badges/poster-pair-fb.webp" data-poster-pair-bb="/assets/badges/poster-pair-bb.webp" data-poster-single-0f="/assets/badges/poster-single-0f.webp" data-poster-single-0b="/assets/badges/poster-single-0b.webp" data-poster-single-1f="/assets/badges/poster-single-1f.webp" data-poster-single-1b="/assets/badges/poster-single-1b.webp" width="410" height="500" alt="" fetchpriority="high" decoding="async">
+        </picture>
       </div>
       <canvas class="hero-badge-canvas" data-badge-canvas aria-hidden="true"></canvas>
-      <span class="sr-only">Fatos Desconhecidos: experiência em direção criativa. smiile: projeto digital. As informações também estão nos estudos abaixo.</span>
     </div>
-    <div class="hero-badge-legend"><a class="badge-legend-item" href="#trabalhos"><i></i>EXPERIÊNCIA EDITORIAL</a><a class="badge-legend-item" href="#experiencias"><i></i>PROJETOS DIGITAIS</a></div>
-    <div class="hero-badge-controls"><button class="badge-swing-button" data-badge-swing type="button" disabled aria-label="Balançar os crachás interativos">Balançar as peças <span aria-hidden="true">↔</span></button><button class="badge-swing-button" data-badge-flip type="button" aria-pressed="false">Ver o verso <span aria-hidden="true">↗</span></button></div>
-    <div class="exhibit-bottom"><span data-badge-hint>ARRASTE PARA EXPLORAR</span><span>IDEIA ↗ EXECUÇÃO.</span></div>
+    <div class="hero-badge-detail">
+      <p class="badge-detail-kicker" data-badge-detail-kicker>Fatos Desconhecidos</p>
+      <h2 data-badge-detail-title>Histórias que ficam.</h2>
+      <p data-badge-detail-body>Direção criativa e narrativa: pesquisa, roteiro, arte e conteúdo para grandes audiências.</p>
+      <a data-badge-detail-link href="#trabalhos">Explorar o trabalho editorial <span aria-hidden="true">↗</span></a>
+    </div>
+    <p class="badge-gesture-note" data-badge-hint>Toque na peça para virar. Arraste de leve para mover.</p>
+    <span class="sr-only" data-badge-status role="status" aria-live="polite" aria-atomic="true"></span>
+  </div>
+  <div class="hero-support">
+    <div class="hero-authority"><span class="authority-mark" aria-hidden="true">F.</span><p>Há anos na direção criativa da <strong>Fatos Desconhecidos.</strong><br><span>Experiência criando conteúdo para grandes audiências.</span></p></div>
+    <p class="hero-scope">Da narrativa e da direção de arte ao site, app ou sistema.</p>
+    <div class="hero-cred"><span>NARRATIVA</span><i></i><span>DIREÇÃO DE ARTE</span><i></i><span>TECNOLOGIA</span></div>
   </div>
   <a class="scroll-indicator" href="#trabalhos"><span class="mouse-glyph" aria-hidden="true">↓</span> O TRABALHO CONTINUA ABAIXO</a>
 </section>

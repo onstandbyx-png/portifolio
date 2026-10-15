@@ -2,7 +2,7 @@
    Sources have clear attribution; paid results are never invented. */
 import {clamp,createMotion} from '../sections/motion.js';
 import {createDeviceFrame} from './device-frame.js';
-import {mountScrollGallery,createChapterState,stableViewportHeight} from './scroll-gallery.js';
+import {mountScrollGallery,createChapterState,readingProgress,stableViewportHeight} from './scroll-gallery.js';
 import {mountFatosDeck} from './fatos-deck.js';
 import {mountSocialAds} from './social-ads.js';
 const $=(s,r=document)=>r.querySelector(s),$$=(s,r=document)=>[...r.querySelectorAll(s)];
@@ -43,10 +43,10 @@ function mountScrollFilm(){
  function paint(){
   const mobile=small.matches,paused=motion.paused();natural=stableViewportHeight()<700||reduced.matches;
   film.classList.toggle('rf-natural',natural);film.dataset.paused=String(paused);film.dataset.mode=natural?'flow':'scroll';
-  const progress=state.value,segment=Math.min(3,Math.floor(progress)),local=progress-segment;
+  const progress=state.value,segment=Math.min(3,Math.floor(progress));
   // Hold each reading state before the next camera movement. Reverse scroll
   // evaluates the same timeline, so planes never reset or jump to a timer.
-  const t=clamp((local-.15)/.7),e=t*t*(3-2*t),spacing=mobile?innerWidth*.92:430;
+  const e=readingProgress(progress)-segment,spacing=mobile?innerWidth*.92:430;
   const stops=mobile?[{x:spacing,scale:1,rx:0,ry:0,rz:0},{x:spacing,scale:1,rx:0,ry:0,rz:0},{x:0,scale:1,rx:0,ry:0,rz:0},{x:-spacing,scale:1,rx:0,ry:0,rz:0},{x:-spacing,scale:1,rx:0,ry:0,rz:0}]:[{x:0,scale:.73,rx:15,ry:-7,rz:-4},{x:spacing,scale:1,rx:0,ry:0,rz:0},{x:0,scale:1,rx:0,ry:0,rz:0},{x:-spacing,scale:1,rx:0,ry:0,rz:0},{x:0,scale:.73,rx:12,ry:7,rz:3}];
   const a=stops[segment],b=stops[segment+1],camera={};
   for(const key of ['x','scale','rx','ry','rz'])camera[key]=lerp(a[key],b[key],e);
@@ -58,16 +58,16 @@ function mountScrollFilm(){
    const distance=Math.abs(i-focus),active=overview||i===focus;
    plane.style.setProperty('--rf-x',`${(i-1)*spacing}px`);plane.style.setProperty('--rf-y','0px');
    plane.style.setProperty('--rf-z',`${overview?(i===1?55:-45):distance*-80}px`);
-   plane.style.setProperty('--rf-ry',`${overview?(i-1)*-13:mobile?0:(i-focus)*-9}deg`);
+   plane.style.setProperty('--rf-ry',`${paused?0:overview?(i-1)*-13:mobile?0:(i-focus)*-9}deg`);
    plane.style.setProperty('--rf-blur',`${!mobile&&!active&&!paused?Math.min(2.5,distance*1.5):0}px`);
-   plane.style.setProperty('--rf-alpha',String(mobile&&!active?.18:1));
+   plane.style.setProperty('--rf-alpha',String(active?1:mobile?.18:.4));
    plane.classList.toggle('rf-in-focus',natural||active);plane.setAttribute('aria-hidden',String(!natural&&!active));
    if(natural){const rect=plane.getBoundingClientRect(),height=stableViewportHeight(),offset=clamp((rect.top+rect.height/2-height/2)/height,-1,1);plane.style.setProperty('--rf-flow-angle',`${paused?0:offset*-5}deg`)}
   });
   if(index!==lastPhase){lastPhase=index;film.dataset.phase=String(index);film.dataset.format=String(index)}
   const selectedTab=mobile?Math.max(1,Math.min(3,index)):index;
   tabs.forEach((tab,i)=>{tab.hidden=mobile&&(i===0||i===4);tab.setAttribute('aria-pressed',String(i===selectedTab))});
-  const message=natural?'Três formatos completos. Continue rolando.':paused?'Movimento pausado · escolha um formato.':'Role para percorrer a composição.';
+  const message=natural?'Três formatos completos. Continue rolando.':paused?'Sem animação · role ou escolha um formato.':'Role para percorrer a composição.';
   if(status.textContent!==message)status.textContent=message;
  }
  function update(){

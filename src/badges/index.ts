@@ -3,19 +3,29 @@ import type { BadgeScene as BadgeSceneHandle } from "./badge/BadgeScene";
 const stage = document.querySelector<HTMLElement>("[data-portfolio-badges]");
 const canvas = stage?.querySelector<HTMLCanvasElement>("[data-badge-canvas]");
 const poster = stage?.querySelector<HTMLImageElement>("[data-badge-poster]");
-const swingButton = document.querySelector<HTMLButtonElement>("[data-badge-swing]");
+const posterSource = stage?.querySelector<HTMLSourceElement>("[data-badge-poster-source]");
+const controls = document.querySelector<HTMLElement>(".hero-badge-controls");
+const selectButtons = [...document.querySelectorAll<HTMLButtonElement>("[data-badge-select]")];
 const flipButton = document.querySelector<HTMLButtonElement>("[data-badge-flip]");
 const hint = document.querySelector<HTMLElement>("[data-badge-hint]");
+const cardStatus = document.querySelector<HTMLElement>("[data-badge-status]");
+const detailKicker = document.querySelector<HTMLElement>("[data-badge-detail-kicker]");
+const detailTitle = document.querySelector<HTMLElement>("[data-badge-detail-title]");
+const detailBody = document.querySelector<HTMLElement>("[data-badge-detail-body]");
+const detailLink = document.querySelector<HTMLAnchorElement>("[data-badge-detail-link]");
 const reduced = matchMedia("(prefers-reduced-motion: reduce)");
 const motionToggle = document.querySelector<HTMLElement>(".motion-toggle");
 let instance: BadgeSceneHandle | null = null;
 let near = false, inView = false, visible = !document.hidden, loading = false;
 let failed = false, ready = false;
+let selectedCard: 0 | 1 = 0;
+let restoringCardState = false;
+let layout: "pair" | "single" = "single";
 const cardFaces: [boolean, boolean] = [false, false];
-const cardNames = ["Fatos", "smiile"] as const;
-const cardRoles = ["Direção criativa e narrativa: pesquisa, roteiro, arte e conteúdo para grandes audiências.", "Projeto digital: sites, apps, componentes interativos e sistemas."] as const;
-const cardButtons: HTMLButtonElement[] = [];
-let cardStatus: HTMLElement | null = null;
+const cards = [
+  { name: "Fatos", kicker: "Fatos Desconhecidos", front: "Histórias que ficam.", back: "Da pesquisa à narrativa.", body: "Direção criativa e narrativa: pesquisa, roteiro, arte e conteúdo para grandes audiências.", href: "#trabalhos", link: "Explorar o trabalho editorial" },
+  { name: "smiile", kicker: "smiile · Projeto digital", front: "Uma ideia ganha vida.", back: "Da interface à experiência.", body: "Sites, apps, componentes interativos e sistemas. Do conceito à experiência digital.", href: "#experiencias", link: "Explorar os projetos digitais" },
+] as const;
 let posterRevision = 0;
 const posterDecodes = new Map<string, Promise<void>>();
 
@@ -29,58 +39,81 @@ function decodePoster(source: string) {
   }
   return decoded;
 }
-
 function reflectPoster() {
   const revision = ++posterRevision;
   const faces = cardFaces.map(face => face ? "b" : "f").join("");
-  const source = poster?.getAttribute(`data-poster-${faces}`);
+  const key = layout === "pair" ? `pair-${faces}` : `single-${selectedCard}${cardFaces[selectedCard] ? "b" : "f"}`;
+  const source = poster?.getAttribute(`data-poster-${key}`);
   if (!poster || !source) return;
-  if (poster.getAttribute("src") === source) { poster.dataset.faces = faces; return; }
-  // Keep the decoded current frame until its replacement is ready. Only the
-  // latest requested combination can win when someone flips rapidly.
-  void decodePoster(source).then(() => {
+  const apply = () => {
     if (revision !== posterRevision) return;
+    // Updating both picture candidates atomically preserves the same decoded
+    // design while switching layout, selected card or printed face.
     poster.src = source;
+    if (posterSource) posterSource.srcset = source;
     poster.dataset.faces = faces;
+    poster.dataset.posterKey = key;
     delete poster.dataset.error;
-  }).catch(() => {
-    if (revision === posterRevision) poster.dataset.error = faces;
+  };
+  if (poster.currentSrc === new URL(source, document.baseURI).href && poster.complete && poster.naturalWidth) { apply(); return; }
+  void decodePoster(source).then(apply).catch(() => {
+    if (revision === posterRevision) poster.dataset.error = key;
   });
 }
-
+function reflectDetail() {
+  const card = cards[selectedCard];
+  const flipped = cardFaces[selectedCard];
+  selectButtons.forEach((button, index) => button.setAttribute("aria-pressed", String(index === selectedCard)));
+  if (flipButton) {
+    flipButton.setAttribute("aria-pressed", String(flipped));
+    flipButton.setAttribute("aria-label", `Ver ${flipped ? "a frente" : "o verso"} do crachá ${card.name}`);
+    flipButton.innerHTML = `${flipped ? "Ver frente" : "Ver verso"} <span aria-hidden="true">↻</span>`;
+  }
+  if (detailKicker) detailKicker.textContent = card.kicker;
+  if (detailTitle) detailTitle.textContent = flipped ? card.back : card.front;
+  if (detailBody) detailBody.textContent = card.body;
+  if (detailLink) { detailLink.href = card.href; detailLink.innerHTML = `${card.link} <span aria-hidden="true">↗</span>`; }
+}
+function announce() {
+  if (cardStatus) cardStatus.textContent = `${cards[selectedCard].name}: ${cardFaces[selectedCard] ? "verso" : "frente"} da peça. ${cards[selectedCard].body}`;
+}
+function reflectSelection(index: 0 | 1) {
+  selectedCard = index;
+  if (stage) stage.dataset.selectedCard = String(index);
+  reflectDetail();
+  reflectPoster();
+}
+function selectCard(index: 0 | 1) {
+  if (index === selectedCard) return;
+  reflectSelection(index);
+  instance?.setSelectedCard(index, !isPaused());
+  announce();
+}
 function setState(value: string) {
   if (!stage) return;
   stage.dataset.state = value;
   stage.setAttribute("aria-busy", String(value === "loading"));
-  if (swingButton) swingButton.disabled = value !== "ready" || isPaused();
 }
 function reflectCard(index: 0 | 1, flipped: boolean) {
   cardFaces[index] = flipped;
-  const allBack = cardFaces.every(Boolean);
-  const allFront = cardFaces.every(face => !face);
   if (stage) {
-    stage.dataset.face = allBack ? "back" : allFront ? "front" : "mixed";
-    stage.dataset[ index === 0 ? "fatosFace" : "smiileFace" ] = flipped ? "back" : "front";
+    stage.dataset.face = cardFaces.every(Boolean) ? "back" : cardFaces.every(face => !face) ? "front" : "mixed";
+    stage.dataset[index === 0 ? "fatosFace" : "smiileFace"] = flipped ? "back" : "front";
   }
-  // The fallback is rendered from this exact scene, including each combination
-  // of printed faces. It never reintroduces the earlier HTML card design.
   reflectPoster();
-  const button = cardButtons[index];
-  if (button) {
-    button.setAttribute("aria-pressed", String(flipped));
-    button.textContent = `${cardNames[index]} · ${flipped ? "ver frente" : "ver verso"}`;
-  }
-  flipButton?.setAttribute("aria-pressed", allBack ? "true" : allFront ? "false" : "mixed");
-  if (flipButton) flipButton.textContent = allBack ? "Ver as frentes" : "Ver os dois versos";
+  reflectDetail();
 }
 function flipCard(index: 0 | 1, flipped: boolean) {
   reflectCard(index, flipped);
   instance?.setCardFlipped(index, flipped, !isPaused());
-  if (cardStatus) cardStatus.textContent = flipped ? `${cardNames[index]} — ${cardRoles[index]}` : `${cardNames[index]}: frente da peça.`;
-  if (hint) hint.textContent = "TOQUE PARA VIRAR · ARRASTE PARA MOVER";
+  announce();
 }
-function restoreCardFaces() {
-  cardFaces.forEach((flipped, index) => instance?.setCardFlipped(index as 0 | 1, flipped, false));
+function restoreCardState() {
+  restoringCardState = true;
+  try {
+    cardFaces.forEach((flipped, index) => instance?.setCardFlipped(index as 0 | 1, flipped, false));
+    instance?.setSelectedCard(selectedCard, false);
+  } finally { restoringCardState = false; }
 }
 function isPaused() {
   return reduced.matches || motionToggle?.getAttribute("aria-pressed") === "true";
@@ -88,11 +121,20 @@ function isPaused() {
 function sync() {
   if (instance) {
     instance.setActive(ready && inView && visible && !isPaused());
-    // Once available, freeze the same scene when motion is reduced. A reduced
-    // first visit still uses the poster without creating a WebGL context.
+    // A ready scene remains the sole visible design when motion is paused.
+    // Reduced motion on first visit uses its exact poster without WebGL.
     if (ready) setState("ready");
   }
-  if (swingButton) swingButton.disabled = !instance || !ready || isPaused();
+  if (hint) hint.textContent = isPaused() || failed ? "Escolha a peça e explore a frente e o verso." : "Toque na peça para virar. Arraste de leve para mover.";
+}
+function resize() {
+  const nextLayout = (canvas?.clientWidth || 0) >= 540 ? "pair" : "single";
+  if (nextLayout !== layout || !stage?.dataset.layout) {
+    layout = nextLayout;
+    if (stage) stage.dataset.layout = layout;
+    reflectPoster();
+  }
+  instance?.resize();
 }
 function failure(reason: unknown) {
   failed = true;
@@ -100,56 +142,35 @@ function failure(reason: unknown) {
   instance?.dispose();
   instance = null;
   setState("fallback");
+  sync();
   console.warn("Crachás em modo estático.", reason);
-  if (hint) hint.textContent = "EXPLORE A FRENTE E O VERSO";
 }
-
 async function load() {
   if (loading || failed || instance || !canvas || reduced.matches || !near) return;
   loading = true;
   setState("loading");
   let pending: BadgeSceneHandle | null = null;
-  const timeout = setTimeout(() => {
-    failure("Tempo de inicialização excedido.");
-    pending?.dispose();
-  }, 12000);
+  const timeout = setTimeout(() => { failure("Tempo de inicialização excedido."); pending?.dispose(); }, 12000);
   try {
     const { BadgeScene } = await import("./badge/BadgeScene");
     if (failed) return;
     pending = new BadgeScene(canvas, {
-      // The first useful image is a visible card, never the offscreen start of a clip.
       enter: false,
       front: { name: "Fatos", label: "DIREÇÃO CRIATIVA", line: "Narrativa e conteúdo para grandes audiências." },
       back: { name: "smiile", label: "PROJETO DIGITAL", line: "Da interface à experiência." },
-      onRest() {
-        if (hint && !stage?.dataset.interacted) hint.textContent = "TOQUE PARA VIRAR · ARRASTE PARA MOVER";
-      },
-      onTouch() {
-        if (stage) stage.dataset.interacted = "true";
-        if (hint) hint.textContent = "DIREÇÃO CRIATIVA + EXPERIÊNCIAS DIGITAIS";
-      },
-      onCardFlip(index, flipped) {
-        reflectCard(index, flipped);
-        if (cardStatus) cardStatus.textContent = flipped ? `${cardNames[index]} — ${cardRoles[index]}` : `${cardNames[index]}: frente da peça.`;
-      },
-      onContextLost() {
-        ready = false;
-        setState("fallback");
-      },
-      onContextRestored() {
-        ready = true;
-        restoreCardFaces();
-        sync();
-      },
+      onTouch() { if (stage) stage.dataset.interacted = "true"; },
+      onCardSelect(index) { if (!restoringCardState) { reflectSelection(index); announce(); } },
+      onCardFlip(index, flipped) { if (!restoringCardState) { reflectSelection(index); reflectCard(index, flipped); announce(); } },
+      onContextLost() { ready = false; setState("fallback"); },
+      onContextRestored() { ready = true; restoreCardState(); sync(); },
       onError: failure,
     });
     await pending.init();
     if (failed) { pending.dispose(); return; }
     instance = pending;
-    restoreCardFaces();
+    restoreCardState();
     ready = true;
     sync();
-    // The first rendered pose matches the poster; movement starts on request.
   } catch (error) {
     pending?.dispose();
     failure(error);
@@ -158,21 +179,18 @@ async function load() {
     loading = false;
   }
 }
-
 if (stage && canvas) {
+  resize();
   const approach = new IntersectionObserver(entries => {
     if (!entries.some(entry => entry.isIntersecting)) return;
     near = true;
     void load();
     approach.disconnect();
   }, { rootMargin: "420px 0px" });
-  const view = new IntersectionObserver(([entry]) => {
-    inView = !!entry?.isIntersecting;
-    sync();
-  }, { threshold: [0, .06, .2, .4] });
+  const view = new IntersectionObserver(([entry]) => { inView = !!entry?.isIntersecting; sync(); }, { threshold: [0, .06, .2, .4] });
   approach.observe(stage);
   view.observe(stage);
-  new ResizeObserver(() => instance?.resize()).observe(canvas);
+  new ResizeObserver(resize).observe(canvas);
   document.addEventListener("visibilitychange", () => { visible = !document.hidden; sync(); });
   if (motionToggle) new MutationObserver(sync).observe(motionToggle, { attributes: true, attributeFilter: ["aria-pressed"] });
   reduced.addEventListener("change", () => {
@@ -180,54 +198,33 @@ if (stage && canvas) {
     else if (!instance && near) void load();
     sync();
   });
-  swingButton?.addEventListener("click", () => {
-    if (isPaused()) return;
-    if (instance && ready) instance.swing(1);
-  });
-  swingButton?.addEventListener("keydown", event => {
-    if (isPaused() || (event.key !== "ArrowLeft" && event.key !== "ArrowRight")) return;
-    event.preventDefault();
-    instance?.swing(event.key === "ArrowLeft" ? -1 : 1);
-  });
-  const controls = flipButton?.parentElement;
-  if (controls) {
-    cardNames.forEach((name, index) => {
-      const button = document.createElement("button");
-      button.type = "button";
-      button.className = "badge-swing-button badge-card-button";
-      button.dataset.badgeCardFlip = String(index);
-      button.setAttribute("aria-pressed", "false");
-      button.setAttribute("aria-label", `Virar o crachá ${name}`);
-      button.textContent = `${name} · ver verso`;
-      button.addEventListener("click", () => flipCard(index as 0 | 1, !cardFaces[index]));
-      cardButtons.push(button);
-      controls.insertBefore(button, swingButton);
-    });
-    cardStatus = document.createElement("span");
-    cardStatus.className = "sr-only";
-    cardStatus.setAttribute("role", "status");
-    cardStatus.setAttribute("aria-live", "polite");
-    cardStatus.setAttribute("aria-atomic", "true");
-    controls.append(cardStatus);
-    controls.addEventListener("keydown", event => {
-      if (event.key !== "Escape") return;
+  selectButtons.forEach((button, index) => button.addEventListener("click", () => selectCard(index as 0 | 1)));
+  flipButton?.addEventListener("click", () => flipCard(selectedCard, !cardFaces[selectedCard]));
+  controls?.addEventListener("keydown", event => {
+    if (event.key === "Escape") {
       event.preventDefault();
-      flipCard(0, false);
-      flipCard(1, false);
+      cardFaces[0] = false;
+      cardFaces[1] = false;
+      restoreCardState();
+      reflectCard(0, false);
+      reflectCard(1, false);
       instance?.rest();
-    });
-  }
+      announce();
+    }
+    if ((event.key === "ArrowLeft" || event.key === "ArrowRight") && (event.target as HTMLElement).matches("[data-badge-select]")) {
+      event.preventDefault();
+      const next = selectedCard === 0 ? 1 : 0;
+      selectCard(next);
+      selectButtons[next]?.focus();
+    }
+  });
   reflectCard(0, false);
   reflectCard(1, false);
-  // Prioritize the first frame, then warm the other three fallback states.
-  void poster?.decode().then(() => Promise.allSettled(["ff", "fb", "bf", "bb"].map(faces => {
-    const source = poster.getAttribute(`data-poster-${faces}`);
+  // Warm the four useful fallback states only for the current composition.
+  void poster?.decode().then(() => Promise.allSettled((layout === "pair" ? ["pair-ff", "pair-fb", "pair-bf", "pair-bb"] : ["single-0f", "single-0b", "single-1f", "single-1b"]).map(key => {
+    const source = poster.getAttribute(`data-poster-${key}`);
     return source ? decodePoster(source) : Promise.resolve();
   }))).catch(() => {});
-  flipButton?.addEventListener("click", () => {
-    const flipped = !cardFaces.every(Boolean);
-    flipCard(0, flipped);
-    flipCard(1, flipped);
-  });
   setState(reduced.matches ? "fallback" : "idle");
+  sync();
 }

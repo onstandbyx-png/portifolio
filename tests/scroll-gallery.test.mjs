@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import {createChapterState,galleryPose} from '../public/assets/showcase/scroll-gallery.js';
+import {createChapterState,galleryPose,readingProgress} from '../public/assets/showcase/scroll-gallery.js';
 
 // Choosing a chapter never captures scroll ownership. The very next native
 // scroll event takes over, in either direction, without a resume interaction.
@@ -9,12 +9,28 @@ for(const progress of [0,4,2.6,1,0,4])assert.equal(chapters.scroll(progress),pro
 assert.equal(chapters.mode,'scroll');
 assert.equal(chapters.scroll(1.25),1.25);
 
-// Pause freezes the camera, but never blocks direct navigation. Resuming scroll
-// while globally paused must still preserve the current reading state.
-chapters.pause(true);assert.equal(chapters.scroll(4),1.25);
-assert.equal(chapters.choose(2),2);assert.equal(chapters.resume(4),2);
-chapters.pause(false);assert.equal(chapters.scroll(4),4);
+// Pause removes intermediate poses, not native navigation. A chapter reached
+// while paused is still the current chapter when motion is enabled again.
+assert.equal(chapters.pause(true),1);assert.equal(chapters.scroll(3.6),4);
+assert.equal(chapters.choose(2),2);assert.equal(chapters.resume(3.4),3);
+assert.equal(chapters.pause(false),3);assert.equal(chapters.scroll(4),4);
 assert.equal(chapters.scroll(-20),0);assert.equal(chapters.choose(20),4);
+
+// Pausing or opening the current work settles its reading plane without
+// moving the page. Resuming in place preserves that pose; the next actual
+// scroll change resumes the reversible timeline, with no focus ownership.
+chapters.scroll(1.46);assert.equal(chapters.pause(true),1);
+assert.equal(chapters.pause(false),1);assert.equal(chapters.scroll(1.46),1);
+assert.equal(chapters.scroll(1.47),1.47);
+assert.equal(chapters.settle(),1);assert.equal(chapters.scroll(1.47),1);
+assert.equal(chapters.scroll(1.6),1.6);
+
+// Reading plateaus occupy .35 on either side of every chapter, with smooth
+// reversible passages between them. Endpoints remain exact for camera stops.
+for(let chapter=0;chapter<4;chapter++){
+ for(const offset of [-.34,0,.34])assert.equal(readingProgress(Math.max(0,chapter+offset)),chapter);
+ assert.equal(readingProgress(chapter),chapter);
+}
 
 // The reference fold is a reversible projection, independent of scroll
 // direction or timing. Only one card is active at any checkpoint.

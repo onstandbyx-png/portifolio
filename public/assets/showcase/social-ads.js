@@ -4,7 +4,7 @@
  * The 3-frame editorial story uses original local art and the source's phone
  * chronology. No invented engagement counts, publication or advertiser claims.
  */
-import { createDeviceFrame } from './device-frame.js';
+import { createDeviceFrame, installDemoExplorer } from './device-frame.js';
 
 const $ = (selector, root = document) => root.querySelector(selector);
 const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
@@ -55,8 +55,9 @@ function fitPhone(host, frame) {
     // on Android must not repeatedly resize the phone while the user scrolls.
     const stableViewport = parseFloat(getComputedStyle(host, '::before').height) || innerHeight;
     // Reserve the header, spacing and full 44px frame controls as one unit.
-    const height = Math.max(420, Math.min(720, stableViewport - (mobile ? 140 : 170)));
-    const width = Math.min(host.clientWidth, height * 435 / 907, 350);
+    const exploring = !!host.closest('.is-exploring');
+    const height = Math.max(420, Math.min(exploring ? 860 : 720, stableViewport - (exploring ? 100 : mobile ? 140 : 170)));
+    const width = Math.min(host.clientWidth, height * 435 / 907, exploring ? 400 : 350);
     frame.root.style.setProperty('--df-pt', `${width / 435}px`);
     host.style.setProperty('--sa-phone-width', `${width}px`);
     host.parentElement.style.setProperty('--sa-phone-width', `${width}px`);
@@ -68,6 +69,15 @@ function createAside(platform) {
   const aside = document.createElement('div'); aside.className = 'mock-aside sa-story-aside';
   aside.innerHTML = `<span>${platform === 'meta' ? 'INSTAGRAM / CARROSSEL' : 'TIKTOK / VÍDEO VERTICAL'}</span><h3>A mesma história.<br>Outro ritmo.</h3><p class="sa-story-detail">${frames[0].detail}</p><div class="sa-sequence" role="group" aria-label="Etapas da história">${frames.map((frame, index) => `<button type="button" ${platform === 'meta' ? `data-rx-social="${index}" aria-current="${!index}"` : `data-frame="${index}" aria-pressed="${!index}"`}><small>0${index + 1}</small><span>${frame.label}</span></button>`).join('')}</div><p class="sa-story-feedback" role="status" aria-live="polite">${platform === 'meta' ? 'Deslize a imagem ou escolha um quadro.' : 'Três quadros, em uma sequência de 12 segundos.'}</p>`;
   return aside;
+}
+
+function addExplorer(panel, label) {
+  const aside = $('.sa-story-aside', panel);
+  const trigger = document.createElement('button');
+  trigger.type = 'button'; trigger.className = 'df-explore-trigger';
+  trigger.innerHTML = 'Explorar em tamanho maior <span aria-hidden="true">↗</span>';
+  aside.prepend(trigger);
+  return installDemoExplorer({ source: panel, trigger, title: label, onChange: () => panel.dispatchEvent(new Event('demo:explorationchange')) });
 }
 
 function createMeta(panel) {
@@ -169,6 +179,7 @@ function wireStory(panel, specimen, platform) {
   new MutationObserver(() => { if (panel.hidden) stop('Sequência pausada ao trocar de formato.'); }).observe(panel, { attributes: true, attributeFilter: ['hidden'] });
   new MutationObserver(() => { if (paused()) stop('Sequência pausada pelo controle da página.'); }).observe(document.body, { attributes: true, attributeFilter: ['class'] });
   document.addEventListener('visibilitychange', () => { if (document.hidden) stop('Sequência pausada ao sair da página.'); }); reduced.addEventListener('change', () => stop('Sequência pausada. Os quadros continuam disponíveis.'));
+  panel.addEventListener('demo:explorationchange', () => stop('Sequência pausada. Retome de onde parou.'));
   show(0, false);
 }
 
@@ -178,5 +189,7 @@ export function mountSocialAds(root = document) {
   upgradeTabIcons(root);
   const instagram = createMeta(meta), video = createTikTok(tiktok);
   wireStory(meta, instagram, 'meta'); wireStory(tiktok, video, 'tiktok');
+  addExplorer(meta, 'Instagram · Fatos Desconhecidos');
+  addExplorer(tiktok, 'TikTok · Fatos Desconhecidos');
   return instagram.root;
 }

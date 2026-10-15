@@ -3,7 +3,7 @@
  * Original source/asset provenance: ../portfolio/recovered-smiile/SOURCES.md.
  * Prepared examples only. No GPS, booking, call or messaging service is invoked.
  */
-import { createDeviceFrame } from './device-frame.js';
+import { createDeviceFrame, installDemoExplorer } from './device-frame.js';
 import { TRAIL, MAP, ROUTE_D, WAYPOINTS, PROFILE, trailAt, routeSplit, fmt } from '../portfolio/recovered-smiile/trail-data.js';
 
 const ASSET = '/assets/portfolio/recovered-smiile/';
@@ -45,9 +45,16 @@ function routeMap(progress = 0, miniature = false) {
 function installPhone(host, { scheme = 'light', label, time = '7:12' } = {}) {
   const frame = createDeviceFrame({ tone: 'light', scheme, time, label });
   host.append(frame.root);
-  const resize = () => frame.root.style.setProperty('--df-pt', `${Math.min(370, host.clientWidth) / 435}px`);
+  const resize = () => {
+    if (!host.clientWidth) return;
+    const exploring = !!host.closest('.is-exploring');
+    const stableViewport = parseFloat(getComputedStyle(host, '::before').height) || innerHeight;
+    const height = Math.max(420, Math.min(exploring ? 860 : 740, stableViewport - (exploring ? 100 : 150)));
+    frame.root.style.setProperty('--df-pt', `${Math.min(exploring ? 400 : 370, host.clientWidth, height * 435 / 907) / 435}px`);
+  };
   resize();
   new ResizeObserver(resize).observe(host);
+  addEventListener('resize', resize, { passive: true });
   return frame;
 }
 
@@ -86,7 +93,7 @@ function createTrailDemo(panel, reduced) {
     stop(); screen = next; render();
     const focus = next === 'list' ? $('[data-app-action="open"]', viewport) || $('input', viewport) : $('h3', viewport);
     focus?.focus({ preventScroll: true });
-    if (next === 'list') window.scrollTo({ top: listPageScroll, behavior: 'instant' });
+    if (next === 'list' && !panel.closest('.is-exploring')) window.scrollTo({ top: listPageScroll, behavior: 'instant' });
   }
   function stop() {
     clearInterval(timer); timer = null; running = false;
@@ -232,6 +239,11 @@ export function mountProductDemos() {
   $('.pd-product-tabs', host).addEventListener('click', event => { const button = event.target.closest('[data-product-tab]'); if (button) select(button.dataset.productTab); });
   $('.pd-product-tabs', host).addEventListener('keydown', event => { const index = tabs.indexOf(active); const next = event.key === 'ArrowRight' ? (index + 1) % 3 : event.key === 'ArrowLeft' ? (index + 2) % 3 : event.key === 'Home' ? 0 : event.key === 'End' ? 2 : -1; if (next < 0) return; event.preventDefault(); select(tabs[next]); $(`[data-product-tab="${active}"]`, host).focus(); });
   const pause = () => { app.pause(); voice.pause(); };
+  const explore = document.createElement('button');
+  explore.type = 'button'; explore.className = 'df-explore-trigger pd-explore-trigger';
+  explore.innerHTML = 'Explorar em tamanho maior <span aria-hidden="true">↗</span>';
+  $('.pd-product-tabs', host).after(explore);
+  installDemoExplorer({ source: host, trigger: explore, title: 'smiile · experiências digitais', onChange: pause });
   document.addEventListener('visibilitychange', () => { if (document.hidden) pause(); });
   new IntersectionObserver(entries => { if (!entries[0].isIntersecting) pause(); }, { threshold: .01 }).observe(host);
   reduced.addEventListener('change', pause);

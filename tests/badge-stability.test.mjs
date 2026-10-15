@@ -140,3 +140,66 @@ test('fixed-step reference seeks keep advancing after the rig settles', () => {
   for (let i = 0; i < 120; i++) rig.tick();
   assert.ok(Math.abs(rig.world.time - 1) < 1e-8);
 });
+
+
+const singleRig = () => new BadgeRig(undefined, { enter: false, single: true });
+
+test('readable suspension starts upright, attached and compact', () => {
+  const rig = singleRig(), card = rig.cards[0];
+  assert.ok(Math.abs(card.p.x) < .005 && Math.abs(card.p.y) < .01, 'card is centered in its independent frame');
+  assert.ok(Math.abs(card.q.x) < .01 && Math.abs(card.q.y) < .01 && Math.abs(card.q.z) < .01, 'print faces the reader at rest');
+  assert.ok(rig.anchors.every(anchor => anchor.p.y > 1.5 && anchor.p.y < 1.7), 'suspension no longer consumes more height than the card');
+  const worldPoint = (body, point) => new Vector3(point.x, point.y, point.z)
+    .applyQuaternion(new Quaternion(body.q.x, body.q.y, body.q.z, body.q.w))
+    .add(new Vector3(body.p.x, body.p.y, body.p.z));
+  for (const joint of rig.world.joints.filter(joint => joint.a === card))
+    assert.ok(worldPoint(joint.a, joint.la).distanceTo(worldPoint(joint.b, joint.lb)) < .001, 'scaled hook remains attached through the card slot');
+  assertBounded(rig);
+});
+
+test('interacting with one suspension leaves the neighboring piece at rest', () => {
+  const active = singleRig(), neighbor = singleRig(), initial = poses(neighbor);
+  active.grab(0, { x: 0, y: 0, z: 0 }, { ...active.cards[0].p });
+  active.drag({ x: 100, y: 100, z: 100 });
+  for (let i = 0; i < 240; i++) { active.tick(); neighbor.advance(STEP); }
+  assert.deepEqual(poses(neighbor), initial, 'no shared constraint or impulse moves the other card');
+  assert.equal(neighbor.moving, false);
+});
+
+test('readable card corner drags stay bounded and return exactly to the reading pose', () => {
+  const rig = singleRig(), initial = poses(rig);
+  for (let round = 0; round < 12; round++) {
+    const direction = round % 2 ? 1 : -1;
+    const local = { x: direction * .7, y: .7, z: 0 };
+    const body = rig.cards[0];
+    const point = new Vector3(local.x, local.y, local.z)
+      .applyQuaternion(new Quaternion(body.q.x, body.q.y, body.q.z, body.q.w))
+      .add(new Vector3(body.p.x, body.p.y, body.p.z));
+    rig.grab(0, local, point);
+    rig.drag({ x: direction * 100, y: 100, z: 100 });
+    for (let i = 0; i < 120; i++) {
+      rig.tick(); assertBounded(rig);
+      const card = rig.cards[0], rotation = new Quaternion(card.q.x, card.q.y, card.q.z, card.q.w);
+      for (const x of [-.8, .8]) for (const y of [-1.0385, 1.0385]) {
+        const corner = new Vector3(x, y, 0).applyQuaternion(rotation);
+        assert.ok(Math.abs(corner.x + card.p.x) < 1.16, 'printed corners stay inside the frame and clear of the neighbor');
+      }
+    }
+    rig.release();
+    for (let i = 0; i < 1200; i++) rig.tick();
+    assert.equal(rig.moving, false);
+    assert.deepEqual(poses(rig), initial, 'release restores the same stable frontal reading position');
+  }
+});
+
+test('single-card inspections and repeated pushes never accumulate energy', () => {
+  const one = singleRig(), many = singleRig(), initial = poses(one);
+  for (let i = 0; i < 100; i++) { one.inspect(); one.advance(STEP); }
+  assert.deepEqual(poses(one), initial, 'inspection does not push the suspension');
+  one.swing(1);
+  for (let i = 0; i < 100; i++) many.swing(1);
+  assert.deepEqual(many.cards[0].v, one.cards[0].v);
+  assert.deepEqual(many.cards[0].w, one.cards[0].w);
+  for (let i = 0; i < 1200; i++) { many.tick(); assertBounded(many); }
+  assert.equal(many.moving, false);
+});
