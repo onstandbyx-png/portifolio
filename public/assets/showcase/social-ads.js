@@ -59,13 +59,14 @@ function fitPhone(host, frame) {
     const width = Math.min(host.clientWidth, height * 435 / 907, 350);
     frame.root.style.setProperty('--df-pt', `${width / 435}px`);
     host.style.setProperty('--sa-phone-width', `${width}px`);
+    host.parentElement.style.setProperty('--sa-phone-width', `${width}px`);
   };
   new ResizeObserver(resize).observe(host); addEventListener('resize', resize, { passive: true }); resize();
 }
 
 function createAside(platform) {
   const aside = document.createElement('div'); aside.className = 'mock-aside sa-story-aside';
-  aside.innerHTML = `<span>${platform === 'meta' ? 'INSTAGRAM / CARROSSEL' : 'TIKTOK / VÍDEO VERTICAL'}</span><h3>A mesma história.<br>Outro ritmo.</h3><p class="sa-story-detail">${frames[0].detail}</p><div class="sa-sequence" role="group" aria-label="Etapas da história">${frames.map((frame, index) => `<button type="button" ${platform === 'meta' ? `data-rx-social="${index}" aria-current="${!index}"` : `data-frame="${index}" aria-pressed="${!index}"`}><small>0${index + 1}</small><span>${frame.label}</span></button>`).join('')}</div>${platform === 'tiktok' ? `<button type="button" class="sa-play" data-play-story aria-pressed="false">${icon('play')}Assistir à sequência</button>` : ''}<p class="sa-story-feedback" role="status" aria-live="polite">${platform === 'meta' ? 'Deslize a imagem ou escolha um quadro.' : 'Três quadros, em uma sequência de 12 segundos.'}</p>`;
+  aside.innerHTML = `<span>${platform === 'meta' ? 'INSTAGRAM / CARROSSEL' : 'TIKTOK / VÍDEO VERTICAL'}</span><h3>A mesma história.<br>Outro ritmo.</h3><p class="sa-story-detail">${frames[0].detail}</p><div class="sa-sequence" role="group" aria-label="Etapas da história">${frames.map((frame, index) => `<button type="button" ${platform === 'meta' ? `data-rx-social="${index}" aria-current="${!index}"` : `data-frame="${index}" aria-pressed="${!index}"`}><small>0${index + 1}</small><span>${frame.label}</span></button>`).join('')}</div><p class="sa-story-feedback" role="status" aria-live="polite">${platform === 'meta' ? 'Deslize a imagem ou escolha um quadro.' : 'Três quadros, em uma sequência de 12 segundos.'}</p>`;
   return aside;
 }
 
@@ -81,7 +82,7 @@ function createMeta(panel) {
 
 function createTikTok(panel) {
   const root = document.createElement('div'); root.className = 'sa-social'; root.dataset.platform = 'tiktok'; root.dataset.socialFrame = '0';
-  root.innerHTML = `<div class="sa-device-host"></div><div class="sa-frame-controls"><button type="button" data-tt-prev aria-label="Quadro anterior">${icon('back')}</button><span class="sa-frame-label">01 / 03 · Gancho</span><button type="button" data-tt-next aria-label="Próximo quadro">${icon('next')}</button></div>`;
+  root.innerHTML = `<div class="sa-device-host"></div><div class="sa-frame-controls sa-frame-controls--playback"><button type="button" data-tt-prev aria-label="Quadro anterior">${icon('back')}</button><button type="button" class="sa-play" data-play-story aria-pressed="false" aria-label="Reproduzir sequência"><span class="sa-play-icon">${icon('play')}</span><span class="sa-play-copy"><span class="sa-play-action">Reproduzir</span><span class="sa-frame-label" aria-hidden="true">01 / 03</span></span></button><button type="button" data-tt-next aria-label="Próximo quadro">${icon('next')}</button></div>`;
   const frame = createDeviceFrame({ tone: 'light', scheme: 'dark', time: '10:09', label: 'TikTok: sequência editorial Fatos Desconhecidos, com três quadros controláveis' });
   frame.root.classList.add('sa-device', 'sa-tiktok-device'); $('.sa-device-host', root).append(frame.root);
   frame.screen.innerHTML = `<div class="sa-tiktok"><div class="sa-media sa-tt-media" role="group" aria-label="Quadro do vídeo"><img src="${frames[0].src}" alt="${frames[0].title}" decoding="async" loading="lazy"><div class="sa-tt-copy"><span>FATOS <small>DESCONHECIDOS</small></span><h3>${frames[0].title}</h3></div></div><div class="sa-tt-top" aria-hidden="true">${icon('live')}<span>Seguindo</span><b>Para você</b>${icon('search')}</div><div class="sa-tt-rail" aria-hidden="true"><span class="sa-tt-avatar"><img src="${AVATAR}" alt="" width="40" height="40"><i>${icon('plus')}</i></span>${icon('heart', true)}${icon('comment', true)}${icon('save', true)}${icon('share', true)}<span class="sa-tt-record"><img src="${AVATAR}" alt="" width="30" height="30"></span></div><div class="sa-tt-info"><b>@fatosdesconhecidos</b><p>${frames[0].caption}</p><span>${icon('note')}Histórias do cotidiano · Fatos</span></div><div class="sa-tt-progress" data-social-progress role="progressbar" aria-label="Progresso da sequência" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><i></i></div><div class="sa-tt-nav" aria-hidden="true"><span>${icon('home', true)}<small>Início</small></span><span>${icon('friends')}<small>Amigos</small></span><span class="sa-tt-create">${icon('plus')}</span><span>${icon('inbox')}<small>Caixa de entrada</small></span><span>${icon('user')}<small>Perfil</small></span></div></div>`;
@@ -92,17 +93,20 @@ function createTikTok(panel) {
 function wireStory(panel, specimen, platform) {
   const { root, area, image, title, caption } = specimen;
   const reduced = matchMedia('(prefers-reduced-motion:reduce)');
-  let requested = 0, committed = 0, revision = 0, pointer = null, playing = false, raf = 0, elapsed = 0, lastTime = 0, preparing = 0;
+  let requested = 0, committed = 0, revision = 0, pointer = null, playing = false, pending = false, raf = 0, elapsed = 0, lastTime = 0, preparing = 0;
   const duration = 12000, step = duration / frames.length;
   const feedback = $('.sa-story-feedback', panel), play = $('[data-play-story]', panel), progress = $('[data-social-progress]', panel);
   const setFeedback = text => { if (feedback.textContent !== text) feedback.textContent = text; };
   function paintProgress(value) { if (!progress) return; const p = Math.max(0, Math.min(1, value)); progress.setAttribute('aria-valuenow', String(Math.round(p * 100))); $('i', progress).style.transform = `scaleX(${p})`; }
   function paintPlay() {
     if (!play) return;
+    const action = playing ? 'Pausar' : elapsed >= duration ? 'Rever' : elapsed > 0 ? 'Retomar' : 'Reproduzir';
     play.setAttribute('aria-pressed', String(playing));
-    play.innerHTML = `${icon(playing ? 'pause' : 'play')}${playing ? 'Pausar sequência' : elapsed >= duration ? 'Rever sequência' : elapsed > 0 ? 'Retomar sequência' : 'Assistir à sequência'}`;
+    play.setAttribute('aria-label', `${action} sequência`);
+    $('.sa-play-icon', play).innerHTML = icon(playing ? 'pause' : 'play');
+    $('.sa-play-action', play).textContent = action;
   }
-  function stop() { preparing++; playing = false; cancelAnimationFrame(raf); raf = 0; paintPlay(); }
+  function stop(message) { const active = playing || pending; preparing++; playing = false; pending = false; cancelAnimationFrame(raf); raf = 0; paintPlay(); if (active && message) setFeedback(message); }
   async function show(index, manual = true) {
     const next = (index + frames.length) % frames.length;
     requested = next;
@@ -112,7 +116,7 @@ function wireStory(panel, specimen, platform) {
       image.src = data.src; image.alt = `Fatos Desconhecidos: ${data.title}`; image.style.objectPosition = data.position;
       title.textContent = data.title; caption.textContent = data.caption; committed = next;
       root.dataset.socialFrame = String(next); root.dataset.socialReady = 'true'; area.removeAttribute('data-image-error');
-      $('.sa-frame-label', root).textContent = `0${next + 1} / 03 · ${data.label}`;
+      $('.sa-frame-label', root).textContent = `0${next + 1} / 03${platform === 'meta' ? ` · ${data.label}` : ''}`;
       $('.sa-story-detail', panel).textContent = data.detail;
       if (platform === 'meta') {
         $('.rx-ig-count', root).textContent = `${next + 1}/3`;
@@ -138,7 +142,7 @@ function wireStory(panel, specimen, platform) {
   if (play) {
     function tick(now) {
       if (!playing) return;
-      if (paused() || document.hidden || panel.hidden || reduced.matches) { stop(); return; }
+      if (paused() || document.hidden || panel.hidden || reduced.matches) { stop('Sequência pausada. Retome de onde parou.'); return; }
       elapsed = Math.min(duration, elapsed + Math.min(100, now - lastTime)); lastTime = now;
       const target = Math.min(2, Math.floor(elapsed / step)); if (target !== requested) show(target, false);
       paintProgress(elapsed / duration);
@@ -149,20 +153,22 @@ function wireStory(panel, specimen, platform) {
       if (playing) { stop(); setFeedback('Sequência pausada. Continue de onde parou.'); return; }
       if (paused()) { setFeedback('Use Retomar movimento no controle da página para reproduzir. Os quadros continuam disponíveis.'); return; }
       if (reduced.matches) { navigate((committed + 1) % 3); return; }
-      const generation = ++preparing; setFeedback('Preparando a sequência…');
+      const generation = ++preparing; pending = true; setFeedback('Preparando a sequência…');
       try { await Promise.all(frames.map(frame => decoded(frame.src))); }
-      catch { setFeedback('Não foi possível preparar a sequência. Explore os quadros individualmente.'); return; }
+      catch { if (generation === preparing) { pending = false; setFeedback('Não foi possível preparar a sequência. Explore os quadros individualmente.'); } return; }
       if (generation !== preparing || paused() || panel.hidden || document.hidden) return;
       if (elapsed >= duration) elapsed = 0;
       await show(Math.min(2, Math.floor(elapsed / step)), false);
       if (generation !== preparing || paused() || panel.hidden || document.hidden) return;
-      playing = true; lastTime = performance.now(); paintPlay(); setFeedback('Reproduzindo a sequência de 12 segundos.'); raf = requestAnimationFrame(tick);
+      pending = false; playing = true; lastTime = performance.now(); paintPlay(); setFeedback('Reproduzindo a sequência de 12 segundos.'); raf = requestAnimationFrame(tick);
     });
   }
-  new IntersectionObserver(([entry]) => { if (!entry.isIntersecting) stop(); }, { threshold: .01 }).observe(root);
-  new MutationObserver(() => { if (panel.hidden) stop(); }).observe(panel, { attributes: true, attributeFilter: ['hidden'] });
-  new MutationObserver(() => { if (paused()) stop(); }).observe(document.body, { attributes: true, attributeFilter: ['class'] });
-  document.addEventListener('visibilitychange', () => { if (document.hidden) stop(); }); reduced.addEventListener('change', stop);
+  // The observed unit includes the phone and its playback controls. Clicking
+  // play must never scroll away from the unit whose visibility owns playback.
+  new IntersectionObserver(([entry]) => { if (!entry.isIntersecting) stop('Sequência pausada ao sair do aparelho. Retome de onde parou.'); }, { threshold: .01 }).observe(root);
+  new MutationObserver(() => { if (panel.hidden) stop('Sequência pausada ao trocar de formato.'); }).observe(panel, { attributes: true, attributeFilter: ['hidden'] });
+  new MutationObserver(() => { if (paused()) stop('Sequência pausada pelo controle da página.'); }).observe(document.body, { attributes: true, attributeFilter: ['class'] });
+  document.addEventListener('visibilitychange', () => { if (document.hidden) stop('Sequência pausada ao sair da página.'); }); reduced.addEventListener('change', () => stop('Sequência pausada. Os quadros continuam disponíveis.'));
   show(0, false);
 }
 

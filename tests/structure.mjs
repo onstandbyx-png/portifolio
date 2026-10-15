@@ -16,6 +16,7 @@ assert(h.includes('data-portfolio-badges')&&h.includes('/assets/badge-build/inde
 assert(showcase.includes('createDeviceFrame')&&showcase.includes('pf-film-device'),'Same smiile metallic hardware used across previews');
 assert(styles.includes('.work-evidence-gallery')&&styles.includes('.pd-static-preview'),'Responsive proof compositions required');
 for(const path of ['cena-desconhecidos.webp','cena-negocios.webp','cena-nerd.webp','cena-crencas.webp','smiile-creative-studio.webp','smiile-architecture-coast.webp'])assert(existsSync(new URL('../public/assets/portfolio/'+path,import.meta.url)),path);
-for(const target of ['#editorial','#laboratorio','#experiencias','#estudio-interativo'])assert(js.includes(target)||showcase.includes(target)||h.includes(target),target);
+for(const target of ['#editorial','#laboratorio','#experiencias','#narrativa-visual'])assert(js.includes(target)||showcase.includes(target)||h.includes(target),target);
 assert(!/\\b\\d+(?:[.,]\\d+)?\\s*(?:%|leads|ROAS)\\b/i.test(h),'Unverified campaign performance metric');
+for(const source of [h,js,showcase])assert(!source.includes('#estudio-interativo'),'Hidden studio has no public navigation');
 console.log('PASS: visual proof, attribution, reusable devices and truthful campaign states');

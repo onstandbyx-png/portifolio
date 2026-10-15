@@ -1,6 +1,10 @@
-/* The HTML cards remain the first frame and the accessible motion-free view. */
+/* One presentation at a time: the rendered scene replaces the first frame
+   only after init() has presented it. Crossfading would show two card designs. */
+.hero-badge-stage .hero-badge-standin,.hero-badge-stage .hero-badge-canvas{transition:none}
 .hero-badge-stage:not([data-state="ready"]) .hero-badge-standin{opacity:1;visibility:visible}
-.hero-badge-stage:not([data-state="ready"]) .hero-badge-canvas{opacity:0;pointer-events:none}
+.hero-badge-stage:not([data-state="ready"]) .hero-badge-canvas{opacity:0;visibility:hidden;pointer-events:none}
+.hero-badge-stage[data-state="ready"] .hero-badge-standin{opacity:0;visibility:hidden}
+.hero-badge-stage[data-state="ready"] .hero-badge-canvas{opacity:1;visibility:visible;pointer-events:auto}
 .hero-badge-stage[data-state="fallback"] .hero-badge-standin{transition:none}
 .hero-badge-stage[data-state="fallback"] .hero-badge-canvas{transition:none}
 .hero-badge-exhibit .hero-badge-controls{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:8px;bottom:36px}

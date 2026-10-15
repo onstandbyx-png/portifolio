@@ -5,7 +5,7 @@ import {mkdir,writeFile} from 'node:fs/promises';
 import assert from 'node:assert/strict';
 
 // Interaction checks for the recovered reference components. This suite keeps
-// the existing kinetic-pass suite separate: a passing DOM check is not a
+// the archived kinetic-pass section hidden: a passing DOM check is not a
 // substitute for inspecting the captured states against the supplied videos.
 const require=createRequire(process.env.QA_PACKAGE||import.meta.url);
 let chromium;
@@ -72,9 +72,9 @@ try{
     const context=await browser.newContext({viewport:{width,height},isMobile:width<500,hasTouch:width<500,deviceScaleFactor:1,reducedMotion:reduced?'reduce':'no-preference'});
     const page=await context.newPage();page.setDefaultTimeout(12000);
     const record={...scenario,browser:browser.version(),checks:[],errors:[],failures:[]};records.push(record);
-    const mutations=[];
+    const mutations=[],studioMediaRequests=[];
     page.on('pageerror',error=>record.errors.push(String(error)));
-    page.on('request',request=>{if(!['GET','HEAD','OPTIONS'].includes(request.method()))mutations.push({method:request.method(),url:request.url()});});
+    page.on('request',request=>{if(!['GET','HEAD','OPTIONS'].includes(request.method()))mutations.push({method:request.method(),url:request.url()});if(/\/assets\/kinetic-pass\/material-loop\.(?:webm|mp4)(?:$|\?)/.test(request.url()))studioMediaRequests.push(request.url());});
     await page.route('https://midia-kit-production-c234.up.railway.app/**',route=>route.abort());
     const check=(name,value)=>{record.checks.push({name,pass:!!value});assert(value,name);};
     const capture=async(name,locator=page)=>locator.screenshot({path:`${output}/${name}-${label}.png`,animations:'disabled'});
@@ -87,7 +87,10 @@ try{
       await page.goto(base,{waitUntil:'domcontentloaded'});
       await page.waitForSelector('html[data-rx-showcase="ready"]',{state:'attached',timeout:30000});
       await group('baseline',async()=>{
-        check('Hero, kinetic pass and original editorial device remain mounted',await page.locator('[data-portfolio-badges]').count()===1&&await page.locator('#estudio-interativo').count()===1&&await page.locator('#editorial .pf-reference-device .df-metal').count()===1);
+        check('Hero and original editorial device remain mounted',await page.locator('[data-portfolio-badges]').count()===1&&await page.locator('#editorial .pf-reference-device .df-metal').count()===1);
+        check('The archived layered studio section is not visible',!await page.locator('#estudio-interativo').isVisible()&&!/A ideia tem camadas/i.test(await page.locator('main').innerText()));
+        check('No navigation link targets the archived layered studio',await page.locator('a[href$="#estudio-interativo"]').count()===0);
+        check('The archived studio does not request its video assets',studioMediaRequests.length===0&&await page.locator('video.ks-video').count()===0);
         check('Four original work pieces remain inside gallery planes',await page.locator('#trabalhos .rg-plane .work-tile').count()===4);
         check('No obsolete LINHA or SOTA CI narrative is visible',!/(?:\bLINHA\b|SOTA CI)/i.test(await page.locator('main').innerText()));
         check('Only one project-path heading is visible',(await page.locator('main').innerText()).split('Escolha o desafio. Veja a entrega.').length-1<=1);

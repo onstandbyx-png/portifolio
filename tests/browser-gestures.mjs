@@ -180,6 +180,7 @@ try{
           check(`${channel}: complete metallic hardware and home indicator are present`,await social.locator('.df-metal').count()===1&&await social.locator('.df-camera').count()===1&&await social.locator('.df-status').count()===1&&await social.locator('.df-home').count()===1);
           check(`${channel}: phone fits below the header without clipping its bottom`,await social.locator('.sa-device').evaluate(el=>{const r=el.getBoundingClientRect();return r.top>=60&&r.bottom<=innerHeight-5&&r.left>=0&&r.right<=innerWidth;}));
           check(`${channel}: frame navigation fits inside the same viewport`,await social.locator('.sa-frame-controls').evaluate(el=>{const r=el.getBoundingClientRect();return r.top>=60&&r.bottom<=innerHeight-5&&[...el.querySelectorAll('button')].every(button=>{const b=button.getBoundingClientRect();return b.width>=44&&b.height>=44;});}));
+          if(channel==='tiktok')check('TikTok play remains alongside the visible phone controls',await page.locator('#panel-tiktok [data-play-story]').evaluate(button=>{const r=button.getBoundingClientRect();return Boolean(button.closest('.sa-social'))&&r.top>=60&&r.bottom<=innerHeight-5;}));
           const chrome=social.locator(channel==='meta'?'.sa-ig-actions':'.sa-tt-nav');
           check(`${channel}: social actions remain inside the visible phone`,await chrome.evaluate(el=>{const r=el.getBoundingClientRect(),d=el.closest('.sa-device').getBoundingClientRect();return r.height>0&&r.top>=d.top&&r.bottom<=d.bottom&&r.bottom<=innerHeight;}));
           const image=social.locator(channel==='meta'?'.rx-ig-photo>img':'.sa-tt-media>img');
@@ -205,6 +206,15 @@ try{
         await page.locator('#motion-toggle').click();await play.click();const globalPaused=Number(await progress.getAttribute('aria-valuenow'));await page.waitForTimeout(350);
         check('Global pause prevents a hidden TikTok timer from running',await play.getAttribute('aria-pressed')==='false'&&Number(await progress.getAttribute('aria-valuenow'))===globalPaused);
         await page.locator('#motion-toggle').click();
+        await play.click();await page.waitForFunction(()=>document.querySelector('#panel-tiktok [data-play-story]').getAttribute('aria-pressed')==='true');
+        await nativeScroll(page,mobile,height*.55,width*.1);await nativeScroll(page,mobile,height*.55,width*.1);
+        await page.waitForFunction(()=>document.querySelector('#panel-tiktok [data-play-story]').getAttribute('aria-pressed')==='false');
+        const outside=Number(await progress.getAttribute('aria-valuenow'));await page.waitForTimeout(350);
+        check('Leaving the social device pauses playback without losing position',Number(await progress.getAttribute('aria-valuenow'))===outside);
+        await align(page,'#panel-tiktok .sa-social');await page.waitForTimeout(350);
+        check('Returning to the social device does not restart playback automatically',await play.getAttribute('aria-pressed')==='false'&&Number(await progress.getAttribute('aria-valuenow'))===outside);
+        await play.click();await page.waitForFunction(value=>Number(document.querySelector('#panel-tiktok [data-social-progress]').getAttribute('aria-valuenow'))>value,outside);
+        check('Explicit play after returning continues the paused sequence',Number(await progress.getAttribute('aria-valuenow'))>outside);await play.click();
       });
       await group('page',async()=>{check('No document overflow at the tested viewport',await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+2));check('No uncaught JavaScript errors',row.errors.length===0);});
     }finally{await context.close();}

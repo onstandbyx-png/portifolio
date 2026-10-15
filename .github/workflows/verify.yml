@@ -26,8 +26,8 @@ jobs:
         run: node tests/browser-evidence.mjs
       - name: Validate touch gestures and badge stability
         run: node tests/browser-gestures.mjs
-      - name: Validate preserved interactive video pass
-        run: node tests/browser-kinetic-pass.mjs
+      - name: Validate hidden studio and active work links
+        run: node tests/browser-hidden-studio.mjs
       - uses: actions/upload-artifact@v4
         if: always()
         with:

@@ -201,5 +201,13 @@
       "adapted": false
     }
   ],
-  "interactionRevision": "interaction-fidelity-20261015-r2"
+  "interactionRevision": "interaction-fidelity-20261015-r3",
+  "hiddenSections": [
+    {
+      "id": "estudio-interativo",
+      "reason": "Ocultado a pedido do usuário: concentra a experiência de crachás no hero.",
+      "sourceRetained": true,
+      "publicInitialization": false
+    }
+  ]
 }

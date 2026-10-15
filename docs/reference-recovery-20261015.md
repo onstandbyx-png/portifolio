@@ -12,7 +12,7 @@ Esta revisão parte de `702344b5e26e21c7a80713560130e9da969aa289`. Recupera mate
 | Mídia kit Fatos: baralho de seis verticais | `fatos-deck.js` | Artes originais, avatares, navegação e frente/verso. O arraste acompanha o dedo e troca uma carta por gesto; cancelar retorna à mesma carta. A altura considera a área disponível e mantém os controles visíveis. O verso apresenta contexto editorial e formatos; não transforma audiência do grupo em resultado pessoal. |
 | Fatos: Meta e TikTok | `social-ads.js` | Mesmo dispositivo metálico, interfaces sociais completas, três quadros editoriais coerentes, imagens decodificadas e sequência controlável de 12 segundos. |
 | smiile: app, site e ligação | `product-demos.js` | App com busca, favoritos, detalhe, mapa e percurso; site com galeria e agendamento; áudio original com transcrição e proposta v2/v3. |
-| Ingresso “init”: material, dobra e camadas | Estúdio cinético existente | Preservado. Vídeo, dobra, exploração de camadas e controles continuam funcionais. |
+| Ingresso “init”: material, dobra e camadas | Estúdio cinético arquivado | Ocultado a pedido do usuário. Fonte preservada, sem inicialização, mídia ou acessos na página pública. |
 
 ## Fontes e fidelidade
 
@@ -38,22 +38,29 @@ Esta revisão parte de `702344b5e26e21c7a80713560130e9da969aa289`. Recupera mate
 
 Capturas foram inspecionadas em desktop e celular emulado, incluindo frente/verso do Fatos, app/site/voz, narrativa visual e galeria. Essa revisão revelou e corrigiu: sobreposição de controles, legenda encoberta pelo plano seguinte, salto de pose durante o clique, controles de áudio cortados em 320 px e perda de foco na confirmação do agendamento.
 
-O estúdio cinético foi verificado separadamente em 390 × 844 px: 36 verificações aprovadas, incluindo vídeo local, byte ranges, dobra, camadas, pausa global, teclado e movimento reduzido. O workflow executa também sua matriz completa.
+A seção “A ideia tem camadas” foi ocultada a pedido do usuário. A suíte pública agora verifica sua ausência mesmo com o hash antigo, a ausência de carregamento dos seus assets e o destino válido do quarto caso. A suíte anterior de vídeo fica arquivada para uso isolado; não é mais executada contra a página pública.
 
 As capturas automatizadas e relatórios são gerados em `qa/`, ignorado pelo Git, e publicados como artefato do workflow. Emulação de Chromium não substitui uma revisão em aparelhos físicos e Safari.
 
-## Correção de comportamento — R2
+## Correção de comportamento — R2/R3
 
-A revisão `interaction-fidelity-20261015-r2` responde aos screenshots de 15/10: baralho maior que a tela, mock TikTok genérico e planos sobrepostos com rolagem presa.
+A revisão `interaction-fidelity-20261015-r3` responde aos screenshots de 15/10: baralho maior que a tela, mock TikTok genérico e planos sobrepostos com rolagem presa.
 
 - No hero, um toque vira a peça; o arraste horizontal move o crachá; um gesto vertical no celular rola a página. Escape restaura a frente e o repouso em leque, mantendo as duas silhuetas visíveis. Os cartões giram ao redor dos encaixes, sem deslocar os pontos de suspensão. A referência do ponto agarrado fica fixa durante o gesto, inclusive no verso.
 - O botão de balanço substitui um impulso pequeno, sem somar energia. Depois das constraints, a física interativa limita velocidades a 1,6 unidade/s e 2,4 rad/s. O alvo de arraste avança gradualmente dentro de uma área fixa; arrastes consecutivos não deslocam essa área.
 - A entrada original continua disponível. Ao interagir durante a entrada, a peça conserva a pose e volta suavemente à leitura. Ao estabilizar, o solver entra em repouso real, sem micro-oscilações residuais.
 - A galeria mantém perspectiva em 390 × 748 px. Em 320 × 640 px, a altura curta pede cartões completos no fluxo da página. O mesmo vale para a narrativa de formatos; não há botão “Retomar rolagem”.
 - O baralho e os telefones usam a altura estável `svh` para não pulsar quando a barra do navegador Android abre ou fecha. A frente, o verso e os controles precisam ser revisados juntos, e não apenas por capturas de componentes recortados.
+- O controle de reprodução do TikTok fica junto do aparelho e das setas. A validação remota encontrou uma corrida de visibilidade quando o botão ficava no texto abaixo do telefone: alcançar o botão ocultava o aparelho e pausava a sequência. A posição do controle foi corrigida, preservando a pausa quando a seção realmente sai da tela.
 - Meta e TikTok substituem os posters simplificados. O código anterior de reprodução foi removido para haver somente um controlador da sequência, com pausa ao sair da seção, trocar de aba ou pausar a página.
 
 A inspeção visual e os gestos em navegador emulado complementam os testes de solver; aprovação automática não significa equivalência perfeita ao vídeo de referência.
+
+## Crachás sem versões concorrentes
+
+A transição de entrada misturava o HTML estático e o WebGL: a captura quadro a quadro encontrou 20 frames de sobreposição. A troca agora é exclusiva, depois do primeiro frame 3D pronto; a mesma auditoria encontrou zero sobreposição. Movimento reduzido e perda/restauração de WebGL preservam uma única representação visível. A física não foi alterada por esse ajuste.
+
+O estúdio independente “A ideia tem camadas” foi retirado da inicialização pública, junto com seu CSS e seus acessos. O quarto trabalho permanece disponível e agora conduz à narrativa visual Casa Costa, com textos coerentes com essa demonstração.
 
 ## Revisão isolada
 
