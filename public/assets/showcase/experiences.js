@@ -1,15 +1,16 @@
 /* Showcase interactions based on the source Fatos baralho, mobile social studio,
    and smiile "Uma ideia. Muitas formas." scroll stage. No account credentials or ad delivery. */
 import {clamp,createMotion} from '../sections/motion.js';
+import {createDeviceFrame} from './device-frame.js';
 const $=(selector,root=document)=>root.querySelector(selector);
 const $$=(selector,root=document)=>Array.from(root.querySelectorAll(selector));
 const motion=createMotion();
 function parse(markup){const t=document.createElement('template');t.innerHTML=markup.trim();return t.content.firstElementChild;}
 const materials=[
- {id:'editorial',name:'Fatos Desconhecidos',tag:'EDITORIAL / PESQUISA',series:'01',accent:'#338bfc',image:'/assets/fatos-desconhecidos.webp',title:'Por que essa história merece atenção?',headline:'O trabalho começa pela pergunta.',description:'Pesquisa, recorte, roteiro e direção narrativa. Experiência editorial apresentada sem vender espaço na rede.',details:['Pesquisa e seleção de pauta','Gancho, texto e roteiro','Estrutura de carrossel e contexto'],cta:'Ver caso editorial',case:'fatos'},
- {id:'campanha',name:'Campanhas & Ads',tag:'CRIAÇÃO / MÍDIA PAGA',series:'02',accent:'#e48e61',image:'/assets/fatos-narrativa-detail.webp',title:'Uma ideia. Diferentes maneiras de comunicar.',headline:'Da ideia até a mensagem em circulação.',description:'Estratégia, criação, operação de mídia paga e páginas de campanha. Aqui, a composição é apenas um estudo visual.',details:['Conceito, copy e variações','Google, Meta e TikTok Ads','Mensuração e otimização'],cta:'Explorar laboratório',href:'#laboratorio'},
+ {id:'editorial',name:'Fatos Desconhecidos',tag:'EDITORIAL / PESQUISA',series:'01',accent:'#338bfc',image:'/assets/showcase/scenes/materia-viva.svg',title:'Por que essa história merece atenção?',headline:'O trabalho começa pela pergunta.',description:'Pesquisa, recorte, roteiro e direção narrativa. Experiência editorial apresentada sem vender espaço na rede.',details:['Pesquisa e seleção de pauta','Gancho, texto e roteiro','Estrutura de carrossel e contexto'],cta:'Ver caso editorial',case:'fatos'},
+ {id:'campanha',name:'Campanhas & Ads',tag:'CRIAÇÃO / MÍDIA PAGA',series:'02',accent:'#e48e61',image:'/assets/showcase/scenes/campanha.svg',title:'Uma ideia. Diferentes maneiras de comunicar.',headline:'Da ideia até a mensagem em circulação.',description:'Estratégia, criação, operação de mídia paga e páginas de campanha. Aqui, a composição é apenas um estudo visual.',details:['Conceito, copy e variações','Google, Meta e TikTok Ads','Mensuração e otimização'],cta:'Explorar laboratório',href:'#laboratorio'},
  {id:'digital',name:'smiile',tag:'INTERFACES / PRODUTO',series:'03',accent:'#aed4a0',image:'/assets/smiile-landscape.webp',title:'Uma ideia ganha forma quando você interage.',headline:'Do conceito à experiência digital.',description:'Sites, interfaces e sistemas demonstrados por experiências que respondem ao visitante.',details:['Estratégia e interface','Design mobile-first','Componentes e desenvolvimento'],cta:'Ver caso smiile',case:'smiile'},
- {id:'sistemas',name:'SOTA CI Intel',tag:'SISTEMAS / EVIDÊNCIAS',series:'04',accent:'#d5f29d',image:'/assets/fatos-editorial-detail.webp',title:'E se cada conclusão pudesse ser verificada?',headline:'O que não se vê sustenta o produto.',description:'Pesquisa estruturada, grafos de evidência e orquestração. O fluxo é didático, não uma consulta real.',details:['Entrada e origem','Evidência e relações','Dossiês com limites explícitos'],cta:'Conhecer o sistema',case:'ci'}
+ {id:'sistemas',name:'SOTA CI Intel',tag:'SISTEMAS / EVIDÊNCIAS',series:'04',accent:'#d5f29d',image:'/assets/showcase/scenes/sistemas.svg',title:'E se cada conclusão pudesse ser verificada?',headline:'O que não se vê sustenta o produto.',description:'Pesquisa estruturada, grafos de evidência e orquestração. O fluxo é didático, não uma consulta real.',details:['Entrada e origem','Evidência e relações','Dossiês com limites explícitos'],cta:'Conhecer o sistema',case:'ci'}
 ];
 function buildCard(m,index){
  const card=document.createElement('article');card.className='rx-deck-card';card.dataset.rxCard=m.id;card.dataset.pos=String(index);
@@ -72,12 +73,18 @@ function mountDeck(){
  }
  function navigate(to){
   to=(to+materials.length)%materials.length;
-  if(busy||to===selected)return;
-  setFlip(false);busy=true;
-  const old=cards[selected],direction=(to-selected+materials.length)%materials.length<=2?-1:1;
-  const a=motion.animate(old,[{transform:'translateX(0) rotate(0deg)',opacity:1},{transform:'translateX('+(direction*125)+'%) rotate('+(direction*16)+'deg)',opacity:.12}],{duration:320,easing:'cubic-bezier(.25,.85,.25,1)'});
-  const finish=()=>{selected=to;refresh();busy=false;const newCard=cards[selected];motion.spring(newCard,p=>({opacity:Math.min(1,p),transform:'translateX('+(-direction*34*(1-p))+'px) rotate('+(direction*5*(1-p))+'deg) scale('+(0.94+0.06*p)+')'}),{name:'bouncy',duration:750});};
-  if(a)a.finished.catch(()=>{}).then(finish);else finish();
+  if(to===selected)return;
+  // Interaction state must never depend on a decorative animation finishing.
+  // A cancelled/background-throttled WAAPI animation previously blocked desktop navigation.
+  setFlip(false);
+  const previous=cards[selected],direction=(to-selected+materials.length)%materials.length<=2?-1:1;
+  selected=to;
+  refresh();
+  const front=$('.rx-front',cards[selected]);
+  if(motion.available()){
+    motion.animate($('.rx-front',previous),[{opacity:1},{opacity:.42}],{duration:260});
+    motion.spring(front,p=>({opacity:clamp(p*1.65),transform:'translateX('+(direction*32*(1-p))+'px) scale('+(.95+.05*p)+')'}),{name:'snappy',duration:640});
+  }
  }
  cards.forEach((card,i)=>{
   $('[data-rx-flip]',card).addEventListener('click',()=>{if(selected!==i)return;setFlip(true);$('[data-rx-return]',card).focus({preventScroll:true});});
@@ -86,51 +93,117 @@ function mountDeck(){
  $('[data-rx-prev]',shell).addEventListener('click',()=>navigate(selected-1));
  $('[data-rx-next]',shell).addEventListener('click',()=>navigate(selected+1));
  stage.addEventListener('keydown',e=>{if(['ArrowRight','ArrowLeft','Home','End'].includes(e.key)){e.preventDefault();navigate(e.key==='Home'?0:e.key==='End'?3:selected+(e.key==='ArrowRight'?1:-1));}if(e.key==='Escape'&&flipped){setFlip(false);$('[data-rx-flip]',cards[selected]).focus({preventScroll:true});}});
- let start=null;stage.addEventListener('pointerdown',e=>{
-  if(e.target.closest('button')||busy)return;start={x:e.clientX,y:e.clientY,t:performance.now()};
+ let start=null;
+ function clearDrag(){stage.style.removeProperty('--rx-drag');stage.style.removeProperty('--rx-drag-rotation');stage.style.cursor='';}
+ stage.addEventListener('pointerdown',e=>{
+  if(e.target.closest('button')||busy)return;
+  start={x:e.clientX,y:e.clientY,t:performance.now(),axis:null};
   if(e.pointerType==='mouse')stage.style.cursor='grabbing';
  });
- stage.addEventListener('pointercancel',()=>{start=null;stage.style.cursor='';});
+ stage.addEventListener('pointermove',e=>{
+  if(!start||busy)return;const dx=e.clientX-start.x,dy=e.clientY-start.y;
+  if(!start.axis&&Math.hypot(dx,dy)>12)start.axis=Math.abs(dx)>Math.abs(dy)*1.25?'horizontal':'vertical';
+  if(start.axis!=='horizontal')return;
+  const movement=clamp(dx/2.6,-84,84);
+  stage.style.setProperty('--rx-drag',movement+'px');
+  stage.style.setProperty('--rx-drag-rotation',(movement/21)+'deg');
+ });
+ stage.addEventListener('pointercancel',()=>{start=null;clearDrag();});
  stage.addEventListener('pointerup',e=>{
-  stage.style.cursor='';if(!start)return;const dx=e.clientX-start.x,dy=e.clientY-start.y;start=null;
-  if(Math.abs(dx)>65&&Math.abs(dx)>Math.abs(dy)*1.25){lastTouch=performance.now();navigate(selected+(dx<0?1:-1));}
+  if(!start){clearDrag();return;}
+  const dx=e.clientX-start.x,dy=e.clientY-start.y,elapsed=performance.now()-start.t;start=null;
+  clearDrag();
+  if(Math.abs(dx)>58&&Math.abs(dx)>Math.abs(dy)*1.25){lastTouch=performance.now();navigate(selected+(dx<0?1:-1));}
  });
  stage.addEventListener('click',e=>{if(performance.now()-lastTouch<360)e.preventDefault();},true);
  refresh();shell.dataset.ready='true';
  return shell;
 }
+/**
+ * A cinematic aperture, NOT a smartphone. Native scroll owns progress;
+ * the format buttons change the concept, never the scroll position state.
+ */
 function mountScrollFilm(){
- const ref=$('#experiencias');if(!ref)return;
- const film=parse('<section class="rx-film" id="narrativa-visual" data-phase="0" aria-label="Uma ideia, muitas formas: narrativa por rolagem"><div class="rx-film-sticky"><div class="rx-film-heading"><span>QUANDO UMA IDEIA GANHA FORMA</span><span>CONTEÚDO · CAMPANHA · PRODUTO</span></div><div class="rx-film-story"><div class="rx-film-word">Uma <em>ideia.</em></div><div class="rx-film-phone"><div class="rx-film-phone-notch"></div><img src="/assets/fatos-narrativa-detail.webp" alt="Material do Ecossistema Fatos em uma demonstração de narrativa visual"><span><small>FATOS / EDITORIAL</small><b>Uma pergunta abre caminhos.</b></span></div><div class="rx-film-word">Muitas <em>formas.</em></div></div><div class="rx-film-cta"><div class="rx-film-progress" role="group" aria-label="Etapas da experiência"><button type="button" aria-current="true" data-rx-film-to="0">01</button><button type="button" aria-current="false" data-rx-film-to="1">02</button><button type="button" aria-current="false" data-rx-film-to="2">03</button></div><span class="rx-film-cue">↓ Continue para ver de perto</span></div></div></section>');
- ref.before(film);const image=$('img',film),caption=$('.rx-film-phone span',film),phone=$('.rx-film-phone',film),words=$$('.rx-film-word',film),buttons=$$('[data-rx-film-to]',film);
- const data=[
-  {image:'/assets/fatos-narrativa-detail.webp',alt:'Prancha editorial original do Fatos',kind:'FATOS / EDITORIAL',text:'Uma pergunta abre caminhos.'},
-  {image:'/assets/fatos-cover-detail.webp',alt:'Capa original do projeto editorial Fatos',kind:'IDEIA / CAMPANHA',text:'A história encontra formatos.'},
-  {image:'/assets/smiile-landscape.webp',alt:'Exemplo de experiência digital da smiile',kind:'SMIILE / PRODUTO',text:'A ideia vira interação.'}
- ];let active=0,scheduled=0,visible=false;const reduce=matchMedia('(prefers-reduced-motion: reduce)');
- function phase(i){if(i===active)return;active=i;film.dataset.phase=String(i);const m=data[i];image.src=m.image;image.alt=m.alt;caption.innerHTML='<small>'+m.kind+'</small><b>'+m.text+'</b>';buttons.forEach((b,j)=>b.setAttribute('aria-current',String(i===j)));motion.animate(image,[{opacity:.45},{opacity:1}],{duration:450});}
- function progress(){
-  scheduled=0;if(!visible||reduce.matches||motion.paused()){if(reduce.matches){film.style.setProperty('--rx-phone-scale','1');words.forEach(w=>w.style.setProperty('--rx-word-opacity','1'));}return;}
-  const rect=film.getBoundingClientRect(),travel=Math.max(1,film.offsetHeight-innerHeight),p=clamp(-rect.top/travel),scale=1+(innerWidth<620?1.15:2.07)*Math.pow(p,1.22);
-  phone.style.setProperty('--rx-phone-scale',String(scale));
-  words.forEach((w,i)=>{w.style.setProperty('--rx-word-opacity',String(clamp(1-p*2.8)));w.style.setProperty('--rx-word-x',(i===0?-1:1)*p*70+'px');});
-  const next=p<.34?0:p<.69?1:2;if(next!==active)phase(next);
+ const ref=$('#experiencias');if(!ref)return null;
+ const film=parse('<section class="rx-film rv-reveal" id="narrativa-visual" data-format="0" data-reveal-state="entry" aria-label="Uma ideia, muitas formas: janela cinematográfica que abre durante a rolagem"><div class="rv-stage"><div class="rv-overline"><span>DA IDEIA À EXPERIÊNCIA</span><span>CONTEÚDO · FORMATO · CONTEXTO</span></div><div class="rv-compose"><div class="rv-copy rv-left">Uma <em>ideia.</em></div><div class="rv-window" role="img" aria-label="Composição editorial Matéria viva"><img data-rv-image src="/assets/showcase/scenes/materia-viva.svg" alt="Ilustração botânica Matéria viva: folha verde com gotículas"/><div class="rv-image-shade" aria-hidden="true"></div><div class="rv-window-caption"><small data-rv-eyebrow>FATOS / EDITORIAL</small><strong data-rv-title>Matéria viva.</strong><p data-rv-description>Curiosidade como ponto de partida para uma boa história.</p></div></div><div class="rv-copy rv-right">Muitas <em>formas.</em></div></div><div class="rv-footer"><div class="rv-format-switch" role="group" aria-label="Escolher desdobramento da ideia"><button type="button" data-rx-film-to="0" aria-pressed="true"><span>01</span> Editorial</button><button type="button" data-rx-film-to="1" aria-pressed="false"><span>02</span> Contexto</button><button type="button" data-rx-film-to="2" aria-pressed="false"><span>03</span> Narrativa</button></div><p class="rv-film-cue">↓ Role para transformar a ideia. Toque para escolher o formato.</p></div></div></section>');
+ ref.before(film);
+ const stage=$('.rv-stage',film),windowEl=$('.rv-window',film),picture=$('[data-rv-image]',film),copy=$$('.rv-copy',film),buttons=$$('[data-rx-film-to]',film);
+ const formats=[
+  {image:'/assets/showcase/scenes/materia-viva.svg',alt:'Matéria viva, composição botânica original',eyebrow:'FATOS / EDITORIAL',title:'Matéria viva.',description:'Curiosidade como ponto de partida para uma boa história.'},
+  {image:'/assets/showcase/scenes/contexto.svg',alt:'Contexto, representação de astronomia e conexões',eyebrow:'FATOS / PESQUISA',title:'Um olhar mais profundo.',description:'Fonte, pergunta e contexto dão sentido à descoberta.'},
+  {image:'/assets/showcase/scenes/narrativa.svg',alt:'Narrativa, arte editorial em tons de terracota',eyebrow:'FATOS / NARRATIVA',title:'A descoberta vira história.',description:'Uma ideia se desdobra em formatos sem perder a mensagem.'}
+ ];
+ let active=0,visible=false,frame=0,currentProgress=0;
+ const reduced=matchMedia('(prefers-reduced-motion:reduce)');
+ const smooth=p=>{const x=clamp(p);return x*x*(3-2*x);};
+ function setFormat(i){
+  active=clamp(i,0,formats.length-1);const scene=formats[active];
+  picture.src=scene.image;picture.alt=scene.alt;
+  windowEl.setAttribute('aria-label',scene.alt);
+  $('[data-rv-eyebrow]',film).textContent=scene.eyebrow;
+  $('[data-rv-title]',film).textContent=scene.title;
+  $('[data-rv-description]',film).textContent=scene.description;
+  film.dataset.format=String(active);
+  buttons.forEach((b,j)=>b.setAttribute('aria-pressed',String(j===active)));
+  if(!reduced.matches&&!motion.paused())motion.animate(picture,[{opacity:.48,transform:'scale(1.035)'},{opacity:1,transform:'scale(1)'}],{duration:420});
  }
- const request=()=>{if(visible&&!scheduled)scheduled=requestAnimationFrame(progress)};
- new IntersectionObserver(([entry])=>{visible=entry.isIntersecting;if(visible)request();},{rootMargin:'100px 0px',threshold:0}).observe(film);
- addEventListener('scroll',request,{passive:true});addEventListener('resize',request,{passive:true});reduce.addEventListener('change',request);
- buttons.forEach((button,i)=>button.addEventListener('click',()=>{const top=scrollY+film.getBoundingClientRect().top;const step=film.offsetHeight-innerHeight;window.scrollTo({top:top+(i===0?.12:i===1?.51:.89)*step,behavior:motion.paused()?'instant':'smooth'});phase(i)}));
- progress();film.dataset.ready='true';return film;
+ function paint(progress){
+  currentProgress=clamp(progress);
+  const opening=smooth(clamp((currentProgress-.10)/.72));
+  const vw=window.innerWidth,vh=stage.clientHeight;
+  const availableH=Math.max(360,vh-124),availableW=Math.max(210,vw-38);
+  const finalW=Math.min(availableW,vw>900?980:Math.min(540,availableH*.81));
+  const finalH=Math.min(availableH,vw>900?Math.min(560,availableH):Math.max(350,finalW*1.27));
+  const firstW=vw>800?142:Math.max(76,Math.min(100,vw*.235)),firstH=firstW*1.72;
+  const w=firstW+(finalW-firstW)*opening,h=firstH+(finalH-firstH)*opening;
+  windowEl.style.width=w.toFixed(2)+'px';windowEl.style.height=h.toFixed(2)+'px';
+  windowEl.style.borderRadius=(18-12*opening).toFixed(2)+'px';
+  windowEl.style.setProperty('--rv-overlay',String(clamp((opening-.36)*2.4)));
+  windowEl.style.setProperty('--rv-image-scale',String(1.08-.08*opening));
+  copy.forEach(el=>{el.style.opacity=String(clamp(1-opening*3.1));el.style.pointerEvents=opening>.2?'none':'';});
+  film.dataset.revealState=opening>.94?'open':opening<.05?'entry':'opening';
+  film.style.setProperty('--rv-open-progress',String(opening));
+ }
+ function update(){
+  frame=0;if(!visible||motion.paused())return;
+  if(reduced.matches){paint(1);return;}
+  const r=film.getBoundingClientRect(),travel=Math.max(1,film.offsetHeight-stage.offsetHeight);
+  const stickyTop=parseFloat(getComputedStyle(stage).top)||0;
+  paint(clamp((stickyTop-r.top)/travel));
+ }
+ const request=()=>{if(!frame)frame=requestAnimationFrame(update)};
+ new IntersectionObserver(([e])=>{visible=e.isIntersecting;if(visible)request();},{threshold:0,rootMargin:'100px 0px'}).observe(film);
+ addEventListener('scroll',request,{passive:true});
+ addEventListener('resize',request,{passive:true});
+ reduced.addEventListener('change',request);
+ buttons.forEach((button,i)=>button.addEventListener('click',()=>{
+  setFormat(i);
+  if(currentProgress<.74&&!reduced.matches){
+   const top=scrollY+film.getBoundingClientRect().top;
+   const travel=Math.max(1,film.offsetHeight-stage.offsetHeight);
+   window.scrollTo({top:top+travel*.82,behavior:motion.paused()?'auto':'smooth'});
+  }
+ }));
+ paint(reduced.matches?1:0);setFormat(0);film.dataset.ready='true';return film;
 }
 function mountSocial(){
  const panel=$('#panel-meta'),old=panel&&$('.mock-phone',panel);if(!panel||!old)return;
- const scene=parse('<div class="rx-instagram" role="region" aria-label="Estudo de publicação em formato social, não veiculada"><div class="rx-iphone"><div class="rx-iphone-inner"><div class="rx-device-status"><span>10:09</span><span class="rx-dynamic-island" aria-hidden="true"></span><span>▂ ▂ ▰</span></div><div class="rx-ig-topbar"><span>‹</span><strong>Posts</strong><span class="rx-follow">Seguir</span></div><div class="rx-ig-profile"><span class="rx-ig-avatar">F</span><div><b>fatosdesconhecidos <span aria-hidden="true">✦</span></b><small>Estudo autoral · não veiculado</small></div><span>≡</span></div><div class="rx-ig-photo"><img src="/assets/fatos-desconhecidos.webp" alt="Material editorial original do Fatos, apresentado como estudo visual" loading="lazy"><span class="rx-ig-count">1/3</span><div class="rx-ig-overlay"><small>ESTUDO DE LINGUAGEM / FATOS</small><h3>Por que isso faz parte do seu dia?</h3></div><div class="rx-ig-nav"><button type="button" data-rx-social-prev aria-label="Imagem anterior">‹</button><button type="button" data-rx-social-next aria-label="Próxima imagem">›</button></div></div><div class="rx-ig-dots" role="group" aria-label="Selecionar quadro"><button type="button" data-rx-social="0" aria-current="true" aria-label="Imagem 1"></button><button type="button" data-rx-social="1" aria-current="false" aria-label="Imagem 2"></button><button type="button" data-rx-social="2" aria-current="false" aria-label="Imagem 3"></button></div><div class="rx-ig-actions"><span>♡ &nbsp; ◯ &nbsp; ↗</span><span>▯</span></div><p class="rx-ig-caption"><strong>fatosdesconhecidos</strong> O começo é uma pergunta. A narrativa organiza o contexto e o formato.</p><span class="rx-ig-date">ESTUDO CONCEITUAL / 2026</span><div class="rx-ig-home"></div></div></div><p class="rx-social-caption">ESTRUTURA DE POST SOCIAL · COMPOSIÇÃO AUTORAL · NÃO REPRESENTA MÍDIA VEICULADA</p></div>');
- old.replaceWith(scene);const image=$('.rx-ig-photo img',scene),title=$('.rx-ig-overlay h3',scene),cap=$('.rx-ig-caption',scene),count=$('.rx-ig-count',scene);
+ const scene=parse('<div class="rx-instagram" role="region" aria-label="Estudo de publicação em formato social, não veiculada"><div class="rx-iphone"><div class="rx-iphone-inner"><div class="rx-device-status"><span>10:09</span><span class="rx-dynamic-island" aria-hidden="true"></span><span>▂ ▂ ▰</span></div><div class="rx-ig-topbar"><span>‹</span><strong>Posts</strong><span class="rx-follow">Seguir</span></div><div class="rx-ig-profile"><span class="rx-ig-avatar">F</span><div><b>fatosdesconhecidos <span aria-hidden="true">✦</span></b><small>Estudo autoral · não veiculado</small></div><span>≡</span></div><div class="rx-ig-photo"><img src="/assets/showcase/scenes/materia-viva.svg" alt="Composição botânica conceitual Matéria viva" loading="lazy"><span class="rx-ig-count">1/3</span><div class="rx-ig-overlay"><small>ESTUDO DE LINGUAGEM / FATOS</small><h3>Por que isso faz parte do seu dia?</h3></div><div class="rx-ig-nav"><button type="button" data-rx-social-prev aria-label="Imagem anterior">‹</button><button type="button" data-rx-social-next aria-label="Próxima imagem">›</button></div></div><div class="rx-ig-dots" role="group" aria-label="Selecionar quadro"><button type="button" data-rx-social="0" aria-current="true" aria-label="Imagem 1"></button><button type="button" data-rx-social="1" aria-current="false" aria-label="Imagem 2"></button><button type="button" data-rx-social="2" aria-current="false" aria-label="Imagem 3"></button></div><div class="rx-ig-actions"><span>♡ &nbsp; ◯ &nbsp; ↗</span><span>▯</span></div><p class="rx-ig-caption"><strong>fatosdesconhecidos</strong> O começo é uma pergunta. A narrativa organiza o contexto e o formato.</p><span class="rx-ig-date">ESTUDO CONCEITUAL / 2026</span><div class="rx-ig-home"></div></div></div><p class="rx-social-caption">ESTRUTURA DE POST SOCIAL · COMPOSIÇÃO AUTORAL · NÃO REPRESENTA MÍDIA VEICULADA</p></div>');
+ old.replaceWith(scene);
+ // Reuse the exact smiile metallic frame instead of maintaining a conflicting orange shell.
+ const legacy=$('.rx-iphone',scene),inner=$('.rx-iphone-inner',legacy);
+ const socialDevice=createDeviceFrame({tone:'dark',scheme:'dark',time:'10:09',label:'Dispositivo metálico com carrossel social interativo'});
+ socialDevice.root.classList.add('pf-social-device');
+ legacy.replaceWith(socialDevice.root);
+ $('.rx-device-status',inner)?.remove();
+ $('.rx-ig-home',inner)?.remove();
+ socialDevice.screen.append(inner);
+ const image=$('.rx-ig-photo img',scene),title=$('.rx-ig-overlay h3',scene),cap=$('.rx-ig-caption',scene),count=$('.rx-ig-count',scene);
  const slides=[
- {image:'/assets/fatos-desconhecidos.webp',headline:'Por que isso faz parte do seu dia?',copy:'O começo é uma pergunta. A narrativa organiza o contexto e o formato.'},
- {image:'/assets/fatos-editorial-detail.webp',headline:'Uma história começa pelo olhar.',copy:'Fontes, escolha do recorte e direção de texto.'},
- {image:'/assets/fatos-narrativa-detail.webp',headline:'Quando a ideia encontra a forma.',copy:'A mesma lógica editorial pode inspirar diferentes composições.'}
- ];let selected=0;function show(i){selected=(i+slides.length)%slides.length;const s=slides[selected];image.src=s.image;image.alt='Material original do Fatos, composição '+(selected+1);title.textContent=s.headline;cap.innerHTML='<strong>fatosdesconhecidos</strong> '+s.copy;count.textContent=(selected+1)+'/3';$$('[data-rx-social]',scene).forEach((n,j)=>n.setAttribute('aria-current',String(selected===j)));motion.animate(image,[{opacity:.4,transform:'scale(1.09)'},{opacity:1,transform:'scale(1)'}],{duration:480});}
+ {image:'/assets/showcase/scenes/materia-viva.svg',headline:'Por que isso faz parte do seu dia?',copy:'O começo é uma pergunta. A narrativa organiza o contexto e o formato.'},
+ {image:'/assets/showcase/scenes/contexto.svg',headline:'Que pergunta revela o contexto?',copy:'Pesquisa e contexto sustentam o roteiro.'},
+ {image:'/assets/showcase/scenes/narrativa.svg',headline:'Uma descoberta. Muitas formas.',copy:'Do primeiro gancho à narrativa completa, com uma identidade coerente.'}
+ ];let selected=0;function show(i){selected=(i+slides.length)%slides.length;const s=slides[selected];image.src=s.image;image.alt='Arte editorial conceitual Fatos, quadro '+(selected+1);title.textContent=s.headline;cap.innerHTML='<strong>fatosdesconhecidos</strong> '+s.copy;count.textContent=(selected+1)+'/3';$$('[data-rx-social]',scene).forEach((n,j)=>n.setAttribute('aria-current',String(selected===j)));motion.animate(image,[{opacity:.4,transform:'scale(1.09)'},{opacity:1,transform:'scale(1)'}],{duration:480});}
  $('[data-rx-social-prev]',scene).addEventListener('click',()=>show(selected-1));$('[data-rx-social-next]',scene).addEventListener('click',()=>show(selected+1));
  $$('[data-rx-social]',scene).forEach(b=>b.addEventListener('click',()=>show(Number(b.dataset.rxSocial))));
  let pt=null;const screen=$('.rx-ig-photo',scene);screen.style.touchAction='pan-y';screen.addEventListener('pointerdown',e=>{if(e.target.closest('button'))return;pt={x:e.clientX,y:e.clientY};});

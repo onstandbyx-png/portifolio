@@ -1,3 +1,4 @@
+import {createDeviceFrame} from '../showcase/device-frame.js';
 import {createMotion,clamp,entryEdge,rotationForEdge,chapterAt,timelineStep} from './motion.js';
 const $=(s,r=document)=>r.querySelector(s),$$=(s,r=document)=>[...r.querySelectorAll(s)];
 const M=createMotion(),fine=matchMedia('(hover:hover) and (pointer:fine)');
@@ -57,8 +58,8 @@ mount('Works',()=>{
    $('.sm-case-thumbs',dialog)?.remove();
    if($('#dialog-kicker').textContent.includes('FATOS')){
     const list=copy('<div class="sm-case-thumbs" role="group" aria-label="Explorar materiais do Fatos"></div>');
-    const sheets=[['Direção','fatos-editorial-detail.webp'],['Roteiro','fatos-roteiro.webp'],['Narrativa','fatos-narrativa-detail.webp']];
-    sheets.forEach(([label,file],i)=>{const btn=copy(`<button type="button" aria-pressed="${i===0}">${label}</button>`);list.append(btn);btn.addEventListener('click',()=>{const img=$('img',image);if(img){img.src='/assets/'+file;img.alt='Material original Fatos: '+label;rise(img,12);}$$('button',list).forEach(x=>x.setAttribute('aria-pressed',String(x===btn)));});});
+    const sheets=[['A pergunta','showcase/scenes/materia-viva.svg'],['O contexto','showcase/scenes/contexto.svg'],['A narrativa','showcase/scenes/narrativa.svg']];
+    sheets.forEach(([label,file],i)=>{const btn=copy(`<button type="button" aria-pressed="${i===0}">${label}</button>`);list.append(btn);btn.addEventListener('click',()=>{const img=$('img',image);if(img){img.src='/assets/'+file;img.alt='Estudo editorial conceitual Fatos: '+label;rise(img,12);}$$('button',list).forEach(x=>x.setAttribute('aria-pressed',String(x===btn)));});});
     image.append(list);
    }
   }
@@ -67,48 +68,101 @@ mount('Works',()=>{
 });
 
 mount('Editorial',()=>{
- const feature=$('.editorial-feature'),image=$('#editorial-image'),page=$('.editorial-page'),buttons=$$('.editorial-step');if(!feature||!page||!image||!buttons.length)return;
- const runway=document.createElement('div');runway.className='sm-editorial-runway';feature.before(runway);runway.append(feature);
- page.prepend(copy('<div class="sm-paper-fan" aria-hidden="true"><span></span><span></span></div>'));
- const strip=copy('<div class="sm-editorial-controls"><span class="sm-editorial-cue">ROLE PARA LER A HISTÓRIA ↓</span><div role="group" aria-label="Navegar entre capítulos"><button type="button" data-story-prev aria-label="Capítulo anterior">←</button><span class="sm-story-count">01 / 03</span><button type="button" data-story-next aria-label="Próximo capítulo">→</button></div></div>');feature.append(strip);
- let active=0,auto=false,lockedUntil=0,frame=0,outgoing=null,linked=false;
- function transition(i){
-  if(i===active)return;const direction=i>active?1:-1;active=i;
-  outgoing?.remove();outgoing=cloneVisual(image);page.append(outgoing);
-  queueMicrotask(()=>{
-   $('.sm-story-count',strip).textContent=`0${i+1} / 03`;
-   $('[data-story-prev]',strip).disabled=i===0;$('[data-story-next]',strip).disabled=i===2;
-   feature.style.setProperty('--story-progress',String((i+1)/3));
-   const ghost=outgoing;const a=M.animate(ghost,[{opacity:1,transform:'translateX(0) rotate(0deg)'},{opacity:0,transform:`translateX(${-direction*55}px) rotate(${-direction*7}deg)`}],{duration:380});
-   if(a)a.finished.catch(()=>{}).finally(()=>ghost?.remove());else ghost?.remove();
-   M.spring(image,p=>({opacity:clamp(p*1.6),transform:`translateX(${direction*70*(1-p)}px) rotate(${direction*6*(1-p)}deg) scale(${.94+.06*p})`}),{duration:690});
-   $$('#editorial-caption,#editorial-headline,#editorial-description').forEach((el,j)=>rise(el,17,45*j));
-  });
+ const feature=$('.editorial-feature'),page=$('.editorial-page'),buttons=$$('.editorial-step');
+ if(!feature||!page||buttons.length!==3)return;
+ const runway=document.createElement('div');
+ runway.className='sm-editorial-runway pf-story-runway';feature.before(runway);runway.append(feature);
+ page.classList.add('pf-new-device-stage');
+ const stories=[
+  {label:'01 / A PERGUNTA',title:'Por que isso faz parte do seu dia?',description:'Uma pergunta abre a conversa e desperta curiosidade.',insight:'Comece pelo que merece ser entendido.',image:'/assets/showcase/scenes/materia-viva.svg',alt:'Matéria viva: macroilustração botânica'},
+  {label:'02 / O CONTEXTO',title:'O que a pesquisa revela?',description:'Fontes e relações permitem enxergar além do óbvio.',insight:'Contexto antes de qualquer conclusão.',image:'/assets/showcase/scenes/contexto.svg',alt:'Composição astronômica que representa a pesquisa'},
+  {label:'03 / A NARRATIVA',title:'Uma descoberta. Muitas formas.',description:'Roteiro, imagem e desdobramento trabalham juntos.',insight:'A forma acompanha a mensagem.',image:'/assets/showcase/scenes/narrativa.svg',alt:'Composição editorial em tons terrosos'}
+ ];
+ const content='<div class="pf-story-screen" data-scene="0"><img class="pf-story-image" src="'+stories[0].image+'" alt="'+stories[0].alt+'"><div class="pf-story-gradient" aria-hidden="true"></div><div class="pf-story-profile"><b class="pf-story-avatar" aria-hidden="true">F</b><span><strong>Fatos Desconhecidos</strong><small>Estúdio editorial · demonstração</small></span></div><div class="pf-story-description"><span class="pf-story-kicker">'+stories[0].label+'</span><h3 class="pf-story-title">'+stories[0].title+'</h3><p class="pf-story-explain">'+stories[0].description+'</p></div><div class="pf-story-lower"><small>DA PERGUNTA AO DESDOBRAMENTO</small><p class="pf-story-insight">'+stories[0].insight+'</p><div class="pf-story-progress" aria-hidden="true"><i></i></div></div><nav class="pf-story-controls" aria-label="Capítulos do estudo editorial"><button type="button" data-pf-prev aria-label="Capítulo anterior">‹</button><span data-pf-count>01 / 03</span><button type="button" data-pf-next aria-label="Capítulo seguinte">›</button></nav></div>';
+ const device=createDeviceFrame({tone:'light',scheme:'dark',time:'10:47',label:'Dispositivo metálico interativo com estudo editorial de três capítulos',content});
+ page.append(device.root);const shell=device.root;
+ const strip=copy('<div class="sm-editorial-controls"><span class="sm-editorial-cue">EXPLORE O PROCESSO ↓</span><div role="group" aria-label="Navegar entre capítulos"><button type="button" data-story-prev aria-label="Capítulo anterior">←</button><span class="sm-story-count">01 / 03</span><button type="button" data-story-next aria-label="Próximo capítulo">→</button></div></div>');
+ feature.append(strip);
+ let active=0,lockedUntil=0,linked=false,scheduled=0,auto=false;
+ function render(i){
+  i=Math.max(0,Math.min(2,i));active=i;
+  const story=stories[i];const scene=$('.pf-story-screen',shell);
+  scene.dataset.scene=String(i);
+  const image=$('.pf-story-image',shell);
+  image.src=story.image;image.alt=story.alt;
+  $('.pf-story-kicker',shell).textContent=story.label;
+  $('.pf-story-title',shell).textContent=story.title;
+  $('.pf-story-explain',shell).textContent=story.description;
+  $('.pf-story-insight',shell).textContent=story.insight;
+  $('.pf-story-progress i',shell).style.transform='scaleX('+((i+1)/3)+')';
+  $('[data-pf-count]',shell).textContent='0'+(i+1)+' / 03';
+  $('.sm-story-count',strip).textContent='0'+(i+1)+' / 03';
+  $('[data-story-prev]',strip).disabled=i===0;$('[data-story-next]',strip).disabled=i===2;
+  $('[data-pf-prev]',shell).disabled=i===0;$('[data-pf-next]',shell).disabled=i===2;
+  feature.style.setProperty('--story-progress',String((i+1)/3));
+  if(M.available())M.animate(image,[{opacity:.55,transform:'scale(1.035)'},{opacity:1,transform:'scale(1)'}],{duration:490});
  }
- buttons.forEach((b,i)=>b.addEventListener('click',()=>{
-  transition(i);
-  if(linked&&!auto){lockedUntil=performance.now()+850;const top=scrollY+runway.getBoundingClientRect().top-84+(runway.offsetHeight-feature.offsetHeight)*(i+.1)/3;window.scrollTo({top,behavior:M.paused()?'auto':'smooth'});}
+ buttons.forEach((button,i)=>button.addEventListener('click',()=>{
+  render(i);
+  if(linked&&!auto){
+   lockedUntil=performance.now()+950;
+   const travel=Math.max(1,runway.offsetHeight-feature.offsetHeight);
+   const top=scrollY+runway.getBoundingClientRect().top-84+travel*(i+.12)/3;
+   scrollTo({top,behavior:M.paused()?'auto':'smooth'});
+  }
  },true));
- function go(i){buttons[clamp(i,0,2)]?.click();}
- $('[data-story-prev]',strip).disabled=true;
- $('[data-story-prev]',strip).addEventListener('click',()=>go(active-1));$('[data-story-next]',strip).addEventListener('click',()=>go(active+1));
- function measure(){linked=!M.paused()&&innerWidth>=1000&&innerHeight>=690;runway.dataset.linked=String(linked);runway.style.height=linked?`${feature.offsetHeight+innerHeight*1.3}px`:'auto';$('.sm-editorial-cue',strip).textContent=linked?'ROLE PARA LER A HISTÓRIA ↓':'EXPLORE OS CAPÍTULOS ↔';}
- function update(){frame=0;if(!linked||M.paused()||performance.now()<lockedUntil)return;const r=runway.getBoundingClientRect(),length=runway.offsetHeight-feature.offsetHeight;if(r.top>100||r.bottom<100)return;const next=chapterAt((84-r.top)/Math.max(1,length),3);if(next!==active){auto=true;buttons[next].click();auto=false;}}
- const request=()=>{if(!frame)frame=requestAnimationFrame(update);};
- addEventListener('scroll',request,{passive:true});addEventListener('resize',()=>{measure();request();},{passive:true});
- matchMedia('(prefers-reduced-motion: reduce)').addEventListener('change',()=>{measure();request();});
- M.onStop(()=>{measure();outgoing?.remove();});
- const toggle=$('.motion-toggle');toggle&&new MutationObserver(()=>{measure();request();}).observe(toggle,{attributes:true,attributeFilter:['aria-pressed']});
- measure();new ResizeObserver(()=>{if(linked)runway.style.height=`${feature.offsetHeight+innerHeight*1.3}px`;}).observe(feature);
+ $('[data-pf-prev]',shell).addEventListener('click',()=>buttons[Math.max(0,active-1)]?.click());
+ $('[data-pf-next]',shell).addEventListener('click',()=>buttons[Math.min(2,active+1)]?.click());
+ $('[data-story-prev]',strip).addEventListener('click',()=>buttons[Math.max(0,active-1)]?.click());
+ $('[data-story-next]',strip).addEventListener('click',()=>buttons[Math.min(2,active+1)]?.click());
+ const screen=$('.pf-story-screen',shell);let drag=null;
+ screen.addEventListener('pointerdown',e=>{if(e.target.closest('button'))return;drag={x:e.clientX,y:e.clientY};});
+ screen.addEventListener('pointerup',e=>{if(!drag)return;const dx=e.clientX-drag.x,dy=e.clientY-drag.y;drag=null;if(Math.abs(dx)>48&&Math.abs(dx)>Math.abs(dy)*1.3)buttons[Math.max(0,Math.min(2,active+(dx<0?1:-1)))]?.click();});
+ screen.addEventListener('pointercancel',()=>{drag=null;});
+ function measure(){
+  linked=innerWidth>=1000&&innerHeight>=720&&M.available();
+  runway.dataset.linked=String(linked);
+  runway.style.height=linked?Math.ceil(feature.offsetHeight+innerHeight*1.55)+'px':'auto';
+  $('.sm-editorial-cue',strip).textContent=linked?'ROLE PARA PERCORRER OS CAPÍTULOS ↓':'USE AS SETAS OU DESLIZE SOBRE A TELA';
+ }
+ function update(){
+  scheduled=0;if(!linked||performance.now()<lockedUntil)return;
+  const r=runway.getBoundingClientRect(),travel=Math.max(1,runway.offsetHeight-feature.offsetHeight);
+  if(r.top>85||r.bottom<120)return;
+  const n=chapterAt((85-r.top)/travel,3);
+  if(n!==active){auto=true;buttons[n].click();auto=false;}
+ }
+ const request=()=>{if(!scheduled)scheduled=requestAnimationFrame(update);};
+ addEventListener('scroll',request,{passive:true});
+ addEventListener('resize',()=>{measure();request();},{passive:true});
+ M.onStop(()=>{measure();});
+ render(0);measure();
 });
 
 mount('Experience',()=>{
  const frame=$('#immersive-frame');if(!frame)return;frame.classList.add('sm-interactive-experience');
  const preview=copy(`<div class="sm-experience"><div class="sm-device-tools"><span>EXPERIMENTE A INTERFACE</span><div role="group" aria-label="Formato da prévia"><button type="button" data-device="desktop" aria-pressed="true">Desktop</button><button type="button" data-device="mobile" aria-pressed="false">Mobile</button></div></div><div class="sm-device" data-mode="desktop" data-tone="light"><div class="sm-browser-chrome"><span>● ● ●</span><span>casa costa / prévia local</span><span>↗</span></div><div class="sm-demo-nav"><strong>Casa Costa</strong><div role="group" aria-label="Navegação da prévia"><button type="button" data-demo-page="inicio" aria-pressed="true">Início</button><button type="button" data-demo-page="projeto" aria-pressed="false">Projeto</button></div></div><div class="sm-demo-body"><div class="sm-demo-picture"><img src="/assets/smiile-landscape.webp" alt="Casa Costa, composição original demonstrada na smiile" loading="lazy"><span>UM LUGAR PARA EXISTIR.</span></div><div class="sm-demo-copy"><small>ARQUITETURA / EXPERIÊNCIA</small><h3>Entre a casa<br>e o horizonte.</h3><p>Imagem, mensagem e navegação trabalhando juntas.</p><button type="button" class="sm-demo-action">Conhecer o projeto <span>↗</span></button></div></div><div class="sm-demo-footer"><span>CONCEITO DA SMIILE</span><div role="group" aria-label="Direção visual da prévia"><button type="button" data-tone="light" aria-pressed="true">Clara</button><button type="button" data-tone="dark" aria-pressed="false">Grafite</button></div></div></div><div class="sm-experience-note"><span>MUDE O FORMATO. EXPLORE AS PÁGINAS.</span><span>INTERAÇÃO LOCAL / SEM ENVIO</span></div></div>`);
  frame.append(preview);const device=$('.sm-device',preview);let activePage='inicio';
+ const host=device.parentElement;
+ const phone=createDeviceFrame({tone:'light',scheme:'light',time:'10:47',label:'Prévia interativa Casa Costa dentro do dispositivo metálico'});
+ phone.root.classList.add('pf-experience-device');phone.root.hidden=true;host.append(phone.root);
+ let insidePhone=false;
+ function setDeviceMode(mobile){
+  if(insidePhone===mobile)return;
+  if(mobile){phone.screen.append(device);phone.root.hidden=false;}
+  else{host.insertBefore(device,phone.root);phone.root.hidden=true;}
+  insidePhone=mobile;
+ }
  $$('[data-device]',preview).forEach(button=>button.addEventListener('click',()=>{
-  const before=device.getBoundingClientRect();device.dataset.mode=button.dataset.device;$$('[data-device]',preview).forEach(b=>b.setAttribute('aria-pressed',String(b===button)));
-  const after=device.getBoundingClientRect();M.spring(device,p=>({transform:`scaleX(${before.width/after.width+(1-before.width/after.width)*p})`,transformOrigin:'50% 50%'}),{duration:600});rise($('.sm-demo-copy',preview),14,90);
+  const oldWidth=Math.max(1,device.getBoundingClientRect().width);
+  device.dataset.mode=button.dataset.device;
+  $$('[data-device]',preview).forEach(b=>b.setAttribute('aria-pressed',String(b===button)));
+  setDeviceMode(button.dataset.device==='mobile');
+  if(!insidePhone&&M.available()){
+   const nextWidth=Math.max(1,device.getBoundingClientRect().width);
+   M.spring(device,p=>({transform:'scaleX('+(oldWidth/nextWidth+(1-oldWidth/nextWidth)*p)+')',transformOrigin:'50% 50%'}),{duration:530});
+  }
+  rise($('.sm-demo-copy',preview),14,90);
  }));
  function setPage(page){
   activePage=page;const isHome=page==='inicio';$$('[data-demo-page]',preview).forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.demoPage===page)));
