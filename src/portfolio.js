@@ -90,10 +90,9 @@ import {sectionCopy} from '/assets/content/portfolio-copy.js';
         });
         submit?.after(emailButton);
       }
-      const direct=document.createElement('a');direct.className='brief-direct';direct.href=contact.createContactHref(profile).href;direct.textContent=destination.channel==='whatsapp'?'Abrir uma conversa sem preencher o formulário ↗':'Escrever um e-mail sem preencher o formulário ↗';
-      if(destination.channel==='whatsapp'){direct.target='_blank';direct.rel='noopener noreferrer';}
-      direct.addEventListener('click',()=>recordInteraction('contact_click',{channel:destination.channel,entry:'direct'}));
-      brief.append(direct);
+      const alternatives=document.createElement('div');alternatives.className='brief-alternatives';
+      submit?.after(alternatives);
+      brief.querySelectorAll('.brief-email,.brief-copy').forEach(button=>alternatives.append(button));
     }
     if(profile.name){$$('[data-professional-name]').forEach(el=>{el.textContent=profile.name;});}
   }

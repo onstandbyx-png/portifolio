@@ -1,6 +1,14 @@
 /* Static artwork remains inside the moving portfolio presentation. */
 import { createMotion } from '../sections/motion.js';
+import { mountArtworkDialog } from './artwork-dialog.js';
 const ART = '/assets/portfolio/static-r8/';
+
+const campaignNotes = [
+ {title:'Mostrar a ideia antes de explicá-la.',message:'Sua ideia ganha vida.',decision:'A interface é a prova visual da proposta. O título apresenta a possibilidade sem competir com a peça.',delivery:'Conceito e direção de arte para feed e carrossel.'},
+ {title:'Responder à intenção de busca.',message:'Sites e aplicativos com uma proposta clara.',decision:'O anúncio organiza oferta, benefício e convite em texto. A mensagem se mantém coerente com o projeto apresentado.',delivery:'Copy de pesquisa e continuidade da página de destino.'},
+ {title:'Uma abertura pensada para a tela vertical.',message:'E se essa ideia fosse um app?',decision:'A pergunta abre o roteiro; a interface apresenta a resposta. O enquadramento dá espaço à mensagem e ao próximo passo.',delivery:'Direção visual e roteiro para vídeo vertical.'}
+];
+
 
 const campaigns = [
   { id: 'meta', name: 'Meta', logo: '/assets/brands/meta-official-primary.webp', width: 100, height: 28,
@@ -21,6 +29,11 @@ function mountCampaign(motion) {
   lab.className = 'sp-campaign';
   lab.innerHTML = `<div class="sp-platforms" role="tablist" aria-label="Canais da campanha smiile">${campaigns.map((campaign, i) => `<button type="button" id="tab-${campaign.id}" role="tab" data-sp-tab="${campaign.id}" aria-controls="panel-${campaign.id}" aria-selected="${i === 0}" tabindex="${i === 0 ? '0' : '-1'}"><img class="sp-platform-logo sp-platform-logo--${campaign.id}" src="${campaign.logo}" alt="" width="${campaign.width}" height="${campaign.height}" aria-hidden="true"><span>${campaign.name}</span></button>`).join('')}</div>
     <div class="sp-campaign-art">${campaigns.map((campaign, i) => `<div class="sp-campaign-panel" id="panel-${campaign.id}" role="tabpanel" aria-labelledby="tab-${campaign.id}" tabindex="0"${i ? ' hidden' : ''}><figure>${picture(`campanha-${campaign.id}`, campaign.alt)}</figure></div>`).join('')}</div>`;
+  const layout=document.createElement('div');layout.className='sp-campaign-layout';
+  const art=lab.querySelector('.sp-campaign-art');art.before(layout);layout.append(art);
+  const note=document.createElement('aside');note.className='sp-campaign-note';note.id='campaign-note';note.setAttribute('data-campaign-note','');note.setAttribute('aria-live','polite');note.setAttribute('aria-atomic','true');
+  note.innerHTML='<span class="eyebrow">A decisão por trás da peça</span><h3 data-note-title></h3><dl><div><dt>Mensagem</dt><dd data-note-message></dd></div><div><dt>Adaptação ao canal</dt><dd data-note-decision></dd></div><div><dt>Entrega</dt><dd data-note-delivery></dd></div></dl><a href="#contato" data-contact-service="Campanhas e gestão de mídia">Conversar sobre uma campanha ↗</a>';
+  layout.append(note);
   const tabs = Array.from(lab.querySelectorAll('[data-sp-tab]'));
   const panels = Array.from(lab.querySelectorAll('.sp-campaign-panel'));
   const figures = panels.map(panel => panel.querySelector('figure'));
@@ -59,6 +72,8 @@ function mountCampaign(motion) {
       panels[i].tabIndex = selected ? 0 : -1;
     });
     lab.dataset.channel = campaigns[index].id;
+    for(const field of ['title','message','decision','delivery'])note.querySelector('[data-note-'+field+']').textContent=campaignNotes[index][field];
+    panels[index].setAttribute('aria-describedby','campaign-note');
     if (isChange && motion.available()) {
       lab.dataset.transitioning = 'true';
       panels.forEach((panel, i) => {
@@ -106,8 +121,8 @@ function mountProducts() {
   section.setAttribute('aria-labelledby', 'static-systems-title');
   grid.className = 'shell sp-products-shell';
   grid.innerHTML = `<h2 id="static-systems-title" class="sr-only">Interfaces digitais</h2><div class="sp-products">
-    <figure>${picture('casa-costa', 'Casa Costa: interface de arquitetura com fotografia ampla, navegação clara e informações de visita.')}<figcaption><span>Casa Costa · Estudo de interface</span><h3>Apresentar um lugar.<br>Conduzir uma escolha.</h3></figcaption></figure>
-    <figure>${picture('trilhas', 'Trilhas: interface de aplicativo para descobrir percursos, com busca, fotografia da paisagem e cartão da Trilha do Arco.')}<figcaption><span>Trilhas · Estudo de aplicativo</span><h3>Encontrar um caminho.<br>Começar a explorar.</h3></figcaption></figure>
+    <figure>${picture('trilhas', 'Trilhas: interface para descobrir percursos, com busca, paisagem e informações organizadas para a escolha.')}<figcaption><span>Trilhas · Estudo de aplicativo</span></figcaption></figure>
+    <article class="sp-product-context"><span class="eyebrow">Outro projeto, outra tarefa</span><h3>Encontrar um caminho.<br>Começar a explorar.</h3><p>Depois de apresentar um lugar em Casa Costa, o desafio aqui é ajudar a escolher um percurso.</p><dl><div><dt>Contribuição</dt><dd>Direção visual e UX/UI.</dd></div><div><dt>Decisão de interface</dt><dd>Busca, fotografia e informações do percurso organizam a escolha antes do próximo passo.</dd></div></dl><div class="sp-product-actions"><a href="${ART}trilhas.webp" data-art-open="trilhas">Ampliar a interface ↗</a><a href="#contato" data-contact-service="Sites, apps e sistemas">Conversar sobre um projeto digital ↗</a></div></article>
   </div>`;
   return grid;
 }
@@ -131,6 +146,7 @@ function revealPresentations(elements, motion) {
 export function mountStaticPresentations() {
   if (document.documentElement.dataset.staticPresentations === 'ready') return;
   const motion = createMotion();
+  mountArtworkDialog();
   const campaign = mountCampaign(motion);
   const products = mountProducts();
   revealPresentations([campaign, ...(products?.querySelectorAll('.sp-products > figure') || [])], motion);

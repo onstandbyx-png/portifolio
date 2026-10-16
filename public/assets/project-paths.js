@@ -9,7 +9,7 @@ if (category) {
   root.id = 'project-paths';
   root.className = 'project-paths';
   root.innerHTML = `<header class="path-heading"><div><span class="path-kicker">${escape(copy.eyebrow)}</span><h2 id="project-paths-title">${multiline(copy.title)}</h2></div><p>${escape(copy.body)}</p></header>
-    <div class="path-scopes">${copy.services.map((service, i) => `<details class="path-scope" data-service-scope="${service.id}"${i === 0 ? ' open' : ''}>
+    <div class="path-scopes">${copy.services.map((service, i) => `<details class="path-scope" data-service-scope="${service.id}"${''}>
       <summary><span class="path-number">0${i + 1}</span><span class="path-summary-copy"><strong>${escape(service.label)}</strong><span>${escape(service.title.replace(/\n/g, ' '))}</span></span><span class="path-toggle" aria-hidden="true">+</span></summary>
       <div class="path-scope-content"><p class="path-description">${escape(service.body)}</p><div class="path-deliverables"><span class="path-scope-label">O que podemos construir</span><ul>${service.deliverables.map(deliverable => `<li>${escape(deliverable)}</li>`).join('')}</ul><a class="path-contact" href="#contato" data-project-need="${escape(service.label)}" data-service-id="${service.id}">${escape(service.cta)}<span aria-hidden="true">↗</span></a></div></div>
     </details>`).join('')}</div>

@@ -54,7 +54,7 @@ export function mountScrollGallery(){
    <div class="rg-card-stage" data-face="front">
     <div class="rg-card-rotor">
      <figure class="rg-art rg-card-front"><img src="/assets/portfolio/static-r8/${art.image}" width="960" height="1200" alt="${escape(art.alt)}" loading="lazy" decoding="async"></figure>
-     <div class="rg-card-back" id="rg-back-${escape(entry.id)}" aria-hidden="true" inert><span>Contribuição</span><h4>${escape(entry.contribution)}</h4><p>${escape(entry.nature)}</p><a href="${escape(entry.href)}">${escape(entry.cta)} <i aria-hidden="true">↗</i></a></div>
+     <div class="rg-card-back" id="rg-back-${escape(entry.id)}" aria-hidden="true" inert><span>Contribuição</span><h4>${escape(entry.contribution)}</h4><p data-work-decision>${escape(entry.decision)}</p><a href="${escape(entry.href)}">${escape(entry.cta)} <i aria-hidden="true">↗</i></a></div>
     </div>
     <button class="rg-flip" type="button" data-rg-flip aria-pressed="false" aria-controls="rg-back-${escape(entry.id)}" aria-label="Ver contribuição: ${escape(entry.label)}" title="Ver contribuição"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none"><path d="M19.5 8.5A8 8 0 1 0 20 15M19.5 8.5V3.5M19.5 8.5H14.5" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
    </div>
@@ -67,6 +67,11 @@ export function mountScrollGallery(){
  gallery.before(shell);shell.querySelector('.rg-viewport').append(gallery);gallery.classList.add('rg-gallery');
  gallery.setAttribute('role','region');gallery.setAttribute('aria-label','Trabalhos em perspectiva');
  shell.style.setProperty('--rg-count',String(cards.length));
+ const shortcuts=document.createElement('div');shortcuts.className='rg-shortcuts';shortcuts.setAttribute('role','group');shortcuts.setAttribute('aria-label','Escolher trabalho');
+ ['Fatos','Campanhas','Digital'].forEach((label,i)=>{const button=document.createElement('button');button.type='button';button.dataset.rgTo=String(i);button.textContent=label;button.setAttribute('aria-pressed',String(i===0));button.addEventListener('click',()=>navigate(i));shortcuts.append(button);});
+ shell.querySelector('.rg-toolbar').append(shortcuts);
+ shell.querySelector('[data-rg-name]').classList.add('sr-only');
+ shell.querySelector('.rg-scroll-cue').remove();
  const planes=cards.map((card,index)=>{
   const plane=document.createElement('div');plane.className='rg-plane';plane.dataset.rgIndex=String(index);
   card.before(plane);plane.append(card);card.querySelectorAll('.tile-caption h3 br').forEach(br=>br.before(document.createTextNode(' ')));card.classList.remove('reveal');card.classList.add('is-visible');return plane;
@@ -81,7 +86,7 @@ export function mountScrollGallery(){
  }
  const header=()=>mobile.matches?64:76;
  function render(){
-  const index=Math.round(state.value);shell.dataset.mode=natural?'flow':'scroll';shell.dataset.paused=String(motion.paused());
+  const index=Math.round(state.value);shortcuts.querySelectorAll('[data-rg-to]').forEach((button,i)=>button.setAttribute('aria-pressed',String(i===index)));shell.dataset.mode=natural?'flow':'scroll';shell.dataset.paused=String(motion.paused());
   planes.forEach((plane,i)=>{
    const pose=galleryPose(i,state.value,mobile.matches);
    plane.style.setProperty('--rg-y',`${pose.y}%`);plane.style.setProperty('--rg-angle',`${pose.angle}deg`);
