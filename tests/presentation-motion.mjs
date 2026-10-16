@@ -69,13 +69,11 @@ export async function verifyGallery({page,width,reduced,check,capture}){
 export async function verifyEditorial({page,width,check,capture}){
  const story=page.locator('#editorial[data-editorial-ready="true"]');await story.waitFor();
  const tabs=story.locator('[data-editorial-step]');
- // The transcript is optional in the revised presentation. Open it before
- // checking its rendered copy; keyboard navigation remains unchanged.
- const transcript=story.locator('.es-transcript');
- if(!await transcript.evaluate(el=>el.open))await transcript.locator('summary').click();
+ // Adjacent reading blocks were explicitly hidden; artwork controls remain.
+ check('Editorial text and deck introduction stay outside the visible layout',!await story.locator('.es-context').isVisible()&&!await story.locator('.pf-fatos-intro').isVisible());
  check('The original editorial story keeps three moments and one device',await tabs.count()===3&&await story.locator('.es-device').count()===1&&await story.locator('[data-es-piece]:not([hidden])').count()===1);
  await tabs.first().focus();await page.keyboard.press('ArrowRight');
- check('Editorial keyboard navigation updates readable text and focus',await story.getAttribute('data-editorial-active')==='context'&&await tabs.nth(1).getAttribute('aria-selected')==='true'&&await tabs.nth(1).evaluate(el=>el===document.activeElement)&&(await story.locator('[data-es-copy]').innerText()).includes('Câmera, mapa, mensagens'));
+ check('Editorial keyboard navigation updates readable text and focus',await story.getAttribute('data-editorial-active')==='context'&&await tabs.nth(1).getAttribute('aria-selected')==='true'&&await tabs.nth(1).evaluate(el=>el===document.activeElement)&&(await story.locator('[data-es-copy]').textContent()).includes('Câmera, mapa, mensagens'));
  await page.keyboard.press('End');
  check('Editorial navigation reaches its closing moment',await story.getAttribute('data-editorial-active')==='closing'&&await story.locator('[data-es-piece]:not([hidden])').count()===1);
  await page.keyboard.press('Home');
