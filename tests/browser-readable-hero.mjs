@@ -67,8 +67,8 @@ try{
      layoutCheck.eyebrow.top-layoutCheck.hero.top>=layoutCheck.headerHeight+10);
    check('Hero typography, buttons and badge exhibit stay inside viewport',
      layoutCheck.font>=36&&layoutCheck.font<=85&&layoutCheck.topPadding<=100 &&
-     layoutCheck.title.width>0&&layoutCheck.title.left>=-1&&layoutCheck.title.right<=innerWidth+1 &&
-     layoutCheck.exhibit.left>=-1&&layoutCheck.exhibit.right<=innerWidth+1 &&
+     layoutCheck.title.width>0&&layoutCheck.title.left>=-1&&layoutCheck.title.right<=layoutCheck.viewport+1 &&
+     layoutCheck.exhibit.left>=-1&&layoutCheck.exhibit.right<=layoutCheck.viewport+1 &&
      layoutCheck.actions.every(a=>a.height>=44)&&layoutCheck.scrollWidth<=layoutCheck.viewport+2);
    if(width>=1180)check('Desktop balances text and badge composition in two columns',
      layoutCheck.copy.right+18<=layoutCheck.exhibit.left&&layoutCheck.exhibit.width>=540);
