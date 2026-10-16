@@ -50,9 +50,9 @@ try{
      const hero=document.querySelector('.hero-v2');
      const title=hero.querySelector('#hero-title'),copy=hero.querySelector('.hero-copy'),exhibit=hero.querySelector('.hero-badge-exhibit');
      const actions=[...hero.querySelectorAll('.hero-actions a')];
-     return {hero:box(hero),copy:box(copy),exhibit:box(exhibit),title:box(title),actions:actions.map(box),
+     return {hero:box(hero),copy:box(copy),exhibit:box(exhibit),title:box(title),eyebrow:box(hero.querySelector('.hero-issue')),actions:actions.map(box),
        proof:box(hero.querySelector('.hero-proof')),font:parseFloat(getComputedStyle(title).fontSize),
-       topPadding:parseFloat(getComputedStyle(hero).paddingTop),scrollWidth:document.documentElement.scrollWidth,
+       topPadding:parseFloat(getComputedStyle(hero).paddingTop),headerHeight:document.querySelector('.site-header').getBoundingClientRect().height,scrollWidth:document.documentElement.scrollWidth,
        viewport:innerWidth};
    });
    row.heroLayout=layoutCheck;
@@ -63,6 +63,8 @@ try{
    check('Primary and secondary links target their real destinations',
      await page.locator('.hero-actions a').evaluateAll(a=>a.length===2&&a.every(link=>!!document.querySelector(link.getAttribute('href'))) &&
        a[0].textContent.includes('Explorar trabalhos')&&a[1].textContent.includes('Falar sobre um projeto')));
+   check('Fixed navigation never covers the hero eyebrow at rest',
+     layoutCheck.eyebrow.top-layoutCheck.hero.top>=layoutCheck.headerHeight+10);
    check('Hero typography, buttons and badge exhibit stay inside viewport',
      layoutCheck.font>=36&&layoutCheck.font<=85&&layoutCheck.topPadding<=100 &&
      layoutCheck.title.width>0&&layoutCheck.title.left>=-1&&layoutCheck.title.right<=innerWidth+1 &&

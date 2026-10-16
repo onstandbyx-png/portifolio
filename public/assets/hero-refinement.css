@@ -1,5 +1,5 @@
 /* Hero v2: editorial hierarchy and discoverable badges, no changes to WebGL physics */
-.portfolio-r6 .hero.hero-v2{--exhibit-width:690px;gap:clamp(24px,3vw,46px);padding-top:68px;padding-bottom:50px}
+.portfolio-r6 .hero.hero-v2{--exhibit-width:690px;gap:clamp(24px,3vw,46px);padding-top:84px;padding-bottom:50px}
 .portfolio-r6 .hero.hero-v2 .hero-copy{max-width:760px;min-width:0;padding-top:18px}
 .portfolio-r6 .hero.hero-v2 .hero-issue{font-size:11px;letter-spacing:.095em;font-weight:600;line-height:1.45;color:#52705a}
 .portfolio-r6 .hero.hero-v2 h1{max-width:740px;margin:19px 0;font-size:clamp(50px,4.2vw,71px);font-weight:560;line-height:1.045;letter-spacing:-.055em;text-wrap:balance}
@@ -28,18 +28,18 @@
 .portfolio-r6 .hero.hero-v2 .badge-selected-label i{display:block;width:6px;height:6px;border-radius:50%;background:#476f50}
 .portfolio-r6 .hero.hero-v2 .badge-touch-cue{font-size:11px;text-align:right;color:#708470}
 @media(min-width:1180px){
-.portfolio-r6 .hero.hero-v2{display:grid;grid-template-columns:minmax(0,.95fr) minmax(540px,1fr);grid-template-areas:"copy exhibit";grid-template-rows:auto;gap:clamp(28px,3.2vw,46px);align-items:start;padding-top:68px;padding-bottom:48px;max-width:1392px}
+.portfolio-r6 .hero.hero-v2{display:grid;grid-template-columns:minmax(0,.95fr) minmax(540px,1fr);grid-template-areas:"copy exhibit";grid-template-rows:auto;gap:clamp(28px,3.2vw,46px);align-items:start;padding-top:84px;padding-bottom:48px;max-width:1392px}
 .portfolio-r6 .hero.hero-v2 .hero-copy{padding-top:22px;max-width:620px}
 .portfolio-r6 .hero.hero-v2 .hero-exhibit.hero-badge-exhibit{width:100%}
 }
 @media(min-width:761px) and (max-width:1179px){
-.portfolio-r6 .hero.hero-v2{display:grid;grid-template-columns:minmax(0,1fr);grid-template-areas:"copy" "exhibit";padding-top:60px;padding-bottom:44px;gap:24px}
+.portfolio-r6 .hero.hero-v2{display:grid;grid-template-columns:minmax(0,1fr);grid-template-areas:"copy" "exhibit";padding-top:96px;padding-bottom:44px;gap:24px}
 .portfolio-r6 .hero.hero-v2 .hero-copy{max-width:900px;padding-top:0}
 .portfolio-r6 .hero.hero-v2 h1{font-size:clamp(47px,5.8vw,68px);max-width:900px}
 .portfolio-r6 .hero.hero-v2 .hero-exhibit.hero-badge-exhibit{width:min(100%,720px);max-width:720px}
 }
 @media(max-width:760px){
-.portfolio-r6 .hero.hero-v2{grid-template-columns:minmax(0,1fr);grid-template-areas:"copy" "exhibit";padding-top:43px;padding-bottom:34px;gap:17px}
+.portfolio-r6 .hero.hero-v2{grid-template-columns:minmax(0,1fr);grid-template-areas:"copy" "exhibit";padding-top:86px;padding-bottom:34px;gap:17px}
 .portfolio-r6 .hero.hero-v2 .hero-copy{padding-top:0}
 .portfolio-r6 .hero.hero-v2 .hero-issue{font-size:10px;letter-spacing:.075em}
 .portfolio-r6 .hero.hero-v2 h1{font-size:clamp(37px,9.5vw,55px);line-height:1.045;margin:15px 0 14px;max-width:none;text-wrap:pretty}
