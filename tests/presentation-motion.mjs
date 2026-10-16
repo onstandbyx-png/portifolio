@@ -32,14 +32,14 @@ async function nativeScroll(page,mobile){
   await page.mouse.wheel(0,360);
  }
  try{
-  await page.waitForFunction(before=>scrollY>before+60,before,null,{timeout:3500});
+  await page.waitForFunction(before=>scrollY>before+60,before,{timeout:3500});
  }catch(error){
   if(mobile)throw error;
   // Still use a genuine mouse wheel event. This fallback exercises scrolling
   // after a smooth/scroll-restoration race, not a programmatic jump.
   await page.mouse.move(width*.91,height*.72);
   await page.mouse.wheel(0,420);
-  await page.waitForFunction(before=>scrollY>before+60,before,null,{timeout:6500});
+  await page.waitForFunction(before=>scrollY>before+60,before,{timeout:6500});
  }
  return await page.evaluate(()=>scrollY)>before+60;
 }
