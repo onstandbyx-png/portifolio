@@ -33,10 +33,10 @@ try{
  let healthy=false;for(let i=0;i<60;i++){try{healthy=(await fetch(base+'/health')).ok;if(healthy)break;}catch{}await new Promise(resolve=>setTimeout(resolve,150));}assert(healthy,'Server reachable');
  browser=await chromium.launch({headless:true,executablePath:process.env.CHROMIUM_PATH,args:['--no-sandbox','--disable-dev-shm-usage','--use-gl=angle','--use-angle=swiftshader','--enable-unsafe-swiftshader']});
  const widths=process.env.QA_WIDTHS?.split(',').map(Number);
- for(const [width,height] of [[320,740],[390,844],[1024,900],[1101,900],[1440,900]].filter(([width])=>!widths||widths.includes(width))){
-  const context=await browser.newContext({viewport:{width,height},isMobile:width<500,hasTouch:width<500,deviceScaleFactor:1});
+ for(const [width,height,desktopSiteTouch] of [[320,740,false],[390,844,false],[980,820,true],[1024,900,false],[1101,900,false],[1440,900,false]].filter(([width])=>!widths||widths.includes(width))){
+  const context=await browser.newContext({viewport:{width,height},isMobile:width<500||desktopSiteTouch,hasTouch:width<500||desktopSiteTouch,deviceScaleFactor:1});
   const page=await context.newPage();page.setDefaultTimeout(15000);
-  const row={width,height,checks:[],errors:[],samples:[]};records.push(row);
+  const row={width,height,desktopSiteTouch:!!desktopSiteTouch,checks:[],errors:[],samples:[]};records.push(row);
   const check=(name,pass)=>{row.checks.push({name,pass:Boolean(pass)});assert(pass,name);};
   page.on('pageerror',error=>row.errors.push(String(error)));
   await page.route('**/assets/badge-build/**',route=>route.fulfill({path:path.join(bundle,path.basename(new URL(route.request().url()).pathname)),contentType:'application/javascript'}));
@@ -45,6 +45,10 @@ try{
    await page.waitForFunction(()=>window.__badgeScene?.initialized&&document.querySelector('[data-portfolio-badges]').dataset.state==='ready',null,{timeout:30000});
    await page.evaluate(()=>document.fonts.ready);await page.waitForTimeout(200);
    const initial=await geometry(page);row.initial=initial;const visible=initial.cards.filter(card=>card.visible),single=initial.rect.width<540;
+   await page.evaluate(()=>scrollTo({top:0,behavior:'instant'}));
+   await page.waitForTimeout(90);
+   await page.screenshot({path:`${output}/first-screen-${width}.png`,animations:'disabled'});
+   await align(page);
    const layoutCheck=await page.evaluate(()=>{
      const box=element=>{const r=element.getBoundingClientRect();return {left:r.left,right:r.right,top:r.top,bottom:r.bottom,width:r.width,height:r.height};};
      const hero=document.querySelector('.hero-v2');
@@ -53,7 +57,13 @@ try{
      return {hero:box(hero),copy:box(copy),exhibit:box(exhibit),title:box(title),eyebrow:box(hero.querySelector('.hero-issue')),actions:actions.map(box),
        proof:box(hero.querySelector('.hero-proof')),font:parseFloat(getComputedStyle(title).fontSize),
        topPadding:parseFloat(getComputedStyle(hero).paddingTop),headerHeight:document.querySelector('.site-header').getBoundingClientRect().height,scrollWidth:document.documentElement.scrollWidth,
-       viewport:innerWidth};
+       viewport:innerWidth,
+       coarse:matchMedia('(pointer:coarse)').matches,
+       touch:matchMedia('(hover:none)').matches,
+       copyDisplay:getComputedStyle(copy).display,
+       copyBackground:getComputedStyle(copy).backgroundImage,
+       menuVisible:getComputedStyle(document.querySelector('#menu-toggle')).display!=='none',
+       desktopNavigationVisible:getComputedStyle(document.querySelector('.main-nav')).display!=='none'};
    });
    row.heroLayout=layoutCheck;
    check('New hero communicates a concrete offer and a documented distinction',
@@ -70,10 +80,28 @@ try{
      layoutCheck.title.width>0&&layoutCheck.title.left>=-1&&layoutCheck.title.right<=layoutCheck.viewport+1 &&
      layoutCheck.exhibit.left>=-1&&layoutCheck.exhibit.right<=layoutCheck.viewport+1 &&
      layoutCheck.actions.every(a=>a.height>=44)&&layoutCheck.scrollWidth<=layoutCheck.viewport+2);
-   if(width>=1180)check('Desktop balances text and badge composition in two columns',
-     layoutCheck.copy.right+18<=layoutCheck.exhibit.left&&layoutCheck.exhibit.width>=540);
-   else check('Compact and intermediate hero positions badges just after the copy',
-     layoutCheck.exhibit.top>=layoutCheck.copy.bottom+8&&layoutCheck.exhibit.top-layoutCheck.copy.bottom<80);
+   if(width>=1180){
+     check('Wide desktop is a true two-column gallery with a dark editorial copy panel',
+       layoutCheck.copy.right+18<=layoutCheck.exhibit.left&&layoutCheck.exhibit.width>=540&&
+       layoutCheck.copyBackground.includes('gradient')&&!single&&visible.length===2);
+   }else if(width<=760){
+     check('Handheld hero brings a single full-size badge after the actions and before the proof',
+       layoutCheck.copyDisplay==='contents'&&single&&visible.length===1&&
+       layoutCheck.exhibit.top>=layoutCheck.actions.at(-1).bottom+8&&
+       layoutCheck.proof.top>=layoutCheck.exhibit.bottom-2&&
+       layoutCheck.exhibit.width>=Math.min(300,layoutCheck.viewport-48));
+   }else{
+     check('Tablet and desktop-requested touch no longer render the tiny desktop badge pair',
+       single&&visible.length===1&&layoutCheck.exhibit.width<=520&&
+       layoutCheck.exhibit.top>=layoutCheck.copy.bottom+8&&
+       layoutCheck.exhibit.top-layoutCheck.copy.bottom<90);
+     check('Intermediate hero uses a dedicated dark editorial panel',
+       layoutCheck.copyBackground.includes('gradient'));
+   }
+   if(desktopSiteTouch){
+     check('Android desktop-request mode exposes compact navigation instead of mini desktop links',
+       layoutCheck.coarse&&layoutCheck.touch&&layoutCheck.menuVisible&&!layoutCheck.desktopNavigationVisible);
+   }
    if(width<=350)check('Narrow hero eyebrow remains on one line',await page.locator('.hero-issue .issue-dot').evaluate(el=>getComputedStyle(el).display==='none'));
    check('Selection is visible without blocking the artwork',
      await page.locator('[data-badge-current-label]').innerText()==='Fatos · selecionado');
@@ -85,6 +113,7 @@ try{
    check('Resting card faces are upright',visible.every(card=>Math.abs(card.points[0].y-card.points[1].y)<2&&Math.abs(card.points[0].x-card.points[3].x)<2));
    check('Only a pair of selectors and one contextual flip are present',await page.locator('[data-badge-select]').count()===2&&await page.locator('[data-badge-flip]').count()===1&&await page.locator('[data-badge-swing],[data-badge-card-flip]').count()===0);
    check('Control text and hit areas are readable',await page.locator('[data-badge-select],[data-badge-flip]').evaluateAll(buttons=>buttons.every(el=>{const r=el.getBoundingClientRect();return parseFloat(getComputedStyle(el).fontSize)>=14&&r.width>=44&&r.height>=44;})));
+   check('Browser media source matches the real single/pair WebGL layout',await page.locator('[data-badge-poster-source]').evaluate((source)=>matchMedia(source.media).matches===(document.querySelector('[data-badge-canvas]').getBoundingClientRect().width>=540)));
    check('Removed explanatory blocks are absent from the hero',await page.locator('.hero-badge-detail,[data-badge-hint],.hero-support,.scroll-indicator').count()===0);
    await page.locator('.hero-badge-exhibit').screenshot({path:`${output}/front-${width}.png`,animations:'disabled'});
    await page.locator('[data-badge-flip]').click();await page.waitForFunction(()=>Math.abs(window.__badgeScene.flipAngles[0]-Math.PI)<.03);

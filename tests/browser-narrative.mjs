@@ -61,27 +61,42 @@ try{
    else await page.mouse.click(peekX,peekY);
    check('Tapping a side preview navigates to the referenced chapter',await page.locator('#editorial').getAttribute('data-editorial-active')==='closing');
    await page.locator('[data-editorial-step="0"]').click();
+   check('Swipe begins on Abertura',await page.locator('#editorial').getAttribute('data-editorial-active')==='hook');
    const swipeStage=page.locator('#editorial [data-editorial-stage]');
-   await swipeStage.scrollIntoViewIfNeeded();
-   const swipeBox=await page.locator('#editorial .es-device').boundingBox();
-   const y=Math.max(110,Math.min(height-110,swipeBox.y+swipeBox.height*.5));
-   const x0=swipeBox.x+swipeBox.width*.8,x1=swipeBox.x+swipeBox.width*.2;
-   if(width<500){
-     const session=await page.context().newCDPSession(page);
-     await session.send('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:[{id:1,x:x0,y}]});
-     for(let k=1;k<=10;k++){
-       await session.send('Input.dispatchTouchEvent',{type:'touchMove',touchPoints:[{id:1,x:x0+(x1-x0)*k/10,y}]});
-       await page.waitForTimeout(12);
+   const gestures=[];
+   for(let attempt=0;attempt<3;attempt++){
+     await page.locator('#editorial .es-device').scrollIntoViewIfNeeded();
+     await page.waitForTimeout(100);
+     const p=await page.locator('#editorial .es-device').evaluate(device=>{
+       const r=device.getBoundingClientRect();
+       const yTop=Math.max(115,r.top+28),yBottom=Math.min(innerHeight-112,r.bottom-28);
+       const y=(yTop+yBottom)/2;
+       const x0=r.left+r.width*.78,x1=r.left+r.width*.22;
+       return {x0,x1,y,inside:!!document.elementFromPoint(x0,y)?.closest('[data-editorial-stage]'),
+         rect:{top:r.top,bottom:r.bottom,width:r.width},screenHeight:innerHeight};
+     });
+     if(width<500){
+       const session=await page.context().newCDPSession(page);
+       try{
+         await session.send('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:[{id:1,x:p.x0,y:p.y}]});
+         for(let k=1;k<=12;k++){
+           await session.send('Input.dispatchTouchEvent',{type:'touchMove',touchPoints:[{id:1,x:p.x0+(p.x1-p.x0)*k/12,y:p.y}]});
+           await page.waitForTimeout(18);
+         }
+         await session.send('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[]});
+       }finally{await session.detach();}
+     }else{
+       await page.mouse.move(p.x0,p.y);
+       await page.mouse.down();
+       await page.mouse.move(p.x1,p.y,{steps:14});
+       await page.mouse.up();
      }
-     await session.send('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[]});
-     await session.detach();
-   }else{
-     await page.mouse.move(x0,y);
-     await page.mouse.down();
-     await page.mouse.move(x1,y,{steps:12});
-     await page.mouse.up();
+     await page.waitForFunction(()=>document.querySelector('#editorial').dataset.editorialActive==='context',null,{timeout:1300}).catch(()=>{});
+     const active=await page.locator('#editorial').getAttribute('data-editorial-active');
+     gestures.push({...p,active,attempt:attempt+1});
+     if(active==='context')break;
    }
-   await page.waitForFunction(()=>document.querySelector('#editorial').dataset.editorialActive==='context');
+   row.editorialGestureAttempts=gestures;
    check('Horizontal drag on the actual phone advances to Contexto',await page.locator('#editorial').getAttribute('data-editorial-active')==='context');
    check('Swipe affordance retains vertical native scroll',await swipeStage.evaluate(el=>getComputedStyle(el).touchAction==='pan-y'));
    check('Swiping never selects the phone copy',await swipeStage.evaluate(el=>getComputedStyle(el).userSelect==='none'&&window.getSelection().isCollapsed));
