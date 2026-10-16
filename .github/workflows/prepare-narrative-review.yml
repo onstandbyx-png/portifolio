@@ -2,63 +2,30 @@ name: Prepare Narrative Review
 on:
   push:
     branches: [fix/portfolio-narrative-20261016]
-    paths: [.github/workflows/prepare-narrative-review.yml, scripts/apply-narrative-review.py]
+    paths: [.github/workflows/prepare-narrative-review.yml]
 permissions:
-  contents: write
+  contents: read
 jobs:
   prepare:
     if: github.repository == 'onstandbyx-png/portifolio' && github.ref == 'refs/heads/fix/portfolio-narrative-20261016'
     runs-on: ubuntu-latest
-    timeout-minutes: 20
-    env:
-      QA_PACKAGE: /tmp/portfolio-qa/package.json
+    timeout-minutes: 6
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: fix/portfolio-narrative-20261016
-          fetch-depth: 2
+          persist-credentials: false
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - name: Confirm failing contracts before source changes
-        run: |
-          if node --test tests/narrative.test.mjs > /tmp/narrative-red.log 2>&1; then
-            echo 'Narrative contracts unexpectedly passed before implementation'; exit 1
-          fi
-          tail -12 /tmp/narrative-red.log
-      - name: Apply approved bounded source edits
-        run: python3 scripts/apply-narrative-review.py
-      - name: Verify source and build
+      - name: Reproduce current source build
         run: |
           npm ci
           npm run check
           npm run build
           node --test tests/*.test.mjs
-      - name: Commit source changes to isolated review branch only
-        run: |
-          git config user.name 'github-actions[bot]'
-          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add index.html src/portfolio.js public/assets/content/portfolio-copy.js public/assets/showcase/scroll-gallery.js public/assets/showcase/scroll-film.js public/assets/showcase/static-presentations.js public/assets/project-paths.js public/assets/sections/interactions.js tests/browser-static-presentations.mjs
-          git commit -m 'feat: clarify narrative and add useful project interactions'
-          git push origin HEAD:fix/portfolio-narrative-20261016
-      - name: Install browser tests
-        run: |
-          npm install --prefix /tmp/portfolio-qa --package-lock=false --no-save playwright@1.64.0
-          /tmp/portfolio-qa/node_modules/.bin/playwright install --with-deps chromium
-      - name: Narrative interactions
-        run: node tests/browser-narrative.mjs
-      - name: Preserved motion rhythm
-        if: success() || failure()
-        run: node tests/browser-motion-rhythm.mjs
-      - name: Existing static presentations
-        if: success() || failure()
-        run: node tests/browser-static-presentations.mjs
-      - name: Existing readable badge hero
-        if: success() || failure()
-        run: node tests/browser-readable-hero.mjs
+          tar --exclude=./.git --exclude=./qa -czf /tmp/portfolio-review-source.tar.gz .
       - uses: actions/upload-artifact@v4
-        if: always()
         with:
-          name: narrative-review-evidence
-          path: qa/
-          retention-days: 7
+          name: portfolio-review-source
+          path: /tmp/portfolio-review-source.tar.gz
+          retention-days: 1
