@@ -92,9 +92,11 @@ try{
    const campaignFace=page.locator('#laboratorio .sp-campaign-card');
    await campaignFace.scrollIntoViewIfNeeded();
    await campaignFace.locator('.sp-campaign-panel:not([hidden]) img').click();
-   check('Campaign artwork itself flips to its real creative explanation',await campaignFace.getAttribute('data-side')==='back'&&await campaignFace.locator('[data-sp-card-back]').getAttribute('aria-hidden')==='false');
+   await page.waitForFunction(()=>document.querySelector('#laboratorio .sp-campaign-card')?.dataset.peelState==='open');
+   check('Campaign artwork peels away to expose its creative explanation',await campaignFace.getAttribute('data-side')==='back'&&await campaignFace.locator('[data-sp-card-back]').getAttribute('aria-hidden')==='false'&&Number(await campaignFace.getAttribute('data-peel-progress'))>.99);
    await campaignFace.locator('[data-sp-card-turn="back"]').click();
-   check('Campaign can turn back without hiding its original image',await campaignFace.getAttribute('data-side')==='front'&&await campaignFace.locator('.sp-campaign-panel:not([hidden]) img').count()===1);
+   await page.waitForFunction(()=>document.querySelector('#laboratorio .sp-campaign-card')?.dataset.peelState==='closed');
+   check('Campaign paper returns without losing its original image',await campaignFace.getAttribute('data-side')==='front'&&Number(await campaignFace.getAttribute('data-peel-progress'))<.06&&await campaignFace.locator('.sp-campaign-panel:not([hidden]) img').count()===1);
    check('Each channel explains a different creative decision',new Set(notes).size===3&&notes.every(s=>/adaptação ao canal/i.test(s)&&/entrega/i.test(s)));
    await page.evaluate(()=>['meta','google','tiktok'].forEach(id=>document.querySelector('#tab-'+id).click()));await page.waitForTimeout(800);
    check('Fast changes keep artwork and explanation in sync',await page.locator('.sp-campaign').getAttribute('data-channel')==='tiktok'&&/vertical/.test(await page.locator('[data-note-title]').innerText())&&await page.locator('.sp-campaign-panel:not([hidden])').count()===1);

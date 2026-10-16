@@ -96,15 +96,51 @@ try{
       await page.waitForFunction(before=>scrollY>before+60,before);
       check('The product presentation preserves native page scrolling',await page.evaluate(()=>scrollY)>before+60);
 
-      // Campaign notes now live on the reverse of the functional card.
+      // The sheet remains in its own plane. A physical pull peels the photo
+      // away and exposes the actual creative brief, not a 180-degree rotation.
       const campaignCard=page.locator('#laboratorio .sp-campaign-card');
-      check('Campaign starts with the artwork facing the visitor',await campaignCard.getAttribute('data-side')==='front');
-      await campaignCard.locator('.sp-campaign-panel:not([hidden]) img').click();
-      check('Tapping the artwork itself reveals the explanation without a floating icon',await campaignCard.getAttribute('data-side')==='back'&&await campaignCard.locator('[data-sp-card-back]').getAttribute('aria-hidden')==='false');
+      check('Campaign starts with its artwork and a visible pull corner',
+        await campaignCard.getAttribute('data-side')==='front'&&
+        await campaignCard.locator('[data-peel-grip]').count()===1&&
+        await campaignCard.locator('.sp-peel-fold').count()===1);
+      const grip=campaignCard.locator('[data-peel-grip]');
+      const gripBox=await grip.boundingBox();
+      if(width<500){
+        const session=await page.context().newCDPSession(page);
+        try{
+          const sx=gripBox.x+gripBox.width*.55,sy=gripBox.y+gripBox.height*.46;
+          await session.send('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:[{x:sx,y:sy,id:1}]});
+          for(let step=1;step<=12;step++){
+            await session.send('Input.dispatchTouchEvent',{type:'touchMove',touchPoints:[{x:sx-step*14,y:sy+step*14,id:1}]});
+            await page.waitForTimeout(22);
+          }
+          check('Pulling the corner progressively exposes more of the layer behind',
+            Number(await campaignCard.getAttribute('data-peel-progress'))>.24);
+          await session.send('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[]});
+        }finally{await session.detach();}
+      }else{
+        await page.mouse.move(gripBox.x+gripBox.width*.55,gripBox.y+gripBox.height*.46);
+        await page.mouse.down();
+        await page.mouse.move(gripBox.x-gripBox.width*.7,gripBox.y+gripBox.height*2.6,{steps:13});
+        check('Desktop drag visibly moves the paper corner',
+          Number(await campaignCard.getAttribute('data-peel-progress'))>.24);
+        await page.mouse.up();
+      }
+      await page.waitForFunction(()=>document.querySelector('#laboratorio .sp-campaign-card')?.dataset.peelState==='open');
+      check('Pulling reveals the actual note without rotating the card',
+        await campaignCard.getAttribute('data-side')==='back'&&
+        await campaignCard.locator('[data-sp-card-back]').getAttribute('aria-hidden')==='false'&&
+        Number(await campaignCard.getAttribute('data-peel-progress'))>.99&&
+        await campaignCard.locator('[data-campaign-note]').count()===1);
       await campaignCard.locator('[data-sp-card-turn="back"]').click();
-      check('Tapping the return control restores the artwork',await campaignCard.getAttribute('data-side')==='front');
-      await campaignCard.locator('[data-sp-card-turn="front"]').click();
-      check('The campaign reverse is accessible before its CTA',await campaignCard.getAttribute('data-side')==='back'&&await page.locator('[data-contact-service="Campanhas e gestão de mídia"]').count()===1);
+      await page.waitForFunction(()=>document.querySelector('#laboratorio .sp-campaign-card')?.dataset.peelState==='closed');
+      check('The return control restores the artwork after peeling',
+        await campaignCard.getAttribute('data-side')==='front'&&
+        Number(await campaignCard.getAttribute('data-peel-progress'))<.06);
+      await campaignCard.locator('[data-peel-grip]').click();
+      await page.waitForFunction(()=>document.querySelector('#laboratorio .sp-campaign-card')?.dataset.peelState==='open');
+      check('Tapping the folded corner is an accessible alternative to dragging',
+        await campaignCard.getAttribute('data-side')==='back');
       await page.locator('[data-contact-service="Campanhas e gestão de mídia"]').click();
       check('Campaign contact action prefills the exact service without sending',await page.locator('#service').inputValue()==='Campanhas e gestão de mídia'&&row.mutations.length===0);
       await page.locator('#service').selectOption({label:'Sites, apps e sistemas'});

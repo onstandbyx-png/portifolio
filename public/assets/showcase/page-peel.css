@@ -1,0 +1,124 @@
+/* Real pulled-corner paper peel for the campaign presentation.
+   This file is deliberately scoped to #laboratorio: Fatos and Digital retain
+   their own existing flip/scroll behavior. */
+#laboratorio .sp-peel-layout{display:block;width:min(100%,690px);margin:0 auto}
+#laboratorio .sp-peel-card{position:relative;min-width:0;perspective:none;isolation:isolate}
+#laboratorio .sp-peel-card::before,
+#laboratorio .sp-peel-card::after{
+  content:"";position:absolute;inset:8px 5px -7px 5px;
+  border-radius:17px;background:#d7e0d2;
+  border:1px solid #c9d3c5;box-shadow:0 11px 28px #18312417;
+  pointer-events:none;
+}
+#laboratorio .sp-peel-card::before{transform:translate(3px,5px) rotate(.4deg);z-index:-2}
+#laboratorio .sp-peel-card::after{transform:translate(-2px,2px) rotate(-.3deg);z-index:-1;background:#e7ede2}
+#laboratorio .sp-peel-stack{position:relative;min-width:0;border-radius:16px;box-shadow:0 22px 55px #1e38292a}
+#laboratorio .sp-peel-underlay{
+  position:absolute;inset:0;z-index:1;display:flex;flex-direction:column;
+  min-width:0;min-height:0;overflow-y:auto;overscroll-behavior:contain;
+  border:1px solid #c1cdbc;border-radius:16px;background:
+  radial-gradient(circle at 85% 12%,#eff4e9 0%,transparent 46%),#e6eddf;
+  color:#233c2b;scrollbar-width:thin;
+}
+#laboratorio .sp-peel-underlay-kicker{
+  display:block;padding:26px 28px 0;
+  color:#667c68;font:600 10px/1.5 var(--sans,Inter,Arial,sans-serif);
+  letter-spacing:.14em;text-align:right;
+}
+#laboratorio .sp-peel-underlay .sp-campaign-note-slot{
+  display:flex;align-items:center;flex:1;min-height:0;
+}
+#laboratorio .sp-peel-underlay .sp-campaign-note{
+  min-height:0;padding:clamp(18px,4vw,34px);
+}
+#laboratorio .sp-peel-underlay .sp-campaign-note h3{
+  font-size:clamp(23px,3.2vw,37px);line-height:1.13;margin:12px 0 18px;
+}
+#laboratorio .sp-peel-underlay .sp-campaign-note dl{gap:clamp(11px,1.8vw,20px);margin-bottom:16px}
+#laboratorio .sp-peel-underlay .sp-campaign-note dd{font-size:clamp(13px,1.5vw,16px);line-height:1.5}
+#laboratorio .sp-peel-return{
+  display:flex;align-items:center;justify-content:center;gap:9px;
+  width:calc(100% - 42px);min-height:48px;margin:12px 21px 18px;
+  border:1px solid #adbfae;border-radius:8px;background:#f9fcf6;
+  color:#294935;font:600 13px/1.3 var(--sans,Inter,Arial,sans-serif);
+  cursor:pointer;
+}
+#laboratorio .sp-peel-return span{font-size:19px}
+#laboratorio .sp-peel-sheet{
+  position:relative;z-index:2;min-width:0;overflow:hidden;
+  border:1px solid #d0d7ca;border-radius:16px;background:#f7f4e9;
+  box-shadow:inset 0 0 0 1px #fff9;
+  will-change:clip-path;
+}
+#laboratorio .sp-peel-sheet .sp-campaign-image-slot{min-width:0}
+#laboratorio .sp-peel-sheet .sp-campaign-panel img{border-radius:0;pointer-events:auto;-webkit-user-drag:none;user-select:none}
+#laboratorio .sp-peel-cue{
+  display:flex;align-items:center;gap:12px;min-height:64px;margin:0;padding:13px 24px;
+  border-top:1px solid #d3dccf;background:#edf2e9;
+  color:#355d41;font:600 13px/1.4 var(--sans,Inter,Arial,sans-serif);
+}
+#laboratorio .sp-peel-cue-arrow{font-size:22px;font-weight:400;line-height:1;color:#244b35}
+#laboratorio .sp-peel-cue span:nth-child(2){flex:1}
+#laboratorio .sp-peel-cue span:last-child{font-size:11px;white-space:nowrap;color:#7b8c7a;font-variant-numeric:tabular-nums}
+#laboratorio .sp-peel-fold{
+  position:absolute;z-index:4;inset:0;display:block;width:100%;height:100%;
+  overflow:hidden;pointer-events:none;
+  filter:drop-shadow(-3px 4px 5px #1a352937);
+  border-radius:16px;
+}
+#laboratorio .sp-peel-grip{
+  position:absolute;z-index:5;right:0;top:0;
+  display:grid;place-items:start end;width:72px;height:72px;
+  padding:10px 11px 0 0;
+  border:0;border-radius:0 16px 0 40px;background:transparent;
+  color:#4a6b50;cursor:grab;touch-action:none;
+  -webkit-tap-highlight-color:transparent;
+  user-select:none;-webkit-user-select:none;
+  transition:filter .22s ease,opacity .2s ease;
+}
+#laboratorio .sp-peel-grip:active{cursor:grabbing}
+#laboratorio .sp-peel-grip-symbol{
+  display:grid;place-items:center;width:22px;height:22px;
+  font:500 16px/1 var(--sans,Inter,Arial,sans-serif);
+  transform:rotate(-5deg);
+  color:#56735e;
+  opacity:.85;
+  animation:peel-corner-hint 2.5s ease-in-out 1 .7s both;
+}
+@keyframes peel-corner-hint {
+  0%,100%{transform:translate(0,0) rotate(-5deg)}
+  36%{transform:translate(-3px,3px) rotate(-12deg)}
+  65%{transform:translate(0,0) rotate(-5deg)}
+}
+#laboratorio .sp-peel-grip:focus-visible,
+#laboratorio .sp-peel-return:focus-visible{
+  outline:3px solid #416da2;outline-offset:-5px;z-index:8;
+}
+#laboratorio .sp-peel-card[data-side="back"] .sp-peel-sheet{pointer-events:none}
+#laboratorio .sp-peel-card[data-side="back"] .sp-peel-grip{pointer-events:none}
+#laboratorio .sp-peel-card[data-side="back"] .sp-peel-underlay{pointer-events:auto}
+#laboratorio .sp-peel-card[data-side="front"] .sp-peel-underlay{pointer-events:none}
+#laboratorio .sp-peel-card[data-peel-state="dragging"]{cursor:grabbing}
+#laboratorio .sp-peel-card[data-peel-state="dragging"] .sp-peel-grip{filter:drop-shadow(-2px 3px 5px #152b2a3c)}
+@media(max-width:700px){
+  #laboratorio .sp-peel-cue{min-height:56px;padding:10px 13px;font-size:11px;gap:9px}
+  #laboratorio .sp-peel-cue span:last-child{font-size:10px}
+  #laboratorio .sp-peel-grip{width:70px;height:70px}
+  #laboratorio .sp-peel-underlay-kicker{padding:19px 18px 0;font-size:9px}
+  #laboratorio .sp-peel-underlay .sp-campaign-note{padding:12px 18px}
+  #laboratorio .sp-peel-underlay .sp-campaign-note h3{font-size:clamp(21px,5.8vw,28px);margin:7px 0 11px}
+  #laboratorio .sp-peel-underlay .sp-campaign-note dl{gap:8px;margin-bottom:10px}
+  #laboratorio .sp-peel-underlay .sp-campaign-note dt{font-size:10px;margin-bottom:2px}
+  #laboratorio .sp-peel-underlay .sp-campaign-note dd{font-size:12px;line-height:1.4}
+  #laboratorio .sp-peel-return{min-height:44px;margin:8px 15px 12px;width:calc(100% - 30px)}
+}
+@media(max-width:350px){
+  #laboratorio .sp-peel-cue{font-size:10px}
+  #laboratorio .sp-peel-underlay-kicker{padding:13px 15px 0}
+  #laboratorio .sp-peel-underlay .sp-campaign-note{padding:10px 15px}
+  #laboratorio .sp-peel-underlay .sp-campaign-note dd{font-size:11px}
+}
+@media(prefers-reduced-motion:reduce){
+  #laboratorio .sp-peel-grip-symbol{animation:none!important}
+}
+body.is-paused #laboratorio .sp-peel-grip-symbol{animation:none!important}
