@@ -63,10 +63,13 @@ try{
    await page.waitForFunction(()=>document.querySelector('#editorial').dataset.editorialActive==='context');
    check('Horizontal drag on the actual phone advances to Contexto',await page.locator('#editorial').getAttribute('data-editorial-active')==='context');
    check('Swipe affordance retains vertical native scroll',await swipeStage.evaluate(el=>getComputedStyle(el).touchAction==='pan-y'));
+   check('Swiping never selects the phone copy',await swipeStage.evaluate(el=>getComputedStyle(el).userSelect==='none'&&window.getSelection().isCollapsed));
    
    const notes=[];
    for(const id of ['meta','google','tiktok']){await page.locator('#tab-'+id).click();notes.push(await page.locator('[data-campaign-note]').innerText());}
    row.campaignNotes=notes;
+   // Wait for the pre-existing 600ms channel crossfade to settle before tapping artwork.
+   await page.waitForFunction(()=>!document.querySelector('#laboratorio .sp-campaign').dataset.transitioning);
    const campaignFace=page.locator('#laboratorio .sp-campaign-card');
    await campaignFace.scrollIntoViewIfNeeded();
    await campaignFace.locator('.sp-campaign-panel:not([hidden]) img').click();

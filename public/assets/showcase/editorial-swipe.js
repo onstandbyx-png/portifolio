@@ -32,6 +32,8 @@ export function mountEditorialSwipe(){
  stage.addEventListener('pointerup',e=>{if(!gesture||e.pointerId!==gesture.id)return;
   const g=gesture;gesture=null;const dx=e.clientX-g.x,dy=e.clientY-g.y;
   if(Math.abs(dx)<48||Math.abs(dx)<Math.abs(dy)*1.35||Math.abs(scrollY-g.scrollY)>14||performance.now()-g.time>1100)return;
+  // A drag must never leave a text selection that blocks the next card tap.
+  window.getSelection()?.removeAllRanges();
   select(current()+(dx<0?1:-1));
  },{passive:true});
  stage.addEventListener('pointercancel',()=>{gesture=null},{passive:true});

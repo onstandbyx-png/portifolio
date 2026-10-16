@@ -24,7 +24,7 @@
 #trabalhos .rg-gallery .rg-flip:not(:focus-visible){opacity:0;border-color:transparent;background:transparent;box-shadow:none}
 #trabalhos .rg-gallery .rg-flip:focus-visible{opacity:1}
 #trabalhos .rg-gallery .rg-flip-hint{display:block;margin-top:10px;color:#61725f;font:500 12px/1.45 var(--sans,Inter,Arial,sans-serif)}
-#editorial .es-stage{touch-action:pan-y;cursor:grab}
+#editorial .es-stage{touch-action:pan-y;cursor:grab;user-select:none;-webkit-user-select:none}
 #editorial .es-stage:active{cursor:grabbing}
 #editorial .es-swipe-nav{width:min(100%,520px);margin:0 auto;padding:12px 0 6px;display:grid;grid-template-columns:52px minmax(0,1fr) 52px;gap:12px;align-items:center;color:#435c49}
 #editorial .es-swipe-nav button{display:grid;place-items:center;min-width:48px;min-height:48px;padding:0;border:1px solid #b5c4af;border-radius:50%;background:#f5f6ef;color:#1c3a29;font:500 24px/1 Inter,Arial,sans-serif;cursor:pointer;transition:background .2s ease,border-color .2s ease}
