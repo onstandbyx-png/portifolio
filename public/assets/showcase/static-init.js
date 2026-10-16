@@ -5,8 +5,9 @@ import {mountFatosDeck} from './fatos-deck.js';
 import {mountStaticPresentations} from './static-presentations.js';
 import {mountScrollFilm} from './scroll-film.js';
 import {mountCardSurfaces} from './card-surface.js';
+import {mountDirectInteractions} from './direct-interactions.js';
 function mount(){
-  for(const [name,initialize] of Object.entries({gallery:mountScrollGallery,editorial:mountEditorialStory,fatos:mountFatosDeck,artwork:mountStaticPresentations,film:mountScrollFilm,cardSurfaces:mountCardSurfaces})){
+  for(const [name,initialize] of Object.entries({gallery:mountScrollGallery,editorial:mountEditorialStory,fatos:mountFatosDeck,artwork:mountStaticPresentations,film:mountScrollFilm,cardSurfaces:mountCardSurfaces,directInteractions:mountDirectInteractions})){
     try { initialize(); }
     catch(error){ console.error(`Portfolio ${name}:`,error); }
   }
