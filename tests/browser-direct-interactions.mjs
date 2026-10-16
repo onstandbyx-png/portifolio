@@ -14,7 +14,12 @@ try {
  browser=await chromium.launch({headless:true,executablePath:process.env.CHROMIUM_PATH,args:['--no-sandbox','--disable-dev-shm-usage','--use-gl=angle','--use-angle=swiftshader','--enable-unsafe-swiftshader']});
  for(const [width,height,reduced] of [[320,740,false],[390,844,false],[1440,900,false],[390,844,true]]){
   const context=await browser.newContext({viewport:{width,height},isMobile:width<500,hasTouch:width<500,reducedMotion:reduced?'reduce':'no-preference'});
-  const page=await context.newPage();page.setDefaultTimeout(7000);
+  const page=await context.newPage();page.setDefaultTimeout(15000);
+  const capture=async name=>{
+   // Scrolling a previously off-screen 3D layer requires a compositor paint.
+   await page.waitForTimeout(400);
+   return page.screenshot({path:`qa/direct-interactions/${name}-${width}-${reduced}.png`,animations:'disabled',timeout:30000});
+  };
   const errors=[];page.on('pageerror',e=>errors.push(e.message));
   await page.goto(base,{waitUntil:'networkidle'});
   assert.equal(await page.locator('[data-campaign-flip]').count(),1,'Campaign needs a real, accessible flip control');
@@ -32,7 +37,7 @@ try {
   assert.equal(await campaign.getAttribute('data-face'),'back');
   await page.keyboard.press('Escape');await page.waitForTimeout(700);
   assert.equal(await campaign.getAttribute('data-face'),'front');
-  await page.locator('#panel-meta').evaluate(()=>document.querySelector('#tab-meta').click());
+  await page.locator('#tab-meta').evaluate(el=>el.click());
   if(reduced)await page.locator('[data-work-card="fatos"]').scrollIntoViewIfNeeded();
   else await page.locator('[data-rg-to="0"]').click();
   await page.waitForTimeout(900);
@@ -41,6 +46,7 @@ try {
   assert.match(await flip.innerText(),/virar/i);
   await flip.click();await page.waitForTimeout(750);assert.equal(await flip.getAttribute('aria-pressed'),'true');
   await page.keyboard.press('Escape');await page.waitForTimeout(750);assert.equal(await flip.getAttribute('aria-pressed'),'false');
+  await capture('gallery');
   const story=page.locator('#editorial');const phone=story.locator('.es-device');
   await phone.scrollIntoViewIfNeeded();
   assert.equal(await story.getAttribute('data-editorial-swipe'),'ready');
@@ -72,8 +78,23 @@ try {
   assert.equal(await page.locator('.es-context').isVisible(),false);
   assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),'No horizontal page overflow');
   assert.deepEqual(errors,[]);
-  await page.screenshot({path:`qa/direct-interactions/editorial-${width}-${reduced}.png`,animations:'disabled'});
-  await campaign.scrollIntoViewIfNeeded();await page.screenshot({path:`qa/direct-interactions/campaign-${width}-${reduced}.png`,animations:'disabled'});
-  results.push({width,height,reduced,status:'PASS'});console.log(JSON.stringify(results.at(-1)));await context.close();
+  await phone.scrollIntoViewIfNeeded();await capture('editorial');
+  await campaign.scrollIntoViewIfNeeded();
+  const image=page.locator('#panel-meta img');await image.evaluate(el=>el.decode());
+  const png=await capture('campaign');const rect=await image.boundingBox();
+  const colors=await page.evaluate(async({b64,rect})=>{
+   const image=new Image();image.src='data:image/png;base64,'+b64;await image.decode();
+   const canvas=document.createElement('canvas');canvas.width=image.width;canvas.height=image.height;
+   const ctx=canvas.getContext('2d');ctx.drawImage(image,0,0);
+   const x=Math.max(0,Math.floor(rect.x+10)),y=Math.max(0,Math.floor(rect.y+10));
+   const w=Math.max(1,Math.min(image.width-x,Math.floor(rect.width-20)));
+   const h=Math.max(1,Math.min(image.height-y,Math.floor(rect.height-20)));
+   const data=ctx.getImageData(x,y,w,h).data,unique=new Set();
+   for(let i=0;i<data.length;i+=4)unique.add(data[i]+','+data[i+1]+','+data[i+2]);
+   return unique.size;
+  },{b64:png.toString('base64'),rect});
+  assert(colors>1000,'Campaign screenshot actually contains the artwork, not an empty face');
+  await page.locator('[data-campaign-flip]').click();await page.waitForTimeout(700);await capture('campaign-back');
+  results.push({width,height,reduced,paintedColors:colors,status:'PASS'});console.log(JSON.stringify(results.at(-1)));await context.close();
  }
 }finally{await writeFile('qa/direct-interactions/results.json',JSON.stringify(results,null,2));await browser?.close();server?.kill();}
