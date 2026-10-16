@@ -95,22 +95,45 @@ export function mountEditorialSwipe(){
   next.addEventListener('click',()=>select(current()+1));
   tabs.forEach(tab=>tab.addEventListener('click',update));
   new MutationObserver(update).observe(root,{attributes:true,attributeFilter:['data-editorial-active']});
-  let gesture=null;
+  let gesture=null,touchGesture=null,lastSwipeAt=-1000;
+  function finishSwipe(dx,dy,startY,startTime){
+    const now=performance.now();
+    if(Math.abs(dx)<48||Math.abs(dx)<Math.abs(dy)*1.35||
+       Math.abs(window.scrollY-startY)>14||now-startTime>1100)return false;
+    // Pointer and Touch events can both fire for the same real gesture.
+    if(now-lastSwipeAt<350)return false;
+    lastSwipeAt=now;
+    window.getSelection()?.removeAllRanges();
+    select(current()+(dx<0?1:-1));
+    return true;
+  }
   stage.addEventListener('pointerdown',event=>{
     if(!event.isPrimary||(event.pointerType==='mouse'&&event.button!==0))return;
     gesture={id:event.pointerId,x:event.clientX,y:event.clientY,scrollY:window.scrollY,time:performance.now()};
   },{passive:true});
-  // Release can happen outside the preview while the user drags horizontally.
+  // The ending pointer may leave the device while the user drags.
   window.addEventListener('pointerup',event=>{
     if(!gesture||event.pointerId!==gesture.id)return;
     const g=gesture;gesture=null;
-    const dx=event.clientX-g.x,dy=event.clientY-g.y;
-    if(Math.abs(dx)<48||Math.abs(dx)<Math.abs(dy)*1.35||
-       Math.abs(window.scrollY-g.scrollY)>14||performance.now()-g.time>1100)return;
-    window.getSelection()?.removeAllRanges();
-    select(current()+(dx<0?1:-1));
+    finishSwipe(event.clientX-g.x,event.clientY-g.y,g.scrollY,g.time);
   },{passive:true});
   stage.addEventListener('pointercancel',()=>{gesture=null},{passive:true});
+  // Android can cancel a PointerEvent during native pan handling, especially
+  // with reduced motion. Touchend is a bounded fallback, never a scroll lock.
+  stage.addEventListener('touchstart',event=>{
+    if(event.touches.length!==1){touchGesture=null;return;}
+    const t=event.touches[0];
+    touchGesture={id:t.identifier,x:t.clientX,y:t.clientY,scrollY:window.scrollY,time:performance.now()};
+  },{passive:true});
+  window.addEventListener('touchend',event=>{
+    if(!touchGesture)return;
+    const g=touchGesture;
+    const t=Array.from(event.changedTouches).find(touch=>touch.identifier===g.id);
+    if(!t)return;
+    touchGesture=null;
+    finishSwipe(t.clientX-g.x,t.clientY-g.y,g.scrollY,g.time);
+  },{passive:true});
+  window.addEventListener('touchcancel',()=>{touchGesture=null},{passive:true});
   stage.addEventListener('dragstart',event=>event.preventDefault());
   stage.addEventListener('keydown',event=>{
     if(event.target!==stage||!['ArrowLeft','ArrowRight'].includes(event.key))return;
