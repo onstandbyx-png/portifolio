@@ -25,6 +25,7 @@ try{
    row.initial=await page.evaluate(()=>({height:document.documentElement.scrollHeight,sections:Object.fromEntries(['inicio','trabalhos','editorial','laboratorio','narrativa-visual','sistemas','categorias','contato'].map(id=>[id,Math.round((id==='inicio'?document.querySelector('.hero'):document.getElementById(id)).getBoundingClientRect().height)]))}));
    await capture('hero');
    check('Three named gallery shortcuts are present',await page.locator('[data-rg-to]').count()===3);
+   check('Digital uses a subtle on-card flip hint instead of a floating icon',await page.locator('#trabalhos .work-smiile .rg-card-interaction-hint').count()===1&&await page.locator('#trabalhos .work-smiile .rg-flip').count()===1);
    if(!reduced){
     await page.locator('[data-rg-to="1"]').click();await page.waitForFunction(()=>document.querySelector('[data-rg-to="1"]').getAttribute('aria-pressed')==='true');await page.waitForTimeout(900);
     await page.locator('[data-work-card="ads"] [data-rg-flip]').click();await page.waitForTimeout(750);
@@ -35,10 +36,16 @@ try{
    await page.locator('[data-editorial-step="1"]').click();check('Editorial selection still updates the active artwork and metadata',await page.locator('#editorial').getAttribute('data-editorial-active')==='context'&&/comparação/.test(await page.locator('[data-es-title]').textContent()));
    const editorialNav=page.locator('#editorial .es-swipe-nav');
    check('Editorial has readable swipe controls and three progress dots',await editorialNav.count()===1&&await editorialNav.locator('[data-es-dot]').count()===3);
+   check('The visual carousel renders two usable neighboring phone previews',await page.locator('#editorial .es-peek').count()===2&&await page.locator('#editorial .es-device').count()===1);
+   check('The editorial headline matches the visual reference',/Três olhares/.test(await page.locator('#editorial-title').innerText()));
+   check('The progress marker starts at 01 / 03',await page.locator('[data-es-heading-count]').textContent()==='01 / 03');
    await editorialNav.locator('[data-es-next]').click();
    check('Next arrow reaches Fechamento',await page.locator('#editorial').getAttribute('data-editorial-active')==='closing'&&await editorialNav.locator('[data-es-next]').isDisabled());
    await editorialNav.locator('[data-es-prev]').click();
    check('Previous arrow returns to Contexto',await page.locator('#editorial').getAttribute('data-editorial-active')==='context');
+   check('The side previews stay synchronized with Contexto',await page.locator('#editorial .es-peek').evaluateAll(previews=>previews.length===2&&previews.every(preview=>preview.dataset.stepIndex!=='1'&&preview.querySelector('img')?.getAttribute('src')?.startsWith('/assets/portfolio/'))));
+   await page.locator('#editorial .es-peek--right').click();
+   check('Tapping a side preview navigates to the referenced chapter',await page.locator('#editorial').getAttribute('data-editorial-active')==='closing');
    await page.locator('[data-editorial-step="0"]').click();
    const swipeStage=page.locator('#editorial [data-editorial-stage]');
    await swipeStage.scrollIntoViewIfNeeded();

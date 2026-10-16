@@ -35,8 +35,23 @@ export function mountCampaignFlip(){
 export function mountGalleryFlipHints(){
  document.querySelectorAll('#trabalhos .rg-gallery [data-work-card]').forEach(card=>{
   const caption=card.querySelector('.tile-caption > div');
-  if(!caption||caption.querySelector('.rg-flip-hint'))return;
-  const hint=document.createElement('small');hint.className='rg-flip-hint';
-  hint.textContent='Toque no cartão para ver o verso';caption.append(hint);
+  if(!caption)return;
+  if(card.dataset.workCard==='smiile'){
+    caption.querySelector('.rg-flip-hint')?.remove();
+    const stage=card.querySelector('.rg-card-stage');
+    if(!stage||stage.querySelector('.rg-card-interaction-hint'))return;
+    const hint=document.createElement('span');
+    hint.className='rg-card-interaction-hint';
+    hint.setAttribute('aria-hidden','true');
+    const update=()=>{hint.textContent=stage.dataset.face==='back'?'Toque para voltar':'Toque em qualquer área para ver o verso';};
+    stage.append(hint);
+    new MutationObserver(update).observe(stage,{attributes:true,attributeFilter:['data-face']});
+    update();
+  }else if(!caption.querySelector('.rg-flip-hint')){
+    const hint=document.createElement('small');
+    hint.className='rg-flip-hint';
+    hint.textContent='Toque no cartão para ver o verso';
+    caption.append(hint);
+  }
  });
 }
