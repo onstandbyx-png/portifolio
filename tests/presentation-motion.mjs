@@ -19,10 +19,28 @@ async function seek(page,selector,progress,{heading=null,stage}={}){
  },{progress,heading,stage});await frames(page);
 }
 async function nativeScroll(page,mobile){
- const before=await page.evaluate(()=>scrollY),{width,height}=page.viewportSize();
+ const {width,height}=page.viewportSize();
+ // Clicking a film format invokes native smooth scrolling. Wait until it has
+ // settled before sending an independent wheel gesture; otherwise Chromium
+ // can finish the earlier scroll after the wheel and undo the measurement.
+ if(!mobile)await page.waitForTimeout(650);
+ const before=await page.evaluate(()=>scrollY);
  if(mobile)await touch(page,{x:width*.53,y:height*.7},{x:width*.53+2,y:height*.7-220});
- else{await page.mouse.move(width*.53,height*.7);await page.mouse.wheel(0,220);}
- await page.waitForFunction(before=>scrollY>before+60,before);
+ else{
+  // Scroll over the empty stage margin, not the projected, focusable web mock.
+  await page.mouse.move(width*.08,height*.68);
+  await page.mouse.wheel(0,360);
+ }
+ try{
+  await page.waitForFunction(before=>scrollY>before+60,before,null,{timeout:3500});
+ }catch(error){
+  if(mobile)throw error;
+  // Still use a genuine mouse wheel event. This fallback exercises scrolling
+  // after a smooth/scroll-restoration race, not a programmatic jump.
+  await page.mouse.move(width*.91,height*.72);
+  await page.mouse.wheel(0,420);
+  await page.waitForFunction(before=>scrollY>before+60,before,null,{timeout:6500});
+ }
  return await page.evaluate(()=>scrollY)>before+60;
 }
 async function imageChecks(images){
