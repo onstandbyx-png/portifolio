@@ -61,7 +61,7 @@ try{
       await verifyGallery({page,width,reduced,check,capture});
       await verifyEditorial({page,width,reduced,check,capture});
       await verifyFilm({page,width,reduced,check,capture});
-      check('The next digital project remains a static image without repeating Casa Costa',await page.locator('#sistemas .sp-products figure').count()===1&&await page.locator('#sistemas .sp-products figure img').count()===1);
+      check('Standalone Trilhas is hidden without removing the Digital destination',await page.locator('#trilhas[hidden]').count()===1&&!await page.locator('#trilhas').isVisible()&&await page.locator('#sistemas.digital-anchor').count()===1);
       check('Campaign and product interiors have no nested fake controls or media',await page.locator('.sp-products,.sp-campaign-panel').evaluateAll(roots=>roots.every(root=>!root.querySelector('button,input,select,textarea,[contenteditable],iframe,video,audio,canvas,[role="button"],[role="tab"],.df-explore'))));
       check('Retired interactive product demos and explorers remain absent',await page.locator('.df-explorer,[data-product-tab],[data-call-play],[data-app-action],[data-case],#case-dialog').count()===0);
       check('Archived studio is absent from public navigation',await page.locator('a[href$="#estudio-interativo"],video.ks-video').count()===0);
@@ -89,15 +89,8 @@ try{
       check('Global pause keeps campaign selection usable without starting an animation',await tabs.nth(2).getAttribute('aria-selected')==='true'&&await page.evaluate(count=>window.__presentationAnimations.length===count,pausedAnimations));
       await page.locator('#motion-toggle').click();await tabs.first().click();
 
-      const artwork=page.locator('.sp-products img');
-      check('The next digital artwork remains available',await artwork.count()===1);
-      for(const image of await artwork.all()){
-        await image.scrollIntoViewIfNeeded();await image.evaluate(img=>img.decode());
-        const result=await image.evaluate(img=>{const r=img.getBoundingClientRect();return {src:img.getAttribute('src'),alt:img.alt,decoded:img.naturalWidth>0&&img.naturalHeight>0,local:img.getAttribute('src').startsWith('/assets/'),labelled:img.alt.trim().length>12,sized:Number(img.getAttribute('width'))>0&&Number(img.getAttribute('height'))>0,contained:r.left>=-1&&r.right<=innerWidth+1&&r.width>0,visible:getComputedStyle(img).visibility!=='hidden'&&Number(getComputedStyle(img).opacity)>0};});
-        row.images??=[];row.images.push(result);
-        check(`Static artwork is readable, labelled and local: ${result.src}`,result.decoded&&result.local&&result.labelled&&result.sized&&result.contained&&result.visible);
-      }
-      for(const id of ['trabalhos','editorial','colecao','sistemas']){await page.locator(`#${id}`).scrollIntoViewIfNeeded();await capture(id);}
+      check('Hidden product presentation has no visible or focusable controls',await page.locator('#trilhas').evaluate(root=>root.hidden&&root.inert&&root.getBoundingClientRect().height===0));
+      for(const id of ['trabalhos','editorial','colecao','narrativa-visual']){await page.locator(`#${id}`).scrollIntoViewIfNeeded();await capture(id);}
       check('All internal navigation links resolve to existing sections',await page.locator('.main-nav a,#mobile-nav a,.rg-scroll-shell a').evaluateAll(links=>links.every(link=>link.hash&&document.getElementById(link.hash.slice(1)))));
       const before=await page.evaluate(()=>scrollY);await page.mouse.move(width*.5,height*.5);await page.mouse.wheel(0,220);
       await page.waitForFunction(before=>scrollY>before+60,before);

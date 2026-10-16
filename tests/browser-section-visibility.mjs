@@ -18,6 +18,7 @@ try {
   try {
    await page.goto(base,{waitUntil:'domcontentloaded'});await page.waitForSelector('#colecao[data-ready="true"]');await page.waitForSelector('#narrativa-visual[data-ready="true"]',{state:'attached'});await page.evaluate(()=>document.fonts.ready);
    check('Requested editorial explanation is hidden',!await page.locator('.es-context').isVisible());
+   check('Retained editorial artwork remains accessible',await page.locator('.es-device').evaluate(n=>n.getAttribute('role')==='group'&&n.getAttribute('aria-hidden')!=='true'&&!!n.getAttribute('aria-label')));
    check('Requested Fatos introduction is hidden',!await page.locator('.pf-fatos-intro').isVisible());
    check('Trilhas is archived outside the visible page',await page.locator('#trilhas[hidden]').count()===1&&!await page.locator('#trilhas').isVisible());
    check('Hidden reading blocks reserve no layout space',await page.locator('.es-context,.pf-fatos-intro,#trilhas').evaluateAll(nodes=>nodes.length===3&&nodes.every(n=>n.getBoundingClientRect().height===0)));

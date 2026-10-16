@@ -31,8 +31,8 @@ try{
     check('The reverse rewards the click with a decision',await page.locator('#rg-back-ads [data-work-decision]').isVisible());
     await capture('gallery-reverse');
    }
-   await page.locator('.es-transcript summary').click();check('Transcript opens without replacing the artwork',await page.locator('[data-es-quote]').isVisible()&&await page.locator('.es-device').count()===1);
-   await page.locator('[data-editorial-step="1"]').click();check('Editorial explanation follows the selected piece',/comparação/.test(await page.locator('[data-es-title]').innerText()));await page.locator('.es-transcript summary').click();
+   check('Requested editorial reading blocks are hidden without replacing the artwork',!await page.locator('.es-context').isVisible()&&!await page.locator('.pf-fatos-intro').isVisible()&&await page.locator('.es-device').count()===1);
+   await page.locator('[data-editorial-step="1"]').click();check('Editorial selection still updates the active artwork and metadata',await page.locator('#editorial').getAttribute('data-editorial-active')==='context'&&/comparação/.test(await page.locator('[data-es-title]').textContent()));
    const notes=[];
    for(const id of ['meta','google','tiktok']){await page.locator('#tab-'+id).click();notes.push(await page.locator('[data-campaign-note]').innerText());}
    row.campaignNotes=notes;
@@ -40,8 +40,9 @@ try{
    await page.evaluate(()=>['meta','google','tiktok'].forEach(id=>document.querySelector('#tab-'+id).click()));await page.waitForTimeout(800);
    check('Fast changes keep artwork and explanation in sync',await page.locator('.sp-campaign').getAttribute('data-channel')==='tiktok'&&/vertical/.test(await page.locator('[data-note-title]').innerText())&&await page.locator('.sp-campaign-panel:not([hidden])').count()===1);
    await page.locator('.sp-campaign').screenshot({path:`${output}/campaign-${width}${reduced?'-reduced':''}.png`,animations:'disabled'});
-   check('The duplicate full Casa Costa gallery is removed',await page.locator('#sistemas .sp-products figure').count()===1);
-   for(const id of ['casa','trilhas']){
+   check('Standalone Trilhas is hidden and Digital retains a destination',await page.locator('#trilhas[hidden]').count()===1&&!await page.locator('#trilhas').isVisible()&&await page.locator('#sistemas.digital-anchor').count()===1);
+   check('No hidden Trilhas enlargement control is exposed',await page.locator('[data-art-open="trilhas"]:visible').count()===0);
+   for(const id of ['casa']){
     const link=page.locator(`[data-art-open="${id}"]`);await link.click();
     const dialog=page.locator('#artwork-dialog');await dialog.locator('img').evaluate(img=>img.decode());
     check(`${id}: original static artwork enlarges`,await dialog.isVisible()&&await dialog.locator('img').evaluate(img=>img.naturalWidth>=900));

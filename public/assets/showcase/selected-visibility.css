@@ -1,0 +1,48 @@
+/* Requested visibility scope: keep the artwork and interactions, hide only
+   the adjacent reading blocks and the standalone Trilhas presentation. */
+#editorial .es-context[hidden],
+#editorial .pf-fatos-intro,
+#trilhas[hidden] {
+  display: none !important;
+}
+
+/* A hidden text column must not leave the remaining artwork off-center. */
+#editorial .es-panel {
+  grid-template-columns: minmax(0, 1fr);
+  gap: 0;
+}
+#editorial .es-stage {
+  grid-column: 1;
+  grid-row: 1;
+  width: min(100%, 520px);
+  justify-self: center;
+}
+#editorial #colecao {
+  grid-template-columns: minmax(0, 1fr);
+  gap: 0;
+  margin-top: 32px;
+  padding-top: 32px;
+}
+
+/* Keep live announcements for assistive technology without a reading block. */
+#editorial .es-status {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Preserve existing links without keeping the former section's spacing. */
+body.portfolio-r6 #sistemas.digital-anchor {
+  height: 0;
+  min-height: 0;
+  padding: 0;
+  margin: 0;
+  border: 0;
+  scroll-margin-top: 96px;
+}

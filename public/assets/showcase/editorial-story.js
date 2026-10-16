@@ -24,10 +24,13 @@ export function mountEditorialStory() {
   const image = '/assets/portfolio/recovered-fatos/post-desconhecidos-600.webp';
   const frame = createDeviceFrame({tone:'light', scheme:'dark', time:'10:09', label:'Tecnologia no cotidiano: uma história em três momentos'});
   frame.root.classList.add('es-device');
-  // The device repeats the accessible, adjustable text beside it.
-  frame.root.setAttribute('aria-hidden', 'true');
-  frame.root.removeAttribute('role');
-  frame.root.removeAttribute('aria-label');
+  // Only hide duplicate semantics while the adjacent reading text is exposed.
+  // With the text archived, the retained artwork remains readable to assistive technology.
+  if (!context.hidden) {
+    frame.root.setAttribute('aria-hidden', 'true');
+    frame.root.removeAttribute('role');
+    frame.root.removeAttribute('aria-label');
+  }
   frame.screen.innerHTML = `<div class="es-screen">${copy.steps.map((step, i) => `<article class="es-piece es-piece-${step.id}" data-es-piece="${i}"${i ? ' hidden' : ''}>
     <img class="es-piece-art" src="${image}" alt="" loading="lazy" decoding="async" width="600" height="750">
     <div class="es-piece-shade"></div>
