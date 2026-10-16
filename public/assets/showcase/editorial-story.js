@@ -81,7 +81,11 @@ export function mountEditorialStory() {
     });
   });
   const sizeFrame = () => {
-    const width = Math.min(340, Math.max(220, stage.clientWidth - 24));
+    // Keep the central image comfortably readable while revealing meaningful
+    // slices of the two neighboring editorial phones on narrow screens.
+    const width = matchMedia('(max-width:700px)').matches
+      ? Math.min(340, Math.max(218, Math.min(stage.clientWidth - 20, innerWidth * .64)))
+      : Math.min(340, Math.max(220, stage.clientWidth - 24));
     frame.root.style.setProperty('--df-pt', `${width / 435}px`);
   };
   new ResizeObserver(sizeFrame).observe(stage);

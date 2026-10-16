@@ -11,8 +11,8 @@ export function mountEditorialSwipe(){
   const steps=sectionCopy('editorial').steps;
   const previewImages=[
     '/assets/portfolio/recovered-fatos/post-desconhecidos-600.webp',
-    '/assets/portfolio/recovered-smiile/landscape.webp',
-    '/assets/portfolio/smiile-architecture-coast.webp'
+    '/assets/portfolio/recovered-fatos/cena-desconhecidos.webp',
+    '/assets/portfolio/recovered-smiile/landscape.webp'
   ];
   const safeText=value=>String(value??'').replace(/\s+/g,' ').trim();
   const nav=document.createElement('nav');

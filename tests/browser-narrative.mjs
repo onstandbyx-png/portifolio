@@ -38,6 +38,10 @@ try{
    const editorialNav=page.locator('#editorial .es-swipe-nav');
    check('Editorial has readable swipe controls and three progress dots',await editorialNav.count()===1&&await editorialNav.locator('[data-es-dot]').count()===3);
    check('The visual carousel renders two usable neighboring phone previews',await page.locator('#editorial .es-peek').count()===2&&await page.locator('#editorial .es-device').count()===1);
+   if(width<500)check('Mobile proportions reveal the neighboring phones without shrinking the main text excessively',await page.locator('#editorial .es-device').evaluate(phone=>{
+     const r=phone.getBoundingClientRect(),left=document.querySelector('#editorial .es-peek--left').getBoundingClientRect(),right=document.querySelector('#editorial .es-peek--right').getBoundingClientRect();
+     return r.width>=215&&r.width<=innerWidth*.8&&left.right>10&&right.left<innerWidth-10;
+   }));
    check('The editorial headline matches the visual reference',/Três olhares/.test(await page.locator('#editorial-title').innerText()));
    check('The progress marker follows the selected chapter',await page.locator('[data-es-heading-count]').textContent()==='02 / 03');
    await editorialNav.locator('[data-es-next]').click();
