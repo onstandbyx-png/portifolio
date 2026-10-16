@@ -19,10 +19,11 @@ jobs:
           node-version: '22'
       - run: python3 scripts/apply-selected-visibility.py
       - run: npm ci && npm run check && npm run build && node --test tests/*.test.mjs
-      - name: Remove temporary execution helpers and commit isolated candidate
+      - name: Commit source only; workflow cleanup uses the authorized connector
         run: |
-          rm scripts/apply-selected-visibility.py .github/workflows/apply-selected-visibility.yml
-          git add index.html public/assets/showcase/editorial-story.js public/assets/showcase/selected-visibility.css tests/browser-narrative.mjs tests/browser-section-visibility.mjs tests/browser-static-presentations.mjs tests/presentation-motion.mjs .github/workflows/verify.yml .github/workflows/visibility-probe.yml scripts/apply-selected-visibility.py .github/workflows/apply-selected-visibility.yml
+          git restore .github/workflows
+          rm scripts/apply-selected-visibility.py
+          git add index.html public/assets/showcase/editorial-story.js public/assets/showcase/selected-visibility.css tests/browser-narrative.mjs tests/browser-section-visibility.mjs tests/browser-static-presentations.mjs tests/presentation-motion.mjs scripts/apply-selected-visibility.py
           git diff --cached --check
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
