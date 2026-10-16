@@ -127,6 +127,6 @@ try{
   await page.close();console.log(JSON.stringify(row));
  }
  const nojs=await browser.newPage({javaScriptEnabled:false,viewport:{width:390,height:844}});await nojs.goto(base);
- assert(/Conteúdo, campanhas/.test(await nojs.locator('#hero-title').innerText()));assert(await nojs.locator('[data-work-card]').count()===3);await nojs.close();
+ assert(/Ideias viram histórias/.test(await nojs.locator('#hero-title').innerText()));assert(await nojs.locator('[data-work-card]').count()===3);await nojs.close();
 }finally{await browser?.close();server?.kill();await writeFile(output+'/results.json',JSON.stringify(results,null,2));}
 assert(results.length===4&&results.every(r=>!r.failure),'Narrative browser regression failed');
