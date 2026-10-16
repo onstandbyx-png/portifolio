@@ -8,6 +8,7 @@ const controls = document.querySelector<HTMLElement>(".hero-badge-controls");
 const selectButtons = [...document.querySelectorAll<HTMLButtonElement>("[data-badge-select]")];
 const flipButton = document.querySelector<HTMLButtonElement>("[data-badge-flip]");
 const cardStatus = document.querySelector<HTMLElement>("[data-badge-status]");
+const currentBadgeLabel = document.querySelector<HTMLElement>("[data-badge-current-label]");
 const reduced = matchMedia("(prefers-reduced-motion: reduce)");
 const motionToggle = document.querySelector<HTMLElement>(".motion-toggle");
 let instance: BadgeSceneHandle | null = null;
@@ -59,6 +60,8 @@ function reflectControls() {
   const card = cards[selectedCard];
   const flipped = cardFaces[selectedCard];
   selectButtons.forEach((button, index) => button.setAttribute("aria-pressed", String(index === selectedCard)));
+  if (currentBadgeLabel) currentBadgeLabel.textContent = `${card.name} · ${flipped ? "verso" : "selecionado"}`;
+  if (controls) controls.dataset.activeCard = String(selectedCard);
   if (flipButton) {
     flipButton.setAttribute("aria-pressed", String(flipped));
     flipButton.setAttribute("aria-label", `Ver ${flipped ? "a frente" : "o verso"} do crachá ${card.name}`);

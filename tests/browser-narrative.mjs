@@ -20,7 +20,9 @@ try{
   const capture=async name=>page.screenshot({path:`${output}/${name}-${width}${reduced?'-reduced':''}.png`,animations:'disabled'});
   try{
    await page.goto(base,{waitUntil:'domcontentloaded'});await page.waitForSelector('html[data-static-presentations="ready"]',{state:'attached'});await page.evaluate(()=>document.fonts.ready);
-   check('Hero names the actual services',/Conteúdo, campanhas/.test(await page.locator('#hero-title').innerText()));
+   check('Hero presents the combined editorial and digital offer',/Ideias viram histórias/.test(await page.locator('#hero-title').innerText())&&/campanhas e produtos digitais/.test(await page.locator('#hero-title').innerText()));
+   check('The hero distinguishes professional experience from personal product',
+     await page.locator('.hero-proof').innerText().then(t=>t.includes('Experiência editorial')&&t.includes('Projeto próprio')));
    check('Native transcript is collapsed and explicitly labelled',await page.locator('details.es-transcript').count()===1&&!await page.locator('.es-transcript').evaluate(e=>e.open));
    row.initial=await page.evaluate(()=>({height:document.documentElement.scrollHeight,sections:Object.fromEntries(['inicio','trabalhos','editorial','laboratorio','narrativa-visual','sistemas','categorias','contato'].map(id=>[id,Math.round((id==='inicio'?document.querySelector('.hero'):document.getElementById(id)).getBoundingClientRect().height)]))}));
    await capture('hero');
@@ -125,6 +127,6 @@ try{
   await page.close();console.log(JSON.stringify(row));
  }
  const nojs=await browser.newPage({javaScriptEnabled:false,viewport:{width:390,height:844}});await nojs.goto(base);
- assert(/Conteúdo, campanhas/.test(await nojs.locator('#hero-title').innerText()));assert(await nojs.locator('[data-work-card]').count()===3);await nojs.close();
+ assert(/Ideias viram histórias/.test(await nojs.locator('#hero-title').innerText()));assert(await nojs.locator('[data-work-card]').count()===3);await nojs.close();
 }finally{await browser?.close();server?.kill();await writeFile(output+'/results.json',JSON.stringify(results,null,2));}
 assert(results.length===4&&results.every(r=>!r.failure),'Narrative browser regression failed');

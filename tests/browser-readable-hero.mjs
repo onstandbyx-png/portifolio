@@ -45,6 +45,38 @@ try{
    await page.waitForFunction(()=>window.__badgeScene?.initialized&&document.querySelector('[data-portfolio-badges]').dataset.state==='ready',null,{timeout:30000});
    await page.evaluate(()=>document.fonts.ready);await page.waitForTimeout(200);
    const initial=await geometry(page);row.initial=initial;const visible=initial.cards.filter(card=>card.visible),single=initial.rect.width<540;
+   const layoutCheck=await page.evaluate(()=>{
+     const box=element=>{const r=element.getBoundingClientRect();return {left:r.left,right:r.right,top:r.top,bottom:r.bottom,width:r.width,height:r.height};};
+     const hero=document.querySelector('.hero-v2');
+     const title=hero.querySelector('#hero-title'),copy=hero.querySelector('.hero-copy'),exhibit=hero.querySelector('.hero-badge-exhibit');
+     const actions=[...hero.querySelectorAll('.hero-actions a')];
+     return {hero:box(hero),copy:box(copy),exhibit:box(exhibit),title:box(title),eyebrow:box(hero.querySelector('.hero-issue')),actions:actions.map(box),
+       proof:box(hero.querySelector('.hero-proof')),font:parseFloat(getComputedStyle(title).fontSize),
+       topPadding:parseFloat(getComputedStyle(hero).paddingTop),headerHeight:document.querySelector('.site-header').getBoundingClientRect().height,scrollWidth:document.documentElement.scrollWidth,
+       viewport:innerWidth};
+   });
+   row.heroLayout=layoutCheck;
+   check('New hero communicates a concrete offer and a documented distinction',
+     /Ideias viram histórias/.test(await page.locator('#hero-title').innerText()) &&
+     /do conceito à entrega/.test(await page.locator('.hero-description').innerText()) &&
+     await page.locator('.hero-proof').innerText().then(t=>t.includes('Fatos Desconhecidos')&&t.includes('Experiência editorial')&&t.includes('smiile')&&t.includes('Projeto próprio')));
+   check('Primary and secondary links target their real destinations',
+     await page.locator('.hero-actions a').evaluateAll(a=>a.length===2&&a.every(link=>!!document.querySelector(link.getAttribute('href'))) &&
+       a[0].textContent.includes('Explorar trabalhos')&&a[1].textContent.includes('Falar sobre um projeto')));
+   check('Fixed navigation never covers the hero eyebrow at rest',
+     layoutCheck.eyebrow.top-layoutCheck.hero.top>=layoutCheck.headerHeight+10);
+   check('Hero typography, buttons and badge exhibit stay inside viewport',
+     layoutCheck.font>=36&&layoutCheck.font<=85&&layoutCheck.topPadding<=100 &&
+     layoutCheck.title.width>0&&layoutCheck.title.left>=-1&&layoutCheck.title.right<=layoutCheck.viewport+1 &&
+     layoutCheck.exhibit.left>=-1&&layoutCheck.exhibit.right<=layoutCheck.viewport+1 &&
+     layoutCheck.actions.every(a=>a.height>=44)&&layoutCheck.scrollWidth<=layoutCheck.viewport+2);
+   if(width>=1180)check('Desktop balances text and badge composition in two columns',
+     layoutCheck.copy.right+18<=layoutCheck.exhibit.left&&layoutCheck.exhibit.width>=540);
+   else check('Compact and intermediate hero positions badges just after the copy',
+     layoutCheck.exhibit.top>=layoutCheck.copy.bottom+8&&layoutCheck.exhibit.top-layoutCheck.copy.bottom<80);
+   if(width<=350)check('Narrow hero eyebrow remains on one line',await page.locator('.hero-issue .issue-dot').evaluate(el=>getComputedStyle(el).display==='none'));
+   check('Selection is visible without blocking the artwork',
+     await page.locator('[data-badge-current-label]').innerText()==='Fatos · selecionado');
    check('Fatos remains the default selected card after initialization',initial.selected==='0'&&await page.locator('[data-portfolio-badges]').getAttribute('data-selected-card')==='0');
    check('Canvas and scene agree on the responsive composition',initial.layout===(single?'single':'pair')&&visible.length===(single?1:2));
    check('Every visible face is fully inside the stage',visible.every(card=>card.left>=initial.rect.left-1&&card.right<=initial.rect.right+1&&card.top>=initial.rect.top-1&&card.bottom<=initial.rect.bottom+1));
@@ -56,8 +88,12 @@ try{
    check('Removed explanatory blocks are absent from the hero',await page.locator('.hero-badge-detail,[data-badge-hint],.hero-support,.scroll-indicator').count()===0);
    await page.locator('.hero-badge-exhibit').screenshot({path:`${output}/front-${width}.png`,animations:'disabled'});
    await page.locator('[data-badge-flip]').click();await page.waitForFunction(()=>Math.abs(window.__badgeScene.flipAngles[0]-Math.PI)<.03);
+   check('Flipping Fatos updates its visible contextual label',
+     await page.locator('[data-badge-current-label]').innerText()==='Fatos · verso');
    const firstBack=await geometry(page);check('The selected card turns without turning its neighbour',Math.abs(firstBack.angles[0]-Math.PI)<.03&&Math.abs(firstBack.angles[1])<.03);
    await page.locator('[data-badge-select="1"]').click();await page.waitForTimeout(150);
+   check('Selecting smiile updates the active status without perturbing physics',
+     await page.locator('[data-badge-current-label]').innerText()==='smiile · selecionado');
    const selected=await geometry(page);check('Selection preserves the first face and presents smiile',selected.selected==='1'&&Math.abs(selected.angles[0]-Math.PI)<.03&&(!single||selected.cards[1].visible&&!selected.cards[0].visible)&&await page.locator('[data-badge-select="1"]').getAttribute('aria-pressed')==='true');
    for(let i=0;i<10;i++){await page.locator('[data-badge-flip]').click();row.samples.push(await geometry(page));}
    await page.waitForFunction(()=>Math.abs(window.__badgeScene.flipAngles[1])<.03,null,{timeout:8000});const settled=await geometry(page);row.settled=settled;
