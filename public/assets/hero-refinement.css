@@ -1,0 +1,64 @@
+/* Hero v2: editorial hierarchy and discoverable badges, no changes to WebGL physics */
+.portfolio-r6 .hero.hero-v2{--exhibit-width:690px;gap:clamp(24px,3vw,46px);padding-top:68px;padding-bottom:50px}
+.portfolio-r6 .hero.hero-v2 .hero-copy{max-width:760px;min-width:0;padding-top:18px}
+.portfolio-r6 .hero.hero-v2 .hero-issue{font-size:11px;letter-spacing:.095em;font-weight:600;line-height:1.45;color:#52705a}
+.portfolio-r6 .hero.hero-v2 h1{max-width:740px;margin:19px 0;font-size:clamp(50px,4.2vw,71px);font-weight:560;line-height:1.045;letter-spacing:-.055em;text-wrap:balance}
+.portfolio-r6 .hero.hero-v2 h1 em{font-weight:400;color:#254733}
+.portfolio-r6 .hero.hero-v2 .hero-description{max-width:550px;font-size:clamp(16px,1.35vw,19px);line-height:1.56;color:#526655;margin:0;text-wrap:pretty}
+.portfolio-r6 .hero.hero-v2 .hero-actions{margin:24px 0 0;gap:10px;align-items:center}
+.portfolio-r6 .hero.hero-v2 .hero-actions .button{min-height:48px;gap:16px;font-size:14px;transition:background-color .2s,color .2s,border-color .2s,box-shadow .2s,transform .2s}
+.portfolio-r6 .hero.hero-v2 .hero-actions .button-solid:hover,.portfolio-r6 .hero.hero-v2 .hero-actions .button-solid:focus-visible{box-shadow:0 8px 24px #203a2a29}
+@media(hover:hover) and (pointer:fine){.portfolio-r6 .hero.hero-v2 .hero-actions .button:hover{transform:translateY(-2px)}}
+.portfolio-r6 .hero.hero-v2 .hero-proof{display:flex;flex-wrap:wrap;align-items:start;gap:12px 22px;max-width:650px;margin-top:22px;color:#324e3b}
+.portfolio-r6 .hero.hero-v2 .hero-proof>span{display:grid;gap:3px;padding-left:12px;border-left:2px solid #abc2a9}
+.portfolio-r6 .hero.hero-v2 .hero-proof strong{display:block;font-size:13px;font-weight:650;line-height:1.25}
+.portfolio-r6 .hero.hero-v2 .hero-proof small{display:block;color:#657966;font-size:12px;line-height:1.4}
+.portfolio-r6 .hero.hero-v2 .hero-exhibit.hero-badge-exhibit{width:min(100%,var(--exhibit-width));max-width:690px;margin-inline:auto;align-self:start;border-radius:18px;padding-top:18px;padding-bottom:9px;box-shadow:inset 0 0 0 1px #d5dfd2,0 18px 36px -32px #1c342839}
+.portfolio-r6 .hero.hero-v2 .exhibit-meta{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:0 22px;margin-bottom:12px;font-size:10px;font-weight:650;line-height:1.5;letter-spacing:.095em;color:#526a56}
+.portfolio-r6 .hero.hero-v2 .exhibit-meta-hint{font-size:11px;letter-spacing:0;font-weight:450;color:#71816f;text-align:right}
+.portfolio-r6 .hero.hero-v2 .hero-badge-controls{margin-inline:22px;gap:12px}
+.portfolio-r6 .hero.hero-v2 .hero-badge-controls [data-badge-select][aria-pressed="true"]{border-color:#b9cdb7;box-shadow:0 2px 7px #25442d16,inset 0 -2px 0 #446d4f}
+.portfolio-r6 .hero.hero-v2 .hero-badge-controls button{transition:background-color .2s,color .2s,border-color .2s,box-shadow .2s}
+.portfolio-r6 .hero.hero-v2 .hero-badge-stage{margin-top:0;background:transparent;--badge-focus-x:29%}
+.portfolio-r6 .hero.hero-v2 .hero-badge-stage[data-selected-card="1"]{--badge-focus-x:71%}
+.portfolio-r6 .hero.hero-v2 .hero-badge-stage[data-layout="single"]{--badge-focus-x:50%}
+.portfolio-r6 .hero.hero-v2 .hero-badge-stage::before{content:"";display:block;position:absolute;z-index:0;pointer-events:none;inset:6% 6% 12%;background:radial-gradient(ellipse 49% 56% at var(--badge-focus-x) 53%,#fcfef8d9 0%,#f8fbf028 54%,transparent 100%)}
+.portfolio-r6 .hero.hero-v2 .hero-badge-foot{display:flex;align-items:center;justify-content:space-between;gap:10px;min-height:30px;padding:2px 22px 0;color:#657b67;font-size:12px;line-height:1.35}
+.portfolio-r6 .hero.hero-v2 .badge-selected-label{display:inline-flex;align-items:center;gap:7px;flex:none;color:#2e543b;font-weight:600}
+.portfolio-r6 .hero.hero-v2 .badge-selected-label i{display:block;width:6px;height:6px;border-radius:50%;background:#476f50}
+.portfolio-r6 .hero.hero-v2 .badge-touch-cue{font-size:11px;text-align:right;color:#708470}
+@media(min-width:1180px){
+.portfolio-r6 .hero.hero-v2{display:grid;grid-template-columns:minmax(0,.95fr) minmax(540px,1fr);grid-template-areas:"copy exhibit";grid-template-rows:auto;gap:clamp(28px,3.2vw,46px);align-items:start;padding-top:68px;padding-bottom:48px;max-width:1392px}
+.portfolio-r6 .hero.hero-v2 .hero-copy{padding-top:22px;max-width:620px}
+.portfolio-r6 .hero.hero-v2 .hero-exhibit.hero-badge-exhibit{width:100%}
+}
+@media(min-width:761px) and (max-width:1179px){
+.portfolio-r6 .hero.hero-v2{display:grid;grid-template-columns:minmax(0,1fr);grid-template-areas:"copy" "exhibit";padding-top:60px;padding-bottom:44px;gap:24px}
+.portfolio-r6 .hero.hero-v2 .hero-copy{max-width:900px;padding-top:0}
+.portfolio-r6 .hero.hero-v2 h1{font-size:clamp(47px,5.8vw,68px);max-width:900px}
+.portfolio-r6 .hero.hero-v2 .hero-exhibit.hero-badge-exhibit{width:min(100%,720px);max-width:720px}
+}
+@media(max-width:760px){
+.portfolio-r6 .hero.hero-v2{grid-template-columns:minmax(0,1fr);grid-template-areas:"copy" "exhibit";padding-top:43px;padding-bottom:34px;gap:17px}
+.portfolio-r6 .hero.hero-v2 .hero-copy{padding-top:0}
+.portfolio-r6 .hero.hero-v2 .hero-issue{font-size:10px;letter-spacing:.075em}
+.portfolio-r6 .hero.hero-v2 h1{font-size:clamp(37px,9.5vw,55px);line-height:1.045;margin:15px 0 14px;max-width:none;text-wrap:pretty}
+.portfolio-r6 .hero.hero-v2 .hero-description{font-size:15px;line-height:1.5;max-width:39ch}
+.portfolio-r6 .hero.hero-v2 .hero-actions{margin-top:18px;gap:8px;align-items:center}
+.portfolio-r6 .hero.hero-v2 .hero-actions .button{min-height:46px;gap:9px;padding:10px 12px;font-size:12px}
+.portfolio-r6 .hero.hero-v2 .hero-actions .button-text{border:1px solid #d7ddd1;padding-inline:11px}
+.portfolio-r6 .hero.hero-v2 .hero-proof{margin-top:17px;gap:10px 13px}
+.portfolio-r6 .hero.hero-v2 .hero-proof>span{gap:1px;padding-left:9px}
+.portfolio-r6 .hero.hero-v2 .hero-proof strong{font-size:11px}
+.portfolio-r6 .hero.hero-v2 .hero-proof small{font-size:10px}
+.portfolio-r6 .hero.hero-v2 .hero-exhibit.hero-badge-exhibit{border-radius:15px;padding-top:13px;padding-bottom:8px}
+.portfolio-r6 .hero.hero-v2 .exhibit-meta{padding-inline:15px;margin-bottom:7px;font-size:9px}
+.portfolio-r6 .hero.hero-v2 .exhibit-meta-hint{font-size:10px}
+.portfolio-r6 .hero.hero-v2 .hero-badge-controls{margin-inline:13px;gap:8px}
+.portfolio-r6 .hero.hero-v2 .hero-badge-foot{padding-inline:13px;min-height:28px;font-size:10px}
+.portfolio-r6 .hero.hero-v2 .badge-touch-cue{font-size:10px}
+}
+@media(max-width:390px){.portfolio-r6 .hero.hero-v2 .exhibit-meta-hint{display:none}.portfolio-r6 .hero.hero-v2 .badge-touch-cue{max-width:15ch}}
+@media(max-width:350px){.portfolio-r6 .hero.hero-v2 h1{font-size:36px}.portfolio-r6 .hero.hero-v2 .hero-actions{display:grid;grid-template-columns:1fr}.portfolio-r6 .hero.hero-v2 .hero-actions .button{width:100%;justify-content:space-between}}
+@media(prefers-reduced-motion:reduce){.portfolio-r6 .hero.hero-v2 .hero-actions .button,.portfolio-r6 .hero.hero-v2 .hero-badge-controls button{transition:none!important;transform:none!important}}
+body.is-paused .hero.hero-v2 .hero-actions .button,body.is-paused .hero.hero-v2 .hero-badge-controls button{transition:none!important;transform:none!important}

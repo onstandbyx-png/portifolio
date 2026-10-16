@@ -57,15 +57,15 @@ export const portfolioCopy = {
       "id": "inicio",
       "order": 1,
       "purpose": "Apresentar o profissional, seu campo de atuação e duas evidências distintas.",
-      "eyebrow": "Smile N · Direção criativa",
-      "title": "Conteúdo, campanhas\ne produtos digitais.",
-      "body": "Direção criativa, redação e desenvolvimento para transformar ideias em peças, sites e aplicativos.",
+      "eyebrow": "Direção criativa · do conceito à entrega",
+      "title": "Ideias viram histórias,\ncampanhas e produtos digitais.",
+      "body": "Pesquisa, redação, direção visual e desenvolvimento, do conceito à entrega.",
       "primaryCta": {
-        "label": "Ver projetos",
+        "label": "Explorar trabalhos",
         "href": "#trabalhos"
       },
       "secondaryCta": {
-        "label": "Falar sobre meu projeto",
+        "label": "Falar sobre um projeto",
         "href": "#contato"
       },
       "support": "Minha atuação reúne direção criativa, texto, design e desenvolvimento.",
