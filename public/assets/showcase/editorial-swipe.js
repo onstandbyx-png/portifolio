@@ -125,6 +125,21 @@ export function mountEditorialSwipe(){
     const t=event.touches[0];
     touchGesture={id:t.identifier,x:t.clientX,y:t.clientY,scrollY:window.scrollY,time:performance.now()};
   },{passive:true});
+  // Recognize an intentional horizontal drag before Android cancels the
+  // corresponding pointer/touch release for browser-level gesture handling.
+  // No preventDefault: vertical scroll remains native and unobstructed.
+  window.addEventListener('touchmove',event=>{
+    if(!touchGesture||event.touches.length!==1)return;
+    const g=touchGesture;
+    const t=Array.from(event.touches).find(touch=>touch.identifier===g.id);
+    if(!t)return;
+    const dx=t.clientX-g.x,dy=t.clientY-g.y;
+    if(Math.abs(dx)<88||Math.abs(dx)<Math.abs(dy)*1.7)return;
+    if(finishSwipe(dx,dy,g.scrollY,g.time)){
+      touchGesture=null;
+      gesture=null;
+    }
+  },{passive:true});
   window.addEventListener('touchend',event=>{
     if(!touchGesture)return;
     const g=touchGesture;
