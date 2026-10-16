@@ -61,6 +61,11 @@ try {
   await phone.scrollIntoViewIfNeeded();await drag(110);assert.equal(await story.getAttribute('data-editorial-active'),'hook');
   await drag(110);assert.equal(await story.getAttribute('data-editorial-active'),'hook','First edge is bounded');
   await phone.focus();await page.keyboard.press('ArrowRight');await page.waitForTimeout(700);assert.equal(await story.getAttribute('data-editorial-active'),'context');
+  const firstTab=story.locator('[data-editorial-step]').first();
+  await firstTab.click();await firstTab.focus();await page.keyboard.press('ArrowRight');await page.waitForTimeout(700);
+  assert.equal(await story.getAttribute('data-editorial-active'),'context');
+  assert.equal(await story.locator('[data-es-position]').innerText(),'Contexto · 2 de 3','Original keyboard tabs synchronize progress');
+  assert.equal(await story.locator('[data-es-piece]:not([hidden])').evaluate(el=>el.inert),false,'Keyboard-selected piece remains accessible');
   assert.equal(await page.locator('.es-device').count(),1,'Single original device retained');
   assert.equal(await story.locator('[data-es-piece]:not([hidden])').count(),1);
   assert.equal(await page.locator('#trilhas').isVisible(),false);

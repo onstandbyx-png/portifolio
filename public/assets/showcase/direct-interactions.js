@@ -162,6 +162,7 @@ function mountEditorialSwipe(){
   // Transferring implicit touch capture from a child must not cancel our drag.
   frame.addEventListener('lostpointercapture',event=>{if(gesture&&event.target===frame&&!frame.hasPointerCapture(event.pointerId))cancel();});
   addEventListener('resize',cancel,{passive:true});motion.onStop(cancel);
+  new MutationObserver(sync).observe(root,{attributes:true,attributeFilter:['data-editorial-active']});
   sync();root.dataset.editorialSwipe='ready';
 }
 
