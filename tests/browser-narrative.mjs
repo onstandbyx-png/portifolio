@@ -33,9 +33,46 @@ try{
    }
    check('Requested editorial reading blocks are hidden without replacing the artwork',!await page.locator('.es-context').isVisible()&&!await page.locator('.pf-fatos-intro').isVisible()&&await page.locator('.es-device').count()===1);
    await page.locator('[data-editorial-step="1"]').click();check('Editorial selection still updates the active artwork and metadata',await page.locator('#editorial').getAttribute('data-editorial-active')==='context'&&/comparação/.test(await page.locator('[data-es-title]').textContent()));
+   const editorialNav=page.locator('#editorial .es-swipe-nav');
+   check('Editorial has readable swipe controls and three progress dots',await editorialNav.count()===1&&await editorialNav.locator('[data-es-dot]').count()===3);
+   await editorialNav.locator('[data-es-next]').click();
+   check('Next arrow reaches Fechamento',await page.locator('#editorial').getAttribute('data-editorial-active')==='closing'&&await editorialNav.locator('[data-es-next]').isDisabled());
+   await editorialNav.locator('[data-es-prev]').click();
+   check('Previous arrow returns to Contexto',await page.locator('#editorial').getAttribute('data-editorial-active')==='context');
+   await page.locator('[data-editorial-step="0"]').click();
+   const swipeStage=page.locator('#editorial [data-editorial-stage]');
+   await swipeStage.scrollIntoViewIfNeeded();
+   const swipeBox=await swipeStage.boundingBox();
+   const y=Math.max(110,Math.min(height-110,swipeBox.y+swipeBox.height*.5));
+   const x0=swipeBox.x+swipeBox.width*.8,x1=swipeBox.x+swipeBox.width*.2;
+   if(width<500){
+     const session=await page.context().newCDPSession(page);
+     await session.send('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:[{id:1,x:x0,y}]});
+     for(let k=1;k<=10;k++){
+       await session.send('Input.dispatchTouchEvent',{type:'touchMove',touchPoints:[{id:1,x:x0+(x1-x0)*k/10,y}]});
+       await page.waitForTimeout(12);
+     }
+     await session.send('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[]});
+     await session.detach();
+   }else{
+     await page.mouse.move(x0,y);
+     await page.mouse.down();
+     await page.mouse.move(x1,y,{steps:12});
+     await page.mouse.up();
+   }
+   await page.waitForFunction(()=>document.querySelector('#editorial').dataset.editorialActive==='context');
+   check('Horizontal drag on the actual phone advances to Contexto',await page.locator('#editorial').getAttribute('data-editorial-active')==='context');
+   check('Swipe affordance retains vertical native scroll',await swipeStage.evaluate(el=>getComputedStyle(el).touchAction==='pan-y'));
+   
    const notes=[];
    for(const id of ['meta','google','tiktok']){await page.locator('#tab-'+id).click();notes.push(await page.locator('[data-campaign-note]').innerText());}
    row.campaignNotes=notes;
+   const campaignFace=page.locator('#laboratorio .sp-campaign-card');
+   await campaignFace.scrollIntoViewIfNeeded();
+   await campaignFace.locator('.sp-campaign-panel:not([hidden]) img').click();
+   check('Campaign artwork itself flips to its real creative explanation',await campaignFace.getAttribute('data-side')==='back'&&await campaignFace.locator('[data-sp-card-back]').getAttribute('aria-hidden')==='false');
+   await campaignFace.locator('[data-sp-card-turn="back"]').click();
+   check('Campaign can turn back without hiding its original image',await campaignFace.getAttribute('data-side')==='front'&&await campaignFace.locator('.sp-campaign-panel:not([hidden]) img').count()===1);
    check('Each channel explains a different creative decision',new Set(notes).size===3&&notes.every(s=>/adaptação ao canal/i.test(s)&&/entrega/i.test(s)));
    await page.evaluate(()=>['meta','google','tiktok'].forEach(id=>document.querySelector('#tab-'+id).click()));await page.waitForTimeout(800);
    check('Fast changes keep artwork and explanation in sync',await page.locator('.sp-campaign').getAttribute('data-channel')==='tiktok'&&/vertical/.test(await page.locator('[data-note-title]').innerText())&&await page.locator('.sp-campaign-panel:not([hidden])').count()===1);

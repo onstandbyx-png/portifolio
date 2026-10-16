@@ -96,6 +96,15 @@ try{
       await page.waitForFunction(before=>scrollY>before+60,before);
       check('The product presentation preserves native page scrolling',await page.evaluate(()=>scrollY)>before+60);
 
+      // Campaign notes now live on the reverse of the functional card.
+      const campaignCard=page.locator('#laboratorio .sp-campaign-card');
+      check('Campaign starts with the artwork facing the visitor',await campaignCard.getAttribute('data-side')==='front');
+      await campaignCard.locator('.sp-campaign-panel:not([hidden]) img').click();
+      check('Tapping the artwork itself reveals the explanation without a floating icon',await campaignCard.getAttribute('data-side')==='back'&&await campaignCard.locator('[data-sp-card-back]').getAttribute('aria-hidden')==='false');
+      await campaignCard.locator('[data-sp-card-turn="back"]').click();
+      check('Tapping the return control restores the artwork',await campaignCard.getAttribute('data-side')==='front');
+      await campaignCard.locator('[data-sp-card-turn="front"]').click();
+      check('The campaign reverse is accessible before its CTA',await campaignCard.getAttribute('data-side')==='back'&&await page.locator('[data-contact-service="Campanhas e gestão de mídia"]').count()===1);
       await page.locator('[data-contact-service="Campanhas e gestão de mídia"]').click();
       check('Campaign contact action prefills the exact service without sending',await page.locator('#service').inputValue()==='Campanhas e gestão de mídia'&&row.mutations.length===0);
       await page.locator('#service').selectOption({label:'Sites, apps e sistemas'});
