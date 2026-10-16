@@ -17,18 +17,27 @@ jobs:
         with:
           node-version: '22'
       - run: npm ci
-      - run: npm run check && npm run build
+      - run: npm run check && npm run build && node --test tests/*.test.mjs
       - name: Install Chromium
         run: |
           npm install --prefix /tmp/portfolio-qa --package-lock=false --no-save playwright@1.64.0
           /tmp/portfolio-qa/node_modules/.bin/playwright install --with-deps chromium
+      - name: Validate narrative and useful project interactions
+        run: node tests/browser-narrative.mjs
+      - name: Validate preserved motion rhythm
+        if: success() || failure()
+        run: node tests/browser-motion-rhythm.mjs
       - name: Validate badge loading and consistent fallback artwork
+        if: success() || failure()
         run: node tests/browser-badge-loading.mjs
       - name: Validate reversible presentations, static mock artwork and local contact
+        if: success() || failure()
         run: node tests/browser-static-presentations.mjs
       - name: Validate touch gestures and badge stability
+        if: success() || failure()
         run: node tests/browser-gestures.mjs
       - name: Validate readable hero layouts and independent interaction
+        if: success() || failure()
         run: node tests/browser-readable-hero.mjs
       - uses: actions/upload-artifact@v4
         if: always()

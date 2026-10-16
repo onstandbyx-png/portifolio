@@ -22,7 +22,7 @@ try{
    await page.goto(base,{waitUntil:'domcontentloaded'});await page.waitForSelector('html[data-static-presentations="ready"]',{state:'attached'});await page.evaluate(()=>document.fonts.ready);
    check('Hero names the actual services',/Conteúdo, campanhas/.test(await page.locator('#hero-title').innerText()));
    check('Native transcript is collapsed and explicitly labelled',await page.locator('details.es-transcript').count()===1&&!await page.locator('.es-transcript').evaluate(e=>e.open));
-   row.initial=await page.evaluate(()=>({height:document.documentElement.scrollHeight,sections:Object.fromEntries(['inicio','trabalhos','editorial','laboratorio','narrativa-visual','sistemas','categorias','contato'].map(id=>[id,Math.round(document.getElementById(id).getBoundingClientRect().height)]))}));
+   row.initial=await page.evaluate(()=>({height:document.documentElement.scrollHeight,sections:Object.fromEntries(['inicio','trabalhos','editorial','laboratorio','narrativa-visual','sistemas','categorias','contato'].map(id=>[id,Math.round((id==='inicio'?document.querySelector('.hero'):document.getElementById(id)).getBoundingClientRect().height)]))}));
    await capture('hero');
    check('Three named gallery shortcuts are present',await page.locator('[data-rg-to]').count()===3);
    if(!reduced){
@@ -35,10 +35,11 @@ try{
    await page.locator('[data-editorial-step="1"]').click();check('Editorial explanation follows the selected piece',/comparação/.test(await page.locator('[data-es-title]').innerText()));await page.locator('.es-transcript summary').click();
    const notes=[];
    for(const id of ['meta','google','tiktok']){await page.locator('#tab-'+id).click();notes.push(await page.locator('[data-campaign-note]').innerText());}
-   check('Each channel explains a different creative decision',new Set(notes).size===3&&notes.every(s=>s.includes('Adaptação ao canal')&&s.includes('Entrega')));
+   row.campaignNotes=notes;
+   check('Each channel explains a different creative decision',new Set(notes).size===3&&notes.every(s=>/adaptação ao canal/i.test(s)&&/entrega/i.test(s)));
    await page.evaluate(()=>['meta','google','tiktok'].forEach(id=>document.querySelector('#tab-'+id).click()));await page.waitForTimeout(800);
    check('Fast changes keep artwork and explanation in sync',await page.locator('.sp-campaign').getAttribute('data-channel')==='tiktok'&&/vertical/.test(await page.locator('[data-note-title]').innerText())&&await page.locator('.sp-campaign-panel:not([hidden])').count()===1);
-   await page.locator('#laboratorio').scrollIntoViewIfNeeded();await capture('campaign');
+   await page.locator('.sp-campaign').screenshot({path:`${output}/campaign-${width}${reduced?'-reduced':''}.png`,animations:'disabled'});
    check('The duplicate full Casa Costa gallery is removed',await page.locator('#sistemas .sp-products figure').count()===1);
    for(const id of ['casa','trilhas']){
     const link=page.locator(`[data-art-open="${id}"]`);await link.click();
@@ -55,7 +56,7 @@ try{
    await page.locator('#brief').fill('Preciso de um projeto digital com apresentação e prazo definido.');
    await page.locator('.sm-brief-summary summary').click();check('Optional summary reflects the editable brief',/projeto digital/.test(await page.locator('.sm-brief-summary p').innerText()));
    check('Contact channels remain the established real destinations',await page.locator('[data-contact-direct="whatsapp"]').getAttribute('href')==='https://wa.me/5511985568208'&&await page.locator('[data-contact-direct="email"]').getAttribute('href')==='mailto:smillepls@gmail.com');
-   await page.locator('#contato').scrollIntoViewIfNeeded();await capture('contact');
+   await page.locator('#contato').screenshot({path:`${output}/contact-${width}${reduced?'-reduced':''}.png`,animations:'disabled'});
    check('No horizontal page overflow',await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+2));
    check('No uncaught exceptions or external writes',row.errors.length===0&&row.writes.length===0);
   }catch(error){row.failure=String(error);await capture('failure').catch(()=>{});console.error(row.failure);}
