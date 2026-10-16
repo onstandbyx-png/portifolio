@@ -1,0 +1,30 @@
+name: Apply Selected Visibility
+on:
+  push:
+    branches: [fix/portfolio-hide-selected-20261016]
+    paths: [.github/workflows/apply-selected-visibility.yml]
+permissions:
+  contents: write
+jobs:
+  apply:
+    if: github.ref == 'refs/heads/fix/portfolio-hide-selected-20261016'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: fix/portfolio-hide-selected-20261016
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: python3 scripts/apply-selected-visibility.py
+      - run: npm ci && npm run check && npm run build && node --test tests/*.test.mjs
+      - name: Remove temporary execution helpers and commit isolated candidate
+        run: |
+          rm scripts/apply-selected-visibility.py .github/workflows/apply-selected-visibility.yml
+          git add index.html public/assets/showcase/editorial-story.js public/assets/showcase/selected-visibility.css tests/browser-narrative.mjs tests/browser-section-visibility.mjs tests/browser-static-presentations.mjs tests/presentation-motion.mjs .github/workflows/verify.yml .github/workflows/visibility-probe.yml scripts/apply-selected-visibility.py .github/workflows/apply-selected-visibility.yml
+          git diff --cached --check
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit -m 'fix: hide selected reading blocks and standalone Trilhas without empty space'
+          git push origin HEAD:fix/portfolio-hide-selected-20261016
