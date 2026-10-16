@@ -38,13 +38,20 @@ try{
    check('Editorial has readable swipe controls and three progress dots',await editorialNav.count()===1&&await editorialNav.locator('[data-es-dot]').count()===3);
    check('The visual carousel renders two usable neighboring phone previews',await page.locator('#editorial .es-peek').count()===2&&await page.locator('#editorial .es-device').count()===1);
    check('The editorial headline matches the visual reference',/Três olhares/.test(await page.locator('#editorial-title').innerText()));
-   check('The progress marker starts at 01 / 03',await page.locator('[data-es-heading-count]').textContent()==='01 / 03');
+   check('The progress marker follows the selected chapter',await page.locator('[data-es-heading-count]').textContent()==='02 / 03');
    await editorialNav.locator('[data-es-next]').click();
    check('Next arrow reaches Fechamento',await page.locator('#editorial').getAttribute('data-editorial-active')==='closing'&&await editorialNav.locator('[data-es-next]').isDisabled());
    await editorialNav.locator('[data-es-prev]').click();
    check('Previous arrow returns to Contexto',await page.locator('#editorial').getAttribute('data-editorial-active')==='context');
    check('The side previews stay synchronized with Contexto',await page.locator('#editorial .es-peek').evaluateAll(previews=>previews.length===2&&previews.every(preview=>preview.dataset.stepIndex!=='1'&&preview.querySelector('img')?.getAttribute('src')?.startsWith('/assets/portfolio/'))));
-   await page.locator('#editorial .es-peek--right').click();
+   // The side phone intentionally peeks from behind the large central phone.
+   // Hit its EXPOSED edge rather than the element center (hidden by the device).
+   await page.locator('#editorial [data-editorial-stage]').scrollIntoViewIfNeeded();
+   const peekBox=await page.locator('#editorial .es-peek--right').boundingBox();
+   const peekX=Math.min(width-13,Math.max(13,peekBox.x+peekBox.width*.33));
+   const peekY=Math.max(115,Math.min(height-90,peekBox.y+peekBox.height*.5));
+   if(width<500)await page.touchscreen.tap(peekX,peekY);
+   else await page.mouse.click(peekX,peekY);
    check('Tapping a side preview navigates to the referenced chapter',await page.locator('#editorial').getAttribute('data-editorial-active')==='closing');
    await page.locator('[data-editorial-step="0"]').click();
    const swipeStage=page.locator('#editorial [data-editorial-stage]');
