@@ -99,6 +99,7 @@ try{
       // The sheet remains in its own plane. A physical pull peels the photo
       // away and exposes the actual creative brief, not a 180-degree rotation.
       const campaignCard=page.locator('#laboratorio .sp-campaign-card');
+      await campaignCard.scrollIntoViewIfNeeded();
       check('Campaign starts with its artwork and a visible pull corner',
         await campaignCard.getAttribute('data-side')==='front'&&
         await campaignCard.locator('[data-peel-grip]').count()===1&&
