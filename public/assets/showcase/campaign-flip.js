@@ -154,6 +154,9 @@ export function mountCampaignFlip() {
 
   grip.addEventListener('pointerdown',event=>{
     if(!event.isPrimary||(event.pointerType==='mouse'&&event.button!==0))return;
+    // A NEW pointerdown is a fresh tap, never the synthetic click generated
+    // after the preceding drag. Prevents a stale suppression on Android.
+    ignoreSyntheticClick=false;
     stopAnimation();
     gesture={id:event.pointerId,x:event.clientX,y:event.clientY,initial:progress,maxDistance:0,scrollY:scrollY};
     card.dataset.peelState='dragging';

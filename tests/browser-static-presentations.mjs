@@ -100,12 +100,16 @@ try{
       // away and exposes the actual creative brief, not a 180-degree rotation.
       const campaignCard=page.locator('#laboratorio .sp-campaign-card');
       await campaignCard.scrollIntoViewIfNeeded();
+      // Explicitly align the grip BELOW the fixed desktop/mobile header.
+      await campaignCard.evaluate(el=>scrollTo({top:scrollY+el.getBoundingClientRect().top-118,behavior:'instant'}));
+      await page.waitForTimeout(180);
       check('Campaign starts with its artwork and a visible pull corner',
         await campaignCard.getAttribute('data-side')==='front'&&
         await campaignCard.locator('[data-peel-grip]').count()===1&&
         await campaignCard.locator('.sp-peel-fold').count()===1);
       const grip=campaignCard.locator('[data-peel-grip]');
       const gripBox=await grip.boundingBox();
+      check('The folded tip is actually hittable and not covered by the header',await page.evaluate(({x,y})=>Boolean(document.elementFromPoint(x,y)?.closest('[data-peel-grip]')),{x:gripBox.x+gripBox.width*.55,y:gripBox.y+gripBox.height*.46}));
       if(width<500){
         const session=await page.context().newCDPSession(page);
         try{
