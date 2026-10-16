@@ -74,6 +74,7 @@ try{
      layoutCheck.copy.right+18<=layoutCheck.exhibit.left&&layoutCheck.exhibit.width>=540);
    else check('Compact and intermediate hero positions badges just after the copy',
      layoutCheck.exhibit.top>=layoutCheck.copy.bottom+8&&layoutCheck.exhibit.top-layoutCheck.copy.bottom<80);
+   if(width<=350)check('Narrow hero eyebrow remains on one line',await page.locator('.hero-issue .issue-dot').evaluate(el=>getComputedStyle(el).display==='none'));
    check('Selection is visible without blocking the artwork',
      await page.locator('[data-badge-current-label]').innerText()==='Fatos · selecionado');
    check('Fatos remains the default selected card after initialization',initial.selected==='0'&&await page.locator('[data-portfolio-badges]').getAttribute('data-selected-card')==='0');

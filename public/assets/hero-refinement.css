@@ -59,6 +59,6 @@
 .portfolio-r6 .hero.hero-v2 .badge-touch-cue{font-size:10px}
 }
 @media(max-width:390px){.portfolio-r6 .hero.hero-v2 .exhibit-meta-hint{display:none}.portfolio-r6 .hero.hero-v2 .badge-touch-cue{max-width:15ch}}
-@media(max-width:350px){.portfolio-r6 .hero.hero-v2 h1{font-size:36px}.portfolio-r6 .hero.hero-v2 .hero-actions{display:grid;grid-template-columns:1fr}.portfolio-r6 .hero.hero-v2 .hero-actions .button{width:100%;justify-content:space-between}}
+@media(max-width:350px){.portfolio-r6 .hero.hero-v2 .hero-issue .issue-dot{display:none}.portfolio-r6 .hero.hero-v2 h1{font-size:36px}.portfolio-r6 .hero.hero-v2 .hero-actions{display:grid;grid-template-columns:1fr}.portfolio-r6 .hero.hero-v2 .hero-actions .button{width:100%;justify-content:space-between}}
 @media(prefers-reduced-motion:reduce){.portfolio-r6 .hero.hero-v2 .hero-actions .button,.portfolio-r6 .hero.hero-v2 .hero-badge-controls button{transition:none!important;transform:none!important}}
 body.is-paused .hero.hero-v2 .hero-actions .button,body.is-paused .hero.hero-v2 .hero-badge-controls button{transition:none!important;transform:none!important}
