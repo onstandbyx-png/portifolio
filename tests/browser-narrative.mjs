@@ -26,6 +26,7 @@ try{
    await capture('hero');
    check('Three named gallery shortcuts are present',await page.locator('[data-rg-to]').count()===3);
    check('Digital uses a subtle on-card flip hint instead of a floating icon',await page.locator('#trabalhos .work-smiile .rg-card-interaction-hint').count()===1&&await page.locator('#trabalhos .work-smiile .rg-flip').count()===1);
+   check('The Digital preview announces tapping and renders its folded corner',await page.locator('#trabalhos .work-smiile .rg-card-interaction-hint').innerText().then(t=>t.includes('qualquer área'))&&await page.locator('#trabalhos .work-smiile').evaluate(card=>getComputedStyle(card,'::after').content!=='none'));
    if(!reduced){
     await page.locator('[data-rg-to="1"]').click();await page.waitForFunction(()=>document.querySelector('[data-rg-to="1"]').getAttribute('aria-pressed')==='true');await page.waitForTimeout(900);
     await page.locator('[data-work-card="ads"] [data-rg-flip]').click();await page.waitForTimeout(750);
@@ -56,7 +57,7 @@ try{
    await page.locator('[data-editorial-step="0"]').click();
    const swipeStage=page.locator('#editorial [data-editorial-stage]');
    await swipeStage.scrollIntoViewIfNeeded();
-   const swipeBox=await swipeStage.boundingBox();
+   const swipeBox=await page.locator('#editorial .es-device').boundingBox();
    const y=Math.max(110,Math.min(height-110,swipeBox.y+swipeBox.height*.5));
    const x0=swipeBox.x+swipeBox.width*.8,x1=swipeBox.x+swipeBox.width*.2;
    if(width<500){

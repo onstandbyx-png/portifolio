@@ -100,7 +100,8 @@ export function mountEditorialSwipe(){
     if(!event.isPrimary||(event.pointerType==='mouse'&&event.button!==0))return;
     gesture={id:event.pointerId,x:event.clientX,y:event.clientY,scrollY:window.scrollY,time:performance.now()};
   },{passive:true});
-  stage.addEventListener('pointerup',event=>{
+  // Release can happen outside the preview while the user drags horizontally.
+  window.addEventListener('pointerup',event=>{
     if(!gesture||event.pointerId!==gesture.id)return;
     const g=gesture;gesture=null;
     const dx=event.clientX-g.x,dy=event.clientY-g.y;
@@ -110,6 +111,7 @@ export function mountEditorialSwipe(){
     select(current()+(dx<0?1:-1));
   },{passive:true});
   stage.addEventListener('pointercancel',()=>{gesture=null},{passive:true});
+  stage.addEventListener('dragstart',event=>event.preventDefault());
   stage.addEventListener('keydown',event=>{
     if(event.target!==stage||!['ArrowLeft','ArrowRight'].includes(event.key))return;
     event.preventDefault();
