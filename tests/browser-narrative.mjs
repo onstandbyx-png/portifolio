@@ -61,7 +61,7 @@ try{
    else await page.mouse.click(peekX,peekY);
    check('Tapping a side preview navigates to the referenced chapter',await page.locator('#editorial').getAttribute('data-editorial-active')==='closing');
    await page.locator('[data-editorial-step="0"]').click();
-   check('Swipe begins on Abertura',await page.locator('#editorial').getAttribute('data-editorial-active')==='opening');
+   check('Swipe begins on Abertura',await page.locator('#editorial').getAttribute('data-editorial-active')==='hook');
    const swipeStage=page.locator('#editorial [data-editorial-stage]');
    const gestures=[];
    for(let attempt=0;attempt<3;attempt++){
