@@ -127,9 +127,38 @@ body.portfolio-r6 #sistemas { padding: 104px 0; background: #182d24; color: #edf
   line-height: 1.13;
   letter-spacing: -.045em;
 }
-/* R10: travel and reading space belong to the existing native-scroll scenes. */
+/* Keep the original mobile pacing and its native-scroll presentation. */
 .rg-scroll-shell:not(.rg-natural) { height: calc(var(--rg-count,3) * 110svh); }
 .rf-film:not(.rf-natural) { height: calc(var(--rf-heading-height,200px) + 300svh); }
+
+/* Desktop: scene travel is based on bounded reading distance, not screen height.
+   100svh used to multiply very tall viewports into thousands of empty pixels.
+   The same three animated planes, accessible controls and fixed artwork remain. */
+@media (min-width: 761px) {
+  .rg-scroll-shell:not(.rg-natural) {
+    --rg-scene-height: min(calc(100svh - var(--rg-header, 76px)), 860px);
+    height: calc(var(--rg-scene-height) + var(--rg-count, 3) * 690px - 690px);
+  }
+  .rg-scroll-shell:not(.rg-natural) .rg-sticky {
+    height: var(--rg-scene-height);
+  }
+  .rg-scroll-shell:not(.rg-natural) .rg-plane {
+    width: min(100%, 1150px);
+    height: min(590px, calc(var(--rg-scene-height) - 168px));
+  }
+  .rf-film:not(.rf-natural) {
+    --rf-scene-height: min(calc(100svh - var(--rf-header, 76px)), 860px);
+    height: calc(var(--rf-heading-height, 200px) + var(--rf-scene-height) + 1380px);
+  }
+  .rf-film:not(.rf-natural) .rf-stage {
+    height: var(--rf-scene-height);
+  }
+  #narrativa-visual .rf-heading {
+    padding-top: 52px;
+    padding-bottom: 28px;
+  }
+  body.portfolio-r6 #trabalhos { padding-bottom: 72px; }
+}
 body.portfolio-r6 #trabalhos { padding-bottom: 104px; }
 body.portfolio-r6 #editorial { padding-bottom: 96px; }
 .pf-fatos-deck { margin-top: 72px; padding-top: 64px; gap: 40px 80px; }

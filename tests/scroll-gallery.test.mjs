@@ -24,6 +24,12 @@ for(let chapter=0;chapter<4;chapter++){
  assert(readingProgress(chapter+.75)<chapter+1);
 }
 assert(Math.abs(readingProgress(.499)-readingProgress(.501))<.01);
+// Desktop spends less time on a static frame but has a longer transition.
+assert.equal(readingProgress(.12,true),0);
+assert(readingProgress(.18,true)>0);
+assert(readingProgress(.82,true)<1);
+assert.equal(readingProgress(.90,true),1);
+assert(Math.abs(readingProgress(.499,true)-readingProgress(.501,true))<.01);
 const forward=[];
 for(let cursor=0;cursor<=3;cursor+=.125){
  const poses=Array.from({length:4},(_,index)=>galleryPose(index,cursor));

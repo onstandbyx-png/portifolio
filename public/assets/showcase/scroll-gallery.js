@@ -15,10 +15,11 @@ export function createChapterState(count,initial=0){
  };
 }
 
-// Reading poses keep 44% of each chapter interval. The 56% passage stays
-// continuous and reversible instead of compressing every movement into a flick.
-export function readingProgress(cursor){
- const whole=Math.floor(cursor),phase=clamp((cursor-whole-.22)/.56);
+// On mobile keep the proven .22/.56/.22 reading rhythm. Desktop uses .14/.72/.14:
+// less idle scroll, but a longer, smoother transition between compositions.
+export function readingProgress(cursor, desktop=false){
+ const hold=desktop?.14:.22,travel=desktop?.72:.56;
+ const whole=Math.floor(cursor),phase=clamp((cursor-whole-hold)/travel);
  return whole+phase*phase*(3-2*phase);
 }
 
@@ -29,7 +30,7 @@ export function stableViewportHeight(){
 }
 
 export function galleryPose(index,cursor,mobile=false){
- const distance=index-readingProgress(cursor),amount=clamp(Math.abs(distance)),sign=Math.sign(distance);
+ const distance=index-readingProgress(cursor,!mobile),amount=clamp(Math.abs(distance)),sign=Math.sign(distance);
  return {y:distance*(mobile?94:100),angle:-sign*amount*68,scale:1-.12*amount,
   z:-amount*(mobile?100:180),opacity:clamp(1-Math.max(0,Math.abs(distance)-.8)*2.5),active:Math.round(cursor)===index};
 }

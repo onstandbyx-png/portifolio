@@ -33,8 +33,8 @@ export function mountScrollFilm(){
   const mobile=small.matches,paused=motion.paused(),natural=reduced.matches;
   film.classList.toggle('rf-natural',natural);film.dataset.paused=String(paused);film.dataset.mode=natural?'flow':'scroll';
   if(natural)film.style.removeProperty('--rf-art-height');
-  else film.style.setProperty('--rf-art-height',`${Math.min(mobile?500:560,Math.max(180,camera.clientHeight-24))}px`);
-  const progress=state.value,reading=readingProgress(progress),index=Math.round(progress),spacing=mobile?innerWidth*1.1:Math.min(950,innerWidth*.72);
+  else film.style.setProperty('--rf-art-height',`${Math.min(mobile?500:620,Math.max(180,camera.clientHeight-24))}px`);
+  const progress=state.value,reading=readingProgress(progress,!mobile),index=Math.round(progress),spacing=mobile?innerWidth*1.1:Math.min(950,innerWidth*.72);
   world.style.setProperty('--rf-camera-x',`${(1-reading)*spacing}px`);
   planes.forEach((plane,i)=>{
    const distance=i-reading,active=i===index;

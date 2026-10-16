@@ -26,7 +26,8 @@ try{
  for(let i=0;i<50;i++){try{healthy=(await fetch(base+'/health')).ok;if(healthy)break;}catch{}await new Promise(r=>setTimeout(r,100));}
  assert(healthy,'Server must be reachable');
  browser=await chromium.launch({headless:true,executablePath:process.env.CHROMIUM_PATH,args:['--no-sandbox','--disable-dev-shm-usage','--use-gl=angle','--use-angle=swiftshader','--enable-unsafe-swiftshader']});
- for(const [width,height] of [[390,844],[1440,900]]){
+ await mkdir('qa/motion-rhythm',{recursive:true});
+ for(const [width,height] of [[390,844],[980,1700],[1440,900]]){
   const page=await browser.newPage({viewport:{width,height}});page.setDefaultTimeout(12000);
   await page.goto(base,{waitUntil:'domcontentloaded'});
   await page.waitForSelector('.rf-film[data-ready="true"]',{state:'attached'});
@@ -35,13 +36,40 @@ try{
   const metrics=await page.evaluate(async()=>{
    const {readingProgress}=await import('/assets/showcase/scroll-gallery.js');
    const f=document.querySelector('.rf-film'),h=f.querySelector('.rf-heading'),s=f.querySelector('.rf-stage');
-   const points=[];for(let i=0;i<=1000;i++){const p=i/1000;if(readingProgress(p)>0&&readingProgress(p)<1)points.push(p);}
+   const points=[];for(let i=0;i<=1000;i++){const p=i/1000;if(readingProgress(p,innerWidth>760)>0&&readingProgress(p,innerWidth>760)<1)points.push(p);}
    return {fraction:points.at(-1)-points[0],filmInterval:(f.offsetHeight-h.offsetHeight-s.offsetHeight)/2};
   });
   check(`${width}: film passage >=450px`,metrics.filmInterval*metrics.fraction>=450,metrics);
+  if(width>760){
+   const scene=await page.evaluate(()=>{
+    const g=document.querySelector('.rg-scroll-shell'),f=document.querySelector('.rf-film');
+    const gs=g.querySelector('.rg-sticky'),fs=f.querySelector('.rf-stage'),fh=f.querySelector('.rf-heading');
+    const first=g.querySelector('.rg-plane'),cover=f.querySelector('.rf-cover');
+    return {gallery:g.offsetHeight,film:f.offsetHeight,gStage:gs.offsetHeight,fStage:fs.offsetHeight,
+      galleryTravel:g.offsetHeight-gs.offsetHeight,
+      filmTravel:f.offsetHeight-fh.offsetHeight-fs.offsetHeight,
+      cardHeight:Number.parseFloat(getComputedStyle(first).height),
+      artHeight:Number.parseFloat(getComputedStyle(cover).height),
+      viewport:innerHeight};
+   });
+   check(`${width}: gallery no longer reserves a multi-screen dead zone`,
+     scene.gallery<=2500&&scene.gStage<=900&&scene.cardHeight>=360,scene);
+   check(`${width}: Casa Costa has bounded height and substantial artwork`,
+     scene.film<=2600&&scene.fStage<=900&&scene.artHeight>=400,scene);
+   check(`${width}: three works retain smooth native scroll`,
+     scene.galleryTravel/2*metrics.fraction>=450,scene);
+   check(`${width}: gallery and film shorten on tall desktop windows`,
+     scene.gallery<=scene.viewport*3&&scene.film<=scene.viewport*3,scene);
+  }
   const alphas=[];
   for(const p of [.499,.501]){await seek(page,'.rf-film',p);alphas.push(await page.locator('[data-rf-plane="0"]').evaluate(e=>Number(e.style.getPropertyValue('--rf-alpha'))));}
   check(`${width}: continuous opacity at midpoint`,alphas.every(a=>a>.35&&a<.9)&&Math.abs(alphas[0]-alphas[1])<.03,alphas);
+  if(width>760){
+    await seek(page,'.rf-film',0);
+    await page.screenshot({path:`qa/motion-rhythm/casa-costa-${width}.png`,animations:'disabled'});
+    await seek(page,'.rg-scroll-shell',0);
+    await page.screenshot({path:`qa/motion-rhythm/work-gallery-${width}.png`,animations:'disabled'});
+  }
   const gaps=[];
   for(const p of [.35,.45,.5,.55,.65]){await seek(page,'.rg-scroll-shell',p);gaps.push(await page.evaluate(()=>{const a=document.querySelector('[data-rg-index="0"]').getBoundingClientRect(),b=document.querySelector('[data-rg-index="1"]').getBoundingClientRect();return Math.round(b.top-a.bottom);}));}
   check(`${width}: projected cards remain separated`,gaps.every(g=>g>=12),gaps);
@@ -65,4 +93,4 @@ try{
  await mkdir('qa/motion-rhythm',{recursive:true});
  await writeFile('qa/motion-rhythm/results.json',JSON.stringify(records,null,2));
 }
-assert(records.length===16&&records.every(r=>r.pass),'Motion rhythm regression failed');
+assert(records.length===32&&records.every(r=>r.pass),'Motion rhythm regression failed');
