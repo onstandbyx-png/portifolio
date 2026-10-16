@@ -11,6 +11,16 @@ export function mountArtworkDialog() {
   dialog.innerHTML='<div class="artwork-inner"><header><h2 id="artwork-title"></h2><button type="button" data-art-close aria-label="Fechar imagem ampliada">Fechar ×</button></header><figure><img width="960" height="1200" alt=""><figcaption></figcaption></figure></div>';
   document.body.append(dialog);
   let opener=null;
+  // Keep keyboard navigation within the image viewer, including its single-
+  // control layout. Escape continues to use the browser's native close action.
+  dialog.addEventListener('keydown',event=>{
+    if(event.key!=='Tab')return;
+    const controls=[...dialog.querySelectorAll('button:not([disabled]),a[href],[tabindex="0"]')].filter(el=>el.getClientRects().length>0);
+    const first=controls[0],last=controls.at(-1);
+    if(!first)return;
+    if(event.shiftKey&&document.activeElement===first){event.preventDefault();last.focus();}
+    else if(!event.shiftKey&&document.activeElement===last){event.preventDefault();first.focus();}
+  });
   dialog.querySelector('[data-art-close]').addEventListener('click',()=>dialog.close());
   dialog.addEventListener('close',()=>{
     document.documentElement.classList.remove('has-artwork-dialog');

@@ -4,11 +4,10 @@ import { mountArtworkDialog } from './artwork-dialog.js';
 const ART = '/assets/portfolio/static-r8/';
 
 const campaignNotes = [
- {title:'Mostrar a ideia antes de explicá-la.',message:'Sua ideia ganha vida.',decision:'A interface é a prova visual da proposta. O título apresenta a possibilidade sem competir com a peça.',delivery:'Conceito e direção de arte para feed e carrossel.'},
- {title:'Responder à intenção de busca.',message:'Sites e aplicativos com uma proposta clara.',decision:'O anúncio organiza oferta, benefício e convite em texto. A mensagem se mantém coerente com o projeto apresentado.',delivery:'Copy de pesquisa e continuidade da página de destino.'},
- {title:'Uma abertura pensada para a tela vertical.',message:'E se essa ideia fosse um app?',decision:'A pergunta abre o roteiro; a interface apresenta a resposta. O enquadramento dá espaço à mensagem e ao próximo passo.',delivery:'Direção visual e roteiro para vídeo vertical.'}
+ {title:'Mostrar a ideia antes de explicá-la.',message:'Sua ideia ganha forma.',decision:'A proposta vem primeiro. As duas composições mostram como a mesma direção visual se desdobra em site e aplicativo.',delivery:'Conceito, copy e direção de arte para uma peça de feed.'},
+ {title:'Responder à intenção de busca.',message:'Um site à altura da sua ideia.',decision:'A busca parte de uma necessidade concreta. O título responde ao pedido e a imagem conecta o anúncio ao projeto Casa Costa.',delivery:'Estudo de anúncio de pesquisa e ligação visual com o destino.'},
+ {title:'Um convite pensado para a tela vertical.',message:'O próximo passo começa com um olhar.',decision:'O cenário ocupa a tela vertical. O texto conduz o olhar até a apresentação do aplicativo, mantendo um único convite.',delivery:'Peça vertical e direção visual para desdobramento em vídeo.'}
 ];
-
 
 const campaigns = [
   { id: 'meta', name: 'Meta', logo: '/assets/brands/meta-official-primary.webp', width: 100, height: 28,
