@@ -5,10 +5,18 @@ on:
   pull_request:
 permissions:
   contents: read
+concurrency:
+  group: portfolio-review-${{ github.ref }}
+  cancel-in-progress: true
 jobs:
   verify:
     runs-on: ubuntu-latest
-    timeout-minutes: 25
+    timeout-minutes: 12
+    strategy:
+      fail-fast: false
+      max-parallel: 3
+      matrix:
+        suite: [narrative, motion-rhythm, static-presentations, badge-loading, gestures, readable-hero]
     env:
       QA_PACKAGE: /tmp/portfolio-qa/package.json
     steps:
@@ -17,22 +25,17 @@ jobs:
         with:
           node-version: '22'
       - run: npm ci
-      - run: npm run check && npm run build
+      - name: Verify source, build and unit contracts
+        run: npm run check && npm run build && node --test tests/*.test.mjs
       - name: Install Chromium
         run: |
           npm install --prefix /tmp/portfolio-qa --package-lock=false --no-save playwright@1.64.0
           /tmp/portfolio-qa/node_modules/.bin/playwright install --with-deps chromium
-      - name: Validate badge loading and consistent fallback artwork
-        run: node tests/browser-badge-loading.mjs
-      - name: Validate reversible presentations, static mock artwork and local contact
-        run: node tests/browser-static-presentations.mjs
-      - name: Validate touch gestures and badge stability
-        run: node tests/browser-gestures.mjs
-      - name: Validate readable hero layouts and independent interaction
-        run: node tests/browser-readable-hero.mjs
+      - name: Validate ${{ matrix.suite }}
+        run: node tests/browser-${{ matrix.suite }}.mjs
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: portfolio-evidence-review
+          name: portfolio-${{ matrix.suite }}-evidence
           path: qa/
           retention-days: 7

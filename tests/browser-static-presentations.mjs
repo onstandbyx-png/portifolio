@@ -61,7 +61,7 @@ try{
       await verifyGallery({page,width,reduced,check,capture});
       await verifyEditorial({page,width,reduced,check,capture});
       await verifyFilm({page,width,reduced,check,capture});
-      check('The two digital project interiors remain static images',await page.locator('#sistemas .sp-products figure').count()===2&&await page.locator('#sistemas .sp-products figure img').count()===2);
+      check('The next digital project remains a static image without repeating Casa Costa',await page.locator('#sistemas .sp-products figure').count()===1&&await page.locator('#sistemas .sp-products figure img').count()===1);
       check('Campaign and product interiors have no nested fake controls or media',await page.locator('.sp-products,.sp-campaign-panel').evaluateAll(roots=>roots.every(root=>!root.querySelector('button,input,select,textarea,[contenteditable],iframe,video,audio,canvas,[role="button"],[role="tab"],.df-explore'))));
       check('Retired interactive product demos and explorers remain absent',await page.locator('.df-explorer,[data-product-tab],[data-call-play],[data-app-action],[data-case],#case-dialog').count()===0);
       check('Archived studio is absent from public navigation',await page.locator('a[href$="#estudio-interativo"],video.ks-video').count()===0);
@@ -90,7 +90,7 @@ try{
       await page.locator('#motion-toggle').click();await tabs.first().click();
 
       const artwork=page.locator('.sp-products img');
-      check('Both digital project artworks remain available',await artwork.count()===2);
+      check('The next digital artwork remains available',await artwork.count()===1);
       for(const image of await artwork.all()){
         await image.scrollIntoViewIfNeeded();await image.evaluate(img=>img.decode());
         const result=await image.evaluate(img=>{const r=img.getBoundingClientRect();return {src:img.getAttribute('src'),alt:img.alt,decoded:img.naturalWidth>0&&img.naturalHeight>0,local:img.getAttribute('src').startsWith('/assets/'),labelled:img.alt.trim().length>12,sized:Number(img.getAttribute('width'))>0&&Number(img.getAttribute('height'))>0,contained:r.left>=-1&&r.right<=innerWidth+1&&r.width>0,visible:getComputedStyle(img).visibility!=='hidden'&&Number(getComputedStyle(img).opacity)>0};});
@@ -107,6 +107,7 @@ try{
       check('Campaign contact action prefills the exact service without sending',await page.locator('#service').inputValue()==='Campanhas e gestão de mídia'&&row.mutations.length===0);
       await page.locator('#service').selectOption({label:'Sites, apps e sistemas'});
       const brief='Quero criar um site e um aplicativo. Teste local de revisão.';await page.locator('#brief').fill(brief);
+      await page.locator('.sm-brief-summary summary').click();
       check('The contact summary reflects the editable local draft',await page.locator('.sm-brief-summary p').innerText()===brief&&await page.locator('#brief-form').getAttribute('data-contact-ready')==='true');
       await page.locator('.brief-copy').click();
       const copied=await page.evaluate(()=>window.__copiedBrief);

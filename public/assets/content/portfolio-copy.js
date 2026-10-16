@@ -2,8 +2,8 @@
 export const portfolioCopy = {
   "schemaVersion": 1,
   "language": "pt-BR",
-  "status": "proposta editorial; não aplicada ao site",
-  "reviewedRevision": "3edff34",
+  "status": "aplicada ao portfólio",
+  "reviewedRevision": "9c920416",
   "positioning": {
     "name": "Smile N",
     "role": "Direção criativa",
@@ -18,7 +18,7 @@ export const portfolioCopy = {
   "metadata": {
     "title": "Smile N · Direção criativa, conteúdo e experiências digitais",
     "description": "Direção criativa, conteúdo e campanhas com Smile N. Experiência com Fatos Desconhecidos, projeto próprio smiile e criação de sites, apps e sistemas.",
-    "ogTitle": "Criatividade com direção. Do conceito à entrega.",
+    "ogTitle": "Conteúdo, campanhas e produtos digitais | Smile N",
     "ogDescription": "Conheça a atuação de Smile N em conteúdo, campanhas e experiências digitais. Explore os trabalhos e converse sobre o seu projeto."
   },
   "navigation": {
@@ -58,14 +58,14 @@ export const portfolioCopy = {
       "order": 1,
       "purpose": "Apresentar o profissional, seu campo de atuação e duas evidências distintas.",
       "eyebrow": "Smile N · Direção criativa",
-      "title": "Criatividade com direção.\nDo conceito à entrega.",
-      "body": "Dou forma à mensagem da sua marca — nos conteúdos que ela publica, nas campanhas que coloca no mundo e nas experiências digitais que oferece.",
+      "title": "Conteúdo, campanhas\ne produtos digitais.",
+      "body": "Direção criativa, redação e desenvolvimento para transformar ideias em peças, sites e aplicativos.",
       "primaryCta": {
-        "label": "Conhecer os trabalhos",
+        "label": "Ver projetos",
         "href": "#trabalhos"
       },
       "secondaryCta": {
-        "label": "Conversar sobre um projeto",
+        "label": "Falar sobre meu projeto",
         "href": "#contato"
       },
       "support": "Minha atuação reúne direção criativa, texto, design e desenvolvimento.",
@@ -125,37 +125,40 @@ export const portfolioCopy = {
       "purpose": "Permitir que o visitante escolha evidências concretas antes de ler serviços.",
       "eyebrow": "Trabalhos selecionados",
       "title": "A direção aparece\nno que é entregue.",
-      "body": "Conteúdo editorial, criação de campanha e produto digital. Veja as peças e conheça a minha contribuição em cada frente.",
+      "body": "Escolha uma frente. Veja a peça e a decisão por trás dela.",
       "cards": [
         {
           "id": "fatos",
-          "label": "Fatos Desconhecidos",
+          "label": "Fatos · Conteúdo editorial",
           "nature": "Experiência profissional",
           "title": "Conteúdo começa\ncom uma boa pergunta.",
           "body": "Pesquisa, texto e direção criativa para desenvolver narrativas.",
           "contribution": "Direção criativa e conteúdo",
-          "cta": "Ver atuação editorial",
-          "href": "#editorial"
+          "cta": "Ver conteúdo",
+          "href": "#editorial",
+          "decision": "A pergunta parte do cotidiano; a pesquisa dá contexto à curiosidade."
         },
         {
           "id": "ads",
-          "label": "smiile · Criação de campanha",
+          "label": "smiile · Campanha multicanal",
           "nature": "Estudo conceitual",
           "title": "Uma proposta clara.\nUma linguagem para cada canal.",
           "body": "Um estudo que conecta mensagem, criativo e próximo passo em Meta, Google e TikTok.",
           "contribution": "Conceito, copy e direção de arte",
-          "cta": "Ver a campanha",
-          "href": "#laboratorio"
+          "cta": "Ver campanha",
+          "href": "#laboratorio",
+          "decision": "A mesma proposta ganha uma abertura e uma hierarquia para cada canal."
         },
         {
           "id": "smiile",
-          "label": "smiile · Experiências digitais",
+          "label": "smiile · Interfaces digitais",
           "nature": "Projeto próprio",
           "title": "O design também está\nno que acontece depois.",
           "body": "Sites, aplicativos e fluxos que você pode explorar aqui.",
           "contribution": "Direção visual, UX/UI e desenvolvimento",
-          "cta": "Explorar o projeto",
-          "href": "#sistemas"
+          "cta": "Ver interfaces",
+          "href": "#sistemas",
+          "decision": "A imagem apresenta o destino; a hierarquia torna o próximo passo claro."
         }
       ],
       "controls": {
@@ -176,7 +179,7 @@ export const portfolioCopy = {
       "purpose": "Conectar o vínculo Fatos ao raciocínio editorial e às entregas de conteúdo.",
       "eyebrow": "02 / Fatos Desconhecidos · Conteúdo e direção criativa",
       "title": "A curiosidade abre.\nA narrativa conduz.",
-      "body": "Meu trabalho conecta pesquisa, texto e direção visual: encontrar um recorte, organizar a história e dar a ela uma forma que faça sentido para o público.",
+      "body": "Pesquisa, texto e direção visual. Veja como uma mesma história ganha abertura, contexto e fechamento.",
       "roles": [
         "Pesquisa e pauta",
         "Texto e roteiro",
@@ -186,8 +189,8 @@ export const portfolioCopy = {
         {
           "id": "hook",
           "label": "Abertura",
-          "title": "Começar pelo que a pessoa reconhece.",
-          "body": "Uma pergunta próxima da rotina cria o ponto de entrada para um assunto maior.",
+          "title": "Uma pergunta antes da explicação.",
+          "body": "O objeto familiar aproxima o tema. A pergunta cria uma razão para continuar.",
           "pieceTitle": "O que cabe na palma da sua mão?",
           "pieceCopy": "Um objeto cotidiano pode abrir uma história sobre como a nossa forma de viver mudou.",
           "decision": "O gancho parte de algo familiar. A imagem apresenta o assunto antes de a explicação começar."
@@ -195,8 +198,8 @@ export const portfolioCopy = {
         {
           "id": "context",
           "label": "Contexto",
-          "title": "Escolher o que torna a história clara.",
-          "body": "A pesquisa organiza os fatos; o roteiro escolhe a ordem, o recorte e as conexões.",
+          "title": "A comparação torna a mudança visível.",
+          "body": "Câmera, mapa e mensagens dão exemplos concretos, em vez de uma explicação abstrata.",
           "pieceTitle": "De uma ligação a muitos caminhos.",
           "pieceCopy": "Câmera, mapa, mensagens: funções que hoje dividem a mesma tela.",
           "decision": "O conteúdo avança da pergunta para uma comparação visual. Evitar inserir datas ou números sem uma fonte editorial verificável."
@@ -204,8 +207,8 @@ export const portfolioCopy = {
         {
           "id": "closing",
           "label": "Fechamento",
-          "title": "Dar um sentido ao que foi descoberto.",
-          "body": "O fechamento retoma a ideia central e abre espaço para a conversa continuar.",
+          "title": "O fechamento volta para quem lê.",
+          "body": "A pergunta final conecta a descoberta à rotina da pessoa e encerra a história com sentido.",
           "pieceTitle": "A tecnologia muda.\nA curiosidade continua.",
           "pieceCopy": "Qual função do celular mais mudou a sua rotina?",
           "decision": "A pergunta final conecta a história à experiência de quem leu. É uma escolha de linguagem, sem promessa de engajamento."
@@ -317,7 +320,7 @@ export const portfolioCopy = {
       "purpose": "Vender criação e gestão de campanhas com uma demonstração criativa coerente entre canais.",
       "eyebrow": "03 / Campanhas · Estratégia, criação e mídia",
       "title": "Da atenção\nao próximo passo.",
-      "body": "Uma campanha conecta mensagem, público e ação. Desenvolvo o conceito, os criativos e seus desdobramentos para que cada canal tenha uma função clara.",
+      "body": "Uma ideia, três linguagens. Compare a mensagem, o formato e a decisão criativa em cada canal.",
       "nature": "Estudo de campanha · smiile",
       "campaignName": "Sua ideia ganha vida.",
       "campaignIntent": "Apresentar possibilidades de sites e aplicativos e levar o público a explorar os projetos.",
@@ -457,15 +460,15 @@ export const portfolioCopy = {
       "purpose": "Conectar direção visual e experiência digital em uma transição, sem duplicar uma seção de manifesto.",
       "eyebrow": "smiile · Estudo de direção visual",
       "title": "A identidade muda de formato.\nA direção permanece.",
-      "body": "Casa Costa: uma composição visual adaptada para editorial, publicação e site.",
+      "body": "Casa Costa: da composição editorial à publicação e à interface final.",
       "formats": [
         "Editorial",
         "Social",
         "Site"
       ],
       "cta": {
-        "label": "Entrar no site",
-        "href": "#sistemas",
+        "label": "Ampliar interface final",
+        "href": "/assets/portfolio/static-r8/casa-costa.webp",
         "productTarget": "site"
       },
       "credit": "Casa Costa · Estudo conceitual do projeto smiile.",
@@ -589,13 +592,13 @@ export const portfolioCopy = {
       "order": 8,
       "purpose": "Traduzir a prova em escopo contratável sem repetir o catálogo de trabalhos.",
       "eyebrow": "05 / Como podemos trabalhar juntos",
-      "title": "Uma demanda específica.\nOu um projeto por inteiro.",
-      "body": "Posso entrar em uma etapa ou conectar a direção criativa à execução. O ponto de partida é o que a marca precisa comunicar, entregar ou colocar em funcionamento.",
+      "title": "Em que parte\ndo projeto eu entro?",
+      "body": "Uma entrega específica ou direção e execução juntas.",
       "services": [
         {
           "id": "content",
           "label": "Direção criativa e conteúdo",
-          "title": "Encontrar a mensagem.\nDar forma à história.",
+          "title": "Pesquisa, textos, roteiros e direção visual.",
           "body": "Pesquisa, conceito e linguagem para organizar o que a marca quer dizer e transformar isso em conteúdo.",
           "deliverables": [
             "Pesquisa, pautas e conceito",
@@ -608,7 +611,7 @@ export const portfolioCopy = {
         {
           "id": "campaigns",
           "label": "Campanhas e gestão de mídia",
-          "title": "Conectar a proposta\nao canal e à ação.",
+          "title": "Conceito, criativos e operação de mídia.",
           "body": "Planejamento, criação e operação de campanhas, com entregas e objetivos definidos para cada projeto.",
           "deliverables": [
             "Conceito e plano de campanha",
@@ -621,7 +624,7 @@ export const portfolioCopy = {
         {
           "id": "digital",
           "label": "Sites, apps e sistemas",
-          "title": "Projetar a experiência.\nConstruir o que ela precisa.",
+          "title": "Interfaces, desenvolvimento e integrações.",
           "body": "Interfaces e desenvolvimento para apresentar uma marca, apoiar uma tarefa ou conectar processos.",
           "deliverables": [
             "Arquitetura da experiência e UX/UI",
@@ -635,15 +638,15 @@ export const portfolioCopy = {
       "process": [
         {
           "label": "Contexto",
-          "body": "Entender o objetivo, o público e o que já existe."
+          "body": "Objetivo e materiais."
         },
         {
           "label": "Direção",
-          "body": "Definir a proposta, a linguagem e as entregas."
+          "body": "Escopo e linguagem."
         },
         {
-          "label": "Execução",
-          "body": "Criar, revisar e preparar o que será colocado em uso."
+          "label": "Entrega",
+          "body": "Criação e revisão."
         }
       ],
       "footer": "Projeto pontual, execução integrada ou colaboração recorrente.",
@@ -654,11 +657,11 @@ export const portfolioCopy = {
       "order": 9,
       "purpose": "Dar um próximo passo simples, com contexto suficiente para uma conversa.",
       "eyebrow": "Vamos conversar",
-      "title": "Qual é o próximo\nprojeto da sua marca?",
-      "body": "Me conte o que precisa sair do papel, o que já existe e o prazo que você tem em mente.",
+      "title": "Vamos criar\nseu próximo projeto.",
+      "body": "Conte a entrega que você precisa, o contexto e o prazo.",
       "directCta": "Conversar pelo WhatsApp",
       "alternateCta": "Enviar um e-mail",
-      "formTitle": "Comece pelo contexto.",
+      "formTitle": "Seu projeto, em poucas palavras.",
       "serviceLabel": "O que você precisa criar?",
       "servicePlaceholder": "Escolha uma frente de trabalho",
       "serviceOptions": [
