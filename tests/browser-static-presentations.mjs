@@ -126,7 +126,8 @@ try{
       }else{
         await page.mouse.move(gripBox.x+gripBox.width*.55,gripBox.y+gripBox.height*.46);
         await page.mouse.down();
-        await page.mouse.move(gripBox.x-gripBox.width*.7,gripBox.y+gripBox.height*2.6,{steps:13});
+        // On desktop the sheet is ~700px wide: use a meaningful pull travel.
+        await page.mouse.move(gripBox.x-230,gripBox.y+295,{steps:18});
         check('Desktop drag visibly moves the paper corner',
           Number(await campaignCard.getAttribute('data-peel-progress'))>.24);
         await page.mouse.up();
