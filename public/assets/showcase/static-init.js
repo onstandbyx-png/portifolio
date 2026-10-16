@@ -5,8 +5,10 @@ import {mountFatosDeck} from './fatos-deck.js';
 import {mountStaticPresentations} from './static-presentations.js';
 import {mountScrollFilm} from './scroll-film.js';
 import {mountCardSurfaces} from './card-surface.js';
+import {mountCampaignFlip,mountGalleryFlipHints} from './campaign-flip.js';
+import {mountEditorialSwipe} from './editorial-swipe.js';
 function mount(){
-  for(const [name,initialize] of Object.entries({gallery:mountScrollGallery,editorial:mountEditorialStory,fatos:mountFatosDeck,artwork:mountStaticPresentations,film:mountScrollFilm,cardSurfaces:mountCardSurfaces})){
+  for(const [name,initialize] of Object.entries({gallery:mountScrollGallery,editorial:mountEditorialStory,fatos:mountFatosDeck,artwork:mountStaticPresentations,film:mountScrollFilm,cardSurfaces:mountCardSurfaces,campaignFlip:mountCampaignFlip,galleryHints:mountGalleryFlipHints,editorialSwipe:mountEditorialSwipe})){
     try { initialize(); }
     catch(error){ console.error(`Portfolio ${name}:`,error); }
   }
