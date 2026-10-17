@@ -37,9 +37,15 @@ try{
   const mbp=page.locator('.rf-macbook[data-device="macbook-pro"]');
   check(row,'Casa Costa Site is presented in real laptop anatomy',await mbp.count()===1&&await mbp.locator('.mbp-lid,.mbp-display,.mbp-screen,.mbp-camera,.mbp-hinge,.mbp-base,.mbp-front-groove').count()===7);
   check(row,'Existing Casa Costa photograph and interface survive inside the screen',await mbp.locator('.mbp-screen .rf-web-nav strong').innerText()==='Casa Costa'&&await mbp.locator('.mbp-screen .rf-web-hero img').count()===1);
+  await page.locator('#narrativa-visual').scrollIntoViewIfNeeded();
+  if(!reduced){
+    await page.locator('[data-rx-film-to="2"]').click();
+    await page.waitForFunction(()=>document.querySelector('#narrativa-visual')?.dataset.phase==='2',null,{timeout:8000});
+  }
+  // Off-stage planes are intentionally invisible until the film chooses Site.
+  // Never scroll a 3D-transformed off-stage laptop before selecting the step.
   await mbp.scrollIntoViewIfNeeded();
-  if(!reduced)await page.locator('[data-rx-film-to="2"]').click();
-  await page.waitForTimeout(250);
+  await page.waitForTimeout(160);
   const geometry=await mbp.evaluate(el=>{
     const d=el.querySelector('.mbp-device'),lid=el.querySelector('.mbp-lid'),screen=el.querySelector('.mbp-screen'),base=el.querySelector('.mbp-base');
     const box=e=>{const r=e.getBoundingClientRect();return{w:r.width,h:r.height,left:r.left,right:r.right,top:r.top,bottom:r.bottom}};
