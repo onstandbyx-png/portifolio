@@ -53,16 +53,25 @@ try{
    check('A different physical device occupies each chapter',
      await editorial.locator('[data-es-piece]:not([hidden])').evaluateAll((p,index)=>
        p.length===1&&p[0].dataset.esPiece===String(index),state.index));
-   // Wait for the actual scene-height transition to finish. Landscape
-   // devices intentionally shrink the stage after leaving the tall iPhone.
+   // Wait for any desktop scene transition to settle. Mobile now keeps
+   // one stage height through iPhone, iPad and MacBook.
    await page.waitForFunction(()=>{
      const stage=document.querySelector('#editorial [data-editorial-stage]');
      return stage&&Math.abs(stage.getBoundingClientRect().height-parseFloat(stage.style.height))<2;
    },null,{timeout:2200});
    const data=await active.evaluate(el=>{
      const r=el.getBoundingClientRect(),stage=el.closest('[data-editorial-stage]'),s=stage.getBoundingClientRect();
+     const nav=document.querySelector('#editorial .es-swipe-nav')?.getBoundingClientRect();
+     const next=document.querySelector('#colecao')?.getBoundingClientRect();
+     const side=[...stage.querySelectorAll(':scope > .es-peek')].map(btn=>{
+       const p=btn.getBoundingClientRect();
+       return {top:p.top-s.top,bottom:p.bottom-s.top};
+     });
      return {device:el.dataset.editorialModel,screenWidth:r.width,screenHeight:r.height,
-       stageHeight:s.height,viewport:innerWidth,scrollWidth:document.documentElement.scrollWidth};
+       stageHeight:s.height,stageMode:stage.dataset.heightMode,
+       stageDocumentTop:s.top+scrollY,navDocumentTop:nav?nav.top+scrollY:null,
+       nextDocumentTop:next?next.top+scrollY:null,side,
+       viewport:innerWidth,scrollWidth:document.documentElement.scrollWidth};
    });
    row.sizes.push(data);
    check(state.kind+' remains inside the horizontal viewport',
@@ -99,8 +108,17 @@ try{
    await active.screenshot({path:output+'/'+state.kind+'-'+width+(reduced?'-reduced':'')+'.png',animations:'disabled'});
   }
   if(width<500){
-    check('Horizontal devices use less vertical space than the portrait iPhone',
-      row.sizes[1].stageHeight<row.sizes[0].stageHeight*.82&&row.sizes[2].stageHeight<row.sizes[0].stageHeight*.86,row.sizes);
+    const heights=row.sizes.map(s=>s.stageHeight);
+    const navPositions=row.sizes.map(s=>s.navDocumentTop);
+    const nextPositions=row.sizes.map(s=>s.nextDocumentTop);
+    check('Mobile scene keeps exactly one height across all three device types',
+      Math.max(...heights)-Math.min(...heights)<2.5&&row.sizes.every(s=>s.stageMode==='stable-mobile'),row.sizes);
+    check('Mobile arrows and progress stay in place during chapter switches',
+      navPositions.every(Number.isFinite)&&Math.max(...navPositions)-Math.min(...navPositions)<3,row.sizes);
+    check('Next Fatos section no longer jumps on iPhone/iPad/MacBook changes',
+      nextPositions.every(Number.isFinite)&&Math.max(...nextPositions)-Math.min(...nextPositions)<3,row.sizes);
+    check('Side hardware stays below tabs and above the pagination',
+      row.sizes.every(s=>s.side.length===2&&s.side.every(p=>p.top>=-8&&p.bottom<=s.stageHeight+8)),row.sizes);
   }
   await page.locator('#editorial [data-es-prev]').click();
   check('Previous arrow returns to iPad from MacBook',await editorial.getAttribute('data-editorial-device')==='ipad');

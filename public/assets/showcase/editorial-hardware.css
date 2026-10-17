@@ -167,8 +167,21 @@
 /* The active object determines scene height. Landscape hardware does not
    inherit the portrait iPhone's large vertical whitespace. */
 @media(max-width:700px){
- #editorial .es-stage{padding:7px 0 10px}
- #editorial .es-stage>.es-peek{opacity:.55}
+ /* Keep the entire mobile carousel anchored while the center changes shape.
+    Landscape devices are vertically centered within the iPhone-height scene,
+    with side previews inside the same safe region rather than over the tabs. */
+ #editorial .es-stage{
+   padding:7px 0 10px;
+   transition:none!important;
+   align-items:center;justify-items:center;
+   overflow:visible;
+ }
+ #editorial .es-stage>.es-device{align-self:center;justify-self:center}
+ #editorial .es-stage>.es-peek{
+   top:50%;
+   opacity:.50;
+   transform:translate(-50%,-50%) translateX(var(--side-offset)) scale(.95);
+ }
  #editorial .es-ipad-editorial h3{font-size:calc(4.15 * var(--es-device-unit))}
  #editorial .es-ipad-editorial p{font-size:calc(1.85 * var(--es-device-unit))}
  #editorial .es-mac-nav span{display:none}

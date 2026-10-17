@@ -40,14 +40,9 @@ export function mountEditorialSwipe(){
   function choose(target){
     const from=index(),to=Math.max(0,Math.min(2,target));
     if(from===to)return;
+    // Animation is centralized in editorial-story.render for every input,
+    // preventing a double animation when a swipe/arrow changes the device.
     tabs[to].click();update();
-    const current=stage.querySelector(':scope > .es-device');
-    if(current?.animate&&!matchMedia('(prefers-reduced-motion:reduce)').matches&&!document.body.classList.contains('is-paused')){
-      current.animate([
-        {opacity:.75,transform:'translateX('+(to>from?18:-18)+'px) scale(.984)'},
-        {opacity:1,transform:'translateX(0) scale(1)'}
-      ],{duration:400,easing:'cubic-bezier(.22,.8,.22,1)'});
-    }
   }
   prev.addEventListener('click',()=>choose(index()-1));
   next.addEventListener('click',()=>choose(index()+1));

@@ -111,9 +111,19 @@ export function mountEditorialStory(){
       device.root.style.setProperty('--es-device-unit',(width/100)+'px');
       device.root.dataset.position=i===active?'center':'side';
     });
-    const primary=base[active>=0?active:0],activeHeight=
-      kind==='iphone'?primary*907/435:kind==='ipad'?primary*215.5/281.6:primary*.68;
-    stage.style.height=Math.ceil(activeHeight+(mobile?20:40))+'px';
+    // A height tied to the active device used to collapse the mobile scene by
+    // more than 200px on every iPhone -> iPad/MacBook change. That moved the
+    // pagination and the next section into view mid-gesture, and allowed the
+    // taller side iPhone to overlap the chapter tabs. The scene must remain
+    // stable; the three REAL hardware shapes retain their own aspect ratios.
+    const heights=[base[0]*907/435,base[1]*215.5/281.6,base[2]*.68];
+    const activeHeight=heights[active>=0?active:0];
+    const targetHeight=Math.ceil((mobile?Math.max(...heights):activeHeight)+(mobile?30:40));
+    if(Math.abs((parseFloat(stage.style.height)||0)-targetHeight)>1){
+      stage.style.height=targetHeight+'px';
+    }
+    stage.dataset.heightMode=mobile?'stable-mobile':'adaptive-desktop';
+    stage.style.setProperty('--es-stage-height',targetHeight+'px');
     const shift=mobile?Math.max(181,available*.63):Math.max(295,available*.38);
     peeks.forEach(button=>{
       const delta=button.dataset.esPeek==='left'?-shift:shift;
@@ -124,6 +134,7 @@ export function mountEditorialStory(){
     if(index===active)return;
     if(index<0||index>=3)return;
     cancelAnimations();
+    const previous=active;
     active=index;
     const step=copy.steps[index],others=devices.map((_,i)=>i).filter(i=>i!==index);
     root.dataset.editorialActive=step.id;
@@ -149,6 +160,13 @@ export function mountEditorialStory(){
       button.replaceChildren(devices[i].root);
     });
     sizeDevices();
+    // One restrained entrance regardless of whether a chapter is selected
+    // by swipe, tab, arrow or side preview. No device geometry gets morphed.
+    if(previous>=0&&!motion.paused()&&!matchMedia('(prefers-reduced-motion:reduce)').matches){
+      animations.push(motion.animate(devices[index].root,
+        [{opacity:.74,transform:'translateY(8px) scale(.985)'},{opacity:1,transform:'translateY(0) scale(1)'}],
+        {duration:360,easing:'cubic-bezier(.22,.82,.22,1)'}));
+    }
     // Keep legacy reading/transcript semantics for assistive technology
     // even though the visual explanation is intentionally hidden.
     context.querySelector('[data-es-label]').textContent='0'+(index+1)+' / '+step.label;
