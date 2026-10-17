@@ -33,10 +33,13 @@ try{
   const frame=await phone.boundingBox(),pill=await island.boundingBox();
   row.geometry.iphone={frame,pill};
   check(row,'Island centered and proportionate to phone body',!!frame&&!!pill&&pill.width>frame.width*.17&&pill.width<frame.width*.45&&Math.abs(pill.x+pill.width/2-frame.x-frame.width/2)<3);
-  check(row,'Editorial content remains inside the live screen',await phone.locator('.df-screen [data-es-piece]').count()===3&&await phone.locator('.df-home').count()===1);
+  check(row,'Abertura uses one real iPhone screen and retains home indicator',await phone.locator('.df-screen [data-es-piece="0"]').count()===1&&await phone.locator('.df-home').count()===1);
   await page.locator('#editorial [data-es-piece="0"] .es-piece-art').evaluate(img=>img.decode().catch(()=>{}));
   check(row,'Editorial photo loads into the iPhone preview before it is shown',await page.locator('#editorial [data-es-piece="0"] .es-piece-art').evaluate(img=>img.complete&&img.naturalWidth>0));
-  check(row,'Side phones have the same iPhone-style camera island',await page.locator('#editorial .es-peek-screen').evaluateAll(peeks=>peeks.length===2&&peeks.every(p=>getComputedStyle(p,'::before').content!=='none')));
+  check(row,'The side previews use the actual iPad and MacBook hardware shells',
+    await page.locator('#editorial .es-peek').evaluateAll(peeks=>peeks.length===2&&
+      peeks.some(x=>x.dataset.device==='ipad'&&!!x.querySelector('.ipad-pro-body'))&&
+      peeks.some(x=>x.dataset.device==='macbook'&&!!x.querySelector('.mbp-base'))));
   const mbp=page.locator('.rf-macbook[data-device="macbook-pro"]');
   check(row,'Casa Costa Site is presented in real laptop anatomy',await mbp.count()===1&&await mbp.locator('.mbp-lid,.mbp-display,.mbp-screen,.mbp-camera,.mbp-hinge,.mbp-base,.mbp-front-groove').count()===7);
   check(row,'Existing Casa Costa photograph and interface survive inside the screen',await mbp.locator('.mbp-screen .rf-web-nav strong').innerText()==='Casa Costa'&&await mbp.locator('.mbp-screen .rf-web-hero img').count()===1);

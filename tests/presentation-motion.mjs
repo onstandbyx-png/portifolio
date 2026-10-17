@@ -89,11 +89,11 @@ export async function verifyEditorial({page,width,check,capture}){
  const tabs=story.locator('[data-editorial-step]');
  // Adjacent reading blocks were explicitly hidden; artwork controls remain.
  check('Editorial text and deck introduction stay outside the visible layout',!await story.locator('.es-context').isVisible()&&!await story.locator('.pf-fatos-intro').isVisible());
- check('The original editorial story keeps three moments and one device',await tabs.count()===3&&await story.locator('.es-device').count()===1&&await story.locator('[data-es-piece]:not([hidden])').count()===1);
+ check('The editorial story mounts three distinct shells with one centered at a time',await tabs.count()===3&&await story.locator('.es-device').count()===1&&await story.locator('[data-es-piece]:not([hidden])').count()===1&&await story.locator('.es-hardware').count()===3);
  await tabs.first().focus();await page.keyboard.press('ArrowRight');
- check('Editorial keyboard navigation updates readable text and focus',await story.getAttribute('data-editorial-active')==='context'&&await tabs.nth(1).getAttribute('aria-selected')==='true'&&await tabs.nth(1).evaluate(el=>el===document.activeElement)&&(await story.locator('[data-es-copy]').textContent()).includes('Câmera, mapa, mensagens'));
+ check('Keyboard navigation selects Contexto in a real landscape iPad',await story.getAttribute('data-editorial-active')==='context'&&await story.getAttribute('data-editorial-device')==='ipad'&&await tabs.nth(1).getAttribute('aria-selected')==='true'&&await tabs.nth(1).evaluate(el=>el===document.activeElement)&&(await story.locator('[data-es-copy]').textContent()).includes('Câmera, mapa, mensagens'));
  await page.keyboard.press('End');
- check('Editorial navigation reaches its closing moment',await story.getAttribute('data-editorial-active')==='closing'&&await story.locator('[data-es-piece]:not([hidden])').count()===1);
+ check('Editorial navigation reaches Fechamento in the actual MacBook shell',await story.getAttribute('data-editorial-active')==='closing'&&await story.getAttribute('data-editorial-device')==='macbook'&&await story.locator('.es-device .mbp-base').count()===1&&await story.locator('[data-es-piece]:not([hidden])').count()===1);
  await page.keyboard.press('Home');
  check('Editorial navigation reverses to the opening',await story.getAttribute('data-editorial-active')==='hook'&&await story.locator('#editorial-story-panel').getAttribute('aria-labelledby')===await tabs.first().getAttribute('id'));
  const deck=page.locator('#colecao[data-ready="true"]');await deck.waitFor();
