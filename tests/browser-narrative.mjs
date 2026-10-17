@@ -20,9 +20,9 @@ try{
   const capture=async name=>page.screenshot({path:`${output}/${name}-${width}${reduced?'-reduced':''}.png`,animations:'disabled'});
   try{
    await page.goto(base,{waitUntil:'domcontentloaded'});await page.waitForSelector('html[data-static-presentations="ready"]',{state:'attached'});await page.evaluate(()=>document.fonts.ready);
-   check('Hero presents the combined editorial and digital offer',/Ideias viram histórias/.test(await page.locator('#hero-title').innerText())&&/campanhas e produtos digitais/.test(await page.locator('#hero-title').innerText()));
-   check('The hero distinguishes professional experience from personal product',
-     await page.locator('.hero-proof').innerText().then(t=>t.includes('Experiência editorial')&&t.includes('Projeto próprio')));
+   check('Hero presents the combined editorial and digital offer',/Direção criativa/.test(await page.locator('#hero-title').innerText())&&/Execução digital/.test(await page.locator('#hero-title').innerText()));
+   check('The hero connects creative direction and digital development',
+     await page.locator('.hero-proof').innerText().then(t=>t.includes('Mensagem e direção')&&t.includes('Design e desenvolvimento')));
    check('Native transcript is collapsed and explicitly labelled',await page.locator('details.es-transcript').count()===1&&!await page.locator('.es-transcript').evaluate(e=>e.open));
    row.initial=await page.evaluate(()=>({height:document.documentElement.scrollHeight,sections:Object.fromEntries(['inicio','trabalhos','editorial','laboratorio','narrativa-visual','sistemas','categorias','contato'].map(id=>[id,Math.round((id==='inicio'?document.querySelector('.hero'):document.getElementById(id)).getBoundingClientRect().height)]))}));
    await capture('hero');
@@ -45,7 +45,7 @@ try{
      return device.dataset.editorialModel==='ipad'&&r.width>=260&&r.width<=innerWidth*.98&&
        left.right>10&&right.left<innerWidth-10;
    }));
-   check('The editorial headline matches the visual reference',/Três olhares/.test(await page.locator('#editorial-title').innerText()));
+   check('The editorial headline explains the role of content',/Atenção/.test(await page.locator('#editorial-title').innerText()));
    check('The progress marker follows the selected chapter',await page.locator('[data-es-heading-count]').textContent()==='02 / 03');
    await editorialNav.locator('[data-es-next]').click();
    check('Next arrow reaches Fechamento with MacBook',await page.locator('#editorial').getAttribute('data-editorial-active')==='closing'&&await page.locator('#editorial').getAttribute('data-editorial-device')==='macbook'&&await editorialNav.locator('[data-es-next]').isDisabled());
@@ -119,8 +119,9 @@ try{
    check('Each channel explains a different creative decision',new Set(notes).size===3&&notes.every(s=>/adaptação ao canal/i.test(s)&&/entrega/i.test(s)));
    await page.evaluate(()=>['meta','google','tiktok'].forEach(id=>document.querySelector('#tab-'+id).click()));await page.waitForTimeout(800);
    check('Fast changes keep artwork and explanation in sync',await page.locator('.sp-campaign').getAttribute('data-channel')==='tiktok'&&/vertical/.test(await page.locator('[data-note-title]').innerText())&&await page.locator('.sp-campaign-panel:not([hidden])').count()===1);
-   await page.locator('.sp-campaign').screenshot({path:`${output}/campaign-${width}${reduced?'-reduced':''}.png`,animations:'disabled'});
-   check('Standalone Trilhas is hidden and Digital retains a destination',await page.locator('#trilhas[hidden]').count()===1&&!await page.locator('#trilhas').isVisible()&&await page.locator('#sistemas.digital-anchor').count()===1);
+   await page.locator('.sp-campaign').evaluate(el=>scrollTo({top:scrollY+el.getBoundingClientRect().top-84,behavior:'instant'}));
+   await page.screenshot({path:`${output}/campaign-${width}${reduced?'-reduced':''}.png`,animations:'disabled'});
+   check('Standalone Trilhas is hidden and Digital retains a destination',await page.locator('#trilhas[hidden]').count()===1&&!await page.locator('#trilhas').isVisible()&&await page.locator('#sites.digital-anchor').count()===1);
    check('No hidden Trilhas enlargement control is exposed',await page.locator('[data-art-open="trilhas"]:visible').count()===0);
    for(const id of ['casa']){
     const link=page.locator(`[data-art-open="${id}"]`);await link.click();
@@ -131,19 +132,20 @@ try{
     await capture('artwork-'+id);await page.keyboard.press('Escape');
     check(`${id}: Escape restores the original control and scrolling`,!await dialog.isVisible()&&await link.evaluate(e=>e===document.activeElement)&&!await page.locator('html').evaluate(e=>e.classList.contains('has-artwork-dialog')));
    }
-   for(const [id,label] of [['content','Direção criativa e conteúdo'],['campaigns','Campanhas e gestão de mídia'],['digital','Sites, apps e sistemas']]){
-    const scope=page.locator(`[data-service-scope="${id}"]`);await scope.locator('summary').click();await scope.locator('a').click();check(`${id}: service selection reaches the form`,await page.locator('#service').inputValue()===label);await scope.evaluate(e=>e.open=false);
+   for(const [id,label] of [['identity','Identidade visual'],['content','Conteúdo e redação'],['campaigns','Campanhas e anúncios'],['web','Sites e landing pages'],['systems','Sistemas e automações']]){
+    const scope=page.locator(`[data-service-scope="${id}"]`);await scope.locator('summary').click();await scope.locator('.path-contact').click();check(`${id}: service selection reaches the form`,await page.locator('#service').inputValue()===label);await scope.evaluate(e=>e.open=false);
    }
    await page.locator('#brief').fill('Preciso de um projeto digital com apresentação e prazo definido.');
    await page.locator('.sm-brief-summary summary').click();check('Optional summary reflects the editable brief',/projeto digital/.test(await page.locator('.sm-brief-summary p').innerText()));
    check('Contact channels remain the established real destinations',await page.locator('[data-contact-direct="whatsapp"]').getAttribute('href')==='https://wa.me/5511985568208'&&await page.locator('[data-contact-direct="email"]').getAttribute('href')==='mailto:smillepls@gmail.com');
-   await page.locator('#contato').screenshot({path:`${output}/contact-${width}${reduced?'-reduced':''}.png`,animations:'disabled'});
+   await page.locator('#contato').evaluate(el=>scrollTo({top:scrollY+el.getBoundingClientRect().top-84,behavior:'instant'}));
+   await page.screenshot({path:`${output}/contact-${width}${reduced?'-reduced':''}.png`,animations:'disabled'});
    check('No horizontal page overflow',await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+2));
    check('No uncaught exceptions or external writes',row.errors.length===0&&row.writes.length===0);
   }catch(error){row.failure=String(error);await capture('failure').catch(()=>{});console.error(row.failure);}
   await page.close();console.log(JSON.stringify(row));
  }
  const nojs=await browser.newPage({javaScriptEnabled:false,viewport:{width:390,height:844}});await nojs.goto(base);
- assert(/Ideias viram histórias/.test(await nojs.locator('#hero-title').innerText()));assert(await nojs.locator('[data-work-card]').count()===3);await nojs.close();
+ assert(/Direção criativa/.test(await nojs.locator('#hero-title').innerText()));assert(await nojs.locator('[data-work-card]').count()===3);await nojs.close();
 }finally{await browser?.close();server?.kill();await writeFile(output+'/results.json',JSON.stringify(results,null,2));}
 assert(results.length===4&&results.every(r=>!r.failure),'Narrative browser regression failed');

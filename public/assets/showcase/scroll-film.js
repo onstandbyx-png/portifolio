@@ -10,7 +10,7 @@ const make=markup=>{const tpl=document.createElement('template');tpl.innerHTML=m
 const motion=createMotion();
 
 export function mountScrollFilm(){
- const anchor=$('#experiencias')||$('#sistemas');if(!anchor||$('#narrativa-visual'))return null;
+ const anchor=$('#sites')||$('#experiencias');if(!anchor||$('#narrativa-visual'))return null;
  const copy=sectionCopy('narrativa-visual');
  const film=make(`<section class="rf-film rf-r6" id="narrativa-visual" data-phase="0" aria-labelledby="rx-evidence-title">
   <div class="rf-heading shell"><div><small>${escape(copy.eyebrow)}</small><h2 id="rx-evidence-title">${lines(copy.title)}</h2></div><p>${escape(copy.body)}</p></div>
@@ -30,7 +30,7 @@ export function mountScrollFilm(){
      </div></article>
   </div></div><div class="rf-footer"><div class="rf-format-switch" role="group" aria-label="Formatos da composição Casa Costa">${copy.formats.map((label,i)=>`<button type="button" data-rx-film-to="${i}" aria-pressed="${i===0}"><span>0${i+1}</span>${escape(label)}</button>`).join('')}</div><div class="rf-caption"><p data-rf-status role="status" aria-live="polite">A composição editorial apresenta a identidade.</p><a href="${escape(copy.cta.href)}" data-product-target="site" data-art-open="casa">${escape(copy.cta.label)} <span aria-hidden="true">↗</span></a></div><small class="rf-credit">${escape(copy.credit)}</small></div></div>
  </section>`);
- anchor.before(film);
+ anchor.after(film);
  const phone=createDeviceFrame({tone:'light',scheme:'light',time:'10:09',label:'Casa Costa: composição social em um telefone'});
  phone.root.classList.add('rf-phone','pf-film-device');$('[data-rf-plane="1"]',film).append(phone.root);
  phone.screen.innerHTML='<div class="rf-phone-content"><div class="rf-phone-header"><b>f.</b><span><strong>forma.arquitetura</strong><small>Casa Costa · direção visual</small></span></div><div class="rf-phone-image"><img src="/assets/portfolio/smiile-architecture-coast.webp" alt="Enquadramento vertical da arquitetura Casa Costa" loading="lazy" decoding="async"><strong>Entre a casa<br>e a paisagem.</strong></div><div class="rf-phone-caption"><b>forma.arquitetura</b><p>O exterior também faz parte da casa.</p><span>CASA COSTA / DIREÇÃO VISUAL</span></div></div>';

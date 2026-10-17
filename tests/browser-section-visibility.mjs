@@ -25,7 +25,7 @@ try {
    check('Editorial status remains accessible without a visible block',await page.locator('.es-status').evaluate(n=>{const r=n.getBoundingClientRect();return n.getAttribute('role')==='status'&&r.height<=1&&r.width<=1;}));
    check('The retained editorial artwork is centered',await page.evaluate(()=>{const panel=document.querySelector('.es-panel').getBoundingClientRect(),stage=document.querySelector('.es-stage').getBoundingClientRect();return Math.abs((panel.left+panel.right-stage.left-stage.right)/2)<3;}));
    check('The Fatos deck has no empty text column',await page.evaluate(()=>{const deck=document.querySelector('#colecao').getBoundingClientRect(),display=document.querySelector('.pf-fatos-display').getBoundingClientRect();return Math.abs((deck.left+deck.right-display.left-display.right)/2)<3;}));
-   check('Digital navigation reaches the preserved Casa Costa scene',await page.evaluate(()=>{const anchor=document.querySelector('#sistemas'),film=document.querySelector('#narrativa-visual');return anchor.classList.contains('digital-anchor')&&anchor.getBoundingClientRect().height===0&&Math.abs(anchor.getBoundingClientRect().top-film.getBoundingClientRect().top)<3;}));
+   check('Digital navigation reaches the preserved Casa Costa scene',await page.evaluate(()=>{const anchor=document.querySelector('#sites'),film=document.querySelector('#narrativa-visual');return anchor.classList.contains('digital-anchor')&&anchor.getBoundingClientRect().height===0&&Math.abs(anchor.getBoundingClientRect().top-film.getBoundingClientRect().top)<3;}));
    check('Preserved gallery, editorial controls, badges and film remain present',await page.locator('[data-work-card]').count()===3&&await page.locator('[data-editorial-step]').count()===3&&await page.locator('[data-portfolio-badges]').count()===1&&await page.locator('[data-rf-plane]').count()===3);
    await page.locator('[data-editorial-step="1"]').click();check('Editorial artwork still switches',await page.locator('#editorial').getAttribute('data-editorial-active')==='context');
    await page.locator('[data-fatos-next]').click();check('Fatos navigation still works',await page.locator('#colecao').getAttribute('data-active')==='1');
@@ -38,6 +38,6 @@ try {
   await page.close();console.log(JSON.stringify(row));
  }
  const nojs=await browser.newPage({javaScriptEnabled:false,viewport:{width:390,height:844}});await nojs.goto(base);
- const fallback={noJavaScript:true,pass:!await nojs.locator('.es-context').isVisible()&&await nojs.locator('#trilhas[hidden]').count()===1&&!await nojs.locator('#trilhas').isVisible()&&await nojs.locator('#sistemas.digital-anchor').count()===1};results.push(fallback);await nojs.close();
+ const fallback={noJavaScript:true,pass:!await nojs.locator('.es-context').isVisible()&&await nojs.locator('#trilhas[hidden]').count()===1&&!await nojs.locator('#trilhas').isVisible()&&await nojs.locator('#sites.digital-anchor').count()===1};results.push(fallback);await nojs.close();
 }finally{await browser?.close();server?.kill();await writeFile(output+'/results.json',JSON.stringify(results,null,2));}
 assert(results.length===5&&results.every(r=>!r.failure&&r.pass!==false),'Requested section visibility regression failed');

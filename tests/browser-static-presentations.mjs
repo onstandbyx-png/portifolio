@@ -45,8 +45,8 @@ try{
         check('Mobile menu opens and focuses its first destination',await page.locator('#menu-toggle').getAttribute('aria-expanded')==='true'&&await page.locator('#mobile-nav').isVisible()&&await page.locator('#mobile-nav a').first().evaluate(el=>el===document.activeElement));
         await page.keyboard.press('Escape');
         check('Escape closes navigation and restores focus',await page.locator('#menu-toggle').getAttribute('aria-expanded')==='false'&&await page.locator('#menu-toggle').evaluate(el=>el===document.activeElement));
-        await page.locator('#menu-toggle').click();await page.locator('#mobile-nav a[href="#editorial"]').click();
-        check('Mobile navigation reaches the actual editorial section',await page.locator('#menu-toggle').getAttribute('aria-expanded')==='false'&&await page.locator('#editorial').evaluate(el=>el===document.activeElement));
+        await page.locator('#menu-toggle').click();await page.locator('#mobile-nav a[href="#categorias"]').click();
+        check('Mobile navigation reaches the service catalogue',await page.locator('#menu-toggle').getAttribute('aria-expanded')==='false'&&await page.locator('#categorias').evaluate(el=>el===document.activeElement));
       }
       const rail=page.locator('[data-brand-rail]');await rail.scrollIntoViewIfNeeded();
       await page.waitForFunction(()=>document.querySelector('[data-brand-rail]').dataset.railMotion);
@@ -61,7 +61,7 @@ try{
       await verifyGallery({page,width,reduced,check,capture});
       await verifyEditorial({page,width,reduced,check,capture});
       await verifyFilm({page,width,reduced,check,capture});
-      check('Standalone Trilhas is hidden without removing the Digital destination',await page.locator('#trilhas[hidden]').count()===1&&!await page.locator('#trilhas').isVisible()&&await page.locator('#sistemas.digital-anchor').count()===1);
+      check('Standalone Trilhas is hidden without removing the Digital destination',await page.locator('#trilhas[hidden]').count()===1&&!await page.locator('#trilhas').isVisible()&&await page.locator('#sites.digital-anchor').count()===1);
       check('Campaign and product interiors have no nested fake controls or media',await page.locator('.sp-products,.sp-campaign-panel').evaluateAll(roots=>roots.every(root=>!root.querySelector('button,input,select,textarea,[contenteditable],iframe,video,audio,canvas,[role="button"],[role="tab"],.df-explore'))));
       check('Retired interactive product demos and explorers remain absent',await page.locator('.df-explorer,[data-product-tab],[data-call-play],[data-app-action],[data-case],#case-dialog').count()===0);
       check('Archived studio is absent from public navigation',await page.locator('a[href$="#estudio-interativo"],video.ks-video').count()===0);
@@ -147,15 +147,15 @@ try{
       await page.waitForFunction(()=>document.querySelector('#laboratorio .sp-campaign-card')?.dataset.peelState==='open');
       check('Tapping the folded corner is an accessible alternative to dragging',
         await campaignCard.getAttribute('data-side')==='back');
-      await page.locator('[data-contact-service="Campanhas e gestão de mídia"]').click();
-      check('Campaign contact action prefills the exact service without sending',await page.locator('#service').inputValue()==='Campanhas e gestão de mídia'&&row.mutations.length===0);
-      await page.locator('#service').selectOption({label:'Sites, apps e sistemas'});
+      await campaignCard.locator('[data-contact-service="Campanhas e anúncios"]').click();
+      check('Campaign contact action prefills the exact service without sending',await page.locator('#service').inputValue()==='Campanhas e anúncios'&&row.mutations.length===0);
+      await page.locator('#service').selectOption({label:'Sites e landing pages'});
       const brief='Quero criar um site e um aplicativo. Teste local de revisão.';await page.locator('#brief').fill(brief);
       await page.locator('.sm-brief-summary summary').click();
       check('The contact summary reflects the editable local draft',await page.locator('.sm-brief-summary p').innerText()===brief&&await page.locator('#brief-form').getAttribute('data-contact-ready')==='true');
       await page.locator('.brief-copy').click();
       const copied=await page.evaluate(()=>window.__copiedBrief);
-      check('Copying the briefing preserves its service and text without sending',copied?.includes('Sites, apps e sistemas')&&copied.includes(brief)&&row.mutations.length===0);
+      check('Copying the briefing preserves its service and text without sending',copied?.includes('Sites e landing pages')&&copied.includes(brief)&&row.mutations.length===0);
       check('The real contact destinations remain available',await page.locator('[data-contact-direct="whatsapp"]').getAttribute('href')==='https://wa.me/5511985568208'&&await page.locator('[data-contact-direct="email"]').getAttribute('href')==='mailto:smillepls@gmail.com');
       check('No horizontal document overflow',await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+2));
       check('No broken local resources or JavaScript exceptions',row.failedRequests.length===0&&row.errors.length===0);
