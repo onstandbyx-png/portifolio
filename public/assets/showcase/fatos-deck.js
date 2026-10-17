@@ -135,13 +135,14 @@ export function mountFatosDeck() {
       previous.style.zIndex='12';
       departure=previous.animate([
         {offset:0,transform:previousFrom,opacity:1},
-        {offset:.55,transform:'translate3d('+(-direction*distance*.66)+'px,-8px,0) rotate('+(-direction*9)+'deg) scale(.96)',opacity:1},
+        {offset:.78,transform:'translate3d('+(-direction*distance*.88)+'px,-13px,0) rotate('+(-direction*11.5)+'deg) scale(.946)',opacity:1},
+        {offset:.92,transform:exit,opacity:1},
         {offset:1,transform:exit,opacity:0}
       ],{duration:590,easing:'cubic-bezier(.22,.78,.17,1)',fill:'both'});
       incoming.style.transition='none';
       arrival=incoming.animate([
-        {offset:0,transform:incomingFrom==='none'?'translateX(20px) rotate(4deg) scale(.97)':incomingFrom,opacity:.8},
-        {offset:.48,transform:'translate3d('+(direction*8)+'px,-3px,0) rotate('+(direction*1.6)+'deg) scale(.993)',opacity:.95},
+        {offset:0,transform:incomingFrom==='none'?'translateX(20px) rotate(4deg) scale(.97)':incomingFrom,opacity:1},
+        {offset:.48,transform:'translate3d('+(direction*8)+'px,-3px,0) rotate('+(direction*1.6)+'deg) scale(.993)',opacity:1},
         {offset:1,transform:'translate3d(0,0,0) rotate(0deg) scale(1)',opacity:1}
       ],{duration:590,easing:'cubic-bezier(.18,.73,.22,1)',fill:'both'});
       Promise.allSettled([departure.finished,arrival.finished]).then(()=>{
@@ -224,10 +225,10 @@ export function mountFatosDeck() {
     drag.rotation=clamp(dx/drag.width*13,-13,13);
     const p=drag.progress;
     drag.card.style.transform='translate3d('+drag.offset+'px,'+(-7*p)+'px,0) rotate('+drag.rotation+'deg) scale('+(1-.055*p)+')';
-    drag.card.style.opacity=String(1-.09*p);
+    drag.card.style.opacity='1';
     const sourceX=direction===1?23:-27,sourceAngle=direction*5;
     drag.preview.style.transform='translate3d('+(sourceX*(1-p))+'px,'+(3*(1-p)-4*p)+'px,0) rotate('+(sourceAngle*(1-p))+'deg) scale('+(.974+.026*p)+')';
-    drag.preview.style.opacity=String(.78+.22*p);
+    drag.preview.style.opacity='1';
   });
   stage.addEventListener('pointerup', event => {
     if (!drag || drag.id !== event.pointerId) return;
