@@ -63,7 +63,7 @@ export function mountFatosDeck() {
   const bottom = anchor.querySelector('.editorial-bottom');
   if (bottom) bottom.before(shell); else anchor.append(shell);
   const stage = $('.pf-fatos-stage', shell);
-  let active = 0, drag = null, lastSwipe = -Infinity, arrival = null, settlement = null;
+  let active = 0, drag = null, lastSwipe = -Infinity, arrival = null, departure = null, settlement = null, flightToken = 0;
   const cards = brands.map((brand, i) => {
     const card = make(`<article class="pf-fatos-card" data-fatos-card="${brand.id}" aria-label="${i + 1} de ${brands.length}: ${brand.name}"><div class="pf-fatos-rotor"><div class="pf-fatos-face pf-fatos-front" data-fatos-front><img class="pf-fatos-art" src="${assets}cena-${brand.id}.webp" alt="Composição editorial de ${brand.name}" loading="lazy" decoding="async" width="720" height="1273" draggable="false"><div class="pf-fatos-shade" aria-hidden="true"></div><div class="pf-fatos-profile"><img src="${assets}avatar_${brand.id}.webp" alt="" width="48" height="48" loading="lazy" draggable="false"><div><strong>${brand.name}</strong><span>${brand.handle}</span></div></div><div class="pf-fatos-question"><span class="pf-fatos-rule" aria-hidden="true"></span><h4>${brand.question}</h4></div><button type="button" class="pf-fatos-flip" data-fatos-flip aria-expanded="false">${escape(copy.controls.front)} <span aria-hidden="true">↻</span></button></div><div class="pf-fatos-face pf-fatos-back" data-fatos-back aria-hidden="true" inert><div class="pf-fatos-back-heading"><img src="${assets}avatar_${brand.id}.webp" alt="" width="44" height="44" loading="lazy"><div><span>RECORTE EDITORIAL</span><h4>${brand.name}</h4></div></div><p class="pf-fatos-approach">${brand.approach}</p><div class="pf-fatos-formats"><span>DESDOBRAMENTOS</span><ul>${brand.formats.map(format => `<li>${format}</li>`).join('')}</ul></div><button type="button" class="pf-fatos-flip" data-fatos-return>${escape(copy.controls.back)} <span aria-hidden="true">↶</span></button></div></div></article>`);
     card.style.setProperty('--fatos-accent', brand.color);
@@ -98,64 +98,137 @@ export function mountFatosDeck() {
     $('[data-fatos-territory]', shell).textContent = brands[active].approach;
     $('.pf-fatos-counter', shell).textContent = (active + 1) + ' de 6 · ' + brands[active].short;
   }
-  function go(index, released = null) {
-    const next = (index + brands.length) % brands.length;
-    if (next === active) return;
-    const hadCardFocus = cards[active].contains(document.activeElement);
-    const direction = (next - active + brands.length) % brands.length <= brands.length / 2 ? 1 : -1;
-    arrival?.cancel(); settlement?.cancel();
-    const previous = cards[active], from = released?.transform;
+  const reduced=()=>matchMedia('(prefers-reduced-motion:reduce)').matches||document.body.classList.contains('is-paused');
+  function clearFlight(){
+    flightToken++;
+    arrival?.cancel();departure?.cancel();settlement?.cancel();
+    arrival=null;departure=null;settlement=null;
+    cards.forEach(card=>{
+      card.classList.remove('is-departing');
+      card.style.removeProperty('transition');
+      card.style.removeProperty('transform');
+      card.style.removeProperty('opacity');
+      card.style.removeProperty('z-index');
+    });
+    stage.dataset.motion='idle';
+  }
+  function go(index,released=null){
+    const next=(index+cards.length)%cards.length;
+    if(next===active)return;
+    const previous=cards[active],incoming=cards[next];
+    const focusWasOnCard=previous.contains(document.activeElement);
+    const offset=(next-active+cards.length)%cards.length;
+    const direction=released?.direction??(offset<=cards.length/2?1:-1);
+    const incomingFrom=released?.incomingFrom||getComputedStyle(incoming).transform;
+    const previousFrom=released?.transform||previous.style.transform||'translateX(0px) rotate(0deg) scale(1)';
     cancelDrag(false);
-    active = next; paint();
-    if (from) {
-      previous.style.transition = 'none';
-      const destination = getComputedStyle(previous).transform;
-      previous.style.removeProperty('transition');
-      settlement = motion.animate(previous, [{ transform: from, opacity: 1 }, { transform: destination, opacity: getComputedStyle(previous).opacity }], { duration: 360 });
+    clearFlight();
+    const token=flightToken;
+    active=next;
+    paint();
+    if(!reduced()){
+      stage.dataset.motion='exchange';
+      const distance=Math.min(previous.getBoundingClientRect().width*.78,315);
+      const exit='translate3d('+(-direction*distance)+'px,-16px,0) rotate('+(-direction*13)+'deg) scale(.935)';
+      previous.classList.add('is-departing');
+      previous.style.transition='none';
+      previous.style.zIndex='12';
+      departure=previous.animate([
+        {offset:0,transform:previousFrom,opacity:1},
+        {offset:.78,transform:'translate3d('+(-direction*distance*.88)+'px,-13px,0) rotate('+(-direction*11.5)+'deg) scale(.946)',opacity:1},
+        {offset:.92,transform:exit,opacity:1},
+        {offset:1,transform:exit,opacity:0}
+      ],{duration:590,easing:'cubic-bezier(.22,.78,.17,1)',fill:'both'});
+      incoming.style.transition='none';
+      arrival=incoming.animate([
+        {offset:0,transform:incomingFrom==='none'?'translateX(20px) rotate(4deg) scale(.97)':incomingFrom,opacity:1},
+        {offset:.48,transform:'translate3d('+(direction*8)+'px,-3px,0) rotate('+(direction*1.6)+'deg) scale(.993)',opacity:1},
+        {offset:1,transform:'translate3d(0,0,0) rotate(0deg) scale(1)',opacity:1}
+      ],{duration:590,easing:'cubic-bezier(.18,.73,.22,1)',fill:'both'});
+      Promise.allSettled([departure.finished,arrival.finished]).then(()=>{
+        if(token!==flightToken)return;
+        previous.classList.remove('is-departing');
+        previous.style.removeProperty('transition');
+        previous.style.removeProperty('z-index');
+        incoming.style.removeProperty('transition');
+        arrival?.cancel();departure?.cancel();
+        arrival=null;departure=null;
+        stage.dataset.motion='idle';
+      });
     }
-    arrival = motion.spring(cards[active], progress => ({ opacity: clamp(progress, .4, 1), transform: `translateX(${(1 - progress) * direction * 42}px) rotate(${(1 - progress) * direction * 5}deg)` }), { duration: 560 });
-    if (hadCardFocus) $('[data-fatos-flip]', cards[active]).focus({ preventScroll: true });
+    if(focusWasOnCard)$('[data-fatos-flip]',cards[active]).focus({preventScroll:true});
   }
   shell.addEventListener('keydown', event => {
     const destinations = { ArrowRight: active + 1, ArrowLeft: active - 1, Home: 0, End: brands.length - 1 };
     if (event.key in destinations) { event.preventDefault(); go(destinations[event.key]); }
     if (event.key === 'Escape' && cards[active].classList.contains('is-flipped')) { event.preventDefault(); flip(false, true); }
   });
-  function cancelDrag(animate = true) {
-    const current = drag;
-    drag = null; delete stage.dataset.dragging;
-    if (!current) return;
-    const from = current.card.style.transform;
+  function cancelDrag(animate=true){
+    const current=drag;
+    drag=null;delete stage.dataset.dragging;delete stage.dataset.direction;
+    if(!current)return;
+    const from=current.card.style.transform;
     current.card.style.removeProperty('transform');
     current.card.style.removeProperty('transition');
-    if (stage.hasPointerCapture?.(current.id)) stage.releasePointerCapture(current.id);
-    if (animate && current.axis === 'horizontal' && from) {
+    current.card.style.removeProperty('opacity');
+    if(current.preview){
+      current.preview.style.removeProperty('transition');
+      current.preview.style.removeProperty('transform');
+      current.preview.style.removeProperty('opacity');
+    }
+    if(stage.hasPointerCapture?.(current.id))stage.releasePointerCapture(current.id);
+    if(animate&&current.axis==='horizontal'&&from&&!reduced()){
       settlement?.cancel();
-      settlement = motion.spring(current.card, progress => ({ transform: `translateX(${current.offset * (1 - progress)}px) rotate(${current.rotation * (1 - progress)}deg)` }), { duration: 380, name: 'smooth' });
+      settlement=motion.spring(current.card,progress=>({
+        transform:'translate3d('+(current.offset*(1-progress))+'px,'+(-5*current.progress*(1-progress))+'px,0) rotate('+(current.rotation*(1-progress))+'deg) scale('+(1-.045*current.progress*(1-progress))+')',
+        opacity:1-.1*current.progress*(1-progress)
+      }),{duration:380,name:'smooth'});
     }
   }
-  stage.addEventListener('pointerdown', event => {
-    if (drag || !event.isPrimary || event.target.closest('button, a') || !event.target.closest('.pf-fatos-card.is-active') || (event.pointerType === 'mouse' && event.button !== 0)) return;
-    arrival?.finish(); settlement?.finish();
-    const card = cards[active];
-    drag = { x: event.clientX, y: event.clientY, id: event.pointerId, card, axis: null, width: card.getBoundingClientRect().width, offset: 0, rotation: 0 };
+  stage.addEventListener('pointerdown',event=>{
+    if(drag||!event.isPrimary||event.target.closest('button,a')||
+       !event.target.closest('.pf-fatos-card.is-active')||
+       (event.pointerType==='mouse'&&event.button!==0))return;
+    clearFlight();
+    drag={
+      x:event.clientX,y:event.clientY,id:event.pointerId,
+      card:cards[active],axis:null,width:cards[active].getBoundingClientRect().width,
+      offset:0,rotation:0,progress:0,direction:0,preview:null
+    };
   });
-  stage.addEventListener('pointermove', event => {
-    if (!drag || drag.id !== event.pointerId) return;
-    const dx = event.clientX - drag.x, dy = event.clientY - drag.y;
-    if (!drag.axis) {
-      // Vertical intent belongs entirely to the document. A tap never captures.
-      if (Math.abs(dy) > 10 && Math.abs(dy) > Math.abs(dx) * 1.1) { cancelDrag(false); return; }
-      if (Math.abs(dx) < 12 || Math.abs(dx) < Math.abs(dy) * 1.35) return;
-      drag.axis = 'horizontal'; stage.dataset.dragging = 'true';
-      drag.card.style.transition = 'none'; stage.setPointerCapture?.(event.pointerId);
+  stage.addEventListener('pointermove',event=>{
+    if(!drag||drag.id!==event.pointerId)return;
+    const dx=event.clientX-drag.x,dy=event.clientY-drag.y;
+    if(!drag.axis){
+      if(Math.abs(dy)>10&&Math.abs(dy)>Math.abs(dx)*1.1){cancelDrag(false);return;}
+      if(Math.abs(dx)<12||Math.abs(dx)<Math.abs(dy)*1.35)return;
+      drag.axis='horizontal';
+      stage.dataset.dragging='true';
+      stage.setPointerCapture?.(event.pointerId);
+      drag.card.style.transition='none';
     }
-    if (event.cancelable) event.preventDefault();
-    // Drag follows the finger within one card, with resistance near the edge.
-    const limit = drag.width * .3;
-    drag.offset = Math.sign(dx) * limit * (1 - Math.exp(-Math.abs(dx) / limit));
-    drag.rotation = drag.offset / drag.width * 8;
-    drag.card.style.transform = `translateX(${drag.offset}px) rotate(${drag.rotation}deg)`;
+    if(event.cancelable)event.preventDefault();
+    const direction=dx<0?1:-1;
+    if(drag.direction!==direction){
+      if(drag.preview){
+        drag.preview.style.removeProperty('transform');
+        drag.preview.style.removeProperty('opacity');
+        drag.preview.style.removeProperty('transition');
+      }
+      drag.direction=direction;
+      drag.preview=cards[(active+direction+cards.length)%cards.length];
+      drag.preview.style.transition='none';
+    }
+    const limit=drag.width*.83;
+    drag.offset=clamp(dx,-limit,limit);
+    drag.progress=clamp(Math.abs(dx)/(drag.width*.72),0,1);
+    drag.rotation=clamp(dx/drag.width*13,-13,13);
+    const p=drag.progress;
+    drag.card.style.transform='translate3d('+drag.offset+'px,'+(-7*p)+'px,0) rotate('+drag.rotation+'deg) scale('+(1-.055*p)+')';
+    drag.card.style.opacity='1';
+    const sourceX=direction===1?23:-27,sourceAngle=direction*5;
+    drag.preview.style.transform='translate3d('+(sourceX*(1-p))+'px,'+(3*(1-p)-4*p)+'px,0) rotate('+(sourceAngle*(1-p))+'deg) scale('+(.974+.026*p)+')';
+    drag.preview.style.opacity='1';
   });
   stage.addEventListener('pointerup', event => {
     if (!drag || drag.id !== event.pointerId) return;
@@ -164,14 +237,15 @@ export function mountFatosDeck() {
     const deliberate = current.axis === 'horizontal' && Math.abs(dx) >= threshold && Math.abs(dx) > Math.abs(dy) * 1.25;
     if (deliberate) {
       lastSwipe = performance.now();
-      const transform = current.card.style.transform;
-      go(active + (dx < 0 ? 1 : -1), { transform });
+      const transform=current.card.style.transform;
+      const incomingFrom=current.preview?.style.transform;
+      go(active+(dx<0?1:-1),{transform,incomingFrom,direction:dx<0?1:-1});
     } else cancelDrag(true);
   });
   stage.addEventListener('pointercancel', () => cancelDrag(true));
   stage.addEventListener('lostpointercapture', event => { if (event.target === stage) cancelDrag(true); });
   stage.addEventListener('pointerleave', () => { if (drag && !drag.axis) cancelDrag(false); });
   stage.addEventListener('click', event => { if (performance.now() - lastSwipe < 300) { event.preventDefault(); event.stopPropagation(); } }, true);
-  motion.onStop(() => cancelDrag(false));
+  motion.onStop(() => {cancelDrag(false);clearFlight();});
   paint(); shell.dataset.ready = 'true'; return shell;
 }
