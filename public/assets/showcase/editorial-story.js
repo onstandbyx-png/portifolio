@@ -6,6 +6,7 @@ import { sectionCopy } from '../content/portfolio-copy.js';
 import { createDeviceFrame } from './device-frame.js';
 import { createIPadFrame,createMacBookFrame } from './editorial-hardware.js';
 import { createMotion } from '../sections/motion.js';
+import { stableViewportHeight } from './scroll-gallery.js';
 
 const escape=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const types=['iphone','ipad','macbook'];
@@ -71,113 +72,127 @@ export function mountEditorialStory(){
     createIPadFrame({label:'Contexto em iPad Pro horizontal'}),
     createMacBookFrame({label:'Fechamento em MacBook Pro'})
   ];
-  const pieces=[],duplicates=[];
+  const pieces=[],duplicates=[],objects=[],controls=[];
   devices.forEach((device,i)=>{
     device.root.classList.add('es-hardware','es-hardware--'+types[i]);
     device.root.dataset.editorialModel=types[i];
     device.screen.innerHTML=screenMarkup(copy.steps[i],i);
+    device.screen.querySelectorAll('img').forEach(image=>{image.loading='eager';});
     const piece=device.screen.querySelector('[data-es-piece]');
-    if(!piece)throw new Error('Missing editorial device article: '+i);
     const preview=piece.cloneNode(true);
     preview.removeAttribute('data-es-piece');
     preview.classList.add('es-preview-piece');
     preview.setAttribute('aria-hidden','true');
-    preview.hidden=true;
     piece.parentElement.append(preview);
     pieces.push(piece);duplicates.push(preview);
+    // Each object owns one physical frame for its entire lifetime. Selection
+    // only changes its pose; content and hardware are never reparented.
+    const object=document.createElement('div');
+    object.className='es-object';object.dataset.device=types[i];
+    const control=document.createElement('button');
+    control.type='button';control.className='es-object-select';
+    control.setAttribute('aria-label','Abrir '+copy.steps[i].label+' em '+({iphone:'iPhone',ipad:'iPad',macbook:'MacBook'}[types[i]]));
+    control.addEventListener('click',()=>render(i,true));
+    object.append(device.root,control);objects.push(object);controls.push(control);
   });
-  const peeks=['left','right'].map(side=>{
-    const button=document.createElement('button');
-    button.type='button';button.className='es-peek es-peek--'+side;
-    button.dataset.esPeek=side;
-    button.addEventListener('click',()=>render(Number(button.dataset.stepIndex),true));
-    return button;
-  });
-  let active=-1,animations=[];
+  stage.replaceChildren(...objects);
+  stage.tabIndex=0;
+  stage.setAttribute('aria-label','Três dispositivos. Use as setas para mudar de etapa.');
+  let active=-1,animations=[],generation=0,layoutKey='',mobile=false,shift=0;
   const cancelAnimations=()=>{animations.forEach(a=>a?.cancel());animations=[]};
+  function pose(i){
+    const others=devices.map((_,j)=>j).filter(j=>j!==active);
+    const side=i===active?0:others.indexOf(i)===0?-1:1;
+    return {
+      transform:`translate(-50%,-50%) translate3d(${side*shift}px,${side?12:0}px,0) rotate(${side*(mobile?3:4)}deg) scale(${side?(mobile?.72:.68):1})`,
+      opacity:side?(mobile?.62:.72):1,
+      zIndex:side?1:4
+    };
+  }
+  function applyPose(i){
+    const target=pose(i);
+    Object.assign(objects[i].style,{transform:target.transform,opacity:String(target.opacity),zIndex:String(target.zIndex)});
+    return target;
+  }
   function sizeDevices(){
-    const mobile=matchMedia('(max-width:700px)').matches;
-    const available=stage.clientWidth||innerWidth-52;
+    mobile=matchMedia('(max-width:700px)').matches;
+    const available=stage.clientWidth||innerWidth-36;
+    const budget=Math.max(300,Math.min(640,stableViewportHeight()-(mobile?260:320)));
+    const key=[mobile,available,budget].join(':');
+    if(key===layoutKey)return;
+    layoutKey=key;++generation;cancelAnimations();
     const base=[
-      mobile?Math.min(340,Math.max(216,Math.min(available-14,innerWidth*.64))):Math.min(340,Math.max(220,available-24)),
-      mobile?Math.min(376,Math.max(266,available*.89)):Math.min(655,Math.max(380,available*.75)),
-      mobile?Math.min(410,Math.max(274,available*.94)):Math.min(774,Math.max(410,available*.88))
+      Math.min(mobile?Math.min(340,available-14,innerWidth*.64):340,budget*435/907),
+      Math.min(mobile?Math.min(376,available*.89):Math.min(655,available*.75),budget*281.6/215.5),
+      Math.min(mobile?Math.min(410,available*.94):Math.min(774,available*.88),budget/.68)
     ];
-    const kind=types[active>=0?active:0];
     devices.forEach((device,i)=>{
-      const width=Math.round(base[i]*(i===active?1:mobile?.82:.70));
+      const width=Math.round(base[i]);
       if(i===0)device.root.style.setProperty('--df-pt',width/435+'px');
       else device.root.style.width=width+'px';
       device.root.style.setProperty('--es-device-unit',(width/100)+'px');
-      device.root.dataset.position=i===active?'center':'side';
     });
-    // A height tied to the active device used to collapse the mobile scene by
-    // more than 200px on every iPhone -> iPad/MacBook change. That moved the
-    // pagination and the next section into view mid-gesture, and allowed the
-    // taller side iPhone to overlap the chapter tabs. The scene must remain
-    // stable; the three REAL hardware shapes retain their own aspect ratios.
-    const heights=[base[0]*907/435,base[1]*215.5/281.6,base[2]*.68];
-    const activeHeight=heights[active>=0?active:0];
-    const targetHeight=Math.ceil((mobile?Math.max(...heights):activeHeight)+(mobile?30:40));
-    if(Math.abs((parseFloat(stage.style.height)||0)-targetHeight)>1){
-      stage.style.height=targetHeight+'px';
-    }
-    stage.dataset.heightMode=mobile?'stable-mobile':'adaptive-desktop';
+    const targetHeight=Math.ceil(Math.max(base[0]*907/435,base[1]*215.5/281.6,base[2]*.68)+(mobile?30:32));
+    stage.style.height=targetHeight+'px';
+    stage.dataset.heightMode=mobile?'stable-mobile':'stable-desktop';
     stage.style.setProperty('--es-stage-height',targetHeight+'px');
-    const shift=mobile?Math.max(181,available*.63):Math.max(295,available*.38);
-    peeks.forEach(button=>{
-      const delta=button.dataset.esPeek==='left'?-shift:shift;
-      button.style.setProperty('--side-offset',delta+'px');
-    });
+    shift=mobile?Math.max(166,available*.60):Math.max(245,available*.38);
+    objects.forEach((_,i)=>applyPose(i));
+    root.dataset.editorialMotion='idle';
   }
   function render(index,focus=false){
-    if(index===active)return;
-    if(index<0||index>=3)return;
-    cancelAnimations();
+    if(index===active||index<0||index>=3)return;
     const previous=active;
+    // Read the painted pose before cancelling: interrupted navigation continues
+    // from the current frame instead of restarting from either endpoint.
+    const starts=objects.map(object=>{
+      const style=getComputedStyle(object);
+      return {transform:style.transform,opacity:Number(style.opacity),zIndex:style.zIndex};
+    });
+    cancelAnimations();
+    const token=++generation;
     active=index;
-    const step=copy.steps[index],others=devices.map((_,i)=>i).filter(i=>i!==index);
+    const step=copy.steps[index];
+    const others=devices.map((_,i)=>i).filter(i=>i!==index);
     root.dataset.editorialActive=step.id;
     root.dataset.editorialDevice=types[index];
     stage.dataset.activeDevice=types[index];
     panel.setAttribute('aria-labelledby',tabs[index].id);
     tabs.forEach((tab,i)=>{tab.setAttribute('aria-selected',String(i===index));tab.tabIndex=i===index?0:-1;});
     devices.forEach((device,i)=>{
-      const isCurrent=i===index;
-      device.root.classList.toggle('es-device',isCurrent);
-      device.root.setAttribute('aria-hidden',String(!isCurrent));
-      if(isCurrent){device.root.setAttribute('role','group');}
-      else device.root.removeAttribute('role');
-      pieces[i].hidden=!isCurrent;
-      duplicates[i].hidden=isCurrent;
+      const current=i===index;
+      device.root.classList.toggle('es-device',current);
+      device.root.dataset.position=current?'center':'side';
+      device.root.setAttribute('aria-hidden',String(!current));
+      if(current)device.root.setAttribute('role','group');else device.root.removeAttribute('role');
+      pieces[i].hidden=!current;duplicates[i].hidden=current;
+      objects[i].classList.toggle('es-peek',!current);
+      objects[i].classList.toggle('es-peek--left',i===others[0]);
+      objects[i].classList.toggle('es-peek--right',i===others[1]);
+      objects[i].dataset.stepIndex=String(i);
+      controls[i].hidden=current;
+      const target=applyPose(i);
+      if(previous>=0&&motion.available()){
+        const animation=motion.animate(objects[i],[
+          {...starts[i],offset:0},
+          {zIndex:starts[i].zIndex,offset:.44},
+          {zIndex:String(target.zIndex),offset:.56},
+          {...target,offset:1}
+        ],{duration:620,easing:'cubic-bezier(.4,0,.2,1)'});
+        if(animation)animations.push(animation);
+      }
     });
-    stage.replaceChildren(devices[index].root,...peeks);
-    peeks.forEach((button,k)=>{
-      const i=others[k];
-      button.dataset.stepIndex=String(i);
-      button.dataset.device=types[i];
-      button.setAttribute('aria-label','Abrir '+copy.steps[i].label+' em '+({iphone:'iPhone',ipad:'iPad',macbook:'MacBook'}[types[i]]));
-      button.replaceChildren(devices[i].root);
+    root.dataset.editorialMotion=animations.length?'transition':'idle';
+    if(animations.length)Promise.all(animations.map(a=>a.finished.catch(()=>{}))).then(()=>{
+      if(token!==generation)return;
+      animations=[];root.dataset.editorialMotion='idle';
     });
-    sizeDevices();
-    // One restrained entrance regardless of whether a chapter is selected
-    // by swipe, tab, arrow or side preview. No device geometry gets morphed.
-    if(previous>=0&&!motion.paused()&&!matchMedia('(prefers-reduced-motion:reduce)').matches){
-      animations.push(motion.animate(devices[index].root,
-        [{opacity:.74,transform:'translateY(8px) scale(.985)'},{opacity:1,transform:'translateY(0) scale(1)'}],
-        {duration:360,easing:'cubic-bezier(.22,.82,.22,1)'}));
-    }
-    // Keep legacy reading/transcript semantics for assistive technology
-    // even though the visual explanation is intentionally hidden.
     context.querySelector('[data-es-label]').textContent='0'+(index+1)+' / '+step.label;
     context.querySelector('[data-es-title]').textContent=step.title;
     context.querySelector('[data-es-body]').textContent=step.body;
     context.querySelector('[data-es-quote]').textContent=step.pieceTitle.replace(/\n/g,' ');
     context.querySelector('[data-es-copy]').textContent=step.pieceCopy;
     root.querySelector('[data-es-status]').textContent=step.label+' · '+(index+1)+' de 3';
-    pieces[index].querySelectorAll('.es-mask > span').forEach((line,i)=>{
-      animations.push(motion.animate(line,[{transform:'translateY(108%)'},{transform:'translateY(0)'}],{duration:430,delay:i*50}));
-    });
     if(focus)tabs[index].focus({preventScroll:true});
   }
   tabs.forEach((tab,i)=>{
@@ -188,9 +203,10 @@ export function mountEditorialStory(){
       event.preventDefault();render(index,true);
     });
   });
+  motion.onStop(()=>{++generation;cancelAnimations();root.dataset.editorialMotion='idle';});
+  render(0);sizeDevices();
   new ResizeObserver(sizeDevices).observe(stage);
   addEventListener('resize',sizeDevices,{passive:true});
-  render(0);
   root.dataset.editorialReady='true';
   return root;
 }
