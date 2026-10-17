@@ -230,7 +230,8 @@
   height:auto;min-height:0;width:min(940px,calc(100vw - 24px));
 }
 .rf-film.rf-natural .rf-macbook .mbp-device{
-  width:min(100%,880px);
+  /* Reserve room for the 107% tapered aluminum base in static reading mode. */
+  width:min(calc(100% - 22px),880px);
 }
 @media(max-width:760px){
   .rf-film .rf-web.rf-macbook{width:calc(100vw - 18px);max-width:calc(100vw - 18px)}
