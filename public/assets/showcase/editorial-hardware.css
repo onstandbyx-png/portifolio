@@ -25,6 +25,11 @@
   transition:opacity .24s ease,filter .24s ease,transform .35s ease;
   -webkit-tap-highlight-color:transparent;
 }
+/* Nav is layered above any side hardware extending outside the stage,
+   so preview cards cannot steal taps on the previous/next buttons. */
+#editorial .es-panel{position:relative;z-index:1}
+#editorial .es-swipe-nav{position:relative;z-index:7;isolation:isolate}
+#editorial .es-swipe-nav>button{position:relative;z-index:8}
 #editorial .es-stage>.es-peek:hover,#editorial .es-stage>.es-peek:focus-visible{
   opacity:.93;filter:saturate(.92) drop-shadow(0 12px 23px #1d32292e);
 }
