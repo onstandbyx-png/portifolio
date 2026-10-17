@@ -44,12 +44,13 @@ try{
           return a.classList.contains('is-departing')&&getComputedStyle(a).visibility==='visible'&&
             Number(getComputedStyle(a).zIndex)>Number(getComputedStyle(b).zIndex);
         }));
-        await pause(175);
-        await stage.screenshot({path:out+'/fatos-passage-'+width+'.png'});
+        await pause(125);
         check('Both outgoing and incoming cards stay visible at mid-transition',await stage.evaluate(el=>{
           const a=el.querySelector('[data-fatos-card="desconhecidos"]'),b=el.querySelector('[data-fatos-card="esportes"]');
-          return a.getAnimations().length>0&&b.getAnimations().length>0;
+          return a.getAnimations().length>0&&b.getAnimations().length>0&&
+                 getComputedStyle(a).visibility==='visible'&&getComputedStyle(b).visibility==='visible';
         }));
+        await stage.screenshot({path:out+'/fatos-passage-'+width+'.png'});
         await page.waitForFunction(()=>document.querySelector('#colecao .pf-fatos-stage').dataset.motion==='idle',{timeout:2000});
         check('Departure settles and removes overlay',await stage.locator('.is-departing').count()===0);
       }else{
