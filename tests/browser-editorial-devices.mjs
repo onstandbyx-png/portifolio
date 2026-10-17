@@ -76,7 +76,7 @@ try{
        geometry.bodyRatio>1.29&&geometry.bodyRatio<1.33&&geometry.screenRatio>1.23&&
        geometry.screenRatio<1.42&&geometry.camera&&!geometry.island,geometry);
      check('Contexto retains its image and three functions',
-       await active.locator('.es-ipad-functions span').count()===3&&await active.locator('.es-ipad-visual img').count()===1);
+       await active.locator('[data-es-piece="1"] .es-ipad-functions span').count()===3&&await active.locator('[data-es-piece="1"] .es-ipad-visual img').count()===1);
    }
    if(state.kind==='macbook'){
      const geometry=await active.evaluate(el=>{
@@ -86,7 +86,7 @@ try{
      check('MacBook reuses the real lid hinge and aluminum base dimensions',
        geometry.lid>1.47&&geometry.lid<1.73&&geometry.base>1.03&&geometry.left>=-3&&geometry.right<=width+3,geometry);
      check('Fechamento is Fatos editorial content, not the Casa Costa campaign',
-       await active.locator('.es-mac-hero-copy').innerText().then(text=>text.includes('UMA HISTÓRIA COMPLETA')&&!text.includes('Casa Costa')));
+       await active.locator('[data-es-piece="2"] .es-mac-hero-copy').innerText().then(text=>text.includes('UMA HISTÓRIA COMPLETA')&&!text.includes('Casa Costa')));
    }
    await active.scrollIntoViewIfNeeded();
    await page.waitForTimeout(reduced?25:100);
