@@ -53,6 +53,12 @@ try{
    check('A different physical device occupies each chapter',
      await editorial.locator('[data-es-piece]:not([hidden])').evaluateAll((p,index)=>
        p.length===1&&p[0].dataset.esPiece===String(index),state.index));
+   // Wait for the actual scene-height transition to finish. Landscape
+   // devices intentionally shrink the stage after leaving the tall iPhone.
+   await page.waitForFunction(()=>{
+     const stage=document.querySelector('#editorial [data-editorial-stage]');
+     return stage&&Math.abs(stage.getBoundingClientRect().height-parseFloat(stage.style.height))<2;
+   },null,{timeout:2200});
    const data=await active.evaluate(el=>{
      const r=el.getBoundingClientRect(),stage=el.closest('[data-editorial-stage]'),s=stage.getBoundingClientRect();
      return {device:el.dataset.editorialModel,screenWidth:r.width,screenHeight:r.height,
