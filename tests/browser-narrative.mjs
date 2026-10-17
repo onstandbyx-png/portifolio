@@ -119,7 +119,8 @@ try{
    check('Each channel explains a different creative decision',new Set(notes).size===3&&notes.every(s=>/adaptação ao canal/i.test(s)&&/entrega/i.test(s)));
    await page.evaluate(()=>['meta','google','tiktok'].forEach(id=>document.querySelector('#tab-'+id).click()));await page.waitForTimeout(800);
    check('Fast changes keep artwork and explanation in sync',await page.locator('.sp-campaign').getAttribute('data-channel')==='tiktok'&&/vertical/.test(await page.locator('[data-note-title]').innerText())&&await page.locator('.sp-campaign-panel:not([hidden])').count()===1);
-   await page.locator('.sp-campaign').screenshot({path:`${output}/campaign-${width}${reduced?'-reduced':''}.png`,animations:'disabled'});
+   await page.locator('.sp-campaign').evaluate(el=>scrollTo({top:scrollY+el.getBoundingClientRect().top-84,behavior:'instant'}));
+   await page.screenshot({path:`${output}/campaign-${width}${reduced?'-reduced':''}.png`,animations:'disabled'});
    check('Standalone Trilhas is hidden and Digital retains a destination',await page.locator('#trilhas[hidden]').count()===1&&!await page.locator('#trilhas').isVisible()&&await page.locator('#sites.digital-anchor').count()===1);
    check('No hidden Trilhas enlargement control is exposed',await page.locator('[data-art-open="trilhas"]:visible').count()===0);
    for(const id of ['casa']){
@@ -137,7 +138,8 @@ try{
    await page.locator('#brief').fill('Preciso de um projeto digital com apresentação e prazo definido.');
    await page.locator('.sm-brief-summary summary').click();check('Optional summary reflects the editable brief',/projeto digital/.test(await page.locator('.sm-brief-summary p').innerText()));
    check('Contact channels remain the established real destinations',await page.locator('[data-contact-direct="whatsapp"]').getAttribute('href')==='https://wa.me/5511985568208'&&await page.locator('[data-contact-direct="email"]').getAttribute('href')==='mailto:smillepls@gmail.com');
-   await page.locator('#contato').screenshot({path:`${output}/contact-${width}${reduced?'-reduced':''}.png`,animations:'disabled'});
+   await page.locator('#contato').evaluate(el=>scrollTo({top:scrollY+el.getBoundingClientRect().top-84,behavior:'instant'}));
+   await page.screenshot({path:`${output}/contact-${width}${reduced?'-reduced':''}.png`,animations:'disabled'});
    check('No horizontal page overflow',await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+2));
    check('No uncaught exceptions or external writes',row.errors.length===0&&row.writes.length===0);
   }catch(error){row.failure=String(error);await capture('failure').catch(()=>{});console.error(row.failure);}
