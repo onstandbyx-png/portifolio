@@ -17,7 +17,17 @@ export function mountScrollFilm(){
   <div class="rf-stage"><div class="rf-camera"><div class="rf-world">
    <article class="rf-plane rf-cover" data-rf-plane="0" aria-label="Casa Costa: composição editorial"><img src="/assets/portfolio/smiile-architecture-coast.webp" alt="Casa entre a paisagem costeira e a vegetação" loading="lazy" decoding="async"><div class="rf-cover-top"><span>FORMA</span><span>CASA COSTA / 01</span></div><div class="rf-cover-copy"><small>ARQUITETURA PARA HABITAR</small><strong>O essencial<br>tem espaço.</strong><p>Luz natural, matéria e paisagem.</p></div></article>
    <div class="rf-plane rf-phone-plane" data-rf-plane="1"></div>
-   <article class="rf-plane rf-web" data-rf-plane="2" aria-label="Casa Costa: direção visual do site"><div class="rf-web-chrome"><i></i><i></i><i></i><span>CASA COSTA / ESTUDO DE INTERFACE</span></div><div class="rf-web-nav"><strong>Casa Costa</strong><span>A casa &nbsp; · &nbsp; Galeria &nbsp; · &nbsp; Visita</span></div><div class="rf-web-hero"><img src="/assets/portfolio/smiile-architecture-coast.webp" alt="A arquitetura Casa Costa integrada ao horizonte" loading="lazy" decoding="async"><div class="rf-web-copy"><small>LUZ · MATÉRIA · PAISAGEM</small><strong>Mais perto<br>do mar.</strong><p>Um lugar para desacelerar.</p></div></div></article>
+   <article class="rf-plane rf-web rf-macbook" data-rf-plane="2" data-device="macbook-pro" aria-label="Casa Costa: interface do site apresentada na tela de um notebook em estilo MacBook Pro">
+     <div class="mbp-device" aria-label="Notebook aberto, vista frontal">
+       <div class="mbp-lid"><div class="mbp-display"><div class="mbp-screen">
+         <div class="rf-web-chrome"><i></i><i></i><i></i><span>CASA COSTA / ESTUDO DE INTERFACE</span></div>
+         <div class="rf-web-nav"><strong>Casa Costa</strong><span>A casa &nbsp; · &nbsp; Galeria &nbsp; · &nbsp; Visita</span></div>
+         <div class="rf-web-hero"><img src="/assets/portfolio/smiile-architecture-coast.webp" alt="A arquitetura Casa Costa integrada ao horizonte" loading="lazy" decoding="async"><div class="rf-web-copy"><small>LUZ · MATÉRIA · PAISAGEM</small><strong>Mais perto<br>do mar.</strong><p>Um lugar para desacelerar.</p></div></div>
+       </div></div><div class="mbp-camera" aria-hidden="true"><i></i></div></div>
+       <div class="mbp-hinge" aria-hidden="true"></div>
+       <div class="mbp-base" aria-hidden="true"><span class="mbp-front-groove"></span></div>
+       <span class="mbp-ground-shadow" aria-hidden="true"></span>
+     </div></article>
   </div></div><div class="rf-footer"><div class="rf-format-switch" role="group" aria-label="Formatos da composição Casa Costa">${copy.formats.map((label,i)=>`<button type="button" data-rx-film-to="${i}" aria-pressed="${i===0}"><span>0${i+1}</span>${escape(label)}</button>`).join('')}</div><div class="rf-caption"><p data-rf-status role="status" aria-live="polite">A composição editorial apresenta a identidade.</p><a href="${escape(copy.cta.href)}" data-product-target="site" data-art-open="casa">${escape(copy.cta.label)} <span aria-hidden="true">↗</span></a></div><small class="rf-credit">${escape(copy.credit)}</small></div></div>
  </section>`);
  anchor.before(film);
@@ -32,8 +42,13 @@ export function mountScrollFilm(){
  function paint(){
   const mobile=small.matches,paused=motion.paused(),natural=reduced.matches;
   film.classList.toggle('rf-natural',natural);film.dataset.paused=String(paused);film.dataset.mode=natural?'flow':'scroll';
-  if(natural)film.style.removeProperty('--rf-art-height');
-  else film.style.setProperty('--rf-art-height',`${Math.min(mobile?500:620,Math.max(180,camera.clientHeight-24))}px`);
+  const measuredHeight=Math.min(mobile?500:620,Math.max(180,camera.clientHeight-24));
+  if(natural){film.style.removeProperty('--rf-art-height');film.style.removeProperty('--mbp-max-width');}
+  else{
+    film.style.setProperty('--rf-art-height',`${measuredHeight}px`);
+    // Preserve a recognizable lid/base ratio instead of stretching the webpage.
+    film.style.setProperty('--mbp-max-width',`${Math.min(900,Math.round(measuredHeight*1.46))}px`);
+  }
   const progress=state.value,reading=readingProgress(progress,!mobile),index=Math.round(progress),spacing=mobile?innerWidth*1.1:Math.min(950,innerWidth*.72);
   world.style.setProperty('--rf-camera-x',`${(1-reading)*spacing}px`);
   planes.forEach((plane,i)=>{
