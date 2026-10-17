@@ -147,11 +147,11 @@ export const portfolioCopy = {
         },
         {
           "id": "smiile",
-          "label": "Sites · Estudo de interface",
-          "nature": "Projeto próprio",
+          "label": "Sites · Casa Costa",
+          "nature": "Estudo conceitual",
           "title": "Apresentar bem.\nFacilitar a escolha.",
           "body": "Direção visual e UX/UI para organizar a informação e tornar o próximo passo evidente.",
-          "contribution": "Direção visual, UX/UI e desenvolvimento",
+          "contribution": "Direção visual e UX/UI",
           "cta": "Ver interfaces",
           "href": "#narrativa-visual",
           "decision": "A imagem apresenta o contexto. Texto, hierarquia e navegação ajudam a pessoa a entender a proposta antes de tomar uma decisão."

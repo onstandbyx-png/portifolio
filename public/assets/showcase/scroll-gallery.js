@@ -42,9 +42,9 @@ export function mountScrollGallery(){
  if(!gallery||gallery.classList.contains('rg-gallery'))return gallery?.closest('.rg-scroll-shell')||null;
  const copy=sectionCopy('trabalhos'),entries=copy.cards;
  const visual={
-  fatos:{image:'fatos-editorial.webp',alt:'Composição editorial Fatos Desconhecidos, com fotografia e hierarquia tipográfica',title:'Pesquisa que vira\nnarrativa.',body:'Pesquisa, texto e direção criativa para conteúdo editorial.'},
-  ads:{image:'campanha-meta.webp',alt:'Peça estática de campanha smiile com direção de arte para Meta',title:'Uma ideia.\nTrês canais.',body:'Conceito, copy e direção de arte para Meta, Google e TikTok.'},
-  smiile:{image:'trilhas.webp',alt:'Estudo estático da interface Trilhas, com busca e descoberta de percursos',title:'Interfaces\npara explorar.',body:'Direção visual e UX/UI para sites e aplicativos.'}
+  fatos:{image:'fatos-editorial.webp',alt:'Composição editorial Fatos Desconhecidos, com fotografia e hierarquia tipográfica'},
+  ads:{image:'campanha-meta.webp',alt:'Peça estática de campanha smiile com direção de arte para Meta'},
+  smiile:{image:'casa-costa.webp',alt:'Estudo conceitual do site Casa Costa, com identidade visual, fotografia e navegação editorial'}
  };
  const escape=value=>String(value).replace(/[&<>"']/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
  gallery.classList.remove('rg-static-gallery');
