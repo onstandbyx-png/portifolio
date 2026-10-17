@@ -51,8 +51,8 @@ try{
    check(state.kind+' uses its original dedicated hardware frame',
      await active.evaluate((node,selectors)=>selectors.every(sel=>!!node.querySelector(sel)),state.selectors));
    check('A different physical device occupies each chapter',
-     await editorial.locator('[data-es-piece]:not([hidden])').evaluateAll(p=>
-       p.length===1&&p[0].dataset.esPiece===String(state.index)));
+     await editorial.locator('[data-es-piece]:not([hidden])').evaluateAll((p,index)=>
+       p.length===1&&p[0].dataset.esPiece===String(index),state.index));
    const data=await active.evaluate(el=>{
      const r=el.getBoundingClientRect(),stage=el.closest('[data-editorial-stage]'),s=stage.getBoundingClientRect();
      return {device:el.dataset.editorialModel,screenWidth:r.width,screenHeight:r.height,
