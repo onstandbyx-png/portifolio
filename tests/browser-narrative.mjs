@@ -40,9 +40,10 @@ try{
    const editorialNav=page.locator('#editorial .es-swipe-nav');
    check('Editorial has readable swipe controls and three progress dots',await editorialNav.count()===1&&await editorialNav.locator('[data-es-dot]').count()===3);
    check('Carousel shows real iPhone, iPad and MacBook shells rather than duplicate phones',await page.locator('#editorial .es-peek').count()===2&&await page.locator('#editorial .es-device').count()===1&&await page.locator('#editorial .es-hardware').count()===3&&await page.locator('#editorial').getAttribute('data-editorial-device')==='ipad');
-   if(width<500)check('Mobile proportions reveal the neighboring phones without shrinking the main text excessively',await page.locator('#editorial .es-device').evaluate(phone=>{
-     const r=phone.getBoundingClientRect(),left=document.querySelector('#editorial .es-peek--left').getBoundingClientRect(),right=document.querySelector('#editorial .es-peek--right').getBoundingClientRect();
-     return r.width>=215&&r.width<=innerWidth*.8&&left.right>10&&right.left<innerWidth-10;
+   if(width<500)check('Mobile iPad is wider than the original phone while adjacent hardware stays discoverable',await page.locator('#editorial .es-device').evaluate(device=>{
+     const r=device.getBoundingClientRect(),left=document.querySelector('#editorial .es-peek--left').getBoundingClientRect(),right=document.querySelector('#editorial .es-peek--right').getBoundingClientRect();
+     return device.dataset.editorialModel==='ipad'&&r.width>=260&&r.width<=innerWidth*.98&&
+       left.right>10&&right.left<innerWidth-10;
    }));
    check('The editorial headline matches the visual reference',/Três olhares/.test(await page.locator('#editorial-title').innerText()));
    check('The progress marker follows the selected chapter',await page.locator('[data-es-heading-count]').textContent()==='02 / 03');
