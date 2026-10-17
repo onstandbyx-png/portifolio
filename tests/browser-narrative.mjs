@@ -39,7 +39,7 @@ try{
    await page.locator('[data-editorial-step="1"]').click();check('Editorial selection still updates the active artwork and metadata',await page.locator('#editorial').getAttribute('data-editorial-active')==='context'&&/comparação/.test(await page.locator('[data-es-title]').textContent()));
    const editorialNav=page.locator('#editorial .es-swipe-nav');
    check('Editorial has readable swipe controls and three progress dots',await editorialNav.count()===1&&await editorialNav.locator('[data-es-dot]').count()===3);
-   check('The visual carousel renders two usable neighboring phone previews',await page.locator('#editorial .es-peek').count()===2&&await page.locator('#editorial .es-device').count()===1);
+   check('Carousel shows real iPhone, iPad and MacBook shells rather than duplicate phones',await page.locator('#editorial .es-peek').count()===2&&await page.locator('#editorial .es-device').count()===1&&await page.locator('#editorial .es-hardware').count()===3&&await page.locator('#editorial').getAttribute('data-editorial-device')==='ipad');
    if(width<500)check('Mobile proportions reveal the neighboring phones without shrinking the main text excessively',await page.locator('#editorial .es-device').evaluate(phone=>{
      const r=phone.getBoundingClientRect(),left=document.querySelector('#editorial .es-peek--left').getBoundingClientRect(),right=document.querySelector('#editorial .es-peek--right').getBoundingClientRect();
      return r.width>=215&&r.width<=innerWidth*.8&&left.right>10&&right.left<innerWidth-10;
@@ -47,16 +47,17 @@ try{
    check('The editorial headline matches the visual reference',/Três olhares/.test(await page.locator('#editorial-title').innerText()));
    check('The progress marker follows the selected chapter',await page.locator('[data-es-heading-count]').textContent()==='02 / 03');
    await editorialNav.locator('[data-es-next]').click();
-   check('Next arrow reaches Fechamento',await page.locator('#editorial').getAttribute('data-editorial-active')==='closing'&&await editorialNav.locator('[data-es-next]').isDisabled());
+   check('Next arrow reaches Fechamento with MacBook',await page.locator('#editorial').getAttribute('data-editorial-active')==='closing'&&await page.locator('#editorial').getAttribute('data-editorial-device')==='macbook'&&await editorialNav.locator('[data-es-next]').isDisabled());
    await editorialNav.locator('[data-es-prev]').click();
-   check('Previous arrow returns to Contexto',await page.locator('#editorial').getAttribute('data-editorial-active')==='context');
-   check('The side previews stay synchronized with Contexto',await page.locator('#editorial .es-peek').evaluateAll(previews=>previews.length===2&&previews.every(preview=>preview.dataset.stepIndex!=='1'&&preview.querySelector('img')?.getAttribute('src')?.startsWith('/assets/portfolio/'))));
+   check('Previous arrow restores landscape iPad',await page.locator('#editorial').getAttribute('data-editorial-active')==='context'&&await page.locator('#editorial').getAttribute('data-editorial-device')==='ipad');
+   check('The other original hardware shells remain synchronized as previews',await page.locator('#editorial .es-peek').evaluateAll(previews=>previews.length===2&&previews.every(preview=>preview.dataset.stepIndex!=='1'&&!!preview.querySelector('img[src^="/assets/portfolio/"]'))&&previews.some(x=>x.dataset.device==='iphone')&&previews.some(x=>x.dataset.device==='macbook')));
    // The side phone intentionally peeks from behind the large central phone.
    // Hit its EXPOSED edge rather than the element center (hidden by the device).
    await page.locator('#editorial [data-editorial-stage]').scrollIntoViewIfNeeded();
    const peekBox=await page.locator('#editorial .es-peek--right').boundingBox();
-   const peekX=Math.min(width-13,Math.max(13,peekBox.x+peekBox.width*.33));
-   const peekY=Math.max(115,Math.min(height-90,peekBox.y+peekBox.height*.5));
+   // Click the exposed right edge, outside the active landscape iPad.
+   const peekX=Math.min(width-16,Math.max(16,peekBox.x+peekBox.width-26));
+   const peekY=Math.max(115,Math.min(height-90,peekBox.y+peekBox.height*.50));
    if(width<500)await page.touchscreen.tap(peekX,peekY);
    else await page.mouse.click(peekX,peekY);
    check('Tapping a side preview navigates to the referenced chapter',await page.locator('#editorial').getAttribute('data-editorial-active')==='closing');
