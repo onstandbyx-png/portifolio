@@ -32,7 +32,7 @@ export function mountEditorialStory() {
     frame.root.removeAttribute('aria-label');
   }
   frame.screen.innerHTML = `<div class="es-screen">${copy.steps.map((step, i) => `<article class="es-piece es-piece-${step.id}" data-es-piece="${i}"${i ? ' hidden' : ''}>
-    <img class="es-piece-art" src="${image}" alt="" loading="lazy" decoding="async" width="600" height="750">
+    <img class="es-piece-art" src="${image}" alt="" loading="eager" decoding="async" width="600" height="750">
     <div class="es-piece-shade"></div>
     <div class="es-piece-meta"><img src="/assets/portfolio/recovered-fatos/avatar_desconhecidos.webp" width="38" height="38" alt=""><span>FATOS<br><small>TECNOLOGIA NO COTIDIANO</small></span></div>
     <div class="es-piece-copy"><span class="es-piece-kicker">${String(i + 1).padStart(2, '0')} / ${escape(step.label)}</span><h3>${lines(step.pieceTitle)}</h3><p>${escape(step.pieceCopy)}</p></div>

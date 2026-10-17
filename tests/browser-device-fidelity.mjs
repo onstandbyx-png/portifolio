@@ -34,6 +34,9 @@ try{
   row.geometry.iphone={frame,pill};
   check(row,'Island centered and proportionate to phone body',!!frame&&!!pill&&pill.width>frame.width*.17&&pill.width<frame.width*.45&&Math.abs(pill.x+pill.width/2-frame.x-frame.width/2)<3);
   check(row,'Editorial content remains inside the live screen',await phone.locator('.df-screen [data-es-piece]').count()===3&&await phone.locator('.df-home').count()===1);
+  await page.locator('#editorial [data-es-piece="0"] .es-piece-art').evaluate(img=>img.decode().catch(()=>{}));
+  check(row,'Editorial photo loads into the iPhone preview before it is shown',await page.locator('#editorial [data-es-piece="0"] .es-piece-art').evaluate(img=>img.complete&&img.naturalWidth>0));
+  check(row,'Side phones have the same iPhone-style camera island',await page.locator('#editorial .es-peek-screen').evaluateAll(peeks=>peeks.length===2&&peeks.every(p=>getComputedStyle(p,'::before').content!=='none')));
   const mbp=page.locator('.rf-macbook[data-device="macbook-pro"]');
   check(row,'Casa Costa Site is presented in real laptop anatomy',await mbp.count()===1&&await mbp.locator('.mbp-lid,.mbp-display,.mbp-screen,.mbp-camera,.mbp-hinge,.mbp-base,.mbp-front-groove').count()===7);
   check(row,'Existing Casa Costa photograph and interface survive inside the screen',await mbp.locator('.mbp-screen .rf-web-nav strong').innerText()==='Casa Costa'&&await mbp.locator('.mbp-screen .rf-web-hero img').count()===1);
@@ -55,6 +58,7 @@ try{
   check(row,'Notebook lid retains landscape display proportions',geometry.lid.w>geometry.lid.h*1.48&&geometry.lid.w<geometry.lid.h*1.73,geometry);
   check(row,'Aluminum base extends beyond lid and sits beneath its display',geometry.base.w>geometry.lid.w&&geometry.base.top>=geometry.lid.bottom-9,geometry);
   check(row,'Screen remains inside bezel and displays a usable preview',geometry.screen.w<geometry.lid.w&&geometry.screen.h<geometry.lid.h&&geometry.screen.w>190&&geometry.scrollWidth<=geometry.innerWidth+2,geometry);
+  if(width<500)check(row,'Notebook aluminum deck is fully visible on mobile',geometry.base.left>=-2&&geometry.base.right<=geometry.innerWidth+2,geometry);
   if(!reduced){await page.locator('[data-rx-film-to="1"]').click();await page.waitForTimeout(900);await page.locator('[data-rx-film-to="2"]').click();await page.waitForTimeout(900);
     check(row,'Editorial-Social-Site controls still select the website',await page.locator('#narrativa-visual').getAttribute('data-phase')==='2');}
   await page.screenshot({path:output+'/first-screen-'+width+(reduced?'-reduced':'')+'.png',animations:'disabled'});
