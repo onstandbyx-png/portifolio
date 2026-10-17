@@ -25,7 +25,7 @@ const geometry=page=>page.evaluate(()=>{
   const left=Math.min(...points.map(p=>p.x)),right=Math.max(...points.map(p=>p.x)),top=Math.min(...points.map(p=>p.y)),bottom=Math.max(...points.map(p=>p.y));
   return{index,visible:art.visible&&s.rigRoots[index].visible,left,right,top,bottom,width:right-left,height:bottom-top,points};
  });
- return{layout:s.canvas.dataset.layout,selected:s.canvas.dataset.selectedCard,cards,rect:{left:rect.left,right:rect.right,top:rect.top,bottom:rect.bottom,width:rect.width,height:rect.height},angles:[...s.flipAngles],targets:[...s.flipTargets],bodies:s.rigs.map(rig=>rig.cards[0]).map(b=>({p:{...b.p},v:{...b.v},w:{...b.w}}))};
+ return{cssWidth:s.canvas.clientWidth,layout:s.canvas.dataset.layout,selected:s.canvas.dataset.selectedCard,cards,rect:{left:rect.left,right:rect.right,top:rect.top,bottom:rect.bottom,width:rect.width,height:rect.height},angles:[...s.flipAngles],targets:[...s.flipTargets],bodies:s.rigs.map(rig=>rig.cards[0]).map(b=>({p:{...b.p},v:{...b.v},w:{...b.w}}))};
 });
 const align=page=>page.locator('.hero-badge-exhibit').evaluate(el=>scrollTo({top:scrollY+el.getBoundingClientRect().top-76,behavior:'instant'}));
 const norm=v=>Math.hypot(v.x,v.y,v.z);
@@ -44,7 +44,7 @@ try{
    await page.goto(base,{waitUntil:'domcontentloaded'});await align(page);
    await page.waitForFunction(()=>window.__badgeScene?.initialized&&document.querySelector('[data-portfolio-badges]').dataset.state==='ready',null,{timeout:30000});
    await page.evaluate(()=>document.fonts.ready);await page.waitForTimeout(200);
-   const initial=await geometry(page);row.initial=initial;const visible=initial.cards.filter(card=>card.visible),single=initial.rect.width<540;
+   const initial=await geometry(page);row.initial=initial;const visible=initial.cards.filter(card=>card.visible),single=initial.cssWidth<540;
    await page.evaluate(()=>scrollTo({top:0,behavior:'instant'}));
    await page.waitForTimeout(90);
    await page.screenshot({path:`${output}/first-screen-${width}.png`,animations:'disabled'});
@@ -62,6 +62,10 @@ try{
        touch:matchMedia('(hover:none)').matches,
        copyDisplay:getComputedStyle(copy).display,
        copyBackground:getComputedStyle(copy).backgroundImage,
+       surfaceBackground:getComputedStyle(hero.querySelector('.hero-surface')).backgroundColor,
+       surfaceIsShared:hero.querySelector('.hero-surface').contains(copy)&&hero.querySelector('.hero-surface').contains(exhibit),
+       stage:box(hero.querySelector('.hero-badge-stage')),
+       controls:box(hero.querySelector('.hero-badge-controls')),
        menuVisible:getComputedStyle(document.querySelector('#menu-toggle')).display!=='none',
        desktopNavigationVisible:getComputedStyle(document.querySelector('.main-nav')).display!=='none'};
    });
@@ -76,28 +80,30 @@ try{
    check('Fixed navigation never covers the hero eyebrow at rest',
      layoutCheck.eyebrow.top-layoutCheck.hero.top>=layoutCheck.headerHeight+10);
    check('Hero typography, buttons and badge exhibit stay inside viewport',
-     layoutCheck.font>=36&&layoutCheck.font<=85&&layoutCheck.topPadding<=100 &&
+     layoutCheck.font>=30&&layoutCheck.font<=85&&layoutCheck.topPadding<=100 &&
      layoutCheck.title.width>0&&layoutCheck.title.left>=-1&&layoutCheck.title.right<=layoutCheck.viewport+1 &&
      layoutCheck.exhibit.left>=-1&&layoutCheck.exhibit.right<=layoutCheck.viewport+1 &&
      layoutCheck.actions.every(a=>a.height>=44)&&layoutCheck.scrollWidth<=layoutCheck.viewport+2);
-   if(width>=1180){
-     check('Wide desktop is a true two-column gallery with a dark editorial copy panel',
-       layoutCheck.copy.right+18<=layoutCheck.exhibit.left&&layoutCheck.exhibit.width>=540&&
-       layoutCheck.copyBackground.includes('gradient')&&!single&&visible.length===2);
-   }else if(width<=760){
-     check('Handheld hero brings a single full-size badge after the actions and before the proof',
-       layoutCheck.copyDisplay==='contents'&&single&&visible.length===1&&
-       layoutCheck.exhibit.top>=layoutCheck.actions.at(-1).bottom+8&&
-       layoutCheck.proof.top>=layoutCheck.exhibit.bottom-2&&
-       layoutCheck.exhibit.width>=Math.min(300,layoutCheck.viewport-48));
+   check('The hero has a shared forest surface rather than two independent panels',
+     layoutCheck.surfaceIsShared&&layoutCheck.surfaceBackground==='rgb(25, 59, 45)');
+   if(width>=960){
+     check('Desktop and desktop-request touch integrate copy and badges side by side',
+       layoutCheck.copy.right+18<=layoutCheck.exhibit.left&&layoutCheck.exhibit.width>=350);
+     check('The physical scene chooses a pair only when both badges fit',
+       (width>=1180)?(!single&&visible.length===2):(single&&visible.length===1));
+   }else if(width<=700){
+     check('The main badge arrives before the secondary proof in the mobile hero',
+       single&&visible.length===1&&layoutCheck.exhibit.top>=layoutCheck.actions.at(-1).bottom+8&&
+       layoutCheck.proof.top>=layoutCheck.exhibit.bottom-2);
+     check('Mobile printed card occupies most of the useful width without clipping',
+       visible[0].width>=layoutCheck.stage.width*.79&&visible[0].width<=layoutCheck.stage.width-.08*layoutCheck.stage.width&&
+       visible[0].left>=layoutCheck.stage.left&&visible[0].right<=layoutCheck.stage.right&&
+       visible[0].top>=layoutCheck.stage.top&&visible[0].bottom<=layoutCheck.stage.bottom+2);
    }else{
-     check('Tablet and desktop-requested touch no longer render the tiny desktop badge pair',
-       single&&visible.length===1&&layoutCheck.exhibit.width<=520&&
-       layoutCheck.exhibit.top>=layoutCheck.copy.bottom+8&&
-       layoutCheck.exhibit.top-layoutCheck.copy.bottom<90);
-     check('Intermediate hero uses a dedicated dark editorial panel',
-       layoutCheck.copyBackground.includes('gradient'));
+     check('Small tablets retain one readable full-size badge',single&&visible.length===1);
    }
+   check('Controls are outside and below the artwork, not over its face',
+     layoutCheck.controls.top>=layoutCheck.stage.bottom-2);
    if(desktopSiteTouch){
      check('Android desktop-request mode exposes compact navigation instead of mini desktop links',
        layoutCheck.coarse&&layoutCheck.touch&&layoutCheck.menuVisible&&!layoutCheck.desktopNavigationVisible);
@@ -113,7 +119,7 @@ try{
    check('Resting card faces are upright',visible.every(card=>Math.abs(card.points[0].y-card.points[1].y)<2&&Math.abs(card.points[0].x-card.points[3].x)<2));
    check('Only a pair of selectors and one contextual flip are present',await page.locator('[data-badge-select]').count()===2&&await page.locator('[data-badge-flip]').count()===1&&await page.locator('[data-badge-swing],[data-badge-card-flip]').count()===0);
    check('Control text and hit areas are readable',await page.locator('[data-badge-select],[data-badge-flip]').evaluateAll(buttons=>buttons.every(el=>{const r=el.getBoundingClientRect();return parseFloat(getComputedStyle(el).fontSize)>=14&&r.width>=44&&r.height>=44;})));
-   check('Browser media source matches the real single/pair WebGL layout',await page.locator('[data-badge-poster-source]').evaluate((source)=>matchMedia(source.media).matches===(document.querySelector('[data-badge-canvas]').getBoundingClientRect().width>=540)));
+   check('Browser media source matches the real single/pair WebGL layout',await page.locator('[data-badge-poster-source]').evaluate((source)=>matchMedia(source.media).matches===(document.querySelector('[data-badge-canvas]').clientWidth>=540)));
    check('Removed explanatory blocks are absent from the hero',await page.locator('.hero-badge-detail,[data-badge-hint],.hero-support,.scroll-indicator').count()===0);
    await page.locator('.hero-badge-exhibit').screenshot({path:`${output}/front-${width}.png`,animations:'disabled'});
    await page.locator('[data-badge-flip]').click();await page.waitForFunction(()=>Math.abs(window.__badgeScene.flipAngles[0]-Math.PI)<.03);

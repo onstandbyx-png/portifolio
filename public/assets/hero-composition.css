@@ -1,0 +1,206 @@
+/* Unified hero: the existing WebGL scene and its exact fallback poster share
+   one visual surface. Only the hero/header layouts are changed here. */
+.portfolio-r6 .hero.hero-v2 {
+  display:block; min-height:0; max-width:1392px;
+  padding-top:94px; padding-bottom:38px;
+}
+.portfolio-r6 .hero-v2 .hero-surface {
+  --hero-paper:#f7f6ed; --hero-ink:#17392c; --hero-muted:#c0d2c3;
+  position:relative; isolation:isolate; overflow:hidden;
+  display:grid; grid-template-columns:minmax(0,1fr);
+  grid-template-areas:"copy" "exhibit" "proof";
+  gap:22px; padding:28px;
+  color:var(--hero-paper); background:#193b2d;
+  background:radial-gradient(ellipse at 85% 44%,#315b4238 0,transparent 58%),#193b2d;
+  border:1px solid #315542; border-radius:22px;
+}
+.portfolio-r6 .hero.hero-v2 .hero-copy {
+  grid-area:copy; position:relative; display:block; min-width:0;
+  width:100%; max-width:620px; min-height:0; padding:0; margin:0;
+  align-self:center; background:none; border:0; border-radius:0; box-shadow:none;
+}
+.portfolio-r6 .hero-v2 .hero-copy::before {display:none}
+.portfolio-r6 .hero.hero-v2 .hero-issue {
+  display:flex; align-items:center; flex-wrap:nowrap; gap:9px;
+  color:#c2d6c4; font-size:10px; font-weight:550;
+  line-height:1.45; letter-spacing:.09em; margin:0;
+}
+.portfolio-r6 .hero-v2 .issue-dot {
+  flex:none; width:5px; height:5px; background:#c7dfbc;
+  box-shadow:0 0 0 3px #b9d7b61f; animation:none;
+}
+.portfolio-r6 .hero.hero-v2 h1 {
+  max-width:none; margin:20px 0 19px;
+  font-size:clamp(42px,4.3vw,64px); font-weight:550;
+  line-height:1.055; letter-spacing:-.055em;
+  color:var(--hero-paper); text-wrap:pretty;
+}
+.portfolio-r6 .hero.hero-v2 h1 em {
+  color:#dfebd6; font-weight:400; letter-spacing:-.05em;
+}
+.portfolio-r6 .hero.hero-v2 .hero-description {
+  max-width:47ch; margin:0; color:#cbdbcc;
+  font-size:16px; line-height:1.55; text-wrap:pretty;
+}
+.portfolio-r6 .hero.hero-v2 .hero-actions {
+  display:flex; flex-wrap:wrap; align-items:center;
+  gap:10px; margin:24px 0 0;
+}
+.portfolio-r6 .hero.hero-v2 .hero-actions .button {
+  min-height:46px; padding:11px 17px; gap:13px;
+  font-size:13px; border-radius:6px; font-weight:600;
+  transition:background-color .2s,color .2s,border-color .2s;
+}
+.portfolio-r6 .hero-v2 .hero-actions .button-solid {
+  color:#173c2b; background:#f4f5e9; border-color:#f4f5e9;
+  box-shadow:0 5px 14px #061c161a;
+}
+.portfolio-r6 .hero-v2 .hero-actions .button-text {
+  background:transparent; color:#ecf2e6; border:1px solid #9cbaa573;
+}
+.portfolio-r6 .hero-v2 .hero-actions .button span {font-size:16px}
+.portfolio-r6 .hero-v2 .hero-proof {
+  grid-area:proof; display:flex; flex-wrap:wrap; gap:14px 22px;
+  min-width:0; margin:0; padding:17px 0 0;
+  border-top:1px solid #8daf922f; align-self:end;
+}
+.portfolio-r6 .hero-v2 .hero-proof>span {
+  display:grid; gap:4px; padding-left:10px; border-left:1px solid #a2c3a784;
+}
+.portfolio-r6 .hero-v2 .hero-proof strong {color:#edf3e9;font-size:12px;font-weight:600;line-height:1.3}
+.portfolio-r6 .hero-v2 .hero-proof small {color:#bfd1bd;font-size:11px;line-height:1.4}
+/* No separate pale box, oversized instruction header or control over the art. */
+.portfolio-r6 .hero.hero-v2 .hero-exhibit.hero-badge-exhibit {
+  grid-area:exhibit; position:relative; display:flex; flex-direction:column;
+  width:100%; max-width:none; min-width:0; min-height:0;
+  margin:0; padding:0; align-self:center;
+  border:0; border-radius:0; background:transparent; box-shadow:none;
+  overflow:visible; container:hero-badges / inline-size;
+}
+.portfolio-r6 .hero-v2 .hero-exhibit::before,
+.portfolio-r6 .hero-v2 .hero-exhibit-bg {display:none}
+.portfolio-r6 .hero.hero-v2 .hero-badge-stage {
+  position:relative; inset:auto; flex:none; width:100%; height:auto;
+  max-height:none; aspect-ratio:.82; margin:0;
+  overflow:hidden; border-radius:12px; touch-action:pan-y;
+  background:transparent;
+}
+.portfolio-r6 .hero-v2 .hero-badge-stage::before {
+  content:""; position:absolute; inset:4% 5% 8%; pointer-events:none;
+  background:radial-gradient(ellipse at 50% 54%,#cae1c416,transparent 70%);
+}
+.portfolio-r6 .hero-v2 .hero-badge-stage::after {
+  content:""; position:absolute; top:0; left:8%; right:8%;
+  border-top:1px solid #9db49c30; pointer-events:none;
+}
+/* Identical framing for live and fallback: enlarge printed cards, keep their
+   lower edge anchored and crop only excess space above the short suspension. */
+.portfolio-r6 .hero-v2 .hero-badge-canvas,
+.portfolio-r6 .hero-v2 .hero-badge-standin [data-badge-poster] {
+  transform:scale(var(--badge-scale,1.20)); transform-origin:50% 90%;
+  mask-image:none; -webkit-mask-image:none;
+}
+@container hero-badges (min-width:540px) {
+  .portfolio-r6 .hero.hero-v2 .hero-badge-stage {aspect-ratio:1.45;--badge-scale:1.075}
+}
+.portfolio-r6 .hero.hero-v2 .hero-badge-controls {
+  position:relative; inset:auto; z-index:4; display:flex;
+  align-items:center; justify-content:space-between; flex-wrap:nowrap;
+  width:100%; max-width:520px; gap:12px; margin:10px auto 0;
+}
+.portfolio-r6 .hero-v2 .badge-selection {
+  display:flex; gap:3px; padding:3px; border:1px solid #94b49b59;
+  background:#f7f5e909; border-radius:99px; box-shadow:none;
+}
+.portfolio-r6 .hero.hero-v2 .hero-badge-controls button {
+  min-width:44px; min-height:44px; padding:9px 17px;
+  font:550 14px/1.2 var(--sans); border-radius:99px;
+  border:1px solid transparent; gap:8px;
+  transition:background-color .2s,color .2s,border-color .2s;
+}
+.portfolio-r6 .hero-v2 .hero-badge-controls [data-badge-select] {color:#d7e6d3;background:transparent}
+.portfolio-r6 .hero-v2 .hero-badge-controls [data-badge-select][aria-pressed="true"] {
+  background:#f5f5e9; color:#244732; border-color:#f5f5e9; box-shadow:none;
+}
+.portfolio-r6 .hero-v2 .hero-badge-controls [data-badge-flip] {
+  background:transparent; color:#e7eedf; border-color:#9db9a278;
+}
+.portfolio-r6 .hero-v2 .hero-badge-controls [data-badge-flip] span {font-size:18px}
+.portfolio-r6 .hero-v2 .hero-badge-controls button:focus-visible,
+.portfolio-r6 .hero-v2 .hero-actions a:focus-visible {outline:2px solid #dceaba;outline-offset:4px}
+.portfolio-r6 .hero.hero-v2 .hero-badge-foot {
+  display:flex; align-items:center; justify-content:space-between; gap:12px;
+  width:100%; max-width:520px; margin:9px auto 0; padding:0 3px;
+  color:#c1d4bd; font:400 11px/1.5 var(--sans);
+}
+.portfolio-r6 .hero-v2 .badge-selected-label {display:inline-flex;gap:6px;align-items:center;font-weight:550;color:#d5e4cc}
+.portfolio-r6 .hero-v2 .badge-selected-label i {width:4px;height:4px;flex:none;border-radius:50%;background:#b7cfa8}
+.portfolio-r6 .hero-v2 .badge-touch-cue {font-size:10px;line-height:1.4;text-align:right;color:#bacfb6}
+@media (min-width:960px) {
+  .portfolio-r6 .hero-v2 .hero-surface {
+    grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);
+    grid-template-areas:"copy exhibit" "proof exhibit";
+    grid-template-rows:1fr auto; column-gap:clamp(24px,3vw,42px); row-gap:20px;
+    padding:30px clamp(28px,3.1vw,44px);
+  }
+  .portfolio-r6 .hero-v2 .hero-copy {align-self:center}
+  .portfolio-r6 .hero-v2 .hero-proof {margin-top:0;max-width:530px}
+}
+@media(min-width:960px) and (max-width:1179px) {
+  .portfolio-r6 .hero-v2 .hero-exhibit.hero-badge-exhibit {max-width:530px;justify-self:center}
+}
+@media(min-width:701px) and (max-width:959px) {
+  .portfolio-r6 .hero-v2 .hero-surface {padding:30px;gap:22px}
+  .portfolio-r6 .hero-v2 .hero-exhibit.hero-badge-exhibit {width:min(100%,480px);margin:0 auto}
+  .portfolio-r6 .hero.hero-v2 h1 {max-width:22ch;font-size:clamp(42px,6vw,54px)}
+}
+@media(max-width:700px) {
+  .portfolio-r6 .hero.hero-v2 {width:calc(100% - 24px);padding-top:78px;padding-bottom:24px}
+  .portfolio-r6 .hero-v2 .hero-surface {padding:22px 17px 18px;gap:18px;border-radius:18px}
+  .portfolio-r6 .hero.hero-v2 .hero-issue {font-size:9px;letter-spacing:.055em;gap:7px;line-height:1.45}
+  .portfolio-r6 .hero-v2 .issue-dot {width:4px;height:4px}
+  .portfolio-r6 .hero.hero-v2 h1 {font-size:clamp(30px,8.2vw,39px);line-height:1.045;margin:13px 0;max-width:none;letter-spacing:-.052em}
+  .portfolio-r6 .hero.hero-v2 .hero-description {font-size:14px;line-height:1.5;max-width:42ch}
+  .portfolio-r6 .hero.hero-v2 .hero-actions {display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;margin:17px 0 0}
+  .portfolio-r6 .hero.hero-v2 .hero-actions .button {width:100%;min-height:44px;padding:10px 11px;gap:8px;font-size:11px}
+  .portfolio-r6 .hero-v2 .hero-actions .button-text {padding-inline:9px}
+  .portfolio-r6 .hero-v2 .hero-actions .button span {font-size:14px}
+  .portfolio-r6 .hero.hero-v2 .hero-exhibit.hero-badge-exhibit {width:calc(100% + 24px);margin-inline:-12px}
+  .portfolio-r6 .hero.hero-v2 .hero-badge-stage {--badge-scale:1.20}
+  .portfolio-r6 .hero.hero-v2 .hero-badge-controls,
+  .portfolio-r6 .hero.hero-v2 .hero-badge-foot {max-width:calc(100% - 24px)}
+  .portfolio-r6 .hero.hero-v2 .hero-badge-controls {margin-top:8px;gap:8px}
+  .portfolio-r6 .hero.hero-v2 .hero-badge-controls button {padding:9px 14px;font-size:14px}
+  .portfolio-r6 .hero-v2 .hero-proof {padding-top:14px;display:grid;grid-template-columns:1.2fr 1fr;gap:12px}
+  .portfolio-r6 .hero-v2 .hero-proof strong {font-size:11px}
+  .portfolio-r6 .hero-v2 .hero-proof small {font-size:10px}
+  .portfolio-r6 .hero-v2 .badge-touch-cue {max-width:16ch}
+}
+@media(max-width:350px) {
+  .portfolio-r6 .hero.hero-v2 h1 {font-size:30px}
+  .portfolio-r6 .hero-v2 .hero-surface {padding-inline:14px}
+  .portfolio-r6 .hero.hero-v2 .hero-issue .issue-dot {display:none}
+  .portfolio-r6 .hero.hero-v2 .hero-issue {font-size:8px}
+  .portfolio-r6 .hero.hero-v2 .hero-actions {grid-template-columns:minmax(0,1fr)}
+  .portfolio-r6 .hero.hero-v2 .hero-actions .button-text {justify-content:center;border:0}
+  .portfolio-r6 .hero.hero-v2 .hero-badge-controls button {padding-inline:11px}
+}
+/* Touch laptop/tablet and Android desktop-request preserve usable navigation;
+   the shared hero still uses side-by-side content from 960 CSS px onward. */
+@media(min-width:761px) and (max-width:1179px) and (pointer:coarse) and (hover:none) {
+  .portfolio-r6 .main-nav,.portfolio-r6 .header-cta {display:none!important}
+  .portfolio-r6 .header-inner .menu-toggle {display:flex!important;margin-left:0;width:48px;height:48px;flex-shrink:0}
+  .portfolio-r6 .header-inner .motion-toggle {margin-left:auto}
+  .portfolio-r6 .mobile-nav:not([hidden]) {display:flex;position:absolute;top:76px;left:0;right:0;flex-direction:column;background:#f3f1e9;padding:18px 25px 25px;box-shadow:0 16px 24px #162b2224}
+  .portfolio-r6 .mobile-nav a {font-size:23px;min-height:52px;padding:13px}
+}
+@media(hover:hover) and (pointer:fine) {
+  .portfolio-r6 .hero-v2 .hero-actions .button-solid:hover {background:#e0ebd7;border-color:#e0ebd7;transform:none}
+  .portfolio-r6 .hero-v2 .hero-actions .button-text:hover,
+  .portfolio-r6 .hero-v2 .hero-badge-controls [data-badge-flip]:hover {background:#f5f7e914;transform:none}
+  .portfolio-r6 .hero-v2 .hero-badge-controls [data-badge-select]:not([aria-pressed="true"]):hover {background:#f5f7e912}
+}
+@media(prefers-reduced-motion:reduce) {
+  .portfolio-r6 .hero-v2 .hero-actions .button,.portfolio-r6 .hero-v2 .hero-badge-controls button {transition:none!important}
+}
+body.is-paused .hero-v2 .hero-actions .button,body.is-paused .hero-v2 .hero-badge-controls button {transition:none!important}

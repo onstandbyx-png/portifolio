@@ -71,7 +71,7 @@ try{
     if(mode==='chunk-delayed')await page.waitForFunction(()=>document.querySelector('[data-portfolio-badges]').dataset.state==='loading');
     if(mode==='chunk-failed'||mode==='reduced')await page.waitForFunction(()=>document.querySelector('[data-portfolio-badges]').dataset.state==='fallback');
     const initial=await state(page);row.initial=initial;
-    const expectedLayout=await page.locator('[data-badge-canvas]').evaluate(canvas=>canvas.getBoundingClientRect().width>=540?'pair':'single');
+    const expectedLayout=await page.locator('[data-badge-canvas]').evaluate(canvas=>canvas.clientWidth>=540?'pair':'single');
     blockedPoster=expectedLayout==='single'?'single-0b':'pair-bf';
     check('The initial responsive poster uses the same layout as its canvas bounds',initial.src.includes(expectedLayout==='pair'?'poster-pair-ff.webp':'poster-single-0f.webp'));
     check('No legacy HTML cards, CSS cords or old blue hero image exist',initial.legacy===0&&await page.locator('[data-portfolio-badges] img[src*="cena-desconhecidos"]').count()===0);

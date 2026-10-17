@@ -1,17 +1,10 @@
 import {createRequire} from 'node:module';
-import {spawn,execFileSync} from 'node:child_process';
+import {spawn} from 'node:child_process';
 import {mkdir,writeFile} from 'node:fs/promises';
-import {existsSync} from 'node:fs';
 import assert from 'node:assert/strict';
 const require=createRequire(process.env.QA_PACKAGE||import.meta.url);
 const {chromium}=require('playwright');
 const output='qa/hero-fit';await mkdir(output,{recursive:true});
-// Reproducible, private QA fixture for this isolated UI review. Only the app,
-// installed public dependencies and assets; no Git metadata, env files or secrets.
-if(process.env.GITHUB_ACTIONS==='true'){
- const roots=['src','scripts','public','tests','server.mjs','index.html','package.json','package-lock.json','node_modules'].filter(p=>existsSync(p));
- execFileSync('tar',['-czf',`${output}/source-replay.tgz`,'--exclude=*.mp4','--exclude=*.pdf',...roots],{timeout:90000});
-}
 const base=(process.env.BASE_URL||'http://127.0.0.1:4197').replace(/\/$/,'');
 const server=process.env.BASE_URL?null:spawn(process.execPath,['server.mjs'],{env:{...process.env,PORT:'4197'},stdio:'ignore'});
 let browser;const report=[];
@@ -33,7 +26,7 @@ try{
   check('copy and badge belong to one shared hero surface',metrics.sameSurface);
   check('no nested pale showcase panel competes with the shared surface',metrics.exhibitBackground==='rgba(0, 0, 0, 0)'&&metrics.exhibitShadow==='none');
   check('controls sit below the actual artwork instead of delaying its entrance',metrics.controls.top>=metrics.stage.bottom-2);
-  if(width>=960){check('desktop and desktop-request touch keep badge beside copy',metrics.copy.right<=metrics.exhibit.left+2);check('badge and copy occupy the same vertical composition',Math.abs(metrics.copy.top-metrics.exhibit.top)<90);}
+  if(width>=960){check('desktop and desktop-request touch keep badge beside copy',metrics.copy.right<=metrics.exhibit.left+2);check('badge and copy occupy the same vertical composition',Math.min(metrics.copy.bottom,metrics.exhibit.bottom)-Math.max(metrics.copy.top,metrics.exhibit.top)>=metrics.copy.height*.8);}
   else{check('mobile title stays compact and the live object arrives early',metrics.title.height<=160&&metrics.stage.top<=580);}
   check('no horizontal document overflow',metrics.scrollWidth<=width+2);check('no runtime errors',row.errors.length===0);
   await page.screenshot({path:`${output}/first-screen-${width}.png`,animations:'disabled'});
