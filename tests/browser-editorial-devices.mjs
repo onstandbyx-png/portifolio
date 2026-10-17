@@ -42,6 +42,13 @@ try{
   for(const state of states){
    await page.locator('[data-editorial-step="'+state.index+'"]').click();
    await page.waitForFunction(expected=>document.querySelector('#editorial')?.dataset.editorialDevice===expected,state.kind);
+   if(state.index===1){
+     await page.waitForTimeout(65);
+     const cardAnimations=await editorial.locator('.es-stage').evaluate(stage=>
+       [...stage.querySelectorAll('.es-hardware')].reduce((count,el)=>count+el.getAnimations().filter(a=>a.playState==='running').length,0));
+     check('The active device advances in a spatial card-stack transition, respecting reduced motion',
+       reduced?cardAnimations===0:cardAnimations>=1,{cardAnimations,reduced});
+   }
    const active=editorial.locator(':scope .es-stage > .es-device');
    const model=active.locator(state.model);
    // :scope can match the active root itself; use evaluation instead of

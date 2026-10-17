@@ -93,7 +93,7 @@ export function mountEditorialStory(){
     button.addEventListener('click',()=>render(Number(button.dataset.stepIndex),true));
     return button;
   });
-  let active=-1,animations=[];
+  let active=-1,animations=[],deviceAnimations=[],transitionToken=0;
   const cancelAnimations=()=>{animations.forEach(a=>a?.cancel());animations=[]};
   function sizeDevices(){
     const mobile=matchMedia('(max-width:700px)').matches;
@@ -123,6 +123,11 @@ export function mountEditorialStory(){
   function render(index,focus=false){
     if(index===active)return;
     if(index<0||index>=3)return;
+    // Snapshot each physical device before reparenting it. The video reference
+    // slides outgoing cards behind the stack while the next card advances.
+    const oldBoxes=active<0?null:devices.map(d=>d.root.getBoundingClientRect());
+    deviceAnimations.forEach(a=>a.cancel());deviceAnimations=[];
+    const thisTransition=++transitionToken;
     cancelAnimations();
     active=index;
     const step=copy.steps[index],others=devices.map((_,i)=>i).filter(i=>i!==index);
@@ -149,6 +154,26 @@ export function mountEditorialStory(){
       button.replaceChildren(devices[i].root);
     });
     sizeDevices();
+    if(oldBoxes&&!matchMedia('(prefers-reduced-motion:reduce)').matches&&!document.body.classList.contains('is-paused')){
+      requestAnimationFrame(()=>{
+        if(thisTransition!==transitionToken)return;
+        devices.forEach((device,i)=>{
+          const before=oldBoxes[i],after=device.root.getBoundingClientRect();
+          if(before.width<1||after.width<1)return;
+          const parent=device.root.closest('.es-peek');
+          const matrix=parent?new DOMMatrixReadOnly(getComputedStyle(parent).transform):null;
+          const zoom=matrix?Math.max(.01,Math.hypot(matrix.a,matrix.b)):1;
+          const dx=((before.left+before.width/2)-(after.left+after.width/2))/zoom;
+          const dy=((before.top+before.height/2)-(after.top+after.height/2))/zoom;
+          const scale=Math.min(3,Math.max(.2,before.width/after.width));
+          if(Math.abs(dx)+Math.abs(dy)+Math.abs(scale-1)*100<3)return;
+          deviceAnimations.push(device.root.animate([
+            {transform:'translate('+dx.toFixed(1)+'px,'+dy.toFixed(1)+'px) scale('+scale.toFixed(4)+')',opacity:i===index?.72:1},
+            {transform:'translate(0px,0px) scale(1)',opacity:1}
+          ],{duration:610,easing:'cubic-bezier(.18,.8,.2,1)',fill:'none'}));
+        });
+      });
+    }
     // Keep legacy reading/transcript semantics for assistive technology
     // even though the visual explanation is intentionally hidden.
     context.querySelector('[data-es-label]').textContent='0'+(index+1)+' / '+step.label;

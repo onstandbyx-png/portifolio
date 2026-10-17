@@ -181,3 +181,17 @@
 }
 body.is-paused #editorial .es-stage,
 body.is-paused #editorial .es-peek{transition:none!important}
+
+/* Video reference / 1,349-frame audit: cards fan around the focused object.
+   A slight alternating lean and depth contrast signal which objects are next.
+   JS supplies the 610ms spatial interpolation; no extra animation dependency. */
+#editorial .es-stage>.es-peek--left{--es-stack-angle:-3.2deg}
+#editorial .es-stage>.es-peek--right{--es-stack-angle:3.2deg}
+#editorial .es-stage>.es-peek{
+  transform:translate(-50%,-50%) translateX(var(--side-offset)) rotate(var(--es-stack-angle,0deg)) scale(.96);
+  transition:opacity .31s ease,filter .31s ease,transform .55s cubic-bezier(.18,.78,.2,1);
+}
+#editorial .es-stage>.es-device{isolation:isolate}
+@media(prefers-reduced-motion:reduce){
+ #editorial .es-stage>.es-peek{transition:none!important}
+}

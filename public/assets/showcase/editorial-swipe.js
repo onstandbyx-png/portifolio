@@ -41,13 +41,8 @@ export function mountEditorialSwipe(){
     const from=index(),to=Math.max(0,Math.min(2,target));
     if(from===to)return;
     tabs[to].click();update();
-    const current=stage.querySelector(':scope > .es-device');
-    if(current?.animate&&!matchMedia('(prefers-reduced-motion:reduce)').matches&&!document.body.classList.contains('is-paused')){
-      current.animate([
-        {opacity:.75,transform:'translateX('+(to>from?18:-18)+'px) scale(.984)'},
-        {opacity:1,transform:'translateX(0) scale(1)'}
-      ],{duration:400,easing:'cubic-bezier(.22,.8,.22,1)'});
-    }
+    // Actual physical device nodes animate their relocation in editorial-story.
+    // Do not add a competing transform to the active hardware here.
   }
   prev.addEventListener('click',()=>choose(index()-1));
   next.addEventListener('click',()=>choose(index()+1));
