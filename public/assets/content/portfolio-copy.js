@@ -3,12 +3,12 @@ export const portfolioCopy = {
   "schemaVersion": 1,
   "language": "pt-BR",
   "status": "aplicada ao portfólio",
-  "reviewedRevision": "9c920416",
+  "reviewedRevision": "positioning-20261017",
   "positioning": {
     "name": "Smile N",
-    "role": "Direção criativa",
+    "role": "Diretor criativo e redator",
     "signature": "ideia ↗ execução.",
-    "promise": "Direção criativa com capacidade de execução: conteúdo e campanhas, com sites, aplicativos e sistemas como continuidade da experiência.",
+    "promise": "Direção criativa e desenvolvimento para marcas e empresas: da identidade e do conteúdo aos anúncios, sites e sistemas.",
     "proofRoles": {
       "fatos": "Experiência profissional em direção criativa e conteúdo; não atribuir autoria individual de todas as artes ou atuação em todas as verticais.",
       "smiile": "Projeto próprio; mostrar contribuição em direção visual, interfaces e desenvolvimento.",
@@ -16,29 +16,25 @@ export const portfolioCopy = {
     }
   },
   "metadata": {
-    "title": "Smile N · Direção criativa, conteúdo e experiências digitais",
-    "description": "Direção criativa, conteúdo e campanhas com Smile N. Experiência com Fatos Desconhecidos, projeto próprio smiile e criação de sites, apps e sistemas.",
-    "ogTitle": "Conteúdo, campanhas e produtos digitais | Smile N",
-    "ogDescription": "Conheça a atuação de Smile N em conteúdo, campanhas e experiências digitais. Explore os trabalhos e converse sobre o seu projeto."
+    "title": "Smile N · Direção criativa, anúncios, sites e sistemas",
+    "description": "Diretor criativo e redator. Identidade visual, conteúdo, campanhas, sites e sistemas para apresentar sua oferta, gerar interesse e simplificar processos.",
+    "ogTitle": "Smile N · Direção criativa. Execução digital.",
+    "ogDescription": "Identidade visual, conteúdo, anúncios, sites e sistemas. Criação e desenvolvimento conectados ao objetivo da sua empresa."
   },
   "navigation": {
     "ariaLabel": "Navegação principal",
     "items": [
       {
+        "label": "Soluções",
+        "href": "#categorias"
+      },
+      {
         "label": "Trabalhos",
         "href": "#trabalhos"
       },
       {
-        "label": "Conteúdo",
-        "href": "#editorial"
-      },
-      {
-        "label": "Campanhas",
-        "href": "#laboratorio"
-      },
-      {
-        "label": "Digital",
-        "href": "#sistemas"
+        "label": "Como trabalho",
+        "href": "#como-trabalho"
       },
       {
         "label": "Contato",
@@ -46,7 +42,7 @@ export const portfolioCopy = {
       }
     ],
     "cta": "Conversar sobre um projeto",
-    "mobileDescription": "Smile N · Direção criativa\nConteúdo, campanhas e experiências digitais.",
+    "mobileDescription": "Smile N · Diretor criativo e redator\nCriação e desenvolvimento para sua empresa.",
     "skip": "Pular para os trabalhos",
     "pause": "Pausar animações e reprodução",
     "resume": "Retomar animações e reprodução",
@@ -56,21 +52,21 @@ export const portfolioCopy = {
     {
       "id": "inicio",
       "order": 1,
-      "purpose": "Apresentar o profissional, seu campo de atuação e duas evidências distintas.",
-      "eyebrow": "Direção criativa · do conceito à entrega",
-      "title": "Ideias viram histórias,\ncampanhas e produtos digitais.",
-      "body": "Pesquisa, redação, direção visual e desenvolvimento, do conceito à entrega.",
+      "purpose": "Apresentar a atuação, as entregas e a utilidade para a empresa.",
+      "eyebrow": "Smile N · Diretor criativo e redator",
+      "title": "Direção criativa.\nExecução digital.",
+      "body": "Identidade visual, conteúdo, anúncios, sites e sistemas. Conecto mensagem, design e desenvolvimento para sua empresa comunicar melhor e colocar projetos em prática.",
       "primaryCta": {
-        "label": "Explorar trabalhos",
-        "href": "#trabalhos"
-      },
-      "secondaryCta": {
-        "label": "Falar sobre um projeto",
+        "label": "Conversar sobre meu projeto",
         "href": "#contato"
       },
-      "support": "Minha atuação reúne direção criativa, texto, design e desenvolvimento.",
-      "proofLine": "Experiência com Fatos Desconhecidos · Criador do projeto smiile",
-      "badgeIntro": "Duas frentes do meu trabalho",
+      "secondaryCta": {
+        "label": "Ver soluções",
+        "href": "#categorias"
+      },
+      "support": "Da mensagem ao que acontece depois.",
+      "proofLine": "Redação e direção criativa · Design e desenvolvimento",
+      "badgeIntro": "Repertório em criação e desenvolvimento",
       "badges": [
         {
           "id": "fatos",
@@ -122,43 +118,43 @@ export const portfolioCopy = {
     {
       "id": "trabalhos",
       "order": 3,
-      "purpose": "Permitir que o visitante escolha evidências concretas antes de ler serviços.",
-      "eyebrow": "Trabalhos selecionados",
-      "title": "A direção aparece\nno que é entregue.",
-      "body": "Escolha uma frente. Veja a peça e a decisão por trás dela.",
+      "purpose": "Comprovar competências com entregas e participação definidas.",
+      "eyebrow": "Trabalhos em contexto",
+      "title": "O trabalho mostra\ncomo eu penso.",
+      "body": "Conteúdo, campanhas e interfaces. Veja o que foi criado, minha participação e a decisão que orientou cada entrega.",
       "cards": [
         {
           "id": "fatos",
-          "label": "Fatos · Conteúdo editorial",
+          "label": "Conteúdo · Fatos Desconhecidos",
           "nature": "Experiência profissional",
-          "title": "Conteúdo começa\ncom uma boa pergunta.",
-          "body": "Pesquisa, texto e direção criativa para desenvolver narrativas.",
+          "title": "Dar uma razão\npara continuar.",
+          "body": "Pesquisa, texto e direção criativa para transformar um assunto em uma história.",
           "contribution": "Direção criativa e conteúdo",
           "cta": "Ver conteúdo",
           "href": "#editorial",
-          "decision": "A pergunta parte do cotidiano; a pesquisa dá contexto à curiosidade."
+          "decision": "Abertura, contexto e fechamento organizam o tema. Esse repertório ajuda marcas a apresentar assuntos e ofertas com clareza."
         },
         {
           "id": "ads",
-          "label": "smiile · Campanha multicanal",
+          "label": "Campanhas · Estudo smiile",
           "nature": "Estudo conceitual",
-          "title": "Uma proposta clara.\nUma linguagem para cada canal.",
-          "body": "Um estudo que conecta mensagem, criativo e próximo passo em Meta, Google e TikTok.",
+          "title": "Uma oferta.\nCada canal, uma abordagem.",
+          "body": "Conceito, copy e direção de arte para apresentar a mesma oferta em canais diferentes.",
           "contribution": "Conceito, copy e direção de arte",
           "cta": "Ver campanha",
           "href": "#laboratorio",
-          "decision": "A mesma proposta ganha uma abertura e uma hierarquia para cada canal."
+          "decision": "No feed, a peça desperta interesse. Na busca, responde a uma intenção. No vídeo vertical, o ritmo conduz a mensagem."
         },
         {
           "id": "smiile",
-          "label": "smiile · Interfaces digitais",
+          "label": "Sites · Estudo de interface",
           "nature": "Projeto próprio",
-          "title": "O design também está\nno que acontece depois.",
-          "body": "Sites, aplicativos e fluxos que você pode explorar aqui.",
+          "title": "Apresentar bem.\nFacilitar a escolha.",
+          "body": "Direção visual e UX/UI para organizar a informação e tornar o próximo passo evidente.",
           "contribution": "Direção visual, UX/UI e desenvolvimento",
           "cta": "Ver interfaces",
-          "href": "#sistemas",
-          "decision": "A imagem apresenta o destino; a hierarquia torna o próximo passo claro."
+          "href": "#narrativa-visual",
+          "decision": "A imagem apresenta o contexto. Texto, hierarquia e navegação ajudam a pessoa a entender a proposta antes de tomar uma decisão."
         }
       ],
       "controls": {
@@ -177,9 +173,9 @@ export const portfolioCopy = {
       "id": "editorial",
       "order": 4,
       "purpose": "Conectar o vínculo Fatos ao raciocínio editorial e às entregas de conteúdo.",
-      "eyebrow": "02 / Fatos Desconhecidos · Conteúdo e direção criativa",
-      "title": "A curiosidade abre.\nA narrativa conduz.",
-      "body": "Pesquisa, texto e direção visual. Veja como uma mesma história ganha abertura, contexto e fechamento.",
+      "eyebrow": "Conteúdo e redação",
+      "title": "Atenção\ncom propósito.",
+      "body": "Minha experiência editorial na Fatos Desconhecidos conecta pesquisa, texto e direção criativa. Abertura, contexto e fechamento ajudam sua marca a explicar melhor o que tem a dizer.",
       "roles": [
         "Pesquisa e pauta",
         "Texto e roteiro",
@@ -218,7 +214,7 @@ export const portfolioCopy = {
       "cta": {
         "label": "Conversar sobre conteúdo",
         "href": "#contato",
-        "service": "Direção criativa e conteúdo"
+        "service": "Conteúdo e redação"
       },
       "controls": {
         "detail": "Entender a escolha",
@@ -318,15 +314,15 @@ export const portfolioCopy = {
       "id": "laboratorio",
       "order": 5,
       "purpose": "Vender criação e gestão de campanhas com uma demonstração criativa coerente entre canais.",
-      "eyebrow": "03 / Campanhas · Estratégia, criação e mídia",
-      "title": "Da atenção\nao próximo passo.",
-      "body": "Uma ideia, três linguagens. Compare a mensagem, o formato e a decisão criativa em cada canal.",
+      "eyebrow": "Campanhas e anúncios",
+      "title": "Uma oferta clara.\nEm cada canal.",
+      "body": "Conceito, copy e criativos para aproximar sua oferta do público. Explore como mensagem, formato e intenção se conectam em uma campanha.",
       "nature": "Estudo de campanha · smiile",
       "campaignName": "Sua ideia ganha vida.",
       "campaignIntent": "Apresentar possibilidades de sites e aplicativos e levar o público a explorar os projetos.",
       "campaignOffer": "Experiências de sites e aplicativos do projeto smiile, disponíveis para exploração no portfólio.",
       "campaignPrimaryCta": "Explorar projetos",
-      "campaignDestination": "#sistemas",
+      "campaignDestination": "#narrativa-visual",
       "campaignFunnel": "Criativo apresenta uma possibilidade concreta; a ação leva à interface correspondente para exploração. O estudo não alega cadastro, compra ou conversão medidos.",
       "tabs": [
         {
@@ -435,7 +431,7 @@ export const portfolioCopy = {
         "cta": {
           "label": "Conversar sobre uma campanha",
           "href": "#contato",
-          "service": "Campanhas e gestão de mídia"
+          "service": "Campanhas e anúncios"
         },
         "internalNote": "Escopo oferecido como serviço. Não afirma campanhas anteriores, investimento administrado ou resultado comprovado."
       },
@@ -458,12 +454,12 @@ export const portfolioCopy = {
       "id": "narrativa-visual",
       "order": 6,
       "purpose": "Conectar direção visual e experiência digital em uma transição, sem duplicar uma seção de manifesto.",
-      "eyebrow": "smiile · Estudo de direção visual",
-      "title": "A identidade muda de formato.\nA direção permanece.",
-      "body": "Casa Costa: da composição editorial à publicação e à interface final.",
+      "eyebrow": "Identidade visual e sites",
+      "title": "Uma identidade.\nEm cada ponto de contato.",
+      "body": "Da linguagem visual à página que apresenta a oferta. Veja como a mesma marca mantém reconhecimento ao mudar de formato.",
       "formats": [
-        "Editorial",
-        "Social",
+        "Identidade",
+        "Conteúdo",
         "Site"
       ],
       "cta": {
@@ -471,7 +467,7 @@ export const portfolioCopy = {
         "href": "/assets/portfolio/static-r8/casa-costa.webp",
         "productTarget": "site"
       },
-      "credit": "Casa Costa · Estudo conceitual do projeto smiile.",
+      "credit": "Casa Costa · Estudo conceitual de identidade e interface.",
       "motionIntent": "Transição breve da composição para a janela do site. Na sequência, usar apenas uma exploração de Casa Costa."
     },
     {
@@ -589,64 +585,110 @@ export const portfolioCopy = {
     },
     {
       "id": "categorias",
-      "order": 8,
-      "purpose": "Traduzir a prova em escopo contratável sem repetir o catálogo de trabalhos.",
-      "eyebrow": "05 / Como podemos trabalhar juntos",
-      "title": "Em que parte\ndo projeto eu entro?",
-      "body": "Uma entrega específica ou direção e execução juntas.",
+      "order": 2,
+      "purpose": "Mostrar cedo as cinco frentes e o problema que cada uma atende.",
+      "eyebrow": "Como posso ajudar",
+      "title": "O próximo passo\nda sua empresa.",
+      "body": "Uma entrega específica ou um projeto integrado. Escolha o que seu negócio precisa colocar em prática.",
       "services": [
         {
-          "id": "content",
-          "label": "Direção criativa e conteúdo",
-          "title": "Pesquisa, textos, roteiros e direção visual.",
-          "body": "Pesquisa, conceito e linguagem para organizar o que a marca quer dizer e transformar isso em conteúdo.",
+          "id": "identity",
+          "label": "Identidade visual",
+          "title": "Uma marca reconhecível em cada ponto de contato.",
+          "scope": "Direção visual · identidade · aplicações",
+          "problem": "Sua empresa precisa apresentar melhor quem é e o que oferece?",
+          "body": "Organizo a linguagem visual e suas aplicações para que a marca tenha unidade nas redes, nas campanhas e no site.",
           "deliverables": [
-            "Pesquisa, pautas e conceito",
-            "Textos, roteiros e narrativas",
-            "Direção de arte e peças",
-            "Desdobramentos para publicação"
+            "Direção visual e conceito",
+            "Identidade e linguagem da marca",
+            "Aplicações e materiais de comunicação",
+            "Orientações de uso e consistência"
           ],
-          "cta": "Conversar sobre conteúdo"
+          "cta": "Conversar sobre minha marca",
+          "proofHref": "#narrativa-visual",
+          "proofLabel": "Ver a identidade em diferentes formatos"
+        },
+        {
+          "id": "content",
+          "label": "Conteúdo e redação",
+          "title": "Uma razão para prestar atenção. Clareza para continuar.",
+          "scope": "Pautas · textos · roteiros · posts",
+          "problem": "Sua marca tem o que dizer, mas precisa encontrar a melhor forma?",
+          "body": "Transformo assuntos, ideias e ofertas em mensagens claras. Repertório editorial e experiência com conteúdo viral orientam a abertura, o ritmo e a narrativa.",
+          "deliverables": [
+            "Pesquisa, pautas e conceitos",
+            "Redação, roteiros e narrativas",
+            "Posts, carrosséis e direção visual",
+            "Adaptação da linguagem ao público"
+          ],
+          "cta": "Conversar sobre conteúdo",
+          "proofHref": "#editorial",
+          "proofLabel": "Explorar o raciocínio editorial"
         },
         {
           "id": "campaigns",
-          "label": "Campanhas e gestão de mídia",
-          "title": "Conceito, criativos e operação de mídia.",
-          "body": "Planejamento, criação e operação de campanhas, com entregas e objetivos definidos para cada projeto.",
+          "label": "Campanhas e anúncios",
+          "title": "Sua oferta apresentada com intenção, do criativo ao destino.",
+          "scope": "Conceito · copy · criativos · mídia",
+          "problem": "Vai lançar uma oferta ou precisa melhorar sua divulgação?",
+          "body": "Conecto conceito, redação e direção de arte em campanhas multiplataforma. Criação de peças e operação de mídia podem compor o projeto, com objetivos e escopo definidos.",
           "deliverables": [
             "Conceito e plano de campanha",
-            "Copy, criativos e variações",
-            "Configuração e publicação",
-            "Acompanhamento e otimização"
+            "Copy, criativos e versões por canal",
+            "Configuração e publicação, conforme escopo",
+            "Acompanhamento e otimização de mídia"
           ],
-          "cta": "Conversar sobre uma campanha"
+          "cta": "Conversar sobre uma campanha",
+          "proofHref": "#laboratorio",
+          "proofLabel": "Comparar a abordagem em três canais"
         },
         {
-          "id": "digital",
-          "label": "Sites, apps e sistemas",
-          "title": "Interfaces, desenvolvimento e integrações.",
-          "body": "Interfaces e desenvolvimento para apresentar uma marca, apoiar uma tarefa ou conectar processos.",
+          "id": "web",
+          "label": "Sites e landing pages",
+          "title": "Explique sua oferta. Facilite o próximo passo do cliente.",
+          "scope": "Estrutura · copy · UX/UI · desenvolvimento",
+          "problem": "Seu site precisa apresentar melhor o negócio ou uma oferta específica?",
+          "body": "Planejo a informação, desenho a experiência e desenvolvo a página. A mensagem e a interface trabalham juntas para orientar contato, pedido ou contratação.",
           "deliverables": [
-            "Arquitetura da experiência e UX/UI",
-            "Sites e aplicativos",
-            "Sistemas e integrações",
-            "Automações e evolução do produto"
+            "Estrutura e arquitetura da informação",
+            "Copy e direção visual",
+            "Interface responsiva e desenvolvimento",
+            "Publicação e integrações do projeto"
           ],
-          "cta": "Conversar sobre um projeto digital"
+          "cta": "Conversar sobre meu site",
+          "proofHref": "#narrativa-visual",
+          "proofLabel": "Ver direção visual aplicada ao site"
+        },
+        {
+          "id": "systems",
+          "label": "Sistemas e automações",
+          "title": "Menos etapas manuais. Mais clareza na operação.",
+          "scope": "Ferramentas · processos · integrações",
+          "problem": "Sua equipe repete tarefas ou perde informações entre ferramentas?",
+          "body": "Desenvolvo interfaces e fluxos para organizar tarefas e conectar processos. Cada solução parte de uma necessidade concreta da operação.",
+          "deliverables": [
+            "Mapeamento da tarefa e do fluxo",
+            "Sistemas e interfaces operacionais",
+            "Integrações e automações",
+            "Validação e evolução da solução"
+          ],
+          "cta": "Conversar sobre um sistema",
+          "proofHref": "#sistemas",
+          "proofLabel": "Experimentar a organização de um pedido"
         }
       ],
       "process": [
         {
-          "label": "Contexto",
-          "body": "Objetivo e materiais."
+          "label": "Entender",
+          "body": "Alinhamos o objetivo, o público, o contexto e o que precisa funcionar."
         },
         {
-          "label": "Direção",
-          "body": "Escopo e linguagem."
+          "label": "Dar direção",
+          "body": "Defino conceito, linguagem, entregas e prioridades com você."
         },
         {
-          "label": "Entrega",
-          "body": "Criação e revisão."
+          "label": "Criar e entregar",
+          "body": "Desenvolvo, revisamos e colocamos a solução em uso."
         }
       ],
       "footer": "Projeto pontual, execução integrada ou colaboração recorrente.",
@@ -657,22 +699,24 @@ export const portfolioCopy = {
       "order": 9,
       "purpose": "Dar um próximo passo simples, com contexto suficiente para uma conversa.",
       "eyebrow": "Vamos conversar",
-      "title": "Vamos criar\nseu próximo projeto.",
-      "body": "Conte a entrega que você precisa, o contexto e o prazo.",
+      "title": "Qual desafio vamos\ncolocar em movimento?",
+      "body": "Conte o que sua empresa faz e o que você quer melhorar. Podemos definir juntos a entrega mais adequada.",
       "directCta": "Conversar pelo WhatsApp",
       "alternateCta": "Enviar um e-mail",
       "formTitle": "Seu projeto, em poucas palavras.",
-      "serviceLabel": "O que você precisa criar?",
+      "serviceLabel": "Como posso ajudar sua empresa?",
       "servicePlaceholder": "Escolha uma frente de trabalho",
       "serviceOptions": [
-        "Direção criativa e conteúdo",
-        "Campanhas e gestão de mídia",
-        "Sites, apps e sistemas",
+        "Identidade visual",
+        "Conteúdo e redação",
+        "Campanhas e anúncios",
+        "Sites e landing pages",
+        "Sistemas e automações",
         "Projeto integrado",
         "Ainda estou definindo"
       ],
       "briefLabel": "Conte um pouco sobre o projeto",
-      "briefPlaceholder": "O que sua marca faz? O que você precisa entregar? Existe um prazo?",
+      "briefPlaceholder": "O que sua empresa faz? O que você quer melhorar ou lançar? Há um prazo?",
       "submit": "Continuar no WhatsApp",
       "submitHint": "Você revisa a mensagem e confirma o envio no WhatsApp.",
       "validation": "Escolha uma frente e conte um pouco sobre o projeto para continuar.",
@@ -682,7 +726,7 @@ export const portfolioCopy = {
         "Colaboração recorrente"
       ],
       "contactContextPrefix": "Quero conversar sobre",
-      "footerSignature": "Smile N · Direção criativa",
+      "footerSignature": "Smile N · Diretor criativo e redator",
       "backToTop": "Voltar ao início",
       "internalNote": "Preservar contatos existentes. Não adicionar prazo de resposta, gratuidade ou disponibilidade sem confirmação."
     }

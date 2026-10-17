@@ -19,7 +19,9 @@ test('Outer presentations remain interactive while product mock content stays st
 });
 test('Project services are navigable and do not send data',()=>{
  const s=read('public/assets/project-paths.js');
- for(const marker of ['<details','<summary','data-service-scope','href="#contato"','path-contact','data-service-id','select.dispatchEvent'])assert(s.includes(marker),marker);
+ const html=read('index.html');
+ for(const marker of ['<details','<summary','data-service-scope','href="#contato"','path-contact','data-service-id'])assert(html.includes(marker),marker);
+ assert(s.includes('select.dispatchEvent'));
  assert(!s.includes('XMLHttpRequest')&&!s.includes('window.open')&&!s.includes('fetch('),'Service selection must not send visitor data');
 });
 test('No fixed contact CTA obscures reading on mobile',()=>{

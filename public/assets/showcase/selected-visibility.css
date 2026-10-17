@@ -38,7 +38,7 @@
 }
 
 /* Preserve existing links without keeping the former section's spacing. */
-body.portfolio-r6 #sistemas.digital-anchor {
+body.portfolio-r6 #sites.digital-anchor {
   height: 0;
   min-height: 0;
   padding: 0;

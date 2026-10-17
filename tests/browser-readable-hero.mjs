@@ -71,12 +71,12 @@ try{
    });
    row.heroLayout=layoutCheck;
    check('New hero communicates a concrete offer and a documented distinction',
-     /Ideias viram histórias/.test(await page.locator('#hero-title').innerText()) &&
-     /do conceito à entrega/.test(await page.locator('.hero-description').innerText()) &&
-     await page.locator('.hero-proof').innerText().then(t=>t.includes('Fatos Desconhecidos')&&t.includes('Experiência editorial')&&t.includes('smiile')&&t.includes('Projeto próprio')));
+     /Direção criativa/.test(await page.locator('#hero-title').innerText()) &&
+     /mensagem, design e desenvolvimento/.test(await page.locator('.hero-description').innerText()) &&
+     await page.locator('.hero-proof').innerText().then(t=>t.includes('Mensagem e direção')&&t.includes('Design e desenvolvimento')));
    check('Primary and secondary links target their real destinations',
      await page.locator('.hero-actions a').evaluateAll(a=>a.length===2&&a.every(link=>!!document.querySelector(link.getAttribute('href'))) &&
-       a[0].textContent.includes('Explorar trabalhos')&&a[1].textContent.includes('Falar sobre um projeto')));
+       a[0].textContent.includes('Conversar sobre meu projeto')&&a[1].textContent.includes('Ver soluções')));
    check('Fixed navigation never covers the hero eyebrow at rest',
      layoutCheck.eyebrow.top-layoutCheck.hero.top>=layoutCheck.headerHeight+10);
    check('Hero typography, buttons and badge exhibit stay inside viewport',

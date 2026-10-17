@@ -31,7 +31,7 @@ function mountCampaign(motion) {
   const layout=document.createElement('div');layout.className='sp-campaign-layout';
   const art=lab.querySelector('.sp-campaign-art');art.before(layout);layout.append(art);
   const note=document.createElement('aside');note.className='sp-campaign-note';note.id='campaign-note';note.setAttribute('data-campaign-note','');note.setAttribute('aria-live','polite');note.setAttribute('aria-atomic','true');
-  note.innerHTML='<span class="eyebrow">A decisão por trás da peça</span><h3 data-note-title></h3><dl><div><dt>Mensagem</dt><dd data-note-message></dd></div><div><dt>Adaptação ao canal</dt><dd data-note-decision></dd></div><div><dt>Entrega</dt><dd data-note-delivery></dd></div></dl><a href="#contato" data-contact-service="Campanhas e gestão de mídia">Conversar sobre uma campanha ↗</a>';
+  note.innerHTML='<span class="eyebrow">A decisão por trás da peça</span><h3 data-note-title></h3><dl><div><dt>Mensagem</dt><dd data-note-message></dd></div><div><dt>Adaptação ao canal</dt><dd data-note-decision></dd></div><div><dt>Entrega</dt><dd data-note-delivery></dd></div></dl><a href="#contato" data-contact-service="Campanhas e anúncios">Conversar sobre uma campanha ↗</a>';
   layout.append(note);
   const tabs = Array.from(lab.querySelectorAll('[data-sp-tab]'));
   const panels = Array.from(lab.querySelectorAll('.sp-campaign-panel'));
@@ -114,14 +114,14 @@ function mountCampaign(motion) {
 }
 
 function mountProducts() {
-  const section = document.querySelector('#sistemas');
+  const section = document.querySelector('#trilhas:not([hidden])');
   const grid = section?.querySelector('.systems-grid, .sp-products-shell');
   if (!grid) return;
   section.setAttribute('aria-labelledby', 'static-systems-title');
   grid.className = 'shell sp-products-shell';
   grid.innerHTML = `<h2 id="static-systems-title" class="sr-only">Interfaces digitais</h2><div class="sp-products">
     <figure>${picture('trilhas', 'Trilhas: interface para descobrir percursos, com busca, paisagem e informações organizadas para a escolha.')}<figcaption><span>Trilhas · Estudo de aplicativo</span></figcaption></figure>
-    <article class="sp-product-context"><span class="eyebrow">Outro projeto, outra tarefa</span><h3>Encontrar um caminho.<br>Começar a explorar.</h3><p>Depois de apresentar um lugar em Casa Costa, o desafio aqui é ajudar a escolher um percurso.</p><dl><div><dt>Contribuição</dt><dd>Direção visual e UX/UI.</dd></div><div><dt>Decisão de interface</dt><dd>Busca, fotografia e informações do percurso organizam a escolha antes do próximo passo.</dd></div></dl><div class="sp-product-actions"><a href="${ART}trilhas.webp" data-art-open="trilhas">Ampliar a interface ↗</a><a href="#contato" data-contact-service="Sites, apps e sistemas">Conversar sobre um projeto digital ↗</a></div></article>
+    <article class="sp-product-context"><span class="eyebrow">Outro projeto, outra tarefa</span><h3>Encontrar um caminho.<br>Começar a explorar.</h3><p>Depois de apresentar um lugar em Casa Costa, o desafio aqui é ajudar a escolher um percurso.</p><dl><div><dt>Contribuição</dt><dd>Direção visual e UX/UI.</dd></div><div><dt>Decisão de interface</dt><dd>Busca, fotografia e informações do percurso organizam a escolha antes do próximo passo.</dd></div></dl><div class="sp-product-actions"><a href="${ART}trilhas.webp" data-art-open="trilhas">Ampliar a interface ↗</a><a href="#contato" data-contact-service="Sites e landing pages">Conversar sobre um projeto digital ↗</a></div></article>
   </div>`;
   return grid;
 }

@@ -49,7 +49,7 @@ export function mountScrollGallery(){
  const escape=value=>String(value).replace(/[&<>"']/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
  gallery.classList.remove('rg-static-gallery');
  gallery.innerHTML=entries.filter(entry=>visual[entry.id]).map((entry,index)=>{
-  const art=visual[entry.id],title=art.title.split('\n').map(line=>`<span class="rg-title-line"><span>${escape(line)}</span></span>`).join('');
+  const art=visual[entry.id],title=entry.title.split('\n').map(line=>`<span class="rg-title-line"><span>${escape(line)}</span></span>`).join('');
   return `<article class="work-tile work-${escape(entry.id)}" data-work-card="${escape(entry.id)}" aria-labelledby="work-card-${escape(entry.id)}">
    <div class="work-context"><span>${String(index+1).padStart(2,'0')} / ${escape(entry.label)}</span><span>${escape(entry.nature)}</span></div>
    <div class="rg-card-stage" data-face="front">
@@ -59,7 +59,7 @@ export function mountScrollGallery(){
     </div>
     <button class="rg-flip" type="button" data-rg-flip aria-pressed="false" aria-controls="rg-back-${escape(entry.id)}" aria-label="Ver contribuição: ${escape(entry.label)}" title="Ver contribuição"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none"><path d="M19.5 8.5A8 8 0 1 0 20 15M19.5 8.5V3.5M19.5 8.5H14.5" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
    </div>
-   <div class="tile-caption"><div><h3 id="work-card-${escape(entry.id)}">${title}</h3><p>${escape(art.body)}</p></div><a class="tile-open" href="${escape(entry.href)}"><span>${escape(entry.cta)}</span><i aria-hidden="true">↗</i></a></div>
+   <div class="tile-caption"><div><h3 id="work-card-${escape(entry.id)}">${title}</h3><p>${escape(entry.body)}</p></div><a class="tile-open" href="${escape(entry.href)}"><span>${escape(entry.cta)}</span><i aria-hidden="true">↗</i></a></div>
   </article>`;
  }).join('');
  const cards=[...gallery.querySelectorAll(':scope > .work-tile')];if(!cards.length)return null;
@@ -69,7 +69,7 @@ export function mountScrollGallery(){
  gallery.setAttribute('role','region');gallery.setAttribute('aria-label','Trabalhos em perspectiva');
  shell.style.setProperty('--rg-count',String(cards.length));
  const shortcuts=document.createElement('div');shortcuts.className='rg-shortcuts';shortcuts.setAttribute('role','group');shortcuts.setAttribute('aria-label','Escolher trabalho');
- ['Fatos','Campanhas','Digital'].forEach((label,i)=>{const button=document.createElement('button');button.type='button';button.dataset.rgTo=String(i);button.textContent=label;button.setAttribute('aria-pressed',String(i===0));button.addEventListener('click',()=>navigate(i));shortcuts.append(button);});
+ ['Conteúdo','Campanhas','Sites'].forEach((label,i)=>{const button=document.createElement('button');button.type='button';button.dataset.rgTo=String(i);button.textContent=label;button.setAttribute('aria-pressed',String(i===0));button.addEventListener('click',()=>navigate(i));shortcuts.append(button);});
  shell.querySelector('.rg-toolbar').append(shortcuts);
  shell.querySelector('[data-rg-name]').classList.add('sr-only');
  shell.querySelector('.rg-scroll-cue').remove();
