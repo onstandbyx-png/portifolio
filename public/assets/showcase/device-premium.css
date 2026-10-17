@@ -226,8 +226,11 @@
   font-size:clamp(10px,1.3vw,14px);
   margin-top:clamp(4px,1.3vw,12px);
 }
-.rf-film .rf-natural .rf-web.rf-macbook{
-  height:auto;min-height:0;width:min(940px,calc(100vw - 24px));
+/* Static-flow layout has 20px inner gutters on both sides. */
+.rf-film.rf-natural .rf-web.rf-macbook{
+  height:auto;min-height:0;
+  width:min(940px,calc(100vw - 44px));
+  max-width:calc(100vw - 44px);
 }
 .rf-film.rf-natural .rf-macbook .mbp-device{
   /* Reserve room for the 107% tapered aluminum base in static reading mode. */
