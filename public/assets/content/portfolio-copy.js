@@ -172,142 +172,142 @@ export const portfolioCopy = {
     {
       "id": "editorial",
       "order": 4,
-      "purpose": "Conectar o vínculo Fatos ao raciocínio editorial e às entregas de conteúdo.",
-      "eyebrow": "Conteúdo e redação",
-      "title": "Uma ideia.\nTrês formas de contar.",
-      "body": "Abertura para despertar interesse, contexto para explicar e fechamento para orientar. Pesquisa, redação e direção criativa em uma mesma história.",
+      "purpose": "Demonstrar como um pedido comercial vira direção e entrega navegável, sem imagens de terceiros.",
+      "eyebrow": "Do conceito à entrega",
+      "title": "Uma ideia.\nTrês etapas para ganhar vida.",
+      "body": "Escolha um desafio no celular, acompanhe a direção no tablet e explore um resultado no notebook. Todos os exemplos são protótipos interativos.",
       "roles": [
-        "Pesquisa e pauta",
-        "Texto e roteiro",
-        "Direção criativa"
+        "Diagnóstico e objetivo",
+        "Direção visual e experiência",
+        "Interface pronta para explorar"
       ],
       "steps": [
         {
           "id": "hook",
-          "label": "Abertura",
-          "title": "Uma pergunta antes da explicação.",
-          "body": "O objeto familiar aproxima o tema. A pergunta cria uma razão para continuar.",
-          "pieceTitle": "O que cabe na palma da sua mão?",
-          "pieceCopy": "Um objeto cotidiano pode abrir uma história sobre como a nossa forma de viver mudou.",
-          "decision": "O gancho parte de algo familiar. A imagem apresenta o assunto antes de a explicação começar."
+          "label": "Desafio",
+          "title": "Toda boa entrega parte de uma necessidade.",
+          "body": "Escolha entre site, campanha ou sistema. A demonstração se adapta à sua seleção.",
+          "pieceTitle": "O que sua empresa precisa criar?",
+          "pieceCopy": "Selecione um tipo de projeto e acompanhe a construção de uma solução.",
+          "decision": "Começar pelo problema real reduz a distância entre a ideia e a proposta."
         },
         {
           "id": "context",
-          "label": "Contexto",
-          "title": "A comparação torna a mudança visível.",
-          "body": "Câmera, mapa e mensagens dão exemplos concretos, em vez de uma explicação abstrata.",
-          "pieceTitle": "De uma ligação a muitos caminhos.",
-          "pieceCopy": "Câmera, mapa, mensagens: funções que hoje dividem a mesma tela.",
-          "decision": "O conteúdo avança da pergunta para uma comparação visual. Evitar inserir datas ou números sem uma fonte editorial verificável."
+          "label": "Direção",
+          "title": "Uma ideia ganha estrutura e hierarquia.",
+          "body": "Compare a direção visual e os elementos que permitem transformar intenção em interação.",
+          "pieceTitle": "A proposta começa a tomar forma.",
+          "pieceCopy": "Arquitetura, mensagem e um primeiro protótipo relacionados ao objetivo escolhido.",
+          "decision": "Uma interface clicável permite avaliar direção e escopo antes da produção."
         },
         {
           "id": "closing",
-          "label": "Fechamento",
-          "title": "O fechamento volta para quem lê.",
-          "body": "A pergunta final conecta a descoberta à rotina da pessoa e encerra a história com sentido.",
-          "pieceTitle": "A tecnologia muda.\nA curiosidade continua.",
-          "pieceCopy": "Qual função do celular mais mudou a sua rotina?",
-          "decision": "A pergunta final conecta a história à experiência de quem leu. É uma escolha de linguagem, sem promessa de engajamento."
+          "label": "Entrega",
+          "title": "Da proposta a uma experiência utilizável.",
+          "body": "Um protótipo do serviço selecionado aparece como interface, com próximo passo comercial claro.",
+          "pieceTitle": "Do conceito a algo que funciona.",
+          "pieceCopy": "Experimente o resultado, avalie o fluxo e imagine sua próxima entrega.",
+          "decision": "A demonstração responde ao objetivo e conduz a um contato contextual."
         }
       ],
-      "studyLabel": "Estudo editorial · Tecnologia no cotidiano",
+      "studyLabel": "Demonstração autoral · Dados ilustrativos",
       "cta": {
-        "label": "Conversar sobre conteúdo",
+        "label": "Conversar sobre um projeto",
         "href": "#contato",
-        "service": "Conteúdo e redação"
+        "service": "Sites, campanhas e sistemas"
       },
       "controls": {
-        "detail": "Entender a escolha",
-        "collapse": "Fechar contexto",
+        "detail": "Entender a solução",
+        "collapse": "Fechar detalhes",
         "previous": "Etapa anterior",
         "next": "Próxima etapa"
       },
-      "creditSummary": "Autoria e contexto",
-      "credit": "Atuação profissional em direção criativa e conteúdo. As composições exibidas vêm dos materiais do Ecossistema Fatos e foram organizadas para esta apresentação; não constituem uma atribuição individual de todas as artes.",
-      "motionIntent": "A mesma história evolui entre abertura, contexto e fechamento. A tipografia revela a decisão, acompanhada pela peça correspondente."
+      "creditSummary": "Sobre a demonstração",
+      "credit": "Todos os elementos destas três cenas são protótipos originais de interface, sem dados reais, imagens ou resultados comerciais atribuídos a clientes.",
+      "motionIntent": "Preservar iPhone, iPad e MacBook físicos, suas poses em camadas, seleção por etapa e swipe nativo; a escolha inicial acompanha as demais etapas."
     },
     {
       "id": "colecao",
       "order": 4.1,
-      "purpose": "Mostrar repertório editorial sem apresentar seis verticais como seis clientes pessoais.",
-      "eyebrow": "Universos do Ecossistema Fatos",
-      "title": "A linguagem muda\ncom o assunto.",
-      "body": "Ciência, esporte, cultura, mistério, entretenimento e negócios pedem perguntas e recortes diferentes.",
+      "purpose": "Mostrar seis capacidades reais por meio de protótipos funcionais e independentes, mantendo o baralho 3D.",
+      "eyebrow": "Experiências para explorar",
+      "title": "Seis formas de\ntransformar uma ideia.",
+      "body": "Vire cada cartão para testar uma mini-experiência. As cenas usam interface, tipografia e movimento, sem imagens de terceiros.",
       "cards": [
         {
-          "id": "desconhecidos",
-          "name": "Fatos Desconhecidos",
-          "question": "O que existe por trás do que parece comum?",
-          "context": "Partir de algo familiar para apresentar uma descoberta com clareza.",
+          "id": "sites",
+          "name": "Sites e apps",
+          "question": "Uma experiência feita para funcionar.",
+          "context": "Explore uma interface e alterne a apresentação entre site e aplicativo.",
           "formats": [
-            "Vídeo explicativo",
-            "Carrossel editorial",
-            "Roteiro de curiosidades"
+            "Protótipo responsivo",
+            "Componentes navegáveis",
+            "Contato com contexto"
           ]
         },
         {
-          "id": "esportes",
-          "name": "Fatos Esportes",
-          "question": "Que história o placar não conta?",
-          "context": "Personagens, cultura e bastidores ampliam o olhar sobre o esporte.",
+          "id": "conteudo",
+          "name": "Conteúdo e copy",
+          "question": "A mensagem muda a forma de ver.",
+          "context": "Explore um carrossel tipográfico com abertura, desenvolvimento e convite.",
           "formats": [
-            "História de personagem",
-            "Narrativa de bastidores",
-            "Série temática"
+            "Copy e narrativa",
+            "Estrutura em três cenas",
+            "Adaptação ao público"
           ]
         },
         {
-          "id": "crencas",
-          "name": "Fatos e Crenças",
-          "question": "O que uma tradição ajuda a entender?",
-          "context": "Referências e contexto cultural orientam uma abordagem cuidadosa do assunto.",
+          "id": "campanhas",
+          "name": "Campanhas e Ads",
+          "question": "Uma oferta. Diferentes formatos.",
+          "context": "Compare composições para feed, vídeo vertical e pesquisa.",
           "formats": [
-            "Conteúdo explicativo",
-            "Série cultural",
-            "Roteiro temático"
+            "Meta e TikTok",
+            "Busca e campanhas",
+            "Variações por canal"
           ]
         },
         {
-          "id": "sobrenaturais",
-          "name": "Fatos Sobrenaturais",
-          "question": "Onde termina o relato e começa a investigação?",
-          "context": "Construir o suspense distinguindo o que é relato, hipótese e evidência.",
+          "id": "video",
+          "name": "Vídeo e movimento",
+          "question": "O ritmo transforma a narrativa.",
+          "context": "Controle uma timeline de três cenas com reprodução, pausa e retomada.",
           "formats": [
-            "Narrativa de suspense",
-            "Investigação editorial",
-            "Quadro especial"
+            "Storyboard",
+            "Movimento e ritmo",
+            "Transições controláveis"
           ]
         },
         {
-          "id": "nerd",
-          "name": "Fatos Nerd",
-          "question": "Por que certas histórias continuam com a gente?",
-          "context": "Conectar jogos e entretenimento às conversas e referências de quem acompanha o tema.",
+          "id": "lojas",
+          "name": "Lojas e produtos",
+          "question": "Da escolha ao próximo passo.",
+          "context": "Configure um produto demonstrativo e simule uma adição ao carrinho.",
           "formats": [
-            "Conteúdo de lançamento",
-            "Análise de universo",
-            "Série de cultura pop"
+            "Variações de produto",
+            "Escolha e feedback",
+            "Carrinho sem pagamento"
           ]
         },
         {
-          "id": "negocios",
-          "name": "Fatos e Negócios",
-          "question": "Qual problema essa ideia ajuda a resolver?",
-          "context": "Traduzir trajetórias, decisões e propostas em histórias compreensíveis.",
+          "id": "sistemas",
+          "name": "Sistemas e IA",
+          "question": "Uma solicitação vira uma ação.",
+          "context": "Experimente uma triagem de atendimento e seu encaminhamento para tarefas.",
           "formats": [
-            "História de empresa",
-            "Conteúdo explicativo",
-            "Série de negócios"
+            "Entrada de pedido",
+            "Classificação",
+            "Painel operacional"
           ]
         }
       ],
-      "credit": "Identidades e composições: mídia kit Ecossistema Fatos. Recortes apresentados como estudo editorial.",
+      "credit": "Estudos originais e fictícios: as simulações não fazem compras, lançam anúncios nem enviam dados.",
       "controls": {
-        "front": "Ver o recorte",
-        "back": "Voltar à peça",
-        "previous": "Universo anterior",
-        "next": "Próximo universo",
-        "hint": "Escolha um universo e conheça o recorte."
+        "front": "Testar demonstração",
+        "back": "Voltar ao cartão",
+        "previous": "Cartão anterior",
+        "next": "Próximo cartão",
+        "hint": "Arraste, use as setas ou vire o cartão para testar."
       }
     },
     {
