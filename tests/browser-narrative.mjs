@@ -36,7 +36,7 @@ try{
     await capture('gallery-reverse');
    }
    check('Requested editorial reading blocks are hidden without replacing the artwork',!await page.locator('.es-context').isVisible()&&!await page.locator('.pf-fatos-intro').isVisible()&&await page.locator('.es-device').count()===1);
-   await page.locator('[data-editorial-step="1"]').click();check('Editorial selection still updates the active artwork and metadata',await page.locator('#editorial').getAttribute('data-editorial-active')==='context'&&/comparação/.test(await page.locator('[data-es-title]').textContent()));
+   await page.locator('[data-editorial-step="1"]').click();check('Direção selection updates project-stage metadata',await page.locator('#editorial').getAttribute('data-editorial-active')==='context'&&/estrutura/.test(await page.locator('[data-es-title]').textContent()));
    const editorialNav=page.locator('#editorial .es-swipe-nav');
    check('Editorial has readable swipe controls and three progress dots',await editorialNav.count()===1&&await editorialNav.locator('[data-es-dot]').count()===3);
    check('Carousel shows real iPhone, iPad and MacBook shells rather than duplicate phones',await page.locator('#editorial .es-peek').count()===2&&await page.locator('#editorial .es-device').count()===1&&await page.locator('#editorial .es-hardware').count()===3&&await page.locator('#editorial').getAttribute('data-editorial-device')==='ipad');
@@ -46,13 +46,13 @@ try{
      return device.dataset.editorialModel==='ipad'&&r.width>=260&&r.width<=innerWidth*.98&&
        left.right>10&&right.left<innerWidth-10;
    }));
-   check('The editorial headline explains the role of content',/Três formas de contar/.test(await page.locator('#editorial-title').innerText()));
+   check('The headline connects challenge, direction and delivery',/Três etapas para ganhar vida/.test(await page.locator('#editorial-title').innerText()));
    check('The progress marker follows the selected chapter',await page.locator('[data-es-heading-count]').textContent()==='02 / 03');
    await editorialNav.locator('[data-es-next]').click();
-   check('Next arrow reaches Fechamento with MacBook',await page.locator('#editorial').getAttribute('data-editorial-active')==='closing'&&await page.locator('#editorial').getAttribute('data-editorial-device')==='macbook'&&await editorialNav.locator('[data-es-next]').isDisabled());
+   check('Next arrow reaches Entrega with MacBook',await page.locator('#editorial').getAttribute('data-editorial-active')==='closing'&&await page.locator('#editorial').getAttribute('data-editorial-device')==='macbook'&&await editorialNav.locator('[data-es-next]').isDisabled());
    await editorialNav.locator('[data-es-prev]').click();
    check('Previous arrow restores landscape iPad',await page.locator('#editorial').getAttribute('data-editorial-active')==='context'&&await page.locator('#editorial').getAttribute('data-editorial-device')==='ipad');
-   check('The other original hardware shells remain synchronized as previews',await page.locator('#editorial .es-peek').evaluateAll(previews=>previews.length===2&&previews.every(preview=>preview.dataset.stepIndex!=='1'&&!!preview.querySelector('img[src^="/assets/portfolio/"]'))&&previews.some(x=>x.dataset.device==='iphone')&&previews.some(x=>x.dataset.device==='macbook')));
+   check('Other real hardware shells remain visible without external imagery',await page.locator('#editorial .es-peek').evaluateAll(previews=>previews.length===2&&previews.every(preview=>preview.dataset.stepIndex!=='1'&&!!preview.querySelector('.es-hardware')&&!preview.querySelector('img'))&&previews.some(x=>x.dataset.device==='iphone')&&previews.some(x=>x.dataset.device==='macbook')));
    // The side phone intentionally peeks from behind the large central phone.
    // Hit its EXPOSED edge rather than the element center (hidden by the device).
    await page.locator('#editorial [data-editorial-stage]').scrollIntoViewIfNeeded();
@@ -65,7 +65,7 @@ try{
    else await page.mouse.click(peekX,peekY);
    check('Tapping a side preview navigates to the referenced chapter',await page.locator('#editorial').getAttribute('data-editorial-active')==='closing');
    await page.locator('[data-editorial-step="0"]').click();
-   check('Swipe begins on Abertura',await page.locator('#editorial').getAttribute('data-editorial-active')==='hook');
+   check('Swipe begins on Desafio',await page.locator('#editorial').getAttribute('data-editorial-active')==='hook');
    const swipeStage=page.locator('#editorial [data-editorial-stage]');
    const gestures=[];
    for(let attempt=0;attempt<3;attempt++){
@@ -101,7 +101,7 @@ try{
      if(active==='context')break;
    }
    row.editorialGestureAttempts=gestures;
-   check('Horizontal drag on the actual phone advances to Contexto',await page.locator('#editorial').getAttribute('data-editorial-active')==='context');
+   check('Horizontal drag on the actual phone advances to Direção',await page.locator('#editorial').getAttribute('data-editorial-active')==='context');
    check('Swipe affordance retains vertical native scroll',await swipeStage.evaluate(el=>getComputedStyle(el).touchAction==='pan-y'));
    check('Swiping never selects the phone copy',await swipeStage.evaluate(el=>getComputedStyle(el).userSelect==='none'&&window.getSelection().isCollapsed));
    
