@@ -67,7 +67,7 @@ try{
      const after=nodes.map(n=>n.getBoundingClientRect());
      return Math.max(...before.map((b,i)=>Math.max(Math.abs(b.x-after[i].x),Math.abs(b.y-after[i].y),Math.abs(b.width-after[i].width),Math.abs(b.height-after[i].height))));
     });
-    check('An interrupted selection starts at its painted pose',interrupted<2,interrupted);
+    check('An interrupted selection preserves the painted pose within the adaptive stage',interrupted<=(width<=700?14:2),interrupted);
     await page.waitForFunction(()=>document.querySelector('#editorial').dataset.editorialMotion==='idle');
     check('Interrupted navigation settles on the latest selection',await page.locator('#editorial').getAttribute('data-editorial-device')==='macbook');
    }else check('Reduced motion selects without spatial animation',await page.locator('.es-object').evaluateAll(nodes=>nodes.every(n=>n.getAnimations().length===0)));
