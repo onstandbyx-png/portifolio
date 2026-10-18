@@ -44,6 +44,11 @@ for(let index=0;index<4;index++){
 }
 for(const mobile of [true,false]){
  const a=galleryPose(0,.5,mobile),b=galleryPose(1,.5,mobile);
- assert(b.y-a.y>=94,'Whole-plane spacing must preserve the gap without shrinking artwork');
+ // The gallery now travels sideways as a layered carousel, not vertically.
+ // Verify legible full-size cards and balanced lateral motion without 68deg flips.
+ assert(b.x-a.x >= (mobile ? 30 : 24),'Layered passage must preserve lateral card spacing');
+ assert(Math.abs(a.x+b.x) < .001,'Adjacent cards balance around the reading center');
+ assert(Math.abs(a.angle+b.angle) < .001,'Tilts stay reversible and symmetrical');
+ assert([a,b].every(p=>p.scale>.90&&Math.abs(p.angle)<=13),'Artwork stays readable without harsh shrinking or rotation');
 }
 console.log('Scroll gallery: native navigation, readable plateaus, continuous passages, spacing and reversible projection PASS');
