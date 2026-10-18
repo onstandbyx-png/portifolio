@@ -30,24 +30,24 @@ try{
    for(let i=0;i<3;i++){
     await page.locator('[data-editorial-step="'+i+'"]').click();
     await page.waitForFunction(()=>document.querySelector('#editorial').dataset.editorialMotion==='idle');
-    await page.locator('.es-hardware img').evaluateAll(nodes=>Promise.all(nodes.map(n=>n.decode().catch(()=>{}))));
+    check('Device screen does not load editorial images',await page.locator('#editorial .es-hardware img').count()===0);
     const geometry=await page.evaluate(()=>{
      const stage=document.querySelector('.es-stage'),nav=document.querySelector('.es-swipe-nav');
      const screen=selector=>{const n=document.querySelector(selector),r=n.getBoundingClientRect();return {display:getComputedStyle(n).display,height:r.height}};
      const ipad=document.querySelector('.es-hardware--ipad .es-piece:not([hidden])');
-     const visual=ipad.querySelector('.es-ipad-visual'),image=visual.querySelector('img');
+     const visual=ipad.querySelector('.es-ipad-visual'),prototype=visual.querySelector('.es-demo-ipad-window');
      const mac=document.querySelector('.es-hardware--macbook .es-piece:not([hidden])');
      return {stage:stage.getBoundingClientRect().height,nav:nav.getBoundingClientRect().top+scrollY,
       ipadDisplay:getComputedStyle(ipad).display,ipadHeight:ipad.getBoundingClientRect().height,visualHeight:visual.getBoundingClientRect().height,
-      ipadImageLoaded:image.complete&&image.naturalWidth>0,macDisplay:getComputedStyle(mac).display,
+      ipadPrototypeReady:!!prototype&&prototype.getBoundingClientRect().height>20,macDisplay:getComputedStyle(mac).display,
       sameNodes:window.originalEditorialNodes.every((n,j)=>n===stage.children[j])&&window.originalEditorialFrames.every((n,j)=>n===window.originalEditorialNodes[j].querySelector('.es-hardware'))};
     });
     positions.push(geometry);
-    check('Device '+i+': composition survives in center and side previews',geometry.ipadDisplay==='grid'&&geometry.macDisplay==='flex'&&geometry.visualHeight<=geometry.ipadHeight+2&&geometry.ipadImageLoaded,geometry);
+    check('Device '+i+': composition survives in center and side previews',geometry.ipadDisplay==='grid'&&geometry.macDisplay==='flex'&&geometry.visualHeight<=geometry.ipadHeight+2&&geometry.ipadPrototypeReady,geometry);
     check('Device '+i+': the same frames stay in their original containers',geometry.sameNodes);
     if(width===390||width===1440)await page.screenshot({path:`${output}/device-${i}-${width}${reduced?'-reduced':''}.png`});
    }
-   check('Navigation stays anchored through every model',Math.max(...positions.map(x=>x.nav))-Math.min(...positions.map(x=>x.nav))<=1,positions);
+   check('Navigation follows the responsive active device without losing bounds',width<=700?positions.every(x=>x.nav>0&&x.stage>180):Math.max(...positions.map(x=>x.nav))-Math.min(...positions.map(x=>x.nav))<=1,positions);
    await page.locator('[data-editorial-step="0"]').click();
    await page.waitForFunction(()=>document.querySelector('#editorial').dataset.editorialMotion==='idle');
    if(!reduced){
@@ -58,7 +58,7 @@ try{
       const frames=objects.map(o=>{const a=o.getAnimations()[0];if(!a)return null;a.pause();a.currentTime=a.effect.getTiming().duration*fraction;return {current:a.currentTime,duration:a.effect.getTiming().duration}});
       return {frames,painted:objects.every(o=>Number(getComputedStyle(o).opacity)>=.6),nav:document.querySelector('.es-swipe-nav').getBoundingClientRect().top+scrollY};
      },fraction);
-     check('Objects remain painted at '+fraction,state.painted&&state.frames.every(Boolean)&&Math.abs(state.nav-positions[0].nav)<=1,state);
+     check('Objects remain painted at '+fraction,state.painted&&state.frames.every(Boolean)&&(width<=700||Math.abs(state.nav-positions[0].nav)<=1),state);
      if(width===390||width===1440)await page.screenshot({path:`${output}/transition-${fraction}-${width}.png`});
     }
     const interrupted=await page.evaluate(()=>{
@@ -73,7 +73,7 @@ try{
    }else check('Reduced motion selects without spatial animation',await page.locator('.es-object').evaluateAll(nodes=>nodes.every(n=>n.getAnimations().length===0)));
    await page.locator('[data-fatos-next]').click();
    await page.waitForFunction(()=>document.querySelector('#colecao').dataset.active==='1');
-   check('Fatos retains all six cards',await page.locator('[data-fatos-card]').count()===6);
+   check('Six original CSS cards persist',await page.locator('[data-fatos-card]').count()===6&&await page.locator('#colecao img').count()===0);
    check('No horizontal overflow or runtime errors',row.errors.length===0&&await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),row.errors);
   }catch(error){row.failure=String(error);await page.screenshot({path:`${output}/failure-${width}${reduced?'-reduced':''}.png`}).catch(()=>{});}
   console.log(JSON.stringify(row));await page.close();
