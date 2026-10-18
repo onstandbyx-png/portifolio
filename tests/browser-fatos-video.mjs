@@ -33,7 +33,17 @@ try{
         const front=el.querySelector('[data-position="0"]'),next=el.querySelector('[data-position="1"]'),previous=el.querySelector('[data-position="5"]');
         const a=front.getBoundingClientRect(),b=next.getBoundingClientRect(),c=previous.getBoundingClientRect();
         return [front,next,previous].every(card=>getComputedStyle(card).visibility==='visible')&&
-          b.x>a.x+8&&c.x<a.x-8&&getComputedStyle(el).touchAction==='pan-y';
+          b.right-a.right>=22&&a.left-c.left>=22&&
+          getComputedStyle(el).touchAction==='pan-y'&&
+          [front,next,previous].every(card=>getComputedStyle(card).opacity>0.55);
+      }));
+      check('Three-layer fan is visibly wider than the active front card',await stage.evaluate(el=>{
+        const front=el.querySelector('[data-position="0"]').getBoundingClientRect();
+        const side=[...el.querySelectorAll('[data-position="1"],[data-position="5"]')].map(n=>n.getBoundingClientRect());
+        const fullLeft=Math.min(front.left,...side.map(r=>r.left));
+        const fullRight=Math.max(front.right,...side.map(r=>r.right));
+        return fullRight-fullLeft>=front.width+45&&
+               getComputedStyle(el).perspective!=='none';
       }));
       await stage.screenshot({path:out+'/fatos-before-'+width+(reduced?'-reduced':'')+'.png',animations:'disabled'});
       await deck.locator('[data-fatos-next]').click();
