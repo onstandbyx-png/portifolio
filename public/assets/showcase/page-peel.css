@@ -122,3 +122,18 @@
   #laboratorio .sp-peel-grip-symbol{animation:none!important}
 }
 body.is-paused #laboratorio .sp-peel-grip-symbol{animation:none!important}
+
+/* Page material: a curved crease carries real-time shadow and paper thickness. */
+#laboratorio .sp-peel-card .sp-peel-fold{
+  filter:drop-shadow(calc(-3px - 9px * var(--peel-progress,.05)) calc(3px + 5px * var(--peel-progress,.05)) calc(3px + 7px * var(--peel-progress,.05)) #112e2359);
+}
+#laboratorio .sp-peel-underlay:before{
+  content:"";display:block;position:absolute;inset:0;z-index:0;pointer-events:none;
+  background:linear-gradient(128deg,#2848350a 10%,transparent 50%,#10281918 100%);
+  opacity:calc(1 - var(--peel-progress,.05));
+}
+#laboratorio .sp-peel-sheet{
+  box-shadow:inset 0 0 0 1px #fff9,0 6px 19px #102b2314;
+}
+#laboratorio .sp-peel-grip:focus-visible{outline:3px solid #416da2}
+@media(prefers-reduced-motion:reduce){#laboratorio .sp-peel-fold{filter:none!important}}
