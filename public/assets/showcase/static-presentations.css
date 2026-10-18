@@ -1,0 +1,188 @@
+/* Static image content, with transitions and scroll entrances on its container. */
+.sp-campaign, .sp-products-shell { min-width: 0; }
+.sp-campaign-panel img, .sp-products figure > img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 4 / 5;
+  object-fit: contain;
+  border-radius: 3px;
+}
+body.portfolio-r6 #laboratorio { padding-block: 112px; }
+body.portfolio-r6 #laboratorio .ads-heading { padding-top: 0; }
+.sp-campaign { width: min(100%, 680px); margin: 36px auto 0; }
+.sp-platforms {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+  margin-bottom: 28px;
+  border-bottom: 1px solid #d0d6c9;
+}
+.sp-platforms > button {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 10px;
+  min-width: 0;
+  min-height: 94px;
+  padding: 16px 12px 20px;
+  border: 0;
+  border-radius: 3px 3px 0 0;
+  background: transparent;
+  color: #6b7667;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 550;
+  line-height: 1.3;
+  cursor: pointer;
+  transition: color 180ms ease, background-color 180ms ease;
+}
+.sp-platforms > button::after {
+  content: '';
+  position: absolute;
+  right: 0;
+  bottom: -1px;
+  left: 0;
+  height: 3px;
+  background: transparent;
+  transition: background-color 220ms ease;
+}
+.sp-platforms > button[aria-selected='true'] { background: #e9ede1; color: #1b3627; }
+.sp-platforms > button[aria-selected='true']::after { background: #294c36; }
+.sp-platforms > button:hover { color: #193827; background: #e9ede180; }
+.sp-platforms .sp-platform-logo { width: 30px; height: 30px; object-fit: contain; flex: none; }
+.sp-platforms .sp-platform-logo--meta { width: 88px; }
+.sp-campaign-art { display: grid; align-items: start; overflow: clip; isolation: isolate; }
+.sp-campaign-panel { grid-area: 1 / 1; position: relative; min-width: 0; }
+.sp-campaign-panel[hidden] { display: none !important; }
+/* Exit-only painting never restores focus or screen-reader ownership. */
+.sp-campaign-panel[hidden][data-leaving='true'] { display: block !important; pointer-events: none; }
+.sp-campaign-panel > figure { margin: 0; }
+.sp-platforms > button:focus-visible, .sp-campaign-panel:focus-visible {
+  outline: 3px solid #406fca;
+  outline-offset: 4px;
+}
+body.portfolio-r6 .sa-campaign-services {
+  display: grid;
+  grid-template-columns: 1.1fr .9fr;
+  gap: 40px 72px;
+  margin: 64px 0 0;
+  padding: 40px 0 0;
+  border-top: 1px solid #d0d6c9;
+}
+body.portfolio-r6 .sa-campaign-services h3 {
+  margin: 0 0 16px;
+  font-size: clamp(28px, 3vw, 40px);
+  font-weight: 500;
+  letter-spacing: -.045em;
+  line-height: 1.1;
+}
+body.portfolio-r6 .sa-campaign-services p {
+  max-width: 600px;
+  margin: 0;
+  color: #687262;
+  font-size: 16px;
+  line-height: 1.7;
+}
+body.portfolio-r6 .sa-campaign-services ul {
+  margin: 0 0 22px;
+  padding-left: 18px;
+  color: #43573e;
+  font-size: 15px;
+  line-height: 1.8;
+}
+body.portfolio-r6 .sa-campaign-services a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  border-bottom: 1px solid currentColor;
+  color: #294334;
+  font-size: 15px;
+  line-height: 1.4;
+  font-weight: 550;
+  text-decoration: none;
+}
+body.portfolio-r6 .sa-campaign-credit {
+  margin-top: 32px;
+  max-width: 680px;
+  color: #687262;
+  font-size: 13px;
+  line-height: 1.6;
+}
+body.portfolio-r6 .sa-campaign-credit summary { min-height: 44px; padding-block: 12px; cursor: pointer; }
+body.portfolio-r6 .sa-campaign-credit p { margin-top: 4px; }
+body.portfolio-r6 #sistemas { padding: 104px 0; background: #182d24; color: #edf0e5; }
+.sp-products-shell { display: block; }
+.sp-products { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 40px; }
+.sp-products > figure { min-width: 0; margin: 0; }
+.sp-products figcaption { padding-top: 24px; }
+.sp-products figcaption > span { color: #b7c6b3; font-size: 13px; line-height: 1.5; }
+.sp-products h3 {
+  margin: 12px 0 0;
+  color: #edf0e5;
+  font-size: clamp(26px, 2.7vw, 38px);
+  font-weight: 500;
+  line-height: 1.13;
+  letter-spacing: -.045em;
+}
+/* Keep the original mobile pacing and its native-scroll presentation. */
+.rg-scroll-shell:not(.rg-natural) { height: calc(var(--rg-count,3) * 110svh); }
+.rf-film:not(.rf-natural) { height: calc(var(--rf-heading-height,200px) + 300svh); }
+
+/* Desktop: scene travel is based on bounded reading distance, not screen height.
+   100svh used to multiply very tall viewports into thousands of empty pixels.
+   The same three animated planes, accessible controls and fixed artwork remain. */
+@media (min-width: 761px) {
+  .rg-scroll-shell:not(.rg-natural) {
+    --rg-scene-height: min(calc(100svh - var(--rg-header, 76px)), 860px);
+    height: calc(var(--rg-scene-height) + var(--rg-count, 3) * 690px - 690px);
+  }
+  .rg-scroll-shell:not(.rg-natural) .rg-sticky {
+    height: var(--rg-scene-height);
+  }
+  .rg-scroll-shell:not(.rg-natural) .rg-plane {
+    width: min(100%, 1150px);
+    height: min(590px, calc(var(--rg-scene-height) - 168px));
+  }
+  .rf-film:not(.rf-natural) {
+    --rf-scene-height: min(calc(100svh - var(--rf-header, 76px)), 860px);
+    height: calc(var(--rf-heading-height, 200px) + var(--rf-scene-height) + 1380px);
+  }
+  .rf-film:not(.rf-natural) .rf-stage {
+    height: var(--rf-scene-height);
+  }
+  #narrativa-visual .rf-heading {
+    padding-top: 52px;
+    padding-bottom: 28px;
+  }
+  body.portfolio-r6 #trabalhos { padding-bottom: 72px; }
+}
+body.portfolio-r6 #trabalhos { padding-bottom: 104px; }
+body.portfolio-r6 #editorial { padding-bottom: 96px; }
+.pf-fatos-deck { margin-top: 72px; padding-top: 64px; gap: 40px 80px; }
+.pf-fatos-context { min-height: 280px; align-content: start; }
+.rf-caption p { min-height: 3em; }
+@media (max-width: 760px) {
+  body.portfolio-r6 #laboratorio { padding-block: 88px; }
+  .sp-campaign { margin-top: 32px; }
+  .sp-platforms { gap: 4px; margin-bottom: 24px; }
+  .sp-platforms > button { min-height: 88px; padding: 12px 8px 16px; font-size: 13px; }
+  .sp-platforms .sp-platform-logo--meta { width: 76px; }
+  body.portfolio-r6 .sa-campaign-services { grid-template-columns: minmax(0, 1fr); gap: 24px; margin-top: 40px; padding-top: 32px; }
+  body.portfolio-r6 .sa-campaign-services h3 { font-size: 29px; }
+  body.portfolio-r6 .sa-campaign-services p { font-size: 16px; }
+  body.portfolio-r6 #sistemas { padding: 80px 0; }
+  .sp-products { grid-template-columns: minmax(0, 1fr); gap: 64px; }
+  .sp-products figcaption { padding-top: 18px; }
+  .sp-products h3 { font-size: clamp(27px, 7.4vw, 36px); }
+  body.portfolio-r6 #trabalhos { padding-bottom: 80px; }
+  body.portfolio-r6 #editorial { padding-bottom: 80px; }
+  .pf-fatos-deck { margin-top: 56px; padding-top: 48px; gap: 32px; }
+}
+@media (max-width: 360px) { .pf-fatos-context { min-height: 340px; } }
+@media (prefers-reduced-motion: reduce) {
+  .sp-platforms > button, .sp-platforms > button::after { transition: none; }
+}
+body.is-paused .sp-platforms > button, body.is-paused .sp-platforms > button::after { transition: none; }

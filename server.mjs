@@ -5,7 +5,7 @@ import { extname, resolve, sep } from 'node:path';
 
 const root = resolve(fileURLToPath(new URL('.', import.meta.url)));
 const port = Number(process.env.PORT || 3000);
-const mime = {'.html':'text/html; charset=utf-8','.css':'text/css; charset=utf-8','.js':'text/javascript; charset=utf-8','.webp':'image/webp','.svg':'image/svg+xml','.png':'image/png','.jpg':'image/jpeg','.ico':'image/x-icon','.mp4':'video/mp4','.webm':'video/webm','.woff2':'font/woff2','.ttf':'font/ttf'};
+const mime = {'.html':'text/html; charset=utf-8','.css':'text/css; charset=utf-8','.js':'text/javascript; charset=utf-8','.webp':'image/webp','.svg':'image/svg+xml','.png':'image/png','.jpg':'image/jpeg','.ico':'image/x-icon','.mp4':'video/mp4','.webm':'video/webm','.mp3':'audio/mpeg','.json':'application/json; charset=utf-8','.woff2':'font/woff2','.ttf':'font/ttf'};
 const routes = new Map([
   ['/','index.html'],['/index.html','index.html'],
   ['/assets/portfolio.css','src/styles.css'],['/assets/portfolio.js','src/portfolio.js'],
@@ -26,7 +26,7 @@ createServer(async (req,res)=>{
   try{
     const body=await readFile(full);
     const type=mime[extname(full)]??'application/octet-stream';
-    if(type.startsWith('video/')){
+    if(type.startsWith('video/')||type.startsWith('audio/')){
       const range=req.headers.range;
       const mediaHeaders={'Content-Type':type,'Accept-Ranges':'bytes','Cache-Control':'public, max-age=86400',...headers};
       if(range){

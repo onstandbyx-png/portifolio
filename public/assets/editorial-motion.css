@@ -1,0 +1,29 @@
+/* R6 motion is an entrance, a reading pose and an exit — never a text loop. */
+:root{--ed-ease:cubic-bezier(.22,.72,.2,1);--ed-feedback:160ms;--ed-panel:360ms}
+.ed-heading{position:relative}
+.ed-heading-source{display:block}
+.ed-source-covered{opacity:0}
+.ed-heading-visual{position:absolute;inset:0;display:block;pointer-events:none;user-select:none}
+.ed-line-mask{position:absolute;inset-inline:0;top:0;display:block;overflow:clip;padding:.14em .12em;margin-inline:-.12em}
+.ed-line{display:block;white-space:nowrap;transform-origin:0 100%;will-change:transform,opacity}
+.ed-line em{display:inline;font-style:italic}
+.editorial-motion-ready .hero-actions .button,.editorial-motion-ready .header-cta,.editorial-motion-ready .contact-direct>a{transition:background-color var(--ed-feedback),color var(--ed-feedback),border-color var(--ed-feedback),box-shadow var(--ed-feedback)}
+.editorial-motion-ready .hero-actions .button,.editorial-motion-ready .header-cta{transform:none}
+.editorial-motion-ready .hero-actions .button>span,.editorial-motion-ready .contact-direct>a>span[aria-hidden]{display:inline-block;transition:transform var(--ed-feedback) var(--ed-ease)}
+.editorial-motion-ready .hero-actions .button:focus-visible>span,.editorial-motion-ready .contact-direct>a:focus-visible>span[aria-hidden]{transform:translate(2px,-2px)}
+.editorial-motion-ready :is(.hero-actions a,.header-cta,.contact-direct>a,.main-nav a):focus-visible{outline:2px solid currentColor;outline-offset:5px}
+.editorial-motion-ready .main-nav a::after{transition:transform 220ms var(--ed-ease)}
+.editorial-motion-ready .main-nav a:focus-visible::after{transform:scaleX(1)}
+@media(hover:hover) and (pointer:fine){
+ .editorial-motion-ready .hero-actions .button:hover>span,.editorial-motion-ready .contact-direct>a:hover>span[aria-hidden]{transform:translate(2px,-2px)}
+ .editorial-motion-ready .main-nav a:hover::after{transform:scaleX(1)}
+}
+.editorial-motion-ready .hero-actions .button:active{box-shadow:inset 0 0 0 2px currentColor}
+/* The existing page-wide pause also covers these CSS-only interactions. */
+html[data-editorial-motion-paused=true] :is(.hero-actions .button,.hero-actions .button>span,.header-cta,.contact-direct>a,.contact-direct>a>span),html[data-editorial-motion-paused=true] .main-nav a::after{transition:none!important}
+html[data-editorial-motion-paused=true] .hero-actions .button>span,html[data-editorial-motion-paused=true] .contact-direct>a>span[aria-hidden]{transform:none!important}
+@media(prefers-reduced-motion:reduce){
+ .ed-line{transform:none!important;opacity:1!important}
+ .editorial-motion-ready :is(.hero-actions .button,.hero-actions .button>span,.header-cta,.contact-direct>a,.contact-direct>a>span),.editorial-motion-ready .main-nav a::after{transition:none!important}
+ .editorial-motion-ready .hero-actions .button>span,.editorial-motion-ready .contact-direct>a>span[aria-hidden]{transform:none!important}
+}

@@ -1,0 +1,44 @@
+{
+  "provider": "ElevenLabs",
+  "model": "eleven_v4",
+  "flowId": "1qDjniJuC5MmmbvBtL0x",
+  "generatedAt": "2026-10-13",
+  "durationMs": 19400,
+  "pauseMs": 600,
+  "file": "agents-call-pt-br.mp3",
+  "segments": [
+    {
+      "speaker": "Maestro",
+      "text": "Oi, Ana! Sou o Maestro, o assistente. Sexta às 10h funciona?",
+      "startMs": 600,
+      "endMs": 6360,
+      "voiceId": "czvzJwIVS2asEKnthV40",
+      "source": "call-01.mp3"
+    },
+    {
+      "speaker": "Ana",
+      "text": "Funciona. Dá para incluir o banco da mesa?",
+      "startMs": 6960,
+      "endMs": 11200,
+      "voiceId": "xPnmQf6Ow3GGYWWURFPi",
+      "source": "call-02.mp3"
+    },
+    {
+      "speaker": "Maestro",
+      "text": "Dá sim. Mando a proposta atualizada hoje.",
+      "startMs": 11800,
+      "endMs": 15480,
+      "voiceId": "czvzJwIVS2asEKnthV40",
+      "source": "call-03.mp3"
+    },
+    {
+      "speaker": "Ana",
+      "text": "Perfeito, obrigada!",
+      "startMs": 16080,
+      "endMs": 18800,
+      "voiceId": "xPnmQf6Ow3GGYWWURFPi",
+      "source": "call-04.mp3"
+    }
+  ]
+}
+

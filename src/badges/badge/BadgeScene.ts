@@ -1,8 +1,7 @@
 /*
- * Renders the badge rig with three.js: the two printed cards with thickness and
- * a punched slot, the woven straps (rebuilt every frame so they bend and
- * twist), the brushed crimp, the gunmetal swivel snap hook and a soft shadow on
- * the wall behind. Drawn on a transparent canvas over the section background.
+ * Two independent, short badge suspensions. Each printed card keeps its
+ * punched slot, woven strap, brushed crimp and metal swivel. Wide canvases
+ * show both pieces side by side; narrow canvases show one full-size selection.
  */
 import {
   BufferAttribute,
@@ -43,7 +42,7 @@ import {
 } from "three";
 import { RoundedBoxGeometry } from "three/examples/jsm/geometries/RoundedBoxGeometry.js";
 import { RoomEnvironment } from "three/examples/jsm/environments/RoomEnvironment.js";
-import { BadgeRig, CARD, CRIMP, HOOK, RIG, SLOT_Y, STRAP } from "./rig";
+import { BadgeRig, CARD, CRIMP, HOOK, RIG, SHORT_STRAP, SLOT_Y, STRAP } from "./rig";
 import { brushed, weave, type CardArt } from "./art";
 import { editorialCard as maestroCard, digitalCard as lumeCard } from "./portfolioArt";
 import type { Body } from "./physics";
@@ -58,13 +57,16 @@ export type BadgeSceneOptions = {
   onRest?: () => void;
   /** Called the first time someone moves the badge. */
   onTouch?: () => void;
+  /** A deliberate card turn, shared by pointer and accessible DOM controls. */
+  onCardFlip?: (index: 0 | 1, flipped: boolean) => void;
+  onCardSelect?: (index: 0 | 1) => void;
   onContextLost?: () => void;
   onContextRestored?: () => void;
   onError?: (error: unknown) => void;
 };
 
-/** Camera framing of the reference clip: a 3:4 frame, the card a little below centre. */
-const VIEW = { fov: 24.7, aspect: 3 / 4, y: 0.69, z: 10.4 };
+/** Both layouts contain the same short suspension and a fully readable card. */
+const VIEW = { height: 2.86, singleAspect: .82, pairAspect: 1.45, y: .30, z: 10.4 };
 const WALL_Z = -0.42;
 
 function roundedRect(w: number, h: number, r: number) {
@@ -126,8 +128,8 @@ function cardMesh(art: CardArt, edge: string, renderer: WebGLRenderer) {
     geometry.setAttribute("uv", new BufferAttribute(uv, 2));
     geometry.translate(0, 0, back ? -CARD.d / 2 - 0.0005 : CARD.d / 2 + 0.0005);
     const mesh = new Mesh(geometry, new MeshPhysicalMaterial({
-      map: texture(canvas, renderer), roughness: 0.66,
-      clearcoat: 0.16, clearcoatRoughness: 0.48,
+      map: texture(canvas, renderer), roughness: 0.72,
+      clearcoat: 0.22, clearcoatRoughness: 0.52,
     }));
     mesh.castShadow = true;
     mesh.receiveShadow = true;
@@ -233,7 +235,7 @@ class StrapMesh {
   private readonly position: Float32Array;
   private readonly normal: Float32Array;
   private readonly uv: Float32Array;
-  constructor(material: Material) {
+  constructor(material: Material, private readonly width = STRAP.width) {
     const n = this.samples;
     // 4 faces × 2 vertices per sample.
     this.position = new Float32Array(n * 8 * 3);
@@ -262,7 +264,7 @@ class StrapMesh {
   update(points: Vector3[], widthTop: Vector3, widthBottom: Vector3) {
     const curve = new CatmullRomCurve3(points, false, "centripetal");
     const n = this.samples;
-    const hw = STRAP.width / 2,
+    const hw = this.width / 2,
       ht = STRAP.thickness / 2;
     const P = this.position,
       N = this.normal,
@@ -333,12 +335,15 @@ export class BadgeScene {
   private readonly renderer: WebGLRenderer;
   private readonly scene = new Scene();
   private readonly model = new Group();
-  private readonly camera = new PerspectiveCamera(VIEW.fov, VIEW.aspect, 0.1, 60);
-  private rig: BadgeRig;
+  private readonly camera = new PerspectiveCamera(16, VIEW.singleAspect, 0.1, 60);
+  private rigs: [BadgeRig, BadgeRig];
+  private readonly rigRoots: [Group, Group] = [new Group(), new Group()];
+  private layout: "single" | "pair" = "single";
   private cards: [Group, Group] | null = null;
-  private crimp = new Group();
-  private hook = new Group();
-  private straps: [StrapMesh, StrapMesh] | null = null;
+  private cardArt: [Group, Group] | null = null;
+  private crimps: [Group, Group] = [new Group(), new Group()];
+  private hooks: [Group, Group] = [new Group(), new Group()];
+  private straps: [[StrapMesh, StrapMesh], [StrapMesh, StrapMesh]] | null = null;
   private textures: Texture[] = [];
   private active = false;
   private running = false;
@@ -346,8 +351,15 @@ export class BadgeScene {
   private frame = 0;
   private dragging = -1;
   private dragPointer: number | null = null;
-  private pendingTouch: { event: PointerEvent; x: number; y: number } | null = null;
-  private flipTarget = 0;
+  private pendingPointer: { event: PointerEvent; index: 0 | 1; local: Vector3; x: number; y: number } | null = null;
+  private readonly flipAngles = [0, 0];
+  private readonly flipTargets = [0, 0];
+  private readonly sheen = [0, 0];
+  private readonly sheenTargets = [0, 0];
+  private focusedCard: 0 | 1 = 0;
+  private readonly dragLocal = new Vector3();
+  private readonly dragPointerStart = new Vector3();
+  private readonly dragPhysicalStart = new Vector3();
   private disposed = false;
   private contextLost = false;
   private initialized = false;
@@ -372,17 +384,18 @@ export class BadgeScene {
     renderer.shadowMap.enabled = true;
     renderer.shadowMap.type = PCFShadowMap;
     renderer.setClearColor(0x000000, 0);
-    this.rig = new BadgeRig(RIG, { enter: options.enter });
+    this.rigs = [new BadgeRig(RIG, { enter: false, single: true }), new BadgeRig(RIG, { enter: false, single: true })];
     this.camera.position.set(0, VIEW.y, VIEW.z);
     this.camera.lookAt(0, VIEW.y, 0);
     this.scene.add(this.model);
+    this.model.add(...this.rigRoots);
     this.canvas.addEventListener("webglcontextlost", this.onContextLost);
     this.canvas.addEventListener("webglcontextrestored", this.onContextRestored);
   }
 
   /** Builds materials, textures and meshes. Resolves when the first frame is drawn. */
   async init() {
-    const { renderer, scene, model } = this;
+    const { renderer, scene } = this;
     const pmrem = new PMREMGenerator(renderer);
     const environment = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
     pmrem.dispose();
@@ -418,10 +431,14 @@ export class BadgeScene {
 
     const [front, back] = await Promise.all([maestroCard(this.options.front), lumeCard(this.options.back)]);
     if (this.disposed) return;
-    this.cards = [cardMesh(front, "#f1f2f5", renderer), cardMesh(back, "#1b1a1f", renderer)];
-    model.add(this.cards[0], this.cards[1]);
+    // Each physical parent belongs to its own suspension. A local art turn
+    // never changes the solver's quaternion or the neighboring card.
+    this.cardArt = [cardMesh(front, "#f1f2f5", renderer), cardMesh(back, "#1b1a1f", renderer)];
+    this.cards = [new Group(), new Group()];
+    this.cards.forEach((card, i) => card.add(this.cardArt![i]!));
+    this.rigRoots.forEach((root, i) => root.add(this.cards![i]!));
 
-    const metal = new MeshStandardMaterial({ color: "#6e727b", metalness: 0.78, roughness: 0.34, envMapIntensity: 1.5 });
+    const metal = new MeshStandardMaterial({ color: "#9baba3", metalness: 0.72, roughness: 0.38, envMapIntensity: 1.5 });
     const bright = new MeshStandardMaterial({ color: "#e4e6ea", metalness: 1, roughness: 0.25, envMapIntensity: 1.6 });
     const brushedTexture = texture(brushed(), renderer);
     this.textures.push(brushedTexture);
@@ -450,12 +467,20 @@ export class BadgeScene {
     wrap.rotation.z = Math.PI / 2;
     wrap.position.y = CRIMP.loop + 0.012;
     wrap.castShadow = true;
-    this.crimp.add(sleeve, loop, wrap);
-    this.hook.add(hookMesh(metal, bright));
-    model.add(this.crimp, this.hook);
-
-    this.straps = [new StrapMesh(fabric), new StrapMesh(fabric)];
-    model.add(this.straps[0].mesh, this.straps[1].mesh);
+    this.crimps[0].add(sleeve, loop, wrap);
+    this.hooks[0].add(hookMesh(metal, bright));
+    this.crimps[1] = this.crimps[0].clone(true);
+    this.hooks[1] = this.hooks[0].clone(true);
+    this.straps = [
+      [new StrapMesh(fabric, SHORT_STRAP.width * .58), new StrapMesh(fabric, SHORT_STRAP.width * .58)],
+      [new StrapMesh(fabric, SHORT_STRAP.width * .58), new StrapMesh(fabric, SHORT_STRAP.width * .58)],
+    ];
+    this.rigRoots.forEach((root, i) => {
+      const scale = this.rigs[i]!.suspensionScale;
+      this.crimps[i]!.scale.set(scale * .76, scale, scale);
+      this.hooks[i]!.scale.set(scale * .84, scale, scale);
+      root.add(this.crimps[i]!, this.hooks[i]!, this.straps![i]![0].mesh, this.straps![i]![1].mesh);
+    });
 
     this.canvas.addEventListener("pointerdown", this.onDown);
     this.canvas.addEventListener("pointermove", this.onMove);
@@ -478,10 +503,13 @@ export class BadgeScene {
     this.renderer.setSize(w, h, false);
     const aspect = w / h;
     this.camera.aspect = aspect;
-    // Keep the reference framing; narrower frames keep its width instead.
-    const tanHalf = Math.tan(((VIEW.fov / 2) * Math.PI) / 180);
-    const fov = aspect >= VIEW.aspect ? VIEW.fov : (2 * Math.atan((tanHalf * VIEW.aspect) / aspect) * 180) / Math.PI;
-    this.camera.fov = fov;
+    const layout = w >= 540 ? "pair" : "single";
+    if (layout !== this.layout) this.releasePointer();
+    this.layout = layout;
+    this.canvas.dataset.layout = layout;
+    const referenceAspect = layout === "pair" ? VIEW.pairAspect : VIEW.singleAspect;
+    const height = VIEW.height * Math.max(1, referenceAspect / aspect);
+    this.camera.fov = 2 * Math.atan(height / (2 * VIEW.z)) * 180 / Math.PI;
     this.camera.updateProjectionMatrix();
     if (this.initialized && !this.running) this.draw();
   }
@@ -493,10 +521,11 @@ export class BadgeScene {
     else {
       this.releasePointer();
       this.sleep();
-      if (this.model.rotation.y !== this.flipTarget) {
-        this.model.rotation.y = this.flipTarget;
-        if (this.initialized) this.draw();
-      }
+      this.sheen.fill(0);
+      this.sheenTargets.fill(0);
+      this.flipTargets.forEach((target, i) => { this.flipAngles[i] = target; });
+      // A paused reading view rests frontally instead of freezing mid-drag.
+      if (this.initialized) this.rest();
     }
   }
 
@@ -504,18 +533,39 @@ export class BadgeScene {
   swing(direction: 1 | -1 = 1) {
     if (!this.active || this.disposed || this.contextLost) return;
     this.touch();
-    this.rig.swing(direction);
+    this.rigs[this.focusedCard].swing(direction);
     this.wake();
   }
 
   /** Deliberate access to the printed roles on the reverse, including while paused. */
   setFlipped(flipped: boolean, animate = true) {
-    this.flipTarget = flipped ? Math.PI : 0;
+    this.setCardFlipped(0, flipped, animate);
+    this.setCardFlipped(1, flipped, animate);
+  }
+
+  /** Inspect one card while its companion keeps its own face and motion. */
+  setCardFlipped(index: 0 | 1, flipped: boolean, animate = true) {
+    if (this.disposed || this.contextLost) return;
+    this.rigs[index].inspect();
+    this.flipTargets[index] = flipped ? Math.PI : 0;
+    this.setSelectedCard(index, false);
     this.releasePointer();
+    this.options.onCardFlip?.(index, flipped);
     if (!animate || !this.active) {
-      this.model.rotation.y = this.flipTarget;
+      this.flipAngles[index] = this.flipTargets[index]!;
       this.draw();
     } else this.wake();
+  }
+
+  /** Select one piece without changing either face or applying physical force. */
+  setSelectedCard(index: 0 | 1, _animate = true) {
+    if (this.disposed) return;
+    const changed = this.focusedCard !== index;
+    if (changed) this.releasePointer();
+    this.focusedCard = index;
+    this.canvas.dataset.selectedCard = String(index);
+    if (changed) this.options.onCardSelect?.(index);
+    if (this.initialized && !this.contextLost) this.draw();
   }
 
   /** PNG of the current frame (used to make the reduced-motion poster). */
@@ -526,14 +576,16 @@ export class BadgeScene {
 
   /** Jumps straight to the resting badge without the entrance. */
   rest() {
-    this.rig = new BadgeRig(RIG, { enter: false });
+    this.releasePointer();
+    this.rigs = [new BadgeRig(RIG, { enter: false, single: true }), new BadgeRig(RIG, { enter: false, single: true })];
     this.draw();
   }
 
   /** Replays the entrance up to clip time `t` in fixed steps (for comparisons with the reference). */
   seek(t: number) {
-    this.rig = new BadgeRig(RIG, { enter: true });
-    while (this.rig.clipTime < t) this.rig.tick();
+    this.rest();
+    // Seeking is deterministic; the readable scene has no falling entrance.
+    this.rigs.forEach(rig => { while (rig.clipTime < t) rig.tick(); });
     this.draw();
   }
 
@@ -579,12 +631,24 @@ export class BadgeScene {
     if (!this.running) return;
     const dt = Math.min(0.05, (now - this.last) / 1000);
     this.last = now;
-    this.rig.advance(dt);
-    const turn = this.flipTarget - this.model.rotation.y;
-    this.model.rotation.y += turn * (1 - Math.exp(-dt * 8));
-    if (Math.abs(turn) < .001) this.model.rotation.y = this.flipTarget;
+    this.rigs.forEach(rig => rig.advance(dt));
+    let turning = false;
+    let highlighting = false;
+    this.sheenTargets.forEach((target, index) => {
+      const difference = target - this.sheen[index]!;
+      this.sheen[index] = Math.abs(difference) < .005 ? target : this.sheen[index]! + difference * (1 - Math.exp(-dt * 12));
+      highlighting ||= Math.abs(difference) >= .005;
+    });
+    // A grabbed card keeps its inspection pose until release. No animation
+    // changes the grabbed point underneath an active pointer.
+    if (this.dragging < 0 && !this.pendingPointer) this.flipTargets.forEach((target, i) => {
+      const turn = target - this.flipAngles[i]!;
+      const step = Math.min(Math.abs(turn) * (1 - Math.exp(-dt * 12)), dt * 7);
+      this.flipAngles[i] = Math.abs(turn) < .001 ? target : this.flipAngles[i]! + Math.sign(turn) * step;
+      turning ||= Math.abs(turn) >= .001;
+    });
     this.draw();
-    if (this.rig.moving || this.dragging >= 0 || Math.abs(turn) >= .001) this.frame = requestAnimationFrame(this.tick);
+    if (this.rigs.some(rig => rig.moving) || this.dragging >= 0 || turning || highlighting) this.frame = requestAnimationFrame(this.tick);
     else {
       this.running = false;
       this.options.onRest?.();
@@ -628,26 +692,37 @@ export class BadgeScene {
   };
 
   private sync() {
-    const rig = this.rig;
     if (!this.cards || !this.straps) return;
-    toThree(rig.cards[0], this.cards[0]);
-    toThree(rig.cards[1], this.cards[1]);
-    toThree(rig.crimp, this.crimp);
-    toThree(rig.hook, this.hook);
-    const crimpQ = q.set(rig.crimp.q.x, rig.crimp.q.y, rig.crimp.q.z, rig.crimp.q.w);
-    const across = new Vector3(1, 0, 0).applyQuaternion(crimpQ);
-    const [aL, aR] = rig.anchors;
-    const top = new Vector3(aR.p.x - aL.p.x, aR.p.y - aL.p.y, aR.p.z - aL.p.z).normalize();
-    rig.straps.forEach((list, i) => {
-      const anchor = rig.anchors[i]!;
-      const side = i === 0 ? -1 : 1;
-      const points = [new Vector3(anchor.p.x, anchor.p.y + 0.6, anchor.p.z), new Vector3(anchor.p.x, anchor.p.y, anchor.p.z)];
-      for (const b of list) points.push(new Vector3(b.p.x, b.p.y, b.p.z));
-      for (const depth of [0, -0.12]) {
-        v.set(side * STRAP.attachX, CRIMP.h / 2 + depth, side * -STRAP.attachZ).applyQuaternion(crimpQ);
-        points.push(new Vector3(rig.crimp.p.x + v.x, rig.crimp.p.y + v.y, rig.crimp.p.z + v.z));
-      }
-      this.straps![i]!.update(points, top, across);
+    this.rigs.forEach((rig, index) => {
+      const root = this.rigRoots[index]!;
+      root.visible = this.layout === "pair" || index === this.focusedCard;
+      root.position.x = this.layout === "pair" ? (index === 0 ? -1.01 : 1.01) : 0;
+      toThree(rig.cards[0], this.cards![index]!);
+      const art = this.cardArt![index]!;
+      art.children.forEach(child => {
+        if (child instanceof Mesh && child.material instanceof MeshPhysicalMaterial) child.material.clearcoat = .22 + this.sheen[index]! * .22;
+      });
+      art.rotation.y = this.flipAngles[index]!;
+      // Lift through the turn so the printed edge never crosses the shadow wall.
+      art.position.z = Math.sin(this.flipAngles[index]!) * .46;
+      toThree(rig.crimp, this.crimps[index]!);
+      toThree(rig.hook, this.hooks[index]!);
+      const scale = rig.suspensionScale;
+      const crimpQ = q.set(rig.crimp.q.x, rig.crimp.q.y, rig.crimp.q.z, rig.crimp.q.w);
+      const across = new Vector3(1, 0, 0).applyQuaternion(crimpQ);
+      const [aL, aR] = rig.anchors;
+      const top = new Vector3(aR.p.x - aL.p.x, aR.p.y - aL.p.y, aR.p.z - aL.p.z).normalize();
+      rig.straps.forEach((list, i) => {
+        const anchor = rig.anchors[i]!;
+        const side = i === 0 ? -1 : 1;
+        const points = [new Vector3(anchor.p.x, anchor.p.y + .05, anchor.p.z), new Vector3(anchor.p.x, anchor.p.y, anchor.p.z)];
+        for (const b of list) points.push(new Vector3(b.p.x, b.p.y, b.p.z));
+        for (const depth of [0, -.12]) {
+          v.set(side * STRAP.attachX * scale, (CRIMP.h / 2 + depth) * scale, side * -STRAP.attachZ * scale).applyQuaternion(crimpQ);
+          points.push(new Vector3(rig.crimp.p.x + v.x, rig.crimp.p.y + v.y, rig.crimp.p.z + v.z));
+        }
+        this.straps![index]![i]!.update(points, top, across);
+      });
     });
   }
 
@@ -659,7 +734,8 @@ export class BadgeScene {
   }
   private pick(event: PointerEvent) {
     if (!this.cards) return null;
-    const hits = this.ray(event).intersectObjects(this.cards, true);
+    const visibleCards = this.cards.filter((_, i) => this.rigRoots[i]!.visible);
+    const hits = this.ray(event).intersectObjects(visibleCards, true);
     const hit = hits[0];
     if (!hit) return null;
     let object: Object3D | null = hit.object;
@@ -673,68 +749,101 @@ export class BadgeScene {
     this.options.onTouch?.();
   }
 
-  private beginDrag(event: PointerEvent) {
-    const hit = this.pick(event);
-    if (!hit) return;
+  private beginDrag(pending: NonNullable<BadgeScene["pendingPointer"]>) {
+    const { event, index } = pending;
+    this.setSelectedCard(index, false);
     this.canvas.setPointerCapture(event.pointerId);
     this.dragPointer = event.pointerId;
-    const body = this.rig.cards[hit.index];
-    const localPoint = this.model.worldToLocal(hit.point.clone());
-    const local = v.copy(localPoint).sub(new Vector3(body.p.x, body.p.y, body.p.z));
-    local.applyQuaternion(q.set(-body.q.x, -body.q.y, -body.q.z, body.q.w));
-    this.rig.grab(hit.index, { x: local.x, y: local.y, z: local.z }, { x: localPoint.x, y: localPoint.y, z: localPoint.z });
-    this.grabPlane.set(new Vector3(0, 0, 1), -hit.point.z);
-    this.dragging = hit.index;
+    this.dragLocal.copy(pending.local);
+    // Freeze the selected material point and pointer origin once. Recomputing
+    // a rotating visual offset for every move creates a feedback loop at the
+    // reverse face and can inject very large constraint impulses.
+    const visualPoint = this.cardArt![index].localToWorld(this.dragLocal.clone());
+    this.grabPlane.set(new Vector3(0, 0, 1), -visualPoint.z);
+    if (!this.ray(event).ray.intersectPlane(this.grabPlane, this.dragPointerStart)) {
+      this.releasePointer(); return;
+    }
+    this.dragPhysicalStart.copy(this.cards![index].localToWorld(this.dragLocal.clone()));
+    const target = this.rigRoots[index].worldToLocal(this.dragPhysicalStart.clone());
+    this.rigs[index].grab(0, this.dragLocal, { x: target.x, y: target.y, z: target.z });
+    this.dragging = index;
     this.canvas.style.cursor = "grabbing";
     this.touch();
     this.wake();
   }
   private onDown = (event: PointerEvent) => {
     if (!this.active || !event.isPrimary || event.button !== 0 || this.dragPointer !== null) return;
-    if (event.pointerType === "touch") {
-      // Let the browser resolve a vertical scroll before claiming a horizontal drag.
-      if (this.pick(event)) this.pendingTouch = { event, x: event.clientX, y: event.clientY };
-      return;
-    }
-    this.beginDrag(event);
+    const hit = this.pick(event);
+    // Defer capture until intent is known. A short click/tap turns a card;
+    // touch pan-y remains the browser's gesture and never becomes a flip.
+    if (hit) this.pendingPointer = {
+      event, index: hit.index,
+      local: this.cardArt![hit.index].worldToLocal(hit.point.clone()),
+      x: event.clientX, y: event.clientY,
+    };
   };
   private onMove = (event: PointerEvent) => {
     if (!this.active) return;
-    if (this.pendingTouch && event.pointerId === this.pendingTouch.event.pointerId) {
-      const dx = event.clientX - this.pendingTouch.x;
-      const dy = event.clientY - this.pendingTouch.y;
-      if (Math.abs(dy) > 8 && Math.abs(dy) >= Math.abs(dx)) this.pendingTouch = null;
-      else if (Math.abs(dx) > 10 && Math.abs(dx) > Math.abs(dy) * 1.3) {
-        this.beginDrag(this.pendingTouch.event);
-        this.pendingTouch = null;
+    if (this.pendingPointer && event.pointerId === this.pendingPointer.event.pointerId) {
+      const pending = this.pendingPointer;
+      const dx = event.clientX - pending.x;
+      const dy = event.clientY - pending.y;
+      if (event.pointerType === "touch" && Math.abs(dy) > 8 && Math.abs(dy) >= Math.abs(dx)) {
+        this.pendingPointer = null;
+      } else if (event.pointerType === "touch"
+        ? Math.abs(dx) > 10 && Math.abs(dx) > Math.abs(dy) * 1.3
+        : Math.hypot(dx, dy) > 8) {
+        this.beginDrag(pending);
+        this.pendingPointer = null;
       }
     }
-    if (this.dragging >= 0) {
+    if (this.dragging >= 0 && event.pointerId === this.dragPointer) {
       const target = new Vector3();
       if (this.ray(event).ray.intersectPlane(this.grabPlane, target)) {
-        this.model.worldToLocal(target);
-        this.rig.drag({ x: target.x, y: target.y, z: target.z });
+        target.sub(this.dragPointerStart).add(this.dragPhysicalStart);
+        this.rigRoots[this.dragging]!.worldToLocal(target);
+        this.rigs[this.dragging]!.drag({ x: target.x, y: target.y, z: target.z });
       }
       return;
     }
-    if (event.pointerType === "mouse") this.canvas.style.cursor = this.pick(event) ? "grab" : "";
+    if (event.pointerType === "mouse") {
+      const hit = this.pick(event);
+      this.canvas.style.cursor = hit ? "grab" : "";
+      this.sheenTargets.forEach((_, index) => { this.sheenTargets[index] = hit?.index === index ? 1 : 0; });
+      this.wake();
+    }
   };
   private onUp = (event: PointerEvent) => {
-    this.pendingTouch = null;
-    if (this.dragPointer !== event.pointerId) return;
-    this.releasePointer();
-    this.wake();
+    const pending = this.pendingPointer;
+    if (pending?.event.pointerId === event.pointerId) this.pendingPointer = null;
+    if (this.dragPointer === event.pointerId) {
+      this.releasePointer();
+      this.wake();
+      return;
+    }
+    if (event.type !== "pointerup" || !pending || pending.event.pointerId !== event.pointerId) return;
+    if (Math.hypot(event.clientX - pending.x, event.clientY - pending.y) > 10) return;
+    this.touch();
+    // Selection belongs to pointerdown, even if another face passes underneath
+    // during the gesture. A tap never creates a drag joint or applies force.
+    if (pending.index !== this.focusedCard) this.setSelectedCard(pending.index);
+    this.setCardFlipped(pending.index, this.flipTargets[pending.index] === 0);
   };
   private releasePointer() {
-    this.pendingTouch = null;
+    this.pendingPointer = null;
     this.dragging = -1;
-    this.rig.release();
+    this.rigs.forEach(rig => rig.release());
     const pointer = this.dragPointer;
     this.dragPointer = null;
     if (pointer !== null && this.canvas.hasPointerCapture(pointer)) this.canvas.releasePointerCapture(pointer);
     this.canvas.style.cursor = "";
   }
   private onLeave = () => {
-    if (this.dragging < 0) this.canvas.style.cursor = "";
+    if (this.dragging < 0) {
+      this.pendingPointer = null;
+      this.canvas.style.cursor = "";
+      this.sheenTargets.fill(0);
+      this.wake();
+    }
   };
 }
