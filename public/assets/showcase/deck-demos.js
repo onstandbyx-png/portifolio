@@ -72,7 +72,7 @@ function video(node){
  const paint=()=>{const index=Math.min(2,Math.floor(elapsed/3500));if(index!==sceneIndex){sceneIndex=index;$(node,'[data-fd-motion-tag]').textContent=scenes[index].tag;$(node,'[data-fd-motion-title]').textContent=scenes[index].headline;}
  $(node,'[data-fd-video-progress]').style.transform='scaleX('+Math.min(1,elapsed/10000)+')';$(node,'[data-fd-video-time]').textContent='00:'+String(Math.floor(elapsed/1000)).padStart(2,'0')+' / 00:10';
  $(node,'.fd-motion-stage').dataset.fdMotionScene=String(index);};
- const stop=()=>{active=false;cancelAnimationFrame(raf);raf=0;play.setAttribute('aria-pressed','false');play.textContent='Reproduzir';node.classList.remove('is-playing');};
+ const stop=()=>{active=false;cancelAnimationFrame(raf);raf=0;play.setAttribute('aria-pressed','false');play.textContent='Reproduzir';if(node.classList.contains('is-playing'))node.classList.remove('is-playing');};
  const available=()=>!reduce.matches&&!document.hidden&&!document.body.classList.contains('is-paused')&&Boolean(node.closest('.pf-fatos-card.is-active.is-flipped'));
  const tick=now=>{if(!active)return;if(!available()){stop();return;}elapsed=Math.min(10000,elapsed+Math.min(90,now-last));last=now;paint();if(elapsed>=10000){stop();return;}raf=requestAnimationFrame(tick);};
  play.addEventListener('click',()=>{if(active){stop();return;}if(reduce.matches||document.body.classList.contains('is-paused')){elapsed=Math.min(10000,elapsed+3500);paint();return;}if(elapsed>=10000)elapsed=0;active=true;node.classList.add('is-playing');play.setAttribute('aria-pressed','true');play.textContent='Pausar';last=performance.now();raf=requestAnimationFrame(tick);});
