@@ -33,9 +33,10 @@ try{
   const frame=await phone.boundingBox(),pill=await island.boundingBox();
   row.geometry.iphone={frame,pill};
   check(row,'Island centered and proportionate to phone body',!!frame&&!!pill&&pill.width>frame.width*.17&&pill.width<frame.width*.45&&Math.abs(pill.x+pill.width/2-frame.x-frame.width/2)<3);
-  check(row,'Abertura uses one real iPhone screen and retains home indicator',await phone.locator('.df-screen [data-es-piece="0"]').count()===1&&await phone.locator('.df-home').count()===1);
-  await page.locator('#editorial [data-es-piece="0"] .es-piece-art').evaluate(img=>img.decode().catch(()=>{}));
-  check(row,'Editorial photo loads into the iPhone preview before it is shown',await page.locator('#editorial [data-es-piece="0"] .es-piece-art').evaluate(img=>img.complete&&img.naturalWidth>0));
+  check(row,'Desafio uses one real iPhone screen and retains home indicator',await phone.locator('.df-screen [data-es-piece="0"]').count()===1&&await phone.locator('.df-home').count()===1);
+  check(row,'Original challenge UI renders inside iPhone instead of external photo',
+    await page.locator('#editorial [data-es-piece="0"] .es-demo-choice-group button').count()===3&&
+    await page.locator('#editorial .es-hardware img').count()===0);
   check(row,'The side previews use the actual iPad and MacBook hardware shells',
     await page.locator('#editorial .es-peek').evaluateAll(peeks=>peeks.length===2&&
       peeks.some(x=>x.dataset.device==='ipad'&&!!x.querySelector('.ipad-pro-body'))&&
