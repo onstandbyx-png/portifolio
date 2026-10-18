@@ -118,7 +118,7 @@ try{
    await campaignFace.locator('[data-sp-card-turn="back"]').click();
    await page.waitForFunction(()=>document.querySelector('#laboratorio .sp-campaign-card')?.dataset.peelState==='closed');
    check('Campaign paper returns without losing its original image',await campaignFace.getAttribute('data-side')==='front'&&Number(await campaignFace.getAttribute('data-peel-progress'))<.06&&await campaignFace.locator('.sp-campaign-panel:not([hidden]) img').count()===1);
-   check('Each channel explains a different creative decision',new Set(notes).size===3&&notes.every(s=>/adaptação ao canal/i.test(s)&&/entrega/i.test(s)));
+   check('Each channel explains a distinct and actionable creative decision',new Set(notes).size===3&&/Mostrar a ideia/i.test(notes[0])&&/intenção de busca/i.test(notes[1])&&/tela vertical/i.test(notes[2])&&notes.every(s=>/Conversar sobre uma campanha/i.test(s)));
    await page.evaluate(()=>['meta','google','tiktok'].forEach(id=>document.querySelector('#tab-'+id).click()));await page.waitForTimeout(800);
    check('Fast changes keep artwork and explanation in sync',await page.locator('.sp-campaign').getAttribute('data-channel')==='tiktok'&&/vertical/.test(await page.locator('[data-note-title]').innerText())&&await page.locator('.sp-campaign-panel:not([hidden])').count()===1);
    await page.locator('.sp-campaign').evaluate(el=>scrollTo({top:scrollY+el.getBoundingClientRect().top-84,behavior:'instant'}));
