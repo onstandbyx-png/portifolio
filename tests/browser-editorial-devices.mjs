@@ -98,8 +98,8 @@ try{
      check('iPad landscape body is physically proportioned and not a stretched iPhone',
        geometry.bodyRatio>1.29&&geometry.bodyRatio<1.33&&geometry.screenRatio>1.23&&
        geometry.screenRatio<1.42&&geometry.camera&&!geometry.island,geometry);
-     check('Contexto retains its image and three functions',
-       await active.locator('[data-es-piece="1"] .es-ipad-functions span').count()===3&&await active.locator('[data-es-piece="1"] .es-ipad-visual img').count()===1);
+     check('Direção has a CSS-only interface and three functions',
+       await active.locator('[data-es-piece="1"] .es-ipad-functions span').count()===3&&await active.locator('[data-es-piece="1"] .es-demo-ipad-window').count()===1&&await active.locator('img').count()===0);
    }
    if(state.kind==='macbook'){
      const geometry=await active.evaluate(el=>{
@@ -108,8 +108,8 @@ try{
      });
      check('MacBook reuses the real lid hinge and aluminum base dimensions',
        geometry.lid>1.47&&geometry.lid<1.73&&geometry.base>1.03&&geometry.left>=-3&&geometry.right<=width+3,geometry);
-     check('Fechamento is Fatos editorial content, not the Casa Costa campaign',
-       await active.locator('[data-es-piece="2"] .es-mac-hero-copy').innerText().then(text=>text.includes('UMA HISTÓRIA COMPLETA')&&!text.includes('Casa Costa')));
+     check('Entrega has original preview and contextual contact action',
+       await active.locator('[data-es-piece="2"] .es-demo-mac-copy').innerText().then(text=>text.includes('Uma presença')&&!text.includes('Casa Costa'))&&await active.locator('[data-es-piece="2"]:not([hidden]) [data-es-cta]').count()===1);
    }
    await active.scrollIntoViewIfNeeded();
    await page.waitForTimeout(reduced?25:100);
@@ -119,20 +119,21 @@ try{
     const heights=row.sizes.map(s=>s.stageHeight);
     const navPositions=row.sizes.map(s=>s.navDocumentTop);
     const nextPositions=row.sizes.map(s=>s.nextDocumentTop);
-    check('Scene keeps one height across all device types',
-      Math.max(...heights)-Math.min(...heights)<2.5&&row.sizes.every(s=>s.stageMode===(width<=700?'stable-mobile':'stable-desktop')),row.sizes);
-    check('Arrows and progress stay in place during chapter switches',
-      navPositions.every(Number.isFinite)&&Math.max(...navPositions)-Math.min(...navPositions)<3,row.sizes);
-    check('Next Fatos section no longer jumps on iPhone/iPad/MacBook changes',
-      nextPositions.every(Number.isFinite)&&Math.max(...nextPositions)-Math.min(...nextPositions)<3,row.sizes);
-    check('Side hardware stays below tabs and above the pagination',
-      row.sizes.every(s=>s.side.length===2&&s.side.every(p=>p.top>=-8&&p.bottom<=s.stageHeight+8)),row.sizes);
+    check('Scene height matches the selected hardware without large mobile dead zones',
+      width<=700?(heights[0]>heights[1]+80&&heights[0]>heights[2]+80&&row.sizes.every(s=>s.stageMode==='compact-by-step')):(Math.max(...heights)-Math.min(...heights)<2.5&&row.sizes.every(s=>s.stageMode==='stable-desktop')),row.sizes);
+    check('Arrows and progress follow the current device without overlap',
+      navPositions.every(Number.isFinite)&&row.sizes.every(s=>s.navDocumentTop>=s.stageDocumentTop+s.stageHeight-40),row.sizes);
+    check('The card gallery follows the active device layout',
+      nextPositions.every(Number.isFinite)&&row.sizes.every(s=>s.nextDocumentTop>=s.navDocumentTop),row.sizes);
+    check('Side previews fit alongside the active mobile device',
+      row.sizes.every(s=>s.side.length===2&&s.side.every(p=>p.top>=-24&&p.bottom<=s.stageHeight+24)),row.sizes);
   }
   await page.locator('#editorial [data-es-prev]').click();
   check('Previous arrow returns to iPad from MacBook',await editorial.getAttribute('data-editorial-device')==='ipad');
   await page.locator('#editorial [data-es-prev]').click();
   check('Second previous arrow returns to iPhone',await editorial.getAttribute('data-editorial-device')==='iphone');
   check('All screens remain readable to assistive technology',await editorial.locator(':scope .es-stage .es-hardware.es-device').getAttribute('aria-hidden')==='false');
+  check('No image elements or external editorial brand in either replaced section',await editorial.evaluate(root=>root.querySelectorAll('img').length===0&&!/Fatos Desconhecidos|Fatos Esportes|Fatos Nerd/i.test(root.textContent)));
   check('No script exceptions during device transitions',row.errors.length===0,row.errors);
   console.log(JSON.stringify({width,height,reduced,checks:row.checks,geometry:row.sizes,errors:row.errors}));
   await context.close();

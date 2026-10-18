@@ -16,7 +16,10 @@ test('Every gallery reverse explains a decision',()=>{
 });
 test('Editorial transcript is an optional accessible expansion',()=>{
  assert.match(read('index.html'),/<details class="es-transcript">/);
- assert.match(read('index.html'),/Ler o texto da peça/);
+ assert.match(read('index.html'),/Entender a escolha/);
+ assert.match(read('index.html'),/Três etapas para ganhar vida/);
+ assert.equal(sectionCopy('editorial').steps.length,3);
+ assert.equal(sectionCopy('colecao').cards.length,6);
 });
 test('Campaign context supplements the safe crossfade',()=>{
  const js=read('public/assets/showcase/static-presentations.js');

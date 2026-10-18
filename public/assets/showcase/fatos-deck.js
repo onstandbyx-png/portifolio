@@ -1,50 +1,25 @@
-/* Adapted from Ecossistema Fatos Baralho.tsx and data/data.json.
- * Source: onstandbyx-png/roblox b9c827082edc6e2076c864687451ae3d1a1dcf76.
- * Portfolio context deliberately shows editorial choices, not network metrics. */
+/* Six independent interactive capabilities using the existing physical deck, gesture physics and accessibility contracts. */
 import { clamp, createMotion } from '../sections/motion.js';
 import { sectionCopy } from '../content/portfolio-copy.js';
 const copy = sectionCopy('colecao');
 const metadata = {
-  "desconhecidos": {
-    "short": "Desconhecidos",
-    "handle": "@fatosdesconhecidos",
-    "territory": "Curiosidades, ciência e histórias do cotidiano.",
-    "color": "#4b91ff"
-  },
-  "esportes": {
-    "short": "Esportes",
-    "handle": "@fatosesportesbr",
-    "territory": "Histórias, personagens e cultura do esporte.",
-    "color": "#66c577"
-  },
-  "crencas": {
-    "short": "Crenças",
-    "handle": "@fatosecrencas",
-    "territory": "Crenças, tradições e narrativas culturais.",
-    "color": "#f2ae63"
-  },
-  "sobrenaturais": {
-    "short": "Sobrenaturais",
-    "handle": "@fatossobrenaturaisbr",
-    "territory": "Mistérios, suspense e narrativas que despertam curiosidade.",
-    "color": "#bec6d4"
-  },
-  "nerd": {
-    "short": "Nerd",
-    "handle": "@fatosnerdoficial",
-    "territory": "Jogos, entretenimento e cultura pop.",
-    "color": "#f1cd65"
-  },
-  "negocios": {
-    "short": "Negócios",
-    "handle": "@fatosenegocio",
-    "territory": "Ideias, trajetórias e o mundo dos negócios.",
-    "color": "#6bcba8"
-  }
+  sites:{short:'Sites',handle:'UX / Desenvolvimento',territory:'Sites e aplicativos',color:'#99D3C4'},
+  conteudo:{short:'Conteúdo',handle:'Redação / Narrativa',territory:'Conteúdo e copy',color:'#D7C9F2'},
+  campanhas:{short:'Campanhas',handle:'Estratégia / Ads',territory:'Campanhas multicanal',color:'#EEC38E'},
+  video:{short:'Vídeo',handle:'Direção / Movimento',territory:'Vídeo e motion',color:'#AECDE6'},
+  lojas:{short:'Lojas',handle:'Comércio / Interface',territory:'Experiência de compra',color:'#F0B7A8'},
+  sistemas:{short:'Sistemas',handle:'Produto / Automação',territory:'Sistemas e IA',color:'#ABDAB3'}
+};
+const coverScenes = {
+  sites:'<div class="pf-case-browser"><div class="pf-case-browser-top"><i></i><i></i><i></i><span>studio / projeto</span></div><div class="pf-case-browser-body"><small>DESIGN + CÓDIGO</small><b>O essencial vira uma experiência.</b><div class="pf-case-cta">Explorar interface ↗</div><div class="pf-case-browser-strips"><i></i><i></i><i></i></div></div></div>',
+  conteudo:'<div class="pf-case-editor"><span>01 / UMA IDEIA</span><strong>Uma boa história começa com clareza.</strong><div class="pf-case-editor-footer"><span>ABERTURA</span><span>CONTEXTO</span><span>CONVITE</span></div></div>',
+  campanhas:'<div class="pf-case-ad-layout"><div class="pf-case-ad-phone"><small>STORIES</small><b>Uma ideia.<br>Vários caminhos.</b><span>Explorar →</span></div><div class="pf-case-ad-search"><small>Pesquisa · Patrocinado</small><b>Seu próximo projeto digital</b><span>Sites e experiências</span></div></div>',
+  video:'<div class="pf-case-film"><div class="pf-case-film-ring"><span>▶</span></div><strong>UMA IDEIA<br>EM MOVIMENTO.</strong><div class="pf-case-film-track"><i></i><i></i><i></i></div><small>00:00 ━━━━━━━━━ 00:10</small></div>',
+  lojas:'<div class="pf-case-shop"><small>STUDIO / PRODUTO CONCEITUAL</small><div class="pf-case-product-sculpt"><i></i><i></i><i></i></div><b>Escolha, personalize, explore.</b><div class="pf-case-swatches"><i></i><i></i><i></i></div></div>',
+  sistemas:'<div class="pf-case-ops"><div class="pf-case-ops-top"><span>PAINEL DE FLUXOS</span><b>3 tarefas</b></div><div class="pf-case-task"><i></i><span>Nova solicitação<small>Entrada recebida</small></span><b>01</b></div><div class="pf-case-task"><i></i><span>Qualificação<small>Prioridade definida</small></span><b>02</b></div><div class="pf-case-task"><i></i><span>Próxima ação<small>Equipe notificada*</small></span><b>03</b></div><small>*SIMULAÇÃO LOCAL</small></div>'
 };
 const brands = copy.cards.map(card => ({ ...card, ...metadata[card.id], approach: card.context }));
 const escape = value => String(value ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const assets = '/assets/portfolio/recovered-fatos/';
 const make = html => { const t = document.createElement('template'); t.innerHTML = html.trim(); return t.content.firstElementChild; };
 const $ = (selector, root) => root.querySelector(selector);
 
@@ -54,18 +29,18 @@ export function mountFatosDeck() {
   const existing = anchor.querySelector('#colecao');
   if (existing) return existing;
   const motion = createMotion();
-  const shell = make(`<section id="colecao" class="pf-fatos-deck shell" aria-label="Composições editoriais Fatos" data-active="0">
+  const shell = make(`<section id="colecao" class="pf-fatos-deck shell" aria-label="Seis experiências interativas de criação e desenvolvimento" data-active="0">
     <div class="pf-fatos-intro">
       <div class="pf-fatos-context"><span data-fatos-index>01 / 06</span><strong data-fatos-name></strong><h4 data-fatos-question></h4><p data-fatos-territory></p></div>
     </div>
-    <div class="pf-fatos-display"><div class="pf-fatos-stage" role="region" aria-roledescription="carrossel" aria-label="Seis universos editoriais Fatos" tabindex="0"></div><div class="pf-fatos-navigation" role="group" aria-label="Navegar pelas composições"><button type="button" data-fatos-prev aria-label="Composição anterior"><span aria-hidden="true">←</span></button><p class="pf-fatos-counter" role="status" aria-live="polite"></p><button type="button" data-fatos-next aria-label="Próxima composição"><span aria-hidden="true">→</span></button></div></div>
+    <div class="pf-fatos-display"><div class="pf-fatos-stage" role="region" aria-roledescription="carrossel" aria-label="Seis exemplos de serviços interativos" tabindex="0"></div><div class="pf-fatos-navigation" role="group" aria-label="Navegar pelas composições"><button type="button" data-fatos-prev aria-label="Composição anterior"><span aria-hidden="true">←</span></button><p class="pf-fatos-counter" role="status" aria-live="polite"></p><button type="button" data-fatos-next aria-label="Próxima composição"><span aria-hidden="true">→</span></button></div></div>
   </section>`);
   const bottom = anchor.querySelector('.editorial-bottom');
   if (bottom) bottom.before(shell); else anchor.append(shell);
   const stage = $('.pf-fatos-stage', shell);
   let active = 0, drag = null, lastSwipe = -Infinity, arrival = null, departure = null, settlement = null, flightToken = 0;
   const cards = brands.map((brand, i) => {
-    const card = make(`<article class="pf-fatos-card" data-fatos-card="${brand.id}" aria-label="${i + 1} de ${brands.length}: ${brand.name}"><div class="pf-fatos-rotor"><div class="pf-fatos-face pf-fatos-front" data-fatos-front><img class="pf-fatos-art" src="${assets}cena-${brand.id}.webp" alt="Composição editorial de ${brand.name}" loading="lazy" decoding="async" width="720" height="1273" draggable="false"><div class="pf-fatos-shade" aria-hidden="true"></div><div class="pf-fatos-profile"><img src="${assets}avatar_${brand.id}.webp" alt="" width="48" height="48" loading="lazy" draggable="false"><div><strong>${brand.name}</strong><span>${brand.handle}</span></div></div><div class="pf-fatos-question"><span class="pf-fatos-rule" aria-hidden="true"></span><h4>${brand.question}</h4></div><button type="button" class="pf-fatos-flip" data-fatos-flip aria-expanded="false">${escape(copy.controls.front)} <span aria-hidden="true">↻</span></button></div><div class="pf-fatos-face pf-fatos-back" data-fatos-back aria-hidden="true" inert><div class="pf-fatos-back-heading"><img src="${assets}avatar_${brand.id}.webp" alt="" width="44" height="44" loading="lazy"><div><span>RECORTE EDITORIAL</span><h4>${brand.name}</h4></div></div><p class="pf-fatos-approach">${brand.approach}</p><div class="pf-fatos-formats"><span>DESDOBRAMENTOS</span><ul>${brand.formats.map(format => `<li>${format}</li>`).join('')}</ul></div><button type="button" class="pf-fatos-flip" data-fatos-return>${escape(copy.controls.back)} <span aria-hidden="true">↶</span></button></div></div></article>`);
+    const card = make(`<article class="pf-fatos-card" data-fatos-card="${brand.id}" aria-label="${i + 1} de ${brands.length}: ${escape(brand.name)}"><div class="pf-fatos-rotor"><div class="pf-fatos-face pf-fatos-front" data-fatos-front><div class="pf-fatos-art pf-case-art pf-case-art--${brand.id}" aria-hidden="true">${coverScenes[brand.id]}</div><div class="pf-fatos-shade" aria-hidden="true"></div><div class="pf-fatos-profile"><span class="pf-case-mark" aria-hidden="true">${String(i+1).padStart(2,'0')}</span><div><strong>${escape(brand.name)}</strong><span>${escape(brand.handle)}</span></div></div><div class="pf-fatos-question"><span class="pf-fatos-rule" aria-hidden="true"></span><h4>${escape(brand.question)}</h4></div><button type="button" class="pf-fatos-flip" data-fatos-flip aria-expanded="false">${escape(copy.controls.front)} <span aria-hidden="true">↻</span></button></div><div class="pf-fatos-face pf-fatos-back" data-fatos-back aria-hidden="true" inert><div class="pf-fatos-back-heading"><span class="pf-case-mark" aria-hidden="true">${String(i+1).padStart(2,'0')}</span><div><span>PROTÓTIPO INTERATIVO</span><h4>${escape(brand.name)}</h4></div></div><p class="pf-fatos-approach">${escape(brand.approach)}</p><div class="pf-fatos-formats"><span>O QUE ESTA DEMONSTRAÇÃO EXPLORA</span><ul>${brand.formats.map(format => `<li>${escape(format)}</li>`).join('')}</ul></div><button type="button" class="pf-fatos-flip" data-fatos-return>${escape(copy.controls.back)} <span aria-hidden="true">↶</span></button></div></div></article>`);
     card.style.setProperty('--fatos-accent', brand.color);
     $('[data-fatos-flip]', card).addEventListener('click', () => flip(true, true));
     $('[data-fatos-return]', card).addEventListener('click', () => flip(false, true));
