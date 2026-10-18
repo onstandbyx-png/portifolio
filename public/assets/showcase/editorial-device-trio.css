@@ -1,0 +1,112 @@
+/* Physical editorial stack: one real device for each chapter.
+   Timing follows the supplied 25-second reference (roughly 0.55-0.65s for
+   each change), with the active device in front and angled side previews.
+   Existing iPhone and MacBook shell geometry is reused. */
+#editorial .es-stage{width:min(100%,860px);min-height:0;height:auto;position:relative;isolation:isolate;overflow:visible;transition:height .42s cubic-bezier(.2,.8,.2,1)}
+#editorial .es-stage:before{display:none}
+#editorial .es-stage>.es-hardware{position:relative;z-index:4;min-width:0;flex:none;filter:drop-shadow(0 18px 24px #172a2133)}
+#editorial .es-stage>.es-device{filter:drop-shadow(0 18px 23px #182f2638)}
+#editorial .es-peek{
+  position:absolute;left:50%;top:50%;z-index:1;
+  display:block;width:max-content;max-width:none;height:auto;aspect-ratio:auto;
+  padding:0;margin:0;border:0;border-radius:0;background:transparent;
+  opacity:.57;filter:saturate(.72);
+  transform-origin:center center;
+  transform:translate(-50%,-50%) translate3d(var(--side-offset,280px),0,-35px) rotateY(var(--peek-tilt,0deg)) scale(.91);
+  transition:opacity .4s ease,filter .4s ease,transform .59s cubic-bezier(.18,.8,.2,1);
+  perspective:1350px;cursor:pointer;touch-action:manipulation;-webkit-tap-highlight-color:transparent;
+}
+#editorial .es-peek--left{--peek-tilt:9deg;z-index:2}
+#editorial .es-peek--right{--peek-tilt:-9deg;z-index:1}
+#editorial .es-peek:hover{opacity:.86;filter:saturate(.92)}
+#editorial .es-peek:focus-visible{outline:3px solid #436a9b;outline-offset:8px;opacity:1}
+#editorial .es-peek>.es-hardware{pointer-events:none}
+#editorial .es-stage .es-piece[hidden],#editorial .es-preview-piece[hidden]{display:none!important}
+#editorial .es-peek .es-preview-piece:not([hidden]){display:block!important}
+#editorial .es-stage .es-screen{position:absolute;inset:0}
+#editorial .es-stage>.es-device .es-piece{pointer-events:none}
+#editorial .es-hardware--iphone{flex:none}
+#editorial .es-hardware--ipad{aspect-ratio:281.6/215.5;flex:none;min-width:0;isolation:isolate}
+#editorial .ipad-pro-body{
+  box-sizing:border-box;position:relative;width:100%;height:100%;padding:clamp(6px,1vw,12px);
+  border:1px solid #88968b;border-radius:clamp(15px,2.5vw,29px);
+  background:linear-gradient(140deg,#f1f3ef 0%,#909e94 11%,#e2e7e1 29%,#a3afa5 58%,#f2f5ef 79%,#849387 100%);
+  box-shadow:inset 0 1px 1px #fff9,inset 0 -2px 2px #52635570,0 12px 24px #192e2430;
+}
+#editorial .ipad-pro-metal{position:absolute;inset:0;pointer-events:none;border-radius:inherit;box-shadow:inset 0 0 0 1px #fff8,inset 0 0 0 2px #52655436}
+#editorial .ipad-pro-glass{box-sizing:border-box;width:100%;height:100%;border:clamp(5px,.9vw,10px) solid #101415;border-radius:clamp(9px,2vw,23px);overflow:hidden;background:#07090a;box-shadow:0 0 0 1px #626d6575}
+#editorial .ipad-pro-screen{position:relative;width:100%;height:100%;overflow:hidden;border-radius:clamp(4px,1vw,12px);background:#f4f6ee;isolation:isolate}
+#editorial .ipad-pro-camera{
+  display:grid;place-items:center;position:absolute;z-index:8;left:50%;top:clamp(2px,.5vw,6px);
+  transform:translateX(-50%);width:clamp(7px,1vw,12px);height:clamp(7px,1vw,12px);
+  border-radius:50%;background:#090d0f;box-shadow:0 0 0 1px #293237;pointer-events:none;
+}
+#editorial .ipad-pro-camera i{width:45%;height:45%;border-radius:50%;background:radial-gradient(circle at 38% 33%,#456c82,#080e1a 77%)}
+#editorial .ipad-pro-power,#editorial .ipad-pro-volume{position:absolute;z-index:6;pointer-events:none;background:#aab5ab;border:1px solid #718376}
+#editorial .ipad-pro-power{top:-2px;right:10%;width:11%;height:3px;border-radius:3px}
+#editorial .ipad-pro-volume{right:-2px;top:20%;width:3px;height:18%;border-radius:3px}
+#editorial .ipad-pro-home{position:absolute;z-index:4;left:50%;bottom:3.7%;transform:translateX(-50%);width:22%;height:3px;border-radius:10px;background:#f9faf9b0;pointer-events:none}
+
+/* Stage 02: true landscape iPad composition with independent text and photo columns. */
+#editorial .es-screen--ipad{background:#f4f5ed;color:#223b2a}
+#editorial .es-ipad-editorial{
+  display:grid;grid-template-columns:48% 52%;
+  position:absolute;inset:0;width:100%;height:100%;background:#f1f4ed;color:#203e2b;
+}
+#editorial .es-ipad-info{position:relative;display:flex;flex-direction:column;gap:clamp(4px,1vw,13px);padding:clamp(9px,2vw,24px);min-width:0;overflow:hidden}
+#editorial .es-ipad-brand{display:flex;align-items:center;gap:7px;font-weight:700;font-size:clamp(9px,1.1vw,15px);white-space:nowrap}
+#editorial .es-ipad-brand img{width:clamp(15px,2vw,28px);height:clamp(15px,2vw,28px);border-radius:50%}
+#editorial .es-ipad-brand small{display:block;color:#647765;font-size:.7em;letter-spacing:.04em}
+#editorial .es-ipad-step{margin-top:auto;color:#728576;letter-spacing:.1em;text-transform:uppercase;font-size:clamp(7px,.8vw,10px)}
+#editorial .es-ipad-info h3{margin:0;font:600 clamp(17px,3.1vw,40px)/1.06 Inter,Arial,sans-serif;letter-spacing:-.052em;max-width:15ch;color:#1e3829}
+#editorial .es-ipad-info h3 .es-mask{line-height:1.13}
+#editorial .es-ipad-info p{margin:0;color:#54705c;font:400 clamp(9px,1.1vw,15px)/1.35 Inter,Arial,sans-serif;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+#editorial .es-ipad-functions{display:flex;flex-wrap:wrap;gap:clamp(3px,.6vw,7px);margin-top:auto;color:#44694c;font-size:clamp(8px,.85vw,11px)}
+#editorial .es-ipad-functions span{display:flex;align-items:center;gap:3px;white-space:nowrap}
+#editorial .es-ipad-functions svg{width:clamp(11px,1.2vw,16px);height:clamp(11px,1.2vw,16px)}
+#editorial .es-ipad-visual{position:relative;overflow:hidden;min-height:0;background:#667e70}
+#editorial .es-ipad-visual img{width:100%;height:100%;object-fit:cover;object-position:center}
+#editorial .es-ipad-visual::after{content:"";position:absolute;inset:44% 0 0;background:linear-gradient(transparent,#1a3429b0);pointer-events:none}
+#editorial .es-ipad-visual>span{position:absolute;bottom:7%;left:8%;right:8%;z-index:2;color:#fff;font:600 clamp(7px,.8vw,10px)/1.25 Inter,Arial,sans-serif;letter-spacing:.08em;text-shadow:0 1px 2px #0007}
+
+/* Stage 03: exact MacBook physical class stack already used by Casa Costa. */
+#editorial .es-hardware--macbook.rf-macbook{display:block;flex:none;position:relative;min-width:0;max-width:min(100%,820px);filter:drop-shadow(0 12px 19px #1b36292d)}
+#editorial .es-hardware--macbook .mbp-device{width:100%;max-width:none}
+#editorial .es-hardware--macbook .mbp-screen{position:relative;overflow:hidden}
+#editorial .es-hardware--macbook .mbp-lid{aspect-ratio:1.59}
+#editorial .es-screen--macbook{background:#f3f5ee;color:#24382b}
+#editorial .es-macbook-editorial{display:flex;flex-direction:column;position:absolute;inset:0;overflow:hidden;background:#f8f8f0;color:#203b2b}
+#editorial .es-mac-browser{box-sizing:border-box;display:flex;align-items:center;justify-content:space-between;min-height:9%;padding:0 3%;background:#e7eee5;color:#607565;font:600 clamp(6px,.75vw,10px)/1.2 Inter,Arial,sans-serif;letter-spacing:.06em}
+#editorial .es-mac-browser>span{display:flex;gap:4px}
+#editorial .es-mac-browser i{width:clamp(3px,.55vw,6px);height:clamp(3px,.55vw,6px);border-radius:50%;background:#95a58e}
+#editorial .es-mac-nav{box-sizing:border-box;display:flex;align-items:center;justify-content:space-between;gap:10px;min-height:17%;padding:0 4%;color:#1c3828}
+#editorial .es-mac-nav strong{font:600 clamp(10px,1.5vw,21px)/1 Georgia,serif}
+#editorial .es-mac-nav span{font-size:clamp(6px,.8vw,11px)}
+#editorial .es-mac-nav small{font-size:clamp(6px,.75vw,10px);color:#758a77;white-space:nowrap}
+#editorial .es-mac-hero{position:relative;flex:1;min-height:0;overflow:hidden;background:#49695c}
+#editorial .es-mac-hero>img{display:block;width:100%;height:100%;object-fit:cover;object-position:center 49%;filter:saturate(.91)}
+#editorial .es-mac-hero::after{content:"";position:absolute;inset:23% 0 0;background:linear-gradient(transparent,#112819bc);pointer-events:none}
+#editorial .es-mac-hero-copy{display:flex;flex-direction:column;gap:clamp(3px,.8vw,10px);position:absolute;z-index:2;bottom:7%;left:5%;right:6%;color:white;text-shadow:0 1px 3px #18251b8c}
+#editorial .es-mac-hero-copy small{font:600 clamp(6px,.75vw,10px)/1.2 Inter,Arial,sans-serif;letter-spacing:.1em}
+#editorial .es-mac-hero-copy h3{font:500 clamp(17px,3vw,40px)/1.05 Georgia,serif;letter-spacing:-.05em;margin:0;color:#fff;max-width:18ch}
+#editorial .es-mac-hero-copy p{font:400 clamp(8px,1.05vw,14px)/1.3 Inter,Arial,sans-serif;margin:0;color:#eff5ec;max-width:46ch}
+
+@media(max-width:700px){
+ #editorial .es-stage{padding:10px 0 3px}
+ #editorial .es-peek{opacity:.42;transform:translate(-50%,-50%) translate3d(var(--side-offset,190px),0,-20px) rotateY(var(--peek-tilt,0deg)) scale(.88)}
+ #editorial .es-ipad-info{padding:8px}
+ #editorial .es-ipad-info h3{font-size:clamp(16px,4.2vw,21px)}
+ #editorial .es-ipad-info p{font-size:clamp(8px,2.1vw,11px)}
+ #editorial .es-ipad-brand{font-size:9px}
+ #editorial .es-ipad-functions{font-size:8px;gap:3px}
+ #editorial .es-ipad-functions svg{width:10px;height:10px}
+ #editorial .es-mac-nav span{display:none}
+ #editorial .es-mac-hero-copy h3{font-size:clamp(19px,5vw,29px)}
+ #editorial .es-mac-hero-copy p{font-size:clamp(8px,2.3vw,11px)}
+}
+@media(max-width:360px){
+ #editorial .es-ipad-info p{-webkit-line-clamp:2}
+ #editorial .es-ipad-brand small{display:none}
+}
+@media(prefers-reduced-motion:reduce){#editorial .es-stage,#editorial .es-peek{transition:none!important}}
+body.is-paused #editorial .es-stage,body.is-paused #editorial .es-peek{transition:none!important}
