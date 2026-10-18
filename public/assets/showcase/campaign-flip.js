@@ -2,6 +2,7 @@
  * Native page scrolling remains untouched outside the 64px folded-corner grip.
  */
 import {bindCardSurface} from './card-surface.js';
+import {mountCampaignExperience} from './experience-player.js';
 
 export function mountCampaignFlip() {
   const lab=document.querySelector('#laboratorio .sp-campaign');
@@ -46,6 +47,7 @@ export function mountCampaignFlip() {
   const crease=card.querySelector('[data-sp-peel-crease]');
   card.querySelector('.sp-campaign-image-slot').append(art);
   card.querySelector('.sp-campaign-note-slot').append(note);
+  const campaignExperience=mountCampaignExperience(lab,underlay);
   const BASE=.05,clamp=(n,min=0,max=1)=>Math.min(max,Math.max(min,n));
   const prefersReduced=matchMedia('(prefers-reduced-motion:reduce)');
   let progress=BASE,animation=0,gesture=null,ignoreSyntheticClick=false;
@@ -110,6 +112,7 @@ export function mountCampaignFlip() {
     sheet.setAttribute('aria-hidden',String(open));
     grip.setAttribute('aria-expanded',String(open));
     card.dataset.peelState=open?'open':'closed';
+    if(!open)campaignExperience?.stop();
   }
   function animateTo(target,focus=false){
     stopAnimation();
@@ -200,6 +203,7 @@ export function mountCampaignFlip() {
   new MutationObserver(()=>{
     if(card.dataset.side==='back'&&underlay.contains(document.activeElement))
       grip.focus({preventScroll:true});
+    campaignExperience?.reset();
     reset();
   }).observe(lab,{attributes:true,attributeFilter:['data-channel']});
   const motionSwitch=document.querySelector('#motion-toggle');
