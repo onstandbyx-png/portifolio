@@ -13,15 +13,15 @@ export function mountEditorialSwipe(){
   const steps=sectionCopy('editorial').steps;
   const nav=document.createElement('nav');
   nav.className='es-swipe-nav';
-  nav.setAttribute('aria-label','Navegação da história editorial');
+  nav.setAttribute('aria-label','Navegação das etapas do projeto');
   nav.innerHTML=[
-    '<button type="button" data-es-prev aria-label="Etapa anterior da história"><span aria-hidden="true">←</span></button>',
+    '<button type="button" data-es-prev aria-label="Etapa anterior do projeto"><span aria-hidden="true">←</span></button>',
     '<div class="es-swipe-center"><div class="es-swipe-dots" aria-hidden="true">',
       '<span data-es-dot></span><span data-es-dot></span><span data-es-dot></span>',
     '</div><span data-es-count class="es-swipe-count"></span>',
       '<span class="es-swipe-hint"><span aria-hidden="true">←</span> Deslize para explorar <span aria-hidden="true">→</span></span>',
     '</div>',
-    '<button type="button" data-es-next aria-label="Próxima etapa da história"><span aria-hidden="true">→</span></button>'
+    '<button type="button" data-es-next aria-label="Próxima etapa do projeto"><span aria-hidden="true">→</span></button>'
   ].join('');
   panel.after(nav);
   const prev=nav.querySelector('[data-es-prev]'),next=nav.querySelector('[data-es-next]');
@@ -57,6 +57,7 @@ export function mountEditorialSwipe(){
     choose(index()+(dx<0?1:-1));return true;
   }
   stage.addEventListener('pointerdown',event=>{
+    if(event.target.closest('button,a,[data-no-editorial-swipe]'))return;
     if(!event.isPrimary||(event.pointerType==='mouse'&&event.button!==0))return;
     gesture={id:event.pointerId,x:event.clientX,y:event.clientY,scrollY:scrollY,time:performance.now()};
   },{passive:true});
@@ -67,6 +68,7 @@ export function mountEditorialSwipe(){
   },{passive:true});
   stage.addEventListener('pointercancel',()=>{gesture=null},{passive:true});
   stage.addEventListener('touchstart',event=>{
+    if(event.target.closest('button,a,[data-no-editorial-swipe]'))return;
     if(event.touches.length!==1){touchGesture=null;return;}
     const t=event.touches[0];
     touchGesture={id:t.identifier,x:t.clientX,y:t.clientY,scrollY:scrollY,time:performance.now()};
