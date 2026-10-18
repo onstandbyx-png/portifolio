@@ -1,103 +1,121 @@
-/** Six distinct, honest showcase prototypes, using the six existing Fatos cards.
- * Each interaction belongs to the reverse, not to the outer flip or deck swipe.
+/** Six independent mini-experiences, all local and image-free.
+ * Controls inside card backs do not initiate deck gestures or transactions.
  */
-const src='/assets/portfolio/recovered-fatos/';
-const photos={
- desconhecidos:src+'cena-desconhecidos.webp',
- esportes:src+'cena-esportes.webp',
- crencas:src+'cena-crencas.webp',
- sobrenaturais:src+'cena-sobrenaturais.webp',
- nerd:src+'cena-nerd.webp',
- negocios:src+'cena-negocios.webp'
+const $=(root,selector)=>root.querySelector(selector);
+const $$=(root,selector)=>Array.from(root.querySelectorAll(selector));
+const examples={
+  sites:{title:'Sites e apps',caption:'Um protótipo navegável com dois formatos.',service:'Sites e aplicativos'},
+  conteudo:{title:'Conteúdo e copy',caption:'A mesma ideia em três momentos de leitura.',service:'Conteúdo e redação'},
+  campanhas:{title:'Campanhas e Ads',caption:'A oferta se adapta à superfície e à intenção.',service:'Campanhas e anúncios'},
+  video:{title:'Vídeo e movimento',caption:'Ritmo e sequenciamento controlados por você.',service:'Vídeo e motion'},
+  lojas:{title:'Lojas e produtos',caption:'Escolhas com feedback, sem checkout ou pagamento.',service:'Lojas e e-commerce'},
+  sistemas:{title:'Sistemas e IA',caption:'O atendimento vira uma tarefa em um fluxo local.',service:'Sistemas e automações'}
 };
-const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&amp;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const labels={
- desconhecidos:{name:'Posts',why:'Uma ideia, três momentos de leitura.'},
- esportes:{name:'Vídeos',why:'Roteiro, movimento e legenda sincronizados.'},
- crencas:{name:'Blog',why:'Um artigo que organiza pesquisa e aprofundamento.'},
- sobrenaturais:{name:'Loja',why:'Produto demonstrativo e escolha antes do carrinho.'},
- nerd:{name:'Ads',why:'A mesma ideia, formatos realmente diferentes.'},
- negocios:{name:'ChatGPT Ads',why:'Resposta independente e anúncio explicitamente patrocinado.'}
-};
-const fcard=(label,body)=>'<div class="fd-head"><span class="fd-kicker">ESTUDO AUTORAL · '+esc(label)+'</span><strong>'+esc(body)+'</strong></div>';
-function createPosts(card){
- let index=0;
- const labels=['01 · GANCHO','02 · CONTEXTO','03 · CONCLUSÃO'];
- const texts=['Você sabia? Uma pergunta muda a forma de olhar.','O contexto conecta fato, imagem e explicação.','A síntese deixa uma ideia para levar adiante.'];
- const images=[photos.desconhecidos,photos.crencas,photos.negocios];
- card.innerHTML=fcard('POSTS','Carrossel editorial em três páginas')+
- '<div class="fd-post"><img data-fd-post-image alt="Composição editorial Fatos" loading="lazy" decoding="async"><div class="fd-post-copy"><small data-fd-post-kicker></small><p data-fd-post-text></p></div></div>'+
- '<div class="fd-nav"><button type="button" data-fd-previous>←</button><output data-fd-counter>01 / 03</output><button type="button" data-fd-next>→</button></div>';
- const paint=()=>{card.querySelector('[data-fd-post-image]').src=images[index];card.querySelector('[data-fd-post-kicker]').textContent=labels[index];card.querySelector('[data-fd-post-text]').textContent=texts[index];card.querySelector('[data-fd-counter]').textContent='0'+(index+1)+' / 03';};
- card.querySelector('[data-fd-previous]').addEventListener('click',()=>{index=(index+2)%3;paint()});
- card.querySelector('[data-fd-next]').addEventListener('click',()=>{index=(index+1)%3;paint()});
+const header=(label,lead)=>'<header class="fd-head"><span class="fd-kicker">DEMONSTRAÇÃO ORIGINAL · '+label+'</span><strong>'+lead+'</strong></header>';
+const makeCTA=service=>{const a=document.createElement('a');a.className='fd-project-link';a.href='#contato';a.dataset.contactService=service;a.dataset.noCardFlip='';a.textContent='Quero um projeto assim ↗';return a;};
+function sites(node){
+ node.innerHTML=header('SITES + APPS','Da estrutura à interface navegável.')+
+ '<div class="fd-switch" role="group" aria-label="Tipo de interface"><button type="button" data-fd-site="site" aria-pressed="true">Site</button><button type="button" data-fd-site="app" aria-pressed="false">Aplicativo</button></div>'+
+ '<div class="fd-site-frame" data-fd-site-frame="site"><div class="fd-site-toolbar"><span></span><span></span><span></span><b data-fd-site-domain>seuprojeto.studio</b></div><div class="fd-site-body"><small data-fd-site-kicker>IDENTIDADE + EXPERIÊNCIA</small><strong data-fd-site-title>Seu projeto merece uma presença própria.</strong><p data-fd-site-desc>Uma mensagem clara. Uma interface intuitiva.</p><div class="fd-site-action" data-fd-site-action>Explorar soluções ↗</div><div class="fd-site-tiles"><i></i><i></i><i></i></div></div></div>'+
+ '<p class="fd-caption" role="status" data-fd-site-status>Prévia de um site responsivo.</p>';
+ const variants={
+ site:{title:'Seu projeto merece uma presença própria.',kicker:'IDENTIDADE + EXPERIÊNCIA',desc:'Uma mensagem clara. Uma interface intuitiva.',domain:'seuprojeto.studio',action:'Explorar soluções ↗',status:'Prévia de um site responsivo.'},
+ app:{title:'Tudo o que importa, no seu bolso.',kicker:'PRODUTO + NAVEGAÇÃO',desc:'Escolha uma função, encontre seu próximo passo.',domain:'meu aplicativo',action:'Abrir experiência ↗',status:'Prévia de aplicativo com navegação compacta.'}
+ };
+ $$(node,'[data-fd-site]').forEach(button=>button.addEventListener('click',()=>{
+ const mode=button.dataset.fdSite,data=variants[mode];node.querySelector('[data-fd-site-frame]').dataset.fdSiteFrame=mode;
+ for(const [name,value] of Object.entries({title:data.title,kicker:data.kicker,desc:data.desc,domain:data.domain,action:data.action,status:data.status}))$(node,'[data-fd-site-'+name+']').textContent=value;
+ $$(node,'[data-fd-site]').forEach(b=>b.setAttribute('aria-pressed',String(b===button)));
+ }));
+}
+function conteudo(node){
+ const slides=[
+ {label:'01 / ABERTURA',title:'Sua ideia tem algo que merece atenção.',copy:'Uma pergunta concreta abre a conversa.'},
+ {label:'02 / CONTEXTO',title:'Mostre por que ela importa.',copy:'Organize benefícios e evidências com clareza.'},
+ {label:'03 / CONVITE',title:'Dê ao próximo passo um motivo.',copy:'Finalize com uma ação específica e alcançável.'}
+ ];
+ node.innerHTML=header('CONTEÚDO + COPY','Uma história em três decisões.')+
+ '<div class="fd-story-frame" tabindex="0" role="group" aria-label="Três quadros de redação"><small data-fd-story-label></small><strong data-fd-story-title></strong><p data-fd-story-copy></p><div class="fd-story-steps" aria-hidden="true"><i></i><i></i><i></i></div></div>'+
+ '<div class="fd-nav"><button type="button" data-fd-story-prev aria-label="Quadro anterior">←</button><output data-fd-story-counter>01 / 03</output><button type="button" data-fd-story-next aria-label="Próximo quadro">→</button></div>';
+ let step=0;const frame=$(node,'.fd-story-frame');
+ const paint=()=>{const s=slides[step];$(node,'[data-fd-story-label]').textContent=s.label;$(node,'[data-fd-story-title]').textContent=s.title;$(node,'[data-fd-story-copy]').textContent=s.copy;$(node,'[data-fd-story-counter]').textContent=String(step+1).padStart(2,'0')+' / 03';$$(node,'.fd-story-steps i').forEach((e,i)=>e.classList.toggle('is-current',i===step));};
+ const move=d=>{step=(step+d+slides.length)%slides.length;paint();};
+ $(node,'[data-fd-story-prev]').addEventListener('click',()=>move(-1));
+ $(node,'[data-fd-story-next]').addEventListener('click',()=>move(1));
+ frame.addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key==='ArrowLeft'){e.stopPropagation();e.preventDefault();move(e.key==='ArrowRight'?1:-1)}});
  paint();
 }
-function createVideo(card){
- const scene=[
- {title:'O instante que muda o jogo.',image:photos.esportes,subtitle:'Gancho · 00–03s'},
- {title:'O contexto explica o momento.',image:photos.desconhecidos,subtitle:'Desenvolvimento · 03–07s'},
- {title:'Toda história pede um desfecho.',image:photos.nerd,subtitle:'Fechamento · 07–10s'}
+function campanhas(node){
+ const formats={
+ feed:{label:'Feed 4:5',kicker:'PUBLICAÇÃO · FEED',title:'Transforme uma ideia em proposta.',desc:'A mensagem e a hierarquia valorizam a leitura rápida.',status:'Peça demonstrativa para feed.'},
+ stories:{label:'Stories 9:16',kicker:'PUBLICAÇÃO · STORIES',title:'Uma mensagem para ocupar a tela.',desc:'Um convite direto para explorar.',status:'Peça demonstrativa vertical, sem vídeo ou publicação real.'},
+ search:{label:'Pesquisa',kicker:'PATROCINADO · EXEMPLO',title:'Sites e aplicações sob medida',desc:'Identidade, interface e desenvolvimento em uma experiência.',status:'Exemplo de anúncio de pesquisa. Nenhuma campanha foi veiculada.'}
+ };
+ node.innerHTML=header('CAMPANHAS + ADS','Uma intenção. Três formatos de comunicação.')+
+ '<div class="fd-switch fd-ad-switch" role="group" aria-label="Formato do anúncio"><button type="button" data-fd-channel="feed" aria-pressed="true">Feed</button><button type="button" data-fd-channel="stories" aria-pressed="false">Stories</button><button type="button" data-fd-channel="search" aria-pressed="false">Pesquisa</button></div>'+
+ '<div class="fd-campaign-preview" data-fd-campaign="feed"><small data-fd-ad-kicker></small><strong data-fd-ad-title></strong><p data-fd-ad-desc></p><span class="fd-campaign-action">Conhecer projeto ↗</span></div><p class="fd-caption" role="status" data-fd-ad-status></p>';
+ const paint=type=>{const x=formats[type];$(node,'[data-fd-campaign]').dataset.fdCampaign=type;$(node,'[data-fd-ad-kicker]').textContent=x.kicker;$(node,'[data-fd-ad-title]').textContent=x.title;$(node,'[data-fd-ad-desc]').textContent=x.desc;$(node,'[data-fd-ad-status]').textContent=x.status;$$(node,'[data-fd-channel]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.fdChannel===type)));};
+ $$(node,'[data-fd-channel]').forEach(b=>b.addEventListener('click',()=>paint(b.dataset.fdChannel)));paint('feed');
+}
+function video(node){
+ const scenes=[
+ {tag:'01 / GANCHO',headline:'Uma ideia ocupa o primeiro quadro.'},
+ {tag:'02 / DEMONSTRAÇÃO',headline:'O movimento revela como ela funciona.'},
+ {tag:'03 / PRÓXIMO PASSO',headline:'A sequência termina com um convite.'}
  ];
- card.innerHTML=fcard('VÍDEOS','Montagem animada de 10 segundos')+
- '<div class="fd-video" role="group" aria-label="Montagem animada demonstrativa de esportes"><img data-fd-video-image loading="lazy" decoding="async" alt="Quadro do estudo editorial"><div class="fd-video-overlay"><small data-fd-video-subtitle></small><strong data-fd-video-title></strong></div><div class="fd-video-progress"><i></i></div></div>'+
- '<div class="fd-nav"><button type="button" data-fd-video-play aria-pressed="false">Reproduzir</button><output data-fd-video-time>00:00 / 00:10</output><button type="button" data-fd-video-replay>↻</button></div>';
- let active=false,elapsed=0,raf=0,last=0,sceneIndex=-1;
- const img=card.querySelector('[data-fd-video-image]'),progress=card.querySelector('.fd-video-progress i'),button=card.querySelector('[data-fd-video-play]');
- const reduced=matchMedia('(prefers-reduced-motion:reduce)');
- const paint=()=>{const i=Math.min(2,Math.floor(elapsed/3500));if(i!==sceneIndex){sceneIndex=i;img.src=scene[i].image;card.querySelector('[data-fd-video-title]').textContent=scene[i].title;card.querySelector('[data-fd-video-subtitle]').textContent=scene[i].subtitle;}
- progress.style.transform='scaleX('+(elapsed/10000)+')';card.querySelector('[data-fd-video-time]').textContent='00:'+String(Math.floor(elapsed/1000)).padStart(2,'0')+' / 00:10';};
- const stop=()=>{active=false;cancelAnimationFrame(raf);raf=0;button.setAttribute('aria-pressed','false');button.textContent='Reproduzir';};
- const enabled=()=>!reduced.matches&&!document.hidden&&!document.body.classList.contains('is-paused')&&card.closest('.pf-fatos-card.is-active.is-flipped');
- const tick=now=>{if(!active)return;if(!enabled()){stop();return;}elapsed=Math.min(10000,elapsed+Math.min(80,now-last));last=now;paint();if(elapsed>=10000){stop();return;}raf=requestAnimationFrame(tick)};
- button.addEventListener('click',()=>{if(active){stop();return;}if(reduced.matches||document.body.classList.contains('is-paused')){elapsed=Math.min(10000,elapsed+3500);paint();return;}if(elapsed>=10000)elapsed=0;active=true;button.setAttribute('aria-pressed','true');button.textContent='Pausar';last=performance.now();raf=requestAnimationFrame(tick)});
- card.querySelector('[data-fd-video-replay]').addEventListener('click',()=>{stop();elapsed=0;paint()});
- paint();return stop;
+ node.innerHTML=header('VÍDEO + MOTION','Três cenas. Dez segundos. Uma narrativa.')+
+ '<div class="fd-motion-stage" role="group" aria-label="Storyboard animado de dez segundos"><div class="fd-motion-orbit" aria-hidden="true"><i></i><i></i></div><div class="fd-motion-copy"><small data-fd-motion-tag></small><strong data-fd-motion-title></strong></div><div class="fd-video-progress" aria-hidden="true"><i data-fd-video-progress></i></div></div>'+
+ '<div class="fd-nav"><button type="button" data-fd-video-play aria-pressed="false">Reproduzir</button><output role="status" data-fd-video-time>00:00 / 00:10</output><button type="button" data-fd-video-replay aria-label="Reiniciar">↻</button></div>';
+ let active=false,elapsed=0,last=0,raf=0,sceneIndex=-1;
+ const reduce=matchMedia('(prefers-reduced-motion:reduce)');
+ const play=$(node,'[data-fd-video-play]');
+ const paint=()=>{const index=Math.min(2,Math.floor(elapsed/3500));if(index!==sceneIndex){sceneIndex=index;$(node,'[data-fd-motion-tag]').textContent=scenes[index].tag;$(node,'[data-fd-motion-title]').textContent=scenes[index].headline;}
+ $(node,'[data-fd-video-progress]').style.transform='scaleX('+Math.min(1,elapsed/10000)+')';$(node,'[data-fd-video-time]').textContent='00:'+String(Math.floor(elapsed/1000)).padStart(2,'0')+' / 00:10';
+ $(node,'.fd-motion-stage').dataset.fdMotionScene=String(index);};
+ const stop=()=>{active=false;cancelAnimationFrame(raf);raf=0;play.setAttribute('aria-pressed','false');play.textContent='Reproduzir';node.classList.remove('is-playing');};
+ const available=()=>!reduce.matches&&!document.hidden&&!document.body.classList.contains('is-paused')&&Boolean(node.closest('.pf-fatos-card.is-active.is-flipped'));
+ const tick=now=>{if(!active)return;if(!available()){stop();return;}elapsed=Math.min(10000,elapsed+Math.min(90,now-last));last=now;paint();if(elapsed>=10000){stop();return;}raf=requestAnimationFrame(tick);};
+ play.addEventListener('click',()=>{if(active){stop();return;}if(reduce.matches||document.body.classList.contains('is-paused')){elapsed=Math.min(10000,elapsed+3500);paint();return;}if(elapsed>=10000)elapsed=0;active=true;node.classList.add('is-playing');play.setAttribute('aria-pressed','true');play.textContent='Pausar';last=performance.now();raf=requestAnimationFrame(tick);});
+ $(node,'[data-fd-video-replay]').addEventListener('click',()=>{stop();elapsed=0;sceneIndex=-1;paint();});
+ reduce.addEventListener('change',()=>{if(reduce.matches)stop()});paint();return stop;
 }
-function createBlog(card){
- card.innerHTML=fcard('BLOG','A pergunta vira uma leitura aprofundada')+
- '<article class="fd-article"><span>FATOS · ARTIGO</span><h4>Por que certas histórias ficam na memória?</h4><img src="'+photos.crencas+'" alt="Ilustração editorial do artigo" loading="lazy"><p>Uma boa abertura chama a atenção. O contexto transforma essa curiosidade em entendimento.</p><details><summary>Ler desenvolvimento</summary><p>A estrutura combina uma pergunta clara, evidências verificáveis e explicações organizadas em blocos. A conclusão retoma a ideia central sem repetir a abertura.</p><p>Estudo de organização editorial, não um artigo publicado.</p></details></article>';
+function lojas(node){
+ node.innerHTML=header('LOJA + PRODUTO','A escolha muda o produto em tempo real.')+
+ '<div class="fd-shop-stage" data-fd-color="sage"><div class="fd-shop-product" aria-hidden="true"><div class="fd-shop-object"><i></i></div></div><div class="fd-shop-details"><small>PRODUTO CONCEITUAL</small><strong>Objeto Studio</strong><p>Uma peça fictícia para mostrar seleção de variantes.</p><div class="fd-switch fd-shop-options" role="group" aria-label="Cor do produto"><button type="button" data-fd-variant="sage" aria-pressed="true">Sálvia</button><button type="button" data-fd-variant="clay" aria-pressed="false">Argila</button></div></div></div>'+
+ '<button class="fd-add" type="button" data-fd-add>Adicionar ao carrinho simulado</button><p class="fd-caption" role="status" data-fd-cart>Sem compra ou pagamento.</p>';
+ const stage=$(node,'.fd-shop-stage');let n=0;
+ $$(node,'[data-fd-variant]').forEach(b=>b.addEventListener('click',()=>{stage.dataset.fdColor=b.dataset.fdVariant;$$(node,'[data-fd-variant]').forEach(x=>x.setAttribute('aria-pressed',String(x===b)));}));
+ $(node,'[data-fd-add]').addEventListener('click',()=>{$(node,'[data-fd-cart]').textContent=++n+' item(ns) no carrinho demonstrativo · sem checkout';});
 }
-function createStore(card){
- card.innerHTML=fcard('LOJA','Protótipo comercial sem checkout')+
- '<div class="fd-product"><img src="'+photos.sobrenaturais+'" loading="lazy" alt="Arte conceitual de uma edição ilustrada"><div class="fd-product-copy"><small>EDIÇÃO CONCEITUAL</small><h4>Caderno de histórias</h4><p>Objeto editorial demonstrativo</p><div class="fd-options"><button type="button" aria-pressed="true" data-fd-variant="claro">Claro</button><button type="button" aria-pressed="false" data-fd-variant="escuro">Escuro</button></div><button type="button" class="fd-add" data-fd-add>Adicionar ao carrinho simulado</button><span role="status" data-fd-cart>Sem compra ou pagamento</span></div></div>';
- card.querySelectorAll('[data-fd-variant]').forEach(button=>button.addEventListener('click',()=>{card.dataset.variant=button.dataset.fdVariant;card.querySelectorAll('[data-fd-variant]').forEach(el=>el.setAttribute('aria-pressed',String(el===button)));}));
- let n=0;card.querySelector('[data-fd-add]').addEventListener('click',()=>{n++;card.querySelector('[data-fd-cart]').textContent=n+' item(ns) no carrinho demonstrativo · sem checkout'});
-}
-function createAds(card){
- card.innerHTML=fcard('ADS','Mesmo conceito, duas adaptações de canal')+
- '<div class="fd-ad-tabs" role="group" aria-label="Formato"><button type="button" data-fd-ad-format="feed" aria-pressed="true">Feed 4:5</button><button type="button" data-fd-ad-format="stories" aria-pressed="false">Stories 9:16</button></div>'+
- '<div class="fd-ad-preview" data-format="feed"><img src="'+photos.nerd+'" loading="lazy" decoding="async" alt="Criativo ilustrativo de campanha"><span>Estudo de posicionamento</span><strong data-fd-ad-title>Uma história para explorar.</strong></div><p class="fd-ad-caption">Copy e hierarquia adequadas ao enquadramento, sem reutilizar o mesmo recorte.</p>';
- card.querySelectorAll('[data-fd-ad-format]').forEach(btn=>btn.addEventListener('click',()=>{const type=btn.dataset.fdAdFormat;card.querySelectorAll('[data-fd-ad-format]').forEach(b=>b.setAttribute('aria-pressed',String(b===btn)));card.querySelector('.fd-ad-preview').dataset.format=type;card.querySelector('[data-fd-ad-title]').textContent=type==='feed'?'Uma história para explorar.':'Descubra em uma tela.';card.querySelector('.fd-ad-preview img').src=type==='feed'?photos.nerd:photos.desconhecidos;}));
-}
-function createChatGPTAds(card){
- card.innerHTML=fcard('CHATGPT ADS','Estudo de publicidade contextual em IA')+
- '<div class="fd-ai-chat"><div class="fd-ai-question"><small>Pergunta fictícia</small><p>Como encontro boas ideias para uma campanha?</p></div>'+
- '<div class="fd-ai-answer"><strong>Resposta do assistente</strong><p>Comece pelo público, objetivo e formato. Compare exemplos e valide a mensagem antes de publicar.</p></div>'+
- '<div class="fd-sponsored"><span>Patrocinado · exemplo conceitual</span><strong>Estúdio criativo smiile</strong><p>Direção visual e projetos digitais para transformar ideias em experiências.</p><a href="#contato" data-no-card-flip>Conhecer o projeto ↗</a></div></div>';
+function sistemas(node){
+ const stages=[
+ {key:'Recebido',headline:'Solicitação recebida',body:'Novo pedido identificado e organizado no painel.',tag:'ENTRADA'},
+ {key:'Classificado',headline:'Prioridade e responsável',body:'A solicitação foi classificada para a equipe comercial.',tag:'TRIAGEM'},
+ {key:'Pronto',headline:'Próxima ação registrada',body:'Preparar proposta. Nenhuma mensagem foi enviada.',tag:'ENCAMINHAMENTO'}
+ ];
+ node.innerHTML=header('SISTEMAS + IA','Do contato a uma próxima ação organizada.')+
+ '<div class="fd-flow-screen"><div class="fd-flow-top"><strong>Painel de solicitações</strong><span>DEMO LOCAL</span></div><div class="fd-flow-track" aria-hidden="true"><i></i><i></i><i></i></div><small data-fd-flow-tag></small><h4 data-fd-flow-title></h4><p data-fd-flow-body></p><div class="fd-flow-meta"><span>Comercial</span><span data-fd-flow-state>Recebido</span></div></div>'+
+ '<div class="fd-nav"><button type="button" data-fd-flow-reset>Recomeçar</button><output role="status" data-fd-flow-step>01 / 03</output><button type="button" data-fd-flow-next>Avançar →</button></div>';
+ let index=0;const paint=()=>{const s=stages[index];$(node,'[data-fd-flow-tag]').textContent=s.tag;$(node,'[data-fd-flow-title]').textContent=s.headline;$(node,'[data-fd-flow-body]').textContent=s.body;$(node,'[data-fd-flow-state]').textContent=s.key;$(node,'[data-fd-flow-step]').textContent='0'+(index+1)+' / 03';$(node,'[data-fd-flow-next]').disabled=index===2;$$(node,'.fd-flow-track i').forEach((b,i)=>b.classList.toggle('is-current',i<=index));};
+ $(node,'[data-fd-flow-reset]').addEventListener('click',()=>{index=0;paint()});
+ $(node,'[data-fd-flow-next]').addEventListener('click',()=>{index=Math.min(2,index+1);paint()});paint();
 }
 export function mountDeckDemos(){
  const shell=document.querySelector('#colecao');
  if(!shell||shell.dataset.deckDemos==='ready')return;
- const makers={desconhecidos:createPosts,esportes:createVideo,crencas:createBlog,sobrenaturais:createStore,nerd:createAds,negocios:createChatGPTAds};
- const stops=[];
- shell.querySelectorAll('[data-fatos-card]').forEach(card=>{
-  const id=card.dataset.fatosCard,back=card.querySelector('[data-fatos-back]');
-  if(!back||!makers[id])return;
-  const sample=document.createElement('section');sample.className='fd-demo';sample.dataset.delivery=labels[id].name.toLowerCase();sample.dataset.noCardFlip='';
-  sample.setAttribute('aria-label','Demonstração visual: '+labels[id].name);
-  back.querySelector('.pf-fatos-back-heading')?.after(sample);
-  const stop=makers[id](sample);
-  if(typeof stop==='function')stops.push(stop);
-  const explanation=document.createElement('p');explanation.className='fd-caption';explanation.textContent=labels[id].why;
-  sample.after(explanation);
+ const factories={sites,conteudo,campanhas,video,lojas,sistemas},stoppers=[];
+ $$(shell,'[data-fatos-card]').forEach(card=>{
+  const id=card.dataset.fatosCard,back=$(card,'[data-fatos-back]');if(!back||!factories[id])return;
+  const sample=document.createElement('section');sample.className='fd-demo fd-demo--'+id;sample.dataset.noCardFlip='';sample.setAttribute('aria-label','Demonstração visual de '+examples[id].title);
+  $(back,'.pf-fatos-back-heading')?.after(sample);
+  const stop=factories[id](sample);if(typeof stop==='function')stoppers.push(stop);
+  const caption=document.createElement('p');caption.className='fd-caption';caption.textContent=examples[id].caption;sample.append(caption,makeCTA(examples[id].service));
  });
- const stopAll=()=>stops.forEach(stop=>stop());
- document.addEventListener('visibilitychange',()=>{if(document.hidden)stopAll()});
- new MutationObserver(()=>{if(document.body.classList.contains('is-paused'))stopAll()}).observe(document.body,{attributes:true,attributeFilter:['class']});
- new MutationObserver(()=>{
-  if(!shell.querySelector('.pf-fatos-card.is-active.is-flipped'))stopAll();
- }).observe(shell.querySelector('.pf-fatos-stage'),{subtree:true,attributes:true,attributeFilter:['class','aria-hidden']});
- new IntersectionObserver(([entry])=>{if(!entry.isIntersecting)stopAll()},{threshold:.02}).observe(shell);
+ const stopAll=()=>stoppers.forEach(stop=>stop());
+ document.addEventListener('visibilitychange',()=>{if(document.hidden)stopAll();});
+ new MutationObserver(()=>{if(document.body.classList.contains('is-paused'))stopAll();}).observe(document.body,{attributes:true,attributeFilter:['class']});
+ const stage=$(shell,'.pf-fatos-stage');
+ if(stage)new MutationObserver(()=>{if(!$(shell,'.pf-fatos-card.is-active.is-flipped'))stopAll();}).observe(stage,{subtree:true,attributes:true,attributeFilter:['class','aria-hidden']});
+ if(typeof IntersectionObserver!=='undefined')new IntersectionObserver(([entry])=>{if(!entry.isIntersecting)stopAll();},{threshold:.02}).observe(shell);
  shell.dataset.deckDemos='ready';
 }
