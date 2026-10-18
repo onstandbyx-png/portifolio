@@ -1,0 +1,37 @@
+/* Rest-state microinteraction from 1000776234.mp4, measured 1349 frames.
+   The physical stack remains still between selections; a fine pointer only
+   reveals a low-opacity pattern, never moves artwork/text or blocks buttons. */
+#colecao .pf-fatos-card .pf-fatos-front{isolation:isolate}
+#colecao .pf-fatos-card .pf-fatos-front::after{
+  content:"";position:absolute;inset:0;z-index:1;
+  pointer-events:none;opacity:0;
+  border-radius:inherit;
+  background:
+    radial-gradient(ellipse 30% 27% at var(--fatos-light-x,65%) var(--fatos-light-y,28%),
+      #fff3 0%,#ffffff08 63%,transparent 100%),
+    radial-gradient(circle,#ffffff30 .65px,transparent 1.45px) 0 0/18px 18px;
+  -webkit-mask-image:radial-gradient(ellipse 49% 45% at var(--fatos-light-x,65%) var(--fatos-light-y,28%),
+    #000 3%,transparent 80%);
+  mask-image:radial-gradient(ellipse 49% 45% at var(--fatos-light-x,65%) var(--fatos-light-y,28%),
+    #000 3%,transparent 80%);
+  transition:opacity 190ms ease-out;
+}
+#colecao .pf-fatos-card.is-active.is-illuminated:not(.is-flipped) .pf-fatos-front::after{
+  opacity:.45;
+}
+#colecao .pf-fatos-front .pf-fatos-profile,
+#colecao .pf-fatos-front .pf-fatos-question,
+#colecao .pf-fatos-front .pf-fatos-flip{
+  z-index:2;
+}
+#colecao .pf-fatos-stage[data-motion="exchange"] .pf-fatos-front::after,
+#colecao .pf-fatos-stage[data-dragging="true"] .pf-fatos-front::after,
+#colecao .pf-fatos-card.is-departing .pf-fatos-front::after{
+  opacity:0!important;
+}
+@media(hover:none),(pointer:coarse),(prefers-reduced-motion:reduce){
+  #colecao .pf-fatos-card .pf-fatos-front::after{display:none!important;transition:none!important}
+}
+body.is-paused #colecao .pf-fatos-card .pf-fatos-front::after{
+  display:none!important;transition:none!important;
+}

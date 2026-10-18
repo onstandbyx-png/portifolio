@@ -12,9 +12,11 @@ Portfólio de redação, conteúdo, direção criativa, campanhas e Ads, sites, 
 ## Fontes atuais
 
 Imagens de estúdio e marcas: repositório Fatos onstandbyx-png/roblox, commit b9c827082edc6e2076c864687451ae3d1a1dcf76, public/estudio/cena-*.webp.
-Smiile: https://smiile-landing-preview.up.railway.app/ (página pública consultada em 15/10/2026).
+Smiile: onstandbyx-png/smiile-, revisão a2e6d42c526aa721d5059a6baad00cc86418ca3d, diretório sites/smiile-landing. Os assets, o percurso e o áudio usados aqui são locais; a demonstração não depende da disponibilidade da prévia externa.
 O dispositivo metálico e crachás da smiile são reaproveitados do código existente, sem recriar visual genérico.
 A página pública protegida do mídia kit Fatos não é dependência para exibir imagens.
+
+O [registro de implementação](docs/reference-recovery-20261015.md) relaciona as referências às interações adaptadas. O [manifesto de fontes](docs/portfolio-sources.json) registra revisão, caminho original e SHA-256 dos materiais recuperados. O [plano visual](docs/plans/portfolio-reference-recovery-20261015.md) preserva o diagnóstico anterior à implementação.
 
 ## Executar
 

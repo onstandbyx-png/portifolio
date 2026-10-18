@@ -1,0 +1,111 @@
+/* Visual acceptance override: a genuine, legible 3D card FAN.
+   Prior reference used ±17–23px offsets; behind a ~330px front card this
+   concealed practically all of the next compositions. This exposes two
+   independent 30–60px edges while preserving the original Fatos artwork,
+   flip faces, swipe handlers and native scrolling. */
+
+/* Let the deck breathe without increasing overall section travel. */
+#colecao .pf-fatos-display{
+  width:100%;
+  max-width:min(100%,510px);
+}
+#colecao .pf-fatos-stage{
+  --stack-side:clamp(45px,10vw,78px);
+  --stack-far:clamp(62px,14vw,107px);
+  --stack-angle:7deg;
+  position:relative;
+  width:100%;
+  box-sizing:border-box;
+  display:grid;
+  justify-items:center;
+  align-items:start;
+  padding:26px 11px 32px;
+  perspective:1100px;
+  perspective-origin:center 42%;
+  transform-style:preserve-3d;
+  overflow:visible;
+  isolation:isolate;
+  touch-action:pan-y;
+}
+#colecao .pf-fatos-card{
+  grid-area:1/1;
+  width:min(85%,344px);
+  max-width:none;
+  transform-origin:center 82%;
+  backface-visibility:visible;
+  transition:transform 500ms cubic-bezier(.20,.78,.22,1),opacity 470ms cubic-bezier(.20,.78,.22,1);
+  will-change:auto;
+  visibility:visible;
+}
+#colecao .pf-fatos-card[data-position="0"]{
+  transform:translate3d(0,0,0) rotateZ(0deg) scale(1);
+  z-index:20;opacity:1;visibility:visible;pointer-events:auto;
+}
+#colecao .pf-fatos-card[data-position="1"]{
+  transform:translate3d(var(--stack-side),-5px,-35px) rotateY(-3deg) rotateZ(var(--stack-angle)) scale(.968);
+  z-index:13;opacity:.96;visibility:visible;pointer-events:none;
+}
+#colecao .pf-fatos-card[data-position="5"]{
+  transform:translate3d(calc(-1 * var(--stack-side)),3px,-43px) rotateY(3deg) rotateZ(calc(-1 * var(--stack-angle))) scale(.957);
+  z-index:12;opacity:.94;visibility:visible;pointer-events:none;
+}
+#colecao .pf-fatos-card[data-position="2"]{
+  transform:translate3d(var(--stack-far),8px,-81px) rotateY(-4deg) rotateZ(9.4deg) scale(.922);
+  z-index:8;opacity:.80;visibility:visible;pointer-events:none;
+}
+#colecao .pf-fatos-card[data-position="4"]{
+  transform:translate3d(calc(-1 * var(--stack-far)),12px,-84px) rotateY(4deg) rotateZ(-9.2deg) scale(.910);
+  z-index:7;opacity:.77;visibility:visible;pointer-events:none;
+}
+#colecao .pf-fatos-card[data-position="3"]{
+  transform:translate3d(0,15px,-113px) rotateZ(-1deg) scale(.89);
+  z-index:5;opacity:.69;visibility:visible;pointer-events:none;
+}
+#colecao .pf-fatos-card[data-position]:not([data-position="0"]) .pf-fatos-face{
+  border-color:color-mix(in srgb,var(--fatos-accent) 35%,#e2eae6);
+  box-shadow:0 14px 27px -16px #111b2b92,0 0 0 1px #ffffff78;
+}
+#colecao .pf-fatos-card[data-position="0"] .pf-fatos-face{
+  box-shadow:0 25px 46px -20px #0a17208e,0 4px 12px #131c242b;
+}
+#colecao .pf-fatos-card.is-departing{
+  z-index:30!important;visibility:visible!important;pointer-events:none!important;
+  will-change:transform,opacity;
+}
+#colecao .pf-fatos-navigation{
+  position:relative;z-index:3;
+  width:min(100%,395px);
+  margin:12px auto 0;
+}
+#colecao .pf-fatos-navigation::after{
+  content:"Deslize o cartão ou utilize as setas";
+  grid-column:1/-1;text-align:center;
+  margin:3px 0 0;color:#738572;
+  font:500 11px/1.5 var(--sans,Inter,Arial,sans-serif);
+}
+@media(max-width:700px){
+  #colecao .pf-fatos-stage{
+    --stack-side:clamp(37px,12.1vw,51px);
+    --stack-far:clamp(49px,15.6vw,70px);
+    padding:20px 8px 29px;
+  }
+  #colecao .pf-fatos-card{width:min(84%,330px)}
+  #colecao .pf-fatos-card[data-position="1"]{transform:translate3d(var(--stack-side),-4px,-27px) rotateZ(6.2deg) scale(.97)}
+  #colecao .pf-fatos-card[data-position="5"]{transform:translate3d(calc(-1 * var(--stack-side)),3px,-32px) rotateZ(-6.2deg) scale(.965)}
+  #colecao .pf-fatos-card[data-position="2"]{transform:translate3d(var(--stack-far),7px,-60px) rotateZ(8.1deg) scale(.935)}
+  #colecao .pf-fatos-card[data-position="4"]{transform:translate3d(calc(-1 * var(--stack-far)),8px,-65px) rotateZ(-8deg) scale(.932)}
+  #colecao .pf-fatos-question h4{font-size:clamp(22px,6.7vw,30px)}
+  #colecao .pf-fatos-profile strong{font-size:clamp(12px,3.55vw,15px)}
+  #colecao .pf-fatos-profile span{font-size:clamp(9px,2.7vw,12px)}
+  #colecao .pf-fatos-navigation::after{font-size:10px}
+}
+@media(max-width:360px){
+  #colecao .pf-fatos-stage{--stack-side:37px;--stack-far:49px;padding-inline:5px}
+  #colecao .pf-fatos-card{width:85%}
+  #colecao .pf-fatos-question h4{font-size:clamp(20px,6.4vw,26px)}
+  #colecao .pf-fatos-flip{font-size:12px;min-height:44px}
+}
+@media(prefers-reduced-motion:reduce){
+  #colecao .pf-fatos-card{transition:none!important;will-change:auto!important}
+}
+body.is-paused #colecao .pf-fatos-card{transition:none!important;will-change:auto!important}

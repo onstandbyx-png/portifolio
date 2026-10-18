@@ -1,0 +1,54 @@
+/* Responsive, tap-anywhere campaign face and accessible editorial swipe. */
+#laboratorio .sp-campaign-flip-layout{display:block;width:min(100%,690px);margin:0 auto}
+#laboratorio .sp-campaign-card{position:relative;min-width:0;perspective:1600px;isolation:isolate}
+#laboratorio .sp-campaign-card-inner{position:relative;transform-style:preserve-3d;transition:transform 700ms cubic-bezier(.22,.8,.22,1)}
+#laboratorio .sp-campaign-card[data-side="back"] .sp-campaign-card-inner{transform:rotateY(180deg)}
+#laboratorio .sp-campaign-face{min-width:0;overflow:hidden;background:#f8f7ef;border:1px solid #cbd4c5;border-radius:15px;box-shadow:0 14px 42px #1831241c;backface-visibility:hidden;-webkit-backface-visibility:hidden}
+#laboratorio .sp-campaign-face-front{position:relative}
+#laboratorio .sp-campaign-face-back{position:absolute;inset:0;display:flex;flex-direction:column;transform:rotateY(180deg);overflow-y:auto;overscroll-behavior:contain;scrollbar-width:thin}
+#laboratorio .sp-campaign-image-slot{min-width:0}
+#laboratorio .sp-campaign-panel figure{margin:0}
+#laboratorio .sp-campaign-panel img{border-radius:0}
+#laboratorio .sp-campaign-note-slot{display:flex;align-items:center;min-height:0;flex:1}
+#laboratorio .sp-campaign-note{min-height:0;width:100%;padding:clamp(20px,4vw,38px)}
+#laboratorio .sp-campaign-note h3{margin:12px 0 20px;max-width:none;font-size:clamp(24px,3vw,37px)}
+#laboratorio .sp-campaign-note dl{gap:clamp(12px,1.8vw,20px)}
+#laboratorio .sp-campaign-note dd{font-size:clamp(13px,1.5vw,16px);line-height:1.5}
+#laboratorio .sp-card-flip-cue{display:flex;align-items:center;justify-content:space-between;gap:12px;width:100%;min-height:58px;padding:12px clamp(16px,4vw,28px);border:0;border-top:1px solid #d5dcd0;border-radius:0;background:#f1f3eb;color:#3c5947;font:550 13px/1.3 var(--sans,Inter,Arial,sans-serif);cursor:pointer;text-align:left}
+#laboratorio .sp-card-flip-cue span:first-child{font-size:19px;line-height:1}
+#laboratorio .sp-card-flip-cue span:nth-child(2){flex:1}
+#laboratorio .sp-card-flip-cue span:last-child{white-space:nowrap;color:#718275;font-variant-numeric:tabular-nums}
+#laboratorio .sp-card-flip-cue:focus-visible,#editorial .es-swipe-nav button:focus-visible{outline:3px solid #406fca;outline-offset:-4px;z-index:2}
+#laboratorio .sp-campaign-card[data-card-surface-flip="ready"]{cursor:pointer}
+/* Overlay no longer obscures card art; keyboard access and full-card tap remain. */
+#trabalhos .rg-gallery .rg-flip:not(:focus-visible){opacity:0;border-color:transparent;background:transparent;box-shadow:none}
+#trabalhos .rg-gallery .rg-flip:focus-visible{opacity:1}
+#trabalhos .rg-gallery .rg-flip-hint{display:block;margin-top:10px;color:#61725f;font:500 12px/1.45 var(--sans,Inter,Arial,sans-serif)}
+#editorial .es-stage{touch-action:pan-y;cursor:grab;user-select:none;-webkit-user-select:none}
+#editorial .es-stage:active{cursor:grabbing}
+#editorial .es-swipe-nav{width:min(100%,520px);margin:0 auto;padding:12px 0 6px;display:grid;grid-template-columns:52px minmax(0,1fr) 52px;gap:12px;align-items:center;color:#435c49}
+#editorial .es-swipe-nav button{display:grid;place-items:center;min-width:48px;min-height:48px;padding:0;border:1px solid #b5c4af;border-radius:50%;background:#f5f6ef;color:#1c3a29;font:500 24px/1 Inter,Arial,sans-serif;cursor:pointer;transition:background .2s ease,border-color .2s ease}
+#editorial .es-swipe-nav button:disabled{opacity:.35;cursor:default}
+#editorial .es-swipe-center{display:flex;min-width:0;flex-direction:column;align-items:center;justify-content:center;gap:5px;text-align:center}
+#editorial .es-swipe-dots{display:flex;gap:9px;align-items:center;min-height:12px}
+#editorial .es-swipe-dots span{display:block;width:8px;height:8px;border-radius:50%;background:#b9c7b5}
+#editorial .es-swipe-dots span.is-current{background:#254936;transform:scale(1.12)}
+#editorial .es-swipe-count{font-size:12px;line-height:1.3;color:#354e3c}
+#editorial .es-swipe-hint{font-size:12px;line-height:1.45;color:#667d6a}
+#editorial .es-swipe-hint span{padding-left:3px;font-size:16px}
+@media(max-width:700px){
+#editorial .es-tabs button{justify-content:center;flex-direction:row;align-items:center;min-height:52px;padding:12px 4px}
+#editorial .es-tabs button>span{display:none}
+#editorial .es-tabs button strong{font-size:clamp(12px,3.6vw,15px);font-weight:600;white-space:nowrap}
+#editorial .es-panel{padding-top:24px}
+#editorial .es-stage{padding-bottom:4px}
+#editorial .es-swipe-nav{padding-top:16px;padding-bottom:16px;gap:8px}
+#laboratorio .sp-campaign-note{padding:18px 20px}
+#laboratorio .sp-campaign-note h3{font-size:clamp(23px,6vw,30px);margin:10px 0 15px}
+#laboratorio .sp-campaign-note dl{gap:10px;margin-bottom:14px}
+#laboratorio .sp-campaign-note dd{font-size:13px;line-height:1.42}
+#laboratorio .sp-campaign-note a{font-size:13px;line-height:1.35}
+}
+@media(max-width:360px){#laboratorio .sp-campaign-note{padding:14px 16px}#laboratorio .sp-campaign-note h3{font-size:22px}#laboratorio .sp-campaign-note dt{font-size:10px}}
+@media(prefers-reduced-motion:reduce){#laboratorio .sp-campaign-card-inner,#editorial .es-swipe-nav button{transition:none!important}}
+body.is-paused #laboratorio .sp-campaign-card-inner,body.is-paused #editorial .es-swipe-nav button{transition:none!important}

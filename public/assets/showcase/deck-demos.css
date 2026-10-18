@@ -1,0 +1,74 @@
+/* Six real, separate prototype demos inside the original six persistent cards. */
+#colecao .pf-fatos-back{padding:14px 16px 80px}
+#colecao .pf-fatos-back-heading{margin-bottom:8px}
+#colecao .pf-fatos-back-heading h4{font-size:18px}
+#colecao .pf-fatos-approach,#colecao .pf-fatos-formats{display:none}
+#colecao .fd-demo{font-family:Inter,Arial,sans-serif;display:flex;flex-direction:column;gap:8px;color:#eaf3ea;min-height:0;touch-action:pan-y}
+#colecao .fd-demo button{font-family:inherit;cursor:pointer}
+#colecao .fd-demo button:focus-visible,#colecao .fd-demo a:focus-visible,#colecao .fd-demo summary:focus-visible{outline:3px solid #c5d8ef;outline-offset:2px}
+#colecao .fd-head{display:grid;gap:2px}
+#colecao .fd-kicker{color:#cadbcc;font-size:9px;letter-spacing:.11em}
+#colecao .fd-head strong{font-size:12px;font-weight:560;line-height:1.25}
+#colecao .fd-caption{color:#bccac4;font-size:11px;line-height:1.3;margin:7px 0}
+#colecao .fd-nav{display:flex;gap:8px;align-items:center;justify-content:space-between;min-height:38px}
+#colecao .fd-nav>button{border:1px solid #81978b;background:#1b2d34;color:#fff;min-width:39px;min-height:38px;padding:5px 10px;border-radius:6px;font-size:13px}
+#colecao .fd-nav>output{color:#d0dbe2;font-size:11px}
+#colecao .fd-post{position:relative;overflow:hidden;display:block;min-height:0;height:265px;border-radius:10px;background:#496278}
+#colecao .fd-post img{width:100%;height:100%;object-fit:cover}
+#colecao .fd-post:after,#colecao .fd-video:after,#colecao .fd-ad-preview:after{content:"";position:absolute;inset:15% 0 0;background:linear-gradient(transparent,#081921c9);pointer-events:none}
+#colecao .fd-post-copy{position:absolute;z-index:2;bottom:15px;left:14px;right:14px;color:white}
+#colecao .fd-post-copy small{font-size:10px;letter-spacing:.1em}
+#colecao .fd-post-copy p{font-size:18px;line-height:1.14;font-weight:560;margin:7px 0 0}
+#colecao .fd-video{position:relative;height:258px;overflow:hidden;border-radius:9px;background:#223e42}
+#colecao .fd-video>img{width:100%;height:100%;object-fit:cover}
+#colecao .fd-video-overlay{position:absolute;z-index:2;left:14px;right:14px;bottom:24px;color:white;display:grid;gap:7px}
+#colecao .fd-video-overlay small{font-size:10px}
+#colecao .fd-video-overlay strong{font-size:20px;line-height:1.15}
+#colecao .fd-video-progress{position:absolute;bottom:0;left:0;right:0;background:#b7c9bf75;height:5px;z-index:4}
+#colecao .fd-video-progress>i{display:block;width:100%;height:100%;transform-origin:left;background:#e6f9e9;transform:scaleX(0)}
+#colecao .fd-article{padding:14px;border:1px solid #627970;border-radius:8px;max-height:320px;overflow-y:auto;overscroll-behavior:contain;background:#fafbf6;color:#1b3028}
+#colecao .fd-article>span{font-size:9px;letter-spacing:.12em}
+#colecao .fd-article h4{font-size:20px;line-height:1.13;letter-spacing:-.035em;margin:8px 0 10px}
+#colecao .fd-article img{width:100%;height:112px;object-fit:cover;border-radius:5px}
+#colecao .fd-article p{font-size:12px;line-height:1.5;margin:10px 0}
+#colecao .fd-article details{font-size:12px}
+#colecao .fd-article summary{cursor:pointer;padding:8px 0;color:#285f49}
+#colecao .fd-product{display:grid;grid-template-columns:45% 55%;gap:9px;background:#f3f4ed;color:#1e342a;padding:9px;border-radius:10px}
+#colecao .fd-product>img{height:246px;width:100%;object-fit:cover;border-radius:6px}
+#colecao .fd-product-copy{display:flex;flex-direction:column;gap:7px;min-width:0}
+#colecao .fd-product-copy small{font-size:9px;color:#687b6a}
+#colecao .fd-product-copy h4{font-size:17px;margin:0;line-height:1.1}
+#colecao .fd-product-copy p{font-size:11px;margin:0}
+#colecao .fd-options{display:flex;gap:4px}
+#colecao .fd-options button{padding:5px;border:1px solid #c0cfc2;color:#2d5239;border-radius:4px;background:#fff;font-size:10px}
+#colecao .fd-options button[aria-pressed=true]{background:#224936;color:white}
+#colecao .fd-add{min-height:42px;border:0;background:#204c39;color:#fff;border-radius:6px;padding:6px;font-size:11px}
+#colecao [data-fd-cart]{font-size:10px;line-height:1.3;color:#42614c}
+#colecao .fd-ad-tabs{display:flex;gap:6px}
+#colecao .fd-ad-tabs button{border:1px solid #80958d;background:transparent;color:white;padding:7px;border-radius:5px;min-height:36px;font-size:11px}
+#colecao .fd-ad-tabs button[aria-pressed=true]{background:#e4f1df;color:#1b4133}
+#colecao .fd-ad-preview{position:relative;width:210px;max-width:100%;height:254px;overflow:hidden;border-radius:10px;isolation:isolate;margin:auto}
+#colecao .fd-ad-preview[data-format=stories]{width:156px;height:264px;border-radius:15px;border:4px solid #0b171d}
+#colecao .fd-ad-preview img{width:100%;height:100%;object-fit:cover}
+#colecao .fd-ad-preview>span,#colecao .fd-ad-preview>strong{position:absolute;z-index:2;color:#fff;left:12px;right:10px}
+#colecao .fd-ad-preview>span{top:10px;font-size:9px}
+#colecao .fd-ad-preview>strong{bottom:19px;font-size:19px;line-height:1.13}
+#colecao .fd-ad-caption{margin:0;font-size:11px;color:#d7e2dc}
+#colecao .fd-ai-chat{display:flex;flex-direction:column;gap:8px;padding:9px;background:#f9faf8;color:#253c31;border-radius:9px;max-height:333px;overflow-y:auto;overscroll-behavior:contain}
+#colecao .fd-ai-question,#colecao .fd-ai-answer,#colecao .fd-sponsored{padding:9px;border-radius:8px}
+#colecao .fd-ai-question{background:#e8ece9;margin-left:20px}
+#colecao .fd-ai-question small{font-size:9px;color:#607266}
+#colecao .fd-ai-question p,#colecao .fd-ai-answer p,#colecao .fd-sponsored p{font-size:11px;line-height:1.4;margin:4px 0}
+#colecao .fd-ai-answer strong,#colecao .fd-sponsored strong{font-size:11px}
+#colecao .fd-sponsored{border:1px solid #b2c0b4;background:#f7f6f1}
+#colecao .fd-sponsored span{display:block;color:#637264;font-size:9px;margin-bottom:5px}
+#colecao .fd-sponsored a{color:#2f6045;font-size:11px}
+@media(max-width:380px){
+ #colecao .pf-fatos-back{padding:12px 13px 66px}
+ #colecao .fd-post{height:226px}
+ #colecao .fd-video{height:222px}
+ #colecao .fd-product>img{height:215px}
+ #colecao .fd-article{max-height:250px}
+ #colecao .fd-ai-chat{max-height:265px}
+}
+@media(prefers-reduced-motion:reduce){#colecao .fd-demo *{animation:none!important;transition:none!important}}

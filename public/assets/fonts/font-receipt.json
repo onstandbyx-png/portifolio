@@ -1,0 +1,100 @@
+{
+  "retrieved_on": "2026-10-15",
+  "scope": "Fontes do relatório/protótipo, sem alteração do site",
+  "direct_http_limit": "https://rsms.me/inter/inter.css retornou HTTP 403 no ambiente. Usado repositório oficial rsms/inter vinculado no site da fonte.",
+  "sources": [
+    {
+      "file": "InterVariable.woff2",
+      "url": "https://raw.githubusercontent.com/rsms/inter/master/docs/font-files/InterVariable.woff2",
+      "repository": "https://github.com/rsms/inter",
+      "git_blob_sha": "5a8d3e72ad7ffb62af3b146e1b1f54ab5813a212",
+      "official_site": "https://rsms.me/inter/",
+      "license": "Inter-OFL.txt",
+      "bytes": 352240,
+      "sha256": "693b77d4f32ee9b8bfc995589b5fad5e99adf2832738661f5402f9978429a8e3",
+      "obtained_via": "GitHub connector fetch_file (base64 for binaries; utf-8 for licenses)",
+      "modified": false,
+      "git_blob_sha_verified": true,
+      "validation": {
+        "file": "InterVariable.woff2",
+        "size": 352240,
+        "sha256": "693b77d4f32ee9b8bfc995589b5fad5e99adf2832738661f5402f9978429a8e3",
+        "mapped_codepoints": 2852,
+        "latin_ascii": true,
+        "pt": true,
+        "axes": [
+          {
+            "tag": "opsz",
+            "min": 14.0,
+            "default": 14.0,
+            "max": 32.0
+          },
+          {
+            "tag": "wght",
+            "min": 100.0,
+            "default": 400.0,
+            "max": 900.0
+          }
+        ],
+        "decoder": "fontTools with Brotli decompression by Node zlib",
+        "family": "Inter Variable",
+        "version": "Version 4.001;git-9221beed3"
+      }
+    },
+    {
+      "file": "Newsreader-Italic-Variable.woff2",
+      "url": "https://raw.githubusercontent.com/productiontype/Newsreader/master/fonts/variable/woff2/Newsreader-Italic%5Bopsz%2Cwght%5D.woff2",
+      "repository": "https://github.com/productiontype/Newsreader",
+      "git_blob_sha": "eb49cfbce847e250ee2b99a7897e9c048792648f",
+      "original_filename": "Newsreader-Italic[opsz,wght].woff2",
+      "license": "Newsreader-OFL.txt",
+      "bytes": 239844,
+      "sha256": "d184d5e6a967ffea109d9f99fa245eccbff221e27f30bfd7d6fdb2940fcc6265",
+      "obtained_via": "GitHub connector fetch_file (base64 for binaries; utf-8 for licenses)",
+      "modified": false,
+      "git_blob_sha_verified": true,
+      "validation": {
+        "file": "Newsreader-Italic-Variable.woff2",
+        "size": 239844,
+        "sha256": "d184d5e6a967ffea109d9f99fa245eccbff221e27f30bfd7d6fdb2940fcc6265",
+        "mapped_codepoints": 564,
+        "latin_ascii": true,
+        "pt": true,
+        "axes": [
+          {
+            "tag": "wght",
+            "min": 200.0,
+            "default": 400.0,
+            "max": 800.0
+          },
+          {
+            "tag": "opsz",
+            "min": 0.0,
+            "default": 16.0,
+            "max": 72.0
+          }
+        ],
+        "decoder": "fontTools with Brotli decompression by Node zlib",
+        "family": "Newsreader 16pt",
+        "version": "Version 1.003"
+      }
+    },
+    {
+      "file": "Inter-OFL.txt",
+      "url": "https://github.com/rsms/inter/blob/master/LICENSE.txt",
+      "bytes": 4380,
+      "sha256": "262481e844521b326f5ecd053e59b98c8b2da78c8ee1bdbb6e8174305e54935a",
+      "obtained_via": "GitHub connector fetch_file (base64 for binaries; utf-8 for licenses)",
+      "modified": false
+    },
+    {
+      "file": "Newsreader-OFL.txt",
+      "url": "https://github.com/productiontype/Newsreader/blob/master/OFL.txt",
+      "bytes": 4395,
+      "sha256": "806bdd7d159dc2965b41a80078851b8a549b97103f0b64519849aa662b371297",
+      "obtained_via": "GitHub connector fetch_file (base64 for binaries; utf-8 for licenses)",
+      "modified": false
+    }
+  ],
+  "usage": "fonts.css usa URLs locais. Para HTML autônomo, substituir src por data:font/woff2;base64 e incluir licenças no pacote."
+}

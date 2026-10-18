@@ -1,101 +1,119 @@
 import { TEX, type CardArt } from "./art";
-type MaybeImage = HTMLImageElement | null;
+
 type Ctx = CanvasRenderingContext2D;
-const SANS='Inter, "Segoe UI", Arial, sans-serif';
-const SERIF='Georgia, "Times New Roman", serif';
-const cache=new Map<string, Promise<MaybeImage>>();
-function img(src:string):Promise<MaybeImage>{
-  if(cache.has(src))return cache.get(src)!;
-  const promise=new Promise<MaybeImage>(resolve=>{
-    const image=new Image();let settled=false;
-    const done=(value:MaybeImage)=>{if(settled)return;settled=true;clearTimeout(timeout);resolve(value)};
-    const timeout=setTimeout(()=>done(null),3500);
-    image.decoding="async";image.onload=()=>done(image);image.onerror=()=>done(null);image.src=src;
+type Picture = HTMLImageElement | null;
+const SANS = '"Inter Variable", Inter, Arial, sans-serif';
+const SERIF = 'Newsreader, Georgia, serif';
+const INK = "#202923", MUTED = "#58665a", PAPER = "#fcfbf6";
+const files = new Map<string, Promise<Picture>>();
+
+function picture(src: string): Promise<Picture> {
+  if (files.has(src)) return files.get(src)!;
+  const promise = new Promise<Picture>(resolve => {
+    const image = new Image(); image.decoding = "async";
+    let done = false;
+    const finish = (value: Picture) => { if (done) return; done = true; clearTimeout(timer); resolve(value); };
+    const timer = setTimeout(() => finish(null), 5000);
+    image.onload = () => finish(image); image.onerror = () => finish(null); image.src = src;
   });
-  cache.set(src,promise);return promise;
+  files.set(src, promise); return promise;
 }
-function surface(color:string):[HTMLCanvasElement,Ctx]{
-  const c=document.createElement("canvas");c.width=TEX.w;c.height=TEX.h;
-  const ctx=c.getContext("2d")!;ctx.fillStyle=color;ctx.fillRect(0,0,c.width,c.height);return[c,ctx];
+
+// Explicitly request the faces before drawing both the live textures and posters.
+// fonts.ready alone does not request a face that has not appeared in the DOM yet.
+async function fontsReady() {
+  if (!document.fonts) return;
+  const loaded = await Promise.all([
+    document.fonts.load(`500 64px ${SANS}`),
+    document.fonts.load(`650 64px ${SANS}`),
+    document.fonts.load(`italic 450 96px ${SERIF}`),
+  ]);
+  if (loaded.some(faces => faces.length === 0)) throw new Error("As fontes da arte do crachá não foram carregadas.");
+  await document.fonts.ready;
 }
-function rr(ctx:Ctx,x:number,y:number,w:number,h:number,r:number){
-  ctx.beginPath();ctx.roundRect(x,y,w,h,r);
+function surface(color = PAPER): [HTMLCanvasElement, Ctx] {
+  const canvas = document.createElement("canvas"); canvas.width = TEX.w; canvas.height = TEX.h;
+  const ctx = canvas.getContext("2d")!; ctx.fillStyle = color; ctx.fillRect(0, 0, TEX.w, TEX.h); return [canvas, ctx];
 }
-function word(ctx:Ctx,str:string,x:number,y:number,size:number,color:string,weight=600,font=SANS){
-  ctx.fillStyle=color;ctx.textBaseline="alphabetic";ctx.font=`${weight} ${size}px ${font}`;ctx.fillText(str,x,y);
+function text(ctx: Ctx, value: string, x: number, y: number, size: number, color = INK, weight = 500, family = SANS) {
+  ctx.fillStyle = color; ctx.textBaseline = "alphabetic"; ctx.font = `${family === SERIF ? "italic " : ""}${weight} ${size}px ${family}`; ctx.fillText(value, x, y);
 }
-function cover(ctx:Ctx,image:MaybeImage,x:number,y:number,w:number,h:number,color:string){
-  rr(ctx,x,y,w,h,20);ctx.save();ctx.clip();ctx.fillStyle=color;ctx.fillRect(x,y,w,h);
-  if(image?.naturalWidth){
-    const iw=image.naturalWidth,ih=image.naturalHeight;
-    const scale=Math.max(w/iw,h/ih),sw=w/scale,sh=h/scale;
-    ctx.drawImage(image,(iw-sw)/2,(ih-sh)/2,sw,sh,x,y,w,h);
-  }else{
-    ctx.fillStyle="#e5e9e2";ctx.fillRect(x+20,y+20,w-40,h-40);
-    word(ctx,"IDEIA / EXECUÇÃO",x+55,y+h/2,49,"#627361",500);
+function rule(ctx: Ctx, y: number, color = "#d8ded3") {
+  ctx.beginPath(); ctx.moveTo(72, y); ctx.lineTo(952, y); ctx.strokeStyle = color; ctx.lineWidth = 2; ctx.stroke();
+}
+function cover(ctx: Ctx, image: Picture, x: number, y: number, w: number, h: number, color: string, positionY = .5) {
+  ctx.save(); ctx.beginPath(); ctx.roundRect(x, y, w, h, 24); ctx.clip(); ctx.fillStyle = color; ctx.fillRect(x, y, w, h);
+  if (image?.naturalWidth) {
+    const scale = Math.max(w / image.naturalWidth, h / image.naturalHeight), sw = w / scale, sh = h / scale;
+    ctx.drawImage(image, (image.naturalWidth - sw) / 2, (image.naturalHeight - sh) * positionY, sw, sh, x, y, w, h);
   }
   ctx.restore();
 }
-function top(ctx:Ctx,brand:string,count:string,dark=false){
-  const c=dark?"#f3f5ed":"#203529";
-  word(ctx,brand,72,151,80,c,800);
-  word(ctx,count,706,139,29,dark?"#b7c5bb":"#708273",700);
-  ctx.strokeStyle=dark?"#ffffff3b":"#cbd4c9";ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(70,184);ctx.lineTo(952,184);ctx.stroke();
+function arrow(ctx: Ctx, x: number, y: number, color: string) {
+  ctx.strokeStyle = color; ctx.lineWidth = 5; ctx.lineCap = "round"; ctx.lineJoin = "round";
+  ctx.beginPath(); ctx.moveTo(x - 14, y + 14); ctx.lineTo(x + 14, y - 14);
+  ctx.moveTo(x - 12, y - 14); ctx.lineTo(x + 14, y - 14); ctx.lineTo(x + 14, y + 12); ctx.stroke();
 }
-function backInfo(ctx:Ctx,label:string,title:string,details:string[],dark=false){
-  const fg=dark?"#f0f2e9":"#20352c",muted=dark?"#b9c8bc":"#6f8377";
-  word(ctx,label,73,325,32,muted,700);
-  const parts=title.split("\n");parts.forEach((p,i)=>word(ctx,p,72,418+i*90,77,fg,700,SERIF));
-  let y=745;for(const detail of details){ctx.fillStyle=dark?"#30493c":"#e8ede6";rr(ctx,69,y-51,887,79,15);ctx.fill();word(ctx,detail,100,y,38,fg,500);y+=103}
-  ctx.strokeStyle=dark?"#52675a":"#cbd4c9";ctx.beginPath();ctx.moveTo(74,1125);ctx.lineTo(950,1125);ctx.stroke();
-  word(ctx,"SMILE N",73,1200,47,fg,800);
-  word(ctx,"DIREÇÃO CRIATIVA / IDEIA & EXECUÇÃO",73,1263,26,muted,700);
+function footer(ctx: Ctx, label: string, dark = false) {
+  const color = dark ? "#fafaf4" : INK;
+  rule(ctx, 1194, dark ? "#ffffff36" : "#d8ded3"); text(ctx, label, 74, 1264, 47, color, 550); arrow(ctx, 912, 1248, color);
 }
-/** Original portfolio artwork: a visual idea, not a screenshot of a published project. */
-function editorialCover(ctx:Ctx){
-  ctx.save();rr(ctx,72,214,880,662,20);ctx.clip();
-  const ink=ctx.createLinearGradient(72,214,952,876);
-  ink.addColorStop(0,"#1e3d30");ink.addColorStop(1,"#10281d");
-  ctx.fillStyle=ink;ctx.fillRect(72,214,880,662);
-  ctx.strokeStyle="#6e8f7145";ctx.lineWidth=1;
-  for(let x=118;x<952;x+=76){ctx.beginPath();ctx.moveTo(x,214);ctx.lineTo(x,876);ctx.stroke()}
-  for(let y=264;y<876;y+=76){ctx.beginPath();ctx.moveTo(72,y);ctx.lineTo(952,y);ctx.stroke()}
-  const glow=ctx.createRadialGradient(766,440,12,766,440,243);
-  glow.addColorStop(0,"#e1e8b2");glow.addColorStop(.6,"#97ac70");glow.addColorStop(1,"#496e4c");
-  ctx.fillStyle=glow;ctx.beginPath();ctx.arc(766,440,168,0,Math.PI*2);ctx.fill();
-  ctx.strokeStyle="#e7ebcb80";ctx.lineWidth=2;
-  ctx.beginPath();ctx.ellipse(766,440,233,76,-.38,0,Math.PI*2);ctx.stroke();
-  word(ctx,"PONTO DE PARTIDA",120,290,26,"#cbdbbe",600);
-  word(ctx,"Histórias",117,610,116,"#fffef3",500,SERIF);
-  word(ctx,"que ficam.",117,729,116,"#fffef3",500,SERIF);
-  ctx.fillStyle="#d6e7aa";ctx.fillRect(122,797,46,4);
-  word(ctx,"CONTEXTO → NARRATIVA → CONTEÚDO",187,809,25,"#d7e4c7",600);
+function brand(ctx: Ctx, kind: "fatos" | "smiile", avatar: Picture = null, dark = false) {
+  const color = dark ? "#fafaf4" : INK;
+  if (kind === "fatos") {
+    cover(ctx, avatar, 74, 100, 112, 112, "#e8ece8");
+    text(ctx, "Fatos", 210, 151, 65, color, 650); text(ctx, "Desconhecidos", 212, 204, 40, dark ? "#c2cfc3" : MUTED);
+  } else {
+    text(ctx, "smiile", 74, 175, 94, color, 650); text(ctx, "PROJETO PRÓPRIO", 76, 226, 34, dark ? "#bdcfc0" : MUTED, 550);
+  }
+  text(ctx, kind === "fatos" ? "01" : "02", 856, 164, 52, dark ? "#bdcfc0" : MUTED);
+}
+function steps(ctx: Ctx, rows: Array<[string, string]>, dark = false) {
+  const fg = dark ? "#f7f7ef" : INK, quiet = dark ? "#bacdbb" : MUTED;
+  rows.forEach(([title, note], i) => {
+    const y = 638 + i * 170;
+    rule(ctx, y - 62, dark ? "#ffffff26" : "#d8ded3"); text(ctx, `0${i + 1}`, 74, y, 38, quiet);
+    text(ctx, title, 174, y, 57, fg, 550); text(ctx, note, 175, y + 58, 40, quiet);
+  });
+}
+
+/** Original Fatos identity and compositions recovered from the user's media kit. */
+export async function editorialCard(_copy: { name: string; label: string; line: string }): Promise<CardArt> {
+  await fontsReady();
+  const [avatar, photo] = await Promise.all([
+    picture("/assets/portfolio/recovered-fatos/avatar_desconhecidos.webp"),
+    picture("/assets/portfolio/recovered-fatos/cena-desconhecidos.webp"),
+  ]);
+  const [front, ctx] = surface(); brand(ctx, "fatos", avatar);
+  cover(ctx, photo, 64, 260, 896, 606, "#1552ae", .94);
+  text(ctx, "Pesquisa, conteúdo", 74, 982, 84, INK, 450, SERIF);
+  text(ctx, "e direção criativa.", 74, 1074, 84, INK, 450, SERIF);
+  text(ctx, "EXPERIÊNCIA PROFISSIONAL", 77, 1142, 35, MUTED, 550); footer(ctx, "Conhecer minha atuação");
+  const [back, b] = surface("#edf0e7"); brand(b, "fatos", avatar);
+  text(b, "O recorte dá forma", 74, 373, 85, INK, 450, SERIF); text(b, "à história.", 74, 470, 98, INK, 450, SERIF);
+  steps(b, [["Pesquisa e pauta", "Encontrar a pergunta."], ["Texto e roteiro", "Organizar a narrativa."], ["Direção criativa", "Dar forma à mensagem."]]);
+  footer(b, "Ver atuação editorial"); return { front, back };
+}
+
+/** Capture of the actual interactive app, shared by live scene and poster. */
+export async function digitalCard(_copy: { name: string; label: string; line: string }): Promise<CardArt> {
+  await fontsReady(); const screenshot = await picture("/assets/badges/smiile-interface.webp");
+  const [front, ctx] = surface("#22382e"); brand(ctx, "smiile", null, true);
+  ctx.save(); ctx.beginPath(); ctx.roundRect(64, 270, 896, 596, 24); ctx.clip();
+  const bg = ctx.createLinearGradient(64, 270, 960, 866); bg.addColorStop(0, "#dce7d6"); bg.addColorStop(1, "#a8bca7");
+  ctx.fillStyle = bg; ctx.fillRect(64, 270, 896, 596);
+  if (screenshot?.naturalWidth) {
+    // Preserve screen geometry. The print window crops its continuation instead of squeezing the UI.
+    const width = 760, height = screenshot.naturalHeight * width / screenshot.naturalWidth;
+    ctx.drawImage(screenshot, (TEX.w - width) / 2, -560, width, height);
+  } else {
+    text(ctx, "Interface interativa", 148, 542, 65, INK, 450, SERIF); text(ctx, "Explore o projeto abaixo", 150, 610, 44, MUTED);
+  }
   ctx.restore();
-}
-export async function editorialCard(copy:{name:string;label:string;line:string}):Promise<CardArt>{
-  await document.fonts?.ready;
-  const [front,ctx]=surface("#f6f7f2");
-  top(ctx,"FATOS.","01 / EDITORIAL");
-  editorialCover(ctx);
-  word(ctx,copy.label,73,957,32,"#52755a",750);
-  word(ctx,"Da pesquisa",72,1061,79,"#203529",600,SERIF);
-  word(ctx,"à narrativa.",72,1147,79,"#203529",600,SERIF);
-  word(ctx,"SMILE N • EXPERIÊNCIA EDITORIAL",73,1252,27,"#52755a",650);
-  const [back,b]=surface("#e7eee3");top(b,"FATOS.","01 / EDITORIAL");
-  backInfo(b,"MINHA ATUAÇÃO","Direção criativa\ne narrativa.",["Pesquisa e recorte editorial","Roteiro, arte e conteúdo","Conteúdo para grandes audiências"]);
-  return{front,back};
-}
-export async function digitalCard(copy:{name:string;label:string;line:string}):Promise<CardArt>{
-  await document.fonts?.ready;
-  const picture=await img("/assets/smiile-landscape.webp");
-  const [front,ctx]=surface("#1b2c25");
-  top(ctx,"smiile.","02 / DIGITAL",true);
-  cover(ctx,picture,62,210,900,670,"#2c4a35");
-  word(ctx,copy.label,73,971,31,"#bfd6ac",750);
-  word(ctx,"Uma ideia",72,1072,80,"#f6f5ed",600,SERIF);
-  word(ctx,"ganha vida.",72,1164,80,"#f6f5ed",600,SERIF);
-  word(ctx,"SMILE N • DEMONSTRAÇÃO DE PRODUTO",73,1252,25,"#b1c7b5",650);
-  const[back,b]=surface("#243a2e");top(b,"smiile.","02 / DIGITAL",true);
-  backInfo(b,"PROJETO DIGITAL","Da interface\nà experiência.",["Sites e aplicativos","Componentes interativos","Sistemas e automações"],true);
-  return{front,back};
+  text(ctx, "Interfaces, produtos", 74, 982, 81, "#fafaf3", 450, SERIF); text(ctx, "e novas possibilidades.", 74, 1074, 76, "#fafaf3", 450, SERIF);
+  text(ctx, "DIREÇÃO VISUAL + DESENVOLVIMENTO", 76, 1142, 32, "#bdcfc0", 550); footer(ctx, "Explorar o projeto", true);
+  const [back, b] = surface("#22382e"); brand(b, "smiile", null, true);
+  text(b, "Do visual ao que", 74, 373, 85, "#fafaf3", 450, SERIF); text(b, "acontece depois.", 74, 470, 85, "#fafaf3", 450, SERIF);
+  steps(b, [["Site navegável", "Da página ao próximo passo."], ["Aplicativo de trilhas", "Busca, detalhe e mapa."], ["Voz e proposta", "Conversa com contexto."]], true);
+  footer(b, "Explorar as experiências", true); return { front, back };
 }

@@ -1,0 +1,213 @@
+{
+  "schemaVersion": 1,
+  "baseRevision": "702344b5e26e21c7a80713560130e9da969aa289",
+  "date": "2026-10-15",
+  "components": [
+    {
+      "path": "public/assets/showcase/fatos-deck.js",
+      "origin": "onstandbyx-png/roblox@b9c8270:src/components/islands/Baralho.tsx",
+      "adaptation": "Native portfolio edition with six editorial contexts; no audience metrics."
+    },
+    {
+      "path": "public/assets/showcase/product-demos.js",
+      "origin": "onstandbyx-png/smiile-@a2e6d42:sites/smiile-landing",
+      "adaptation": "Native app/site/voice examples using original trail data and audio; see recovered-smiile/SOURCES.md."
+    },
+    {
+      "path": "public/assets/showcase/scroll-gallery.js",
+      "origin": "User video 1000772829.mp4",
+      "adaptation": "CSS3D whole-plane progression owned by native page scroll; short-viewport flow preserves complete cards and actions."
+    },
+    {
+      "path": "public/assets/showcase/experiences.js",
+      "origin": "User video 1000772827.mp4 and Fatos source assets",
+      "adaptation": "Camera progression across a coherent Casa Costa composition; format controls move to native scroll chapters."
+    },
+    {
+      "path": "src/badges/badge/BadgeScene.ts",
+      "origin": "Existing portfolio rig plus user video 1000772828.mp4",
+      "adaptation": "Independent presentation turns, fixed drag reference, bounded physical interaction, damping and stable rest; original entrance preserved."
+    },
+    {
+      "path": "public/assets/showcase/social-ads.js",
+      "origin": "onstandbyx-png/roblox@b9c8270:src/components/islands/estudio/{Instagram,TikTok}.tsx and src/lib/estudio.ts",
+      "adaptation": "Native Meta/TikTok chrome in the shared metallic device; coherent three-frame story, decoded image swaps and a single playback controller. No invented engagement counts."
+    }
+  ],
+  "assets": [
+    {
+      "path": "public/assets/portfolio/recovered-fatos/avatar_crencas.webp",
+      "repository": "onstandbyx-png/roblox",
+      "revision": "b9c827082edc6e2076c864687451ae3d1a1dcf76",
+      "sourcePath": "public/marca/avatar_crencas.webp",
+      "sha256": "861d8f7a6f847456ad79021b509d4cd4d01b7f2a3249e4572bd002507ca54e86",
+      "bytes": 6194,
+      "adapted": false
+    },
+    {
+      "path": "public/assets/portfolio/recovered-fatos/avatar_desconhecidos.webp",
+      "repository": "onstandbyx-png/roblox",
+      "revision": "b9c827082edc6e2076c864687451ae3d1a1dcf76",
+      "sourcePath": "public/marca/avatar_desconhecidos.webp",
+      "sha256": "9a0c39469ab39d05563f2d545ffb5946e08f00de093148c37af73a7f0fe2834c",
+      "bytes": 6182,
+      "adapted": false
+    },
+    {
+      "path": "public/assets/portfolio/recovered-fatos/avatar_esportes.webp",
+      "repository": "onstandbyx-png/roblox",
+      "revision": "b9c827082edc6e2076c864687451ae3d1a1dcf76",
+      "sourcePath": "public/marca/avatar_esportes.webp",
+      "sha256": "39e4ac083ab6e77f4b7b5f592fee2918981dbad8a197202d6c97d7854aa17d1c",
+      "bytes": 6400,
+      "adapted": false
+    },
+    {
+      "path": "public/assets/portfolio/recovered-fatos/avatar_negocios.webp",
+      "repository": "onstandbyx-png/roblox",
+      "revision": "b9c827082edc6e2076c864687451ae3d1a1dcf76",
+      "sourcePath": "public/marca/avatar_negocios.webp",
+      "sha256": "ca07c891489c59c011a6b57ce8035e47c35530e77f0dfcd2c87c2b2fac634d43",
+      "bytes": 6264,
+      "adapted": false
+    },
+    {
+      "path": "public/assets/portfolio/recovered-fatos/avatar_nerd.webp",
+      "repository": "onstandbyx-png/roblox",
+      "revision": "b9c827082edc6e2076c864687451ae3d1a1dcf76",
+      "sourcePath": "public/marca/avatar_nerd.webp",
+      "sha256": "ac26dda3f6ee33135482925da2da5ca8c001d7478370f8e20ea07e12b70b838e",
+      "bytes": 6252,
+      "adapted": false
+    },
+    {
+      "path": "public/assets/portfolio/recovered-fatos/avatar_sobrenaturais.webp",
+      "repository": "onstandbyx-png/roblox",
+      "revision": "b9c827082edc6e2076c864687451ae3d1a1dcf76",
+      "sourcePath": "public/marca/avatar_sobrenaturais.webp",
+      "sha256": "e8e3c74ca551425c1e3fa0b2f83ce812d9185ad80718489d465aaa910cb84f4d",
+      "bytes": 5958,
+      "adapted": false
+    },
+    {
+      "path": "public/assets/portfolio/recovered-fatos/cena-crencas.webp",
+      "repository": "onstandbyx-png/roblox",
+      "revision": "b9c827082edc6e2076c864687451ae3d1a1dcf76",
+      "sourcePath": "public/estudio/cena-crencas.webp",
+      "sha256": "38d8745aa0f76d5e909fc9f78ba2bc493f8a6c26500c67d6ee637ccf96767f67",
+      "bytes": 50190,
+      "adapted": false
+    },
+    {
+      "path": "public/assets/portfolio/recovered-fatos/cena-desconhecidos.webp",
+      "repository": "onstandbyx-png/roblox",
+      "revision": "b9c827082edc6e2076c864687451ae3d1a1dcf76",
+      "sourcePath": "public/estudio/cena-desconhecidos.webp",
+      "sha256": "a77e843bf1f33296d969dfa6643bd7526ac2070753e9d21b9a6b45babb907d82",
+      "bytes": 36976,
+      "adapted": false
+    },
+    {
+      "path": "public/assets/portfolio/recovered-fatos/cena-esportes.webp",
+      "repository": "onstandbyx-png/roblox",
+      "revision": "b9c827082edc6e2076c864687451ae3d1a1dcf76",
+      "sourcePath": "public/estudio/cena-esportes.webp",
+      "sha256": "a28fec4956244e033e2866f12c42397adc206c4e3d5b48bcc78b6d85acadcd38",
+      "bytes": 65726,
+      "adapted": false
+    },
+    {
+      "path": "public/assets/portfolio/recovered-fatos/cena-negocios.webp",
+      "repository": "onstandbyx-png/roblox",
+      "revision": "b9c827082edc6e2076c864687451ae3d1a1dcf76",
+      "sourcePath": "public/estudio/cena-negocios.webp",
+      "sha256": "e0a4cd5bb091883377e342f1669cfa1b937834e7e603fb62f0944d1e83b95865",
+      "bytes": 23272,
+      "adapted": false
+    },
+    {
+      "path": "public/assets/portfolio/recovered-fatos/cena-nerd.webp",
+      "repository": "onstandbyx-png/roblox",
+      "revision": "b9c827082edc6e2076c864687451ae3d1a1dcf76",
+      "sourcePath": "public/estudio/cena-nerd.webp",
+      "sha256": "825519400fd2a5bf89d0cf8d7f3245de86dca511cd20beb9a1dfd1d54a70c568",
+      "bytes": 27512,
+      "adapted": false
+    },
+    {
+      "path": "public/assets/portfolio/recovered-fatos/cena-sobrenaturais.webp",
+      "repository": "onstandbyx-png/roblox",
+      "revision": "b9c827082edc6e2076c864687451ae3d1a1dcf76",
+      "sourcePath": "public/estudio/cena-sobrenaturais.webp",
+      "sha256": "310a51f44e247e051735e55c222d8245104e6ac36c9e182645137852078a8535",
+      "bytes": 27480,
+      "adapted": false
+    },
+    {
+      "path": "public/assets/portfolio/recovered-fatos/post-desconhecidos-600.webp",
+      "repository": "onstandbyx-png/roblox",
+      "revision": "b9c827082edc6e2076c864687451ae3d1a1dcf76",
+      "sourcePath": "public/heroi/post-desconhecidos-600.webp",
+      "sha256": "fc77740b519de053c1c702392d10973b07af80146dd32d79b47ebb9b173c877f",
+      "bytes": 16928,
+      "adapted": false
+    },
+    {
+      "path": "public/assets/portfolio/recovered-smiile/agents-call-pt-br.json",
+      "repository": "onstandbyx-png/smiile-",
+      "revision": "a2e6d42c526aa721d5059a6baad00cc86418ca3d",
+      "sourcePath": "sites/smiile-landing/public/media/agents-call-pt-br.json",
+      "sha256": "c3d43bcf29f43bff482b61fb0b99c5a3b6f03178bbeec3d7cac594bfa00b884a",
+      "bytes": 1076,
+      "adapted": false
+    },
+    {
+      "path": "public/assets/portfolio/recovered-smiile/agents-call-pt-br.mp3",
+      "repository": "onstandbyx-png/smiile-",
+      "revision": "a2e6d42c526aa721d5059a6baad00cc86418ca3d",
+      "sourcePath": "sites/smiile-landing/public/media/agents-call-pt-br.mp3",
+      "sha256": "b1227bd0e44fc76dc5c744c3360db6de00c8d6edc72789ada82485ce04f6e714",
+      "bytes": 311423,
+      "adapted": false
+    },
+    {
+      "path": "public/assets/portfolio/recovered-smiile/landscape.webp",
+      "repository": "onstandbyx-png/smiile-",
+      "revision": "a2e6d42c526aa721d5059a6baad00cc86418ca3d",
+      "sourcePath": "sites/smiile-landing/public/assets/landscape.webp",
+      "sha256": "d4f41bb832da191a1ac7331ecbb6eb6b5c2ad56fc5777e0fda5ab676c851f33f",
+      "bytes": 298506,
+      "adapted": false
+    },
+    {
+      "path": "public/assets/portfolio/recovered-smiile/trail-data.js",
+      "repository": "onstandbyx-png/smiile-",
+      "revision": "a2e6d42c526aa721d5059a6baad00cc86418ca3d",
+      "sourcePath": [
+        "sites/smiile-landing/src/data/trail.ts",
+        "sites/smiile-landing/src/data/trail.generated.ts"
+      ],
+      "sha256": "6e5b0c31d3ad0fccd91ccd35ac9b34b86d55e9ea76097cbf54b56d49c13b0efc",
+      "bytes": 10503,
+      "adapted": true
+    },
+    {
+      "path": "public/assets/portfolio/recovered-smiile/trail-map.svg",
+      "repository": "onstandbyx-png/smiile-",
+      "revision": "a2e6d42c526aa721d5059a6baad00cc86418ca3d",
+      "sourcePath": "sites/smiile-landing/public/assets/trail-map.svg",
+      "sha256": "d05b468ba38e426a6526127cb47c258b0d30c49f6bfb12a0f18e8ab8e46115df",
+      "bytes": 42286,
+      "adapted": false
+    }
+  ],
+  "interactionRevision": "hero-single-design-20261015-r4",
+  "hiddenSections": [
+    {
+      "id": "estudio-interativo",
+      "reason": "Ocultado a pedido do usuário: concentra a experiência de crachás no hero.",
+      "sourceRetained": true,
+      "publicInitialization": false
+    }
+  ]
+}

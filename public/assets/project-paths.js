@@ -1,34 +1,14 @@
-/* Business-oriented, visual portfolio examples. No fictitious product dependency. */
-const category=document.querySelector('#categorias');
-if(category){
- const projects=[
- {id:'launch',number:'01',tab:'Conteúdo e redação',service:'Redação e conteúdo',eyebrow:'PESQUISA / ROTEIRO / NARRATIVA',title:'Uma história merece o próximo olhar.',description:'Pesquisa, pautas, roteiros, carrosséis e conteúdo visual que torna assuntos compreensíveis.',image:'/assets/portfolio/cena-desconhecidos.webp',steps:['Escolher o assunto','Construir a narrativa','Adaptar formatos'],notes:['A pergunta e o público indicam o caminho.','Um roteiro organiza o gancho, a pesquisa e o contexto.','Um assunto pode virar post, vídeo ou carrossel.'],scope:['Pautas e pesquisa','Texto e direção de arte','Adaptações e roteiros']},
- {id:'demand',number:'02',tab:'Campanhas e Ads',service:'Campanhas e criativos',eyebrow:'CONCEITO / CRIATIVO / DISTRIBUIÇÃO',title:'A ideia encontra o canal certo.',description:'Conceito de campanha, peças publicitárias e operação de anúncios com mensuração e melhoria.',image:'/assets/portfolio/cena-negocios.webp',steps:['Definir objetivo','Criar para o canal','Acompanhar resultados'],notes:['Começamos pelo público e a proposta.','O mesmo objetivo pede composições diferentes em feed, vídeo e busca.','A gestão acompanha e ajusta a campanha.'],scope:['Estratégia e público','Criativos e formatos','Veiculação e otimização']},
- {id:'experience',number:'03',tab:'Sites e aplicativos',service:'Sites e experiências digitais',eyebrow:'UX / INTERFACE / DESENVOLVIMENTO',title:'Um produto que dá para explorar.',description:'Sites, apps, interfaces e automações com estados navegáveis e funcionamento demonstrável.',image:'/assets/portfolio/smiile-architecture-coast.webp',steps:['Entender o usuário','Construir a interface','Testar a experiência'],notes:['Tudo começa pela tarefa que precisa ser feita.','O design revela uma experiência navegável.','Responsividade e interação tornam o resultado verificável.'],scope:['Arquitetura de experiência','UI e protótipos','Desenvolvimento e integrações']}
- ];
- const root=category.querySelector('#project-paths')||document.createElement('div');root.id='project-paths';root.className='project-paths';root.dataset.ready='true';
- function e(tag,cls,html){const node=document.createElement(tag);if(cls)node.className=cls;node.innerHTML=html;return node}
- const header=e('header','path-heading','<div><span class="path-kicker">08 / DO BRIEFING À ENTREGA</span><h2 id="project-paths-title">Escolha o desafio.<br><em>Veja a entrega.</em></h2></div><p>Três possibilidades de colaboração. Cada uma traz uma referência visual real e uma contribuição compreensível.</p>');root.append(header);
- const tabs=e('div','path-tabs','');tabs.setAttribute('role','tablist');tabs.setAttribute('aria-label','Frentes de trabalho');
- const panels=e('div','path-panels','');
- projects.forEach(function(p,i){
-  const tab=e('button','', '<span>'+p.number+'</span><strong>'+p.tab+'</strong><span aria-hidden="true">↗</span>');tab.type='button';tab.id='path-tab-'+p.id;tab.dataset.pathTab=p.id;tab.setAttribute('role','tab');tab.setAttribute('aria-controls','path-panel-'+p.id);tab.setAttribute('aria-selected',String(i===0));tab.tabIndex=i===0?0:-1;tabs.append(tab);
-  const panel=e('section','path-panel','');panel.id='path-panel-'+p.id;panel.setAttribute('role','tabpanel');panel.setAttribute('aria-labelledby',tab.id);panel.tabIndex=0;panel.hidden=i!==0;
-  const left=e('div','path-demonstration','');
-  const visual=e('div','path-portfolio-demo','<div class="path-example-label"><span>'+p.eyebrow+'</span><span>PROJETO DE ORIGEM</span></div>');
-  const photo=e('div','path-portfolio-image','<img loading="lazy" src="'+p.image+'" alt="Material de referência do projeto '+(p.id==='experience'?'smiile':'Fatos')+'"><div class="path-portfolio-gradient"></div><div class="path-portfolio-caption"><small>UMA IDEIA · VÁRIOS FORMATOS</small><h4>'+p.title+'</h4></div>');visual.append(photo);
-  const steps=e('div','path-portfolio-steps','');steps.setAttribute('role','group');steps.setAttribute('aria-label','Etapas da colaboração');
-  p.steps.forEach(function(label,j){let b=e('button','', '<b>0'+(j+1)+'</b><span>'+label+'</span>');b.type='button';b.dataset.pathFocus=j;b.setAttribute('aria-pressed',String(j===0));steps.append(b)});
-  visual.append(steps);left.append(visual);const note=e('div','path-decisions','<span>O RACIOCÍNIO POR TRÁS</span><p data-path-note role="status">'+p.notes[0]+'</p>');left.append(note);panel.append(left);
-  const right=e('div','path-delivery','<span class="path-delivery-kicker">'+p.eyebrow+'</span><h3>'+p.title+'</h3><p class="path-delivery-description">'+p.description+'</p><span class="path-scope-label">O QUE POSSO ENTREGAR</span>');const ol=e('ol','path-scope','');
-  p.scope.forEach(function(label,j){const li=e('li','', '<span>0'+(j+1)+'</span><div><strong>'+label+'</strong></div>');ol.append(li)});right.append(ol);
-  const action=e('a','path-contact','Conversar sobre '+p.tab.toLowerCase()+' <span aria-hidden="true">↗</span>');action.href='#contato';action.dataset.projectNeed=p.service;right.append(action);right.append(e('p','path-scope-note','O trabalho é contratado com escopo e entregas definidos.'));panel.append(right);panels.append(panel);
- });
- root.append(tabs,panels);root.append(e('div','path-footnote','<span class="path-footnote-mark">✳</span><p>Projetos de origem identificada. Os estudos conceituais não representam campanha veiculada nem métricas pessoais.</p><span class="path-signature">IDEIA ↗ EXECUÇÃO</span>'));
- category.append(root);category.setAttribute('aria-labelledby','project-paths-title');
- const bs=[...root.querySelectorAll('[data-path-tab]')],ps=[...root.querySelectorAll('.path-panel')];
- function select(i,focus){bs.forEach(function(b,j){b.setAttribute('aria-selected',String(i===j));b.tabIndex=i===j?0:-1;ps[j].hidden=i!==j});root.dataset.activePath=projects[i].id;if(focus)bs[i].focus();}
- bs.forEach(function(b,i){b.addEventListener('click',()=>select(i));b.addEventListener('keydown',function(ev){let n={ArrowRight:(i+1)%3,ArrowLeft:(i+2)%3,Home:0,End:2}[ev.key];if(n===undefined)return;ev.preventDefault();select(n,true)})});
- ps.forEach(function(panel,i){panel.querySelectorAll('[data-path-focus]').forEach(function(btn){btn.addEventListener('click',function(){const j=Number(btn.dataset.pathFocus);panel.querySelectorAll('[data-path-focus]').forEach(b=>b.setAttribute('aria-pressed',String(b===btn)));panel.querySelector('[data-path-note]').textContent=projects[i].notes[j];panel.querySelector('.path-portfolio-image').dataset.step=String(j)})});panel.querySelector('.path-contact').addEventListener('click',function(){let select=document.querySelector('#service');if(select){for(const o of select.options)if(o.value===projects[i].service||o.textContent===projects[i].service){select.value=o.value;select.dispatchEvent(new Event('change',{bubbles:true}));break}}})});
- select(0,false);
+/** The complete catalogue is readable in HTML; JavaScript only connects the brief. */
+const root = document.querySelector('#project-paths');
+if (root) {
+  root.querySelectorAll('[data-project-need]').forEach(link => {
+    link.addEventListener('click', () => {
+      const select = document.querySelector('#service');
+      const option = select && [...select.options].find(item => item.value === link.dataset.projectNeed);
+      if (!option) return;
+      select.value = option.value;
+      select.dispatchEvent(new Event('change', { bubbles: true }));
+    });
+  });
+  root.dataset.ready = 'true';
 }

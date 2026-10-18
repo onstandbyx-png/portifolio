@@ -14,7 +14,7 @@ export function createMotion(){
  preference.addEventListener('change',()=>{if(paused())finishAll()});
  const button=document.querySelector('.motion-toggle');if(button)new MutationObserver(()=>{if(paused())finishAll()}).observe(button,{attributes:true,attributeFilter:['aria-pressed']});
  document.addEventListener('visibilitychange',()=>{if(document.hidden)finishAll()});
- function animate(el,keyframes,{duration=420,delay=0,easing='cubic-bezier(.16,1,.3,1)'}={}){if(!el||!available()||!el.animate)return null;const a=el.animate(keyframes,{duration,delay,easing,fill:'none'});animations.add(a);a.finished.catch(()=>{}).finally(()=>animations.delete(a));return a;}
+ function animate(el,keyframes,{duration=420,delay=0,easing='cubic-bezier(.16,1,.3,1)'}={}){if(!el||!available()||!el.animate)return null;const a=el.animate(keyframes,{duration,delay,easing,fill:'backwards'});animations.add(a);a.finished.catch(()=>{}).finally(()=>animations.delete(a));return a;}
  function spring(el,frame,{name='snappy',duration=690,delay=0}={}){const frames=Array.from({length:49},(_,i)=>({...frame(i===48?1:springAt(name,i/48*duration)),offset:i/48}));return animate(el,frames,{duration,delay,easing:'linear'});}
  return{paused,available,animate,spring,onStop:fn=>{stopListeners.add(fn);return()=>stopListeners.delete(fn)},finishAll};
 }
