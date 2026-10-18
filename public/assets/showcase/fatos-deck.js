@@ -112,6 +112,9 @@ export function mountFatosDeck() {
     });
     stage.dataset.motion='idle';
   }
+  // Four exchanges in the 25s reference settle in roughly 0.45–0.55s.
+  // Keep each DOM card persistent; only the physical position is animated.
+  const EXCHANGE_MS=480;
   function go(index,released=null){
     const next=(index+cards.length)%cards.length;
     if(next===active)return;
@@ -128,23 +131,25 @@ export function mountFatosDeck() {
     paint();
     if(!reduced()){
       stage.dataset.motion='exchange';
-      const distance=Math.min(previous.getBoundingClientRect().width*.78,315);
-      const exit='translate3d('+(-direction*distance)+'px,-16px,0) rotate('+(-direction*13)+'deg) scale(.935)';
+      stage.dataset.referenceTiming=String(EXCHANGE_MS);
+      const distance=Math.min(previous.getBoundingClientRect().width*.76,305);
+      const exit='translate3d('+(-direction*distance)+'px,-10px,0) rotate('+(-direction*8.5)+'deg) scale(.946)';
       previous.classList.add('is-departing');
       previous.style.transition='none';
       previous.style.zIndex='12';
       departure=previous.animate([
         {offset:0,transform:previousFrom,opacity:1},
-        {offset:.78,transform:'translate3d('+(-direction*distance*.88)+'px,-13px,0) rotate('+(-direction*11.5)+'deg) scale(.946)',opacity:1},
-        {offset:.92,transform:exit,opacity:1},
+        {offset:.18,transform:'translate3d('+(-direction*distance*.11)+'px,-2px,0) rotate('+(-direction*2)+'deg) scale(.996)',opacity:1},
+        {offset:.76,transform:'translate3d('+(-direction*distance*.92)+'px,-10px,0) rotate('+(-direction*7.3)+'deg) scale(.952)',opacity:1},
+        {offset:.94,transform:exit,opacity:.96},
         {offset:1,transform:exit,opacity:0}
-      ],{duration:590,easing:'cubic-bezier(.22,.78,.17,1)',fill:'both'});
+      ],{duration:EXCHANGE_MS,easing:'cubic-bezier(.23,.74,.24,1)',fill:'both'});
       incoming.style.transition='none';
       arrival=incoming.animate([
         {offset:0,transform:incomingFrom==='none'?'translateX(20px) rotate(4deg) scale(.97)':incomingFrom,opacity:1},
-        {offset:.48,transform:'translate3d('+(direction*8)+'px,-3px,0) rotate('+(direction*1.6)+'deg) scale(.993)',opacity:1},
+        {offset:.70,transform:'translate3d('+(direction*3)+'px,-2px,0) rotate('+(direction*.65)+'deg) scale(1.017)',opacity:1},
         {offset:1,transform:'translate3d(0,0,0) rotate(0deg) scale(1)',opacity:1}
-      ],{duration:590,easing:'cubic-bezier(.18,.73,.22,1)',fill:'both'});
+      ],{duration:EXCHANGE_MS,easing:'cubic-bezier(.20,.78,.22,1)',fill:'both'});
       Promise.allSettled([departure.finished,arrival.finished]).then(()=>{
         if(token!==flightToken)return;
         previous.classList.remove('is-departing');

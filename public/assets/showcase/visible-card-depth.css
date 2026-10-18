@@ -33,7 +33,7 @@
   max-width:none;
   transform-origin:center 82%;
   backface-visibility:visible;
-  transition:transform 620ms cubic-bezier(.17,.76,.2,1),opacity 530ms cubic-bezier(.17,.76,.2,1);
+  transition:transform 500ms cubic-bezier(.20,.78,.22,1),opacity 470ms cubic-bezier(.20,.78,.22,1);
   will-change:auto;
   visibility:visible;
 }
