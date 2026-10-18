@@ -34,6 +34,13 @@ try{
       nodes.length===3&&['iphone','ipad','macbook'].every(model=>nodes.some(n=>n.dataset.editorialModel===model))));
   check('Exactly one primary and two interactive hardware previews exist',
     await editorial.locator('.es-device').count()===1&&await editorial.locator('.es-peek').count()===2);
+  check('Video-reference deck has real depth and two independently posed neighbors',
+    await editorial.evaluate(root=>{
+      const stage=root.querySelector('.es-stage'),side=[...stage.querySelectorAll('.es-object.es-peek')];
+      return root.dataset.editorialReference==='layered-deck-25s'&&
+        getComputedStyle(stage).perspective!=='none'&&side.length===2&&
+        side.every(el=>getComputedStyle(el).transform.startsWith('matrix3d('));
+    }));
   const states=[
     {index:0,kind:'iphone',model:'.df-iphone-pro',selectors:['.df-island','.df-home','.df-metal']},
     {index:1,kind:'ipad',model:'.es-hardware--ipad',selectors:['.ipad-pro-body','.ipad-pro-screen','.ipad-pro-camera','.ipad-pro-home']},
