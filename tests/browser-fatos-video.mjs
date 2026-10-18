@@ -28,7 +28,8 @@ try{
       await deck.scrollIntoViewIfNeeded();await pause(140);
       const stage=deck.locator('.pf-fatos-stage');
       const cards=deck.locator('[data-fatos-card]');
-      check('Six original Fatos cards remain persistent',await cards.count()===6);
+      check('Six original HTML/CSS cards remain persistent',await cards.count()===6);
+       check('All six fronts use CSS and never load photos or avatars',await stage.evaluate(root=>root.querySelectorAll('img').length===0&&[...root.querySelectorAll('[data-fatos-card]')].length===6));
       check('Active and adjacent cards form a physically visible stack',await stage.evaluate(el=>{
         const front=el.querySelector('[data-position="0"]'),next=el.querySelector('[data-position="1"]'),previous=el.querySelector('[data-position="5"]');
         const a=front.getBoundingClientRect(),b=next.getBoundingClientRect(),c=previous.getBoundingClientRect();
@@ -71,8 +72,8 @@ try{
       await deck.locator('[data-fatos-next]').click();
       check('Counter and active card update without remounting',await deck.getAttribute('data-active')==='1'&&await cards.count()===6);
       if(!reduced){
-        check('Departing Fatos Desconhecidos stays above Fatos Esportes',await stage.evaluate(el=>{
-          const a=el.querySelector('[data-fatos-card="desconhecidos"]'),b=el.querySelector('[data-fatos-card="esportes"]');
+        check('Departing Sites card stays above Conteúdo',await stage.evaluate(el=>{
+          const a=el.querySelector('[data-fatos-card="sites"]'),b=el.querySelector('[data-fatos-card="conteudo"]');
           return a.classList.contains('is-departing')&&getComputedStyle(a).visibility==='visible'&&
             Number(getComputedStyle(a).zIndex)>Number(getComputedStyle(b).zIndex);
         }));
@@ -86,7 +87,7 @@ try{
           }));
         await pause(125);
         check('Both outgoing and incoming cards stay visible at mid-transition',await stage.evaluate(el=>{
-          const a=el.querySelector('[data-fatos-card="desconhecidos"]'),b=el.querySelector('[data-fatos-card="esportes"]');
+          const a=el.querySelector('[data-fatos-card="sites"]'),b=el.querySelector('[data-fatos-card="conteudo"]');
           return a.getAnimations().length>0&&b.getAnimations().length>0&&
                  getComputedStyle(a).visibility==='visible'&&getComputedStyle(b).visibility==='visible';
         }));
@@ -97,7 +98,7 @@ try{
         check('Reduced motion swaps instantly with no flying overlay',await stage.locator('.is-departing').count()===0);
       }
       await deck.locator('[data-fatos-prev]').click();
-      check('Reverse arrow returns to Fatos Desconhecidos',await deck.getAttribute('data-active')==='0');
+      check('Reverse arrow returns to Sites',await deck.getAttribute('data-active')==='0');
       if(!reduced)await page.waitForFunction(()=>document.querySelector('#colecao .pf-fatos-stage').dataset.motion==='idle',{timeout:2000});
       await deck.locator('.pf-fatos-card.is-active [data-fatos-flip]').click();
       check('Original card reverse still works',await deck.locator('.pf-fatos-card.is-active [data-fatos-back]').getAttribute('aria-hidden')==='false');
@@ -115,7 +116,7 @@ try{
               await cdp.send('Input.dispatchTouchEvent',{type:'touchMove',touchPoints:[{id:1,x:sx+(ex-sx)*k/12,y:sy}]});
               await pause(17);
             }
-            check('The card tracks the real touch and lifts the next Fatos card',await stage.evaluate(el=>el.dataset.dragging==='true'&&el.querySelector('[data-position="1"]').style.transform.includes('translate3d')));
+            check('Card tracks touch and lifts the adjacent card',await stage.evaluate(el=>el.dataset.dragging==='true'&&el.querySelector('[data-position="1"]').style.transform.includes('translate3d')));
             await stage.screenshot({path:out+'/fatos-drag-'+width+'.png'});
             await cdp.send('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[]});
           }finally{await cdp.detach();}
@@ -126,7 +127,7 @@ try{
           await page.mouse.up();
         }
         await page.waitForFunction(()=>document.querySelector('#colecao').dataset.active==='1',null,{timeout:5000});
-        check('Swipe selects Fatos Esportes without replacing the DOM cards',await cards.count()===6);
+        check('Swipe selects Conteúdo without remounting the six cards',await cards.count()===6);
       }
       await stage.screenshot({path:out+'/fatos-after-'+width+(reduced?'-reduced':'')+'.png',animations:'disabled'});
       check('No runtime JS errors',row.errors.length===0);
