@@ -30,9 +30,12 @@ export function stableViewportHeight(){
 }
 
 export function galleryPose(index,cursor,mobile=false){
- const distance=index-readingProgress(cursor,!mobile),amount=clamp(Math.abs(distance)),sign=Math.sign(distance);
- return {y:distance*(mobile?94:100),angle:-sign*amount*68,scale:1-.12*amount,
-  z:-amount*(mobile?100:180),opacity:clamp(1-Math.max(0,Math.abs(distance)-.8)*2.5),active:Math.round(cursor)===index};
+ const position=readingProgress(cursor,!mobile),distance=index-position,amount=clamp(Math.abs(distance)),sign=Math.sign(distance);
+ // A layered carousel travels sideways, never flips the entire artwork by 68deg.
+ // The dominant/front-facing card and all labels follow the SAME timeline.
+ return {x:distance*(mobile?31:25),y:amount*(mobile?7:10),angle:-sign*amount*(mobile?9:13),
+  scale:1-.078*amount,z:-amount*(mobile?86:135),opacity:clamp(1-.48*amount),
+  active:Math.round(position)===index};
 }
 
 // R9: static artwork stays inside an animated physical card. The outer chapter
@@ -87,16 +90,24 @@ export function mountScrollGallery(){
  }
  const header=()=>mobile.matches?64:76;
  function render(){
-  const index=Math.round(state.value);shortcuts.querySelectorAll('[data-rg-to]').forEach((button,i)=>button.setAttribute('aria-pressed',String(i===index)));shell.dataset.mode=natural?'flow':'scroll';shell.dataset.paused=String(motion.paused());
+  const timeline=readingProgress(state.value,!mobile.matches);
+  const index=clamp(Math.round(timeline),0,cards.length-1);
+  const settled=natural||motion.paused()||Math.abs(timeline-index)<.14;
+  shortcuts.querySelectorAll('[data-rg-to]').forEach((button,i)=>{
+    button.setAttribute('aria-pressed',String(i===index&&settled));
+    button.dataset.transition=i===index&&!settled?'passing':'idle';
+  });
+  shell.dataset.readState=settled?'reading':'passing';
+  shell.dataset.mode=natural?'flow':'scroll';shell.dataset.paused=String(motion.paused());
   planes.forEach((plane,i)=>{
    const pose=galleryPose(i,state.value,mobile.matches);
-   plane.style.setProperty('--rg-y',`${pose.y}%`);plane.style.setProperty('--rg-angle',`${pose.angle}deg`);
+   plane.style.setProperty('--rg-x',`${pose.x}%`);plane.style.setProperty('--rg-y',`${pose.y}%`);plane.style.setProperty('--rg-angle',`${pose.angle}deg`);
    plane.style.setProperty('--rg-scale',String(pose.scale));plane.style.setProperty('--rg-z',`${pose.z}px`);
    plane.style.setProperty('--rg-opacity',String(pose.opacity));plane.style.zIndex=String(cards.length-Math.abs(i-index));
-   plane.classList.toggle('rg-active',pose.active);plane.inert=!natural&&!pose.active;
+   plane.classList.toggle('rg-active',pose.active);plane.inert=!natural&&(!pose.active||!settled);
    const titleBox=cards[i].querySelector('.tile-caption h3').getBoundingClientRect();
-   if(visible&&pose.active&&(natural||Math.abs(pose.angle)<2)&&titleBox.top<stableViewportHeight()-60&&titleBox.bottom>header())revealTitle(cards[i],i);
-   plane.setAttribute('aria-hidden',String(!natural&&!pose.active));
+   if(visible&&pose.active&&settled&&titleBox.top<stableViewportHeight()-60&&titleBox.bottom>header())revealTitle(cards[i],i);
+   plane.setAttribute('aria-hidden',String(!natural&&(!pose.active||!settled)));
    if(natural){
     const rect=plane.getBoundingClientRect(),height=stableViewportHeight(),offset=clamp((rect.top+rect.height/2-height/2)/height,-1,1);
     plane.style.setProperty('--rg-flow-angle',`${motion.paused()?0:offset*-5}deg`);
@@ -105,7 +116,7 @@ export function mountScrollGallery(){
   shell.querySelector('[data-rg-prev]').disabled=index===0;
   shell.querySelector('[data-rg-next]').disabled=index===cards.length-1;
   if(index!==lastIndex){lastIndex=index;count.textContent=String(index+1).padStart(2,'0')+' / '+String(cards.length).padStart(2,'0');name.textContent=entries.find(entry=>entry.id===cards[index].dataset.workCard)?.label||'Trabalho selecionado'}
-  const message=natural?copy.controls.scroll:motion.paused()?copy.controls.paused:copy.controls.scroll;
+  const message=!settled?'Passagem · continue rolando':natural?copy.controls.scroll:motion.paused()?copy.controls.paused:copy.controls.scroll;
   if(status.textContent!==message)status.textContent=message;
  }
  function update(){

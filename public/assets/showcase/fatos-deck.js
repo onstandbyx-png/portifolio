@@ -224,7 +224,7 @@ export function mountFatosDeck() {
     }
   }
   stage.addEventListener('pointerdown',event=>{
-    if(drag||!event.isPrimary||event.target.closest('button,a')||
+    if(drag||!event.isPrimary||event.target.closest('button,a,[data-no-card-flip]')||
        !event.target.closest('.pf-fatos-card.is-active')||
        (event.pointerType==='mouse'&&event.button!==0))return;
     clearFlight();

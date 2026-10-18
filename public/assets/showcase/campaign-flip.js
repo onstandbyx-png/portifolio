@@ -2,6 +2,7 @@
  * Native page scrolling remains untouched outside the 64px folded-corner grip.
  */
 import {bindCardSurface} from './card-surface.js';
+import {mountCampaignExperience} from './experience-player.js';
 
 export function mountCampaignFlip() {
   const lab=document.querySelector('#laboratorio .sp-campaign');
@@ -29,7 +30,7 @@ export function mountCampaignFlip() {
       '</div>',
       '<svg class="sp-peel-fold" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">',
         '<defs><linearGradient id="sp-peel-paper-gradient" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fffef8"/><stop offset=".36" stop-color="#f3efe5"/><stop offset=".72" stop-color="#d4dbce"/><stop offset="1" stop-color="#aebdad"/></linearGradient></defs>',
-        '<polygon data-sp-peel-flap fill="url(#sp-peel-paper-gradient)"></polygon>',
+        '<path data-sp-peel-flap fill="url(#sp-peel-paper-gradient)"></path>',
         '<path data-sp-peel-crease fill="none" stroke="#50624d" stroke-opacity=".30" stroke-width="1.7"></path>',
       '</svg>',
       '<button class="sp-peel-grip" type="button" data-sp-card-turn="front" data-peel-grip aria-label="Segure e puxe a ponta superior direita para revelar o conteúdo atrás" aria-describedby="sp-peel-instructions"><span class="sp-peel-grip-symbol" aria-hidden="true">↙</span></button>',
@@ -46,60 +47,45 @@ export function mountCampaignFlip() {
   const crease=card.querySelector('[data-sp-peel-crease]');
   card.querySelector('.sp-campaign-image-slot').append(art);
   card.querySelector('.sp-campaign-note-slot').append(note);
+  const campaignExperience=mountCampaignExperience(lab,underlay);
   const BASE=.05,clamp=(n,min=0,max=1)=>Math.min(max,Math.max(min,n));
   const prefersReduced=matchMedia('(prefers-reduced-motion:reduce)');
   let progress=BASE,animation=0,gesture=null,ignoreSyntheticClick=false;
   const paused=()=>prefersReduced.matches||document.body.classList.contains('is-paused');
 
-  // Compute the true visible paper polygon, rather than turning the card.
-  // First half: top-right triangular peel. Second half: the remaining lower-left
-  // triangle shrinks until the whole creative brief is exposed.
+  // A sampled curved crease replaces the oversize triangular reveal.
+  // The flap has its own highlight/shadow and stays tied to the pointer.
   function paint(next) {
     progress=clamp(next,0,1);
     const w=sheet.offsetWidth,h=sheet.offsetHeight;
     if(!w||!h)return;
-    let a,b,poly;
-    if(progress<=.5){
-      const t=progress*2;
-      a={x:w*(1-t),y:0};
-      b={x:w,y:h*t};
-      poly=[[0,0],[a.x,0],[w,b.y],[w,h],[0,h]];
-    }else{
-      const t=(progress-.5)*2;
-      a={x:0,y:h*t};
-      b={x:w*(1-t),y:h};
-      poly=[[0,a.y],[b.x,h],[0,h]];
-    }
-    const point=([x,y])=>x.toFixed(2)+'px '+y.toFixed(2)+'px';
-    sheet.style.clipPath='polygon('+poly.map(point).join(',')+')';
-    sheet.style.webkitClipPath=sheet.style.clipPath;
-    fold.setAttribute('viewBox','0 0 '+w+' '+h);
+    const early=progress<=.5,t=early?progress*2:(progress-.5)*2;
+    const a=early?{x:w*(1-t),y:0}:{x:0,y:h*t};
+    const b=early?{x:w,y:h*t}:{x:w*(1-t),y:h};
     const dx=b.x-a.x,dy=b.y-a.y;
     const length=Math.max(1,Math.hypot(dx,dy));
-    const normal={x:-dy/length,y:dx/length};
-    const width=Math.min(19,Math.max(9,0.017*Math.max(w,h)));
-    let tip;
-    // Reflection of the peeled corner across its diagonal fold, capped
-    // into the paper surface for a realistic small curled flap.
-    if(progress<.3){
-      const ax=w-a.x,ay=-a.y;
-      const projection=(ax*dx+ay*dy)/(length*length);
-      tip={
-        x:clamp(2*(a.x+dx*projection)-w,0,w),
-        y:clamp(2*(a.y+dy*projection),0,h)
-      };
-      flap.setAttribute('points',
-        [[a.x,a.y],[b.x,b.y],[tip.x,tip.y]].map(p=>p.map(n=>n.toFixed(1)).join(',')).join(' '));
-    }else{
-      flap.setAttribute('points',
-        [[a.x,a.y],[b.x,b.y],[b.x+normal.x*width,b.y+normal.y*width],[a.x+normal.x*width,a.y+normal.y*width]]
-          .map(p=>p.map(n=>n.toFixed(1)).join(',')).join(' '));
+    const nx=-dy/length,ny=dx/length;
+    const bend=Math.min(36,w*.062)*Math.sin(Math.PI*Math.min(1,progress*1.3));
+    const edge=[];
+    for(let i=0;i<=20;i++){
+      const u=i/20,p=Math.sin(Math.PI*u)*bend;
+      edge.push({x:a.x+dx*u+nx*p,y:a.y+dy*u+ny*p});
     }
-    crease.setAttribute('d','M '+a.x.toFixed(1)+' '+a.y.toFixed(1)+' L '+b.x.toFixed(1)+' '+b.y.toFixed(1));
-    fold.style.opacity=String(clamp(1-progress*2.2,0,1));
+    const px=v=>v.x.toFixed(2)+'px '+v.y.toFixed(2)+'px';
+    const poly=early?[{x:0,y:0},...edge,{x:w,y:h},{x:0,y:h}]:[...edge,{x:0,y:h}];
+    sheet.style.clipPath='polygon('+poly.map(px).join(',')+')';
+    sheet.style.webkitClipPath=sheet.style.clipPath;
+    fold.setAttribute('viewBox','0 0 '+w+' '+h);
+    const band=Math.min(31,Math.max(12,w*.045))*(1-.30*progress);
+    const outside=edge.map(v=>({x:clamp(v.x-nx*band,0,w),y:clamp(v.y-ny*band,0,h)}));
+    const path=points=>points.map((p,i)=>(i?'L':'M')+p.x.toFixed(2)+' '+p.y.toFixed(2)).join(' ');
+    flap.setAttribute('d',path(edge)+' '+path(outside.reverse()).replace(/^M/,'L')+' Z');
+    crease.setAttribute('d',path(edge));
+    fold.style.opacity=String(clamp(1-progress*1.18,0,1));
     grip.style.opacity=String(clamp(1-progress*3,0,1));
     card.dataset.peelProgress=progress.toFixed(2);
     card.style.setProperty('--peel-progress',progress.toFixed(3));
+    card.style.setProperty('--peel-bend',(bend/w).toFixed(4));
   }
   function stopAnimation(){if(animation){cancelAnimationFrame(animation);animation=0;}}
   function semantics(open) {
@@ -110,6 +96,7 @@ export function mountCampaignFlip() {
     sheet.setAttribute('aria-hidden',String(open));
     grip.setAttribute('aria-expanded',String(open));
     card.dataset.peelState=open?'open':'closed';
+    if(!open)campaignExperience?.stop();
   }
   function animateTo(target,focus=false){
     stopAnimation();
@@ -124,6 +111,7 @@ export function mountCampaignFlip() {
     const start=performance.now(),from=progress;
     const duration=goingOpen?680:550;
     card.dataset.peelState=goingOpen?'opening':'closing';
+    card.style.setProperty('--peel-illuminance',String(target));
     function tick(now){
       const t=clamp((now-start)/duration);
       const eased=t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2;
@@ -200,6 +188,7 @@ export function mountCampaignFlip() {
   new MutationObserver(()=>{
     if(card.dataset.side==='back'&&underlay.contains(document.activeElement))
       grip.focus({preventScroll:true});
+    campaignExperience?.reset();
     reset();
   }).observe(lab,{attributes:true,attributeFilter:['data-channel']});
   const motionSwitch=document.querySelector('#motion-toggle');
