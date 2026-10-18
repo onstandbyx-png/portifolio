@@ -54,7 +54,7 @@ try{
    const ids=['sites','conteudo','campanhas','video','lojas','sistemas'];
    for(let i=0;i<ids.length;i++){
     await deck.locator('.pf-fatos-card.is-active [data-fatos-flip]').click();
-    await page.waitForTimeout(reduced?25:90);
+    await page.waitForTimeout(reduced?40:720); // Card reverse settles before its interactive surface receives a tap.
     check('Card '+ids[i]+' has active responsive demo',await deck.locator('.pf-fatos-card.is-active').getAttribute('data-fatos-card')===ids[i]&&await deck.locator('.pf-fatos-card.is-active .fd-demo').count()===1);
     const active=deck.locator('.pf-fatos-card.is-active');
     if(ids[i]==='sites'){await active.locator('[data-fd-site="app"]').click();check('Site app switch',await active.locator('[data-fd-site-frame]').getAttribute('data-fd-site-frame')==='app');}
