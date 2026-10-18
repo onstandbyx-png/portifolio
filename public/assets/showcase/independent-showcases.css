@@ -1,0 +1,84 @@
+/* Image-free original interactive showcases. The original device shells and physical card transforms remain intact. */
+#editorial .es-stage{transition:height .42s cubic-bezier(.2,.78,.22,1);overflow:visible}
+#editorial .es-screen--iphone,#editorial .es-independent-phone{background:#102b27;color:#f7f6f0}
+#editorial .es-independent-phone{position:absolute;inset:0;isolation:isolate;overflow:hidden;background:radial-gradient(ellipse at 90% 5%,#558a7655 0%,transparent 46%),linear-gradient(155deg,#22443c,#0e2827 67%,#0b1e21)}
+#editorial .es-independent-phone:before{content:"";position:absolute;left:-34%;top:40%;width:170%;aspect-ratio:1;border:1px solid #d4e7cd16;border-radius:50%;box-shadow:0 0 0 28px #d9e6d007,0 0 0 56px #e4eedd09;pointer-events:none}
+#editorial .es-demo-phone-header{position:absolute;top:calc(80 * var(--df-pt));left:7.5%;right:7.5%;display:flex;align-items:center;gap:11px;font-size:calc(13 * var(--df-pt));letter-spacing:.10em;color:#e1eadd;z-index:2}
+#editorial .es-demo-mark{width:calc(46 * var(--df-pt));height:calc(46 * var(--df-pt));display:grid;place-items:center;font-weight:780;font-size:calc(27 * var(--df-pt));background:#d3ebd8;color:#183e30;border-radius:12px;flex:none;letter-spacing:-.07em}
+#editorial .es-demo-phone-main{position:absolute;top:23%;left:8%;right:8%;bottom:10%;display:flex;flex-direction:column;align-items:stretch;z-index:2}
+#editorial .es-demo-phone-main>small{color:#accaba;letter-spacing:.13em;font-size:calc(14 * var(--df-pt));font-weight:650}
+#editorial .es-demo-phone-main h3{font-size:calc(47 * var(--df-pt));line-height:1.035;font-weight:620;letter-spacing:-.065em;margin:calc(15 * var(--df-pt)) 0 calc(13 * var(--df-pt));max-width:14ch;color:#fff}
+#editorial .es-demo-phone-main>p{font-size:calc(19 * var(--df-pt));line-height:1.4;color:#d1e5d8;margin:0;max-width:27ch}
+#editorial .es-demo-choice-title{font-size:calc(12 * var(--df-pt));letter-spacing:.11em;font-weight:700;color:#adcab9;margin:auto 0 calc(12 * var(--df-pt))}
+#editorial .es-demo-choice-group{display:grid;gap:calc(9 * var(--df-pt));padding-bottom:calc(8 * var(--df-pt))}
+#editorial .es-demo-choice-group button{min-height:calc(68 * var(--df-pt));padding:calc(9 * var(--df-pt)) calc(17 * var(--df-pt));display:flex;justify-content:space-between;align-items:center;gap:12px;text-align:left;background:#fcfff218;color:white;border:1px solid #d4e8d950;border-radius:calc(10 * var(--df-pt));font-family:inherit;font-size:calc(19 * var(--df-pt));font-weight:570;cursor:pointer;transition:background .2s,transform .2s,border-color .2s}
+#editorial .es-demo-choice-group button>span{font-size:calc(26 * var(--df-pt));color:#d7e5d6}
+#editorial .es-demo-choice-group button[aria-pressed=true]{background:#e7efe5;color:#183f31;border-color:#e7efe5}
+#editorial .es-demo-choice-group button[aria-pressed=true]>span{color:#2b6345}
+#editorial .es-demo-choice-group button:active{transform:scale(.987)}
+#editorial .es-demo-choice-group button:focus-visible,#editorial .es-demo-mac-copy a:focus-visible{outline:3px solid #9dd4ff;outline-offset:3px}
+#editorial .es-demo-phone-bottom{position:absolute;left:8%;right:8%;bottom:3.5%;display:flex;justify-content:space-between;align-items:center;font-size:calc(12 * var(--df-pt));letter-spacing:.1em;color:#c7d8cc}
+#editorial .es-ipad-editorial.es-independent-ipad{grid-template-columns:48% 52%;background:#274d43;color:white}
+#editorial .es-independent-ipad .es-ipad-info{padding:calc(4.5 * var(--es-device-unit)) calc(4 * var(--es-device-unit))}
+#editorial .es-independent-ipad .es-demo-mark{width:calc(5 * var(--es-device-unit));height:calc(5 * var(--es-device-unit));font-size:calc(2.7 * var(--es-device-unit));border-radius:calc(.9 * var(--es-device-unit))}
+#editorial .es-independent-ipad .es-ipad-brand{font-size:calc(2.4 * var(--es-device-unit))}
+#editorial .es-independent-ipad .es-ipad-step{color:#b8dfcd}
+#editorial .es-independent-ipad h3{font-size:calc(4.7 * var(--es-device-unit));max-width:17ch}
+#editorial .es-independent-ipad p{color:#d3e9de;font-size:calc(1.9 * var(--es-device-unit))}
+#editorial .es-independent-ipad .es-ipad-visual{background:linear-gradient(125deg,#dae7da,#b8d9cd)}
+#editorial .es-independent-ipad .es-ipad-visual:after{display:none}
+#editorial .es-demo-ipad-window{position:absolute;inset:9% 8% 8%;background:#f5f7f1;border:1px solid #dde6da;box-shadow:0 14px 30px #1a413a33;border-radius:calc(1.8 * var(--es-device-unit));overflow:hidden;color:#204031}
+#editorial .es-demo-ipad-toolbar{height:14%;display:flex;align-items:center;gap:calc(.65 * var(--es-device-unit));padding:0 6%;border-bottom:1px solid #d9e4d9}
+#editorial .es-demo-ipad-toolbar i{width:calc(1 * var(--es-device-unit));height:calc(1 * var(--es-device-unit));border-radius:50%;background:#afcbb6}
+#editorial .es-demo-ipad-toolbar span{margin-left:auto;font-size:calc(1.15 * var(--es-device-unit));letter-spacing:.05em;color:#607967}
+#editorial .es-demo-ipad-panel{padding:7% 9%;display:flex;flex-direction:column;height:86%;box-sizing:border-box}
+#editorial .es-demo-ipad-panel small{color:#6e8b7b;font-size:calc(1.1 * var(--es-device-unit));letter-spacing:.11em}
+#editorial .es-demo-ipad-panel strong{font-size:calc(3.3 * var(--es-device-unit));line-height:1.1;letter-spacing:-.04em;margin:7% 0 8%}
+#editorial .es-demo-ipad-lines{display:grid;gap:calc(.9 * var(--es-device-unit))}
+#editorial .es-demo-ipad-lines i{height:calc(1 * var(--es-device-unit));border-radius:50px;background:#bccfc1}
+#editorial .es-demo-ipad-lines i:nth-child(2){width:75%}#editorial .es-demo-ipad-lines i:nth-child(3){width:52%}
+#editorial .es-demo-ipad-blocks{display:grid;grid-template-columns:repeat(3,1fr);gap:5%;margin-top:auto;height:31%}
+#editorial .es-demo-ipad-blocks i{border-radius:calc(1 * var(--es-device-unit));background:linear-gradient(145deg,#ccdccc,#9fc1af)}
+#editorial .es-demo-ipad-blocks i:nth-child(2){background:linear-gradient(145deg,#bad4d6,#84b1b0)}
+#editorial .es-demo-ipad-panel>p{display:none}
+#editorial .es-macbook-editorial.es-independent-mac{background:#f5f6f2;color:#1c362d}
+#editorial .es-independent-mac .es-mac-nav strong{font-weight:760}
+#editorial .es-independent-mac .es-mac-hero{background:#e1e8df}
+#editorial .es-independent-mac .es-mac-hero:after{display:none}
+#editorial .es-demo-mac-layout{position:absolute;inset:0;display:grid;grid-template-columns:51% 49%;color:#1d3d2f}
+#editorial .es-demo-mac-copy{min-width:0;display:flex;flex-direction:column;align-items:flex-start;justify-content:center;padding:3% 4% 5% 8%;gap:calc(1.7 * var(--es-device-unit))}
+#editorial .es-demo-mac-copy small{font-size:calc(1.2 * var(--es-device-unit));font-weight:650;letter-spacing:.10em;color:#50775d}
+#editorial .es-demo-mac-copy h3{font-size:calc(5 * var(--es-device-unit));line-height:1.02;letter-spacing:-.06em;margin:0;color:#163627}
+#editorial .es-demo-mac-copy p{font-size:calc(1.65 * var(--es-device-unit));line-height:1.4;margin:0;color:#547362;max-width:26ch}
+#editorial .es-demo-mac-copy a{font-size:calc(1.5 * var(--es-device-unit));padding:calc(1.4 * var(--es-device-unit)) calc(1.7 * var(--es-device-unit));background:#193b2c;color:white;text-decoration:none;border-radius:calc(.7 * var(--es-device-unit));font-weight:650;min-width:0}
+#editorial .es-demo-mac-preview{padding:7% 8% 7% 0;min-width:0;display:grid;place-items:center}
+#editorial .es-demo-mac-surface{width:100%;height:100%;border-radius:calc(1.5 * var(--es-device-unit));background:#fdfdf9;border:1px solid #c7d5ca;box-shadow:0 10px 26px #193c2e15;display:flex;flex-direction:column;padding:9%;box-sizing:border-box;gap:calc(1.4 * var(--es-device-unit))}
+#editorial .es-demo-mac-bar{display:flex;gap:5px}
+#editorial .es-demo-mac-bar i{width:calc(.75 * var(--es-device-unit));height:calc(.75 * var(--es-device-unit));border-radius:50%;background:#97b1a1}
+#editorial .es-demo-mac-surface small{font-size:calc(1 * var(--es-device-unit));letter-spacing:.1em;color:#678575;margin-top:8%}
+#editorial .es-demo-mac-surface strong{font-size:calc(2.65 * var(--es-device-unit));line-height:1.08;letter-spacing:-.04em}
+#editorial .es-demo-mac-lines{display:grid;gap:calc(.9 * var(--es-device-unit));margin-top:4%}
+#editorial .es-demo-mac-lines i{background:#d0dfd3;border-radius:9px;height:calc(.8 * var(--es-device-unit))}
+#editorial .es-demo-mac-lines i:nth-child(2){width:76%}#editorial .es-demo-mac-lines i:nth-child(3){width:48%}
+#editorial .es-demo-mac-tiles{display:flex;gap:5%;height:28%;margin-top:auto}
+#editorial .es-demo-mac-tiles i{background:#c1d8ca;flex:1;border-radius:calc(.7 * var(--es-device-unit))}
+#editorial .es-demo-mac-tiles i:nth-child(2){background:#c6dde3}
+#editorial[data-project-choice=campanha] .es-independent-phone{background:radial-gradient(circle at 90% 10%,#ab80663a,transparent 45%),linear-gradient(155deg,#43342e,#231f26)}
+#editorial[data-project-choice=campanha] .es-independent-ipad{background:#564336}
+#editorial[data-project-choice=campanha] .es-independent-ipad .es-ipad-visual{background:#e6dfce}
+#editorial[data-project-choice=campanha] .es-demo-ipad-blocks i,#editorial[data-project-choice=campanha] .es-demo-mac-tiles i{background:#e7d1b7}
+#editorial[data-project-choice=sistema] .es-independent-phone{background:radial-gradient(circle at 90% 10%,#86a7b33a,transparent 45%),linear-gradient(155deg,#273a47,#1b2931)}
+#editorial[data-project-choice=sistema] .es-independent-ipad{background:#324e5c}
+#editorial[data-project-choice=sistema] .es-independent-ipad .es-ipad-visual{background:#dbe7ed}
+#editorial[data-project-choice=sistema] .es-demo-ipad-blocks i,#editorial[data-project-choice=sistema] .es-demo-mac-tiles i{background:#bcd1e1}
+#editorial .es-placeholder-original{display:grid;place-items:center;background:linear-gradient(145deg,#1a3c31,#0f2b27)}
+#editorial .es-placeholder-original span{font-size:32px;font-weight:780}
+#editorial .es-placeholder-original p{position:absolute;top:30%;font-size:27px}
+@media(max-width:700px){
+ #editorial .es-stage{transition:height .38s cubic-bezier(.2,.78,.22,1)}
+ #editorial .es-stage:before{width:64%;opacity:.38}
+ #editorial .es-independent-mac .es-mac-nav span{display:none}
+ #editorial .es-demo-mac-copy{gap:calc(1.1 * var(--es-device-unit))}
+ #editorial .es-demo-mac-copy h3{font-size:calc(4.6 * var(--es-device-unit))}
+ #editorial .es-demo-mac-copy p{display:block;font-size:calc(1.7 * var(--es-device-unit))}
+}
