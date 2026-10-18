@@ -66,6 +66,11 @@ try{
     await active.locator('[data-fatos-return]').click();
     if(i<ids.length-1){await deck.locator('[data-fatos-next]').click();await page.waitForTimeout(reduced?30:550);}
    }
+   await page.locator('#editorial [data-editorial-step="2"]').click();
+   await page.waitForTimeout(reduced?30:690);
+   await page.locator('#editorial [data-es-piece="2"]:not([hidden]) [data-es-cta]').click();
+   check('Commercial CTA preselects the demonstrated campaign without submitting any data',
+     await page.locator('#service').inputValue()==='Campanhas e anúncios');
    check('Native page width and browser errors',await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+3)&&row.errors.length===0);
    if(width===390){await deck.scrollIntoViewIfNeeded();await page.screenshot({path:output+'/cards-mobile.png',animations:'disabled'});}
   }catch(error){row.failure=String(error);await page.screenshot({path:output+'/failure-'+width+'.png'}).catch(()=>{});}
