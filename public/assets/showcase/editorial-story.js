@@ -37,6 +37,7 @@ export function mountEditorialStory(){
     preview.removeAttribute('data-es-piece');
     preview.classList.add('es-preview-piece');
     preview.setAttribute('aria-hidden','true');
+    preview.inert=true; // Preview is decorative: only the currently active device owns controls.
     piece.parentElement.append(preview);
     pieces.push(piece);duplicates.push(preview);
     // Each object owns one physical frame for its entire lifetime. Selection
@@ -123,7 +124,7 @@ export function mountEditorialStory(){
       device.root.dataset.position=current?'center':'side';
       device.root.setAttribute('aria-hidden',String(!current));
       if(current)device.root.setAttribute('role','group');else device.root.removeAttribute('role');
-      pieces[i].hidden=!current;duplicates[i].hidden=current;
+      pieces[i].hidden=!current;pieces[i].inert=!current;duplicates[i].hidden=current;duplicates[i].inert=true;
       objects[i].classList.toggle('es-peek',!current);
       objects[i].classList.toggle('es-peek--left',i===others[0]);
       objects[i].classList.toggle('es-peek--right',i===others[1]);
