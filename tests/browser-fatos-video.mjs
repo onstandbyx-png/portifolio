@@ -21,9 +21,12 @@ try{
     const context=await browser.newContext({viewport:{width,height},isMobile:width<500,hasTouch:width<500,deviceScaleFactor:1,reducedMotion:reduced?'reduce':'no-preference'});
     const page=await context.newPage();page.setDefaultTimeout(15000);
     page.on('pageerror',e=>row.errors.push(e.message));
+     page.on('console',msg=>{if(msg.type()==='error')console.log('BROWSER-ERROR',msg.text())});
     const check=(name,passed)=>{row.checks.push({name,pass:!!passed});assert(passed,name);};
     try{
       await page.goto(base,{waitUntil:'domcontentloaded'});
+       await page.waitForTimeout(900);
+       console.log('INIT-DIAGNOSTIC',JSON.stringify(await page.evaluate(()=>({editorial:document.querySelector('#editorial')?.dataset.editorialReady,collection:document.querySelector('#colecao')?.dataset.ready,collectionExists:!!document.querySelector('#colecao'),scripts:[...document.scripts].filter(s=>s.src).map(s=>s.src).filter(x=>x.includes('static-init')),pageWidth:document.documentElement.scrollWidth}))));
       const deck=page.locator('#colecao[data-ready="true"]');await deck.waitFor();
       await deck.scrollIntoViewIfNeeded();await pause(140);
       const stage=deck.locator('.pf-fatos-stage');
