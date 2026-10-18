@@ -109,7 +109,7 @@ try{
      check('MacBook reuses the real lid hinge and aluminum base dimensions',
        geometry.lid>1.47&&geometry.lid<1.73&&geometry.base>1.03&&geometry.left>=-3&&geometry.right<=width+3,geometry);
      check('Entrega has original preview and contextual contact action',
-       await active.locator('[data-es-piece="2"] .es-demo-mac-copy').innerText().then(text=>text.includes('Uma presença')&&!text.includes('Casa Costa'))&&await active.locator('[data-es-cta]').count()===1);
+       await active.locator('[data-es-piece="2"] .es-demo-mac-copy').innerText().then(text=>text.includes('Uma presença')&&!text.includes('Casa Costa'))&&await active.locator('[data-es-piece="2"]:not([hidden]) [data-es-cta]').count()===1);
    }
    await active.scrollIntoViewIfNeeded();
    await page.waitForTimeout(reduced?25:100);
