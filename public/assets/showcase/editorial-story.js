@@ -73,6 +73,8 @@ export function mountEditorialStory(){
     createMacBookFrame({label:'Fechamento em MacBook Pro'})
   ];
   const pieces=[],duplicates=[],objects=[],controls=[];
+  // Source video: front card exits sideways as the next real device advances.
+  root.dataset.editorialReference='layered-deck-25s';
   devices.forEach((device,i)=>{
     device.root.classList.add('es-hardware','es-hardware--'+types[i]);
     device.root.dataset.editorialModel=types[i];
@@ -104,7 +106,7 @@ export function mountEditorialStory(){
     const others=devices.map((_,j)=>j).filter(j=>j!==active);
     const side=i===active?0:others.indexOf(i)===0?-1:1;
     return {
-      transform:`translate(-50%,-50%) translate3d(${side*shift}px,${side?12:0}px,0) rotate(${side*(mobile?3:4)}deg) scale(${side?(mobile?.72:.68):1})`,
+      transform:`translate(-50%,-50%) translate3d(${side*shift}px,${side?12:0}px,${side?-38:0}px) rotateY(${side*-4.5}deg) rotateZ(${side*(mobile?3:4)}deg) scale(${side?(mobile?.73:.70):1})`,
       opacity:side?(mobile?.62:.72):1,
       zIndex:side?1:4
     };
@@ -173,12 +175,20 @@ export function mountEditorialStory(){
       controls[i].hidden=current;
       const target=applyPose(i);
       if(previous>=0&&motion.available()){
+        // The video exchange uses release, overlap, then a small front-only settle.
+        const direction=index>previous?-1:1;
+        const settle=i===index?{
+          transform:`translate(-50%,-50%) translate3d(${direction*12}px,-3px,11px) rotateY(${direction*-1.7}deg) rotateZ(${direction*.7}deg) scale(1.017)`,
+          opacity:1
+        }:target;
         const animation=motion.animate(objects[i],[
           {...starts[i],offset:0},
-          {zIndex:starts[i].zIndex,offset:.44},
-          {zIndex:String(target.zIndex),offset:.56},
-          {...target,offset:1}
-        ],{duration:620,easing:'cubic-bezier(.4,0,.2,1)'});
+          {transform:starts[i].transform,opacity:starts[i].opacity,zIndex:starts[i].zIndex,offset:.12},
+          {zIndex:starts[i].zIndex,offset:.43},
+          {zIndex:String(target.zIndex),offset:.57},
+          {...settle,zIndex:String(target.zIndex),offset:.84},
+          {...target,zIndex:String(target.zIndex),offset:1}
+        ],{duration:610,easing:'cubic-bezier(.22,.8,.22,1)'});
         if(animation)animations.push(animation);
       }
     });
