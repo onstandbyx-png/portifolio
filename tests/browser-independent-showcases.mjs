@@ -50,7 +50,7 @@ try{
    await page.waitForTimeout(reduced?30:440);
    const phoneHeight=await page.locator('#editorial .es-stage').evaluate(n=>n.getBoundingClientRect().height);
    if(width<=700)check('Mobile stage follows device height instead of reserving an empty iPhone scene',phoneHeight>ipadHeight+75&&phoneHeight>macHeight+75);
-   if([320,390,1440].includes(width)){await page.locator('#editorial .es-tabs').scrollIntoViewIfNeeded();await page.screenshot({path:output+'/device-'+width+'.png',animations:'disabled'});}
+   if([320,390,1440].includes(width)){await page.locator('#editorial .es-tabs').scrollIntoViewIfNeeded();await page.locator('#editorial .es-stage').screenshot({path:output+'/device-'+width+'.png',animations:'disabled',timeout:30000});}
    const ids=['sites','conteudo','campanhas','video','lojas','sistemas'];
    for(let i=0;i<ids.length;i++){
     await deck.locator('.pf-fatos-card.is-active [data-fatos-flip]').click();
