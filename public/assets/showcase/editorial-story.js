@@ -20,9 +20,9 @@ export function mountEditorialStory(){
   const panel=root.querySelector('#editorial-story-panel');
   const context=root.querySelector('[data-editorial-context]');
   const devices=[
-    createDeviceFrame({tone:'light',scheme:'dark',time:'10:09',label:'Abertura em iPhone Pro'}),
-    createIPadFrame({label:'Contexto em iPad Pro horizontal'}),
-    createMacBookFrame({label:'Fechamento em MacBook Pro'})
+    createDeviceFrame({tone:'light',scheme:'dark',time:'10:09',label:'Desafio em iPhone Pro'}),
+    createIPadFrame({label:'Direção em iPad Pro horizontal'}),
+    createMacBookFrame({label:'Entrega em MacBook Pro'})
   ];
   const pieces=[],duplicates=[],objects=[],controls=[];
   // Source video: front card exits sideways as the next real device advances.
@@ -58,8 +58,10 @@ export function mountEditorialStory(){
   function pose(i){
     const others=devices.map((_,j)=>j).filter(j=>j!==active);
     const side=i===active?0:others.indexOf(i)===0?-1:1;
+    const ownHeight=modelHeights[i]||1,primaryHeight=modelHeights[Math.max(0,active)]||ownHeight;
+    const sideScale=mobile?Math.min(.73,(primaryHeight*.84)/ownHeight):.70;
     return {
-      transform:`translate(-50%,-50%) translate3d(${side*shift}px,${side?12:0}px,${side?-38:0}px) rotateY(${side*-4.5}deg) rotateZ(${side*(mobile?3:4)}deg) scale(${side?(mobile?.73:.70):1})`,
+      transform:`translate(-50%,-50%) translate3d(${side*shift}px,${side?12:0}px,${side?-38:0}px) rotateY(${side*-4.5}deg) rotateZ(${side*(mobile?3:4)}deg) scale(${side?sideScale:1})`,
       opacity:side?(mobile?.62:.72):1,
       zIndex:side?1:4
     };
