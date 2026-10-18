@@ -224,3 +224,25 @@ body.is-paused #trabalhos .rg-static-gallery .tile-open i{transition:none}
 @media(prefers-reduced-motion:reduce){.rg-flip{transition:none!important}}
 
 @media(min-width:761px){#trabalhos .rg-natural .work-evidence-gallery.rg-gallery{grid-template-columns:1fr!important}.rg-natural .rg-plane{width:min(100%,1100px);height:550px;min-height:0;margin-inline:auto}}
+
+
+/* Video-derived layered carousel: side passage with small tilt and front rest.
+   Active item stays legible; navigation labels settle with its reading pose. */
+.rg-scroll-shell:not(.rg-natural) .rg-plane{
+ transform:translate(calc(-50% + var(--rg-x,0%)),calc(-50% + var(--rg-y,0%)))
+   perspective(1450px) translateZ(var(--rg-z,0px)) rotateY(var(--rg-angle,0deg))
+   scale(var(--rg-scale,1));
+ transform-origin:50% 50%;
+}
+.rg-scroll-shell[data-read-state="passing"] .rg-toolbar [data-rg-to][data-transition="passing"]{
+ box-shadow:inset 0 -2px 0 #9baea1;color:#58725e;
+}
+.rg-scroll-shell[data-read-state="reading"] .rg-plane.rg-active{filter:none;opacity:1}
+@media(max-width:760px){
+ .rg-scroll-shell:not(.rg-natural) .rg-plane{
+   transform:translate(calc(-50% + var(--rg-x,0%)),calc(-50% + var(--rg-y,0%)))
+    perspective(1150px) translateZ(var(--rg-z,0px)) rotateY(var(--rg-angle,0deg))
+    scale(var(--rg-scale,1));
+ }
+}
+@media(prefers-reduced-motion:reduce){.rg-scroll-shell .rg-plane{transform:none!important}}
