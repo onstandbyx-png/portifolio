@@ -70,9 +70,9 @@ try{
     await seek(page,'.rg-scroll-shell',0);
     await page.screenshot({path:`qa/motion-rhythm/work-gallery-${width}.png`,animations:'disabled'});
   }
-  const gaps=[];
-  for(const p of [.35,.45,.5,.55,.65]){await seek(page,'.rg-scroll-shell',p);gaps.push(await page.evaluate(()=>{const a=document.querySelector('[data-rg-index="0"]').getBoundingClientRect(),b=document.querySelector('[data-rg-index="1"]').getBoundingClientRect();return Math.round(b.top-a.bottom);}));}
-  check(`${width}: projected cards remain separated`,gaps.every(g=>g>=12),gaps);
+  const galleryDepth=[];
+  for(const p of [.35,.45,.5,.55,.65]){await seek(page,'.rg-scroll-shell',p);galleryDepth.push(await page.evaluate(()=>{const a=document.querySelector('[data-rg-index="0"]').getBoundingClientRect(),b=document.querySelector('[data-rg-index="1"]').getBoundingClientRect();return {lateral:Math.abs(Math.round(b.left-a.left)),overlap:Math.round(Math.min(a.right,b.right)-Math.max(a.left,b.left)),width:a.width};}));}
+  check(`${width}: layered horizontal cards keep readable distinct poses`,galleryDepth.every(g=>g.lateral>=12&&g.overlap>0&&g.overlap<=g.width),galleryDepth);
   const delayed=await page.evaluate(async()=>{const {createMotion}=await import('/assets/sections/motion.js');const e=document.createElement('span');document.body.append(e);const a=createMotion().animate(e,[{opacity:0},{opacity:1}],{duration:400,delay:300});const opacity=Number(getComputedStyle(e).opacity);a?.cancel();e.remove();return opacity;});
   check(`${width}: delayed entrance has no flash`,delayed===0,delayed);
   await page.locator('#tab-google').click();await page.evaluate(()=>document.querySelectorAll('.sp-campaign-panel figure').forEach(figure=>figure.getAnimations().forEach(a=>{a.pause();a.currentTime=a.effect.getTiming().duration/2})));await frames(page);
