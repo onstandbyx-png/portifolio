@@ -46,6 +46,28 @@ try{
                getComputedStyle(el).perspective!=='none';
       }));
       await stage.screenshot({path:out+'/fatos-before-'+width+(reduced?'-reduced':'')+'.png',animations:'disabled'});
+      if(width>=1000&&!reduced){
+        const active=stage.locator('.pf-fatos-card.is-active');
+        const box=await active.boundingBox();
+        await page.mouse.move(box.x+box.width*.30,box.y+box.height*.42);
+        await page.waitForTimeout(70);
+        const first=await active.evaluate(card=>({
+          on:card.classList.contains('is-illuminated'),
+          x:parseFloat(card.style.getPropertyValue('--fatos-light-x')),
+          sheen:parseFloat(getComputedStyle(card.querySelector('.pf-fatos-front'),'::after').opacity)
+        }));
+        await page.mouse.move(box.x+box.width*.75,box.y+box.height*.28);
+        await page.waitForTimeout(70);
+        const second=await active.evaluate(card=>parseFloat(card.style.getPropertyValue('--fatos-light-x')));
+        check('Reference-style rest-state reflection follows fine pointer, without moving a card',
+          first.on&&first.sheen>.15&&second>first.x+20);
+        await page.mouse.move(3,3);
+        await page.waitForTimeout(30);
+        check('Reflection disappears when the pointer leaves the deck',
+          await active.evaluate(card=>!card.classList.contains('is-illuminated')));
+      }
+      if(width<500)check('Mobile never runs hover-only surface animation',
+        await stage.locator('.pf-fatos-card.is-illuminated').count()===0);
       await deck.locator('[data-fatos-next]').click();
       check('Counter and active card update without remounting',await deck.getAttribute('data-active')==='1'&&await cards.count()===6);
       if(!reduced){
