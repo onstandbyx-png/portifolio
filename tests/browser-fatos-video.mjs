@@ -54,6 +54,14 @@ try{
           return a.classList.contains('is-departing')&&getComputedStyle(a).visibility==='visible'&&
             Number(getComputedStyle(a).zIndex)>Number(getComputedStyle(b).zIndex);
         }));
+        check('Frame-calibrated exchange uses a bounded 480ms passage and restrained tilt',
+          await stage.evaluate(el=>{
+            const departing=el.querySelector('.is-departing');
+            const animation=departing?.getAnimations()[0],timing=animation?.effect?.getTiming();
+            const last=animation?.effect?.getKeyframes().slice(-1)[0];
+            return el.dataset.referenceTiming==='480'&&timing?.duration===480&&
+              /rotate\(-?8\.5deg\)/.test(last?.transform||'');
+          }));
         await pause(125);
         check('Both outgoing and incoming cards stay visible at mid-transition',await stage.evaluate(el=>{
           const a=el.querySelector('[data-fatos-card="desconhecidos"]'),b=el.querySelector('[data-fatos-card="esportes"]');
