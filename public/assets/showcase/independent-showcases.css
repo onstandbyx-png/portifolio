@@ -82,3 +82,158 @@
  #editorial .es-demo-mac-copy h3{font-size:calc(4.6 * var(--es-device-unit))}
  #editorial .es-demo-mac-copy p{display:block;font-size:calc(1.7 * var(--es-device-unit))}
 }
+
+
+/* Keep the original perspective, depth, swipe, physical card geometry and lighting. */
+#colecao .pf-fatos-front{background:linear-gradient(155deg,#173c38,#112d30 60%,#0b2023)}
+#colecao [data-fatos-card=conteudo] .pf-fatos-front{background:linear-gradient(155deg,#3b3652,#25243d 65%,#191a2c)}
+#colecao [data-fatos-card=campanhas] .pf-fatos-front{background:linear-gradient(155deg,#4d3e32,#302821 65%,#201b1a)}
+#colecao [data-fatos-card=video] .pf-fatos-front{background:linear-gradient(155deg,#2c4651,#1f3341 65%,#182430)}
+#colecao [data-fatos-card=lojas] .pf-fatos-front{background:linear-gradient(155deg,#59413d,#3a2a2c 65%,#251f28)}
+#colecao [data-fatos-card=sistemas] .pf-fatos-front{background:linear-gradient(155deg,#284a39,#193729 65%,#112b21)}
+#colecao .pf-fatos-shade{background:linear-gradient(180deg,#0003,transparent 30%,#091d2633 68%,#0712194d);pointer-events:none}
+#colecao .pf-fatos-question{top:22%;z-index:3}
+#colecao .pf-fatos-question h4{font-size:clamp(24px,5.2vw,29px);max-width:13ch;font-weight:650;line-height:1.1}
+#colecao .pf-fatos-profile{z-index:3}
+#colecao .pf-case-mark{width:36px;height:36px;display:grid;place-items:center;flex:none;border:1px solid #f6f8f4aa;border-radius:10px;background:#ffffff1c;color:#fff;font-size:14px;font-weight:760;font-variant-numeric:tabular-nums}
+#colecao .pf-fatos-profile>div>span{color:#e4ece6}
+#colecao .pf-case-art{position:absolute;top:49%;right:19px;bottom:85px;left:19px;width:auto;height:auto;overflow:visible;display:grid;place-items:center;isolation:isolate}
+#colecao .pf-case-art *{box-sizing:border-box}
+#colecao .pf-case-browser{width:100%;height:100%;border:1px solid #f6f9f6a9;border-radius:12px;background:#f7f8f2;box-shadow:0 12px 30px #04181866;overflow:hidden;color:#244336;transform:rotate(-2deg)}
+#colecao .pf-case-browser-top{display:flex;align-items:center;gap:5px;background:#e5ebe3;height:13%;padding:0 13px}
+#colecao .pf-case-browser-top i{width:6px;height:6px;border-radius:50%;background:#a0bca4}
+#colecao .pf-case-browser-top span{margin-left:auto;color:#6e8677;font-size:9px}
+#colecao .pf-case-browser-body{padding:14px 18px;display:flex;flex-direction:column;align-items:flex-start;gap:10px}
+#colecao .pf-case-browser-body small{font-size:9px;letter-spacing:.1em;color:#607f66}
+#colecao .pf-case-browser-body b{font-size:19px;line-height:1.1;max-width:17ch;letter-spacing:-.05em}
+#colecao .pf-case-cta{padding:7px 10px;font-size:9px;color:white;background:#245c3f;border-radius:5px}
+#colecao .pf-case-browser-strips{display:flex;gap:8px;width:100%;height:32px;margin-top:4px}
+#colecao .pf-case-browser-strips i{flex:1;background:#c5dfc8;border-radius:4px}#colecao .pf-case-browser-strips i:nth-child(2){background:#b7d3d9}
+#colecao .pf-case-editor{width:100%;height:100%;background:linear-gradient(145deg,#f5f0ec,#e7ddf1);color:#423859;border-radius:12px;display:flex;flex-direction:column;padding:21px;box-shadow:0 12px 30px #0b0b1b55;transform:rotate(2deg)}
+#colecao .pf-case-editor>span{font-size:10px;letter-spacing:.12em}
+#colecao .pf-case-editor>strong{font:580 24px/1.1 Inter,Arial,sans-serif;letter-spacing:-.06em;margin:auto 0}
+#colecao .pf-case-editor-footer{display:flex;justify-content:space-between;gap:5px;border-top:1px solid #8275945c;padding-top:13px;font-size:8px;letter-spacing:.05em}
+#colecao .pf-case-ad-layout{width:100%;height:100%;display:flex;align-items:flex-end;justify-content:center;gap:8px}
+#colecao .pf-case-ad-phone{width:49%;height:100%;display:flex;flex-direction:column;padding:16px 12px;background:linear-gradient(160deg,#e4b994,#a96e5f);color:#2d2523;border:5px solid #262729;border-radius:19px;box-shadow:0 15px 25px #100d0d55;transform:rotate(-5deg)}
+#colecao .pf-case-ad-phone small{font-size:9px;letter-spacing:.1em}#colecao .pf-case-ad-phone b{font-size:18px;line-height:1.05;letter-spacing:-.05em;margin:auto 0}
+#colecao .pf-case-ad-phone>span{font-size:11px;border-top:1px solid #3b29294d;padding-top:9px}
+#colecao .pf-case-ad-search{width:51%;min-height:53%;display:flex;flex-direction:column;gap:8px;padding:14px 10px;background:#fffefa;color:#274735;border-radius:9px;box-shadow:0 8px 18px #110a0a55;transform:rotate(4deg)}
+#colecao .pf-case-ad-search small{font-size:8px;color:#748270}#colecao .pf-case-ad-search b{font-size:15px;line-height:1.15}#colecao .pf-case-ad-search span{font-size:10px;color:#5a7b65}
+#colecao .pf-case-film{width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;border:1px solid #c3e1e366;border-radius:14px;background:radial-gradient(circle at 50% 35%,#a0ccda33,transparent 60%),#122c35}
+#colecao .pf-case-film-ring{width:83px;height:83px;border:1px solid #c2e4e3aa;border-radius:50%;display:grid;place-items:center;box-shadow:0 0 0 16px #b0d4d213}
+#colecao .pf-case-film-ring span{font-size:26px;color:#f6f4e9}
+#colecao .pf-case-film strong{text-align:center;font-size:20px;line-height:1.08;letter-spacing:-.04em}
+#colecao .pf-case-film-track{display:flex;gap:7px;width:77%;height:4px}#colecao .pf-case-film-track i{flex:1;border-radius:4px;background:#74b6c4}
+#colecao .pf-case-film small{font-size:9px;letter-spacing:.12em;color:#b7d7dd}
+#colecao .pf-case-shop{width:100%;height:100%;display:flex;flex-direction:column;padding:16px;border-radius:12px;background:#f4ece5;color:#4e3637}
+#colecao .pf-case-shop small{font-size:9px;letter-spacing:.11em}
+#colecao .pf-case-product-sculpt{flex:1;display:grid;place-items:center;perspective:400px;min-height:0}
+#colecao .pf-case-product-sculpt:before{content:"";display:block;width:95px;height:95px;background:linear-gradient(135deg,#bf8b82,#e9c1a8);border-radius:18px 38px 18px 35px;box-shadow:inset -13px -11px 20px #88575144,15px 15px 0 #cda39a55;transform:rotate(-21deg) skew(-5deg,5deg)}
+#colecao .pf-case-shop b{font-size:17px;line-height:1.1;letter-spacing:-.035em}
+#colecao .pf-case-swatches{display:flex;gap:7px;margin-top:9px}#colecao .pf-case-swatches i{width:12px;height:12px;border-radius:50%;background:#6e967c}
+#colecao .pf-case-swatches i:nth-child(2){background:#c88b7d}#colecao .pf-case-swatches i:nth-child(3){background:#4d6174}
+#colecao .pf-case-ops{height:100%;width:100%;background:#eff7ef;color:#254a38;padding:13px;border-radius:12px;display:flex;flex-direction:column;gap:11px}
+#colecao .pf-case-ops-top{display:flex;justify-content:space-between;align-items:center;font-size:9px}
+#colecao .pf-case-ops-top>b{font-size:10px;color:#5d886c}
+#colecao .pf-case-task{border:1px solid #d3e3d4;background:white;border-radius:7px;display:flex;gap:8px;padding:11px 8px;align-items:center;box-shadow:0 3px 9px #315e3210}
+#colecao .pf-case-task>i{width:8px;height:8px;border-radius:50%;background:#5a9d75;flex:none}
+#colecao .pf-case-task>span{display:grid;gap:3px;font-size:11px;font-weight:650;flex:1}
+#colecao .pf-case-task small{font-size:9px;color:#729380;font-weight:450}#colecao .pf-case-task>b{color:#99b3a1;font-size:10px}
+#colecao .pf-case-ops>small{font-size:8px;color:#648f76;margin-top:auto}
+#colecao .pf-fatos-back{overflow-y:auto;overscroll-behavior:contain;scrollbar-width:thin;padding-bottom:93px;background:radial-gradient(ellipse at 110% -10%,color-mix(in srgb,var(--fatos-accent) 25%,#111e27),#111e27 65%)}
+#colecao .pf-fatos-back .pf-fatos-back-heading{align-items:center}
+#colecao .pf-fatos-back .pf-case-mark{width:31px;height:31px;font-size:12px}
+#colecao .pf-fatos-flip{z-index:7;min-height:45px}
+#colecao .pf-fatos-back .pf-fatos-flip{position:sticky;bottom:-75px;margin:13px 0 -76px;width:100%;left:auto;min-height:44px}
+#colecao .fd-demo{color:#f0f5f1;gap:10px;font-family:Inter,Arial,sans-serif;touch-action:pan-y}
+#colecao .fd-head{gap:4px}
+#colecao .fd-head .fd-kicker{font-size:9px;color:#cad8d1;letter-spacing:.1em}
+#colecao .fd-head strong{font-size:13px;line-height:1.25;font-weight:600}
+#colecao .fd-caption{color:#d2e0d8;font-size:11px;line-height:1.4}
+#colecao .fd-demo button,#colecao .fd-demo a{font-family:inherit}
+#colecao .fd-switch{display:flex;flex-wrap:wrap;gap:6px;min-width:0}
+#colecao .fd-switch button{flex:1;min-width:0;min-height:39px;border:1px solid #829e91;background:#203e38;color:#f8fbf6;border-radius:6px;font-size:11px;padding:6px}
+#colecao .fd-switch button[aria-pressed=true]{background:#eff5e9;color:#173d2c;border-color:#eff5e9}
+#colecao .fd-project-link{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:10px 12px;min-height:42px;background:#dbeadd;color:#183f2c;text-decoration:none;border-radius:7px;font-size:12px;font-weight:680}
+#colecao .fd-project-link:focus-visible{outline:3px solid #92c6ff;outline-offset:2px}
+#colecao .fd-site-frame{height:225px;border:1px solid #c9dfcf;background:#f7faf5;color:#244934;border-radius:11px;overflow:hidden}
+#colecao .fd-site-frame[data-fd-site-frame=app]{width:68%;margin:auto;border:6px solid #25312e;border-radius:17px;box-shadow:0 5px 14px #0003}
+#colecao .fd-site-toolbar{height:30px;background:#e1ebe1;display:flex;align-items:center;gap:5px;padding:0 10px}
+#colecao .fd-site-toolbar span{width:6px;height:6px;border-radius:50%;background:#9dbba5}
+#colecao .fd-site-toolbar b{font-size:9px;color:#567a60;margin:auto;font-weight:550;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#colecao .fd-site-body{padding:13px;display:flex;flex-direction:column;align-items:flex-start;gap:8px}
+#colecao .fd-site-body small{font-size:8px;letter-spacing:.1em;color:#6e8d76}
+#colecao .fd-site-body strong{font-size:21px;letter-spacing:-.05em;line-height:1.05}
+#colecao .fd-site-body p{font-size:11px;line-height:1.3;margin:0;color:#5e8069}
+#colecao .fd-site-action{padding:6px 10px;background:#246647;color:white;border-radius:5px;font-size:10px}
+#colecao .fd-site-tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:5px;width:100%;height:20px;margin-top:5px}
+#colecao .fd-site-tiles i{background:#c8e0d1;border-radius:4px}
+#colecao .fd-story-frame{min-height:225px;background:linear-gradient(150deg,#f0ede7,#d9d4ea);color:#3a3a50;border-radius:11px;display:flex;flex-direction:column;padding:16px}
+#colecao .fd-story-frame>small{font-size:10px;letter-spacing:.10em}
+#colecao .fd-story-frame strong{font-size:24px;line-height:1.07;letter-spacing:-.055em;margin:auto 0 6px}
+#colecao .fd-story-frame>p{font-size:12px;margin:0 0 14px;line-height:1.35}
+#colecao .fd-story-steps{display:flex;gap:6px}
+#colecao .fd-story-steps i{height:4px;flex:1;background:#928aa35d;border-radius:4px}
+#colecao .fd-story-steps i.is-current{background:#6a4f82}
+#colecao .fd-campaign-preview{height:223px;border-radius:11px;background:linear-gradient(155deg,#c18e74,#e7bea3);color:#392f2d;display:flex;flex-direction:column;align-items:flex-start;padding:17px;gap:12px;transition:width .2s,background .2s;width:100%;max-width:100%;box-sizing:border-box;margin:auto}
+#colecao .fd-campaign-preview strong{font-size:23px;line-height:1.06;letter-spacing:-.05em;margin:auto 0}
+#colecao .fd-campaign-preview small{font-size:9px;letter-spacing:.11em}
+#colecao .fd-campaign-preview p{font-size:12px;line-height:1.35;margin:0}
+#colecao .fd-campaign-preview[data-fd-campaign=stories]{width:154px;border:5px solid #292323;border-radius:17px;padding:12px;background:linear-gradient(150deg,#ce9a7b,#795853);color:#fff}
+#colecao .fd-campaign-preview[data-fd-campaign=stories] strong{font-size:18px}
+#colecao .fd-campaign-preview[data-fd-campaign=search]{background:#f7f9f6;color:#203e34;border:1px solid #cddbcc}
+#colecao .fd-campaign-action{font-size:10px;border-bottom:1px solid currentColor;padding-bottom:4px}
+#colecao .fd-motion-stage{height:223px;border-radius:11px;background:radial-gradient(circle at 49% 50%,#5377896a,#173542 60%,#0e212c);position:relative;overflow:hidden;display:flex;flex-direction:column;justify-content:flex-end;padding:16px;color:#fff}
+#colecao .fd-motion-orbit{position:absolute;left:50%;top:34%;width:102px;height:102px;border:1px solid #9fc4d2a6;border-radius:50%;transform:translate(-50%,-50%);display:grid;place-items:center}
+#colecao .fd-motion-orbit i{width:59px;height:59px;border:1px solid #c7d7e1aa;border-radius:50%;position:absolute}
+#colecao .fd-motion-orbit i:nth-child(2){width:26px;height:26px;background:#c8dfea5e}
+#colecao .fd-demo.is-playing .fd-motion-orbit{animation:fd-orbit 5s linear infinite}
+#colecao .fd-motion-copy{display:grid;gap:5px;position:relative;z-index:1}
+#colecao .fd-motion-copy small{font-size:9px;letter-spacing:.12em}
+#colecao .fd-motion-copy strong{font-size:19px;line-height:1.08;letter-spacing:-.04em}
+#colecao .fd-video-progress{height:4px;left:16px;right:16px;bottom:8px;background:#fff5}
+#colecao .fd-video-progress i{background:#d9ecf0}
+#colecao .fd-shop-stage{display:grid;grid-template-columns:42% 58%;height:219px;overflow:hidden;border-radius:11px;background:#f3f4ed;color:#243d32}
+#colecao .fd-shop-product{background:linear-gradient(130deg,#e7eee4,#d2e2d5);display:grid;place-items:center;perspective:500px}
+#colecao .fd-shop-object{height:85px;width:75px;border-radius:15px 28px 18px 25px;background:linear-gradient(120deg,#82a68e,#b3c9b7);transform:rotate(-18deg);box-shadow:inset -12px -8px 16px #49795f3b,12px 13px 0 #9cb7a0}
+#colecao .fd-shop-stage[data-fd-color=clay] .fd-shop-object{background:linear-gradient(120deg,#c38373,#ecc3a6);box-shadow:inset -12px -8px 16px #97615240,12px 13px 0 #c59a91}
+#colecao .fd-shop-details{padding:12px 10px;display:flex;flex-direction:column;gap:9px;justify-content:center}
+#colecao .fd-shop-details>small{color:#647d68;font-size:9px}
+#colecao .fd-shop-details>strong{font-size:17px;line-height:1.1}
+#colecao .fd-shop-details>p{font-size:11px;line-height:1.35;margin:0}
+#colecao .fd-shop-options button{min-height:35px;font-size:10px}
+#colecao .fd-add{background:#234e38;color:#fff;min-height:39px;border:0;border-radius:7px;padding:8px;font-size:11px}
+#colecao .fd-flow-screen{height:223px;border:1px solid #d6e5d8;border-radius:11px;background:#f3f7f0;color:#2c503a;padding:15px;box-sizing:border-box}
+#colecao .fd-flow-top{display:flex;justify-content:space-between;gap:6px;align-items:center}
+#colecao .fd-flow-top strong{font-size:12px}#colecao .fd-flow-top span{font-size:9px;color:#5d8a67}
+#colecao .fd-flow-track{display:flex;gap:6px;margin:12px 0}
+#colecao .fd-flow-track i{height:4px;background:#b8cab9;flex:1;border-radius:4px}
+#colecao .fd-flow-track i.is-current{background:#4f9470}
+#colecao .fd-flow-screen>small{font-size:9px;letter-spacing:.08em;color:#608773}
+#colecao .fd-flow-screen h4{font-size:19px;line-height:1.1;letter-spacing:-.04em;margin:9px 0}
+#colecao .fd-flow-screen>p{font-size:12px;line-height:1.35;margin:0}
+#colecao .fd-flow-meta{display:flex;justify-content:space-between;align-items:center;border-top:1px solid #d7e3d6;margin-top:13px;padding-top:9px;font-size:10px}
+#colecao .fd-flow-meta>span:last-child{font-weight:680;color:#3a7555}
+#colecao .fd-nav{min-height:42px;gap:5px}
+#colecao .fd-nav>button{min-height:39px}
+@keyframes fd-orbit{from{transform:translate(-50%,-50%) rotate(0)}to{transform:translate(-50%,-50%) rotate(360deg)}}
+@media(max-width:700px){
+ #colecao .pf-fatos-question{top:22%}
+ #colecao .pf-fatos-question h4{font-size:clamp(23px,7vw,30px)}
+ #colecao .pf-case-art{top:48%;bottom:80px;left:14px;right:14px}
+ #colecao .pf-fatos-back{padding:14px 15px 76px}
+ #colecao .pf-fatos-back .pf-fatos-flip{bottom:-62px}
+}
+@media(max-width:360px){
+ #colecao .pf-fatos-question h4{font-size:24px}
+ #colecao .pf-case-art{top:50%;bottom:70px}
+ #colecao .pf-case-editor>strong{font-size:19px}
+ #colecao .fd-site-frame,#colecao .fd-story-frame,#colecao .fd-motion-stage,#colecao .fd-flow-screen,#colecao .fd-campaign-preview,#colecao .fd-shop-stage{height:195px;min-height:195px}
+ #colecao .fd-story-frame strong{font-size:21px}
+ #colecao .fd-shop-details>strong{font-size:15px}
+}
+@media(prefers-reduced-motion:reduce){
+ #editorial .es-stage,#editorial .es-demo-choice-group button,#colecao .fd-campaign-preview{transition:none!important}
+ #colecao .fd-motion-orbit{animation:none!important}
+}
+body.is-paused #editorial .es-stage,body.is-paused #colecao .fd-motion-orbit{transition:none!important;animation:none!important}
