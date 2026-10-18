@@ -99,7 +99,40 @@ export function mountFatosDeck() {
     $('.pf-fatos-counter', shell).textContent = (active + 1) + ' de 6 · ' + brands[active].short;
   }
   const reduced=()=>matchMedia('(prefers-reduced-motion:reduce)').matches||document.body.classList.contains('is-paused');
+  // The reference's idle sections are stable, with a faint patterned light
+  // following a fine pointer. Keep this completely independent of card physics.
+  const finePointer=matchMedia('(hover:hover) and (pointer:fine)');
+  let glintFrame=0,glintCard=null,glintCoordinates=null;
+  function clearGlint(){
+    if(glintFrame){cancelAnimationFrame(glintFrame);glintFrame=0;}
+    glintCard?.classList.remove('is-illuminated');
+    glintCard=null;glintCoordinates=null;
+  }
+  stage.addEventListener('pointermove',event=>{
+    if(event.pointerType!=='mouse'&&event.pointerType!=='pen')return;
+    if(!finePointer.matches||reduced()||drag||stage.dataset.motion==='exchange'){clearGlint();return;}
+    const card=event.target.closest('.pf-fatos-card.is-active:not(.is-flipped)');
+    if(!card||!stage.contains(card)){clearGlint();return;}
+    if(glintCard!==card){clearGlint();glintCard=card;}
+    const rect=card.getBoundingClientRect();
+    if(!rect.width||!rect.height)return;
+    glintCoordinates={
+      x:Math.max(0,Math.min(100,(event.clientX-rect.left)/rect.width*100)),
+      y:Math.max(0,Math.min(100,(event.clientY-rect.top)/rect.height*100))
+    };
+    if(glintFrame)return;
+    glintFrame=requestAnimationFrame(()=>{
+      glintFrame=0;
+      if(!glintCard||!glintCoordinates)return;
+      glintCard.style.setProperty('--fatos-light-x',glintCoordinates.x.toFixed(1)+'%');
+      glintCard.style.setProperty('--fatos-light-y',glintCoordinates.y.toFixed(1)+'%');
+      glintCard.classList.add('is-illuminated');
+    });
+  },{passive:true});
+  stage.addEventListener('pointerleave',clearGlint,{passive:true});
+  stage.addEventListener('pointerdown',clearGlint,{passive:true});
   function clearFlight(){
+    clearGlint();
     flightToken++;
     arrival?.cancel();departure?.cancel();settlement?.cancel();
     arrival=null;departure=null;settlement=null;
@@ -251,6 +284,6 @@ export function mountFatosDeck() {
   stage.addEventListener('lostpointercapture', event => { if (event.target === stage) cancelDrag(true); });
   stage.addEventListener('pointerleave', () => { if (drag && !drag.axis) cancelDrag(false); });
   stage.addEventListener('click', event => { if (performance.now() - lastSwipe < 300) { event.preventDefault(); event.stopPropagation(); } }, true);
-  motion.onStop(() => {cancelDrag(false);clearFlight();});
+  motion.onStop(() => {clearGlint();cancelDrag(false);clearFlight();});
   paint(); shell.dataset.ready = 'true'; return shell;
 }
