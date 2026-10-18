@@ -38,13 +38,13 @@ try{
    await page.locator('#editorial [data-editorial-step="1"]').click();
    await page.waitForTimeout(reduced?30:440);
    check('iPad inherits selected campaign',
-    await page.locator('#editorial .es-device [data-es-preview]').innerText().then(s=>s.includes('Campanha multicanal')));
+    await page.locator('#editorial .es-device [data-es-piece="1"]:not([hidden]) [data-es-preview]').innerText().then(s=>s.includes('Campanha multicanal')));
    const ipadHeight=await page.locator('#editorial .es-stage').evaluate(n=>n.getBoundingClientRect().height);
    await page.locator('#editorial [data-editorial-step="2"]').click();
    await page.waitForTimeout(reduced?30:440);
    check('MacBook inherits the same campaign and CTA',
-    await page.locator('#editorial .es-device [data-es-result]').innerText().then(s=>s.includes('Uma oferta'))&&
-    await page.locator('#editorial .es-device [data-es-cta]').count()===1);
+    await page.locator('#editorial .es-device [data-es-piece="2"]:not([hidden]) [data-es-result]').innerText().then(s=>s.includes('Uma oferta'))&&
+    await page.locator('#editorial .es-device [data-es-piece="2"]:not([hidden]) [data-es-cta]').count()===1);
    const macHeight=await page.locator('#editorial .es-stage').evaluate(n=>n.getBoundingClientRect().height);
    await page.locator('#editorial [data-editorial-step="0"]').click();
    await page.waitForTimeout(reduced?30:440);
