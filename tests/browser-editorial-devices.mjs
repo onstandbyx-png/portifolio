@@ -42,7 +42,8 @@ try{
   for(const state of states){
    await page.locator('[data-editorial-step="'+state.index+'"]').click();
    await page.waitForFunction(expected=>document.querySelector('#editorial')?.dataset.editorialDevice===expected,state.kind);
-   const active=editorial.locator(':scope .es-stage > .es-device');
+   await page.waitForFunction(()=>document.querySelector('#editorial').dataset.editorialMotion==='idle');
+   const active=editorial.locator(':scope .es-stage .es-hardware.es-device');
    const model=active.locator(state.model);
    // :scope can match the active root itself; use evaluation instead of
    // assuming the component wraps itself in an extra node.
@@ -107,13 +108,13 @@ try{
    await page.waitForTimeout(reduced?25:100);
    await active.screenshot({path:output+'/'+state.kind+'-'+width+(reduced?'-reduced':'')+'.png',animations:'disabled'});
   }
-  if(width<500){
+  {
     const heights=row.sizes.map(s=>s.stageHeight);
     const navPositions=row.sizes.map(s=>s.navDocumentTop);
     const nextPositions=row.sizes.map(s=>s.nextDocumentTop);
-    check('Mobile scene keeps exactly one height across all three device types',
-      Math.max(...heights)-Math.min(...heights)<2.5&&row.sizes.every(s=>s.stageMode==='stable-mobile'),row.sizes);
-    check('Mobile arrows and progress stay in place during chapter switches',
+    check('Scene keeps one height across all device types',
+      Math.max(...heights)-Math.min(...heights)<2.5&&row.sizes.every(s=>s.stageMode===(width<=700?'stable-mobile':'stable-desktop')),row.sizes);
+    check('Arrows and progress stay in place during chapter switches',
       navPositions.every(Number.isFinite)&&Math.max(...navPositions)-Math.min(...navPositions)<3,row.sizes);
     check('Next Fatos section no longer jumps on iPhone/iPad/MacBook changes',
       nextPositions.every(Number.isFinite)&&Math.max(...nextPositions)-Math.min(...nextPositions)<3,row.sizes);
@@ -124,7 +125,7 @@ try{
   check('Previous arrow returns to iPad from MacBook',await editorial.getAttribute('data-editorial-device')==='ipad');
   await page.locator('#editorial [data-es-prev]').click();
   check('Second previous arrow returns to iPhone',await editorial.getAttribute('data-editorial-device')==='iphone');
-  check('All screens remain readable to assistive technology',await editorial.locator(':scope .es-stage > .es-device').getAttribute('aria-hidden')==='false');
+  check('All screens remain readable to assistive technology',await editorial.locator(':scope .es-stage .es-hardware.es-device').getAttribute('aria-hidden')==='false');
   check('No script exceptions during device transitions',row.errors.length===0,row.errors);
   console.log(JSON.stringify({width,height,reduced,checks:row.checks,geometry:row.sizes,errors:row.errors}));
   await context.close();

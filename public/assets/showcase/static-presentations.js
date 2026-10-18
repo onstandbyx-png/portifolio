@@ -86,7 +86,7 @@ function mountCampaign(motion) {
         figures[i].style.opacity = selected ? '1' : '0';
         const animation = motion.animate(figures[i], [
           { opacity: opacity[i] }, { opacity: selected ? 1 : 0 },
-        ], { duration: 600, easing: 'cubic-bezier(.4,0,.2,1)' });
+        ], { duration: 280, easing: 'cubic-bezier(.4,0,.2,1)' });
         if (animation) transitions.push(animation);
       });
       Promise.all(transitions.map(animation => animation.finished.catch(() => {}))).then(() => {

@@ -3,49 +3,34 @@
    stack. Their center and side previews are the SAME physical DOM nodes. */
 #editorial[data-editorial-story] .es-stage {
   box-sizing:border-box;position:relative;isolation:isolate;
-  display:grid;place-items:center;
-  width:min(100%,960px);min-height:0;
-  padding:12px 0 16px;
-  overflow:visible;
-  transition:height .32s cubic-bezier(.22,.82,.22,1);
+  display:block;width:min(100%,960px);min-height:0;padding:0;overflow:visible;
+  transition:none;
 }
-#editorial .es-stage>.es-device {
-  position:relative;z-index:4;max-width:none;
-  filter:drop-shadow(0 14px 22px #14251924);
-  margin:0 auto;
+#editorial .es-stage>.es-object {
+  position:absolute;top:50%;left:50%;display:block;
+  width:max-content;max-width:none;height:auto;aspect-ratio:auto;
+  min-width:0;min-height:0;padding:0;margin:0;border:0;border-radius:0;
+  background:transparent;overflow:visible;transform-origin:center;
+  filter:none;transition:none;pointer-events:none;
 }
-#editorial .es-stage>.es-peek {
-  position:absolute;top:50%;left:50%;z-index:1;
-  display:block;width:max-content;max-width:none;height:auto;
-  aspect-ratio:auto;min-width:0;min-height:0;
-  padding:0;border:0;border-radius:0;background:transparent;
-  opacity:.66;overflow:visible;cursor:pointer;
-  transform:translate(-50%,-50%) translateX(var(--side-offset)) scale(.98);
-  filter:saturate(.78) brightness(1.035) drop-shadow(0 11px 18px #1d322929);
-  transition:opacity .24s ease,filter .24s ease,transform .35s ease;
+#editorial[data-editorial-motion="transition"] .es-object{will-change:transform,opacity}
+#editorial .es-object>.es-hardware{position:relative;margin:0;max-width:none;pointer-events:none}
+#editorial .es-object>.es-device{pointer-events:auto}
+#editorial .es-object>.es-object-select {
+  position:absolute;inset:0;width:100%;height:100%;padding:0;border:0;
+  background:transparent;border-radius:12px;cursor:pointer;pointer-events:auto;
   -webkit-tap-highlight-color:transparent;
 }
-/* Nav is layered above any side hardware extending outside the stage,
-   so preview cards cannot steal taps on the previous/next buttons. */
+#editorial .es-object-select[hidden]{display:none!important}
+#editorial .es-object-select:focus-visible{outline:3px solid #366caa;outline-offset:5px}
 #editorial .es-panel{position:relative;z-index:1}
 #editorial .es-tabs{position:relative;z-index:8;isolation:isolate}
 #editorial .es-tabs>button{position:relative;z-index:9}
 #editorial .es-swipe-nav{position:relative;z-index:7;isolation:isolate}
 #editorial .es-swipe-nav>button{position:relative;z-index:8}
-#editorial .es-stage>.es-peek:hover,#editorial .es-stage>.es-peek:focus-visible{
-  opacity:.93;filter:saturate(.92) drop-shadow(0 12px 23px #1d32292e);
-}
-#editorial .es-stage>.es-peek:focus-visible{outline:3px solid #366caa;outline-offset:5px}
-#editorial .es-stage>.es-peek .es-hardware{pointer-events:none}
-#editorial .es-stage>.es-peek .es-preview-piece{display:block;pointer-events:none}
-#editorial .es-stage>.es-peek .es-preview-piece[hidden]{display:none!important}
-#editorial .es-stage>.es-peek .es-peek-screen{
-  position:absolute;inset:0;display:block;
-  width:100%;height:100%;border:0;padding:0;overflow:hidden;
-  background:transparent;
-}
-#editorial .es-stage>.es-peek .es-peek-screen:before,
-#editorial .es-stage>.es-peek .es-peek-screen:after{display:none!important}
+/* Previews retain each screen's own grid/flex composition. */
+#editorial .es-preview-piece{pointer-events:none}
+#editorial .es-preview-piece[hidden]{display:none!important}
 #editorial .es-hardware{box-sizing:border-box;flex:none;max-width:none}
 #editorial .es-hardware--iphone{transform:translateZ(0)}
 #editorial .es-hardware--iphone .es-screen{position:absolute;inset:0}
@@ -161,27 +146,10 @@
 #editorial .es-mac-hero-copy>small{display:block;font-size:calc(1.2 * var(--es-device-unit));font-weight:650;letter-spacing:.11em;margin-bottom:calc(1 * var(--es-device-unit))}
 #editorial .es-mac-hero-copy h3{font-size:calc(5.2 * var(--es-device-unit));font-weight:660;line-height:1.04;letter-spacing:-.05em;margin:0}
 #editorial .es-mac-hero-copy p{font-size:calc(1.75 * var(--es-device-unit));max-width:37ch;line-height:1.45;margin:calc(1.2 * var(--es-device-unit)) 0 0;color:#e5eefb}
-#editorial .es-stage>.es-peek .es-mac-browser{opacity:.88}
-#editorial .es-stage>.es-peek .es-mac-hero-copy p{display:none}
 
-/* The active object determines scene height. Landscape hardware does not
-   inherit the portrait iPhone's large vertical whitespace. */
+
+/* Each viewport has one stable stage, independent of the selected model. */
 @media(max-width:700px){
- /* Keep the entire mobile carousel anchored while the center changes shape.
-    Landscape devices are vertically centered within the iPhone-height scene,
-    with side previews inside the same safe region rather than over the tabs. */
- #editorial .es-stage{
-   padding:7px 0 10px;
-   transition:none!important;
-   align-items:center;justify-items:center;
-   overflow:visible;
- }
- #editorial .es-stage>.es-device{align-self:center;justify-self:center}
- #editorial .es-stage>.es-peek{
-   top:50%;
-   opacity:.50;
-   transform:translate(-50%,-50%) translateX(var(--side-offset)) scale(.95);
- }
  #editorial .es-ipad-editorial h3{font-size:calc(4.15 * var(--es-device-unit))}
  #editorial .es-ipad-editorial p{font-size:calc(1.85 * var(--es-device-unit))}
  #editorial .es-mac-nav span{display:none}
@@ -189,8 +157,3 @@
  #editorial .es-mac-hero-copy h3{font-size:calc(4.65 * var(--es-device-unit))}
  #editorial .es-mac-hero-copy p{display:none}
 }
-@media(prefers-reduced-motion:reduce){
- #editorial .es-stage,#editorial .es-peek{transition:none!important}
-}
-body.is-paused #editorial .es-stage,
-body.is-paused #editorial .es-peek{transition:none!important}

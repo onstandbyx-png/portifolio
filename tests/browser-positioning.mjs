@@ -20,11 +20,11 @@ try{
   const check=(name,pass)=>{row.checks.push({name,pass:!!pass});assert(pass,name)};
   try{
    await page.goto(base,{waitUntil:'domcontentloaded'});await page.evaluate(()=>document.fonts.ready);
-   await page.waitForSelector('.campaign-summary');await page.waitForSelector('[data-workflow][data-state="empty"]');
-   check('The first screen states role and five concrete services',/DIRETOR CRIATIVO E REDATOR/.test(await page.locator('.hero-issue').innerText())&&/Identidade visual, conteúdo, anúncios, sites e sistemas/.test(await page.locator('.hero-description').innerText()));
-   const order=await page.evaluate(()=>['categorias','trabalhos','editorial','laboratorio','narrativa-visual','sistemas','como-trabalho','contato'].map(id=>({id,top:document.getElementById(id).getBoundingClientRect().top+scrollY})));
+   await page.waitForSelector('.campaign-summary');await page.waitForSelector('[data-workflow][data-state="example"]');
+   check('The first screen states role and five concrete services',/DIRETOR CRIATIVO E REDATOR/.test(await page.locator('.hero-issue').innerText())&&/identidades, conteúdos, anúncios, sites e sistemas/.test(await page.locator('.hero-description').innerText()));
+   const order=await page.evaluate(()=>['trabalhos','editorial','laboratorio','narrativa-visual','sistemas','categorias','como-trabalho','contato'].map(id=>({id,top:document.getElementById(id).getBoundingClientRect().top+scrollY})));
    row.sectionOrder=order;
-   check('Solutions precede evidence and each section has its own place',order.every((item,i)=>i===0||item.top>order[i-1].top));
+   check('Visual demonstrations precede the detailed service catalogue',order.every((item,i)=>i===0||item.top>order[i-1].top));
    const copy=await page.locator('.path-summary-copy>strong').allTextContents();check('Five consistent service labels',JSON.stringify(copy)===JSON.stringify(services));
    check('Benefits and scope are available before opening details',await page.locator('.path-summary-copy').evaluateAll(nodes=>nodes.length===5&&nodes.every(n=>n.querySelector('span').getBoundingClientRect().height>0&&n.querySelector('small').getBoundingClientRect().height>0)));
    for(let i=0;i<services.length;i++){
@@ -34,27 +34,29 @@ try{
    }
    check('Essential internal links have destinations',await page.locator('.main-nav a,.path-proof,.path-contact').evaluateAll(nodes=>nodes.every(n=>!n.hash||document.getElementById(n.hash.slice(1)))));
    await page.locator('#categorias').evaluate(el=>scrollTo({top:scrollY+el.getBoundingClientRect().top-84,behavior:'instant'}));
-   await page.screenshot({path:`${output}/solutions-${width}${reduced?'-reduced':''}.png`,animations:'disabled',style:'.site-header,.skip,#reading-progress{visibility:hidden!important}'});
+   await page.screenshot({path:`${output}/solutions-${width}${reduced?'-reduced':''}.png`,animations:'disabled'});
    await page.locator('[data-sp-tab="google"]').click();
    check('Campaign benefit is visible without peeling',await page.locator('[data-campaign-benefit]').innerText()==='Responder a quem já procura.'&&await page.locator('.sp-peel-card').getAttribute('data-side')==='front');
    await page.locator('.campaign-decision').click();await page.waitForFunction(()=>document.querySelector('.sp-peel-card').dataset.peelState==='open');
    check('Explicit creative decision control opens the retained peel',await page.locator('.campaign-decision').getAttribute('aria-expanded')==='true');
    await page.locator('.campaign-decision').click();await page.waitForFunction(()=>document.querySelector('.sp-peel-card').dataset.peelState==='closed');
    await page.locator('#laboratorio').evaluate(el=>scrollTo({top:scrollY+el.getBoundingClientRect().top-84,behavior:'instant'}));
-   await page.screenshot({path:`${output}/campaign-${width}${reduced?'-reduced':''}.png`,animations:'disabled',style:'.site-header,.skip,#reading-progress{visibility:hidden!important}'});
+   await page.screenshot({path:`${output}/campaign-${width}${reduced?'-reduced':''}.png`,animations:'disabled'});
+   check('A useful workflow result is visible before input',await page.locator('[data-workflow-result]').isVisible()&&!await page.locator('.workflow-form').isVisible());
+   await page.locator('[data-workflow-edit]').click();
    const sample='Revisar pedido <b>sem perder contexto</b>';
    await page.locator('#workflow-request').fill(sample);await page.locator('#workflow-area').selectOption('atendimento');await page.locator('#workflow-priority').selectOption('Urgente');
    await page.locator('.workflow-form [type="submit"]').click();
    check('Workflow creates a safely rendered record with chosen route and priority',await page.locator('[data-request-title]').innerText()===sample&&await page.locator('[data-request-title] b').count()===0&&/Atendimento/.test(await page.locator('[data-request-route]').innerText())&&await page.locator('[data-request-priority]').innerText()==='Urgente');
    await page.locator('[data-workflow-complete]').click();check('Workflow changes state',await page.locator('[data-workflow]').getAttribute('data-state')==='completed'&&await page.locator('[data-request-state]').innerText()==='Resolvido');
    await page.locator('#sistemas').evaluate(el=>scrollTo({top:scrollY+el.getBoundingClientRect().top-84,behavior:'instant'}));
-   await page.screenshot({path:`${output}/systems-${width}${reduced?'-reduced':''}.png`,animations:'disabled',style:'.site-header,.skip,#reading-progress{visibility:hidden!important}'});
-   await page.locator('[data-workflow-reset]').click();check('Workflow can restart',await page.locator('[data-workflow]').getAttribute('data-state')==='empty'&&!await page.locator('[data-workflow-result]').isVisible());
-   await page.locator('.systems-intro a').click();check('Systems example leads to the correct service',await page.locator('#service').inputValue()==='Sistemas e automações');
+   await page.screenshot({path:`${output}/systems-${width}${reduced?'-reduced':''}.png`,animations:'disabled'});
+   await page.locator('[data-workflow-reset]').click();check('Workflow can restart',await page.locator('[data-workflow]').getAttribute('data-state')==='example'&&await page.locator('[data-workflow-result]').isVisible());
+   await page.locator('.systems-contact').click();check('Systems example leads to the correct service',await page.locator('#service').inputValue()==='Sistemas e automações');
    await page.locator('#como-trabalho').evaluate(el=>scrollTo({top:scrollY+el.getBoundingClientRect().top-84,behavior:'instant'}));
-   await page.screenshot({path:`${output}/method-${width}${reduced?'-reduced':''}.png`,animations:'disabled',style:'.site-header,.skip,#reading-progress{visibility:hidden!important}'});
+   await page.screenshot({path:`${output}/method-${width}${reduced?'-reduced':''}.png`,animations:'disabled'});
    await page.locator('#contato').evaluate(el=>scrollTo({top:scrollY+el.getBoundingClientRect().top-84,behavior:'instant'}));
-   await page.screenshot({path:`${output}/contact-${width}${reduced?'-reduced':''}.png`,animations:'disabled',style:'.site-header,.skip,#reading-progress{visibility:hidden!important}'});
+   await page.screenshot({path:`${output}/contact-${width}${reduced?'-reduced':''}.png`,animations:'disabled'});
    check('No horizontal overflow',await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+2));
    check('No runtime errors or external writes',row.errors.length===0&&row.writes.length===0);
   }catch(error){row.failure=String(error);await page.screenshot({path:`${output}/failure-${width}${reduced?'-reduced':''}.png`}).catch(()=>{});}

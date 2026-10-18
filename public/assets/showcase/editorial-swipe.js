@@ -88,6 +88,10 @@ export function mountEditorialSwipe(){
   },{passive:true});
   window.addEventListener('touchcancel',()=>{touchGesture=null},{passive:true});
   stage.addEventListener('dragstart',event=>event.preventDefault());
+  // A completed drag must not also click a newly exposed side preview.
+  stage.addEventListener('click',event=>{
+    if(performance.now()-lastSwipeAt<420){event.preventDefault();event.stopImmediatePropagation();}
+  },true);
   stage.addEventListener('keydown',event=>{
     if(event.target!==stage||!['ArrowLeft','ArrowRight'].includes(event.key))return;
     event.preventDefault();choose(index()+(event.key==='ArrowRight'?1:-1));

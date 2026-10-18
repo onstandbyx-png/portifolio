@@ -22,7 +22,7 @@ try{
    await page.goto(base,{waitUntil:'domcontentloaded'});await page.waitForSelector('html[data-static-presentations="ready"]',{state:'attached'});await page.evaluate(()=>document.fonts.ready);
    check('Hero presents the combined editorial and digital offer',/Direção criativa/.test(await page.locator('#hero-title').innerText())&&/Execução digital/.test(await page.locator('#hero-title').innerText()));
    check('The hero connects creative direction and digital development',
-     await page.locator('.hero-proof').innerText().then(t=>t.includes('Mensagem e direção')&&t.includes('Design e desenvolvimento')));
+     await page.locator('.hero-proof').innerText().then(t=>t.includes('Repertório editorial')&&t.includes('Criação e desenvolvimento')));
    check('Native transcript is collapsed and explicitly labelled',await page.locator('details.es-transcript').count()===1&&!await page.locator('.es-transcript').evaluate(e=>e.open));
    row.initial=await page.evaluate(()=>({height:document.documentElement.scrollHeight,sections:Object.fromEntries(['inicio','trabalhos','editorial','laboratorio','narrativa-visual','sistemas','categorias','contato'].map(id=>[id,Math.round((id==='inicio'?document.querySelector('.hero'):document.getElementById(id)).getBoundingClientRect().height)]))}));
    await capture('hero');
@@ -40,12 +40,13 @@ try{
    const editorialNav=page.locator('#editorial .es-swipe-nav');
    check('Editorial has readable swipe controls and three progress dots',await editorialNav.count()===1&&await editorialNav.locator('[data-es-dot]').count()===3);
    check('Carousel shows real iPhone, iPad and MacBook shells rather than duplicate phones',await page.locator('#editorial .es-peek').count()===2&&await page.locator('#editorial .es-device').count()===1&&await page.locator('#editorial .es-hardware').count()===3&&await page.locator('#editorial').getAttribute('data-editorial-device')==='ipad');
+   await page.waitForFunction(()=>document.querySelector('#editorial').dataset.editorialMotion==='idle');
    if(width<500)check('Mobile iPad is wider than the original phone while adjacent hardware stays discoverable',await page.locator('#editorial .es-device').evaluate(device=>{
      const r=device.getBoundingClientRect(),left=document.querySelector('#editorial .es-peek--left').getBoundingClientRect(),right=document.querySelector('#editorial .es-peek--right').getBoundingClientRect();
      return device.dataset.editorialModel==='ipad'&&r.width>=260&&r.width<=innerWidth*.98&&
        left.right>10&&right.left<innerWidth-10;
    }));
-   check('The editorial headline explains the role of content',/Atenção/.test(await page.locator('#editorial-title').innerText()));
+   check('The editorial headline explains the role of content',/Três formas de contar/.test(await page.locator('#editorial-title').innerText()));
    check('The progress marker follows the selected chapter',await page.locator('[data-es-heading-count]').textContent()==='02 / 03');
    await editorialNav.locator('[data-es-next]').click();
    check('Next arrow reaches Fechamento with MacBook',await page.locator('#editorial').getAttribute('data-editorial-active')==='closing'&&await page.locator('#editorial').getAttribute('data-editorial-device')==='macbook'&&await editorialNav.locator('[data-es-next]').isDisabled());
@@ -55,6 +56,7 @@ try{
    // The side phone intentionally peeks from behind the large central phone.
    // Hit its EXPOSED edge rather than the element center (hidden by the device).
    await page.locator('#editorial [data-editorial-stage]').scrollIntoViewIfNeeded();
+   await page.waitForFunction(()=>document.querySelector('#editorial').dataset.editorialMotion==='idle');
    const peekBox=await page.locator('#editorial .es-peek--right').boundingBox();
    // Click the exposed right edge, outside the active landscape iPad.
    const peekX=Math.min(width-16,Math.max(16,peekBox.x+peekBox.width-26));

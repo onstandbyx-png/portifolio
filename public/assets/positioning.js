@@ -1,4 +1,4 @@
-/** Visible campaign context and an interactive workflow example. */
+/** Context follows the artwork; the workflow starts with a useful result. */
 function mountCampaignContext() {
   const lab = document.querySelector('#laboratorio .sp-campaign');
   const layout = lab?.querySelector('.sp-peel-layout');
@@ -7,7 +7,7 @@ function mountCampaignContext() {
   const context = document.createElement('aside');
   context.className = 'campaign-summary';
   context.innerHTML = '<span class="eyebrow">Conceito · copy · direção de arte</span><h3 data-campaign-benefit></h3><p data-campaign-delivery></p><button type="button" class="campaign-decision" aria-controls="campaign-note" aria-expanded="false">Ver decisão criativa <span aria-hidden="true">↗</span></button><a href="#contato" data-contact-service="Campanhas e anúncios">Conversar sobre uma campanha ↗</a>';
-  layout.prepend(context);
+  layout.append(context);
   const descriptions = {
     meta: ['Dar forma à oferta no feed.', 'Criativo e texto trabalham juntos para apresentar a proposta e despertar interesse.'],
     google: ['Responder a quem já procura.', 'Título e mensagem partem da intenção de busca e mantêm uma conexão clara com o destino.'],
@@ -35,13 +35,39 @@ function mountWorkflow() {
   const form = demo?.querySelector('form');
   if (!form) return;
   const result = demo.querySelector('[data-workflow-result]');
-  const empty = demo.querySelector('[data-workflow-empty]');
   const status = demo.querySelector('[data-workflow-status]');
   const submit = form.querySelector('[type="submit"]');
   const complete = demo.querySelector('[data-workflow-complete]');
+  const edit = demo.querySelector('[data-workflow-edit]');
   const routes = { comercial: 'Comercial → Preparar proposta', atendimento: 'Atendimento → Analisar solicitação', operacao: 'Operação → Planejar tarefa' };
   submit.disabled = false;
-  demo.dataset.state = 'empty';
+  demo.querySelector('.workflow-grid').prepend(demo.querySelector('.workflow-output'));
+  function setEditing(open) {
+    form.hidden = !open;
+    demo.dataset.editing = String(open);
+    edit.setAttribute('aria-expanded', String(open));
+    edit.firstChild.textContent = open ? 'Fechar edição ' : 'Experimentar outro pedido ';
+  }
+  function showExample() {
+    form.reset();
+    form.elements.request.setCustomValidity('');
+    result.querySelector('[data-request-title]').textContent = form.elements.request.value;
+    result.querySelector('[data-request-route]').textContent = routes.comercial;
+    result.querySelector('[data-request-priority]').textContent = 'Normal';
+    result.querySelector('[data-request-state]').textContent = 'Pronto para atender';
+    result.querySelector('[data-request-next]').textContent = 'Assunto, responsável e próximo passo reunidos para a equipe agir.';
+    complete.disabled = false;
+    complete.textContent = 'Marcar como resolvido';
+    submit.textContent = 'Organizar pedido';
+    demo.dataset.state = 'example';
+    setEditing(false);
+  }
+  edit.addEventListener('click', () => {
+    const open = form.hidden;
+    setEditing(open);
+    if (open) form.elements.request.focus({ preventScroll: true });
+  });
+  showExample();
   form.addEventListener('submit', event => {
     event.preventDefault();
     const description = form.elements.request;
@@ -54,11 +80,11 @@ function mountWorkflow() {
     result.querySelector('[data-request-next]').textContent = 'Pedido organizado: assunto, prioridade e próximo passo no mesmo lugar.';
     complete.disabled = false;
     complete.textContent = 'Marcar como resolvido';
-    empty.hidden = true;
-    result.hidden = false;
     demo.dataset.state = 'created';
     submit.textContent = 'Atualizar pedido';
     status.textContent = 'Pedido organizado. Você pode marcar como resolvido ou ajustar as informações.';
+    setEditing(false);
+    edit.focus({ preventScroll: true });
   });
   form.elements.request.addEventListener('input', () => form.elements.request.setCustomValidity(''));
   complete.addEventListener('click', () => {
@@ -70,14 +96,8 @@ function mountWorkflow() {
     status.textContent = 'Pedido marcado como resolvido.';
   });
   demo.querySelector('[data-workflow-reset]').addEventListener('click', () => {
-    form.reset();
-    form.elements.request.setCustomValidity('');
-    demo.dataset.state = 'empty';
-    result.hidden = true;
-    empty.hidden = false;
-    submit.textContent = 'Organizar pedido';
-    status.textContent = 'Exemplo reiniciado. Experimente outro pedido.';
-    form.elements.request.focus({ preventScroll: true });
+    showExample();
+    status.textContent = 'Exemplo reiniciado. O pedido está pronto para atender.';
   });
 }
 function mount() { mountCampaignContext(); mountWorkflow(); }

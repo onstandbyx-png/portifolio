@@ -70,13 +70,13 @@ try{
        desktopNavigationVisible:getComputedStyle(document.querySelector('.main-nav')).display!=='none'};
    });
    row.heroLayout=layoutCheck;
-   check('New hero communicates a concrete offer and a documented distinction',
+   check('Hero communicates the services, their benefit and professional repertoire',
      /Direção criativa/.test(await page.locator('#hero-title').innerText()) &&
-     /mensagem, design e desenvolvimento/.test(await page.locator('.hero-description').innerText()) &&
-     await page.locator('.hero-proof').innerText().then(t=>t.includes('Mensagem e direção')&&t.includes('Design e desenvolvimento')));
-   check('Primary and secondary links target their real destinations',
+     await page.locator('.hero-description').innerText().then(t=>['identidades','conteúdos','anúncios','sites','sistemas','comunicar melhor','simplificar processos'].every(term=>t.includes(term))) &&
+     await page.locator('.hero-proof').innerText().then(t=>t.includes('Repertório editorial')&&t.includes('Criação e desenvolvimento')));
+   check('Primary action opens the work and secondary action opens contact',
      await page.locator('.hero-actions a').evaluateAll(a=>a.length===2&&a.every(link=>!!document.querySelector(link.getAttribute('href'))) &&
-       a[0].textContent.includes('Conversar sobre meu projeto')&&a[1].textContent.includes('Ver soluções')));
+       a[0].hash==='#trabalhos'&&a[1].hash==='#contato'));
    check('Fixed navigation never covers the hero eyebrow at rest',
      layoutCheck.eyebrow.top-layoutCheck.hero.top>=layoutCheck.headerHeight+10);
    check('Hero typography, buttons and badge exhibit stay inside viewport',
