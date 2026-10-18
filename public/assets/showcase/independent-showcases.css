@@ -237,3 +237,8 @@
  #colecao .fd-motion-orbit{animation:none!important}
 }
 body.is-paused #editorial .es-stage,body.is-paused #colecao .fd-motion-orbit{transition:none!important;animation:none!important}
+
+/* Click isolation: front and reverse never intercept controls from the other face. */
+#colecao .pf-fatos-card.is-flipped .pf-fatos-front{pointer-events:none!important}
+#colecao .pf-fatos-card:not(.is-flipped) .pf-fatos-back{pointer-events:none!important}
+#colecao .pf-fatos-card.is-flipped .pf-fatos-back{pointer-events:auto}
