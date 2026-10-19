@@ -7,7 +7,7 @@ import { createDeviceFrame } from './device-frame.js';
 import { createIPadFrame,createMacBookFrame } from './editorial-hardware.js';
 import { createMotion } from '../sections/motion.js';
 import { stableViewportHeight } from './scroll-gallery.js';
-import {deviceMarkup,applyDeviceChoice} from './independent-device-content.js';
+import {deviceMarkup,applyDeviceChoice,projectTypes} from './independent-device-content.js';
 
 const types=['iphone','ipad','macbook'];
 const screenMarkup=(step,index)=>deviceMarkup(step,index);
@@ -51,11 +51,28 @@ export function mountEditorialStory(){
     object.append(device.root,control);objects.push(object);controls.push(control);
   });
   stage.replaceChildren(...objects);
-  root.addEventListener('click',event=>{const choice=event.target.closest('[data-es-choice]');if(!choice||!root.contains(choice))return;event.stopPropagation();applyDeviceChoice(root,choice.dataset.esChoice);});
+  const status=root.querySelector('[data-es-status]');
+  // The live status always names the current chapter AND the chosen project,
+  // so selecting an option on the iPhone is announced without moving focus.
+  const statusText=()=>{
+    const index=Math.max(0,active),step=copy.steps[index];
+    const choice=projectTypes[root.dataset.projectChoice]||projectTypes.site;
+    return step.label+' · '+(index+1)+' de 3 · Escolha: '+choice.name;
+  };
+  const updateStatus=()=>{if(status)status.textContent=statusText();};
+  root.addEventListener('click',event=>{
+    const choice=event.target.closest('[data-es-choice]');
+    if(choice&&root.contains(choice)){event.stopPropagation();applyDeviceChoice(root,choice.dataset.esChoice);updateStatus();return;}
+    const go=event.target.closest('[data-es-go]');
+    if(go&&root.contains(go)){event.stopPropagation();render(Number(go.dataset.esGo),true);}
+  });
   stage.tabIndex=0;
   stage.setAttribute('aria-label','Três dispositivos. Use as setas para mudar de etapa.');
-  let active=-1,animations=[],generation=0,layoutKey='',mobile=false,shift=0,modelHeights=[];
+  let active=-1,animations=[],generation=0,layoutKey='',mobile=false,shift=0,modelHeights=[],lidAnimation=null;
   const cancelAnimations=()=>{animations.forEach(a=>a?.cancel());animations=[]};
+  // The MacBook lid rests half-closed while the notebook waits at the side and
+  // opens on its hinge when Entrega becomes active (pose lives in CSS).
+  const lid=devices[2].root.querySelector('.mbp-lid');
   function pose(i){
     const others=devices.map((_,j)=>j).filter(j=>j!==active);
     const side=i===active?0:others.indexOf(i)===0?-1:1;
@@ -72,7 +89,24 @@ export function mountEditorialStory(){
     Object.assign(objects[i].style,{transform:target.transform,opacity:String(target.opacity),zIndex:String(target.zIndex)});
     return target;
   }
-  function resizeStage(){if(!modelHeights.length)return;const height=mobile?modelHeights[Math.max(0,active)]:Math.max(...modelHeights);const px=Math.ceil(height+(mobile?48:32));stage.style.height=px+'px';stage.style.setProperty('--es-stage-height',px+'px');}
+  // Mobile stage height follows the active device and glides between heights.
+  // The glide is frame-driven, but a timer always lands the exact layout height
+  // on schedule, so a delayed frame can never leave the page at a stale height.
+  // Reduced motion and the global pause apply the height instantly.
+  const heightGlide={raf:0,timer:0};
+  function setStageHeight(px,glide){
+    cancelAnimationFrame(heightGlide.raf);clearTimeout(heightGlide.timer);
+    stage.style.setProperty('--es-stage-height',px+'px');stage.dataset.stageHeight=String(px);
+    const from=parseFloat(stage.style.height);
+    if(!glide||!motion.available()||!Number.isFinite(from)||Math.abs(from-px)<1){stage.style.height=px+'px';stage.dataset.heightMotion='idle';return;}
+    const start=performance.now(),duration=360,ease=t=>1-Math.pow(1-t,3);
+    stage.dataset.heightMotion='glide';
+    const land=()=>{cancelAnimationFrame(heightGlide.raf);clearTimeout(heightGlide.timer);stage.style.height=px+'px';stage.dataset.heightMotion='idle';};
+    const frame=()=>{const t=Math.min(1,(performance.now()-start)/duration);if(t>=1){land();return;}stage.style.height=(from+(px-from)*ease(t)).toFixed(2)+'px';heightGlide.raf=requestAnimationFrame(frame);};
+    heightGlide.raf=requestAnimationFrame(frame);
+    heightGlide.timer=setTimeout(land,duration+24);
+  }
+  function resizeStage(glide=false){if(!modelHeights.length)return;const height=mobile?modelHeights[Math.max(0,active)]:Math.max(...modelHeights);setStageHeight(Math.ceil(height+(mobile?48:32)),glide);}
   function sizeDevices(){
     mobile=matchMedia('(max-width:700px)').matches;
     const available=stage.clientWidth||innerWidth-36;
@@ -107,10 +141,12 @@ export function mountEditorialStory(){
       const style=getComputedStyle(object);
       return {transform:style.transform,opacity:Number(style.opacity),zIndex:style.zIndex};
     });
-    cancelAnimations();
+    const lidStart=lid?getComputedStyle(lid).transform:'none';
+    const lidMoving=!!lidAnimation&&lidAnimation.playState==='running';
+    cancelAnimations();lidAnimation=null;
     const token=++generation;
     active=index;
-    resizeStage();
+    resizeStage(previous>=0);
     const step=copy.steps[index];
     const others=devices.map((_,i)=>i).filter(i=>i!==index);
     root.dataset.editorialActive=step.id;
@@ -149,6 +185,17 @@ export function mountEditorialStory(){
         if(animation)animations.push(animation);
       }
     });
+    // Hinge: continue from the painted lid angle toward the pose of the new
+    // position. Reduced motion and the global pause leave the CSS pose instant.
+    if(lid&&previous>=0&&motion.available()&&(index===2||previous===2||lidMoving)){
+      const lidEnd=getComputedStyle(lid).transform;
+      if(lidEnd!==lidStart){
+        const opening=index===2;
+        lidAnimation=motion.animate(lid,[{transform:lidStart},{transform:lidEnd}],
+          opening?{duration:520,delay:150,easing:'cubic-bezier(.2,.72,.18,1)'}:{duration:340,easing:'cubic-bezier(.4,0,.2,1)'});
+        if(lidAnimation)animations.push(lidAnimation);
+      }
+    }
     root.dataset.editorialMotion=animations.length?'transition':'idle';
     if(animations.length)Promise.all(animations.map(a=>a.finished.catch(()=>{}))).then(()=>{
       if(token!==generation)return;
@@ -159,7 +206,7 @@ export function mountEditorialStory(){
     context.querySelector('[data-es-body]').textContent=step.body;
     context.querySelector('[data-es-quote]').textContent=step.pieceTitle.replace(/\n/g,' ');
     context.querySelector('[data-es-copy]').textContent=step.pieceCopy;
-    root.querySelector('[data-es-status]').textContent=step.label+' · '+(index+1)+' de 3';
+    updateStatus();
     if(focus)tabs[index].focus({preventScroll:true});
   }
   tabs.forEach((tab,i)=>{
@@ -170,8 +217,8 @@ export function mountEditorialStory(){
       event.preventDefault();render(index,true);
     });
   });
-  motion.onStop(()=>{++generation;cancelAnimations();root.dataset.editorialMotion='idle';});
-  render(0);sizeDevices();applyDeviceChoice(root,'site');
+  motion.onStop(()=>{++generation;cancelAnimations();resizeStage();root.dataset.editorialMotion='idle';});
+  render(0);sizeDevices();applyDeviceChoice(root,'site');updateStatus();
   new ResizeObserver(sizeDevices).observe(stage);
   addEventListener('resize',sizeDevices,{passive:true});
   root.dataset.editorialReady='true';

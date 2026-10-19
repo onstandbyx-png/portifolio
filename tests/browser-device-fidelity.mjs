@@ -44,6 +44,12 @@ try{
   const mbp=page.locator('.rf-macbook[data-device="macbook-pro"]');
   check(row,'Casa Costa Site is presented in real laptop anatomy',await mbp.count()===1&&await mbp.locator('.mbp-lid,.mbp-display,.mbp-screen,.mbp-camera,.mbp-hinge,.mbp-base,.mbp-front-groove').count()===7);
   check(row,'Existing Casa Costa photograph and interface survive inside the screen',await mbp.locator('.mbp-screen .rf-web-nav strong').innerText()==='Casa Costa'&&await mbp.locator('.mbp-screen .rf-web-hero img').count()===1);
+  check(row,'The editorial hinge never reaches the Casa Costa notebook',await mbp.evaluate(el=>{
+    const lid=el.querySelector('.mbp-lid'),device=el.querySelector('.mbp-device');
+    return getComputedStyle(lid).transform==='none'&&getComputedStyle(device).perspective==='none'&&lid.getAnimations().length===0;
+  }));
+  check(row,'The waiting editorial notebook rests half-closed on its own hinge',await page.locator('#editorial .es-hardware--macbook').evaluate(el=>
+    el.dataset.position==='side'&&new DOMMatrixReadOnly(getComputedStyle(el.querySelector('.mbp-lid')).transform).m22<.8));
   await page.locator('#narrativa-visual').scrollIntoViewIfNeeded();
   if(!reduced){
     await page.locator('[data-rx-film-to="2"]').click();
@@ -63,7 +69,10 @@ try{
   check(row,'Aluminum base extends beyond lid and sits beneath its display',geometry.base.w>geometry.lid.w&&geometry.base.top>=geometry.lid.bottom-9,geometry);
   check(row,'Screen remains inside bezel and displays a usable preview',geometry.screen.w<geometry.lid.w&&geometry.screen.h<geometry.lid.h&&geometry.screen.w>190&&geometry.scrollWidth<=geometry.innerWidth+2,geometry);
   if(width<500)check(row,'Notebook aluminum deck is fully visible on mobile',geometry.base.left>=-2&&geometry.base.right<=geometry.innerWidth+2,geometry);
-  if(!reduced){await page.locator('[data-rx-film-to="1"]').click();await page.waitForTimeout(900);await page.locator('[data-rx-film-to="2"]').click();await page.waitForTimeout(900);
+  // The film scrolls smoothly to each phase; wait for the phase itself instead of a fixed
+  // 900ms sleep, which flaked under software rendering (failed on the untouched base too).
+  if(!reduced){await page.locator('[data-rx-film-to="1"]').click();await page.waitForFunction(()=>document.querySelector('#narrativa-visual')?.dataset.phase==='1',null,{timeout:8000}).catch(()=>{});
+    await page.locator('[data-rx-film-to="2"]').click();await page.waitForFunction(()=>document.querySelector('#narrativa-visual')?.dataset.phase==='2',null,{timeout:8000}).catch(()=>{});
     check(row,'Editorial-Social-Site controls still select the website',await page.locator('#narrativa-visual').getAttribute('data-phase')==='2');}
   await page.screenshot({path:output+'/first-screen-'+width+(reduced?'-reduced':'')+'.png',animations:'disabled'});
   await mbp.screenshot({path:output+'/macbook-'+width+(reduced?'-reduced':'')+'.png',animations:'disabled'});
