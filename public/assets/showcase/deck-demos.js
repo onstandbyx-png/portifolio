@@ -77,7 +77,7 @@ function video(node){
  // The clock updates every frame while playing; it is announced only once playback stops.
  const stop=()=>{active=false;cancelAnimationFrame(raf);raf=0;time.setAttribute('aria-live','polite');play.setAttribute('aria-pressed','false');play.textContent='Reproduzir';if(node.classList.contains('is-playing'))node.classList.remove('is-playing');};
  const available=()=>!reduce.matches&&!document.hidden&&!document.body.classList.contains('is-paused')&&Boolean(node.closest('.pf-fatos-card.is-active.is-flipped'));
- const tick=now=>{if(!active)return;if(!available()){stop();return;}elapsed=Math.min(10000,elapsed+Math.min(90,now-last));last=now;paint();if(elapsed>=10000){stop();return;}raf=requestAnimationFrame(tick);};
+ const tick=now=>{if(!active)return;if(!available()){stop();return;}elapsed=Math.min(10000,elapsed+Math.min(90,Math.max(0,now-last)));last=Math.max(last,now);paint();if(elapsed>=10000){stop();return;}raf=requestAnimationFrame(tick);};
  play.addEventListener('click',()=>{if(active){stop();return;}if(reduce.matches||document.body.classList.contains('is-paused')){elapsed=Math.min(10000,elapsed+3500);paint();return;}if(elapsed>=10000)elapsed=0;active=true;time.setAttribute('aria-live','off');node.classList.add('is-playing');play.setAttribute('aria-pressed','true');play.textContent='Pausar';last=performance.now();raf=requestAnimationFrame(tick);});
  $(node,'[data-fd-video-replay]').addEventListener('click',()=>{stop();elapsed=0;sceneIndex=-1;paint();});
  reduce.addEventListener('change',()=>{if(reduce.matches)stop()});paint();return stop;
