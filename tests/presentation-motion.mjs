@@ -119,6 +119,16 @@ export async function verifyEditorial({page,width,check,capture}){
  await page.waitForFunction(()=>document.querySelector('#colecao').dataset.active==='1');
  check('A real horizontal gesture advances one CSS card',await deck.getAttribute('data-active')==='1');
  check('All six original visual fronts are image-free CSS compositions',await deck.locator('.pf-case-art').count()===6&&await deck.locator('img').count()===0);
+ // Front grammar: chip + service, headline, decorative device art, three steps and a real CTA bar.
+ check('Each front keeps legible real text, decorative art and a full CTA bar',await deck.locator('.pf-fatos-card').evaluateAll(cards=>cards.length===6&&cards.every(card=>{
+  const front=card.querySelector('[data-fatos-front]'),art=front.querySelector('.pf-case-art'),flip=front.querySelector('[data-fatos-flip]');
+  const real=[...front.querySelectorAll('.pf-fatos-profile strong,.pf-fatos-profile>div>span,.pf-fatos-question h4,.pf-fatos-support,.pf-case-steps li>span:last-child,[data-fatos-flip]')];
+  const decorative=[...art.querySelectorAll('*')].filter(el=>[...el.childNodes].some(node=>node.nodeType===3&&node.textContent.trim()));
+  return front.querySelector('.pf-case-mark')&&art.getAttribute('aria-hidden')==='true'&&front.querySelectorAll('.pf-case-steps>li').length===3&&
+   !art.querySelector('a,button,img,image,[role="button"],[tabindex]')&&!/↗/.test(art.textContent)&&
+   real.every(el=>parseFloat(getComputedStyle(el).fontSize)>=12)&&decorative.every(el=>parseFloat(getComputedStyle(el).fontSize)>=8)&&
+   flip.offsetHeight>=44&&flip.offsetWidth>=front.clientWidth*.8;
+ })));
  await align(page,'.pf-fatos-display');const selected=await deck.getAttribute('data-active');
  check('Vertical native scrolling remains available over the interactive cards',await nativeScroll(page,width<500)&&await deck.getAttribute('data-active')===selected);
  await capture('editorial-deck');

@@ -238,7 +238,13 @@ export const portfolioCopy = {
         {
           "id": "sites",
           "name": "Sites e apps",
-          "question": "Uma experiência feita para funcionar.",
+          "question": "Do primeiro toque à próxima ação.",
+          "support": "Estrutura, interface e código para orientar cada clique.",
+          "steps": [
+            "Estrutura",
+            "Interface",
+            "Código"
+          ],
           "context": "Explore uma interface e alterne a apresentação entre site e aplicativo.",
           "formats": [
             "Protótipo responsivo",
@@ -249,7 +255,13 @@ export const portfolioCopy = {
         {
           "id": "conteudo",
           "name": "Conteúdo e copy",
-          "question": "A mensagem muda a forma de ver.",
+          "question": "Uma ideia, uma mensagem por canal.",
+          "support": "Um texto central, adaptado a cada formato e leitor.",
+          "steps": [
+            "Ideia",
+            "Produção",
+            "Distribuição"
+          ],
           "context": "Explore um carrossel tipográfico com abertura, desenvolvimento e convite.",
           "formats": [
             "Copy e narrativa",
@@ -260,18 +272,30 @@ export const portfolioCopy = {
         {
           "id": "campanhas",
           "name": "Campanhas e Ads",
-          "question": "Uma oferta. Diferentes formatos.",
+          "question": "Uma oferta, no formato de cada canal.",
+          "support": "Feed, stories, pesquisa e vídeo falando a mesma língua.",
+          "steps": [
+            "Público",
+            "Criativo",
+            "Formato"
+          ],
           "context": "Compare composições para feed, vídeo vertical e pesquisa.",
           "formats": [
-            "Meta e TikTok",
-            "Busca e campanhas",
+            "Feed e stories",
+            "Pesquisa e vídeo",
             "Variações por canal"
           ]
         },
         {
           "id": "video",
           "name": "Vídeo e movimento",
-          "question": "O ritmo transforma a narrativa.",
+          "question": "Do roteiro ao corte, quadro a quadro.",
+          "support": "Roteiro, ritmo e edição pensados para cada tela.",
+          "steps": [
+            "Roteiro",
+            "Cena",
+            "Corte"
+          ],
           "context": "Controle uma timeline de três cenas com reprodução, pausa e retomada.",
           "formats": [
             "Storyboard",
@@ -282,7 +306,13 @@ export const portfolioCopy = {
         {
           "id": "lojas",
           "name": "Lojas e produtos",
-          "question": "Da escolha ao próximo passo.",
+          "question": "Do produto ao carrinho, sem atrito.",
+          "support": "Página de produto, carrinho e recompra conectados.",
+          "steps": [
+            "Produto",
+            "Checkout",
+            "Recompra"
+          ],
           "context": "Configure um produto demonstrativo e simule uma adição ao carrinho.",
           "formats": [
             "Variações de produto",
@@ -293,7 +323,13 @@ export const portfolioCopy = {
         {
           "id": "sistemas",
           "name": "Sistemas e IA",
-          "question": "Uma solicitação vira uma ação.",
+          "question": "Uma solicitação vira uma próxima ação.",
+          "support": "Pedidos organizados e encaminhados a quem resolve.",
+          "steps": [
+            "Pedido",
+            "Triagem",
+            "Responsável"
+          ],
           "context": "Experimente uma triagem de atendimento e seu encaminhamento para tarefas.",
           "formats": [
             "Entrada de pedido",
