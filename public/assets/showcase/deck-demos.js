@@ -61,9 +61,9 @@ const jar=extra=>'<span class="fdb-jar'+(extra||'')+'" aria-hidden="true"><i cla
 const examples={
  sites:{title:'Sites e apps',sub:'UX / Desenvolvimento',headline:'Do clique ao horário marcado.',status:'Escolha um serviço para ver os horários.',service:'Sites e aplicativos',cta:'Conversar sobre site ou app',steps:[['list','Serviço'],['clock','Horário'],['check','Pronto']]},
  conteudo:{title:'Conteúdo e copy',sub:'Redação / Narrativa',headline:'Qual abertura prende mais?',status:'Escolha A ou B para ver a sequência.',service:'Conteúdo e redação',cta:'Conversar sobre conteúdo',steps:[['spark','Abertura'],['layers','Contexto'],['send','Convite']]},
- campanhas:{title:'Campanhas e Ads',sub:'Estratégia / Ads',headline:'Uma oferta, três superfícies.',status:'',service:'Campanhas e anúncios',cta:'Conversar sobre uma campanha',steps:null},
- video:{title:'Vídeo e movimento',sub:'Direção / Movimento',headline:'Três cenas, um ritmo.',status:'Assista: dez segundos em três cenas.',service:'Vídeo e motion',cta:'Conversar sobre um vídeo',steps:[['spark','Gancho'],['film','Ação'],['megaphone','Convite']]},
- lojas:{title:'Lojas e produtos',sub:'Comércio / Interface',headline:'Da vitrine ao carrinho.',status:'Escolha a cor e adicione ao carrinho.',service:'Lojas e e-commerce',cta:'Conversar sobre uma loja',steps:[['bag','Produto'],['cart','Carrinho'],['receipt','Revisão']]},
+ campanhas:{title:'Campanhas e Ads',sub:'Estratégia / Formatos',headline:'Uma oferta, três superfícies.',status:'',service:'Campanhas e anúncios',cta:'Conversar sobre uma campanha',steps:null},
+ video:{title:'Vídeo e movimento',sub:'Roteiro / Edição',headline:'Três cenas, um ritmo.',status:'Assista: dez segundos em três cenas.',service:'Vídeo e motion',cta:'Conversar sobre um vídeo',steps:[['spark','Gancho'],['film','Ação'],['megaphone','Convite']]},
+ lojas:{title:'Lojas e produtos',sub:'Loja / Recompra',headline:'Da vitrine ao carrinho.',status:'Escolha a cor e adicione ao carrinho.',service:'Lojas e e-commerce',cta:'Conversar sobre uma loja',steps:[['bag','Produto'],['cart','Carrinho'],['receipt','Revisão']]},
  sistemas:{title:'Sistemas e IA',sub:'Produto / Automação',headline:'A IA sugere. Uma pessoa aprova.',status:'Classifique o pedido para ver a sugestão.',service:'Sistemas e automações',cta:'Conversar sobre um sistema',steps:[['inbox','Tipo'],['spark','Sugestão'],['userCheck','Aprovação']]}
 };
 const headline=ex=>'<p class="fdb-headline">'+ex.headline+'</p>';

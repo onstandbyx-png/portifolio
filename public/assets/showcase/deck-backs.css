@@ -373,7 +373,7 @@
 #colecao .fdb-back .fdb-cart-thumb{position:relative;flex:none;width:28px;height:30px;border-radius:6px;background:#ebe4d6}
 #colecao .fdb-back .fdb-cart-thumb .fdb-jar{left:18%;top:14%;width:64%}
 #colecao .fdb-back .fdb-cart-note{margin:0;font-size:12px;font-weight:600;color:#2f6a51}
-#colecao .fdb-back .fdb-shop-object{position:absolute;z-index:3;left:0;bottom:0;width:34%;height:46%;pointer-events:none}
+#colecao .fdb-back .fdb-shop-object{position:absolute;z-index:0;left:0;bottom:0;width:34%;height:46%;pointer-events:none}
 #colecao .fdb-back .fdb-shop-object .fdb-stone{left:0;right:8%;bottom:0;height:30%}
 #colecao .fdb-back .fdb-shop-object .fdb-jar--object{left:14%;bottom:24%;width:62%;filter:drop-shadow(0 calc(8*var(--u)) calc(8*var(--u)) #00000066)}
 #colecao .fdb-back .fdb-shop-object .fdb-leaf{left:-6%;bottom:22%;width:30%;height:22%;transform:rotate(-24deg);opacity:.9}
