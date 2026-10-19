@@ -74,8 +74,9 @@ function video(node){
  $(node,'[data-fd-video-progress]').style.transform='scaleX('+Math.min(1,elapsed/10000)+')';$(node,'[data-fd-video-time]').textContent='00:'+String(Math.floor(elapsed/1000)).padStart(2,'0')+' / 00:10';
  $(node,'.fd-motion-stage').dataset.fdMotionScene=String(index);};
  const time=$(node,'[data-fd-video-time]');
- // The clock updates every frame while playing; it is announced only once playback stops.
- const stop=()=>{active=false;cancelAnimationFrame(raf);raf=0;time.setAttribute('aria-live','polite');play.setAttribute('aria-pressed','false');play.textContent='Reproduzir';if(node.classList.contains('is-playing'))node.classList.remove('is-playing');};
+ // The clock updates every frame while playing; it is announced once playback stops.
+ const announce=()=>{time.setAttribute('aria-live','polite');requestAnimationFrame(()=>{time.textContent=time.textContent;});};
+ const stop=()=>{const wasPlaying=active;active=false;cancelAnimationFrame(raf);raf=0;if(wasPlaying)announce();play.setAttribute('aria-pressed','false');play.textContent='Reproduzir';if(node.classList.contains('is-playing'))node.classList.remove('is-playing');};
  const available=()=>!reduce.matches&&!document.hidden&&!document.body.classList.contains('is-paused')&&Boolean(node.closest('.pf-fatos-card.is-active.is-flipped'));
  const tick=now=>{if(!active)return;if(!available()){stop();return;}elapsed=Math.min(10000,elapsed+Math.min(90,Math.max(0,now-last)));last=Math.max(last,now);paint();if(elapsed>=10000){stop();return;}raf=requestAnimationFrame(tick);};
  play.addEventListener('click',()=>{if(active){stop();return;}if(reduce.matches||document.body.classList.contains('is-paused')){elapsed=Math.min(10000,elapsed+3500);paint();return;}if(elapsed>=10000)elapsed=0;active=true;time.setAttribute('aria-live','off');node.classList.add('is-playing');play.setAttribute('aria-pressed','true');play.textContent='Pausar';last=performance.now();raf=requestAnimationFrame(tick);});

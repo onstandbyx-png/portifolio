@@ -63,7 +63,10 @@ try{
     if(ids[i]==='sites'){await active.locator('[data-fd-site="app"]').click();check('Site app switch',await active.locator('[data-fd-site-frame]').getAttribute('data-fd-site-frame')==='app');
      await page.keyboard.press('ArrowRight');await page.keyboard.press('End');await page.waitForTimeout(reduced?30:550);
      check('Keys on a demo control keep the card and its back',await deck.getAttribute('data-active')==='0'&&await active.evaluate(card=>card.classList.contains('is-flipped')));
-     const heading=await active.locator('[data-fatos-back-title]').boundingBox();await page.mouse.click(heading.x+heading.width/2,heading.y+heading.height/2);await page.waitForTimeout(reduced?30:300);
+     await active.locator('[data-fatos-back]').evaluate(back=>{back.scrollTop=0;});await active.evaluate(card=>card.scrollIntoView({block:'center',behavior:'instant'}));
+     const heading=await active.locator('[data-fatos-back-title]').boundingBox(),tapX=heading.x+heading.width/2,tapY=heading.y+heading.height/2;
+     check('The back heading is the element under the tap point',await page.evaluate(([x,y])=>Boolean(document.elementFromPoint(x,y)?.closest('[data-fatos-back-title]')),[tapX,tapY]));
+     if(width<500)await page.touchscreen.tap(tapX,tapY);else await page.mouse.click(tapX,tapY);await page.waitForTimeout(reduced?30:300);
      check('A tap on the back heading does not turn the card',await active.evaluate(card=>card.classList.contains('is-flipped')));}
     if(ids[i]==='conteudo'){await active.locator('[data-fd-story-next]').click();check('Copy slides',await active.locator('[data-fd-story-counter]').innerText()==='02 / 03');}
     if(ids[i]==='campanhas'){await active.locator('[data-fd-channel="stories"]').click();check('Campaign placements',await active.locator('[data-fd-campaign]').getAttribute('data-fd-campaign')==='stories');}

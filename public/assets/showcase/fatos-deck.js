@@ -59,6 +59,7 @@ export function mountFatosDeck() {
     if (performance.now() - lastSwipe < 250) return;
     const card = cards[active]; setFace(card, open);
     // Opening lands at the start of the back, so Tab continues into the demo and its CTA.
+    if (open) $('[data-fatos-back]', card).scrollTop = 0;
     if (moveFocus) $(open ? '[data-fatos-back-title]' : '[data-fatos-flip]', card).focus({ preventScroll: true });
   }
   function paint() {
