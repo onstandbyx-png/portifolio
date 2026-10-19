@@ -11,9 +11,9 @@ const metadata = {
   sistemas:{short:'Sistemas',handle:'Produto / Automação',territory:'Sistemas e IA',color:'#ABDAB3'}
 };
 const coverScenes = {
-  sites:'<div class="pf-case-browser"><div class="pf-case-browser-top"><i></i><i></i><i></i><span>studio / projeto</span></div><div class="pf-case-browser-body"><small>DESIGN + CÓDIGO</small><b>O essencial vira uma experiência.</b><div class="pf-case-cta">Explorar interface ↗</div><div class="pf-case-browser-strips"><i></i><i></i><i></i></div></div></div>',
+  sites:'<div class="pf-case-browser"><div class="pf-case-browser-top"><i></i><i></i><i></i><span>studio / projeto</span></div><div class="pf-case-browser-body"><small>DESIGN + CÓDIGO</small><b>O essencial vira uma experiência.</b><div class="pf-case-cta">Ver serviços</div><div class="pf-case-browser-strips"><i></i><i></i><i></i></div></div></div>',
   conteudo:'<div class="pf-case-editor"><span>01 / UMA IDEIA</span><strong>Uma boa história começa com clareza.</strong><div class="pf-case-editor-footer"><span>ABERTURA</span><span>CONTEXTO</span><span>CONVITE</span></div></div>',
-  campanhas:'<div class="pf-case-ad-layout"><div class="pf-case-ad-phone"><small>STORIES</small><b>Uma ideia.<br>Vários caminhos.</b><span>Explorar →</span></div><div class="pf-case-ad-search"><small>Pesquisa · Patrocinado</small><b>Seu próximo projeto digital</b><span>Sites e experiências</span></div></div>',
+  campanhas:'<div class="pf-case-ad-layout"><div class="pf-case-ad-phone"><small>STORIES</small><b>Uma ideia.<br>Vários caminhos.</b><span>Saiba mais</span></div><div class="pf-case-ad-search"><small>Pesquisa · Patrocinado</small><b>Seu próximo projeto digital</b><span>Sites e experiências</span></div></div>',
   video:'<div class="pf-case-film"><div class="pf-case-film-ring"><span>▶</span></div><strong>UMA IDEIA<br>EM MOVIMENTO.</strong><div class="pf-case-film-track"><i></i><i></i><i></i></div><small>00:00 ━━━━━━━━━ 00:10</small></div>',
   lojas:'<div class="pf-case-shop"><small>STUDIO / PRODUTO CONCEITUAL</small><div class="pf-case-product-sculpt"><i></i><i></i><i></i></div><b>Escolha, personalize, explore.</b><div class="pf-case-swatches"><i></i><i></i><i></i></div></div>',
   sistemas:'<div class="pf-case-ops"><div class="pf-case-ops-top"><span>PAINEL DE FLUXOS</span><b>3 tarefas</b></div><div class="pf-case-task"><i></i><span>Nova solicitação<small>Entrada recebida</small></span><b>01</b></div><div class="pf-case-task"><i></i><span>Qualificação<small>Prioridade definida</small></span><b>02</b></div><div class="pf-case-task"><i></i><span>Próxima ação<small>Equipe notificada*</small></span><b>03</b></div><small>*SIMULAÇÃO LOCAL</small></div>'
@@ -40,7 +40,7 @@ export function mountFatosDeck() {
   const stage = $('.pf-fatos-stage', shell);
   let active = 0, drag = null, lastSwipe = -Infinity, arrival = null, departure = null, settlement = null, flightToken = 0;
   const cards = brands.map((brand, i) => {
-    const card = make(`<article class="pf-fatos-card" data-fatos-card="${brand.id}" aria-label="${i + 1} de ${brands.length}: ${escape(brand.name)}"><div class="pf-fatos-rotor"><div class="pf-fatos-face pf-fatos-front" data-fatos-front><div class="pf-fatos-art pf-case-art pf-case-art--${brand.id}" aria-hidden="true">${coverScenes[brand.id]}</div><div class="pf-fatos-shade" aria-hidden="true"></div><div class="pf-fatos-profile"><span class="pf-case-mark" aria-hidden="true">${String(i+1).padStart(2,'0')}</span><div><strong>${escape(brand.name)}</strong><span>${escape(brand.handle)}</span></div></div><div class="pf-fatos-question"><span class="pf-fatos-rule" aria-hidden="true"></span><h4>${escape(brand.question)}</h4></div><button type="button" class="pf-fatos-flip" data-fatos-flip aria-expanded="false">${escape(copy.controls.front)} <span aria-hidden="true">↻</span></button></div><div class="pf-fatos-face pf-fatos-back" data-fatos-back aria-hidden="true" inert><div class="pf-fatos-back-heading"><span class="pf-case-mark" aria-hidden="true">${String(i+1).padStart(2,'0')}</span><div><span>PROTÓTIPO INTERATIVO</span><h4>${escape(brand.name)}</h4></div></div><p class="pf-fatos-approach">${escape(brand.approach)}</p><div class="pf-fatos-formats"><span>O QUE ESTA DEMONSTRAÇÃO EXPLORA</span><ul>${brand.formats.map(format => `<li>${escape(format)}</li>`).join('')}</ul></div><button type="button" class="pf-fatos-flip" data-fatos-return>${escape(copy.controls.back)} <span aria-hidden="true">↶</span></button></div></div></article>`);
+    const card = make(`<article class="pf-fatos-card" data-fatos-card="${brand.id}" aria-label="${i + 1} de ${brands.length}: ${escape(brand.name)}"><div class="pf-fatos-rotor"><div class="pf-fatos-face pf-fatos-front" data-fatos-front><div class="pf-fatos-art pf-case-art pf-case-art--${brand.id}" aria-hidden="true">${coverScenes[brand.id]}</div><div class="pf-fatos-shade" aria-hidden="true"></div><div class="pf-fatos-profile"><span class="pf-case-mark" aria-hidden="true">${String(i+1).padStart(2,'0')}</span><div><strong>${escape(brand.name)}</strong><span>${escape(brand.handle)}</span></div></div><div class="pf-fatos-question"><span class="pf-fatos-rule" aria-hidden="true"></span><h4>${escape(brand.question)}</h4></div><button type="button" class="pf-fatos-flip" data-fatos-flip aria-expanded="false">${escape(copy.controls.front)} <span aria-hidden="true">↻</span></button></div><div class="pf-fatos-face pf-fatos-back" data-fatos-back aria-hidden="true" inert><div class="pf-fatos-back-heading"><span class="pf-case-mark" aria-hidden="true">${String(i+1).padStart(2,'0')}</span><div><span>PROTÓTIPO INTERATIVO</span><h4 tabindex="-1" data-fatos-back-title>${escape(brand.name)}</h4></div></div><p class="pf-fatos-approach">${escape(brand.approach)}</p><div class="pf-fatos-formats"><span>O QUE ESTA DEMONSTRAÇÃO EXPLORA</span><ul>${brand.formats.map(format => `<li>${escape(format)}</li>`).join('')}</ul></div><button type="button" class="pf-fatos-flip" data-fatos-return>${escape(copy.controls.back)} <span aria-hidden="true">↶</span></button></div></div></article>`);
     card.style.setProperty('--fatos-accent', brand.color);
     $('[data-fatos-flip]', card).addEventListener('click', () => flip(true, true));
     $('[data-fatos-return]', card).addEventListener('click', () => flip(false, true));
@@ -58,7 +58,8 @@ export function mountFatosDeck() {
   function flip(open, moveFocus = false) {
     if (performance.now() - lastSwipe < 250) return;
     const card = cards[active]; setFace(card, open);
-    if (moveFocus) $(open ? '[data-fatos-return]' : '[data-fatos-flip]', card).focus({ preventScroll: true });
+    // Opening lands at the start of the back, so Tab continues into the demo and its CTA.
+    if (moveFocus) $(open ? '[data-fatos-back-title]' : '[data-fatos-flip]', card).focus({ preventScroll: true });
   }
   function paint() {
     shell.dataset.active = String(active);
@@ -172,9 +173,17 @@ export function mountFatosDeck() {
     if(focusWasOnCard)$('[data-fatos-flip]',cards[active]).focus({preventScroll:true});
   }
   shell.addEventListener('keydown', event => {
+    if (event.key === 'Escape' && cards[active].classList.contains('is-flipped')) { event.preventDefault(); flip(false, true); return; }
+    // Keys pressed inside a demo belong to its controls, not to deck navigation.
+    if (event.target.closest?.('[data-fatos-back],input,select,textarea,[contenteditable]')) return;
     const destinations = { ArrowRight: active + 1, ArrowLeft: active - 1, Home: 0, End: brands.length - 1 };
     if (event.key in destinations) { event.preventDefault(); go(destinations[event.key]); }
-    if (event.key === 'Escape' && cards[active].classList.contains('is-flipped')) { event.preventDefault(); flip(false, true); }
+  });
+  // A link elsewhere can name a capability; it opens that card's front without flipping it.
+  document.addEventListener('click', event => {
+    const link = event.target.closest?.('a[data-deck-card]');
+    const index = link ? brands.findIndex(brand => brand.id === link.dataset.deckCard) : -1;
+    if (index >= 0) go(index);
   });
   function cancelDrag(animate=true){
     const current=drag;

@@ -4,23 +4,24 @@
 const $=(root,selector)=>root.querySelector(selector);
 const $$=(root,selector)=>Array.from(root.querySelectorAll(selector));
 const examples={
-  sites:{title:'Sites e apps',caption:'Um protótipo navegável com dois formatos.',service:'Sites e aplicativos'},
-  conteudo:{title:'Conteúdo e copy',caption:'A mesma ideia em três momentos de leitura.',service:'Conteúdo e redação'},
-  campanhas:{title:'Campanhas e Ads',caption:'A oferta se adapta à superfície e à intenção.',service:'Campanhas e anúncios'},
-  video:{title:'Vídeo e movimento',caption:'Ritmo e sequenciamento controlados por você.',service:'Vídeo e motion'},
-  lojas:{title:'Lojas e produtos',caption:'Escolhas com feedback, sem checkout ou pagamento.',service:'Lojas e e-commerce'},
-  sistemas:{title:'Sistemas e IA',caption:'O atendimento vira uma tarefa em um fluxo local.',service:'Sistemas e automações'}
+  sites:{title:'Sites e apps',caption:'Um protótipo navegável com dois formatos.',service:'Sites e aplicativos',cta:'Conversar sobre um site ou app'},
+  conteudo:{title:'Conteúdo e copy',caption:'A mesma ideia em três momentos de leitura.',service:'Conteúdo e redação',cta:'Conversar sobre conteúdo'},
+  campanhas:{title:'Campanhas e Ads',caption:'A oferta se adapta à superfície e à intenção.',service:'Campanhas e anúncios',cta:'Conversar sobre uma campanha'},
+  video:{title:'Vídeo e movimento',caption:'Ritmo e sequenciamento controlados por você.',service:'Vídeo e motion',cta:'Conversar sobre um vídeo'},
+  lojas:{title:'Lojas e produtos',caption:'Escolhas com feedback, sem checkout ou pagamento.',service:'Lojas e e-commerce',cta:'Conversar sobre uma loja virtual'},
+  sistemas:{title:'Sistemas e IA',caption:'O atendimento vira uma tarefa em um fluxo local.',service:'Sistemas e automações',cta:'Conversar sobre um sistema'}
 };
 const header=(label,lead)=>'<header class="fd-head"><span class="fd-kicker">DEMONSTRAÇÃO ORIGINAL · '+label+'</span><strong>'+lead+'</strong></header>';
-const makeCTA=service=>{const a=document.createElement('a');a.className='fd-project-link';a.href='#contato';a.dataset.contactService=service;a.dataset.noCardFlip='';a.textContent='Quero um projeto assim ↗';return a;};
+// The label names the conversation it opens; the demo title travels to the brief as context.
+const makeCTA=(id,example)=>{const a=document.createElement('a');a.className='fd-project-link';a.href='#contato';a.dataset.contactService=example.service;a.dataset.contactSource='deck:'+id;a.dataset.contactCase=example.title+' · demonstração interativa';a.dataset.noCardFlip='';a.innerHTML='<span></span> <span aria-hidden="true">↗</span>';a.firstChild.textContent=example.cta;return a;};
 function sites(node){
  node.innerHTML=header('SITES + APPS','Da estrutura à interface navegável.')+
  '<div class="fd-switch" role="group" aria-label="Tipo de interface"><button type="button" data-fd-site="site" aria-pressed="true">Site</button><button type="button" data-fd-site="app" aria-pressed="false">Aplicativo</button></div>'+
- '<div class="fd-site-frame" data-fd-site-frame="site"><div class="fd-site-toolbar"><span></span><span></span><span></span><b data-fd-site-domain>seuprojeto.studio</b></div><div class="fd-site-body"><small data-fd-site-kicker>IDENTIDADE + EXPERIÊNCIA</small><strong data-fd-site-title>Seu projeto merece uma presença própria.</strong><p data-fd-site-desc>Uma mensagem clara. Uma interface intuitiva.</p><div class="fd-site-action" data-fd-site-action>Explorar soluções ↗</div><div class="fd-site-tiles"><i></i><i></i><i></i></div></div></div>'+
+ '<div class="fd-site-frame" data-fd-site-frame="site"><div class="fd-site-toolbar"><span></span><span></span><span></span><b data-fd-site-domain>seuprojeto.studio</b></div><div class="fd-site-body"><small data-fd-site-kicker>IDENTIDADE + EXPERIÊNCIA</small><strong data-fd-site-title>Seu projeto merece uma presença própria.</strong><p data-fd-site-desc>Uma mensagem clara. Uma interface intuitiva.</p><div class="fd-site-action" data-fd-site-action>Ver serviços</div><div class="fd-site-tiles"><i></i><i></i><i></i></div></div></div>'+
  '<p class="fd-caption" role="status" data-fd-site-status>Prévia de um site responsivo.</p>';
  const variants={
- site:{title:'Seu projeto merece uma presença própria.',kicker:'IDENTIDADE + EXPERIÊNCIA',desc:'Uma mensagem clara. Uma interface intuitiva.',domain:'seuprojeto.studio',action:'Explorar soluções ↗',status:'Prévia de um site responsivo.'},
- app:{title:'Tudo o que importa, no seu bolso.',kicker:'PRODUTO + NAVEGAÇÃO',desc:'Escolha uma função, encontre seu próximo passo.',domain:'meu aplicativo',action:'Abrir experiência ↗',status:'Prévia de aplicativo com navegação compacta.'}
+ site:{title:'Seu projeto merece uma presença própria.',kicker:'IDENTIDADE + EXPERIÊNCIA',desc:'Uma mensagem clara. Uma interface intuitiva.',domain:'seuprojeto.studio',action:'Ver serviços',status:'Prévia de um site responsivo.'},
+ app:{title:'Tudo o que importa, no seu bolso.',kicker:'PRODUTO + NAVEGAÇÃO',desc:'Escolha uma função, encontre seu próximo passo.',domain:'meu aplicativo',action:'Começar agora',status:'Prévia de aplicativo com navegação compacta.'}
  };
  $$(node,'[data-fd-site]').forEach(button=>button.addEventListener('click',()=>{
  const mode=button.dataset.fdSite,data=variants[mode];node.querySelector('[data-fd-site-frame]').dataset.fdSiteFrame=mode;
@@ -53,7 +54,7 @@ function campanhas(node){
  };
  node.innerHTML=header('CAMPANHAS + ADS','Uma intenção. Três formatos de comunicação.')+
  '<div class="fd-switch fd-ad-switch" role="group" aria-label="Formato do anúncio"><button type="button" data-fd-channel="feed" aria-pressed="true">Feed</button><button type="button" data-fd-channel="stories" aria-pressed="false">Stories</button><button type="button" data-fd-channel="search" aria-pressed="false">Pesquisa</button></div>'+
- '<div class="fd-campaign-preview" data-fd-campaign="feed"><small data-fd-ad-kicker></small><strong data-fd-ad-title></strong><p data-fd-ad-desc></p><span class="fd-campaign-action">Conhecer projeto ↗</span></div><p class="fd-caption" role="status" data-fd-ad-status></p>';
+ '<div class="fd-campaign-preview" data-fd-campaign="feed"><small data-fd-ad-kicker></small><strong data-fd-ad-title></strong><p data-fd-ad-desc></p><span class="fd-campaign-action">Saiba mais</span></div><p class="fd-caption" role="status" data-fd-ad-status></p>';
  const paint=type=>{const x=formats[type];$(node,'[data-fd-campaign]').dataset.fdCampaign=type;$(node,'[data-fd-ad-kicker]').textContent=x.kicker;$(node,'[data-fd-ad-title]').textContent=x.title;$(node,'[data-fd-ad-desc]').textContent=x.desc;$(node,'[data-fd-ad-status]').textContent=x.status;$$(node,'[data-fd-channel]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.fdChannel===type)));};
  $$(node,'[data-fd-channel]').forEach(b=>b.addEventListener('click',()=>paint(b.dataset.fdChannel)));paint('feed');
 }
@@ -72,10 +73,12 @@ function video(node){
  const paint=()=>{const index=Math.min(2,Math.floor(elapsed/3500));if(index!==sceneIndex){sceneIndex=index;$(node,'[data-fd-motion-tag]').textContent=scenes[index].tag;$(node,'[data-fd-motion-title]').textContent=scenes[index].headline;}
  $(node,'[data-fd-video-progress]').style.transform='scaleX('+Math.min(1,elapsed/10000)+')';$(node,'[data-fd-video-time]').textContent='00:'+String(Math.floor(elapsed/1000)).padStart(2,'0')+' / 00:10';
  $(node,'.fd-motion-stage').dataset.fdMotionScene=String(index);};
- const stop=()=>{active=false;cancelAnimationFrame(raf);raf=0;play.setAttribute('aria-pressed','false');play.textContent='Reproduzir';if(node.classList.contains('is-playing'))node.classList.remove('is-playing');};
+ const time=$(node,'[data-fd-video-time]');
+ // The clock updates every frame while playing; it is announced only once playback stops.
+ const stop=()=>{active=false;cancelAnimationFrame(raf);raf=0;time.setAttribute('aria-live','polite');play.setAttribute('aria-pressed','false');play.textContent='Reproduzir';if(node.classList.contains('is-playing'))node.classList.remove('is-playing');};
  const available=()=>!reduce.matches&&!document.hidden&&!document.body.classList.contains('is-paused')&&Boolean(node.closest('.pf-fatos-card.is-active.is-flipped'));
  const tick=now=>{if(!active)return;if(!available()){stop();return;}elapsed=Math.min(10000,elapsed+Math.min(90,now-last));last=now;paint();if(elapsed>=10000){stop();return;}raf=requestAnimationFrame(tick);};
- play.addEventListener('click',()=>{if(active){stop();return;}if(reduce.matches||document.body.classList.contains('is-paused')){elapsed=Math.min(10000,elapsed+3500);paint();return;}if(elapsed>=10000)elapsed=0;active=true;node.classList.add('is-playing');play.setAttribute('aria-pressed','true');play.textContent='Pausar';last=performance.now();raf=requestAnimationFrame(tick);});
+ play.addEventListener('click',()=>{if(active){stop();return;}if(reduce.matches||document.body.classList.contains('is-paused')){elapsed=Math.min(10000,elapsed+3500);paint();return;}if(elapsed>=10000)elapsed=0;active=true;time.setAttribute('aria-live','off');node.classList.add('is-playing');play.setAttribute('aria-pressed','true');play.textContent='Pausar';last=performance.now();raf=requestAnimationFrame(tick);});
  $(node,'[data-fd-video-replay]').addEventListener('click',()=>{stop();elapsed=0;sceneIndex=-1;paint();});
  reduce.addEventListener('change',()=>{if(reduce.matches)stop()});paint();return stop;
 }
@@ -109,7 +112,7 @@ export function mountDeckDemos(){
   const sample=document.createElement('section');sample.className='fd-demo fd-demo--'+id;sample.dataset.noCardFlip='';sample.setAttribute('aria-label','Demonstração visual de '+examples[id].title);
   $(back,'.pf-fatos-back-heading')?.after(sample);
   const stop=factories[id](sample);if(typeof stop==='function')stoppers.push(stop);
-  const caption=document.createElement('p');caption.className='fd-caption';caption.textContent=examples[id].caption;sample.append(caption,makeCTA(examples[id].service));
+  const caption=document.createElement('p');caption.className='fd-caption';caption.textContent=examples[id].caption;sample.append(caption,makeCTA(id,examples[id]));
  });
  const stopAll=()=>stoppers.forEach(stop=>stop());
  document.addEventListener('visibilitychange',()=>{if(document.hidden)stopAll();});

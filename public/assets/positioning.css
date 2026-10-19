@@ -99,6 +99,7 @@ body.portfolio-r10 #sistemas{padding:88px 0;background:#193b2d;color:#f4f5e9}
 .method-number{font:italic 28px/1 var(--serif,Georgia,serif);color:#81926c}
 .method-steps h3{font-size:22px;line-height:1.25;letter-spacing:-.025em;font-weight:550;margin:18px 0 12px}
 .method-steps p{font-size:15px;line-height:1.65;max-width:30ch;color:#607255;margin:0}
+.portfolio-r10 .method-proof{margin-top:26px}
 .method-formats{display:flex;flex-wrap:wrap;gap:12px 28px;border-top:1px solid #24432d25;margin-top:36px;padding-top:22px;color:#627557;font-size:12px;line-height:1.5}
 .portfolio-r10 #sites.digital-anchor{height:0;padding:0;margin:0;overflow:hidden}
 @media(max-width:760px){

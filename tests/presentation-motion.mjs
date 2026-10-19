@@ -107,7 +107,11 @@ export async function verifyEditorial({page,width,check,capture}){
  check('Keyboard reaches the sixth original CSS card',await deck.getAttribute('data-active')==='5');
  await page.keyboard.press('Home');await align(page,'.pf-fatos-display');
  const first=deck.locator('.pf-fatos-card.is-active');await first.locator('[data-fatos-flip]').click();
- check('Card flip exposes its prototype and focuses the return action',await first.locator('[data-fatos-back]').getAttribute('aria-hidden')==='false'&&await first.locator('[data-fatos-return]').evaluate(el=>el===document.activeElement));
+ check('Card flip exposes its prototype and focuses the start of the back',await first.locator('[data-fatos-back]').getAttribute('aria-hidden')==='false'&&await first.locator('[data-fatos-back-title]').evaluate(el=>el===document.activeElement));
+ await page.keyboard.press('Tab');
+ check('Tab after a flip continues into the demo instead of leaving the card',await first.locator('[data-fatos-back]').evaluate(back=>back.contains(document.activeElement)&&!document.activeElement.matches('[data-fatos-return]')));
+ await page.keyboard.press('ArrowRight');
+ check('Arrow keys on a demo control do not change the deck card',await deck.getAttribute('data-active')==='0'&&await first.evaluate(card=>card.classList.contains('is-flipped')));
  await page.keyboard.press('Escape');
  check('Escape restores the active card front and focus',await first.locator('[data-fatos-front]').getAttribute('aria-hidden')==='false'&&await first.locator('[data-fatos-flip]').evaluate(el=>el===document.activeElement));
  const box=await first.boundingBox(),start={x:box.x+box.width*.8,y:box.y+box.height*.4},end={x:box.x+box.width*.2,y:start.y+2};

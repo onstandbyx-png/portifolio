@@ -58,8 +58,20 @@ import {sectionCopy} from '/assets/content/portfolio-copy.js';
     $$('.reveal').forEach(el=>io.observe(el));
   }else $$('.reveal').forEach(el=>el.classList.add('is-visible'));
 
-  // Work images link directly to their sections.
-  let contactCase='',contactCaseService='';
+  // A demonstration CTA carries its origin into the brief; the visitor still decides what to send.
+  let contactCase='',contactCaseService='',contactSource='',briefContext=null;
+  // Showcases name finer capabilities than the five fronts offered in the form.
+  const showcaseCategory={
+    'Sites e aplicativos':'Sites e landing pages',
+    'Vídeo e motion':'Conteúdo e redação',
+    'Lojas e e-commerce':'Sites e landing pages'
+  };
+  function setContactCase(label='',service='',source=''){
+    contactCase=label;contactCaseService=label?service:'';contactSource=label?source:'';
+    if(!briefContext)return;
+    briefContext.textContent=label?`Referência do portfólio: ${label}`:'';
+    briefContext.hidden=!label;
+  }
 
   // A contact click opens the chosen application. Only the visitor can send the message.
   const brief=$('#brief-form');
@@ -69,9 +81,9 @@ import {sectionCopy} from '/assets/content/portfolio-copy.js';
   let copyButton=null,preparedBox=null;
   if(brief){
     const submit=$('button[type="submit"]',brief),status=$('#form-status');
-    const context=document.createElement('p');context.id='brief-context';context.className='brief-context';context.hidden=true;
-    $('#service')?.before(context);
-    $('#service')?.addEventListener('change',()=>{if(contactCase&&$('#service').value!==contactCaseService){contactCase='';contactCaseService='';context.hidden=true;context.textContent='';}});
+    briefContext=document.createElement('p');briefContext.id='brief-context';briefContext.className='brief-context';briefContext.hidden=true;briefContext.setAttribute('aria-live','polite');
+    $('#service')?.before(briefContext);
+    $('#service')?.addEventListener('change',()=>{if(contactCase&&$('#service').value!==contactCaseService)setContactCase();});
     brief.dataset.contactReady=String(Boolean(destination));
     if(submit)submit.innerHTML=destination?`Continuar ${destination.channel==='whatsapp'?'no WhatsApp':'por e-mail'} <span aria-hidden="true">↗</span>`:'Copiar meu briefing <span aria-hidden="true">↗</span>';
     if(status)status.textContent=destination?sectionCopy('contato').submitHint:'O canal de contato está em configuração. Você pode preparar e copiar o briefing por aqui.';
@@ -84,7 +96,7 @@ import {sectionCopy} from '/assets/content/portfolio-copy.js';
           if(!brief.reportValidity())return;
           const emailLink=contact.createContactHref({...profile,preferredChannel:'email'},getBrief());
           if(!emailLink)return;
-          recordInteraction('contact_click',{channel:'email',entry:contactCase?'case':'form'});
+          recordInteraction('contact_click',{channel:'email',entry:contactCase?'case':'form',service:$('#service')?.value||'',source:contactSource});
           if(status)status.textContent='Seu aplicativo de e-mail será aberto com o resumo. Revise e envie para iniciar a conversa. Se não abrir, use a opção de copiar.';
           window.location.href=emailLink.href;
         });
@@ -107,7 +119,7 @@ import {sectionCopy} from '/assets/content/portfolio-copy.js';
       await navigator.clipboard.writeText(message);
       if(status)status.textContent='Briefing copiado. Cole na conversa que preferir; a cópia não envia uma mensagem.';
       if(preparedBox)preparedBox.hidden=true;
-      recordInteraction('brief_copied',{entry:contactCase?'case':'form'});
+      recordInteraction('brief_copied',{entry:contactCase?'case':'form',service:$('#service')?.value||'',source:contactSource});
     }catch{
       if(!preparedBox){preparedBox=document.createElement('textarea');preparedBox.id='prepared-brief';preparedBox.readOnly=true;preparedBox.rows=8;preparedBox.className='prepared-brief';preparedBox.setAttribute('aria-label','Briefing pronto para copiar');status?.after(preparedBox);}
       preparedBox.hidden=false;preparedBox.value=message;
@@ -121,7 +133,7 @@ import {sectionCopy} from '/assets/content/portfolio-copy.js';
     if(!brief.reportValidity())return;
     const link=contact?.createContactHref(profile,getBrief());
     if(!link){copyBrief();return;}
-    recordInteraction('contact_click',{channel:link.channel,entry:contactCase?'case':'form'});
+    recordInteraction('contact_click',{channel:link.channel,entry:contactCase?'case':'form',service:$('#service')?.value||'',source:contactSource});
     const status=$('#form-status');
     if(status)status.textContent=link.channel==='whatsapp'?'O WhatsApp será aberto com seu resumo. Revise e toque em enviar para iniciar a conversa.':'Seu aplicativo de e-mail será aberto com o resumo. Revise e envie para iniciar a conversa. Se não abrir, use a opção de copiar.';
     if(link.channel==='whatsapp')window.open(link.href,'_blank','noopener,noreferrer');
@@ -136,11 +148,16 @@ import {sectionCopy} from '/assets/content/portfolio-copy.js';
     const channel=link.dataset.contactDirect;
     if(channel==='whatsapp'||channel==='email')recordInteraction('contact_click',{channel,entry:'direct'});
     else if(link.getAttribute('href')==='#contato'){
-      const requested=link.dataset.contactService;
       const service=$('#service');
-      if(requested&&service&&[...service.options].some(option=>option.value===requested)){service.value=requested;service.dispatchEvent(new Event('change',{bubbles:true}));}
-      const entry=link.matches('[data-project-need]')?'project_need':link.matches('.mobile-project-cta')?'mobile':link.closest('.hero')?'hero':'navigation';
-      recordInteraction('contact_intent',{entry});
+      const requested=showcaseCategory[link.dataset.contactService]||link.dataset.contactService||'';
+      const available=Boolean(requested&&service&&[...service.options].some(option=>option.value===requested));
+      // Every contact link defines the reference: a plain link clears a previous demonstration.
+      setContactCase(available?link.dataset.contactCase||'':'',requested,link.dataset.contactSource||'');
+      if(available){service.value=requested;service.dispatchEvent(new Event('change',{bubbles:true}));}
+      // #colecao lives inside #editorial, so the deck is checked first.
+      const entry=link.matches('[data-project-need]')?'project_need':link.closest('#colecao')?'deck':link.closest('#editorial')?'editorial':
+        link.closest('#laboratorio')?'campaign':link.closest('#sistemas')?'systems':link.closest('.hero')?'hero':'navigation';
+      recordInteraction('contact_intent',{entry,service:available?requested:link.dataset.projectNeed||'',source:link.dataset.contactSource||''});
     }
   });
 

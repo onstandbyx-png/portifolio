@@ -130,8 +130,9 @@ export const portfolioCopy = {
           "title": "Uma razão\npara continuar.",
           "body": "Pesquisa, texto e direção criativa para despertar interesse e explicar uma ideia.",
           "contribution": "Direção criativa e conteúdo",
-          "cta": "Ver conteúdo",
-          "href": "#editorial",
+          "cta": "Testar a sequência de copy",
+          "href": "#colecao",
+          "deckCard": "conteudo",
           "decision": "Minha experiência profissional na Fatos Desconhecidos orienta o raciocínio editorial. A peça apresentada é um estudo: abertura, contexto e fechamento tornam o assunto compreensível."
         },
         {
@@ -622,8 +623,8 @@ export const portfolioCopy = {
             "Adaptação da linguagem ao público"
           ],
           "cta": "Conversar sobre conteúdo",
-          "proofHref": "#editorial",
-          "proofLabel": "Explorar o raciocínio editorial"
+          "proofHref": "#trabalhos",
+          "proofLabel": "Ver o estudo editorial"
         },
         {
           "id": "campaigns",

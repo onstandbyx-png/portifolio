@@ -52,17 +52,18 @@ export function mountScrollGallery(){
  const escape=value=>String(value).replace(/[&<>"']/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
  gallery.classList.remove('rg-static-gallery');
  gallery.innerHTML=entries.filter(entry=>visual[entry.id]).map((entry,index)=>{
+  const deckCard=entry.deckCard?` data-deck-card="${escape(entry.deckCard)}"`:'';
   const art=visual[entry.id],title=entry.title.split('\n').map(line=>`<span class="rg-title-line"><span>${escape(line)}</span></span>`).join('');
   return `<article class="work-tile work-${escape(entry.id)}" data-work-card="${escape(entry.id)}" aria-labelledby="work-card-${escape(entry.id)}">
    <div class="work-context"><span>${String(index+1).padStart(2,'0')} / ${escape(entry.label)}</span><span>${escape(entry.nature)}</span></div>
    <div class="rg-card-stage" data-face="front">
     <div class="rg-card-rotor">
      <figure class="rg-art rg-card-front"><img src="/assets/portfolio/static-r8/${art.image}" width="960" height="1200" alt="${escape(art.alt)}" loading="lazy" decoding="async"></figure>
-     <div class="rg-card-back" id="rg-back-${escape(entry.id)}" aria-hidden="true" inert><span>Contribuição</span><h4>${escape(entry.contribution)}</h4><p data-work-decision>${escape(entry.decision)}</p><a href="${escape(entry.href)}">${escape(entry.cta)} <i aria-hidden="true">↗</i></a></div>
+     <div class="rg-card-back" id="rg-back-${escape(entry.id)}" aria-hidden="true" inert><span>Contribuição</span><h4>${escape(entry.contribution)}</h4><p data-work-decision>${escape(entry.decision)}</p><a href="${escape(entry.href)}"${deckCard}>${escape(entry.cta)} <i aria-hidden="true">↗</i></a></div>
     </div>
     <button class="rg-flip" type="button" data-rg-flip aria-pressed="false" aria-controls="rg-back-${escape(entry.id)}" aria-label="Ver contribuição: ${escape(entry.label)}" title="Ver contribuição"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none"><path d="M19.5 8.5A8 8 0 1 0 20 15M19.5 8.5V3.5M19.5 8.5H14.5" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
    </div>
-   <div class="tile-caption"><div><h3 id="work-card-${escape(entry.id)}">${title}</h3><p>${escape(entry.body)}</p></div><a class="tile-open" href="${escape(entry.href)}"><span>${escape(entry.cta)}</span><i aria-hidden="true">↗</i></a></div>
+   <div class="tile-caption"><div><h3 id="work-card-${escape(entry.id)}">${title}</h3><p>${escape(entry.body)}</p></div><a class="tile-open" href="${escape(entry.href)}"${deckCard}><span>${escape(entry.cta)}</span><i aria-hidden="true">↗</i></a></div>
   </article>`;
  }).join('');
  const cards=[...gallery.querySelectorAll(':scope > .work-tile')];if(!cards.length)return null;
