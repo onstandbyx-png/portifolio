@@ -425,7 +425,11 @@ function quadroElemento(e, ctx) {
     if (!st.regua) escolherRegua(st.total ? 'tempo' : 'rolagem');
     player.pronto();
     acoes();
-    msg(!st.alvo ? 'não achei este elemento sozinho nesta versão: use Escolher no quadro' : protegida() ? 'a proteção da prévia escurece a página quando o quadro perde o foco: toque nele para ver' : '');
+    const ausente = e.ausencias?.[st.versao], acao = e.acoes?.[st.versao];
+    msg(ausente && !st.alvo ? `não está nesta versão: ${curto(ausente, 140)}`
+      : !st.alvo ? 'não achei este elemento sozinho nesta versão: use Escolher no quadro'
+      : protegida() ? 'a proteção da prévia escurece a página quando o quadro perde o foco: toque nele para ver'
+      : acao ? `para ver: ${curto(acao, 120)}` : '');
   }
   function ligar() {
     if (q.vivo || !st.versao) return;

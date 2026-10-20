@@ -66,7 +66,8 @@ export async function mountVersoes(root) {
     const aviso = iframe.closest('.vs-frame')?.querySelector('figcaption');
     aviso?.querySelector('.vs-aviso')?.remove();
     if (!alvo) {
-      aviso?.insertAdjacentHTML('beforeend', ` <span class="vs-aviso">· não achei o elemento nesta versão${isolar ? ', então não dá para isolar' : ''}; role a página ou use o quadro dele</span>`);
+      const ausente = el.ausencias?.[iframe.dataset.versao];
+      aviso?.insertAdjacentHTML('beforeend', ` <span class="vs-aviso">· ${ausente ? `não está nesta versão: ${esc(ausente.slice(0, 140))}` : `não achei o elemento nesta versão${isolar ? ', então não dá para isolar' : ''}; role a página ou use o quadro dele`}</span>`);
       aplicarIsolar(doc, null);
       return;
     }
