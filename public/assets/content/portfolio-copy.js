@@ -130,9 +130,10 @@ export const portfolioCopy = {
           "title": "Uma razão\npara continuar.",
           "body": "Pesquisa, texto e direção criativa para despertar interesse e explicar uma ideia.",
           "contribution": "Direção criativa e conteúdo",
-          "cta": "Testar a sequência de copy",
-          "href": "#colecao",
-          "deckCard": "conteudo",
+          "cta": "Conversar sobre conteúdo",
+          "href": "#contato",
+          "contactService": "Conteúdo e redação",
+          "contactCase": "Fatos Desconhecidos · estudo editorial",
           "decision": "Minha experiência profissional na Fatos Desconhecidos orienta o raciocínio editorial. A peça apresentada é um estudo: abertura, contexto e fechamento tornam o assunto compreensível."
         },
         {
@@ -641,7 +642,7 @@ export const portfolioCopy = {
             "Aplicações e materiais de comunicação",
             "Orientações de uso e consistência"
           ],
-          "cta": "Conversar sobre minha marca",
+          "cta": "Começar briefing de identidade",
           "proofHref": "#narrativa-visual",
           "proofLabel": "Ver a identidade em diferentes formatos"
         },
@@ -658,7 +659,7 @@ export const portfolioCopy = {
             "Posts, carrosséis e direção visual",
             "Adaptação da linguagem ao público"
           ],
-          "cta": "Conversar sobre conteúdo",
+          "cta": "Começar briefing de conteúdo",
           "proofHref": "#trabalhos",
           "proofLabel": "Ver o estudo editorial"
         },
@@ -675,9 +676,9 @@ export const portfolioCopy = {
             "Configuração e publicação, conforme escopo",
             "Acompanhamento e otimização de mídia"
           ],
-          "cta": "Conversar sobre uma campanha",
+          "cta": "Começar briefing de campanha",
           "proofHref": "#laboratorio",
-          "proofLabel": "Comparar a abordagem em três canais"
+          "proofLabel": "Comparar a mesma oferta em três canais"
         },
         {
           "id": "web",
@@ -692,9 +693,9 @@ export const portfolioCopy = {
             "Interface responsiva e desenvolvimento",
             "Publicação e integrações do projeto"
           ],
-          "cta": "Conversar sobre meu site",
-          "proofHref": "#narrativa-visual",
-          "proofLabel": "Ver direção visual aplicada ao site"
+          "cta": "Começar briefing de site",
+          "proofHref": "#editorial",
+          "proofLabel": "Ver um site em três etapas"
         },
         {
           "id": "systems",
@@ -709,9 +710,9 @@ export const portfolioCopy = {
             "Integrações e automações",
             "Validação e evolução da solução"
           ],
-          "cta": "Conversar sobre um sistema",
+          "cta": "Começar briefing de sistema",
           "proofHref": "#sistemas",
-          "proofLabel": "Experimentar a organização de um pedido"
+          "proofLabel": "Organizar um pedido de exemplo"
         }
       ],
       "process": [

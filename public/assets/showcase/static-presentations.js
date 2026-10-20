@@ -11,11 +11,14 @@ const campaignNotes = [
 
 const campaigns = [
   { id: 'meta', name: 'Meta', logo: '/assets/brands/meta-official-primary.webp', width: 100, height: 28,
-    alt: 'Campanha smiile para Meta: direção de arte para apresentar sites e aplicativos.' },
+    alt: 'Campanha smiile para Meta: direção de arte para apresentar sites e aplicativos.',
+    text: ['Ideias que se tornam reais', 'Do conceito à experiência', 'Sites. Aplicativos. Uma nova forma de apresentar'] },
   { id: 'google', name: 'Google Ads', logo: '/assets/brands/google-ads-official-reference.webp', width: 32, height: 32,
-    alt: 'Campanha smiile para Google: anúncio de pesquisa e continuidade visual da página.' },
+    alt: 'Campanha smiile para Google: anúncio de pesquisa e continuidade visual da página.',
+    text: ['Busca: “um site para minha ideia”', 'smiile, design e desenvolvimento', 'Da primeira impressão ao próximo passo', 'Uma mensagem. Uma intenção'] },
   { id: 'tiktok', name: 'TikTok', logo: '/assets/brands/tiktok-official-icon-black-circle.png', width: 32, height: 32,
-    alt: 'Campanha smiile para TikTok: composição vertical sobre explorar uma nova experiência.' },
+    alt: 'Campanha smiile para TikTok: composição vertical sobre explorar uma nova experiência.',
+    text: ['Uma nova perspectiva', 'Um app. Outro caminho', 'Trilha do Arco: descubra o que vem depois'] },
 ];
 
 function picture(file, alt, className = '') {
@@ -27,16 +30,21 @@ function mountCampaign(motion) {
   if (!lab) return;
   lab.className = 'sp-campaign';
   lab.innerHTML = `<div class="sp-platforms" role="tablist" aria-label="Canais da campanha smiile">${campaigns.map((campaign, i) => `<button type="button" id="tab-${campaign.id}" role="tab" data-sp-tab="${campaign.id}" aria-controls="panel-${campaign.id}" aria-selected="${i === 0}" tabindex="${i === 0 ? '0' : '-1'}"><img class="sp-platform-logo sp-platform-logo--${campaign.id}" src="${campaign.logo}" alt="" width="${campaign.width}" height="${campaign.height}" aria-hidden="true"><span>${campaign.name}</span></button>`).join('')}</div>
-    <div class="sp-campaign-art">${campaigns.map((campaign, i) => `<div class="sp-campaign-panel" id="panel-${campaign.id}" role="tabpanel" aria-labelledby="tab-${campaign.id}" tabindex="0"${i ? ' hidden' : ''}><figure>${picture(`campanha-${campaign.id}`, campaign.alt)}</figure></div>`).join('')}</div>`;
+    <div class="sp-campaign-art">${campaigns.map((campaign, i) => `<div class="sp-campaign-panel" id="panel-${campaign.id}" role="tabpanel" aria-labelledby="tab-${campaign.id}" tabindex="0"${i ? ' hidden' : ''}><figure>${picture(`campanha-${campaign.id}`, campaign.alt)}<figcaption class="sp-art-text"><b>Texto da peça</b> ${campaign.text.join(' · ')}</figcaption></figure></div>`).join('')}</div>`;
   const layout=document.createElement('div');layout.className='sp-campaign-layout';
   const art=lab.querySelector('.sp-campaign-art');art.before(layout);layout.append(art);
   const note=document.createElement('aside');note.className='sp-campaign-note';note.id='campaign-note';note.setAttribute('data-campaign-note','');note.setAttribute('aria-live','polite');note.setAttribute('aria-atomic','true');
-  note.innerHTML='<span class="eyebrow">A decisão por trás da peça</span><h3 data-note-title></h3><dl><div><dt>Mensagem</dt><dd data-note-message></dd></div><div><dt>Adaptação ao canal</dt><dd data-note-decision></dd></div><div><dt>Entrega</dt><dd data-note-delivery></dd></div></dl><a href="#contato" data-contact-service="Campanhas e anúncios">Conversar sobre uma campanha ↗</a>';
+  note.innerHTML='<span class="eyebrow">A decisão por trás da peça</span><h3 data-note-title></h3><dl><div><dt>Mensagem</dt><dd data-note-message></dd></div><div><dt>Adaptação ao canal</dt><dd data-note-decision></dd></div><div><dt>Entrega</dt><dd data-note-delivery></dd></div></dl><a href="#contato" data-contact-service="Campanhas e anúncios">Conversar sobre uma campanha ↓</a>';
   layout.append(note);
   const tabs = Array.from(lab.querySelectorAll('[data-sp-tab]'));
   const panels = Array.from(lab.querySelectorAll('.sp-campaign-panel'));
   const figures = panels.map(panel => panel.querySelector('figure'));
-  panels.forEach(panel => { panel.querySelector('img').loading = 'eager'; });
+  // The three artworks load as the section approaches the viewport, not at page start.
+  const warm = () => panels.forEach(panel => { panel.querySelector('img').loading = 'eager'; });
+  if ('IntersectionObserver' in window) {
+    const near = new IntersectionObserver(entries => { if (entries.some(entry => entry.isIntersecting)) { near.disconnect(); warm(); } }, { rootMargin: '900px 0px' });
+    near.observe(lab);
+  } else warm();
   let active = -1;
   let generation = 0;
   let transitions = [];

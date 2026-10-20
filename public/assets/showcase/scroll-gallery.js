@@ -34,7 +34,9 @@ export function galleryPose(index,cursor,mobile=false){
  // A layered carousel travels sideways, never flips the entire artwork by 68deg.
  // The dominant/front-facing card and all labels follow the SAME timeline.
  return {x:distance*(mobile?31:25),y:amount*(mobile?7:10),angle:-sign*amount*(mobile?9:13),
-  scale:1-.078*amount,z:-amount*(mobile?86:135),opacity:clamp(1-.48*amount),
+  // Opaque stack: cards never cross-fade. Only the content of a card away from the
+  // reading pose fades, so no text layer is ever visible through another card.
+  scale:1-.078*amount,z:-amount*(mobile?86:135),opacity:1,content:clamp((.5-amount)/.22),
   active:Math.round(position)===index};
 }
 
@@ -52,18 +54,20 @@ export function mountScrollGallery(){
  const escape=value=>String(value).replace(/[&<>"']/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
  gallery.classList.remove('rg-static-gallery');
  gallery.innerHTML=entries.filter(entry=>visual[entry.id]).map((entry,index)=>{
-  const deckCard=entry.deckCard?` data-deck-card="${escape(entry.deckCard)}"`:'';
+  const deckCard=(entry.deckCard?` data-deck-card="${escape(entry.deckCard)}"`:'')+(entry.contactService?` data-contact-service="${escape(entry.contactService)}" data-contact-case="${escape(entry.contactCase||'')}" data-contact-source="trabalhos:${escape(entry.id)}"`:'');
+  // Every work link stays on this page, so it points down, never "out" (↗).
+  const arrow=String(entry.href).startsWith('#')?'↓':'↗';
   const art=visual[entry.id],title=entry.title.split('\n').map(line=>`<span class="rg-title-line"><span>${escape(line)}</span></span>`).join('');
   return `<article class="work-tile work-${escape(entry.id)}" data-work-card="${escape(entry.id)}" aria-labelledby="work-card-${escape(entry.id)}">
    <div class="work-context"><span>${String(index+1).padStart(2,'0')} / ${escape(entry.label)}</span><span>${escape(entry.nature)}</span></div>
    <div class="rg-card-stage" data-face="front">
     <div class="rg-card-rotor">
      <figure class="rg-art rg-card-front"><img src="/assets/portfolio/static-r8/${art.image}" width="960" height="1200" alt="${escape(art.alt)}" loading="lazy" decoding="async"></figure>
-     <div class="rg-card-back" id="rg-back-${escape(entry.id)}" aria-hidden="true" inert><span>Contribuição</span><h4>${escape(entry.contribution)}</h4><p data-work-decision>${escape(entry.decision)}</p><a href="${escape(entry.href)}"${deckCard}>${escape(entry.cta)} <i aria-hidden="true">↗</i></a></div>
+     <div class="rg-card-back" id="rg-back-${escape(entry.id)}" aria-hidden="true" inert><span>Contribuição</span><h4>${escape(entry.contribution)}</h4><p data-work-decision>${escape(entry.decision)}</p><a href="${escape(entry.href)}"${deckCard}>${escape(entry.cta)} <i aria-hidden="true">${arrow}</i></a></div>
     </div>
-    <button class="rg-flip" type="button" data-rg-flip aria-pressed="false" aria-controls="rg-back-${escape(entry.id)}" aria-label="Ver contribuição: ${escape(entry.label)}" title="Ver contribuição"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none"><path d="M19.5 8.5A8 8 0 1 0 20 15M19.5 8.5V3.5M19.5 8.5H14.5" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+    <button class="rg-flip" type="button" data-rg-flip aria-pressed="false" aria-controls="rg-back-${escape(entry.id)}" aria-label="Ver minha parte: ${escape(entry.label)}"><span class="rg-flip-label">Ver minha parte</span><svg aria-hidden="true" viewBox="0 0 24 24" fill="none"><path d="M19.5 8.5A8 8 0 1 0 20 15M19.5 8.5V3.5M19.5 8.5H14.5" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
    </div>
-   <div class="tile-caption"><div><h3 id="work-card-${escape(entry.id)}">${title}</h3><p>${escape(entry.body)}</p></div><a class="tile-open" href="${escape(entry.href)}"${deckCard}><span>${escape(entry.cta)}</span><i aria-hidden="true">↗</i></a></div>
+   <div class="tile-caption"><div><h3 id="work-card-${escape(entry.id)}">${title}</h3><p>${escape(entry.body)}</p></div><a class="tile-open" href="${escape(entry.href)}"${deckCard}><span>${escape(entry.cta)}</span><i aria-hidden="true">${arrow}</i></a></div>
   </article>`;
  }).join('');
  const cards=[...gallery.querySelectorAll(':scope > .work-tile')];if(!cards.length)return null;
@@ -104,7 +108,7 @@ export function mountScrollGallery(){
    const pose=galleryPose(i,state.value,mobile.matches);
    plane.style.setProperty('--rg-x',`${pose.x}%`);plane.style.setProperty('--rg-y',`${pose.y}%`);plane.style.setProperty('--rg-angle',`${pose.angle}deg`);
    plane.style.setProperty('--rg-scale',String(pose.scale));plane.style.setProperty('--rg-z',`${pose.z}px`);
-   plane.style.setProperty('--rg-opacity',String(pose.opacity));plane.style.zIndex=String(cards.length-Math.abs(i-index));
+   plane.style.setProperty('--rg-opacity',String(pose.opacity));plane.style.setProperty('--rg-content',String(natural?1:pose.content));plane.style.zIndex=String(cards.length-Math.abs(i-index));
    plane.classList.toggle('rg-active',pose.active);plane.inert=!natural&&(!pose.active||!settled);
    const titleBox=cards[i].querySelector('.tile-caption h3').getBoundingClientRect();
    if(visible&&pose.active&&settled&&titleBox.top<stableViewportHeight()-60&&titleBox.bottom>header())revealTitle(cards[i],i);
@@ -154,7 +158,8 @@ export function mountScrollGallery(){
    flipped=!flipped;const target=`rotateX(${flipped?rotation.x:0}deg) rotateY(${flipped?rotation.y:0}deg)`;
    stage.dataset.face=flipped?'back':'front';rotor.style.transform=target;
    front.inert=flipped;front.setAttribute('aria-hidden',String(flipped));back.inert=!flipped;back.setAttribute('aria-hidden',String(!flipped));
-   button.setAttribute('aria-pressed',String(flipped));button.setAttribute('aria-label',(flipped?'Voltar à imagem: ':'Ver contribuição: ')+label);button.title=flipped?'Voltar à imagem':'Ver contribuição';
+   const text=flipped?'Voltar à peça':'Ver minha parte';button.querySelector('.rg-flip-label').textContent=text;
+   button.setAttribute('aria-pressed',String(flipped));button.setAttribute('aria-label',text+': '+label);
    state.settle();render();
    turn=motion.animate(rotor,[{transform:current==='none'?'rotateY(0deg)':current},{transform:target}],{duration:650});
   }

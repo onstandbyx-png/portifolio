@@ -15,7 +15,7 @@
 #laboratorio .sp-peel-stack{position:relative;min-width:0;border-radius:16px;box-shadow:0 22px 55px #1e38292a}
 #laboratorio .sp-peel-underlay{
   position:absolute;inset:0;z-index:1;display:flex;flex-direction:column;
-  min-width:0;min-height:0;overflow-y:auto;overscroll-behavior:contain;
+  min-width:0;min-height:0;overflow:hidden;
   border:1px solid #c1cdbc;border-radius:16px;background:
   radial-gradient(circle at 85% 12%,#eff4e9 0%,transparent 46%),#e6eddf;
   color:#233c2b;scrollbar-width:thin;
@@ -52,6 +52,9 @@
 }
 #laboratorio .sp-peel-sheet .sp-campaign-image-slot{min-width:0}
 #laboratorio .sp-peel-sheet .sp-campaign-panel img{border-radius:0;pointer-events:auto;-webkit-user-drag:none;user-select:none}
+/* Small lines printed in the artwork, repeated as live, selectable text (>=12px). */
+#laboratorio .sp-art-text{margin:0;padding:11px 24px 12px;border-top:1px solid #d3dccf;background:#f7f4e9;color:#3d5544;font:500 13px/1.5 var(--sans,Inter,Arial,sans-serif)}
+#laboratorio .sp-art-text b{margin-right:6px;font-weight:650;color:#244b35}
 #laboratorio .sp-peel-cue{
   display:flex;align-items:center;gap:12px;min-height:64px;margin:0;padding:13px 24px;
   border-top:1px solid #d3dccf;background:#edf2e9;
@@ -59,7 +62,7 @@
 }
 #laboratorio .sp-peel-cue-arrow{font-size:22px;font-weight:400;line-height:1;color:#244b35}
 #laboratorio .sp-peel-cue span:nth-child(2){flex:1}
-#laboratorio .sp-peel-cue span:last-child{font-size:11px;white-space:nowrap;color:#7b8c7a;font-variant-numeric:tabular-nums}
+#laboratorio .sp-peel-cue span:last-child{font-size:12px;white-space:nowrap;color:#566a57;font-variant-numeric:tabular-nums}
 #laboratorio .sp-peel-fold{
   position:absolute;z-index:4;inset:0;display:block;width:100%;height:100%;
   overflow:hidden;pointer-events:none;
@@ -95,14 +98,19 @@
   outline:3px solid #416da2;outline-offset:-5px;z-index:8;
 }
 #laboratorio .sp-peel-card[data-side="back"] .sp-peel-sheet{pointer-events:none}
+/* Open: the back joins the flow and grows to its content, so nothing hides behind a
+   nested scroll; the peeled sheet leaves the flow and the fold keeps the sheet size. */
+#laboratorio .sp-peel-card[data-side="back"] .sp-peel-underlay{position:relative;inset:auto;min-height:var(--peel-sheet-h,0px);overflow:visible}
+#laboratorio .sp-peel-card[data-side="back"] .sp-peel-sheet{position:absolute;top:0;left:0;right:0}
 #laboratorio .sp-peel-card[data-side="back"] .sp-peel-grip{pointer-events:none}
 #laboratorio .sp-peel-card[data-side="back"] .sp-peel-underlay{pointer-events:auto}
 #laboratorio .sp-peel-card[data-side="front"] .sp-peel-underlay{pointer-events:none}
 #laboratorio .sp-peel-card[data-peel-state="dragging"]{cursor:grabbing}
 #laboratorio .sp-peel-card[data-peel-state="dragging"] .sp-peel-grip{filter:drop-shadow(-2px 3px 5px #152b2a3c)}
 @media(max-width:700px){
-  #laboratorio .sp-peel-cue{min-height:56px;padding:10px 13px;font-size:11px;gap:9px}
-  #laboratorio .sp-peel-cue span:last-child{font-size:10px}
+  #laboratorio .sp-art-text{padding:10px 13px 11px;font-size:12px}
+  #laboratorio .sp-peel-cue{min-height:56px;padding:10px 13px;font-size:12px;gap:9px}
+  #laboratorio .sp-peel-cue span:last-child{font-size:12px}
   #laboratorio .sp-peel-grip{width:70px;height:70px}
   #laboratorio .sp-peel-underlay-kicker{padding:19px 18px 0;font-size:9px}
   #laboratorio .sp-peel-underlay .sp-campaign-note{padding:12px 18px}
@@ -113,7 +121,6 @@
   #laboratorio .sp-peel-return{min-height:44px;margin:8px 15px 12px;width:calc(100% - 30px)}
 }
 @media(max-width:350px){
-  #laboratorio .sp-peel-cue{font-size:10px}
   #laboratorio .sp-peel-underlay-kicker{padding:13px 15px 0}
   #laboratorio .sp-peel-underlay .sp-campaign-note{padding:10px 15px}
   #laboratorio .sp-peel-underlay .sp-campaign-note dd{font-size:11px}

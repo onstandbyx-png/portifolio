@@ -2,20 +2,20 @@
 #laboratorio .sp-peel-underlay{background:#ecf0e7;align-items:stretch;justify-content:flex-start}
 #laboratorio .cx-player{width:100%;padding:clamp(13px,3vw,23px);box-sizing:border-box;position:relative;z-index:2;color:#17362a;touch-action:pan-y;cursor:default}
 #laboratorio .cx-header{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:0 0 10px}
-#laboratorio .cx-header small{display:block;font-size:9px;letter-spacing:.09em;color:#71826e}
+#laboratorio .cx-header small{display:block;font-size:12px;line-height:1.35;letter-spacing:.06em;color:#4f6350}
 #laboratorio .cx-header h3{font-size:clamp(16px,3vw,22px);margin:3px 0 0;line-height:1.2;letter-spacing:-.025em}
-#laboratorio .cx-playing{min-width:76px;min-height:42px;padding:9px 12px;border:1px solid #bccdb9;border-radius:9px;background:#f9fbf6;color:#234530;font-weight:600;cursor:pointer}
+#laboratorio .cx-playing{flex:none;min-width:max-content;min-height:44px;padding:9px 14px;border:1px solid #bccdb9;border-radius:9px;background:#f9fbf6;color:#234530;font-weight:600;cursor:pointer}
 #laboratorio .cx-placements{display:flex;gap:5px;flex-wrap:wrap;margin:0 0 11px}
-#laboratorio .cx-placement{padding:7px 10px;min-height:38px;background:transparent;border:1px solid #b9cab8;color:#4d6953;border-radius:6px;cursor:pointer;font-size:12px}
+#laboratorio .cx-placement{padding:7px 12px;min-width:44px;min-height:44px;background:transparent;border:1px solid #b9cab8;color:#4d6953;border-radius:6px;cursor:pointer;font-size:12px}
 #laboratorio .cx-placement[aria-pressed=true]{background:#1e4530;border-color:#1e4530;color:#f8fbf7}
 #laboratorio .cx-stage{display:grid;place-items:center;margin:0 auto;min-height:230px;max-height:350px;overflow:hidden;border-radius:13px;background:#e2e9df;position:relative;touch-action:pan-y;cursor:default}
 #laboratorio .cx-frame{width:min(100%,255px);height:min(330px,100%);aspect-ratio:9/13;position:relative;isolation:isolate;background:#1e3029;color:white;border-radius:11px;overflow:hidden;box-shadow:0 8px 20px #162d282b}
 #laboratorio .cx-art{position:absolute;inset:0}
 #laboratorio .cx-art img{width:100%;height:100%;object-fit:cover;display:block;filter:saturate(.88)}
 #laboratorio .cx-art:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,#0c241b6e,transparent 36%,#0b201dbd 100%)}
-#laboratorio .cx-social-chrome{position:absolute;left:14px;right:14px;top:19px;display:flex;justify-content:space-between;z-index:2;gap:10px;font:500 10px Inter,Arial,sans-serif}
+#laboratorio .cx-social-chrome{position:absolute;left:14px;right:14px;top:19px;display:flex;justify-content:space-between;z-index:2;gap:10px;font:500 12px Inter,Arial,sans-serif}
 #laboratorio .cx-overlay{position:absolute;left:15px;right:15px;bottom:23px;z-index:2;text-shadow:0 1px 2px #0008}
-#laboratorio .cx-overlay small{font-size:10px;letter-spacing:.09em}
+#laboratorio .cx-overlay small{font-size:12px;letter-spacing:.06em}
 #laboratorio .cx-overlay h4{font-size:clamp(20px,4vw,26px);line-height:1.07;letter-spacing:-.04em;margin:8px 0}
 #laboratorio .cx-overlay p{font-size:12px;line-height:1.4;margin:0;color:#f3f6f0}
 #laboratorio .cx-progress{position:absolute;z-index:5;left:12px;right:12px;top:8px;height:3px;background:#ffffff55;border-radius:3px;overflow:hidden}
@@ -30,18 +30,17 @@
 #laboratorio .cx-player[data-platform=tiktok] .cx-social-chrome{top:27px}
 #laboratorio .cx-search{position:absolute;z-index:4;inset:0;padding:20px 15px;background:#fffefa;color:#1d3b2c;text-shadow:none}
 #laboratorio .cx-search[hidden]{display:none!important}
-#laboratorio .cx-search .cx-query{display:flex;gap:8px;align-items:center;margin:15px 0 17px;border:1px solid #d5ddd4;border-radius:22px;padding:10px;font-size:11px;color:#657668}
-#laboratorio .cx-search>small{color:#53665d;font-size:9px}
+#laboratorio .cx-search .cx-query{display:flex;gap:8px;align-items:center;margin:15px 0 17px;border:1px solid #d5ddd4;border-radius:22px;padding:10px;font-size:12px;color:#4f6350}
+#laboratorio .cx-search>small{color:#4f6357;font-size:12px}
 #laboratorio .cx-search>h4{font-size:18px;line-height:1.15;color:#1a6e55;margin:10px 0 7px}
 #laboratorio .cx-search>p{font-size:12px;line-height:1.4}
-#laboratorio .cx-search>span{font-size:11px;color:#2b6c64;text-decoration:underline}
-#laboratorio .cx-end-mark{position:absolute;right:8px;bottom:3px;font-weight:700;opacity:.65;font-size:10px}
+#laboratorio .cx-end-mark{position:absolute;right:8px;bottom:3px;font-weight:700;opacity:.8;font-size:12px}
 #laboratorio .cx-tap-regions{display:none}
 #laboratorio .cx-transport{display:flex;align-items:center;justify-content:center;gap:8px;margin:13px 0}
 #laboratorio .cx-transport button{display:grid;place-items:center;min-width:44px;min-height:44px;border-radius:50%;border:1px solid #bfcebd;color:#284b36;background:#fff;cursor:pointer}
 #laboratorio .cx-transport button:disabled{opacity:.36;cursor:default}
-#laboratorio .cx-transport span{flex:1;text-align:center;white-space:nowrap;font-size:11px;color:#3a5a42}
-#laboratorio .cx-contribution{font-size:12px;line-height:1.4;margin:3px 0 8px;color:#627563}
+#laboratorio .cx-transport span{flex:1;text-align:center;white-space:nowrap;font-size:12px;color:#3a5a42}
+#laboratorio .cx-contribution{font-size:13px;line-height:1.45;margin:3px 0 8px;color:#4c604d}
 #laboratorio .sp-peel-underlay .sp-campaign-note-slot{flex:none!important}
 #laboratorio .sp-peel-underlay .sp-campaign-note{padding:9px 20px}
 #laboratorio .sp-peel-underlay .sp-campaign-note h3{font-size:19px;margin:8px 0}
