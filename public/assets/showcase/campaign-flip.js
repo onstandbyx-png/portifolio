@@ -92,6 +92,10 @@ export function mountCampaignFlip() {
   }
   function stopAnimation(){if(animation){cancelAnimationFrame(animation);animation=0;}}
   function semantics(open) {
+    // Focus on the face being hidden follows to the other face whatever opened it
+    // (keyboard, mouse, tap or a screen-reader double-tap), so inert never drops it to <body>.
+    const active=document.activeElement;
+    const handOff=open?(grip.contains(active)||sheet.contains(active))&&backButton:underlay.contains(active)&&grip;
     card.dataset.side=open?'back':'front';
     underlay.inert=!open;
     underlay.setAttribute('aria-hidden',String(!open));
@@ -100,6 +104,7 @@ export function mountCampaignFlip() {
     grip.setAttribute('aria-expanded',String(open));
     // An open corner is invisible: it must not keep a focus stop or a hit area.
     grip.inert=open;
+    if(handOff)handOff.focus({preventScroll:true});
     card.dataset.peelState=open?'open':'closed';
     if(!open)campaignExperience?.stop();
   }

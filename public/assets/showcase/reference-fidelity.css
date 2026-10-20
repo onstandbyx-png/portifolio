@@ -258,13 +258,16 @@
   display:block;
   width:33%;
   max-width:116px;
-  padding:4px;
+  padding:5px 7px;
+  border-radius:6px;
+  /* Opaque plate: every line keeps 5.4:1 whether it falls on the art's light band or on the photo. */
+  background:#f7f4e9;
   color:#4f6a58;
   font:500 12px/1.35 var(--sans,Inter,Arial,sans-serif);
   text-align:right;
   pointer-events:none;
   text-wrap:balance;
-  opacity:.88;
+  opacity:1;
   transition:opacity .3s ease;
 }
 #trabalhos .rg-gallery .rg-card-stage[data-face="back"] .rg-card-interaction-hint{
@@ -272,7 +275,6 @@
 }
 #trabalhos .rg-gallery .work-smiile .rg-flip:focus-visible{
   opacity:1;
-  outline:3px solid #406fca;
 }
 #trabalhos .rg-gallery .work-smiile .rg-card-front img{
   -webkit-user-drag:none;
@@ -288,8 +290,8 @@
 }
 @media(max-width:420px){
   #trabalhos .rg-gallery .rg-card-interaction-hint{
-    width:40%;
-    max-width:126px;
+    width:44%;
+    max-width:130px;
     top:11px;right:11px;
   }
 }

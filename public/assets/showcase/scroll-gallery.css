@@ -181,7 +181,9 @@ body.is-paused #trabalhos .rg-static-gallery .tile-open i{transition:none}
 #trabalhos .rg-gallery .rg-flip svg{display:block;flex:none;width:18px;height:18px}
 #trabalhos .rg-gallery .rg-card-stage .rg-card-back{padding-bottom:72px}
 #trabalhos .rg-gallery .rg-flip:hover{background:#eef3e8}
-#trabalhos .rg-gallery .rg-flip:focus-visible,#trabalhos .rg-gallery a:focus-visible{outline:3px solid #4d7096;outline-offset:4px}
+#trabalhos .rg-gallery a:focus-visible{outline:3px solid #4d7096;outline-offset:4px}
+/* The pill sits on photos: the dark focus token between two light halos keeps >=3:1 on any artwork. */
+#trabalhos .rg-gallery .rg-flip:focus-visible{outline:var(--focus-width) solid var(--focus-color);outline-offset:2px;box-shadow:0 0 0 6px #fffef9}
 #trabalhos .rg-gallery .work-context{width:calc(50% - 55px);left:32px}
 #trabalhos .rg-gallery .tile-open{font-family:inherit;font-weight:550;text-decoration:none}
 .rg-scroll-shell[data-paused=true] .rg-plane,.rg-scroll-shell[data-paused=true] .rg-card-rotor{will-change:auto}

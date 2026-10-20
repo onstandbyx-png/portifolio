@@ -127,7 +127,7 @@
 }
 .portfolio-r6 .hero-v2 .hero-badge-controls [data-badge-flip] span {font-size:18px}
 .portfolio-r6 .hero-v2 .hero-badge-controls button:focus-visible,
-.portfolio-r6 .hero-v2 .hero-actions a:focus-visible {outline:2px solid #dceaba;outline-offset:4px}
+.portfolio-r6 .hero-v2 .hero-actions a:focus-visible {outline:var(--focus-width) solid var(--focus-color-inverse);outline-offset:var(--focus-offset)}
 .portfolio-r6 .hero.hero-v2 .hero-badge-foot {
   display:grid; grid-template-columns:minmax(0,1fr) auto; grid-template-areas:"label cue" "link link";
   align-items:center; column-gap:12px;
@@ -144,7 +144,7 @@
   text-decoration:underline; text-decoration-color:#9ccbb0; text-underline-offset:4px;
 }
 .portfolio-r6 .hero-v2 .badge-continue span {font-size:16px}
-.portfolio-r6 .hero-v2 .badge-continue:focus-visible {outline:2px solid #9ccbb0;outline-offset:3px;border-radius:4px}
+.portfolio-r6 .hero-v2 .badge-continue:focus-visible {outline:var(--focus-width) solid var(--focus-color-inverse);outline-offset:var(--focus-offset);border-radius:4px}
 /* Pair layout: the selected badge gets a mint light on the rail; the other recedes slightly. */
 .portfolio-r6 .hero-v2 .hero-badge-stage[data-layout="pair"]::before {
   inset:0 auto 4% 0; width:50%;
@@ -205,6 +205,12 @@
   .portfolio-r6 .hero-v2 .hero-proof {padding-top:12px;display:grid;grid-template-columns:1.2fr 1fr;gap:12px}
   .portfolio-r6 .hero-v2 .hero-proof strong {font-size:12px}
   .portfolio-r6 .hero-v2 .hero-proof small {font-size:12px}
+  /* Single badge: stage and controls (6px gap + 52px row) share the first screen when that costs at most
+     25% of the badge width; on shorter screens the badge keeps its size and the controls start below the
+     fold, never across it. 488px = tallest stage top measured from 320 to 573px (428px) + 2px + 58px. */
+  @container hero-badges (max-width:539px) {
+    .portfolio-r6 .hero.hero-v2 .hero-badge-stage {align-self:center;width:min(100%,max(calc((100svh - 488px)*.82),clamp(0px,calc((75% - (100svh - 488px)*.82)*999),100%)))}
+  }
 }
 @media(max-width:350px) {
   .portfolio-r6 .hero-v2 .hero-surface {padding-inline:14px}

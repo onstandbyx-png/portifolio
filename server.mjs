@@ -24,11 +24,21 @@ const compressors={br:promisify(brotliCompress),gzip:promisify(gzip)};
 const compressed=new Map();
 const accepts=(header,coding)=>{let own,any;for(const part of String(header||'').toLowerCase().split(',')){const [name,...params]=part.split(';').map(item=>item.trim());const q=params.find(item=>item.startsWith('q='));const weight=q?Number(q.slice(2)):1;if(name===coding)own=weight;else if(name==='*')any=weight;}return (own??any??0)>0;};
 const negotiate=header=>['br','gzip'].find(coding=>accepts(header,coding))??null;
+const brotli=(body,quality)=>compressors.br(body,{params:{[constants.BROTLI_PARAM_QUALITY]:quality,[constants.BROTLI_PARAM_SIZE_HINT]:body.length}});
+// Brotli 11 takes ~1.3 s on the 626 KB badge chunk: large files answer from a fast pass (~25 ms)
+// while the dense pass runs in the background and replaces it for later requests.
+const denseLimit=128*1024;
 function encode(full,info,coding){
   let entry=compressed.get(full);
   if(entry?.mtimeMs!==info.mtimeMs||entry.size!==info.size)compressed.set(full,entry={mtimeMs:info.mtimeMs,size:info.size});
   return entry[coding]??=readFile(full)
-    .then(body=>body.length===info.size?compressors[coding](body,coding==='br'?{params:{[constants.BROTLI_PARAM_QUALITY]:11,[constants.BROTLI_PARAM_SIZE_HINT]:body.length}}:{level:9}):null)
+    .then(body=>{
+      if(body.length!==info.size)return null;
+      if(coding==='gzip')return compressors.gzip(body,{level:9});
+      if(body.length<=denseLimit)return brotli(body,11);
+      brotli(body,11).then(out=>{if(compressed.get(full)===entry&&out.length<info.size)entry.br=Promise.resolve(out);},()=>{});
+      return brotli(body,5);
+    })
     .then(out=>out&&out.length<info.size?out:null,()=>{delete entry[coding];return null;});
 }
 createServer(async (req,res)=>{

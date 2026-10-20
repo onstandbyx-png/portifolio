@@ -71,8 +71,10 @@ function mountWorkflow() {
   form.addEventListener('submit', event => {
     event.preventDefault();
     if (request.value.trim().length < 8) {
-      showError('Descreva o pedido com pelo menos 8 caracteres.');
-      status.textContent = '';
+      const message = 'Descreva o pedido com pelo menos 8 caracteres.';
+      showError(message);
+      // Enter in the field keeps focus where it is, so the live region announces the error.
+      status.textContent = message;
       request.focus();
       return;
     }
@@ -89,7 +91,7 @@ function mountWorkflow() {
     status.textContent = 'Pedido organizado. Você pode marcar como resolvido ou ajustar as informações.';
     edit.focus();
   });
-  request.addEventListener('input', () => { if (request.value.trim().length >= 8) showError(''); });
+  request.addEventListener('input', () => { if (request.value.trim().length >= 8 && request.hasAttribute('aria-invalid')) { showError(''); status.textContent = ''; } });
   complete.addEventListener('click', () => {
     demo.dataset.state = 'completed';
     setState('resolved', 'Resolvido');

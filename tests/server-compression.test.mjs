@@ -71,6 +71,16 @@ test('Requisições com Range não são comprimidas e o Range de mídia continua
   assert.equal(video.status,206);assert.equal(video.headers['content-encoding'],undefined);assert.match(video.headers['content-range'],/^bytes 0-127\/\d+$/);assert.equal(video.body.length,128);csp(video);
 });
 
+test('Chunk 3D grande responde br sem esperar o Brotli 11 e depois recebe a versão densa',{skip:!existsSync(new URL('chunks/',bundle))&&'run npm run build first'},async()=>{
+  const path='/assets/badge-build/chunks/'+readdirSync(new URL('chunks/',bundle)).find(name=>name.endsWith('.js'));
+  const started=performance.now(),first=await get(path,{'accept-encoding':'br'}),elapsed=performance.now()-started;
+  assert.equal(first.headers['content-encoding'],'br');assert(elapsed<600,'First (cold) br response took '+Math.round(elapsed)+' ms');
+  const identity=await get(path,{'accept-encoding':'identity'});assert.deepEqual(brotliDecompressSync(first.body),identity.body);
+  let dense=first;for(let i=0;i<150&&dense.body.length>=first.body.length;i++){await new Promise(resolve=>setTimeout(resolve,100));dense=await get(path,{'accept-encoding':'br'});}
+  assert(dense.body.length<first.body.length,'The dense Brotli pass replaces the fast one');
+  assert.equal(Number(dense.headers['content-length']),dense.body.length);assert.deepEqual(brotliDecompressSync(dense.body),identity.body);
+});
+
 test('Bundle 3D do crachá (npm run build) é servido comprimido',{skip:!existsSync(new URL('index.js',bundle))&&'run npm run build first'},async()=>{
   const paths=['/assets/badge-build/index.js',...readdirSync(new URL('chunks/',bundle)).filter(name=>name.endsWith('.js')).map(name=>'/assets/badge-build/chunks/'+name)];
   assert(paths.length>1,'Badge scene chunk exists');
