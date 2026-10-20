@@ -3,7 +3,9 @@
  * page components run unchanged. Its CSP differs from the site's on purpose:
  * 'wasm-unsafe-eval' for the Rive runtime and connect-src for the original
  * Rive (CC BY) and LottieFiles files, which are loaded from their public CDNs
- * at runtime and never copied into this repository. noindex everywhere. */
+ * at runtime and never copied into this repository. noindex everywhere.
+ * On Railway it runs as its own service with PORTFOLIO_ENTRY=lab/server.mjs
+ * (npm start falls back to the site's server.mjs when the variable is unset). */
 import {createServer} from 'node:http';
 import {readFile, stat} from 'node:fs/promises';
 import {extname, join, normalize, resolve, sep} from 'node:path';

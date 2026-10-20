@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "npm run build && node server.mjs",
-    "start": "node server.mjs",
+    "start": "node ${PORTFOLIO_ENTRY:-server.mjs}",
     "build": "node scripts/build-badges.mjs",
     "check": "node tests/structure.mjs && node --check src/portfolio.js && node --check server.mjs"
   },
