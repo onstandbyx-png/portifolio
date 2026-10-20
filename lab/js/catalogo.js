@@ -67,24 +67,28 @@ const SECOES = [
 ];
 // Page of a version where the element lives (some live on inner pages, per version).
 export const caminhoDe = (el, versao) => el?.caminhos?.[versao] ?? el?.caminho ?? '';
-export function localizar(doc, el, versao) {
+// The node an element crops to, and how it was found: "verificado" (per-version selector checked
+// by hand), "seletor" (catalog selector), "frase" (quoted text from its name) or "secao" (only the
+// section it usually lives in — not the element itself).
+export function localizarDetalhado(doc, el, versao) {
   const visivel = n => n && n.getBoundingClientRect().height > 0;
   const q = sel => { try { return doc.querySelector(sel.replace(/[.,;:]+$/, '')); } catch { return null; } };
   const proprio = versao && el.seletores?.[versao];
-  if (proprio) { const n = q(proprio); if (n) return n; }
-  if (el.seletor) { const n = q(el.seletor); if (visivel(n)) return n; }
+  if (proprio) { const n = q(proprio); if (n) return {no: n, metodo: 'verificado'}; }
+  if (el.seletor) { const n = q(el.seletor); if (visivel(n)) return {no: n, metodo: 'seletor'}; }
   const citado = el.nome.match(/[“"‘']([^”"’']{8,})[”"’']/);
   if (citado) {
     const alvo = citado[1].slice(0, 26).toLowerCase();
     const walker = doc.createTreeWalker(doc.body, NodeFilter.SHOW_TEXT);
     for (let t = walker.nextNode(); t; t = walker.nextNode()) {
-      if (t.textContent.toLowerCase().includes(alvo) && visivel(t.parentElement)) return t.parentElement.closest('section, article, figure') || t.parentElement;
+      if (t.textContent.toLowerCase().includes(alvo) && visivel(t.parentElement)) return {no: t.parentElement.closest('section, article, figure') || t.parentElement, metodo: 'frase'};
     }
   }
   const texto = `${el.nome} ${el.tipo || ''}`;
   for (const [rx, sels] of SECOES) {
     if (!rx.test(texto)) continue;
-    for (const sel of sels) { const n = q(sel); if (visivel(n)) return n; }
+    for (const sel of sels) { const n = q(sel); if (visivel(n)) return {no: n, metodo: 'secao'}; }
   }
-  return null;
+  return {no: null, metodo: null};
 }
+export const localizar = (doc, el, versao) => localizarDetalhado(doc, el, versao).no;

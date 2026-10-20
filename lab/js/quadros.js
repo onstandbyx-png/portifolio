@@ -5,7 +5,7 @@
  * and pause, repeat, speed, a scrubber over animation time or page scroll with a
  * frame readout, hover and click, and the notes from the catalog and the Drive.
  * Only a few cards are live at once; the others come back when scrolled to. */
-import {FAMILIAS, PROJETOS, STATUS, caminhoDe, carregar, esc, localizar} from './catalogo.js';
+import {FAMILIAS, PROJETOS, STATUS, caminhoDe, carregar, esc, localizar, localizarDetalhado} from './catalogo.js';
 
 const $ = (sel, root = document) => root.querySelector(sel);
 const $$ = (sel, root = document) => [...root.querySelectorAll(sel)];
@@ -168,6 +168,29 @@ function simularHover(p, alvo, ligado) {
     for (let n = no; n && n.nodeType === 1; n = n.parentElement) n.setAttribute('data-lab-hover', '');
     eventos(no, ['pointerover', 'pointerenter', 'mouseover', 'mouseenter', 'pointermove', 'mousemove'], x, y);
   } else eventos(no, ['pointerout', 'pointerleave', 'mouseout', 'mouseleave'], x, y);
+}
+/* Recipe that brings an element to the state its card is about (menu open, dialog shown, frame
+ * scrolled…): [{rolar: sel}, {clicar: sel}, {pairar: sel}, {rolarY: px}, {esperar: ms}]. */
+async function executarReceita(p, passos = []) {
+  for (const passo of passos) {
+    if (!p.doc) return;
+    const [acao, valor] = Object.entries(passo)[0] || [];
+    let no = null;
+    try { no = typeof valor === 'string' ? p.doc.querySelector(valor) : null; } catch {}
+    if (acao === 'esperar') await espera(Math.min(Number(valor) || 300, 5000));
+    else if (acao === 'rolarY') p.win.scrollTo({top: Number(valor) || 0, behavior: 'instant'});
+    else if (acao === 'rolar' && no) no.scrollIntoView({block: 'center', behavior: 'instant'});
+    else if (acao === 'clicar' && no) {
+      no.scrollIntoView({block: 'center', behavior: 'instant'});
+      const {x, y} = pontoCentral(p.doc, no, TELAS[p.tela]);
+      eventos(no, ['pointerdown', 'mousedown', 'pointerup', 'mouseup'], x, y);
+      no.click();
+    } else if (acao === 'pairar' && no) {
+      no.scrollIntoView({block: 'center', behavior: 'instant'});
+      simularHover(p, no, true);
+    }
+    await espera(250);
+  }
 }
 function isolar(doc, alvo, ligado) {
   doc.getElementById('lab-isolar')?.remove();
@@ -413,9 +436,13 @@ function quadroElemento(e, ctx) {
     const salvo = lido(chave());
     await espera(650);
     if (!p.doc) return;
-    let alvo = null;
+    let alvo = null, metodo = salvo ? 'escolhido' : null;
     if (salvo) { try { alvo = p.doc.querySelector(salvo); } catch {} }
-    st.alvo = alvo || localizar(p.doc, e, st.versao);
+    await executarReceita(p, e.receitas?.[st.versao]);
+    if (!p.doc) return;
+    if (!alvo) ({no: alvo, metodo} = localizarDetalhado(p.doc, e, st.versao));
+    st.alvo = alvo;
+    st.metodo = metodo;
     isolar(p.doc, st.alvo, st.isolar);
     const caixa = p.enquadrar(st.pagina ? null : st.alvo);
     if (caixa && !stage.dataset.proporcao) {
@@ -427,14 +454,23 @@ function quadroElemento(e, ctx) {
     if (!st.regua) escolherRegua(st.total ? 'tempo' : 'rolagem');
     player.pronto();
     acoes();
-    const ausente = e.ausencias?.[st.versao], acao = e.acoes?.[st.versao];
+    const ausente = e.ausencias?.[st.versao], acao = e.receitas?.[st.versao] ? '' : e.acoes?.[st.versao];
     msg(ausente && !st.alvo ? `não está nesta versão: ${curto(ausente, 140)}`
       : !st.alvo ? 'não achei este elemento sozinho nesta versão: use Escolher no quadro'
       : protegida() ? 'a proteção da prévia escurece a página quando o quadro perde o foco: toque nele para ver'
+      : st.metodo === 'secao' ? 'mostrando a seção onde ele fica, ainda sem recorte próprio'
+      : e.demos?.[st.versao] === 'sistema' ? 'vale para a página toda: o recorte mostra um exemplo'
       : acao ? `para ver: ${curto(acao, 120)}` : '');
   }
   function ligar() {
     if (q.vivo || !st.versao) return;
+    const irmao = e.mesmoRecorte?.[st.versao];
+    if (irmao && !st.verMesmoAssim) {
+      $('.stage-msg', stage)?.remove();
+      stage.append(html(`<span class="stage-msg q-irmao">mesmo recorte do quadro <a href="#q-${esc(irmao)}">${esc(curto(ctx.elementos.find(x => x.id === irmao)?.nome || irmao, 60))}</a> · <button type="button" class="btn" data-q-ver>Ver mesmo assim</button></span>`));
+      $('[data-q-ver]', stage).addEventListener('click', () => { st.verMesmoAssim = true; ligar(); });
+      return;
+    }
     q.vivo = true;
     ocupar(q);
     msg('carregando a versão…');
