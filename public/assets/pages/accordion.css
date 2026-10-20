@@ -1,0 +1,34 @@
+/* K11 · Accordion ported from /assets/project-paths.css (P14).
+   <details class="pg-accordion" name="faq"> opens one item at a time natively and
+   works without JS. The opening transition is progressive (::details-content +
+   interpolate-size); without support, or with reduced motion / pause, it is instant.
+   Markup:
+   <details class="pg-accordion" name="faq">
+     <summary><span class="pg-accordion-q">Pergunta</span><span class="pg-accordion-icon" aria-hidden="true">+</span></summary>
+     <div class="pg-accordion-body"><p>Resposta.</p></div>
+   </details> */
+.pg-accordion-list{border-top:1px solid var(--linha,#18251F33)}
+.pg-accordion{border-bottom:1px solid var(--linha,#18251F33)}
+.pg-accordion>summary{display:grid;grid-template-columns:minmax(0,1fr) 44px;gap:16px;align-items:center;min-height:48px;padding:16px 0;cursor:pointer;list-style:none;font-weight:600;font-size:1.0625rem;line-height:1.4}
+.pg-accordion>summary::-webkit-details-marker{display:none}
+.pg-accordion-icon{display:grid;place-items:center;width:44px;height:44px;border:1px solid currentColor;border-radius:50%;font:300 1.5rem/1 var(--sans);transition:transform .25s ease}
+.pg-accordion[open] .pg-accordion-icon{transform:rotate(45deg)}
+.pg-accordion-body{padding:0 60px 24px 0;max-width:68ch}
+.pg-accordion-body>:first-child{margin-top:0}
+.pg-accordion-body>:last-child{margin-bottom:0}
+.pg-accordion>summary:focus-visible{outline:3px solid var(--foco,#0F2E24);outline-offset:4px;border-radius:4px}
+
+@supports selector(::details-content){
+  .pg-accordion::details-content{block-size:0;overflow-y:clip;transition:block-size .3s ease,content-visibility .3s allow-discrete}
+  .pg-accordion[open]::details-content{block-size:auto}
+}
+@supports (interpolate-size: allow-keywords){
+  .pg-accordion-list,.pg-accordion{interpolate-size:allow-keywords}
+}
+@media (max-width:599px){.pg-accordion-body{padding-right:0}}
+@media (prefers-reduced-motion: reduce){
+  .pg-accordion-icon{transition:none}
+  .pg-accordion::details-content{transition:none!important}
+}
+body.is-paused .pg-accordion-icon{transition:none}
+body.is-paused .pg-accordion::details-content{transition:none!important}

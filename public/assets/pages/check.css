@@ -1,0 +1,36 @@
+/* K19 · Checkbox with a drawn check (pattern of the D4 board, check only).
+   The native input stays in place (focusable, labelled, works without JS) and
+   sits invisibly over the drawn box. The check pops with the "bouncy" spring
+   (~4.6% overshoot, inside the 10% exception) exposed by spring.js as
+   --pg-ease-check; reduced motion or pause shows it without movement.
+   Markup:
+   <label class="pg-check">
+     <input type="checkbox" id="maior" name="maior">
+     <span class="pg-check-box" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span>
+     <span class="pg-check-text">Tenho 18 anos ou mais.</span>
+   </label> */
+.pg-check{position:relative;display:grid;grid-template-columns:44px minmax(0,1fr);align-items:start;column-gap:8px;min-height:44px;cursor:pointer;line-height:1.45}
+.pg-check>input{position:absolute;left:0;top:0;width:44px;height:44px;margin:0;opacity:0;cursor:pointer;z-index:1}
+.pg-check-box{display:grid;place-items:center;width:44px;height:44px}
+.pg-check-box::before{content:'';grid-area:1/1;width:24px;height:24px;border:2px solid currentColor;border-radius:6px;background:transparent;transition:background-color 160ms ease,border-color 160ms ease}
+.pg-check-box svg{grid-area:1/1;width:18px;height:18px;fill:none;stroke:var(--floresta,#0F2E24);stroke-width:3;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:24;stroke-dashoffset:24;transform:scale(.6);opacity:0;transition:stroke-dashoffset 240ms ease,opacity 120ms ease}
+.pg-check-text{padding-top:10px}
+.pg-check>input:checked+.pg-check-box::before{background:var(--lima,#D9ED93);border-color:var(--lima,#D9ED93)}
+.pg-section--papel .pg-check>input:checked+.pg-check-box::before,.pg-check--on-papel>input:checked+.pg-check-box::before{background:var(--floresta,#0F2E24);border-color:var(--floresta,#0F2E24)}
+.pg-section--papel .pg-check-box svg,.pg-check--on-papel .pg-check-box svg{stroke:var(--papel,#F3F1E9)}
+.pg-check>input:checked+.pg-check-box svg{stroke-dashoffset:0;opacity:1;transform:scale(1);animation:pg-check-pop 600ms var(--pg-ease-check,cubic-bezier(.25,1,.5,1)) both}
+.pg-check>input:focus-visible+.pg-check-box::before{outline:3px solid var(--foco,currentColor);outline-offset:3px}
+.pg-check>input[aria-invalid=true]+.pg-check-box::before{border-color:var(--erro-cor,#9B1C1C);border-width:3px}
+@keyframes pg-check-pop{from{transform:scale(.6)}to{transform:scale(1)}}
+@media (prefers-reduced-motion: reduce){
+  .pg-check-box::before,.pg-check-box svg{transition:none}
+  .pg-check>input:checked+.pg-check-box svg{animation:none;transform:none}
+}
+body.is-paused .pg-check-box::before,body.is-paused .pg-check-box svg{transition:none}
+body.is-paused .pg-check>input:checked+.pg-check-box svg{animation:none;transform:none}
+/* Forced colors (Windows high contrast): the filled box loses its background, so
+   the tick and the box border use system colours that stay visible on Canvas. */
+@media (forced-colors: active){
+  :root .pg-check>input:checked+.pg-check-box::before{border-color:Highlight}
+  :root .pg-check>input:checked+.pg-check-box svg{stroke:CanvasText}
+}

@@ -1,0 +1,24 @@
+/* K6 · Deck. Without JS, in reduced motion or with the pause button, the cards
+   are a vertical list. In "stack" mode the active card sits on top; each level
+   behind is 24 px higher and scaleX(.95) narrower (set by deck.js as
+   --deck-y / --deck-sx); an exchange takes 400 ms ease. */
+.pg-deck{min-width:0}
+.pg-deck-stage{display:grid;gap:16px;outline-offset:6px}
+.pg-deck-card{min-width:0}
+.pg-deck-nav{display:none}
+.pg-deck-nav>button{display:grid;place-items:center;width:var(--alvo,44px);height:var(--alvo,44px);min-width:44px;border-radius:50%;border:1px solid currentColor;background:transparent;color:inherit;font:400 1.25rem/1 var(--sans);cursor:pointer}
+.pg-deck-nav>button[aria-disabled=true]{opacity:.45;cursor:default}
+.pg-deck-counter{margin:0;font-size:.875rem;font-variant-numeric:tabular-nums}
+
+.pg-deck[data-deck-mode=stack] .pg-deck-stage{gap:0;padding-top:48px;touch-action:pan-y;isolation:isolate}
+.pg-deck[data-deck-mode=stack] .pg-deck-card{grid-area:1/1;transform-origin:50% 0;transform:translateY(var(--deck-y,0px)) scaleX(var(--deck-sx,1));transition:transform 400ms ease,opacity 400ms ease,visibility 0s linear 0s;will-change:transform}
+.pg-deck[data-deck-mode=stack] .pg-deck-card.is-active{z-index:10;transform:none}
+.pg-deck[data-deck-mode=stack] .pg-deck-card[data-level="1"]{z-index:9}
+.pg-deck[data-deck-mode=stack] .pg-deck-card[data-level="2"]{z-index:8}
+.pg-deck[data-deck-mode=stack] .pg-deck-card[data-level="3"]{z-index:7;opacity:0;visibility:hidden;transition:transform 400ms ease,opacity 400ms ease,visibility 0s linear 400ms}
+.pg-deck[data-deck-mode=stack] .pg-deck-card[data-level=gone]{z-index:11;opacity:0;visibility:hidden;transform:translateX(calc(-100% - 32px)) rotate(-6deg);transition:transform 400ms ease,opacity 400ms ease,visibility 0s linear 400ms;pointer-events:none}
+.pg-deck[data-deck-mode=stack] .pg-deck-nav{display:grid;grid-template-columns:44px minmax(0,1fr) 44px;align-items:center;justify-items:center;gap:12px;margin-top:20px}
+.pg-deck-stage[data-dragging=true]{cursor:grabbing;user-select:none}
+
+@media (prefers-reduced-motion: reduce){.pg-deck-card{transition:none!important}}
+body.is-paused .pg-deck-card{transition:none!important}

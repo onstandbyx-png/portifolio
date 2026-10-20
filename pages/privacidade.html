@@ -1,0 +1,220 @@
+<!doctype html>
+<!--
+  MODELO COMPARTILHADO DAS PÁGINAS PARALELAS (copiar esta casca para pages/criadores.html,
+  pages/criadores-ao-vivo.html e pages/vagas.html; SPEC 2.1 a 2.8). Este comentário não é copiado.
+
+  1. Servidor: server.mjs já responde /criadores, /criadores/ao-vivo, /vagas e /privacidade
+     (308 da forma com barra, preservando a query). pages/ fica fora de public/: o HTML só sai pela rota.
+     Caminhos sempre absolutos (/assets/...), porque /criadores/ao-vivo tem outra base relativa.
+
+  2. head, nesta ordem:
+     meta charset, viewport (width=device-width,initial-scale=1,viewport-fit=cover), theme-color #0F2E24;
+     title e description do arquivo de copy (seção 0); link rel=canonical com a URL absoluta da rota
+     (https://portifolio-github-production.up.railway.app/criadores etc.); og:title, og:description,
+     og:type website, og:locale pt_BR, og:url (= canonical), og:image /assets/creative/og-cover.png;
+     ícone /assets/creative/favicon.svg;
+     preload só da Inter: link rel=preload href=/assets/fonts/InterVariable.woff2 as=font type=font/woff2 crossorigin;
+     CSS: /assets/pages/base.css sempre; depois só o que a página usa:
+       accordion.css (FAQ), check.css (checkbox 18+ e consentimento), flip.css, deck.css,
+       molduras: celular = /assets/showcase/device-frame.css + /assets/showcase/device-premium.css + /assets/pages/devices.css;
+                 notebook = /assets/showcase/device-premium.css + /assets/pages/devices.css (ver devices.js);
+       e o CSS próprio da página em /assets/pages/.
+     Sem JS, esconder os botões que dependem de script: noscript com style .menu-toggle,.motion-toggle{display:none!important}
+       (copiar a linha desta página; o CSP permite estilo inline, nunca script inline).
+     Scripts: script src=/assets/profile.js defer (clássico, ANTES dos módulos) e um único
+       script type=module com a entrada da página (/assets/pages/criadores.js, ao-vivo.js, vagas.js),
+       que importa ./shell.js e os componentes. Página sem entrada própria usa /assets/pages/shell.js.
+     Proibido: script inline, atributos on*, style com url() externa, iframe ou embed de terceiros,
+       fetch/XMLHttpRequest/sendBeacon/POST, window.open, dado de formulário em localStorage ou na URL.
+       /vagas: nenhum JobPosting nem ld+json de vaga.
+
+  3. body: class pg e data-page com a rota. Ordem fixa:
+     a.pg-skip href=#conteudo "Pular para o conteúdo" (primeiro foco);
+     header.site-header#topo (copiar o desta página) com:
+       a.pg-brand para / (aria-label "Smile N, início");
+       nav.pg-nav aria-label "Navegação principal": Trabalhos /#trabalhos, Serviços /#categorias,
+         Para criadores /criadores, Ao vivo /criadores/ao-vivo; aria-current=page no item atual;
+       CTA da página: a.pg-btn.pg-btn--primary.pg-header-cta com data-header-cta e href para a âncora do
+         formulário ("Montar meu kit ↓" #montar, "Montar meu diagnóstico ↓" #diagnostico, "Entrar no banco ↓" #entrar).
+         O shell mostra o CTA (a partir de 720 px) quando o hero sai da tela; marque o hero com data-hero;
+       button#motion-toggle.motion-toggle (obrigatório: /assets/sections/motion.js lê este botão);
+       button#menu-toggle.menu-toggle aria-controls=mobile-nav aria-expanded=false;
+       div#mobile-nav.pg-menu hidden: nav "Navegação móvel" com os 4 links (data-menu-item),
+         o mesmo CTA (a.pg-btn.pg-btn--primary data-menu-item) e button.pg-menu-motion data-motion-proxy data-menu-item.
+     Seletor de trilha (só nas duas páginas de criadores, logo no início do hero):
+       nav.pg-track aria-label "Escolha a página do seu formato" com dois links:
+       "Redes sociais" /criadores e "Vídeo e live" /criadores/ao-vivo; aria-current=page no atual.
+     main#conteudo tabindex=-1 com um único h1; seções section.pg-section com pg-section--papel ou
+       pg-section--floresta, alternando como manda a SPEC 3; conteúdo em div.pg-container.
+       Títulos com revelação (K12): atributo data-reveal-heading. Entradas de 450 ms: classe reveal
+       (agrupe com data-reveal-group para o intervalo de 60 ms). Sem JS tudo fica visível.
+     footer.site-footer fora do main (copiar o desta página). Nas páginas de criadores, acrescentar
+       antes de "Voltar ao topo" um p com a faixa de não afiliação do arquivo de copy (seção 11).
+
+  4. Formulário (SPEC 4.0): form novalidate; chips = button type=button aria-pressed dentro de
+     fieldset data-chips=single|multi data-name=...; checkbox 18+ com o padrão de check.css;
+     botão submit "Revisar mensagem" começa disabled (o JS habilita); div data-error-summary hidden antes
+     dos campos; painel de revisão:
+       section data-handoff-panel hidden > h3 data-handoff-title, div.pg-review-message data-handoff-message,
+       a data-handoff=whatsapp target=_blank rel="noopener noreferrer" (sem href), a data-handoff=email (sem href),
+       button data-handoff=copy, button data-handoff=edit, p role=status data-handoff-status.
+     Abaixo do botão, p data-nojs-fallback "Sem JavaScript? Escreva para ..." com o mailto: do modelo
+       (handoff.mailtoHref gera o mesmo formato; quebras %0D%0A). O mountReview esconde esse parágrafo.
+     JS: builder.js (mountBuilder, createValidator) + handoff.js (buildHandoff, mountReview, refOrigin).
+
+  5. Testes: tests/pages.test.mjs já cobre rotas, CSP, HTML e handoff de toda página que existir em pages/.
+     Testes unitários próprios: tests/pages-ROTA.test.mjs. Navegador: criar tests/pages/route-ROTA.mjs
+     (exportar route, slug e checks; ver tests/pages/route-privacidade.mjs); o runner
+     tests/browser-pages.mjs encontra o arquivo sozinho e já roda a casca, o CSP, a rede, o contraste,
+     os alvos, o movimento reduzido e as capturas de 390 e 1440 em qa/pages/.
+-->
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#0F2E24">
+  <title>Aviso de privacidade · Smile N</title>
+  <meta name="description" content="Como Smile N trata os dados das mensagens montadas nas páginas para criadores e no banco de talentos: o que é coletado, para quê, por quanto tempo e como pedir acesso, correção ou exclusão.">
+  <link rel="canonical" href="https://portifolio-github-production.up.railway.app/privacidade">
+  <meta property="og:title" content="Aviso de privacidade · Smile N">
+  <meta property="og:description" content="O que é coletado, para quê, por quanto tempo e como exercer seus direitos (LGPD, art. 18).">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="pt_BR">
+  <meta property="og:url" content="https://portifolio-github-production.up.railway.app/privacidade">
+  <meta property="og:image" content="https://portifolio-github-production.up.railway.app/assets/creative/og-cover.png">
+  <meta name="author" content="Smile N">
+  <link rel="icon" href="/assets/creative/favicon.svg" type="image/svg+xml">
+  <link rel="preload" href="/assets/fonts/InterVariable.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="/assets/pages/base.css">
+  <noscript><style>.menu-toggle,.motion-toggle{display:none!important}</style></noscript>
+  <script src="/assets/profile.js" defer></script>
+  <script type="module" src="/assets/pages/shell.js"></script>
+</head>
+<body class="pg" data-page="privacidade">
+  <a class="pg-skip" href="#conteudo">Pular para o conteúdo</a>
+  <header class="site-header" id="topo">
+    <div class="pg-container site-header-inner">
+      <a class="pg-brand" href="/" aria-label="Smile N, início"><span class="pg-brand-name">Smile N</span><span class="pg-brand-signature">ideia ↗ execução.</span></a>
+      <nav class="pg-nav" aria-label="Navegação principal"><a href="/#trabalhos">Trabalhos</a><a href="/#categorias">Serviços</a><a href="/criadores">Para criadores</a><a href="/criadores/ao-vivo">Ao vivo</a></nav>
+      <button id="motion-toggle" class="motion-toggle" type="button" aria-pressed="false" aria-label="Pausar movimento e reprodução" title="Pausar movimento e reprodução"><span class="motion-toggle-icon" aria-hidden="true">Ⅱ</span><span class="motion-toggle-text">Pausar movimento</span></button>
+      <button class="menu-toggle" id="menu-toggle" type="button" aria-label="Abrir menu" aria-controls="mobile-nav" aria-expanded="false"><span></span><span></span></button>
+    </div>
+    <div class="pg-menu" id="mobile-nav" hidden>
+      <nav aria-label="Navegação móvel"><a href="/#trabalhos" data-menu-item>Trabalhos</a><a href="/#categorias" data-menu-item>Serviços</a><a href="/criadores" data-menu-item>Para criadores</a><a href="/criadores/ao-vivo" data-menu-item>Ao vivo</a></nav>
+      <button class="pg-menu-motion" type="button" data-motion-proxy data-menu-item aria-pressed="false" aria-label="Pausar movimento e reprodução"><span class="motion-toggle-icon" aria-hidden="true">Ⅱ</span><span class="motion-toggle-text">Pausar movimento</span></button>
+    </div>
+  </header>
+
+  <main id="conteudo" tabindex="-1">
+    <section class="pg-section pg-section--floresta pg-hero" data-hero aria-labelledby="privacidade-titulo">
+      <div class="pg-container">
+        <h1 id="privacidade-titulo" data-reveal-heading>Aviso de privacidade</h1>
+        <p class="pg-lead">Versão 2026-10</p>
+      </div>
+    </section>
+
+    <section class="pg-section pg-section--papel" aria-label="Texto do aviso">
+      <div class="pg-container pg-prose">
+        <section aria-labelledby="quem-cuida">
+          <h2 id="quem-cuida">Quem cuida dos seus dados</h2>
+          <p>Smile N. Contato de privacidade: <a href="mailto:smillepls@gmail.com" data-profile-link="email"><span data-profile-text="email">smillepls@gmail.com</span></a>.</p>
+        </section>
+
+        <section aria-labelledby="o-que-coleto">
+          <h2 id="o-que-coleto">O que eu coleto e para quê</h2>
+          <ul>
+            <li><strong>Pedido de proposta (páginas para criadores):</strong> seu @, plataforma, serviços de interesse e, nas lives, frequência, duração, nicho, objetivo e, se você quiser, o link do canal. Uso para preparar a proposta que você pediu. Base legal: procedimentos preliminares a contrato, a seu pedido (LGPD, art. 7º, V).</li>
+            <li><strong>Banco de talentos (/vagas):</strong> como você quer ser chamado(a), área, experiência, links de portfólio e disponibilidade. Uso para avisar sobre oportunidades compatíveis. Base legal: consentimento (art. 7º, I).</li>
+            <li><strong>Dados que você tornou públicos</strong> (por exemplo, o número de seguidores no seu perfil) só são consultados para preparar a proposta que você pediu.</li>
+            <li>Não peço e não uso foto, idade, estado civil, dados de saúde, origem racial, religião nem documentos.</li>
+          </ul>
+        </section>
+
+        <section aria-labelledby="como-contato">
+          <h2 id="como-contato">Como o contato acontece</h2>
+          <p>O formulário não envia nada sozinho. Ele monta uma mensagem que você revisa e envia pelo WhatsApp ou pelo seu e-mail. A mensagem passa pelos serviços do WhatsApp (Meta) ou do seu provedor de e-mail, e pelo meu provedor de e-mail, que podem guardar dados fora do Brasil, conforme as garantias da LGPD (art. 33). O site fica hospedado na Railway, que mantém registros técnicos de acesso (como IP, data e hora) pelo prazo do plano contratado, sem o conteúdo do formulário. O site não usa cookies de publicidade nem ferramentas de análise de terceiros.</p>
+        </section>
+
+        <section aria-labelledby="compartilho">
+          <h2 id="compartilho">Com quem eu compartilho</h2>
+          <p>Só com os serviços acima, para o contato funcionar. Não vendo dados.</p>
+        </section>
+
+        <section aria-labelledby="quanto-tempo">
+          <h2 id="quanto-tempo">Por quanto tempo</h2>
+          <ul>
+            <li>Pedido de proposta sem contrato: até 12 meses depois do último contato.</li>
+            <li>Banco de talentos: até 12 meses. Depois disso, apago, a não ser que você renove.</li>
+            <li>Se houver contrato, guardo o que a lei exigir.</li>
+          </ul>
+        </section>
+
+        <section aria-labelledby="direitos">
+          <h2 id="direitos">Seus direitos (LGPD, art. 18)</h2>
+          <p>Você pode confirmar se trato seus dados, acessar, corrigir, apagar, saber com quem compartilho, revogar o consentimento e saber o que acontece se não consentir. Basta escrever para <a href="mailto:smillepls@gmail.com" data-profile-link="email"><span data-profile-text="email">smillepls@gmail.com</span></a>. Respondo sem custo, nos prazos da LGPD e da regulamentação da ANPD. Você também pode reclamar à ANPD (Agência Nacional de Proteção de Dados) ou aos órgãos de defesa do consumidor.</p>
+        </section>
+
+        <section aria-labelledby="menores">
+          <h2 id="menores">Menores de 18 anos</h2>
+          <p>Meus formulários são só para maiores de 18. Se eu receber dados de menores, apago e, se for o caso, falo com o responsável legal.</p>
+        </section>
+
+        <section aria-labelledby="seguranca">
+          <h2 id="seguranca">Segurança</h2>
+          <p>O acesso às conversas e aos e-mails é só meu, e reviso periodicamente para apagar o que venceu.</p>
+        </section>
+
+        <section aria-labelledby="mudancas">
+          <h2 id="mudancas">Mudanças</h2>
+          <p>Se este aviso mudar de forma relevante, aviso com destaque nesta página. Se você deu consentimento e não concordar, pode revogá-lo.</p>
+        </section>
+
+        <section id="acessibilidade" aria-labelledby="acessibilidade-titulo">
+          <h2 id="acessibilidade-titulo">Acessibilidade</h2>
+          <p>Estas páginas seguem as diretrizes WCAG 2.2 nível AA: rótulos visíveis, navegação por teclado, contraste e respeito à preferência por menos movimento. Se algo não funcionar para você, escreva para <a href="mailto:smillepls@gmail.com" data-profile-link="email"><span data-profile-text="email">smillepls@gmail.com</span></a>.</p>
+        </section>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="pg-container">
+      <div class="site-footer-grid">
+        <div class="site-footer-brand">
+          <a class="pg-brand" href="/" aria-label="Smile N, início"><span class="pg-brand-name">Smile N</span><span class="pg-brand-signature">ideia ↗ execução.</span></a>
+          <p>Smile N · Diretor criativo e redator · © 2026</p>
+        </div>
+        <nav aria-labelledby="rodape-navegar">
+          <h2 id="rodape-navegar">Navegar</h2>
+          <ul>
+            <li><a href="/">Início</a></li>
+            <li><a href="/#trabalhos">Trabalhos</a></li>
+            <li><a href="/criadores">Para criadores</a></li>
+            <li><a href="/criadores/ao-vivo">Criadores ao vivo</a></li>
+            <li><a href="/vagas">Banco de talentos</a></li>
+          </ul>
+        </nav>
+        <div>
+          <h2 id="rodape-contato">Contato</h2>
+          <ul aria-labelledby="rodape-contato">
+            <li><a href="https://wa.me/5511985568208" target="_blank" rel="noopener noreferrer" data-profile-link="whatsapp">WhatsApp <span aria-hidden="true">↗</span><span class="pg-visually-hidden"> (abre em nova aba)</span></a></li>
+            <li><a href="mailto:smillepls@gmail.com" data-profile-link="email">E-mail <span aria-hidden="true">↗</span></a></li>
+          </ul>
+        </div>
+        <div>
+          <h2 id="rodape-privacidade">Privacidade</h2>
+          <ul aria-labelledby="rodape-privacidade">
+            <li><a href="/privacidade" aria-current="page">Aviso de privacidade</a></li>
+            <li>Pedidos sobre seus dados: <a href="mailto:smillepls@gmail.com" data-profile-link="email"><span data-profile-text="email">smillepls@gmail.com</span></a></li>
+            <li><a href="/privacidade#acessibilidade"><svg class="pg-a11y-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="10.5" fill="none" stroke="currentColor" stroke-width="1.5"/><circle cx="12" cy="6.4" r="1.7" fill="currentColor"/><path d="M6.4 9.3c1.9.5 3.7.8 5.6.8s3.7-.3 5.6-.8M12 10.1v3.7M12 13.8l-2.5 4.5M12 13.8l2.5 4.5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>Acessibilidade</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="site-footer-legal">
+        <p>Smile N · contato e privacidade: <span data-profile-text="email">smillepls@gmail.com</span></p>
+      </div>
+      <a class="site-footer-top" href="#topo">Voltar ao topo <span aria-hidden="true">↑</span></a>
+    </div>
+  </footer>
+</body>
+</html>

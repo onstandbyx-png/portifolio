@@ -11,7 +11,12 @@ const mime = {'.html':'text/html; charset=utf-8','.css':'text/css; charset=utf-8
 const routes = new Map([
   ['/','index.html'],['/index.html','index.html'],
   ['/assets/portfolio.css','src/styles.css'],['/assets/portfolio.js','src/portfolio.js'],
+  // Parallel pages: static HTML outside public/, same CSP and headers as the home.
+  ['/criadores','pages/criadores.html'],['/criadores/ao-vivo','pages/criadores-ao-vivo.html'],
+  ['/vagas','pages/vagas.html'],['/privacidade','pages/privacidade.html'],
 ]);
+// Canonical form without a trailing slash; the query string is preserved.
+const redirects = new Map([['/criadores/','/criadores'],['/criadores/ao-vivo/','/criadores/ao-vivo'],['/vagas/','/vagas'],['/privacidade/','/privacidade']]);
 const headers = {
   'X-Content-Type-Options':'nosniff',
   'Referrer-Policy':'strict-origin-when-cross-origin',
@@ -45,6 +50,7 @@ createServer(async (req,res)=>{
   const url = new URL(req.url || '/', 'http://localhost');
   let path; try { path=decodeURIComponent(url.pathname); } catch { res.writeHead(400,headers); res.end('Invalid path'); return; }
   if(path==='/health'){res.writeHead(200,{'Content-Type':'text/plain; charset=utf-8',...headers});res.end('ok');return;}
+  if(redirects.has(path)){res.writeHead(308,{Location:redirects.get(path)+url.search,...headers});res.end();return;}
   const relative=routes.get(path) ?? (path.startsWith('/assets/') ? 'public'+path : null);
   if(!relative || relative.includes('\0')){res.writeHead(404,headers);res.end('Not found');return;}
   const full=resolve(root,relative);

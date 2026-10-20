@@ -1,0 +1,83 @@
+/* K15 · "Da live ao corte": live timeline, storyboard frame and player controls.
+   Ported from the .fdb-video-* rules of /assets/showcase/deck-backs.css (P10)
+   without the #colecao scope. The frame morphs 16:9 ↔ 9:16 in 350 ms
+   (cubic-bezier(.2,.9,.25,1.02)); the playhead glides to a mark in 500 ms
+   (cubic-bezier(.25,.1,.25,1)). Reduced motion or pause: no transition. */
+
+/* ---------- timeline of a 3-hour live ---------- */
+.av-cut-timeline{--cut-head:0;display:grid;gap:12px;min-width:0}
+.av-cut-timeline-label{margin:0;font-size:.875rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--floresta,#0F2E24)}
+.av-cut-track{position:relative;container-type:inline-size;height:12px;margin:14px 11px 22px;border-radius:99px;background:rgba(24,37,31,.16)}
+.av-cut-track>i{position:absolute;top:50%;left:calc(var(--at) * 100%);width:14px;height:14px;margin:-7px 0 0 -7px;border-radius:50%;background:var(--papel,#F3F1E9);box-shadow:0 0 0 3px var(--floresta,#0F2E24)}
+.av-cut-track>i>b{position:absolute;top:18px;left:50%;transform:translateX(-50%);font-size:.875rem;font-weight:600;font-variant-numeric:tabular-nums;color:var(--tinta-2,#3E4D46);white-space:nowrap}
+.av-cut-fill{position:absolute;left:0;top:0;bottom:0;width:100%;border-radius:inherit;background:var(--floresta,#0F2E24);transform-origin:0 50%;transform:scaleX(var(--cut-head));transition:transform var(--pg-dur-step,500ms) var(--pg-ease-step,cubic-bezier(.25,.1,.25,1))}
+/* The rail is a zero-width line that travels the track (100cqi = track width), so
+   moving the playhead never widens the page. */
+.av-cut-rail{position:absolute;top:0;bottom:0;left:0;width:0;transform:translateX(calc(var(--cut-head) * 100cqi));transition:transform var(--pg-dur-step,500ms) var(--pg-ease-step,cubic-bezier(.25,.1,.25,1))}
+.av-cut-head{position:absolute;top:50%;left:0;width:22px;height:22px;margin:-11px 0 0 -11px;border-radius:50%;background:var(--lima,#D9ED93);box-shadow:0 0 0 3px var(--floresta,#0F2E24)}
+.av-cut-marks{display:flex;flex-wrap:wrap;gap:8px}
+.av-cut-marks .pg-chip b{font-variant-numeric:tabular-nums}
+
+/* ---------- storyboard frame ---------- */
+/* --cut-w keeps the 108% base inside the column (no horizontal page scroll). */
+.av-cut-stage{container-type:inline-size;min-width:0}
+.av-cut-device{--cut-w:calc(100cqw / 1.08);--cut-pad:8px;--cut-h:calc((var(--cut-w) - 2 * var(--cut-pad)) * 9 / 16);display:flex;flex-direction:column;align-items:center;width:var(--cut-w);max-width:100%;margin-inline:auto;transition:width var(--pg-dur-morph,350ms) var(--pg-ease-morph,cubic-bezier(.2,.9,.25,1.02))}
+.av-cut-device[data-ratio="9:16"]{--cut-w:min(220px,100cqw);--cut-pad:6px;--cut-h:calc((var(--cut-w) - 2 * var(--cut-pad)) * 16 / 9)}
+.av-cut-frame{box-sizing:border-box;width:100%;padding:var(--cut-pad);border-radius:14px 14px 6px 6px;background:#101714;box-shadow:inset 0 0 0 1px rgba(139,154,145,.22),0 18px 28px -16px rgba(0,0,0,.55);transition:border-radius var(--pg-dur-morph,350ms) ease}
+.av-cut-device[data-ratio="9:16"] .av-cut-frame{border-radius:30px}
+.av-cut-base{width:108%;height:12px;margin-top:-1px;border-radius:2px 2px 40% 40% / 2px 2px 100% 100%;background:linear-gradient(180deg,#c9cfcb,#7f8a85);transition:opacity var(--pg-dur-morph,350ms) ease}
+.av-cut-device[data-ratio="9:16"] .av-cut-base{opacity:0}
+.av-cut-screen{container:cut/size;position:relative;width:100%;height:var(--cut-h);overflow:hidden;border-radius:6px;background:#21473A;color:#F3F1E9;transition:height var(--pg-dur-morph,350ms) var(--pg-ease-morph,cubic-bezier(.2,.9,.25,1.02)),border-radius var(--pg-dur-morph,350ms) ease}
+.av-cut-device[data-ratio="9:16"] .av-cut-screen{border-radius:24px}
+
+/* Illustration: a cracked vase on the wheel; each scene frames it differently. */
+.av-cut-art{position:absolute;inset:0;overflow:hidden}
+.av-cut-art-inner{position:absolute;inset:0;transform-origin:42% 62%;transition:transform 900ms var(--pg-ease-step,cubic-bezier(.25,.1,.25,1))}
+.av-cut-art .av-cam-table{position:absolute;left:0;right:0;bottom:0;height:34%;background:#183A2F}
+.av-cut-art .av-cam-wheel{position:absolute;left:24%;bottom:20%;width:40%;height:11%;border-radius:50%;background:#0B2119;box-shadow:0 1.2cqh 0 #07170F}
+.av-cut-art .av-cam-vase{position:absolute;left:35%;bottom:25%;width:18%;height:38%;border-radius:42% 42% 30% 30% / 34% 34% 24% 24%;background:#B8754F;box-shadow:inset -1.6cqw 0 0 #8E5537}
+.av-cut-art .av-cam-vase::before{content:'';position:absolute;left:24%;right:24%;top:-12%;height:18%;border-radius:40% 40% 10% 10%;background:#B8754F;box-shadow:inset -1cqw 0 0 #8E5537}
+.av-cut-art .av-cam-vase::after{content:'';position:absolute;left:42%;top:2%;width:20%;height:56%;background:#2B1A10;clip-path:polygon(38% 0,62% 0,46% 28%,80% 52%,50% 100%,34% 100%,58% 55%,22% 30%)}
+.av-cut-screen[data-scene="0"] .av-cut-art-inner{transform:scale(1.35)}
+.av-cut-screen[data-scene="1"] .av-cut-art-inner{transform:scale(1)}
+.av-cut-screen[data-scene="2"] .av-cut-art-inner{transform:scale(.9) translateX(-8%)}
+.av-cut-end{position:absolute;right:6%;top:50%;width:30%;aspect-ratio:1;border-radius:50%;background:#0F2E24;box-shadow:0 0 0 max(4px,1cqw) #B8754F;opacity:0;transform:translateY(-50%) scale(.9);transition:opacity 450ms ease,transform 450ms var(--pg-ease-step,cubic-bezier(.25,.1,.25,1))}
+.av-cut-screen[data-scene="2"] .av-cut-end{opacity:1;transform:translateY(-50%)}
+@container cut (orientation: portrait){
+  .av-cut-art .av-cam-wheel{left:14%;bottom:42%;width:72%;height:6%}
+  .av-cut-art .av-cam-vase{left:32%;bottom:45%;width:36%;height:22%}
+  .av-cut-art .av-cam-table{height:56%}
+  .av-cut-end{right:auto;left:50%;top:24%;width:44%;transform:translateX(-50%) scale(.9)}
+  .av-cut-screen[data-scene="2"] .av-cut-end{transform:translateX(-50%)}
+}
+
+/* Copy on the frame: tag, title, caption (only after a mark, or in scene 2). */
+.av-cut-copy{position:absolute;z-index:2;left:max(10px,5cqw);right:max(10px,5cqw);bottom:calc(max(30px,12cqh) + max(8px,4cqh));display:flex;flex-direction:column;align-items:flex-start;gap:max(6px,1.5cqh)}
+.av-cut-copy p{margin:0}
+.av-cut-tag{padding:.2em .55em;border-radius:4px;background:#0F2E24;color:#D9ED93;font-size:max(14px,2.4cqw);font-weight:700;letter-spacing:.08em}
+.av-cut-title{max-width:30ch;padding:.25em .5em;border-radius:6px;background:#0F2E24;color:#F3F1E9;font-size:max(17px,4.4cqw);font-weight:750;line-height:1.12;letter-spacing:-.02em;text-wrap:balance}
+.av-cut-caption{display:none;padding:.3em .6em;border-radius:6px;background:#F3F1E9;color:#0F2E24;font-size:max(14px,2.8cqw);font-weight:600;line-height:1.3}
+.av-cut[data-cut] .av-cut-caption,.av-cut-screen[data-scene="1"] .av-cut-caption{display:block}
+.av-cut-bar{position:absolute;z-index:3;left:0;right:0;bottom:0;display:flex;align-items:center;gap:10px;min-height:max(30px,12cqh);padding:0 max(10px,3cqw);background:#0B2119}
+.av-cut-progress-track{flex:1 1 auto;height:4px;border-radius:4px;background:rgba(243,241,233,.28);overflow:hidden}
+.av-cut-progress-track>i{display:block;height:100%;background:#9CCBB0;transform-origin:0 50%;transform:scaleX(0)}
+.av-cut-clock{flex:none;font-size:.875rem;font-weight:600;font-variant-numeric:tabular-nums;color:#F3F1E9;white-space:nowrap}
+@container cut (orientation: portrait){
+  .av-cut-title{font-size:max(17px,8.2cqw)}
+  .av-cut-tag,.av-cut-caption{font-size:max(14px,5.2cqw)}
+  .av-cut-copy{bottom:calc(max(30px,9cqh) + max(10px,4cqh))}
+}
+
+/* ---------- player controls (44 px targets) ---------- */
+.av-cut-controls{display:flex;flex-wrap:wrap;align-items:center;gap:10px}
+.av-play{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-width:132px;min-height:48px;padding:0 20px;border:2px solid var(--floresta,#0F2E24);border-radius:999px;background:var(--floresta,#0F2E24);color:var(--papel,#F3F1E9);font-weight:600;font-size:1rem}
+.av-play svg{width:18px;height:18px;fill:currentColor}
+.av-play .av-icon-pause,.av-play[data-state=playing] .av-icon-play{display:none}
+.av-play[data-state=playing] .av-icon-pause{display:block}
+.av-round{display:grid;place-items:center;width:48px;height:48px;border:2px solid currentColor;border-radius:50%;background:transparent;color:inherit}
+.av-round svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+
+@media (prefers-reduced-motion: reduce){
+  .av-cut,.av-cut *{transition:none!important}
+}
+body.is-paused .av-cut,body.is-paused .av-cut *{transition:none!important}
