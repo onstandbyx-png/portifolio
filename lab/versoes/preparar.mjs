@@ -44,8 +44,16 @@ for (const era of eras) {
     await extract(era.commit, dir);
     if (!existsSync(join(dir, 'server.mjs'))) throw new Error('sem server.mjs');
     await symlink(join(ROOT, 'node_modules'), join(dir, 'node_modules'), 'dir');
-    if (existsSync(join(dir, 'scripts', 'build-badges.mjs'))) await run('node', ['scripts/build-badges.mjs'], {cwd: dir});
-    status[era.id] = {ok: true, ms: Date.now() - started};
+    let note = '';
+    if (existsSync(join(dir, 'scripts', 'build-badges.mjs'))) {
+      // Some branch builds chain their own tests after bundling; a failing test keeps the bundle.
+      try { await run('node', ['scripts/build-badges.mjs'], {cwd: dir}); }
+      catch (error) {
+        if (!existsSync(join(dir, 'public', 'assets', 'badge-build', 'index.js'))) throw error;
+        note = `bundle gerado; ${error.message}`;
+      }
+    }
+    status[era.id] = {ok: true, ms: Date.now() - started, ...(note && {note})};
     console.log(`versão ${era.id} (${era.commit.slice(0, 7)}) pronta`);
   } catch (error) {
     status[era.id] = {ok: false, error: String(error.message || error)};

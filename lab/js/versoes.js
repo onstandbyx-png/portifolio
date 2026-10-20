@@ -69,7 +69,7 @@ export async function mountVersoes(root) {
     const v = porId.get(id);
     const wrap = document.createElement('figure');
     wrap.className = 'vs-frame';
-    wrap.innerHTML = `<figcaption><b>${esc(PROJETOS[v.projeto])} · ${esc(v.data)}</b> ${esc(v.rotulo)} <code>${esc(v.commit)}</code></figcaption><div class="vs-viewport"><iframe title="${esc(v.rotulo)}" src="/v/${id}/"></iframe></div>`;
+    wrap.innerHTML = `<figcaption><b>${esc(PROJETOS[v.projeto])} · ${esc(v.data)}</b> ${esc(v.rotulo)} <code>${esc(v.commit)}</code></figcaption><div class="vs-viewport"><iframe title="${esc(v.rotulo)}" src="/v/${id}/${foco?.caminho ? encodeURI(foco.caminho) : ''}"></iframe></div>`;
     const iframe = wrap.querySelector('iframe');
     iframe.style.width = largura ? `${largura}px` : '100%';
     iframe.addEventListener('load', () => { if (foco) setTimeout(() => focar(iframe, foco), 600); });
