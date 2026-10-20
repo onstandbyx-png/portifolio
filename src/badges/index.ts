@@ -9,18 +9,23 @@ const selectButtons = [...document.querySelectorAll<HTMLButtonElement>("[data-ba
 const flipButton = document.querySelector<HTMLButtonElement>("[data-badge-flip]");
 const cardStatus = document.querySelector<HTMLElement>("[data-badge-status]");
 const currentBadgeLabel = document.querySelector<HTMLElement>("[data-badge-current-label]");
+const continueLink = document.querySelector<HTMLAnchorElement>("[data-badge-link]");
+const touchCue = document.querySelector<HTMLElement>(".badge-touch-cue");
+const exhibit = stage?.closest<HTMLElement>(".hero-badge-exhibit");
 const reduced = matchMedia("(prefers-reduced-motion: reduce)");
 const motionToggle = document.querySelector<HTMLElement>(".motion-toggle");
 let instance: BadgeSceneHandle | null = null;
 let near = false, inView = false, visible = !document.hidden, loading = false;
+// The 3D bundle waits for the first intent with the badges or an idle moment after load.
+let idle = false, intent = false;
 let failed = false, ready = false;
 let selectedCard: 0 | 1 = 0;
 let restoringCardState = false;
 let layout: "pair" | "single" = "single";
 const cardFaces: [boolean, boolean] = [false, false];
 const cards = [
-  { name: "Fatos", kicker: "Fatos Desconhecidos · Experiência profissional", front: "Pesquisa, conteúdo e direção criativa.", back: "O recorte dá forma à história.", body: "Experiência em pesquisa, texto e direção criativa para construir narrativas e conteúdos.", href: "#editorial", link: "Conhecer a atuação editorial" },
-  { name: "smiile", kicker: "smiile · Projeto próprio", front: "Interfaces, produtos e novas possibilidades.", back: "Do visual ao que acontece depois.", body: "Direção visual e desenvolvimento de experiências para sites, aplicativos e sistemas.", href: "#sistemas", link: "Explorar as experiências digitais" },
+  { name: "Fatos", kicker: "Fatos Desconhecidos · Experiência profissional", front: "Pesquisa, conteúdo e direção criativa.", back: "O recorte dá forma à história.", body: "Experiência em pesquisa, texto e direção criativa para construir narrativas e conteúdos.", href: "#trabalhos", link: "Ver o estudo Fatos" },
+  { name: "smiile", kicker: "smiile · Projeto próprio", front: "Interfaces, produtos e novas possibilidades.", back: "Do visual ao que acontece depois.", body: "Direção visual e desenvolvimento de experiências para sites, aplicativos e sistemas.", href: "#laboratorio", link: "Ver a campanha smiile" },
 ] as const;
 let posterRevision = 0;
 const posterDecodes = new Map<string, Promise<void>>();
@@ -62,6 +67,11 @@ function reflectControls() {
   selectButtons.forEach((button, index) => button.setAttribute("aria-pressed", String(index === selectedCard)));
   if (currentBadgeLabel) currentBadgeLabel.textContent = `${card.name} · ${flipped ? "verso" : "selecionado"}`;
   if (controls) controls.dataset.activeCard = String(selectedCard);
+  // The arrows printed on the badge art are not links; this real link names the destination.
+  if (continueLink) {
+    continueLink.href = card.href;
+    continueLink.firstChild!.textContent = `${card.link} `;
+  }
   if (flipButton) {
     flipButton.setAttribute("aria-pressed", String(flipped));
     flipButton.setAttribute("aria-label", `Ver ${flipped ? "a frente" : "o verso"} do crachá ${card.name}`);
@@ -87,6 +97,13 @@ function setState(value: string) {
   if (!stage) return;
   stage.dataset.state = value;
   stage.setAttribute("aria-busy", String(value === "loading"));
+  reflectCue();
+}
+// The instruction matches what the visitor can actually do with the current input and renderer.
+function reflectCue() {
+  if (!touchCue || !stage) return;
+  const live = stage.dataset.state !== "fallback" && !reduced.matches;
+  touchCue.textContent = !live ? "Use “Ver verso” para ver o outro lado" : matchMedia("(hover: hover) and (pointer: fine)").matches ? "Arraste o crachá · clique para ver o verso" : "Arraste o crachá ou toque para virar";
 }
 function reflectCard(index: 0 | 1, flipped: boolean) {
   cardFaces[index] = flipped;
@@ -139,7 +156,7 @@ function failure(reason: unknown) {
   console.warn("Crachás em modo estático.", reason);
 }
 async function load() {
-  if (loading || failed || instance || !canvas || reduced.matches || !near) return;
+  if (loading || failed || instance || !canvas || reduced.matches || !(intent || (near && idle))) return;
   loading = true;
   setState("loading");
   let pending: BadgeSceneHandle | null = null;
@@ -183,12 +200,26 @@ if (stage && canvas) {
   const view = new IntersectionObserver(([entry]) => { inView = !!entry?.isIntersecting; sync(); }, { threshold: [0, .06, .2, .4] });
   approach.observe(stage);
   view.observe(stage);
+  // First interaction loads immediately; otherwise wait for idle time after load so the
+  // static poster stays the LCP image and parsing never competes with the first tap.
+  const firstIntent = () => { intent = true; void load(); };
+  for (const type of ["pointerdown", "pointerenter", "focusin"]) exhibit?.addEventListener(type, firstIntent, { once: true, passive: true });
+  const saveData = (navigator as Navigator & { connection?: { saveData?: boolean } }).connection?.saveData === true;
+  const whenIdle = () => {
+    if (saveData) return;
+    const markIdle = () => { idle = true; void load(); };
+    if ("requestIdleCallback" in window) requestIdleCallback(markIdle, { timeout: 2500 });
+    else setTimeout(markIdle, 1500);
+  };
+  if (document.readyState === "complete") whenIdle();
+  else addEventListener("load", whenIdle, { once: true });
   new ResizeObserver(resize).observe(canvas);
   document.addEventListener("visibilitychange", () => { visible = !document.hidden; sync(); });
   if (motionToggle) new MutationObserver(sync).observe(motionToggle, { attributes: true, attributeFilter: ["aria-pressed"] });
   reduced.addEventListener("change", () => {
     if (reduced.matches && !instance) setState("fallback");
-    else if (!instance && near) void load();
+    else if (!instance) void load();
+    reflectCue();
     sync();
   });
   selectButtons.forEach((button, index) => button.addEventListener("click", () => selectCard(index as 0 | 1)));

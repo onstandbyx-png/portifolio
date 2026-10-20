@@ -259,8 +259,8 @@
   width:33%;
   max-width:116px;
   padding:4px;
-  color:#657f6d;
-  font:500 clamp(9px,1vw,12px)/1.35 var(--sans,Inter,Arial,sans-serif);
+  color:#4f6a58;
+  font:500 12px/1.35 var(--sans,Inter,Arial,sans-serif);
   text-align:right;
   pointer-events:none;
   text-wrap:balance;
@@ -288,10 +288,9 @@
 }
 @media(max-width:420px){
   #trabalhos .rg-gallery .rg-card-interaction-hint{
-    width:32%;
-    max-width:94px;
+    width:40%;
+    max-width:126px;
     top:11px;right:11px;
-    font-size:10px;
   }
 }
 @media(prefers-reduced-motion:reduce){

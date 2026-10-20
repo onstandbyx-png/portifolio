@@ -20,9 +20,7 @@
 #laboratorio .sp-card-flip-cue span:last-child{white-space:nowrap;color:#718275;font-variant-numeric:tabular-nums}
 #laboratorio .sp-card-flip-cue:focus-visible,#editorial .es-swipe-nav button:focus-visible{outline:3px solid #406fca;outline-offset:-4px;z-index:2}
 #laboratorio .sp-campaign-card[data-card-surface-flip="ready"]{cursor:pointer}
-/* Overlay no longer obscures card art; keyboard access and full-card tap remain. */
-#trabalhos .rg-gallery .rg-flip:not(:focus-visible){opacity:0;border-color:transparent;background:transparent;box-shadow:none}
-#trabalhos .rg-gallery .rg-flip:focus-visible{opacity:1}
+/* The "Ver minha parte" pill stays visible (scroll-gallery.css); full-card tap remains. */
 #trabalhos .rg-gallery .rg-flip-hint{display:block;margin-top:10px;color:#61725f;font:500 12px/1.45 var(--sans,Inter,Arial,sans-serif)}
 #editorial .es-stage{touch-action:pan-y;cursor:grab;user-select:none;-webkit-user-select:none}
 #editorial .es-stage:active{cursor:grabbing}

@@ -1,4 +1,4 @@
-/** Context follows the artwork; the workflow starts with a useful result. */
+/** Context follows the artwork; the workflow starts from a visible request and an example result. */
 function mountCampaignContext() {
   const lab = document.querySelector('#laboratorio .sp-campaign');
   const layout = lab?.querySelector('.sp-peel-layout');
@@ -6,7 +6,7 @@ function mountCampaignContext() {
   if (!card || lab.querySelector('.campaign-summary')) return;
   const context = document.createElement('aside');
   context.className = 'campaign-summary';
-  context.innerHTML = '<span class="eyebrow">Conceito · copy · direção de arte</span><h3 data-campaign-benefit></h3><p data-campaign-delivery></p><button type="button" class="campaign-decision" aria-controls="campaign-note" aria-expanded="false">Ver decisão criativa <span aria-hidden="true">↗</span></button><a href="#contato" data-contact-service="Campanhas e anúncios">Conversar sobre uma campanha ↗</a>';
+  context.innerHTML = '<span class="eyebrow">Conceito · copy · direção de arte</span><h3 data-campaign-benefit></h3><p data-campaign-delivery></p><button type="button" class="campaign-decision" aria-controls="campaign-note" aria-expanded="false">Ver decisão criativa <span aria-hidden="true">↗</span></button><a href="#contato" data-contact-service="Campanhas e anúncios">Conversar sobre uma campanha ↓</a>';
   layout.append(context);
   const descriptions = {
     meta: ['Dar forma à oferta no feed.', 'Criativo e texto trabalham juntos para apresentar a proposta e despertar interesse.'],
@@ -39,57 +39,60 @@ function mountWorkflow() {
   const submit = form.querySelector('[type="submit"]');
   const complete = demo.querySelector('[data-workflow-complete]');
   const edit = demo.querySelector('[data-workflow-edit]');
+  const request = form.elements.request;
+  const error = form.querySelector('#workflow-request-error');
+  const state = result.querySelector('[data-request-state]');
+  const priority = result.querySelector('[data-request-priority]');
   const routes = { comercial: 'Comercial → Preparar proposta', atendimento: 'Atendimento → Analisar solicitação', operacao: 'Operação → Planejar tarefa' };
   submit.disabled = false;
-  demo.querySelector('.workflow-grid').prepend(demo.querySelector('.workflow-output'));
-  function setEditing(open) {
-    form.hidden = !open;
-    demo.dataset.editing = String(open);
-    edit.setAttribute('aria-expanded', String(open));
-    edit.firstChild.textContent = open ? 'Fechar edição ' : 'Experimentar outro pedido ';
+  // The request is the starting point: the form stays visible before its result (also on mobile).
+  function setState(tone, label) { state.dataset.tone = tone; state.textContent = label; }
+  function setPriority(value) { priority.textContent = value; priority.dataset.priority = value === 'Urgente' ? 'urgent' : 'normal'; }
+  // Inline pt-BR error tied to the field; novalidate keeps native bubbles out.
+  function showError(message) {
+    if (error) { error.textContent = message; error.hidden = !message; }
+    if (message) request.setAttribute('aria-invalid', 'true'); else request.removeAttribute('aria-invalid');
   }
   function showExample() {
     form.reset();
-    form.elements.request.setCustomValidity('');
-    result.querySelector('[data-request-title]').textContent = form.elements.request.value;
+    showError('');
+    result.querySelector('[data-request-title]').textContent = request.value;
     result.querySelector('[data-request-route]').textContent = routes.comercial;
-    result.querySelector('[data-request-priority]').textContent = 'Normal';
-    result.querySelector('[data-request-state]').textContent = 'Pronto para atender';
+    setPriority('Normal');
+    setState('ready', 'Pronto para atender');
     result.querySelector('[data-request-next]').textContent = 'Assunto, responsável e próximo passo reunidos para a equipe agir.';
     complete.disabled = false;
     complete.textContent = 'Marcar como resolvido';
     submit.textContent = 'Organizar pedido';
     demo.dataset.state = 'example';
-    setEditing(false);
   }
-  edit.addEventListener('click', () => {
-    const open = form.hidden;
-    setEditing(open);
-    if (open) form.elements.request.focus({ preventScroll: true });
-  });
+  edit.addEventListener('click', () => { request.focus(); request.select(); });
   showExample();
   form.addEventListener('submit', event => {
     event.preventDefault();
-    const description = form.elements.request;
-    description.setCustomValidity(description.value.trim().length < 8 ? 'Descreva o pedido com pelo menos 8 caracteres.' : '');
-    if (!form.reportValidity()) return;
-    result.querySelector('[data-request-title]').textContent = description.value.trim();
+    if (request.value.trim().length < 8) {
+      showError('Descreva o pedido com pelo menos 8 caracteres.');
+      status.textContent = '';
+      request.focus();
+      return;
+    }
+    showError('');
+    result.querySelector('[data-request-title]').textContent = request.value.trim();
     result.querySelector('[data-request-route]').textContent = routes[form.elements.area.value];
-    result.querySelector('[data-request-priority]').textContent = form.elements.priority.value;
-    result.querySelector('[data-request-state]').textContent = 'Pronto para atender';
+    setPriority(form.elements.priority.value);
+    setState('ready', 'Pronto para atender');
     result.querySelector('[data-request-next]').textContent = 'Pedido organizado: assunto, prioridade e próximo passo no mesmo lugar.';
     complete.disabled = false;
     complete.textContent = 'Marcar como resolvido';
     demo.dataset.state = 'created';
     submit.textContent = 'Atualizar pedido';
     status.textContent = 'Pedido organizado. Você pode marcar como resolvido ou ajustar as informações.';
-    setEditing(false);
-    edit.focus({ preventScroll: true });
+    edit.focus();
   });
-  form.elements.request.addEventListener('input', () => form.elements.request.setCustomValidity(''));
+  request.addEventListener('input', () => { if (request.value.trim().length >= 8) showError(''); });
   complete.addEventListener('click', () => {
     demo.dataset.state = 'completed';
-    result.querySelector('[data-request-state]').textContent = 'Resolvido';
+    setState('resolved', 'Resolvido');
     result.querySelector('[data-request-next]').textContent = 'A situação foi atualizada. Em um projeto real, esse fluxo pode se conectar às ferramentas da sua equipe.';
     complete.disabled = true;
     complete.textContent = 'Pedido resolvido';

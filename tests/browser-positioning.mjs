@@ -42,7 +42,8 @@ try{
    await page.locator('.campaign-decision').click();await page.waitForFunction(()=>document.querySelector('.sp-peel-card').dataset.peelState==='closed');
    await page.locator('#laboratorio').evaluate(el=>scrollTo({top:scrollY+el.getBoundingClientRect().top-84,behavior:'instant'}));
    await page.screenshot({path:`${output}/campaign-${width}${reduced?'-reduced':''}.png`,animations:'disabled'});
-   check('A useful workflow result is visible before input',await page.locator('[data-workflow-result]').isVisible()&&!await page.locator('.workflow-form').isVisible());
+   // The request form is now the visible starting point (it used to be hidden behind an edit toggle).
+   check('The request form is the visible starting point, next to an example result',await page.locator('.workflow-form').isVisible()&&await page.locator('[data-workflow-result]').isVisible()&&await page.evaluate(()=>{const form=document.querySelector('.workflow-form').getBoundingClientRect(),result=document.querySelector('[data-workflow-result]').getBoundingClientRect();return innerWidth<=760?form.top<result.top:form.left<result.left;}));
    await page.locator('[data-workflow-edit]').click();
    const sample='Revisar pedido <b>sem perder contexto</b>';
    await page.locator('#workflow-request').fill(sample);await page.locator('#workflow-area').selectOption('atendimento');await page.locator('#workflow-priority').selectOption('Urgente');
@@ -52,6 +53,9 @@ try{
    await page.locator('#sistemas').evaluate(el=>scrollTo({top:scrollY+el.getBoundingClientRect().top-84,behavior:'instant'}));
    await page.screenshot({path:`${output}/systems-${width}${reduced?'-reduced':''}.png`,animations:'disabled'});
    await page.locator('[data-workflow-reset]').click();check('Workflow can restart',await page.locator('[data-workflow]').getAttribute('data-state')==='example'&&await page.locator('[data-workflow-result]').isVisible());
+   await page.locator('#workflow-request').fill('curto');await page.locator('.workflow-form [type="submit"]').click();
+   check('A short request shows an inline pt-BR error tied to the field',await page.locator('#workflow-request-error').isVisible()&&/pelo menos 8 caracteres/.test(await page.locator('#workflow-request-error').innerText())&&await page.locator('#workflow-request').getAttribute('aria-invalid')==='true'&&await page.locator('#workflow-request').evaluate(el=>el===document.activeElement&&el.closest('form').noValidate&&el.getAttribute('aria-describedby')==='workflow-request-error'));
+   await page.locator('[data-workflow-reset]').click();check('Restart clears the inline error',await page.locator('#workflow-request-error').isHidden()&&await page.locator('#workflow-request').getAttribute('aria-invalid')===null);
    await page.locator('.systems-contact').click();check('Systems example leads to the correct service',await page.locator('#service').inputValue()==='Sistemas e automações');
    await page.locator('#como-trabalho').evaluate(el=>scrollTo({top:scrollY+el.getBoundingClientRect().top-84,behavior:'instant'}));
    await page.screenshot({path:`${output}/method-${width}${reduced?'-reduced':''}.png`,animations:'disabled'});

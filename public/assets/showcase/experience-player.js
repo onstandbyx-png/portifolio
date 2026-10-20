@@ -46,7 +46,7 @@ export function mountCampaignExperience(lab,underlay){
  '<div class="cx-social-chrome" data-cx-chrome><b>smiile.</b><span>Estudo conceitual</span></div>',
  '<div class="cx-art"><img data-cx-image src="'+photo+'" alt="Estudo visual smiile" loading="lazy" decoding="async"></div>',
  '<div class="cx-overlay"><small data-cx-kicker></small><h4 data-cx-title></h4><p data-cx-body></p></div>',
- '<div class="cx-search" hidden data-cx-search><div class="cx-query"><span aria-hidden="true">⌕</span> criar site e aplicativo</div><small>Patrocinado · Estudo conceitual</small><h4 data-cx-search-title></h4><p data-cx-search-copy></p><span>Conhecer a solução ↗</span></div>',
+ '<div class="cx-search" hidden data-cx-search><div class="cx-query"><span aria-hidden="true">⌕</span> criar site e aplicativo</div><small>Patrocinado · Estudo conceitual</small><h4 data-cx-search-title></h4><p data-cx-search-copy></p></div>',
  '<div class="cx-end-mark" aria-hidden="true">smiile.</div>',
  '</div><div class="cx-tap-regions" aria-hidden="true"><span>Anterior</span><span>Próximo</span></div></div>',
  '<div class="cx-transport"><button data-cx-prev type="button" aria-label="Voltar uma etapa">←</button>',

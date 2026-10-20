@@ -2,7 +2,7 @@
    one visual surface. Only the hero/header layouts are changed here. */
 .portfolio-r6 .hero.hero-v2 {
   display:block; min-height:0; max-width:1392px;
-  padding-top:94px; padding-bottom:38px;
+  padding-top:94px; padding-bottom:24px;
 }
 .portfolio-r6 .hero-v2 .hero-surface {
   --hero-paper:#f7f6ed; --hero-ink:#17392c; --hero-muted:#c0d2c3;
@@ -22,7 +22,7 @@
 .portfolio-r6 .hero-v2 .hero-copy::before {display:none}
 .portfolio-r6 .hero.hero-v2 .hero-issue {
   display:flex; align-items:center; flex-wrap:nowrap; gap:9px;
-  color:#c2d6c4; font-size:10px; font-weight:550;
+  color:#c2d6c4; font-size:12px; font-weight:550;
   line-height:1.45; letter-spacing:.09em; margin:0;
 }
 .portfolio-r6 .hero-v2 .issue-dot {
@@ -68,7 +68,7 @@
   display:grid; gap:4px; padding-left:10px; border-left:1px solid #a2c3a784;
 }
 .portfolio-r6 .hero-v2 .hero-proof strong {color:#edf3e9;font-size:12px;font-weight:600;line-height:1.3}
-.portfolio-r6 .hero-v2 .hero-proof small {color:#bfd1bd;font-size:11px;line-height:1.4}
+.portfolio-r6 .hero-v2 .hero-proof small {color:#bfd1bd;font-size:12px;line-height:1.4}
 /* No separate pale box, oversized instruction header or control over the art. */
 .portfolio-r6 .hero.hero-v2 .hero-exhibit.hero-badge-exhibit {
   grid-area:exhibit; position:relative; display:flex; flex-direction:column;
@@ -106,7 +106,7 @@
 .portfolio-r6 .hero.hero-v2 .hero-badge-controls {
   position:relative; inset:auto; z-index:4; display:flex;
   align-items:center; justify-content:space-between; flex-wrap:nowrap;
-  width:100%; max-width:520px; gap:12px; margin:10px auto 0;
+  width:100%; max-width:520px; gap:12px; margin:6px auto 0;
 }
 .portfolio-r6 .hero-v2 .badge-selection {
   display:flex; gap:3px; padding:3px; border:1px solid #94b49b59;
@@ -129,19 +129,46 @@
 .portfolio-r6 .hero-v2 .hero-badge-controls button:focus-visible,
 .portfolio-r6 .hero-v2 .hero-actions a:focus-visible {outline:2px solid #dceaba;outline-offset:4px}
 .portfolio-r6 .hero.hero-v2 .hero-badge-foot {
-  display:flex; align-items:center; justify-content:space-between; gap:12px;
-  width:100%; max-width:520px; margin:9px auto 0; padding:0 3px;
-  color:#c1d4bd; font:400 11px/1.5 var(--sans);
+  display:grid; grid-template-columns:minmax(0,1fr) auto; grid-template-areas:"label cue" "link link";
+  align-items:center; column-gap:12px;
+  width:100%; max-width:520px; margin:4px auto 0; padding:0 3px;
+  color:#c1d4bd; font:400 12px/1.5 var(--sans);
 }
-.portfolio-r6 .hero-v2 .badge-selected-label {display:inline-flex;gap:6px;align-items:center;font-weight:550;color:#d5e4cc}
+.portfolio-r6 .hero-v2 .badge-selected-label {grid-area:label;display:inline-flex;gap:6px;align-items:center;font-weight:550;color:#d5e4cc}
 .portfolio-r6 .hero-v2 .badge-selected-label i {width:4px;height:4px;flex:none;border-radius:50%;background:#b7cfa8}
-.portfolio-r6 .hero-v2 .badge-touch-cue {font-size:10px;line-height:1.4;text-align:right;color:#bacfb6}
+.portfolio-r6 .hero-v2 .badge-touch-cue {grid-area:cue;font-size:12px;line-height:1.4;text-align:right;color:#bacfb6}
+/* The arrows printed on the badge art cannot be links; this real link names the destination. */
+.portfolio-r6 .hero-v2 .badge-continue {
+  grid-area:link; justify-self:start; display:inline-flex; align-items:center; gap:8px; min-height:44px;
+  color:#eef4e8; font:550 14px/1.3 var(--sans);
+  text-decoration:underline; text-decoration-color:#9ccbb0; text-underline-offset:4px;
+}
+.portfolio-r6 .hero-v2 .badge-continue span {font-size:16px}
+.portfolio-r6 .hero-v2 .badge-continue:focus-visible {outline:2px solid #9ccbb0;outline-offset:3px;border-radius:4px}
+/* Pair layout: the selected badge gets a mint light on the rail; the other recedes slightly. */
+.portfolio-r6 .hero-v2 .hero-badge-stage[data-layout="pair"]::before {
+  inset:0 auto 4% 0; width:50%;
+  background:radial-gradient(ellipse 58% 54% at 50% 58%,#9ccbb042,transparent 72%);
+  transition:transform .32s cubic-bezier(.2,.7,.2,1);
+}
+.portfolio-r6 .hero-v2 .hero-badge-stage[data-layout="pair"]::after {
+  height:2px; border:0;
+  background:linear-gradient(#9ccbb0,#9ccbb0) no-repeat 8% 0/26% 2px,linear-gradient(#9db49c30,#9db49c30) no-repeat 0 0/100% 1px;
+  transition:background-position .32s cubic-bezier(.2,.7,.2,1);
+}
+.portfolio-r6 .hero-v2 .hero-badge-stage[data-layout="pair"][data-selected-card="1"]::before {transform:translateX(100%)}
+.portfolio-r6 .hero-v2 .hero-badge-stage[data-layout="pair"][data-selected-card="1"]::after {background-position:92% 0,0 0}
+.portfolio-r6 .hero-v2 .hero-badge-exhibit:has(.hero-badge-stage[data-layout="pair"]) .hero-exhibit-bg {
+  display:block; position:absolute; z-index:3; top:0; left:50%; width:50%; aspect-ratio:.725;
+  background:#193b2d24; pointer-events:none; transition:left .32s cubic-bezier(.2,.7,.2,1);
+}
+.portfolio-r6 .hero-v2 .hero-badge-exhibit:has(.hero-badge-stage[data-layout="pair"][data-selected-card="1"]) .hero-exhibit-bg {left:0}
 @media (min-width:960px) {
   .portfolio-r6 .hero-v2 .hero-surface {
     grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);
     grid-template-areas:"copy exhibit" "proof exhibit";
     grid-template-rows:1fr auto; column-gap:clamp(24px,3vw,42px); row-gap:20px;
-    padding:30px clamp(28px,3.1vw,44px);
+    padding:28px clamp(28px,3.1vw,44px);
   }
   .portfolio-r6 .hero-v2 .hero-copy {align-self:center}
   .portfolio-r6 .hero-v2 .hero-proof {margin-top:0;max-width:530px}
@@ -155,34 +182,33 @@
   .portfolio-r6 .hero.hero-v2 h1 {max-width:22ch;font-size:clamp(42px,6vw,54px)}
 }
 @media(max-width:700px) {
-  .portfolio-r6 .hero.hero-v2 {width:calc(100% - 24px);padding-top:78px;padding-bottom:24px}
-  .portfolio-r6 .hero-v2 .hero-surface {padding:22px 17px 18px;gap:18px;border-radius:18px}
-  .portfolio-r6 .hero.hero-v2 .hero-issue {font-size:9px;letter-spacing:.055em;gap:7px;line-height:1.45}
+  .portfolio-r6 .hero.hero-v2 {width:calc(100% - 24px);padding-top:72px;padding-bottom:16px}
+  .portfolio-r6 .hero-v2 .hero-surface {padding:18px 17px 14px;gap:12px;border-radius:18px}
+  .portfolio-r6 .hero.hero-v2 .hero-issue {font-size:12px;letter-spacing:.04em;gap:7px;line-height:1.35}
   .portfolio-r6 .hero-v2 .issue-dot {width:4px;height:4px}
-  .portfolio-r6 .hero.hero-v2 h1 {font-size:clamp(30px,8.2vw,39px);line-height:1.045;margin:13px 0;max-width:none;letter-spacing:-.052em}
+  .portfolio-r6 .hero.hero-v2 h1 {font-size:clamp(36px,10vw,44px);line-height:1.02;margin:9px 0;max-width:none;letter-spacing:-.052em}
   .portfolio-r6 .hero.hero-v2 .hero-description {font-size:14px;line-height:1.5;max-width:42ch}
-  .portfolio-r6 .hero.hero-v2 .hero-actions {display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;margin:17px 0 0}
-  .portfolio-r6 .hero.hero-v2 .hero-actions .button {width:100%;min-height:44px;padding:10px 11px;gap:8px;font-size:11px}
-  .portfolio-r6 .hero-v2 .hero-actions .button-text {padding-inline:9px}
+  /* Stacked, equal 52px actions: the primary never wraps or looks smaller than the secondary. */
+  .portfolio-r6 .hero.hero-v2 .hero-actions {display:grid;grid-template-columns:minmax(0,1fr);gap:8px;margin:14px 0 0}
+  .portfolio-r6 .hero.hero-v2 .hero-actions .button {width:100%;height:52px;min-height:52px;padding:0 18px;gap:12px;font-size:15px;justify-content:space-between;white-space:nowrap}
+  .portfolio-r6 .hero-v2 .hero-actions .button-text {padding-inline:18px;border-width:1.5px}
   .portfolio-r6 .hero-v2 .hero-actions .button span {font-size:14px}
   .portfolio-r6 .hero.hero-v2 .hero-exhibit.hero-badge-exhibit {width:calc(100% + 24px);margin-inline:-12px}
   .portfolio-r6 .hero.hero-v2 .hero-badge-stage {--badge-scale:1.20}
   .portfolio-r6 .hero.hero-v2 .hero-badge-controls,
   .portfolio-r6 .hero.hero-v2 .hero-badge-foot {max-width:calc(100% - 24px)}
-  .portfolio-r6 .hero.hero-v2 .hero-badge-controls {margin-top:8px;gap:8px}
+  /* One row: the single visible badge and the pressed selector already show the selection. */
+  .portfolio-r6 .hero.hero-v2 .hero-badge-foot {grid-template-columns:auto minmax(0,1fr);grid-template-areas:"link cue";margin-top:4px}
+  .portfolio-r6 .hero-v2 .badge-selected-label {display:none}
+  .portfolio-r6 .hero.hero-v2 .hero-badge-controls {margin-top:6px;gap:8px}
   .portfolio-r6 .hero.hero-v2 .hero-badge-controls button {padding:9px 14px;font-size:14px}
-  .portfolio-r6 .hero-v2 .hero-proof {padding-top:14px;display:grid;grid-template-columns:1.2fr 1fr;gap:12px}
-  .portfolio-r6 .hero-v2 .hero-proof strong {font-size:11px}
-  .portfolio-r6 .hero-v2 .hero-proof small {font-size:10px}
-  .portfolio-r6 .hero-v2 .badge-touch-cue {max-width:16ch}
+  .portfolio-r6 .hero-v2 .hero-proof {padding-top:12px;display:grid;grid-template-columns:1.2fr 1fr;gap:12px}
+  .portfolio-r6 .hero-v2 .hero-proof strong {font-size:12px}
+  .portfolio-r6 .hero-v2 .hero-proof small {font-size:12px}
 }
 @media(max-width:350px) {
-  .portfolio-r6 .hero.hero-v2 h1 {font-size:30px}
   .portfolio-r6 .hero-v2 .hero-surface {padding-inline:14px}
   .portfolio-r6 .hero.hero-v2 .hero-issue .issue-dot {display:none}
-  .portfolio-r6 .hero.hero-v2 .hero-issue {font-size:8px}
-  .portfolio-r6 .hero.hero-v2 .hero-actions {grid-template-columns:minmax(0,1fr)}
-  .portfolio-r6 .hero.hero-v2 .hero-actions .button-text {justify-content:center;border:0}
   .portfolio-r6 .hero.hero-v2 .hero-badge-controls button {padding-inline:11px}
 }
 /* Touch laptop/tablet and Android desktop-request preserve usable navigation;
@@ -202,5 +228,7 @@
 }
 @media(prefers-reduced-motion:reduce) {
   .portfolio-r6 .hero-v2 .hero-actions .button,.portfolio-r6 .hero-v2 .hero-badge-controls button {transition:none!important}
+  .portfolio-r6 .hero-v2 .hero-badge-stage::before,.portfolio-r6 .hero-v2 .hero-badge-stage::after,.portfolio-r6 .hero-v2 .hero-exhibit-bg {transition:none!important}
 }
 body.is-paused .hero-v2 .hero-actions .button,body.is-paused .hero-v2 .hero-badge-controls button {transition:none!important}
+body.is-paused .hero-v2 .hero-badge-stage::before,body.is-paused .hero-v2 .hero-badge-stage::after,body.is-paused .hero-v2 .hero-exhibit-bg {transition:none!important}

@@ -76,6 +76,9 @@ export function mountCampaignFlip() {
     sheet.style.clipPath='polygon('+poly.map(px).join(',')+')';
     sheet.style.webkitClipPath=sheet.style.clipPath;
     fold.setAttribute('viewBox','0 0 '+w+' '+h);
+    // The open back grows to its content (no nested scroll); the fold keeps the sheet's size.
+    fold.style.height=h+'px';
+    card.style.setProperty('--peel-sheet-h',h+'px');
     const band=Math.min(31,Math.max(12,w*.045))*(1-.30*progress);
     const outside=edge.map(v=>({x:clamp(v.x-nx*band,0,w),y:clamp(v.y-ny*band,0,h)}));
     const path=points=>points.map((p,i)=>(i?'L':'M')+p.x.toFixed(2)+' '+p.y.toFixed(2)).join(' ');
@@ -95,6 +98,8 @@ export function mountCampaignFlip() {
     sheet.inert=open;
     sheet.setAttribute('aria-hidden',String(open));
     grip.setAttribute('aria-expanded',String(open));
+    // An open corner is invisible: it must not keep a focus stop or a hit area.
+    grip.inert=open;
     card.dataset.peelState=open?'open':'closed';
     if(!open)campaignExperience?.stop();
   }
@@ -186,10 +191,10 @@ export function mountCampaignFlip() {
   // Channel switching replaces the content behind the same paper sheet,
   // and restores the corner without jarring rotation or stale CTA focus.
   new MutationObserver(()=>{
-    if(card.dataset.side==='back'&&underlay.contains(document.activeElement))
-      grip.focus({preventScroll:true});
+    const refocus=card.dataset.side==='back'&&underlay.contains(document.activeElement);
     campaignExperience?.reset();
     reset();
+    if(refocus)grip.focus({preventScroll:true});
   }).observe(lab,{attributes:true,attributeFilter:['data-channel']});
   const motionSwitch=document.querySelector('#motion-toggle');
   if(motionSwitch)new MutationObserver(()=>{
