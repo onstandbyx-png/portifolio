@@ -16,29 +16,44 @@ import {sectionCopy} from '/assets/content/portfolio-copy.js';
     try{if(Array.isArray(window.dataLayer))window.dataLayer.push({...payload});}catch{/* Optional analytics must not block a contact action. */}
   }
 
-  // Header and accessible mobile menu.
+  // Header and accessible mobile menu. While open, the page behind is locked and inert and focus stays in the menu.
   const header = $('#site-header'), menuToggle = $('#menu-toggle'),mobileNav=$('#mobile-nav');
+  let menuInert=[];
+  const menuOpen=()=>menuToggle?.getAttribute('aria-expanded')==='true';
+  function setMenuState(open){
+    menuToggle.setAttribute('aria-expanded',String(open));menuToggle.setAttribute('aria-label',open?'Fechar menu':'Abrir menu');mobileNav.hidden=!open;
+    document.documentElement.classList.toggle('menu-open',open);
+    if(open){menuInert=[...document.body.children,...$$('.header-inner>*',header)].filter(el=>el!==header&&el!==menuToggle&&!el.inert);menuInert.forEach(el=>{el.inert=true;});}
+    else{menuInert.forEach(el=>{el.inert=false;});menuInert=[];}
+  }
   function closeMenu(restoreFocus=false){
-    if(!menuToggle||!mobileNav)return;
-    menuToggle.setAttribute('aria-expanded','false');menuToggle.setAttribute('aria-label','Abrir menu');mobileNav.hidden=true;
+    if(!menuToggle||!mobileNav||!menuOpen())return;
+    setMenuState(false);
     if(restoreFocus){
       const target=matchMedia('(max-width:900px)').matches?menuToggle:$('.main-nav a');
       target?.focus({preventScroll:true});
     }
   }
   menuToggle?.addEventListener('click',()=>{
-    const opening=menuToggle.getAttribute('aria-expanded')!=='true';
-    menuToggle.setAttribute('aria-expanded',String(opening));
-    menuToggle.setAttribute('aria-label',opening?'Fechar menu':'Abrir menu');
-    mobileNav.hidden=!opening;
-    if(opening)$('a',mobileNav)?.focus({preventScroll:true});
+    if(menuOpen()){closeMenu(true);return;}
+    setMenuState(true);
+    $('a',mobileNav)?.focus({preventScroll:true});
   });
   $$('#mobile-nav a').forEach(a=>a.addEventListener('click',()=>{
     closeMenu();
-    const target=a.hash?document.getElementById(a.hash.slice(1)):null;
+    // The contact action is handled with the other contact CTAs below: it lands on the form heading.
+    const target=a.hash&&!a.classList.contains('mobile-nav-cta')?document.getElementById(a.hash.slice(1)):null;
     if(target){target.tabIndex=-1;target.focus({preventScroll:true});}
   }));
-  addEventListener('keydown',e=>{if(e.key==='Escape'&&menuToggle?.getAttribute('aria-expanded')==='true')closeMenu(true)});
+  // Tab cycles between the toggle (the close control) and the panel links.
+  function trapMenuFocus(event){
+    const items=[menuToggle,...$$('a[href],button:not([disabled])',mobileNav)],at=items.indexOf(document.activeElement);
+    if(event.shiftKey&&at<=0){event.preventDefault();items[items.length-1].focus();}
+    else if(!event.shiftKey&&(at<0||at===items.length-1)){event.preventDefault();items[0].focus();}
+  }
+  addEventListener('keydown',e=>{if(!menuOpen())return;if(e.key==='Escape')closeMenu(true);else if(e.key==='Tab')trapMenuFocus(e);});
+  // A tap outside the header (the inert page) closes the menu.
+  document.addEventListener('click',e=>{if(menuOpen()&&!header?.contains(e.target))closeMenu(true);});
 
   // Global progress and on-screen motion, no wheel/touch hijacking.
   const progress=$('#reading-progress');let pending=false;
@@ -93,7 +108,7 @@ import {sectionCopy} from '/assets/content/portfolio-copy.js';
       if(destination.channel==='whatsapp'&&contact.contactDestination({...profile,whatsapp:''})){
         const emailButton=document.createElement('button');emailButton.type='button';emailButton.className='brief-email';emailButton.textContent='Prefiro e-mail';
         emailButton.addEventListener('click',()=>{
-          if(!brief.reportValidity())return;
+          if(!validateBrief())return;
           const emailLink=contact.createContactHref({...profile,preferredChannel:'email'},getBrief());
           if(!emailLink)return;
           recordInteraction('contact_click',{channel:'email',entry:contactCase?'case':'form',service:$('#service')?.value||'',source:contactSource});
@@ -108,12 +123,34 @@ import {sectionCopy} from '/assets/content/portfolio-copy.js';
     }
     if(profile.name){$$('[data-professional-name]').forEach(el=>{el.textContent=profile.name;});}
   }
+  // Inline pt-BR errors replace the browser's validation bubbles (the form is novalidate).
+  const fieldErrors={service:'Escolha uma frente de trabalho para continuar.',brief:'Conte um pouco sobre o projeto, com pelo menos 8 caracteres.'};
+  const briefFields=[$('#service'),$('#brief')].filter(Boolean),statusHint=$('#form-status')?.textContent||'';
+  const fieldError=field=>field.id==='service'?(field.value?'':fieldErrors.service):(field.value.trim().length>=8?'':fieldErrors.brief);
+  function showFieldError(field,message){
+    const error=document.getElementById(field.id+'-error');
+    if(error){error.textContent=message;error.hidden=!message;}
+    if(message){field.setAttribute('aria-invalid','true');if(error)field.setAttribute('aria-describedby',error.id);}
+    else{field.removeAttribute('aria-invalid');field.removeAttribute('aria-describedby');}
+  }
+  function validateBrief(){
+    const invalid=briefFields.filter(field=>{const message=fieldError(field);showFieldError(field,message);return message;});
+    const status=$('#form-status');
+    if(invalid.length){invalid[0].focus();if(status)status.textContent=sectionCopy('contato').validation;}
+    return !invalid.length;
+  }
+  briefFields.forEach(field=>field.addEventListener(field.tagName==='SELECT'?'change':'input',()=>{
+    if(field.getAttribute('aria-invalid')!=='true')return;
+    showFieldError(field,fieldError(field));
+    const status=$('#form-status');
+    if(status&&!briefFields.some(item=>item.getAttribute('aria-invalid')==='true'))status.textContent=statusHint;
+  }));
   function getBrief(){
     const service=$('#service')?.value||'',description=$('#brief')?.value.trim()||'';
     return contact?contact.buildBrief(service,description,contactCase):`Olá! Quero conversar sobre um projeto.\n\nFrente: ${service}\nContexto: ${description}\n\nConheci seu trabalho no portfólio Ideia & Execução.`;
   }
   async function copyBrief(){
-    if(!brief?.reportValidity())return;
+    if(!brief||!validateBrief())return;
     const message=getBrief(),status=$('#form-status');
     try{
       await navigator.clipboard.writeText(message);
@@ -130,7 +167,7 @@ import {sectionCopy} from '/assets/content/portfolio-copy.js';
   copyButton?.addEventListener('click',copyBrief);
   brief?.addEventListener('submit',e=>{
     e.preventDefault();
-    if(!brief.reportValidity())return;
+    if(!validateBrief())return;
     const link=contact?.createContactHref(profile,getBrief());
     if(!link){copyBrief();return;}
     recordInteraction('contact_click',{channel:link.channel,entry:contactCase?'case':'form',service:$('#service')?.value||'',source:contactSource});
@@ -158,20 +195,38 @@ import {sectionCopy} from '/assets/content/portfolio-copy.js';
       const entry=link.matches('[data-project-need]')?'project_need':link.closest('#colecao')?'deck':link.closest('#editorial')?'editorial':
         link.closest('#laboratorio')?'campaign':link.closest('#sistemas')?'systems':link.closest('.hero')?'hero':'navigation';
       recordInteraction('contact_intent',{entry,service:available?requested:link.dataset.projectNeed||'',source:link.dataset.contactSource||''});
+      // Navigation links go to the section; contact CTAs land on the form heading instead.
+      const navigation=link.closest('nav')&&!link.classList.contains('mobile-nav-cta');
+      if(!navigation&&!event.defaultPrevented&&event.button===0&&!(event.metaKey||event.ctrlKey||event.shiftKey||event.altKey)&&revealBrief())event.preventDefault();
     }
   });
+  // On a stacked layout the form starts about a screen below the section title, so the page scrolls to the form itself.
+  function revealBrief(){
+    const section=$('#contato'),heading=$('#brief-title');
+    if(!section||!brief||!heading)return false;
+    const stacked=brief.getBoundingClientRect().top-section.getBoundingClientRect().top>innerHeight*.4;
+    (stacked?brief:section).scrollIntoView({block:'start',behavior:reduced||paused?'instant':'smooth'});
+    if(location.hash!=='#contato')history.pushState(null,'','#contato');
+    heading.focus({preventScroll:true});
+    return true;
+  }
 
-  // User controls decorative animation independently of OS preference.
-  const pauseBtn=$('#motion-toggle');
-  pauseBtn?.addEventListener('click',()=>{
-    paused=!paused;
+  // User controls decorative animation. A system reduced-motion preference is reflected (paused, not resumable here).
+  const pauseBtn=$('#motion-toggle');let userPaused=false;
+  function syncMotionToggle(){
+    if(!pauseBtn)return;
+    paused=reduced||userPaused;
     document.body.classList.toggle('is-paused',paused);
     pauseBtn.setAttribute('aria-pressed',String(paused));
-    const motionLabel=paused?'Retomar movimento':'Pausar movimento e reprodução';
+    if(reduced)pauseBtn.setAttribute('aria-disabled','true');else pauseBtn.removeAttribute('aria-disabled');
+    const motionLabel=reduced?'Movimento reduzido pelo sistema':paused?'Retomar movimento':'Pausar movimento e reprodução';
     pauseBtn.setAttribute('aria-label',motionLabel);
     pauseBtn.setAttribute('title',motionLabel);
-    pauseBtn.innerHTML=paused?'▶ <span>Retomar movimento</span>':'Ⅱ <span>Pausar movimento</span>';
-  });
+    const text=$('span',pauseBtn);if(text)text.textContent=reduced?'Movimento reduzido':paused?'Retomar movimento':'Pausar movimento';
+  }
+  pauseBtn?.addEventListener('click',()=>{if(reduced)return;userPaused=!userPaused;syncMotionToggle();});
+  preference.addEventListener?.('change',syncMotionToggle);
+  syncMotionToggle();
 
   // Missing cross-origin previews degrade to intentional graphic fallback, not fake artwork.
   $$('img[src^="https://smiile-landing-preview.up.railway.app/"]').forEach(img=>{

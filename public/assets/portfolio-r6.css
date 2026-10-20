@@ -10,7 +10,8 @@ body.portfolio-r6{--paper:#f3f1e9;--paper-2:#e9ece2;--ink:#18251f;--muted:#53615
 .portfolio-r6 button,.portfolio-r6 input,.portfolio-r6 select,.portfolio-r6 textarea{font-family:var(--sans)}
 .portfolio-r6 .eyebrow,.portfolio-r6 .section-kicker,.portfolio-r6 .section-num{font-size:12px;letter-spacing:.09em;font-weight:600;line-height:1.5}
 .portfolio-r6 .section-kicker>span:last-child{font-size:12px}
-.portfolio-r6 .site-header{background:#f3f1e9f5;backdrop-filter:blur(16px);border-color:var(--line)}
+.portfolio-r6 .site-header{background:#f3f1e9f5;backdrop-filter:blur(16px);border-color:var(--line);transition:background-color .28s,box-shadow .28s}
+.portfolio-r6 .site-header.is-scrolled{background:#f3f1e9;box-shadow:0 10px 26px #0f2e2414}
 .portfolio-r6 .header-inner{gap:24px}
 .portfolio-r6 .wordmark{display:flex;align-items:center;gap:16px;letter-spacing:-.045em;font-size:24px}
 .portfolio-r6 .wordmark-signature{font-size:12px;letter-spacing:-.02em;font-weight:450;border-left:1px solid var(--line);padding:6px 0 6px 16px}
@@ -55,7 +56,8 @@ body.portfolio-r6{--paper:#f3f1e9;--paper-2:#e9ece2;--ink:#18251f;--muted:#53615
 .portfolio-r6 .work-cover-copy strong{font-family:var(--sans)}
 .portfolio-r6 .digital-anchor{height:0;scroll-margin-top:90px}
 .portfolio-r6 .source-note{font-size:13px}
-.portfolio-r6 .contact-section{background:#e8ecdf;padding-top:100px}
+.portfolio-r6 .contact-section{background:#e8ecdf;padding-top:100px;padding-bottom:0}
+.portfolio-r6 .site-footer-band{background:#e8ecdf;display:flow-root;padding-bottom:40px}
 .portfolio-r6 .contact-intro h2{font-size:clamp(44px,4.5vw,68px);letter-spacing:-.05em;line-height:1.08}
 .portfolio-r6 .contact-intro>p{font-size:17px;max-width:510px}
 .portfolio-r6 .contact-person div>span,.portfolio-r6 .contact-direct small{font-size:13px}
@@ -84,8 +86,11 @@ body.portfolio-r6{--paper:#f3f1e9;--paper-2:#e9ece2;--ink:#18251f;--muted:#53615
  .portfolio-r6 .wordmark-signature{display:none}.portfolio-r6 .header-cta{font-size:12px}
 }
 @media(max-width:900px){.portfolio-r6 .header-inner{gap:12px}.portfolio-r6 .main-nav{display:none}.portfolio-r6 .wordmark{font-size:24px}.portfolio-r6 .header-inner .motion-toggle{margin-left:auto}.portfolio-r6 .mobile-nav{background:#f3f1e9}.portfolio-r6 .mobile-nav a{font-size:21px;min-height:48px}.portfolio-r6 .mobile-nav p{font-size:14px}}
+/* Open menu: the panel scrolls by itself (the page is locked) and ends with the contact action. */
+.portfolio-r6 .mobile-nav{max-height:calc(100dvh - 76px);overflow-y:auto;overscroll-behavior:contain}.portfolio-r6 .mobile-nav a[aria-current]::after{content:"";display:inline-block;align-self:center;margin-left:10px;vertical-align:middle;width:8px;height:8px;border-radius:50%;background:#234c3c}.portfolio-r6 .mobile-nav .mobile-nav-cta{display:flex;justify-content:space-between;align-items:center;min-height:52px;margin-top:18px;padding:12px 18px;border:0;border-radius:5px;background:#273c31;color:#fff;font:600 15px/1.2 var(--sans)}
 @media(max-width:760px){
  .portfolio-r6 .shell{width:calc(100% - 36px)}
+ .portfolio-r6 .mobile-nav{max-height:calc(100dvh - 64px)}
  .portfolio-r6 .hero{padding-top:98px;padding-bottom:48px;gap:24px}
  .portfolio-r6 .hero h1{font-size:clamp(40px,10.3vw,66px);line-height:1.07;letter-spacing:-.045em;margin:21px 0 21px}
  .portfolio-r6 .hero-issue{font-size:11px;letter-spacing:.055em}

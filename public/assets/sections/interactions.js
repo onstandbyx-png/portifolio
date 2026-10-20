@@ -14,9 +14,18 @@ mount('Contact',()=>{
 });
 
 mount('Navigation',()=>{
- const sections=$$('main section[id]').filter(x=>x.id!=='inicio'),links=$$('.main-nav a');
- const io=new IntersectionObserver(entries=>{for(const e of entries)if(e.isIntersecting){links.forEach(a=>{const on=a.hash==='#'+e.target.id;a.classList.toggle('sm-nav-active',on);if(on)a.setAttribute('aria-current','location');else a.removeAttribute('aria-current')});}},{rootMargin:'-15% 0px -65% 0px',threshold:0});
- sections.forEach(s=>io.observe(s));
+ // The current item is the last section whose top passed 35% of the viewport. A section belongs to the item named by
+ // its own or an ancestor's data-nav-group (#editorial → Trabalhos); an unlisted one (e.g. the injected #narrativa-visual)
+ // keeps the group of the section before it.
+ const links=$$('.main-nav a,#mobile-nav a:not(.mobile-nav-cta)'),targets=new Set(links.map(a=>a.hash.slice(1))),visible=new Set();
+ function mark(){
+  let group='',current='';
+  for(const s of $$('main section[id]')){group=s.closest('[data-nav-group]')?.dataset.navGroup||(targets.has(s.id)?s.id:group);if(visible.has(s))current=group;}
+  links.forEach(a=>{const on=Boolean(current)&&a.hash==='#'+current;a.classList.toggle('sm-nav-active',on);if(on)a.setAttribute('aria-current','location');else a.removeAttribute('aria-current')});
+ }
+ const io=new IntersectionObserver(entries=>{for(const e of entries)e.isIntersecting?visible.add(e.target):visible.delete(e.target);mark();},{rootMargin:'0px 0px -65% 0px',threshold:0});
+ const observe=()=>$$('main section[id]').forEach(s=>io.observe(s));
+ observe();addEventListener('load',observe,{once:true});
  const reveal=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('sm-revealed');rise(e.target,28);reveal.unobserve(e.target);}}),{threshold:.12});
  // R6: editorial-motion.js exclusively owns section heading reveals.
  $$('.source-note').forEach(s=>reveal.observe(s));
