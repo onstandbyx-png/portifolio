@@ -285,6 +285,7 @@ export function mountDeckDemos(){
  if(!shell||shell.dataset.deckDemos==='ready')return;
  const factories={sites,conteudo,campanhas,video,lojas,sistemas},stoppers=[];
  $$(shell,'[data-fatos-card]').forEach(card=>{
+  if(card.hasAttribute('data-ref-card'))return;
   const id=card.dataset.fatosCard,back=$(card,'[data-fatos-back]');if(!back||!factories[id])return;
   back.classList.add('fdb-back');dressBack(back,id);
   const sample=document.createElement('section');sample.className='fd-demo fd-demo--'+id;sample.dataset.noCardFlip='';sample.setAttribute('aria-label','Demonstração visual de '+examples[id].title);
