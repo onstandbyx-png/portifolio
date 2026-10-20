@@ -29,7 +29,8 @@
 
 <nav class="tabs" aria-label="Seções do laboratório">
   <div class="wrap tabs-inner" role="tablist">
-    <button type="button" role="tab" id="tab-versoes" aria-controls="versoes" aria-selected="true">Versões ao vivo <span class="count" data-count="versoes"></span></button>
+    <button type="button" role="tab" id="tab-quadros" aria-controls="quadros" aria-selected="true">Quadros <span class="count" data-count="quadros"></span></button>
+    <button type="button" role="tab" id="tab-versoes" aria-controls="versoes" aria-selected="false" tabindex="-1">Versões ao vivo <span class="count" data-count="versoes"></span></button>
     <button type="button" role="tab" id="tab-recriados" aria-controls="recriados" aria-selected="false" tabindex="-1">Recriados <span class="count" data-count="recriados"></span></button>
     <button type="button" role="tab" id="tab-componentes" aria-controls="componentes" aria-selected="false" tabindex="-1">Componentes das páginas</button>
     <button type="button" role="tab" id="tab-cartoes" aria-controls="cartoes" aria-selected="false" tabindex="-1">Cartões e protótipos</button>
@@ -40,7 +41,15 @@
 </nav>
 
 <main class="wrap">
-  <section class="panel" id="versoes" role="tabpanel" aria-labelledby="tab-versoes" tabindex="-1">
+  <section class="panel" id="quadros" role="tabpanel" aria-labelledby="tab-quadros" tabindex="-1">
+    <div class="intro">
+      <h2>Quadros de análise</h2>
+      <p>Um quadro para cada elemento e para cada versão, com a peça rodando ao vivo no código daquela data. <b>Tocar</b> pausa e retoma tudo o que se mexe, inclusive o que é feito por script; a <b>régua</b> anda pelo tempo das animações ou pela rolagem da página, quadro a quadro. <b>Passar o mouse</b> e <b>Clicar</b> funcionam também no celular. Quando o quadro não acha o elemento sozinho, use <b>Escolher no quadro</b>: a escolha fica guardada neste aparelho.</p>
+    </div>
+    <div data-quadros><p class="note">Carregando os quadros…</p></div>
+  </section>
+
+  <section class="panel" id="versoes" role="tabpanel" aria-labelledby="tab-versoes" tabindex="-1" hidden>
     <div class="intro">
       <h2>Versões ao vivo</h2>
       <p>Cada fase dos seus projetos rodando com o código daquela data. Escolha um elemento (cartões, crachá, aparelhos…) para abrir a versão já nele; use <b>Isolar</b> para ver só o elemento e <b>Comparar versões</b> para ver o mesmo elemento em todas as fases lado a lado.</p>

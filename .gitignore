@@ -9,3 +9,8 @@ coverage/
 public/assets/badge-build/
 qa/
 lab/.versoes/
+# Lab exports can carry private builds; they never belong in this public repository.
+dist-lab/
+lab/vercel/out/
+lab/vercel/repo/
+lab/vercel/node_modules/

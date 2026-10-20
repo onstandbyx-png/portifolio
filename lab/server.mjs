@@ -127,6 +127,10 @@ function rewriter(v) {
   return v.rewrite;
 }
 
+// The lab clock goes first in every version page so the analysis cards can pause and slow script animation.
+const RELOGIO = '<script src="/_lab/relogio.js"></script>';
+const injetar = text => (/<head(\s[^>]*)?>/i.test(text) ? text.replace(/<head(\s[^>]*)?>/i, m => m + RELOGIO) : RELOGIO + text);
+
 const procs = new Map();
 function startLocal(v) {
   const running = procs.get(v.id);
@@ -176,7 +180,10 @@ async function serveStatic(req, res, v, path) {
   const ext = extname(file).toLowerCase();
   const type = TYPES[ext] || {'.webm': 'video/webm', '.mjs': 'text/javascript; charset=utf-8', '.ico': 'image/x-icon', '.woff': 'font/woff', '.gif': 'image/gif', '.mp3': 'audio/mpeg', '.glb': 'model/gltf-binary', '.webmanifest': 'application/manifest+json'}[ext] || 'application/octet-stream';
   let body = await readFile(file);
-  if (/text\/html|text\/css|javascript/.test(type)) body = Buffer.from(rewriter(v)(body.toString('utf8')));
+  if (/text\/html|text\/css|javascript/.test(type)) {
+    const text = rewriter(v)(body.toString('utf8'));
+    body = Buffer.from(/text\/html/.test(type) ? injetar(text) : text);
+  }
   res.writeHead(200, {...versionHeaders(type), 'Content-Length': body.length});
   res.end(req.method === 'HEAD' ? undefined : body);
 }
@@ -206,7 +213,8 @@ async function proxy(req, res, v, path) {
       const chunks = [];
       up.on('data', c => chunks.push(c));
       up.on('end', () => {
-        const body = Buffer.from(rewriter(v)(Buffer.concat(chunks).toString('utf8')));
+        const text = rewriter(v)(Buffer.concat(chunks).toString('utf8'));
+        const body = Buffer.from(/text\/html/.test(type) ? injetar(text) : text);
         res.writeHead(up.statusCode, {...out, 'content-length': body.length});
         res.end(body);
       });
@@ -267,7 +275,7 @@ async function send(req, res, file) {
 
 const same = (a, b) => { const x = Buffer.from(a), y = Buffer.from(b); return x.length === y.length && timingSafeEqual(x, y); };
 function authorized(req) {
-  if (!USUARIO || !SENHA) return true;
+  if (!USUARIO || !SENHA) return false;
   const header = req.headers.authorization || '';
   if (!header.startsWith('Basic ')) return false;
   const [user, ...rest] = Buffer.from(header.slice(6), 'base64').toString('utf8').split(':');
@@ -280,6 +288,11 @@ createServer(async (req, res) => {
     if (pathname === '/health') {
       res.writeHead(200, {...HEADERS, 'Content-Type': 'text/plain; charset=utf-8', 'Cache-Control': 'no-store'});
       return res.end('ok');
+    }
+    // Fails closed: without both variables nothing is served (private versions live here).
+    if (!USUARIO || !SENHA) {
+      res.writeHead(503, {...HEADERS, 'Content-Type': 'text/plain; charset=utf-8'});
+      return res.end('Laboratório sem senha configurada');
     }
     if (!authorized(req)) {
       res.writeHead(401, {...HEADERS, 'WWW-Authenticate': 'Basic realm="Laboratorio de elementos", charset="UTF-8"', 'Content-Type': 'text/plain; charset=utf-8'});
@@ -300,6 +313,10 @@ createServer(async (req, res) => {
         res.end(code === 0 ? `ok ${upload[1]} (${VERSOES.has(upload[1]) ? 'registrada' : 'sem metadados'})` : `tar falhou: ${err}`);
       });
       return;
+    }
+    if (pathname.startsWith('/_lab/')) {
+      const file = locate(pathname);
+      if (file && await send(req, res, file)) return;
     }
     const versioned = pathname.match(/^\/v\/([\w-]+)(\/.*)?$/);
     if (versioned && VERSOES.has(versioned[1])) {
@@ -328,6 +345,8 @@ createServer(async (req, res) => {
       res.writeHead(200, {...HEADERS, 'Content-Type': 'application/json; charset=utf-8', 'Cache-Control': 'no-cache'});
       return res.end(JSON.stringify({versoes: lista, privadas: [...META.values()].filter(m => VERSOES.has(m.id))}));
     }
+    // Private Drive context next to the private versions on the volume.
+    if (pathname === '/contexto.json' && existsSync(join(DADOS, '..', 'contexto.json')) && await send(req, res, join(DADOS, '..', 'contexto.json'))) return;
     const file = locate(pathname);
     if (file && await send(req, res, file)) return;
     res.writeHead(404, {...HEADERS, 'Content-Type': 'text/plain; charset=utf-8'});

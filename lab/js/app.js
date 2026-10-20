@@ -1,4 +1,5 @@
 import {PAIRS} from './recriados.js';
+import {mountQuadros} from './quadros.js';
 import {mountVersoes} from './versoes.js';
 import {mountLottie, mountRive, reducedMotion, renderInputs, renderSetup, whenNear} from './runtime.js';
 
@@ -11,10 +12,19 @@ const ms = n => `${Math.round(n)} ms`;
 const RATES = '<option value="1">1×</option><option value="0.5">0,5×</option><option value="0.25">0,25×</option>';
 const riveNumber = slug => '#' + slug.split('-')[0];
 
-/* Tabs (hash-addressable) */
+/* Tabs (hash-addressable; #q-<element> and #qv-<version> open one analysis card) */
 const tabs = $$('[role=tab]');
 const opened = new Set();
+const montados = {};
+function montar(id) {
+  if (id === 'quadros') montados.quadros = mountQuadros($('[data-quadros]')).then(c => { $('[data-count="quadros"]').textContent = c.elementos + c.versoes; return c; })
+    .catch(error => { $('[data-quadros]').innerHTML = `<p class="note">Os quadros não carregaram: ${esc(error.message)}</p>`; });
+  if (id === 'versoes') montados.versoes = mountVersoes($('[data-versoes]')).then(c => { $('[data-count="versoes"]').textContent = c.versoes; return c; })
+    .catch(error => { $('[data-versoes]').innerHTML = `<p class="note">As versões não carregaram: ${esc(error.message)}</p>`; });
+}
 function showTab(id, {focus = false, push = true} = {}) {
+  const foco = /^qv?-/.test(id) ? id : '';
+  if (foco) { id = 'quadros'; push = false; }
   const tab = tabs.find(t => t.getAttribute('aria-controls') === id) || tabs[0];
   id = tab.getAttribute('aria-controls');
   for (const t of tabs) {
@@ -26,12 +36,17 @@ function showTab(id, {focus = false, push = true} = {}) {
   if (!opened.has(id)) {
     opened.add(id);
     $$('iframe[data-src]', $('#' + id)).forEach(f => { f.src = f.dataset.src; });
-    if (id === 'versoes') mountVersoes($('[data-versoes]')).then(n => { $('[data-count="versoes"]').textContent = n.versoes; })
-      .catch(error => { $('[data-versoes]').innerHTML = `<p class="note">As versões não carregaram: ${esc(error.message)}</p>`; });
+    montar(id);
   }
+  if (foco) montados.quadros?.then(c => c?.focar(foco));
   if (focus) tab.focus();
   if (push && location.hash !== '#' + id) history.replaceState(null, '', '#' + id);
 }
+addEventListener('lab:comparar', event => {
+  showTab('versoes');
+  scrollTo({top: 0});
+  montados.versoes?.then(c => c?.abrir(event.detail.id, {comparando: true}));
+});
 tabs.forEach((tab, i) => {
   tab.addEventListener('click', () => showTab(tab.getAttribute('aria-controls')));
   tab.addEventListener('keydown', event => {
@@ -48,7 +63,7 @@ document.addEventListener('click', event => {
   scrollTo({top: 0});
 });
 addEventListener('hashchange', () => showTab(location.hash.slice(1), {push: false}));
-showTab(location.hash.slice(1) || 'versoes', {push: false});
+showTab(location.hash.slice(1) || 'quadros', {push: false});
 
 /* Frames: width presets and prototype switch */
 document.addEventListener('click', event => {

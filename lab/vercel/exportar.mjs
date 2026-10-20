@@ -9,12 +9,17 @@
  * middleware routes the absolute requests it makes by Referer. */
 import {createHash} from 'node:crypto';
 import {copyFileSync, existsSync, mkdirSync, readdirSync, readFileSync, statSync, writeFileSync} from 'node:fs';
-import {dirname, extname, join, relative, resolve} from 'node:path';
+import {dirname, extname, join, relative, resolve, sep} from 'node:path';
 import {fileURLToPath} from 'node:url';
 
 const LAB = resolve(fileURLToPath(new URL('..', import.meta.url)));
 const ROOT = resolve(LAB, '..');
 const OUT = resolve(process.argv[2] || join(ROOT, 'dist-lab'));
+// Private builds must never be written inside this public repository.
+if (process.env.LAB_PRIVADAS && (OUT + sep).startsWith(ROOT + sep)) {
+  console.error(`exportar: com LAB_PRIVADAS a saída precisa ficar fora de ${ROOT}`);
+  process.exit(1);
+}
 const ERAS = join(LAB, '.versoes');
 const {eras} = JSON.parse(readFileSync(join(LAB, 'versoes', 'portfolio.json'), 'utf8'));
 
@@ -64,6 +69,17 @@ function rewriter(id, prefixes) {
     .replace(/return(["`])\/\1\+(\w)\b/g, (m, q, v) => `return${q}${to}${q}+${v}`);
 }
 
+// The lab clock goes first in every version page (see lab/_lab/relogio.js).
+const RELOGIO = '<script src="/_lab/relogio.js"></script>';
+const injetar = text => (/<head(\s[^>]*)?>/i.test(text) ? text.replace(/<head(\s[^>]*)?>/i, m => m + RELOGIO) : RELOGIO + text);
+
+// Eras e00/e01 hotlinked the Fatos mídia-kit deploy, now behind a password. In a private
+// export (LAB_FATOS_ESTUDIO = the roblox repo's public/estudio) they are served from the lab.
+const ESTUDIO = process.env.LAB_FATOS_ESTUDIO && existsSync(process.env.LAB_FATOS_ESTUDIO) ? process.env.LAB_FATOS_ESTUDIO : '';
+const ESTUDIO_URL = 'https://midia-kit-production-c234.up.railway.app/estudio/';
+const TEXTO = new Set(['.html', '.css', '.js', '.mjs', '.json']);
+if (ESTUDIO) for (const file of walk(ESTUDIO)) copy(file, join('_lab', 'fatos-estudio', relative(ESTUDIO, file)));
+
 const stored = new Set();
 let bytes = 0;
 function store(data, ext) {
@@ -83,7 +99,9 @@ for (const era of eras) {
   const add = (path, file) => {
     const ext = extname(file).toLowerCase();
     let data = readFileSync(file);
+    if (ESTUDIO && TEXTO.has(ext) && data.includes(ESTUDIO_URL)) data = Buffer.from(data.toString('utf8').split(ESTUDIO_URL).join('/_lab/fatos-estudio/'));
     if (ext === '.html' || ext === '.css') data = Buffer.from(rewrite(data.toString('utf8')));
+    if (ext === '.html') data = Buffer.from(injetar(data.toString('utf8')));
     manifest[path] = store(data, ext || '.bin');
   };
   for (const [path, file] of routes) add(path, join(dir, file));
@@ -109,6 +127,7 @@ if (PRIV && existsSync(PRIV)) for (const name of readdirSync(PRIV).filter(n => n
     const ext = extname(file).toLowerCase();
     let data = readFileSync(file);
     if (['.html', '.css', '.js', '.mjs'].includes(ext)) data = Buffer.from(rewrite(data.toString('utf8')));
+    if (ext === '.html') data = Buffer.from(injetar(data.toString('utf8')));
     manifest['/' + relative(dir, file).split('\\').join('/')] = store(data, ext || '.bin');
   }
   manifest['/'] = manifest['*'] = manifest['/index.html']; // '*': SPA fallback, as lab/server.mjs does
@@ -116,5 +135,8 @@ if (PRIV && existsSync(PRIV)) for (const name of readdirSync(PRIV).filter(n => n
   ok.push(meta.id);
   privadas.push(meta);
 }
+// Private Drive context (LAB_CONTEXTO, outside this repository), shown in the analysis cards.
+if (process.env.LAB_CONTEXTO && existsSync(process.env.LAB_CONTEXTO)) copy(process.env.LAB_CONTEXTO, 'contexto.json');
+else put('contexto.json', '{}');
 put('versoes.json', JSON.stringify({versoes: ok.map(id => ({id, kind: 'static'})), privadas}));
 console.log(`exportado: ${ok.length} versões, ${stored.size} arquivos únicos (${Math.round(bytes / 1e6)} MB) em ${OUT}`);

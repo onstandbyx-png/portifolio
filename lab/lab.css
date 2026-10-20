@@ -225,3 +225,24 @@ details .body h4{margin:6px 0 0;font-size:12px;letter-spacing:.06em;text-transfo
 .ref-live .seg-group{justify-content:flex-start}
 .ref-video{display:block;width:100%;max-height:420px;border-radius:var(--r-s);background:#000}
 .vs-aviso{color:var(--warn)}
+
+/* Quadros */
+.q-bar{display:flex;flex-wrap:wrap;gap:10px 14px;align-items:end;margin:0 0 10px}
+.q-bar .vs-field[hidden]{display:none}
+.q-busca input{min-height:36px;min-width:min(100%,220px);padding:4px 10px;border:1px solid var(--line);border-radius:var(--r-s);background:var(--surface);color:var(--ink);font:inherit;font-size:13px}
+.q-grid{grid-template-columns:repeat(auto-fill,minmax(min(100%,440px),1fr))}
+.q-stage{aspect-ratio:4/3;background:var(--stage-2)}
+.q-view{position:absolute;inset:0;overflow:hidden}
+.q-view iframe{position:absolute;top:0;left:0;max-width:none;border:0;transform-origin:0 0;background:#fff}
+.q-stage .stage-msg{z-index:1;pointer-events:none;padding:4px 8px;border-radius:var(--r-s);background:color-mix(in srgb,var(--surface) 88%,transparent)}
+.q-versoes{flex-wrap:wrap}
+.q-versoes .seg{min-height:30px;padding:3px 10px;font-size:12px}
+.q-acoes{gap:6px}
+.q-acoes .btn,.q-acoes .seg{min-height:32px;padding:4px 10px;font-size:12.5px}
+.q-card.is-escolhendo .q-stage{outline:2px dashed var(--accent);outline-offset:3px}
+.q-els{display:flex;flex-wrap:wrap;gap:6px;max-height:132px;overflow:auto}
+.q-el{appearance:none;border:0;cursor:pointer;font:inherit;font-size:12px}
+.q-el:hover{background:var(--soft);color:var(--accent)}
+.q-notas{display:grid;gap:6px;margin:0;padding-left:18px}
+.q-notas code,.q-card details code{font:12px/1.4 var(--mono);overflow-wrap:anywhere}
+.q-mais{display:flex;justify-content:center;margin:18px 0 8px}

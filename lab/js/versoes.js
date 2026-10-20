@@ -1,85 +1,13 @@
 /* Versões: every era of the portfolio (and the private smiile/Fatos versions
- * listed by the server) running live under /v/<id>/. The frames are same-origin,
+ * listed by the deploy) running live under /v/<id>/. The frames are same-origin,
  * so the lab can scroll to an element, highlight it, isolate it and line up the
  * same element across versions. */
+import {FAMILIAS, PROJETOS, STATUS, caminhoDe, carregar, esc, localizar} from './catalogo.js';
+
 const $ = (sel, root = document) => root.querySelector(sel);
-const esc = value => String(value ?? '').replace(/[&<>"']/g, c => ({'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'}[c]));
-
-const FAMILIAS = [['todas', 'Todas'], ['cartoes', 'Cartões'], ['cracha', 'Crachá'], ['aparelhos', 'Aparelhos'], ['heroi', 'Heróis'],
-  ['galeria-rolagem', 'Galeria e rolagem'], ['anuncio-post', 'Anúncios e posts'], ['formulario', 'Formulários'], ['navegacao', 'Navegação'],
-  ['microinteracao', 'Microinterações'], ['marca', 'Marca'], ['secoes', 'Seções']];
-const STATUS = {atual: 'atual', substituido: 'substituído', rejeitado: 'recusado', legado: 'legado', removido: 'removido', rascunho: 'rascunho'};
-const PROJETOS = {portfolio: 'Portfólio', smiile: 'smiile', fatos: 'Fatos'};
-
-
-/* Where an element lives inside a version: its own selector, then a quoted
- * phrase from its name found in the page text, then the section its name
- * points to (ids used across the portfolio, smiile and Fatos versions). */
-const SECOES = [
-  [/crach|badge/i, ['[data-portfolio-badges]', '[data-badge-stage]', '#hero']],
-  [/sistema|pedido/i, ['#sistemas', '#pedidos']],
-  [/categoria|o que podemos|frentes/i, ['#categorias']],
-  [/como trabalho|processo|etapas/i, ['#como-trabalho', '#processo']],
-  [/contato|formul|briefing|whatsapp|e-mail/i, ['#contato']],
-  [/narrativa|casa costa|trilha|filme de rolagem/i, ['#trilhas', '#narrativa-visual']],
-  [/laborat|campanha|peel|papel|storyboard|anúnc|ads\b|meta|tiktok/i, ['#laboratorio', '#campanhas']],
-  [/editorial|iphone|ipad|macbook|aparelho|tríptico|hardware/i, ['#editorial', '#experiencias', '#estudio']],
-  [/baralho|cartas?\b|cartões|deck|coleção/i, ['#colecao', '[data-fatos-deck]', '#trabalhos', '#categorias', '#criacoes', '#marcas']],
-  [/galeria|trabalhos|repertório/i, ['#trabalhos']],
-  [/experiên/i, ['#experiencias']],
-  [/cap[ií]tulo.*v[ií]deo|mesa de dire|v[ií]deo/i, ['#cap-video']],
-  [/celulares|app de trilhas|cap[ií]tulo apps/i, ['#cap-apps']],
-  [/jogo|pixel/i, ['#cap-games']],
-  [/\bcad\b|drone/i, ['#cap-cad']],
-  [/pcb|placa/i, ['#cap-pcb']],
-  [/agente/i, ['#cap-agents']],
-  [/capacidade/i, ['#capacidades']],
-  [/cria[çc][õo]es|projeto/i, ['#criacoes']],
-  [/planos?\b|preço/i, ['#planos', '#plano', '#abrir-plano']],
-  [/universo/i, ['#universo']],
-  [/recurso/i, ['#recursos']],
-  [/estúdio|estudio/i, ['#estudio']],
-  [/marcas/i, ['#marcas']],
-  [/escala|constela/i, ['#escala']],
-  [/formatos/i, ['#formatos']],
-  [/como funciona/i, ['#como-funciona']],
-  [/her[oó]i|hero|vitrine/i, ['main > section:first-of-type', 'section']]
-];
-function localizar(doc, el) {
-  const visivel = n => n && n.getBoundingClientRect().height > 0;
-  const q = sel => { try { return doc.querySelector(sel.replace(/[.,;:]+$/, '')); } catch { return null; } };
-  if (el.seletor) { const n = q(el.seletor); if (visivel(n)) return n; }
-  const citado = el.nome.match(/[“"‘']([^”"’']{8,})[”"’']/);
-  if (citado) {
-    const alvo = citado[1].slice(0, 26).toLowerCase();
-    const walker = doc.createTreeWalker(doc.body, NodeFilter.SHOW_TEXT);
-    for (let t = walker.nextNode(); t; t = walker.nextNode()) {
-      if (t.textContent.toLowerCase().includes(alvo) && visivel(t.parentElement)) return t.parentElement.closest('section, article, figure') || t.parentElement;
-    }
-  }
-  const texto = `${el.nome} ${el.tipo || ''}`;
-  for (const [rx, sels] of SECOES) {
-    if (!rx.test(texto)) continue;
-    for (const sel of sels) { const n = q(sel); if (visivel(n)) return n; }
-  }
-  return null;
-}
 
 export async function mountVersoes(root) {
-  const [portfolio, servidor] = await Promise.all([
-    fetch('/versoes/portfolio.json').then(r => r.json()),
-    fetch('/versoes.json').then(r => r.json()).catch(() => ({versoes: [], privadas: []}))
-  ]);
-  const vivas = new Set(servidor.versoes.map(v => v.id));
-  const versoes = [
-    ...portfolio.eras.map(e => ({id: e.id, projeto: 'portfolio', data: e.date, rotulo: e.label, commit: e.commit.slice(0, 7)})),
-    ...servidor.privadas.map(p => ({id: p.id, projeto: p.projeto, data: p.data, rotulo: p.rotulo, commit: (p.commit || '').slice(0, 7), nota: p.nota}))
-  ].filter(v => vivas.has(v.id));
-  const elementos = [
-    ...portfolio.elementos.map(e => ({...e, projeto: 'portfolio'})),
-    ...servidor.privadas.flatMap(p => (p.elementos || []).map(e => ({...e, projeto: p.projeto, versoes: e.versoes || [p.id]})))
-  ];
-  const porId = new Map(versoes.map(v => [v.id, v]));
+  const {versoes, elementos, porId} = await carregar();
 
   root.innerHTML = `
     <div class="vs-bar">
@@ -123,7 +51,7 @@ export async function mountVersoes(root) {
     const v = porId.get(id);
     const wrap = document.createElement('figure');
     wrap.className = 'vs-frame';
-    wrap.innerHTML = `<figcaption><b>${esc(PROJETOS[v.projeto])} · ${esc(v.data)}</b> ${esc(v.rotulo)} <code>${esc(v.commit)}</code></figcaption><div class="vs-viewport"><iframe title="${esc(v.rotulo)}" src="/v/${id}/${foco?.caminho ? encodeURI(foco.caminho) : ''}"></iframe></div>`;
+    wrap.innerHTML = `<figcaption><b>${esc(PROJETOS[v.projeto])} · ${esc(v.data)}</b> ${esc(v.rotulo)} <code>${esc(v.commit)}</code></figcaption><div class="vs-viewport"><iframe title="${esc(v.rotulo)}" data-versao="${esc(id)}" src="/v/${id}/${encodeURI(caminhoDe(foco, id))}"></iframe></div>`;
     const iframe = wrap.querySelector('iframe');
     iframe.style.width = largura ? `${largura}px` : '100%';
     iframe.addEventListener('load', () => { if (foco) setTimeout(() => focar(iframe, foco), 600); });
@@ -134,11 +62,17 @@ export async function mountVersoes(root) {
     let doc;
     try { doc = iframe.contentDocument; } catch { return; }
     if (!doc || !el) return;
-    const alvo = localizar(doc, el);
+    const alvo = localizar(doc, el, iframe.dataset.versao);
     const aviso = iframe.closest('.vs-frame')?.querySelector('figcaption');
     aviso?.querySelector('.vs-aviso')?.remove();
-    if (!alvo) { aviso?.insertAdjacentHTML('beforeend', ' <span class="vs-aviso">· não achei o elemento nesta versão; role a página</span>'); return; }
-    alvo.scrollIntoView({block: 'center', behavior: 'instant'});
+    if (!alvo) {
+      aviso?.insertAdjacentHTML('beforeend', ` <span class="vs-aviso">· não achei o elemento nesta versão${isolar ? ', então não dá para isolar' : ''}; role a página ou use o quadro dele</span>`);
+      aplicarIsolar(doc, null);
+      return;
+    }
+    // Scroll only inside the version, so the lab page and the comparison strip stay where they are.
+    const win = doc.defaultView, r = alvo.getBoundingClientRect();
+    win.scrollTo({top: win.scrollY + r.top - Math.max(0, (win.innerHeight - r.height) / 2), behavior: 'instant'});
     alvo.style.outline = '3px solid #2F7A57';
     alvo.style.outlineOffset = '4px';
     setTimeout(() => { alvo.style.outline = ''; alvo.style.outlineOffset = ''; }, 2200);
@@ -164,7 +98,8 @@ export async function mountVersoes(root) {
     frames.classList.toggle('is-comparar', comparar && lista.length > 1);
     lista.filter(Boolean).forEach(id => frames.append(frame(id, atual)));
     const id = lista[0];
-    $('[data-vs-abrir]', root).href = id ? `/v/${id}/` : '#';
+    $('[data-vs-abrir]', root).href = id ? `/v/${id}/${encodeURI(caminhoDe(atual, id))}` : '#';
+    frames.scrollLeft = 0;
     $('[data-vs-acoes]', root).hidden = !atual;
     if (atual) $('[data-vs-titulo]', root).innerHTML = `<b>${esc(atual.nome)}</b> — ${esc(atual.interacao || '')}`;
     $('[data-vs-ir]', root).disabled = !atual;
@@ -211,8 +146,22 @@ export async function mountVersoes(root) {
     }
   });
 
+  function abrir(id, {comparando = false} = {}) {
+    const alvo = elementos.find(e => e.id === id);
+    if (!alvo) return;
+    atual = alvo;
+    selProjeto.value = alvo.projeto;
+    listaVersoes();
+    const primeira = alvo.versoes.find(v => porId.has(v));
+    if (primeira) selVersao.value = primeira;
+    comparar = comparando && alvo.versoes.filter(v => porId.has(v)).length > 1;
+    $('[data-vs-comparar]', root).setAttribute('aria-pressed', String(comparar));
+    listaElementos();
+    mostrar();
+  }
+
   listaVersoes();
   listaElementos();
   mostrar();
-  return {versoes: versoes.length, elementos: elementos.length};
+  return {versoes: versoes.length, elementos: elementos.length, abrir};
 }
