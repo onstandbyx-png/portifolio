@@ -224,3 +224,4 @@ details .body h4{margin:6px 0 0;font-size:12px;letter-spacing:.06em;text-transfo
 .ref-live{display:grid;gap:8px}
 .ref-live .seg-group{justify-content:flex-start}
 .ref-video{display:block;width:100%;max-height:420px;border-radius:var(--r-s);background:#000}
+.vs-aviso{color:var(--warn)}

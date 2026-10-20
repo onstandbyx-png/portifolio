@@ -11,6 +11,60 @@ const FAMILIAS = [['todas', 'Todas'], ['cartoes', 'Cartões'], ['cracha', 'Crach
 const STATUS = {atual: 'atual', substituido: 'substituído', rejeitado: 'recusado', legado: 'legado', removido: 'removido', rascunho: 'rascunho'};
 const PROJETOS = {portfolio: 'Portfólio', smiile: 'smiile', fatos: 'Fatos'};
 
+
+/* Where an element lives inside a version: its own selector, then a quoted
+ * phrase from its name found in the page text, then the section its name
+ * points to (ids used across the portfolio, smiile and Fatos versions). */
+const SECOES = [
+  [/crach|badge/i, ['[data-portfolio-badges]', '[data-badge-stage]', '#hero']],
+  [/sistema|pedido/i, ['#sistemas', '#pedidos']],
+  [/categoria|o que podemos|frentes/i, ['#categorias']],
+  [/como trabalho|processo|etapas/i, ['#como-trabalho', '#processo']],
+  [/contato|formul|briefing|whatsapp|e-mail/i, ['#contato']],
+  [/narrativa|casa costa|trilha|filme de rolagem/i, ['#trilhas', '#narrativa-visual']],
+  [/laborat|campanha|peel|papel|storyboard|anúnc|ads\b|meta|tiktok/i, ['#laboratorio', '#campanhas']],
+  [/editorial|iphone|ipad|macbook|aparelho|tríptico|hardware/i, ['#editorial', '#experiencias', '#estudio']],
+  [/baralho|cartas?\b|cartões|deck|coleção/i, ['#colecao', '[data-fatos-deck]', '#trabalhos', '#categorias', '#criacoes', '#marcas']],
+  [/galeria|trabalhos|repertório/i, ['#trabalhos']],
+  [/experiên/i, ['#experiencias']],
+  [/cap[ií]tulo.*v[ií]deo|mesa de dire|v[ií]deo/i, ['#cap-video']],
+  [/celulares|app de trilhas|cap[ií]tulo apps/i, ['#cap-apps']],
+  [/jogo|pixel/i, ['#cap-games']],
+  [/\bcad\b|drone/i, ['#cap-cad']],
+  [/pcb|placa/i, ['#cap-pcb']],
+  [/agente/i, ['#cap-agents']],
+  [/capacidade/i, ['#capacidades']],
+  [/cria[çc][õo]es|projeto/i, ['#criacoes']],
+  [/planos?\b|preço/i, ['#planos', '#plano', '#abrir-plano']],
+  [/universo/i, ['#universo']],
+  [/recurso/i, ['#recursos']],
+  [/estúdio|estudio/i, ['#estudio']],
+  [/marcas/i, ['#marcas']],
+  [/escala|constela/i, ['#escala']],
+  [/formatos/i, ['#formatos']],
+  [/como funciona/i, ['#como-funciona']],
+  [/her[oó]i|hero|vitrine/i, ['main > section:first-of-type', 'section']]
+];
+function localizar(doc, el) {
+  const visivel = n => n && n.getBoundingClientRect().height > 0;
+  const q = sel => { try { return doc.querySelector(sel.replace(/[.,;:]+$/, '')); } catch { return null; } };
+  if (el.seletor) { const n = q(el.seletor); if (visivel(n)) return n; }
+  const citado = el.nome.match(/[“"‘']([^”"’']{8,})[”"’']/);
+  if (citado) {
+    const alvo = citado[1].slice(0, 26).toLowerCase();
+    const walker = doc.createTreeWalker(doc.body, NodeFilter.SHOW_TEXT);
+    for (let t = walker.nextNode(); t; t = walker.nextNode()) {
+      if (t.textContent.toLowerCase().includes(alvo) && visivel(t.parentElement)) return t.parentElement.closest('section, article, figure') || t.parentElement;
+    }
+  }
+  const texto = `${el.nome} ${el.tipo || ''}`;
+  for (const [rx, sels] of SECOES) {
+    if (!rx.test(texto)) continue;
+    for (const sel of sels) { const n = q(sel); if (visivel(n)) return n; }
+  }
+  return null;
+}
+
 export async function mountVersoes(root) {
   const [portfolio, servidor] = await Promise.all([
     fetch('/versoes/portfolio.json').then(r => r.json()),
@@ -79,9 +133,11 @@ export async function mountVersoes(root) {
   function focar(iframe, el) {
     let doc;
     try { doc = iframe.contentDocument; } catch { return; }
-    if (!doc || !el.seletor) return;
-    const alvo = doc.querySelector(el.seletor);
-    if (!alvo) return;
+    if (!doc || !el) return;
+    const alvo = localizar(doc, el);
+    const aviso = iframe.closest('.vs-frame')?.querySelector('figcaption');
+    aviso?.querySelector('.vs-aviso')?.remove();
+    if (!alvo) { aviso?.insertAdjacentHTML('beforeend', ' <span class="vs-aviso">· não achei o elemento nesta versão; role a página</span>'); return; }
     alvo.scrollIntoView({block: 'center', behavior: 'instant'});
     alvo.style.outline = '3px solid #2F7A57';
     alvo.style.outlineOffset = '4px';
@@ -111,8 +167,8 @@ export async function mountVersoes(root) {
     $('[data-vs-abrir]', root).href = id ? `/v/${id}/` : '#';
     $('[data-vs-acoes]', root).hidden = !atual;
     if (atual) $('[data-vs-titulo]', root).innerHTML = `<b>${esc(atual.nome)}</b> — ${esc(atual.interacao || '')}`;
-    $('[data-vs-ir]', root).disabled = !atual?.seletor;
-    $('[data-vs-isolar]', root).disabled = !atual?.seletor;
+    $('[data-vs-ir]', root).disabled = !atual;
+    $('[data-vs-isolar]', root).disabled = !atual;
   }
 
   selProjeto.addEventListener('change', () => { listaVersoes(); listaElementos(); atual = null; mostrar(); });
