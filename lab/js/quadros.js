@@ -35,7 +35,7 @@ function ocupar(q) {
   if (i >= 0) vivos.splice(i, 1);
   vivos.push(q);
   while (vivos.length > MAX_VIVOS) {
-    const sai = vivos.find(v => v !== q && !v.visivel) || vivos.find(v => v !== q);
+    const sai = vivos.find(v => v !== q && !v.visivel && !v.fixo) || vivos.find(v => v !== q && !v.fixo) || vivos.find(v => v !== q);
     vivos.splice(vivos.indexOf(sai), 1);
     sai.desligar();
   }
@@ -46,6 +46,8 @@ const olho = new IntersectionObserver(entries => {
     const q = entry.target.__quadro;
     if (!q) continue;
     q.visivel = entry.isIntersecting;
+    // A card opened from a link stays live until it has been seen and then scrolled away.
+    if (q.visivel) q.visto = true; else if (q.visto) q.fixo = false;
     clearTimeout(q.espera);
     if (q.visivel && !q.vivo) q.espera = setTimeout(() => { if (q.visivel) q.ligar(); }, 450);
   }
@@ -709,6 +711,8 @@ export async function mountQuadros(root) {
       const ir = () => q.card.scrollIntoView({block: 'start', behavior: 'instant'});
       ir();
       q.visivel = true;
+      q.fixo = true;
+      q.visto = false;
       q.ligar();
       // Cards above settle their height while loading; land on the card again once they have.
       setTimeout(ir, 400);
