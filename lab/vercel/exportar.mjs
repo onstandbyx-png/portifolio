@@ -128,6 +128,8 @@ if (PRIV && existsSync(PRIV)) for (const name of readdirSync(PRIV).filter(n => n
     let data = readFileSync(file);
     if (['.html', '.css', '.js', '.mjs'].includes(ext)) data = Buffer.from(rewrite(data.toString('utf8')));
     if (ext === '.html') data = Buffer.from(injetar(data.toString('utf8')));
+    // Single-file apps that route by location.pathname (meta "subcaminho") see the path without /v/<id>.
+    if (meta.subcaminho && ['.html', '.js', '.mjs'].includes(ext)) data = Buffer.from(data.toString('utf8').replace(/\blocation\.pathname\b(?!\s*=[^=])/g, `(location.pathname.replace(/^\\/v\\/[\\w-]+/, '') || '/')`));
     manifest['/' + relative(dir, file).split('\\').join('/')] = store(data, ext || '.bin');
   }
   manifest['/'] = manifest['*'] = manifest['/index.html']; // '*': SPA fallback, as lab/server.mjs does
