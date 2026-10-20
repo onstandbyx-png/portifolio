@@ -1,6 +1,6 @@
 import {PAIRS} from './recriados.js';
 import {mountVersoes} from './versoes.js';
-import {mountLottie, mountRive, reducedMotion, renderInputs, whenNear} from './runtime.js';
+import {mountLottie, mountRive, reducedMotion, renderInputs, renderSetup, whenNear} from './runtime.js';
 
 const PREVIEW = 'https://portfolio-visual-review-production.up.railway.app';
 const $ = (sel, root = document) => root.querySelector(sel);
@@ -100,6 +100,7 @@ function renderPair(pair, data) {
       <div class="side">
         <div class="side-label"><b>Original</b><a href="${esc(orig?.page)}" target="_blank" rel="noopener">${source} ↗</a><span class="tag tag--ok">${isRive ? 'CC BY 4.0' : 'Lottie Simple License'}</span></div>
         <div class="stage" data-orig><span class="stage-msg">carregando o original…</span></div>
+        <div class="inputs" data-setup></div>
         <div class="inputs" data-inputs></div>
         <p class="readout">medido no original: ${esc(origTime)}${isRive ? ' · roda sempre em 1×' : ''}</p>
       </div>
@@ -135,6 +136,7 @@ function renderPair(pair, data) {
     try {
       if (isRive) {
         original = await mountRive(stage, {src: orig.riv, artboard: pair.artboard, stateMachine: pair.sm});
+        renderSetup($('[data-setup]', el), original, {onChange: () => renderInputs($('[data-inputs]', el), original)});
         renderInputs($('[data-inputs]', el), original);
       } else {
         const box = html('<div class="lottie-box"></div>');
@@ -159,7 +161,7 @@ function renderPair(pair, data) {
     on = false;
     rec.reset();
     recTime.textContent = 'tempo da recriação: toque para medir';
-    if (original && isRive) { original.reset(); renderInputs($('[data-inputs]', el), original); }
+    if (original && isRive) original.reset().then(() => renderInputs($('[data-inputs]', el), original));
     else if (original) original.goToAndStop(Math.floor(original.totalFrames) - 1, true);
   });
   return el;
@@ -172,6 +174,7 @@ function renderRive(item, recreated) {
     <div><h3>${esc(item.name)} <small class="by">${riveNumber(item.slug)}</small></h3><p class="by">por ${esc(item.author || 'autor no Rive')} · <a href="${esc(item.page)}" target="_blank" rel="noopener">abrir no Rive ↗</a></p></div>
     <div class="meta"><span class="tag tag--ok">CC BY 4.0</span>${item.enviado ? '<span class="tag">enviado por você</span>' : ''}${recreated ? '<a class="tag tag--ok" href="#recriados" data-tab-link>tem recriação</a>' : ''}</div>
     <div class="controls"><button type="button" class="btn" data-pause disabled>Pausar</button><button type="button" class="btn" data-restart disabled>Reiniciar</button></div>
+    <div class="inputs" data-setup></div>
     <div class="inputs" data-inputs></div>
     ${details(item)}
   </article>`);
@@ -181,12 +184,13 @@ function renderRive(item, recreated) {
       const startPaused = reducedMotion();
       const ctrl = await mountRive(stage, {src: item.riv, paused: startPaused});
       $('.stage-msg', stage)?.remove();
+      renderSetup($('[data-setup]', el), ctrl, {onChange: () => { renderInputs($('[data-inputs]', el), ctrl); sync(); }});
       renderInputs($('[data-inputs]', el), ctrl);
       const sync = () => { pause.textContent = ctrl.playing ? 'Pausar' : 'Tocar'; };
       if (startPaused) { ctrl.playing = false; stage.append(html('<span class="stage-msg">Movimento reduzido ativo: aperte Tocar</span>')); }
       pause.disabled = restart.disabled = false; sync();
       pause.addEventListener('click', () => { if (ctrl.playing) ctrl.pause(); else { ctrl.play(); $('.stage-msg', stage)?.remove(); } sync(); });
-      restart.addEventListener('click', () => { ctrl.reset(); renderInputs($('[data-inputs]', el), ctrl); $('.stage-msg', stage)?.remove(); sync(); });
+      restart.addEventListener('click', async () => { await ctrl.reset(); renderSetup($('[data-setup]', el), ctrl, {onChange: () => { renderInputs($('[data-inputs]', el), ctrl); sync(); }}); renderInputs($('[data-inputs]', el), ctrl); $('.stage-msg', stage)?.remove(); sync(); });
     } catch (error) { fail(stage, error); }
   });
   return el;
@@ -236,7 +240,9 @@ function renderRefs(refs) {
   for (const ref of refs) { if (!groups.has(ref.grupo)) groups.set(ref.grupo, []); groups.get(ref.grupo).push(ref); }
   return [...groups].map(([name, list]) => `<section class="ref-group"><h3>${esc(name)} <span class="count">${list.length}</span></h3><ul class="ref-list">${list.map(ref => {
     const extra = (ref.visual ? `<h4>Visual</h4><p>${esc(ref.visual)}</p>` : '') + timesList(ref.tempos) + (ref.interacao ? `<h4>Interação</h4><p>${esc(ref.interacao)}</p>` : '');
-    return `<li class="ref"><a href="${esc(ref.url)}" target="_blank" rel="noopener">${esc(ref.name)} ↗</a><div class="meta"><span class="tag">${esc(ref.kind)}</span>${ref.enviado ? '<span class="tag tag--ok">enviado por você</span>' : ''}</div><p>${esc(ref.mostra)}</p>${extra ? `<details><summary>O que foi medido</summary><div class="body">${extra}</div></details>` : ''}</li>`;
+    const live = ref.aoVivo ? `<div class="ref-live" data-live="${esc(ref.aoVivo)}"><button type="button" class="btn btn--primary" data-live-open>Abrir aqui, ao vivo</button></div>` : '';
+    const video = ref.video ? `<video class="ref-video" src="${esc(ref.video)}" controls muted playsinline loop preload="none"></video>` : '';
+    return `<li class="ref${ref.aoVivo ? ' ref--live' : ''}"><a href="${esc(ref.url)}" target="_blank" rel="noopener">${esc(ref.name)} ↗</a><div class="meta"><span class="tag">${esc(ref.kind)}</span>${ref.enviado ? '<span class="tag tag--ok">enviado por você</span>' : ''}${ref.aoVivo ? '<span class="tag tag--ok">roda ao vivo</span>' : ''}${ref.video ? '<span class="tag">vídeo da fonte</span>' : ''}</div>${live}${video}<p>${esc(ref.mostra)}</p>${extra ? `<details><summary>O que foi medido</summary><div class="body">${extra}</div></details>` : ''}</li>`;
   }).join('')}</ul></section>`).join('');
 }
 
@@ -247,7 +253,22 @@ try {
   $('[data-pairs]').append(...PAIRS.map(pair => renderPair(pair, data)));
   $('[data-grid="rive"]').append(...data.rive.map(item => renderRive(item, recreated.has(item.slug))));
   $('[data-grid="lottie"]').append(...data.lottie.map(renderLottie));
-  $('[data-refs]').innerHTML = renderRefs(data.refs);
+  const smiileAtual = {grupo: 'Sites do handoff', name: 'smiile (landing publicada)', url: 'https://smiile-landing-preview.up.railway.app/', kind: 'site', enviado: false, aoVivo: 'https://smiile-landing-preview.up.railway.app/', mostra: 'A landing atual do smiile, a mesma da prévia publicada.', tempos: []};
+  $('[data-refs]').innerHTML = renderRefs([...data.refs.filter(r => r.aoVivo), smiileAtual, ...data.refs.filter(r => !r.aoVivo)]);
+  $('[data-refs]').addEventListener('click', event => {
+    const open = event.target.closest('[data-live-open]');
+    if (!open) return;
+    const box = open.closest('[data-live]');
+    box.innerHTML = `<div class="seg-group" role="group" aria-label="Largura">${[['390', '390'], ['768', '768'], ['', 'Cheia']].map(([w, t]) => `<button type="button" class="seg" data-live-w="${w}"${w === '' ? ' aria-pressed="true"' : ''}>${t}</button>`).join('')}<a class="open" href="${esc(box.dataset.live)}" target="_blank" rel="noopener">Abrir em nova aba ↗</a></div><div class="vs-viewport"><iframe title="Site ao vivo" src="${esc(box.dataset.live)}" allow="fullscreen"></iframe></div>`;
+    box.closest('.ref').classList.add('is-open');
+  });
+  $('[data-refs]').addEventListener('click', event => {
+    const w = event.target.closest('[data-live-w]');
+    if (!w) return;
+    const box = w.closest('[data-live]');
+    box.querySelectorAll('[data-live-w]').forEach(b => b.setAttribute('aria-pressed', String(b === w)));
+    box.querySelector('iframe').style.width = w.dataset.liveW ? `${w.dataset.liveW}px` : '100%';
+  });
   const counts = {recriados: PAIRS.length, rive: data.rive.length, lottie: data.lottie.length, refs: data.refs.length};
   for (const [key, n] of Object.entries(counts)) $(`[data-count="${key}"]`).textContent = n;
   $$('[data-filters="rive"] [data-filter]').forEach(button => button.addEventListener('click', () => {

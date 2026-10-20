@@ -74,8 +74,27 @@ eras.forEach((era, index) => {
   if (!existsSync(join(dir, 'server.mjs'))) return;
   VERSOES.set(era.id, {id: era.id, kind: 'local', dir, port: 7100 + index, prefixes: localPrefixes(dir)});
 });
+// Private static versions (smiile, Fatos builds) live on the service volume, never in git:
+// $LAB_DADOS/versoes/<id>/ (files) + <id>.json (projeto, data, rotulo, commit, nota).
+const DADOS = join(process.env.LAB_DADOS || '/data', 'versoes');
+const META = new Map();
+function loadStatic() {
+  if (!existsSync(DADOS)) return;
+  for (const name of readdirSync(DADOS)) {
+    if (!name.endsWith('.json')) continue;
+    try {
+      const meta = JSON.parse(readFileSync(join(DADOS, name), 'utf8'));
+      const dir = join(DADOS, meta.id);
+      if (!/^[\w-]+$/.test(meta.id) || !existsSync(join(dir, 'index.html'))) continue;
+      META.set(meta.id, meta);
+      VERSOES.set(meta.id, {id: meta.id, kind: 'static', dir, prefixes: readdirSync(dir).filter(n => !n.startsWith('.'))});
+    } catch (error) { console.error('versão estática inválida', name, error.message); }
+  }
+}
+loadStatic();
 for (const v of JSON.parse(process.env.LAB_VERSOES_PRIVADAS || '[]')) {
   if (!v.id || !v.upstream) continue;
+  META.set(v.id, {id: v.id, projeto: v.projeto, data: v.data, rotulo: v.rotulo, commit: v.commit || '', nota: v.nota || ''});
   VERSOES.set(v.id, {id: v.id, kind: 'remote', upstream: new URL(v.upstream), auth: v.usuario ? 'Basic ' + Buffer.from(`${v.usuario}:${v.senha || ''}`).toString('base64') : '',
     prefixes: v.prefixos || ['assets', '_astro', 'fonts', 'images', 'img', 'media', 'static', 'icons', 'favicon.svg', 'favicon.ico']});
 }
@@ -102,7 +121,9 @@ function rewriter(v) {
   const to = `/v/${v.id}/`;
   v.rewrite = text => text
     .replace(/srcset=(["'])([^"']*)\1/g, (m, q, val) => `srcset=${q}${val.replace(/^\s*\/(?!\/|v\/)/, ` ${to}`).replace(srcset, `$1${to}$2`).trim()}${q}`)
-    .replace(quoted, `$1${to}$2`);
+    .replace(quoted, `$1${to}$2`)
+    // Vite's preload helper builds absolute URLs as "/" + "assets/x.js".
+    .replace(/return(["`])\/\1\+(\w)\b/g, (m, q, v) => `return${q}${to}${q}+${v}`);
   return v.rewrite;
 }
 
@@ -143,7 +164,25 @@ function frameCsp(value) {
   return [...kept, "frame-ancestors 'self'"].join('; ');
 }
 
+const versionHeaders = type => ({'Content-Type': type, 'Content-Security-Policy': "frame-ancestors 'self'", 'Referrer-Policy': 'same-origin', 'X-Robots-Tag': 'noindex, nofollow, noarchive', 'X-Content-Type-Options': 'nosniff', 'Cache-Control': 'no-cache'});
+async function serveStatic(req, res, v, path) {
+  const clean = normalize(decodeURIComponent(path.split('?')[0])).replace(/^([/\\])+/, '');
+  let file = resolve(v.dir, clean || 'index.html');
+  if (!file.startsWith(v.dir)) { res.writeHead(404); return res.end(); }
+  let info = await stat(file).catch(() => null);
+  if (info?.isDirectory()) { file = join(file, 'index.html'); info = await stat(file).catch(() => null); }
+  if (!info?.isFile() && !extname(clean)) { file = join(v.dir, 'index.html'); info = await stat(file).catch(() => null); }
+  if (!info?.isFile()) { res.writeHead(404, versionHeaders('text/plain; charset=utf-8')); return res.end('Não encontrado'); }
+  const ext = extname(file).toLowerCase();
+  const type = TYPES[ext] || {'.webm': 'video/webm', '.mjs': 'text/javascript; charset=utf-8', '.ico': 'image/x-icon', '.woff': 'font/woff', '.gif': 'image/gif', '.mp3': 'audio/mpeg', '.glb': 'model/gltf-binary', '.webmanifest': 'application/manifest+json'}[ext] || 'application/octet-stream';
+  let body = await readFile(file);
+  if (/text\/html|text\/css|javascript/.test(type)) body = Buffer.from(rewriter(v)(body.toString('utf8')));
+  res.writeHead(200, {...versionHeaders(type), 'Content-Length': body.length});
+  res.end(req.method === 'HEAD' ? undefined : body);
+}
+
 async function proxy(req, res, v, path) {
+  if (v.kind === 'static') return serveStatic(req, res, v, path);
   if (v.kind === 'local') await startLocal(v);
   const target = v.kind === 'local' ? new URL(`http://127.0.0.1:${v.port}`) : v.upstream;
   const headers = {...req.headers, host: target.host, 'accept-encoding': 'identity'};
@@ -246,6 +285,22 @@ createServer(async (req, res) => {
       res.writeHead(401, {...HEADERS, 'WWW-Authenticate': 'Basic realm="Laboratorio de elementos", charset="UTF-8"', 'Content-Type': 'text/plain; charset=utf-8'});
       return res.end('Acesso restrito');
     }
+    const upload = pathname.match(/^\/_enviar\/([\w-]+)$/);
+    if (upload && req.method === 'PUT') {
+      const token = process.env.LAB_UPLOAD_TOKEN || '';
+      if (!token || !same(String(req.headers['x-lab-token'] || ''), token)) { res.writeHead(403, HEADERS); return res.end('Envio desligado'); }
+      await import('node:fs/promises').then(fs => fs.mkdir(DADOS, {recursive: true}));
+      const tar = spawn('tar', ['-xz', '-C', DADOS], {stdio: ['pipe', 'ignore', 'pipe']});
+      let err = '';
+      tar.stderr.on('data', c => { err += c; });
+      req.pipe(tar.stdin);
+      tar.on('close', code => {
+        loadStatic();
+        res.writeHead(code === 0 ? 200 : 500, {...HEADERS, 'Content-Type': 'text/plain; charset=utf-8'});
+        res.end(code === 0 ? `ok ${upload[1]} (${VERSOES.has(upload[1]) ? 'registrada' : 'sem metadados'})` : `tar falhou: ${err}`);
+      });
+      return;
+    }
     const versioned = pathname.match(/^\/v\/([\w-]+)(\/.*)?$/);
     if (versioned && VERSOES.has(versioned[1])) {
       if (!versioned[2]) { res.writeHead(308, {...HEADERS, Location: `/v/${versioned[1]}/`}); return res.end(); }
@@ -271,7 +326,7 @@ createServer(async (req, res) => {
     if (pathname === '/versoes.json') {
       const lista = [...VERSOES.values()].map(v => ({id: v.id, kind: v.kind}));
       res.writeHead(200, {...HEADERS, 'Content-Type': 'application/json; charset=utf-8', 'Cache-Control': 'no-cache'});
-      return res.end(JSON.stringify({versoes: lista, privadas: JSON.parse(process.env.LAB_VERSOES_PRIVADAS || '[]').map(({usuario, senha, upstream, ...rest}) => rest)}));
+      return res.end(JSON.stringify({versoes: lista, privadas: [...META.values()].filter(m => VERSOES.has(m.id))}));
     }
     const file = locate(pathname);
     if (file && await send(req, res, file)) return;
