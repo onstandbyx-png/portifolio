@@ -167,7 +167,9 @@ function setupReveal() {
       if (first) continue;
       motion.animate(el, [{opacity: 0, transform: 'translateY(16px)'}, {opacity: 1, transform: 'none'}], {duration: DURATION.entry, delay: delayOf(el), easing});
     }
-  }, {threshold: 0});
+    // The entry starts just below the fold (12% early, about one wheel notch): an
+    // element is never painted at full opacity for a frame and then blanked.
+  }, {threshold: 0, rootMargin: '0px 0px 12% 0px'});
   items.forEach(el => observer.observe(el));
 }
 

@@ -47,6 +47,17 @@
 .cr-kit{display:grid;justify-items:center;gap:14px;margin:0;min-width:0}
 .cr-kit-card{width:100%;max-width:420px}
 .cr-kit-card[data-flip-ready] .pg-flip-rotor{aspect-ratio:4/5;max-height:420px}
+/* With scripting on, the card already has its final box at first paint (one 4:5
+   cell, back face hidden, toggle space reserved): when flip.js marks it ready the
+   layout does not move, so the hero copy never jumps (no layout shift). Without
+   scripting both faces stay stacked and readable (flip.css). */
+@media (scripting: enabled){
+  .cr-kit-card .pg-flip-rotor{aspect-ratio:4/5;max-height:420px}
+  .cr-kit-card:not([data-flip-ready]) .pg-flip-rotor{gap:0}
+  .cr-kit-card:not([data-flip-ready]) .pg-flip-face{grid-area:1/1}
+  .cr-kit-card:not([data-flip-ready]) .pg-flip-back{visibility:hidden}
+  .cr-kit-card:not([data-flip-ready]) [data-flip-open]{display:inline-flex;visibility:hidden}
+}
 .cr-kit-face{display:flex;flex-direction:column;gap:10px;min-width:0;padding:24px;background:var(--papel);color:var(--tinta);box-shadow:0 28px 60px -32px #000c,inset 0 0 0 1px #18251f14;--foco:var(--floresta);--texto-2:var(--tinta-2)}
 .cr-kit-eyebrow{margin:0;font-size:.75rem;font-weight:600;line-height:1.4;letter-spacing:.08em;text-transform:uppercase;color:var(--floresta)}
 .cr-kit-cover{position:relative;display:flex;align-items:flex-end;gap:14px;flex:1 1 auto;min-height:96px;max-height:180px;padding:16px;border-radius:var(--raio-m);background:linear-gradient(150deg,var(--painel),var(--floresta) 60%);overflow:hidden}

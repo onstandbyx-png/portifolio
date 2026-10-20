@@ -247,6 +247,33 @@ export async function checks(t) {
   for (let step = 1; step <= 6; step++) await page.mouse.move(stageBox.x + stageBox.width * .7 + step, stageBox.y + 20 + step * 14);
   await page.mouse.up();
   check('A vertical drag on the thumbnail keeps the value (axis lock)', Number(await range.inputValue()) === dragged);
+  if (width < 500) {
+    // Real touch (CDP): the finger holds an implicit capture on the element under it.
+    const cdp = await page.context().newCDPSession(page);
+    const touch = (type, x, y) => cdp.send('Input.dispatchTouchEvent', {type, touchPoints: type === 'touchEnd' ? [] : [{x, y}]});
+    const swipe = async (from, to, steps = 12) => {
+      await touch('touchStart', from.x, from.y);
+      for (let i = 1; i <= steps; i++) { await touch('touchMove', from.x + (to.x - from.x) * i / steps, from.y + (to.y - from.y) * i / steps); await pause(16); }
+      await touch('touchEnd');
+      await pause(120);
+    };
+    await thumb.locator('[data-compare-stage]').scrollIntoViewIfNeeded();
+    const box = await thumb.locator('[data-compare-stage]').boundingBox();
+    const y = box.y + box.height * .62;
+    await swipe({x: box.x + box.width * .8, y}, {x: box.x + box.width * .15, y});
+    const left = Number(await range.inputValue());
+    check('A touch drag that starts on the image (not the divider) follows the finger to the end', Math.abs(left - 15) <= 4, left);
+    await swipe({x: box.x + box.width * .35, y}, {x: box.x + box.width * .9, y});
+    const right = Number(await range.inputValue());
+    check('A touch drag back the other way follows the finger too', Math.abs(right - 90) <= 4, right);
+    const handle = await thumb.locator('[data-compare-handle]').boundingBox();
+    const scrollBefore = await page.evaluate(() => scrollY);
+    await swipe({x: handle.x + handle.width / 2, y: handle.y + handle.height * .55}, {x: handle.x + handle.width / 2, y: handle.y + handle.height * .55 - 220}, 10);
+    await pause(400);
+    const scrollAfter = await page.evaluate(() => scrollY);
+    check('A vertical swipe that starts on the divider scrolls the page and keeps the value', scrollAfter - scrollBefore > 60 && Number(await range.inputValue()) === right, {scrollBefore, scrollAfter, value: await range.inputValue()});
+    await cdp.detach();
+  }
 
   // ---------- AV7 · diagnosis form (SPEC 4.0/4.B) ----------
   const form = page.locator('#diagnostico-form'), panel = page.locator('#av-revisao');

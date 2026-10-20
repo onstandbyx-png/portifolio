@@ -5,7 +5,9 @@
  *   list: the back appears under the front (150 ms opacity), one open at a time.
  * - V5 "Entrar no banco": K18 stepper over K9 validation, five steps, one question
  *   each. Step 5 shows the exact message; the WhatsApp/e-mail links (K10) exist only
- *   while both boxes (18+ and consent, K19) are checked. From 960 px the preview
+ *   while both boxes (18+ and consent, K19) are checked; ticking only the
+ *   authorization, or tabbing away with a box unticked, shows the 18+ guardian
+ *   path and the consent error inline. From 960 px the preview
  *   sits in the phone frame (K7) as a neutral bubble; below, it takes the full width.
  * Nothing is sent or stored by this page: the visitor taps a real link. */
 import {motion} from './shell.js';
@@ -26,6 +28,12 @@ const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
 const PAGE = 'vagas';
 const CLOSED = 'rotateX(0deg) rotateY(0deg)';
 const LABELS = Object.freeze({open: 'Ver detalhes', close: 'Fechar'});
+/** Adds or removes one id in aria-describedby, keeping the error ids builder.js manages. */
+function describedBy(el, id, add) {
+  const ids = new Set((el.getAttribute('aria-describedby') || '').split(/\s+/).filter(Boolean));
+  if (add) ids.add(id); else ids.delete(id);
+  if (ids.size) el.setAttribute('aria-describedby', [...ids].join(' ')); else el.removeAttribute('aria-describedby');
+}
 
 /* ---------- V3 · areas: flip (≥ 720 px) or disclosure list ---------- */
 export function mountAreas(root = $('[data-areas]')) {
@@ -182,6 +190,9 @@ export function mountTalentForm(form = $('[data-talent-form]')) {
   const linkHintEl = $('#vg-link1-dica', form);
   const highlight = $('#vg-destaque', form);
   const highlightCount = $('[data-highlight-count]', form);
+  const adultBox = $('#vg-maior', form);
+  const consentBox = $('#vg-consentimento', form);
+  const consentGroup = $('.vg-consent', form);
   const preview = mountPreview($('[data-preview-slot]', form), $('[data-preview-bubble]', form));
   const values = () => readValues(form);
 
@@ -204,7 +215,7 @@ export function mountTalentForm(form = $('[data-talent-form]')) {
   };
   const syncCount = () => { if (highlight && highlightCount) highlightCount.textContent = `${highlight.value.length}/${LIMITS.highlight}`; };
 
-  let current = null;
+  let current = null, boxesTouched = false;
   const lastStep = rules.length - 1;
   function renderReview() {
     const answers = values();
@@ -213,6 +224,9 @@ export function mountTalentForm(form = $('[data-talent-form]')) {
     renderHandoff(panel, unlocked ? current : {text: current.text, whatsapp: null, email: null});
     if (actions) actions.hidden = !unlocked;
     if (locked) locked.hidden = unlocked;
+    // While locked, both boxes are described by "Marque as duas caixas…", which
+    // sits after them; the live wrapper announces the buttons when they appear.
+    if (locked?.id) [adultBox, consentBox].forEach(box => box && describedBy(box, locked.id, !unlocked));
     if (!unlocked && status) status.textContent = '';
     form.dataset.handoff = unlocked ? 'ready' : 'locked';
     preview.refresh();
@@ -240,7 +254,19 @@ export function mountTalentForm(form = $('[data-talent-form]')) {
 
   form.addEventListener('change', event => {
     if (event.target?.name === 'area') syncArea();
-    if (stepper.index() === lastStep) renderReview();
+    if (stepper.index() !== lastStep) return;
+    renderReview();
+    if (event.target === adultBox || event.target === consentBox) boxesTouched = true;
+    // SPEC 4.0/8.3 item 11: going on without "Tenho 18 anos ou mais" shows the
+    // guardian path. Ticking the authorization alone is that attempt here.
+    if (event.target === consentBox && consentBox.checked && adultBox && !adultBox.checked) validators[lastStep].validateField(adultBox.id);
+  });
+  // Leaving the two boxes (Tab to the next control) with one unticked explains
+  // inline what is missing; nothing moves focus.
+  consentGroup?.addEventListener('focusout', event => {
+    const to = event.relatedTarget;
+    if (!boxesTouched || !to || consentGroup.contains(to) || stepper.index() !== lastStep) return;
+    if (!(adultBox?.checked && consentBox?.checked)) [adultBox, consentBox].forEach(box => box && validators[lastStep].validateField(box.id));
   });
   form.addEventListener('input', event => {
     if (event.target === highlight) syncCount();

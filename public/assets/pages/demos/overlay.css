@@ -74,8 +74,9 @@
 /* ---------- the overlay demo: notebook frame with a morphing screen ---------- */
 .av-ov-stage{container-type:inline-size;min-width:0}
 /* --ov-pad: lid + bezel padding of device-premium.css on both sides, so the
-   screen itself is exactly 16:9 or 9:16. */
-.av-ov-device{--ov-w:100cqw;--ov-pad:calc(2 * (clamp(5px,.85vw,10px) + clamp(4px,.7vw,8px)));--ov-lid:calc((var(--ov-w) - var(--ov-pad)) * 9 / 16 + var(--ov-pad));width:var(--ov-w);max-width:100%;margin-inline:auto;--mbp-max-width:100%;transition:width var(--pg-dur-morph,350ms) var(--pg-ease-morph,cubic-bezier(.2,.9,.25,1.02))}
+   screen itself is exactly 16:9 or 9:16. --ov-w leaves room for the base, which
+   is 107% of the device, so it never overflows the column. */
+.av-ov-device{--ov-w:calc(100cqw / 1.07);--ov-pad:calc(2 * (clamp(5px,.85vw,10px) + clamp(4px,.7vw,8px)));--ov-lid:calc((var(--ov-w) - var(--ov-pad)) * 9 / 16 + var(--ov-pad));width:var(--ov-w);max-width:100%;margin-inline:auto;--mbp-max-width:100%;transition:width var(--pg-dur-morph,350ms) var(--pg-ease-morph,cubic-bezier(.2,.9,.25,1.02))}
 .av-ov-device[data-ratio="9:16"]{--ov-w:min(220px,100cqw);--ov-lid:calc((var(--ov-w) - var(--ov-pad)) * 16 / 9 + var(--ov-pad))}
 .av-ov-device .mbp-device{width:100%}
 .av-ov-device .mbp-lid{aspect-ratio:auto;height:var(--ov-lid);transition:height var(--pg-dur-morph,350ms) var(--pg-ease-morph,cubic-bezier(.2,.9,.25,1.02)),border-radius var(--pg-dur-morph,350ms) var(--pg-ease-morph,cubic-bezier(.2,.9,.25,1.02))}

@@ -216,7 +216,7 @@
         <div class="cr-preview-copy">
           <div class="pg-section-head">
             <h2 id="cr-previa" data-reveal-heading>Veja seu kit tomar forma.</h2>
-            <p>Digite seu @. A prévia muda aqui mesmo, no seu aparelho. Nada é enviado.</p>
+            <p data-js-only>Digite seu @. A prévia muda aqui mesmo, no seu aparelho. Nada é enviado.</p>
           </div>
           <div class="pg-field cr-preview-field" data-js-only>
             <label class="pg-label" for="cr-previa-perfil">Seu @</label>
@@ -395,7 +395,7 @@
           <div class="cr-about-publi">
             <h3>Publi identificada desde o primeiro quadro.</h3>
             <p>Roteiros e peças já preveem o rótulo da própria plataforma e o #publi visível sem abrir a legenda, como orienta o Guia de Marketing e Publicidade por Influenciadores Digitais do CONAR (2026). Você publica já no formato certo.</p>
-            <a class="pg-btn pg-btn--link" href="https://conar.wpenginepowered.com/wp-content/uploads/2026/05/260525_GUIA_INFLUENCIADORES_CONAR_v6.pdf" target="_blank" rel="noopener noreferrer">Ler o guia do CONAR <span aria-hidden="true">↗</span></a>
+            <a class="pg-btn pg-btn--link" href="https://conar.wpenginepowered.com/wp-content/uploads/2026/05/260525_GUIA_INFLUENCIADORES_CONAR_v6.pdf" target="_blank" rel="noopener noreferrer">Ler o guia do CONAR <span aria-hidden="true">↗</span><span class="pg-visually-hidden"> (abre em nova aba)</span></a>
           </div>
         </div>
         <p class="cr-transparency">Não sou parceiro oficial, agência credenciada nem representante de TikTok, Instagram, Facebook, Meta, Snapchat ou X. Os nomes aparecem só para indicar onde seu conteúdo roda. As marcas pertencem aos seus titulares. Não peço senha nem acesso à sua conta.</p>
@@ -422,12 +422,12 @@
           <fieldset class="pg-fieldset" id="cr-plataforma" data-chips="single" data-name="plataforma">
             <legend>Plataforma principal</legend>
             <div class="pg-chip-row">
-              <button class="pg-chip" type="button" aria-pressed="false" data-value="TikTok">TikTok</button>
-              <button class="pg-chip" type="button" aria-pressed="false" data-value="Instagram">Instagram</button>
-              <button class="pg-chip" type="button" aria-pressed="false" data-value="X">X</button>
-              <button class="pg-chip" type="button" aria-pressed="false" data-value="Facebook">Facebook</button>
-              <button class="pg-chip" type="button" aria-pressed="false" data-value="Snapchat">Snapchat</button>
-              <button class="pg-chip" type="button" aria-pressed="false" data-value="Outra">Outra</button>
+              <button class="pg-chip" type="button" aria-pressed="false" disabled data-value="TikTok">TikTok</button>
+              <button class="pg-chip" type="button" aria-pressed="false" disabled data-value="Instagram">Instagram</button>
+              <button class="pg-chip" type="button" aria-pressed="false" disabled data-value="X">X</button>
+              <button class="pg-chip" type="button" aria-pressed="false" disabled data-value="Facebook">Facebook</button>
+              <button class="pg-chip" type="button" aria-pressed="false" disabled data-value="Snapchat">Snapchat</button>
+              <button class="pg-chip" type="button" aria-pressed="false" disabled data-value="Outra">Outra</button>
             </div>
           </fieldset>
 
@@ -435,23 +435,23 @@
             <legend>Preciso de</legend>
             <p class="pg-hint cr-chip-hint" id="cr-preciso-dica">Marque quantas quiser.</p>
             <div class="pg-chip-row">
-              <button class="pg-chip" type="button" aria-pressed="false" data-value="Mídia kit">Mídia kit</button>
-              <button class="pg-chip" type="button" aria-pressed="false" data-value="Proposta para marcas">Proposta para marcas</button>
-              <button class="pg-chip" type="button" aria-pressed="false" data-value="Página de links">Página de links</button>
-              <button class="pg-chip" type="button" aria-pressed="false" data-value="Identidade">Identidade</button>
-              <button class="pg-chip" type="button" aria-pressed="false" data-value="Roteiro">Roteiro</button>
-              <button class="pg-chip" type="button" aria-pressed="false" data-value="Edição">Edição</button>
-              <button class="pg-chip" type="button" aria-pressed="false" data-value="Landing page">Landing page</button>
-              <button class="pg-chip" type="button" aria-pressed="false" data-value="Ainda não sei" data-exclusive>Ainda não sei</button>
+              <button class="pg-chip" type="button" aria-pressed="false" disabled data-value="Mídia kit">Mídia kit</button>
+              <button class="pg-chip" type="button" aria-pressed="false" disabled data-value="Proposta para marcas">Proposta para marcas</button>
+              <button class="pg-chip" type="button" aria-pressed="false" disabled data-value="Página de links">Página de links</button>
+              <button class="pg-chip" type="button" aria-pressed="false" disabled data-value="Identidade">Identidade</button>
+              <button class="pg-chip" type="button" aria-pressed="false" disabled data-value="Roteiro">Roteiro</button>
+              <button class="pg-chip" type="button" aria-pressed="false" disabled data-value="Edição">Edição</button>
+              <button class="pg-chip" type="button" aria-pressed="false" disabled data-value="Landing page">Landing page</button>
+              <button class="pg-chip" type="button" aria-pressed="false" disabled data-value="Ainda não sei" data-exclusive>Ainda não sei</button>
             </div>
           </fieldset>
 
           <fieldset class="pg-fieldset" id="cr-prazo" data-chips="single" data-name="prazo" data-optional>
             <legend>Para quando? (opcional)</legend>
             <div class="pg-chip-row">
-              <button class="pg-chip" type="button" aria-pressed="false" data-value="Sem pressa">Sem pressa</button>
-              <button class="pg-chip" type="button" aria-pressed="false" data-value="Este mês">Este mês</button>
-              <button class="pg-chip" type="button" aria-pressed="false" data-value="Urgente">Urgente</button>
+              <button class="pg-chip" type="button" aria-pressed="false" disabled data-value="Sem pressa">Sem pressa</button>
+              <button class="pg-chip" type="button" aria-pressed="false" disabled data-value="Este mês">Este mês</button>
+              <button class="pg-chip" type="button" aria-pressed="false" disabled data-value="Urgente">Urgente</button>
             </div>
           </fieldset>
 
@@ -477,7 +477,7 @@
             <p class="cr-review-intro">Confira abaixo. Ao tocar no botão, ela abre no WhatsApp para você revisar e enviar. Nada é enviado daqui.</p>
             <div class="pg-review-message" data-handoff-message></div>
             <div class="pg-review-actions">
-              <a class="pg-btn pg-btn--primary" data-handoff="whatsapp" target="_blank" rel="noopener noreferrer">Abrir no WhatsApp <span aria-hidden="true">↗</span></a>
+              <a class="pg-btn pg-btn--primary" data-handoff="whatsapp" target="_blank" rel="noopener noreferrer">Abrir no WhatsApp <span aria-hidden="true">↗</span><span class="pg-visually-hidden"> (abre em nova aba)</span></a>
               <a class="pg-btn pg-btn--secondary" data-handoff="email">Prefiro e-mail <span aria-hidden="true">↗</span></a>
               <button class="pg-btn pg-btn--secondary" type="button" data-handoff="copy">Copiar mensagem</button>
               <button class="pg-btn pg-btn--link" type="button" data-handoff="edit">Editar respostas <span aria-hidden="true">↑</span></button>
@@ -547,7 +547,7 @@
         <div>
           <h2 id="rodape-contato">Contato</h2>
           <ul aria-labelledby="rodape-contato">
-            <li><a href="https://wa.me/5511985568208" target="_blank" rel="noopener noreferrer" data-profile-link="whatsapp">WhatsApp <span aria-hidden="true">↗</span></a></li>
+            <li><a href="https://wa.me/5511985568208" target="_blank" rel="noopener noreferrer" data-profile-link="whatsapp">WhatsApp <span aria-hidden="true">↗</span><span class="pg-visually-hidden"> (abre em nova aba)</span></a></li>
             <li><a href="mailto:smillepls@gmail.com" data-profile-link="email">E-mail <span aria-hidden="true">↗</span></a></li>
           </ul>
         </div>

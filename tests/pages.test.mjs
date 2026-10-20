@@ -136,6 +136,8 @@ for (const page of present) {
     assert.ok(html.includes('<script src="/assets/profile.js" defer></script>'), 'profile.js loads before the modules');
     const profile = html.indexOf('/assets/profile.js'), module = html.search(/<script type="module"/);
     assert.ok(module > profile, 'classic profile script precedes module scripts');
+    for (const link of html.match(/<a\b[^>]*target="_blank"[^>]*>[\s\S]*?<\/a>/gi) || [])
+      assert.match(link, /<span class="pg-visually-hidden"> \(abre em nova aba\)<\/span><\/a>$/, `new-tab link without a screen-reader warning: ${link.slice(0, 120)}`);
     for (const img of html.match(/<img\b[^>]*>/gi) || []) {
       assert.doesNotMatch(img, /src="[^"]*brands\//i, 'no platform brand assets');
       assert.doesNotMatch(img, /src="[^"]*(?:tiktok|instagram|youtube|twitch|kick|kwai|snapchat|facebook|meta|whatsapp)/i, `no platform logo: ${img}`);
@@ -156,6 +158,13 @@ for (const page of present) {
     }
   });
 }
+
+test('base.css: viewport-fit=cover gutters clear the safe-area insets on both sides', () => {
+  const css = read('public/assets/pages/base.css');
+  assert.match(css, /--gutter:max\(20px,env\(safe-area-inset-left,0px\),env\(safe-area-inset-right,0px\)\)/);
+  assert.match(css, /@media \(max-width:359px\)\{:root\{--gutter:max\(16px,env\(safe-area-inset-left,0px\),env\(safe-area-inset-right,0px\)\)\}\}/);
+  for (const page of present) assert.match(read(page.file), /viewport-fit=cover/, page.file);
+});
 
 /* ---------- text guards (SPEC 6 and 8.2; visible text only) ---------- */
 for (const page of present.filter(item => item.kind === 'criadores')) {

@@ -28,3 +28,9 @@
 }
 body.is-paused .pg-check-box::before,body.is-paused .pg-check-box svg{transition:none}
 body.is-paused .pg-check>input:checked+.pg-check-box svg{animation:none;transform:none}
+/* Forced colors (Windows high contrast): the filled box loses its background, so
+   the tick and the box border use system colours that stay visible on Canvas. */
+@media (forced-colors: active){
+  :root .pg-check>input:checked+.pg-check-box::before{border-color:Highlight}
+  :root .pg-check>input:checked+.pg-check-box svg{stroke:CanvasText}
+}

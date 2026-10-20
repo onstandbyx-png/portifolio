@@ -5,7 +5,8 @@ import {mkdir, writeFile} from 'node:fs/promises';
 import {createRequire} from 'node:module';
 import {
   VIEWPORTS, openPage, gotoRoute, routeChecks, cleanChecks, shellChecks, contrastAudit, focusRingAudit,
-  targetAudit, idleRafCheck, reducedMotionChecks, pausedChecks, noJsChecks, screenshot, settle
+  targetAudit, idleRafCheck, reducedMotionChecks, pausedChecks, noJsChecks, screenshot, settle,
+  layoutSweep, cumulativeLayoutShift, overflowState, fitsWidth
 } from './pages/harness.mjs';
 import {componentChecks, componentReducedChecks, withHeaderCta} from './pages/components.mjs';
 
@@ -98,6 +99,30 @@ try {
           await cleanChecks(t);
         });
       }
+    }
+    // Between the main viewports: a desktop resize sweep, then CLS on fresh loads.
+    await step(env, {route: mod.route, slug: mod.slug, width: 1024, height: 768, label: 'sweep'}, async t => {
+      await gotoRoute(t);
+      await settle(t.page).catch(() => {});
+      const small = await cumulativeLayoutShift(t.page);
+      t.check('Layout shift on load stays under 0.05 at 1024 × 768', small.total < 0.05, small);
+      await t.page.setViewportSize({width: 1440, height: 900});
+      await gotoRoute(t);
+      await settle(t.page).catch(() => {});
+      const large = await cumulativeLayoutShift(t.page);
+      t.check('Layout shift on load stays under 0.05 at 1440 × 900', large.total < 0.05, large);
+      await layoutSweep(t);
+      await gotoRoute(t);
+      await cleanChecks(t);
+    });
+    // Phones in landscape and tablets (mobile emulation: the layout viewport would grow with overflow).
+    for (const [width, height] of [[844, 390], [768, 1024]]) {
+      await step(env, {route: mod.route, slug: mod.slug, width, height, mobile: true, label: 'mobile'}, async t => {
+        await gotoRoute(t);
+        const overflow = await overflowState(t.page, width);
+        t.check(`No horizontal scroll on a ${width} × ${height} touch screen`, fitsWidth(overflow), overflow);
+        await cleanChecks(t);
+      });
     }
     await step(env, {route: mod.route, slug: mod.slug, width: 390, height: 844, javaScriptEnabled: false, label: 'nojs'}, async t => {
       const response = await gotoRoute(t);

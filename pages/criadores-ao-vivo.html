@@ -200,7 +200,7 @@
         <article class="av-demo av-overlay" id="demo-overlay" aria-labelledby="demo-overlay-titulo">
           <div class="av-demo-text">
             <h3 id="demo-overlay-titulo">Cenas do overlay.</h3>
-            <p>Quatro cenas, uma identidade. Toque para trocar e veja como fica no celular.</p>
+            <p data-js-only>Quatro cenas, uma identidade. Toque para trocar e veja como fica no celular.</p>
           </div>
           <div class="av-demo-controls" data-js-only>
             <div class="av-seg av-seg--wrap" role="group" aria-label="Cena">
@@ -256,7 +256,7 @@
             </div>
           </div>
           <div class="av-demo-notes">
-            <p class="av-demo-status" role="status" data-overlay-status>Começando: a tela de espera já avisa o tema da live.</p>
+            <p class="av-demo-status" role="status" data-overlay-status data-js-only>Começando: a tela de espera já avisa o tema da live.</p>
             <p class="av-demo-caption">Na live, o rótulo de publicidade fica na tela durante todo o segmento patrocinado, e você avisa em voz alta de tempos em tempos.</p>
             <p class="av-demo-label">Exemplo ilustrativo · Ateliê Exemplo (cliente fictício)</p>
           </div>
@@ -423,45 +423,45 @@
               <legend>Onde você transmite?</legend>
               <p class="pg-hint av-hint" id="av-plataformas-dica">Marque todas as que usa.</p>
               <div class="pg-chip-row">
-                <button class="pg-chip" type="button" aria-pressed="false" data-value="YouTube">YouTube</button>
-                <button class="pg-chip" type="button" aria-pressed="false" data-value="Twitch">Twitch</button>
-                <button class="pg-chip" type="button" aria-pressed="false" data-value="Kick">Kick</button>
-                <button class="pg-chip" type="button" aria-pressed="false" data-value="TikTok LIVE">TikTok LIVE</button>
-                <button class="pg-chip" type="button" aria-pressed="false" data-value="Instagram Live">Instagram Live</button>
-                <button class="pg-chip" type="button" aria-pressed="false" data-value="Kwai">Kwai</button>
-                <button class="pg-chip" type="button" aria-pressed="false" data-value="Venda ao vivo (TikTok Shop, Shopee ou outra)">Venda ao vivo (TikTok Shop, Shopee ou outra)</button>
-                <button class="pg-chip" type="button" aria-pressed="false" data-value="Outra">Outra</button>
+                <button class="pg-chip" type="button" aria-pressed="false" disabled data-value="YouTube">YouTube</button>
+                <button class="pg-chip" type="button" aria-pressed="false" disabled data-value="Twitch">Twitch</button>
+                <button class="pg-chip" type="button" aria-pressed="false" disabled data-value="Kick">Kick</button>
+                <button class="pg-chip" type="button" aria-pressed="false" disabled data-value="TikTok LIVE">TikTok LIVE</button>
+                <button class="pg-chip" type="button" aria-pressed="false" disabled data-value="Instagram Live">Instagram Live</button>
+                <button class="pg-chip" type="button" aria-pressed="false" disabled data-value="Kwai">Kwai</button>
+                <button class="pg-chip" type="button" aria-pressed="false" disabled data-value="Venda ao vivo (TikTok Shop, Shopee ou outra)">Venda ao vivo (TikTok Shop, Shopee ou outra)</button>
+                <button class="pg-chip" type="button" aria-pressed="false" disabled data-value="Outra">Outra</button>
               </div>
             </fieldset>
             <fieldset class="pg-fieldset" id="av-frequencia" data-chips="single" data-name="frequencia">
               <legend>Com que frequência?</legend>
               <div class="pg-chip-row">
-                <button class="pg-chip" type="button" aria-pressed="false" data-value="1 vez por semana">1 vez por semana</button>
-                <button class="pg-chip" type="button" aria-pressed="false" data-value="2 a 3 vezes por semana">2 a 3 vezes por semana</button>
-                <button class="pg-chip" type="button" aria-pressed="false" data-value="4 ou mais vezes por semana">4 ou mais vezes por semana</button>
-                <button class="pg-chip" type="button" aria-pressed="false" data-value="Sem agenda fixa">Sem agenda fixa</button>
+                <button class="pg-chip" type="button" aria-pressed="false" disabled data-value="1 vez por semana">1 vez por semana</button>
+                <button class="pg-chip" type="button" aria-pressed="false" disabled data-value="2 a 3 vezes por semana">2 a 3 vezes por semana</button>
+                <button class="pg-chip" type="button" aria-pressed="false" disabled data-value="4 ou mais vezes por semana">4 ou mais vezes por semana</button>
+                <button class="pg-chip" type="button" aria-pressed="false" disabled data-value="Sem agenda fixa">Sem agenda fixa</button>
               </div>
             </fieldset>
             <fieldset class="pg-fieldset" id="av-duracao" data-chips="single" data-name="duracao">
               <legend>Quanto dura uma live, em média?</legend>
               <div class="pg-chip-row">
-                <button class="pg-chip" type="button" aria-pressed="false" data-value="Até 1 h">Até 1 h</button>
-                <button class="pg-chip" type="button" aria-pressed="false" data-value="De 1 a 3 h">De 1 a 3 h</button>
-                <button class="pg-chip" type="button" aria-pressed="false" data-value="De 3 a 6 h">De 3 a 6 h</button>
-                <button class="pg-chip" type="button" aria-pressed="false" data-value="Mais de 6 h">Mais de 6 h</button>
+                <button class="pg-chip" type="button" aria-pressed="false" disabled data-value="Até 1 h">Até 1 h</button>
+                <button class="pg-chip" type="button" aria-pressed="false" disabled data-value="De 1 a 3 h">De 1 a 3 h</button>
+                <button class="pg-chip" type="button" aria-pressed="false" disabled data-value="De 3 a 6 h">De 3 a 6 h</button>
+                <button class="pg-chip" type="button" aria-pressed="false" disabled data-value="Mais de 6 h">Mais de 6 h</button>
               </div>
             </fieldset>
             <fieldset class="pg-fieldset" id="av-nicho" data-chips="single" data-name="nicho">
               <legend>Qual o seu nicho?</legend>
               <div class="pg-chip-row">
-                <button class="pg-chip" type="button" aria-pressed="false" data-value="Games">Games</button>
-                <button class="pg-chip" type="button" aria-pressed="false" data-value="Conversa (Just Chatting)">Conversa (Just Chatting)</button>
-                <button class="pg-chip" type="button" aria-pressed="false" data-value="Música">Música</button>
-                <button class="pg-chip" type="button" aria-pressed="false" data-value="Educação">Educação</button>
-                <button class="pg-chip" type="button" aria-pressed="false" data-value="Venda ao vivo">Venda ao vivo</button>
-                <button class="pg-chip" type="button" aria-pressed="false" data-value="Esporte">Esporte</button>
-                <button class="pg-chip" type="button" aria-pressed="false" data-value="IRL (vida real)">IRL (vida real)</button>
-                <button class="pg-chip" type="button" aria-pressed="false" data-value="Outro" aria-controls="av-nicho-outro-campo">Outro</button>
+                <button class="pg-chip" type="button" aria-pressed="false" disabled data-value="Games">Games</button>
+                <button class="pg-chip" type="button" aria-pressed="false" disabled data-value="Conversa (Just Chatting)">Conversa (Just Chatting)</button>
+                <button class="pg-chip" type="button" aria-pressed="false" disabled data-value="Música">Música</button>
+                <button class="pg-chip" type="button" aria-pressed="false" disabled data-value="Educação">Educação</button>
+                <button class="pg-chip" type="button" aria-pressed="false" disabled data-value="Venda ao vivo">Venda ao vivo</button>
+                <button class="pg-chip" type="button" aria-pressed="false" disabled data-value="Esporte">Esporte</button>
+                <button class="pg-chip" type="button" aria-pressed="false" disabled data-value="IRL (vida real)">IRL (vida real)</button>
+                <button class="pg-chip" type="button" aria-pressed="false" disabled data-value="Outro" aria-controls="av-nicho-outro-campo">Outro</button>
               </div>
             </fieldset>
             <div class="pg-field av-other" id="av-nicho-outro-campo" hidden>
@@ -472,10 +472,10 @@
             <fieldset class="pg-fieldset" id="av-objetivo" data-chips="single" data-name="objetivo">
               <legend>O que você quer resolver primeiro?</legend>
               <div class="pg-chip-row av-chip-cards">
-                <button class="pg-chip av-chip-card" type="button" aria-pressed="false" data-value="Live com cara profissional"><span class="av-chip-main">Live com cara profissional</span><span class="av-chip-sub">identidade e overlay</span></button>
-                <button class="pg-chip av-chip-card" type="button" aria-pressed="false" data-value="Crescer fora da live"><span class="av-chip-main">Crescer fora da live</span><span class="av-chip-sub">cortes e Shorts</span></button>
-                <button class="pg-chip av-chip-card" type="button" aria-pressed="false" data-value="Fechar patrocínio"><span class="av-chip-main">Fechar patrocínio</span><span class="av-chip-sub">proposta e roteiro de publi</span></button>
-                <button class="pg-chip av-chip-card" type="button" aria-pressed="false" data-value="Vender ao vivo"><span class="av-chip-main">Vender ao vivo</span><span class="av-chip-sub">roteiro e cenário</span></button>
+                <button class="pg-chip av-chip-card" type="button" aria-pressed="false" disabled data-value="Live com cara profissional"><span class="av-chip-main">Live com cara profissional</span><span class="av-chip-sub">identidade e overlay</span></button>
+                <button class="pg-chip av-chip-card" type="button" aria-pressed="false" disabled data-value="Crescer fora da live"><span class="av-chip-main">Crescer fora da live</span><span class="av-chip-sub">cortes e Shorts</span></button>
+                <button class="pg-chip av-chip-card" type="button" aria-pressed="false" disabled data-value="Fechar patrocínio"><span class="av-chip-main">Fechar patrocínio</span><span class="av-chip-sub">proposta e roteiro de publi</span></button>
+                <button class="pg-chip av-chip-card" type="button" aria-pressed="false" disabled data-value="Vender ao vivo"><span class="av-chip-main">Vender ao vivo</span><span class="av-chip-sub">roteiro e cenário</span></button>
               </div>
             </fieldset>
             <div class="pg-field">
@@ -503,7 +503,7 @@
               <p>Confira abaixo. Ao tocar no botão, ele abre no WhatsApp para você revisar e enviar. Nada é enviado daqui.</p>
               <div class="pg-review-message" data-handoff-message></div>
               <div class="pg-review-actions">
-                <a class="pg-btn pg-btn--primary" data-handoff="whatsapp" target="_blank" rel="noopener noreferrer">Abrir no WhatsApp <span aria-hidden="true">↗</span></a>
+                <a class="pg-btn pg-btn--primary" data-handoff="whatsapp" target="_blank" rel="noopener noreferrer">Abrir no WhatsApp <span aria-hidden="true">↗</span><span class="pg-visually-hidden"> (abre em nova aba)</span></a>
                 <a class="pg-btn pg-btn--secondary" data-handoff="email">Prefiro e-mail <span aria-hidden="true">↗</span></a>
                 <button class="pg-btn pg-btn--secondary" type="button" data-handoff="copy">Copiar mensagem</button>
                 <button class="pg-btn pg-btn--link" type="button" data-handoff="edit">Editar respostas <span aria-hidden="true">↑</span></button>
@@ -580,7 +580,7 @@
         <div>
           <h2 id="rodape-contato">Contato</h2>
           <ul aria-labelledby="rodape-contato">
-            <li><a href="https://wa.me/5511985568208" target="_blank" rel="noopener noreferrer" data-profile-link="whatsapp">WhatsApp <span aria-hidden="true">↗</span></a></li>
+            <li><a href="https://wa.me/5511985568208" target="_blank" rel="noopener noreferrer" data-profile-link="whatsapp">WhatsApp <span aria-hidden="true">↗</span><span class="pg-visually-hidden"> (abre em nova aba)</span></a></li>
             <li><a href="mailto:smillepls@gmail.com" data-profile-link="email">E-mail <span aria-hidden="true">↗</span></a></li>
           </ul>
         </div>

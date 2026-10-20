@@ -28,10 +28,10 @@ function instrument() {
   addEventListener('portfolio:interaction', event => window.__qa.interactions.push(event.detail));
 }
 
-export async function openPage(env, {route, slug = route.replace(/^\//, '').replace(/\//g, '-') || 'home', width, height, reducedMotion = 'no-preference', javaScriptEnabled = true, permissions = [], label = ''} = {}) {
+export async function openPage(env, {route, slug = route.replace(/^\//, '').replace(/\//g, '-') || 'home', width, height, reducedMotion = 'no-preference', javaScriptEnabled = true, permissions = [], label = '', mobile = width < 500} = {}) {
   const {browser, base, report} = env;
   const context = await browser.newContext({
-    viewport: {width, height}, deviceScaleFactor: 1, isMobile: width < 500, hasTouch: width < 500,
+    viewport: {width, height}, deviceScaleFactor: 1, isMobile: mobile, hasTouch: mobile,
     reducedMotion, javaScriptEnabled, locale: 'pt-BR'
   });
   if (permissions.length) await context.grantPermissions(permissions, {origin: base});
@@ -79,6 +79,17 @@ export async function settle(page, timeout = 4000) {
 export const runningAnimations = page => page.evaluate(() => document.getAnimations().filter(animation => animation.playState === 'running').length);
 const pause = ms => new Promise(resolve => setTimeout(resolve, ms));
 
+/* Horizontal overflow. innerWidth is not a ruler: with isMobile the layout viewport
+ * grows to the content, so innerWidth follows scrollWidth. The page must fit the
+ * root's clientWidth and the configured viewport width. */
+export async function overflowState(page, width) {
+  return page.evaluate(w => {
+    const root = document.documentElement;
+    return {scrollWidth: root.scrollWidth, clientWidth: root.clientWidth, innerWidth, width: w};
+  }, width);
+}
+export const fitsWidth = state => state.scrollWidth <= Math.min(state.clientWidth, state.width);
+
 /* ---------- SPEC 8.3 items 1–5: route, CSP, console, network, overflow ---------- */
 export async function routeChecks(t, response) {
   const {check} = t;
@@ -89,7 +100,10 @@ export async function routeChecks(t, response) {
     const main = document.querySelector('main#conteudo'), footer = document.querySelector('footer.site-footer');
     return Boolean(document.querySelector('header.site-header') && main && footer && !main.contains(footer));
   }));
-  check('No horizontal scroll', await t.page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), await t.page.evaluate(() => [document.documentElement.scrollWidth, innerWidth]));
+  const overflow = await overflowState(t.page, t.width);
+  check('No horizontal scroll', fitsWidth(overflow), overflow);
+  check('Every link that opens a new tab says so to screen readers', await t.page.evaluate(() =>
+    [...document.querySelectorAll('a[target="_blank"]')].every(a => /\(abre em nova aba\)/.test(a.querySelector('.pg-visually-hidden')?.textContent || ''))));
 }
 
 export async function cleanChecks(t) {
@@ -105,7 +119,8 @@ export async function cleanChecks(t) {
   check('Only GET requests', events.nonGet.length === 0, events.nonGet);
   check('No request to another host', events.external.length === 0, events.external);
   check('No 4xx/5xx response', events.failures.length === 0, events.failures);
-  check('No horizontal scroll after interactions', await t.page.evaluate(() => document.documentElement.scrollWidth <= innerWidth));
+  const overflow = await overflowState(t.page, t.width);
+  check('No horizontal scroll after interactions', fitsWidth(overflow), overflow);
 }
 
 /* ---------- shell (K1): focus order, motion toggle, menu, header CTA, footer ---------- */
@@ -356,7 +371,42 @@ export async function noJsChecks(t) {
     [...document.querySelectorAll('main *')].filter(el => el.textContent.trim() && !el.closest('[hidden],[aria-hidden="true"]')).every(el => Number(getComputedStyle(el).opacity) === 1 && getComputedStyle(el).visibility === 'visible')));
   check('Dead JS-only controls are hidden without JS', !(await page.locator('#menu-toggle').isVisible()) && !(await page.locator('#motion-toggle').isVisible()));
   check('Footer navigation reaches every page without JS', await page.evaluate(() => ['/', '/#trabalhos', '/criadores', '/criadores/ao-vivo', '/vagas', '/privacidade'].every(href => document.querySelector(`.site-footer a[href="${href}"]`))));
-  check('No horizontal scroll without JS', await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth));
+  const overflow = await overflowState(page, t.width);
+  check('No horizontal scroll without JS', fitsWidth(overflow), overflow);
+  check('Form chips are disabled without JS (they only list the options)', await page.evaluate(() => [...document.querySelectorAll('[data-chips] button')].every(chip => chip.disabled)));
+}
+
+/* Widths between the three main viewports (phones in landscape, tablets, small
+ * laptops): no horizontal overflow at load, and no large layout shift (CLS). */
+export const SWEEP_WIDTHS = Object.freeze([560, 600, 640, 720, 768, 820, 844, 900, 960, 1024, 1100, 1200, 1263, 1280]);
+export async function layoutSweep(t) {
+  const {page, check} = t;
+  const failures = [];
+  for (const width of SWEEP_WIDTHS) {
+    await page.setViewportSize({width, height: 900});
+    // Crossing a breakpoint can run a 350 ms width morph; measure the settled layout.
+    await pause(80);
+    await page.waitForFunction(() => document.getAnimations().every(animation => animation.playState !== 'running'), null, {timeout: 2000}).catch(() => {});
+    const state = await overflowState(page, width);
+    if (!fitsWidth(state)) failures.push(state);
+  }
+  await page.setViewportSize({width: t.width, height: t.height});
+  await pause(80);
+  check(`No horizontal overflow from ${SWEEP_WIDTHS[0]} to ${SWEEP_WIDTHS.at(-1)} px`, failures.length === 0, failures);
+}
+export async function cumulativeLayoutShift(page) {
+  return page.evaluate(() => new Promise(resolve => {
+    let total = 0;
+    const sources = [];
+    new PerformanceObserver(list => {
+      for (const entry of list.getEntries()) {
+        if (entry.hadRecentInput) continue;
+        total += entry.value;
+        sources.push({value: Number(entry.value.toFixed(4)), at: Math.round(entry.startTime), nodes: (entry.sources || []).map(s => s.node?.className || s.node?.nodeName || '').slice(0, 3)});
+      }
+    }).observe({type: 'layout-shift', buffered: true});
+    setTimeout(() => resolve({total: Number(total.toFixed(4)), sources}), 300);
+  }));
 }
 
 /* SwiftShader (the suite's GL) caps one capture at 8192 px; below that line a taller

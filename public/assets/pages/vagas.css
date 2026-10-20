@@ -195,3 +195,13 @@ html:not(.pg-js) .vg-step+.vg-step{margin-top:56px}
   .vg-option,.vg-option-mark::after,.vg-area-icon::before,.vg-area-icon::after{transition:none!important}
 }
 body.is-paused .vg-option,body.is-paused .vg-option-mark::after,body.is-paused .vg-area-icon::before,body.is-paused .vg-area-icon::after{transition:none!important}
+
+/* ---------- forced colors (Windows high contrast) ----------
+   Backgrounds and author colours are replaced there, so the radio dot and the
+   lima border would vanish. System colours keep the chosen card visible. */
+@media (forced-colors: active){
+  .vg-option-mark::after{background:Highlight}
+  .vg-option:has(input:checked),.vg-option:has(input:checked) .vg-option-mark{border-color:Highlight}
+  .vg-option:has(input:checked){outline:2px solid Highlight;outline-offset:-5px}
+  .vg-option:has(input:focus-visible){outline:3px solid CanvasText;outline-offset:2px}
+}

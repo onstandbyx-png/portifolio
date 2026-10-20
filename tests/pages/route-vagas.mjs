@@ -83,6 +83,9 @@ async function areaChecks(t) {
     [...document.querySelectorAll('[data-area]')].every(card => card.querySelector('.vg-area-tag')?.textContent === 'Banco de talentos' &&
       JSON.stringify([...card.querySelectorAll('dt')].map(dt => dt.textContent)) === JSON.stringify(['O que faz aqui', 'O que eu peço no portfólio', 'Formato']) &&
       card.querySelectorAll('dd')[2].textContent === 'Combinado por projeto.')));
+  const named = [];
+  for (const area of AREAS) named.push(await page.getByRole('heading', {level: 3, name: area, exact: true}).count() === 1 && await page.getByRole('button', {name: area, exact: true}).count() === 1);
+  check('Each area heading and its button are named by the area alone (no repeated seal or "Ver detalhes")', named.every(Boolean), named);
   const mode = await list.getAttribute('data-area-mode');
   check(`Area cards use ${width >= 720 ? 'the flip grid' : 'the disclosure list'} at ${width} px`, mode === (width >= 720 ? 'flip' : 'list'), mode);
   const first = page.locator('#area-edicao-video'), second = page.locator('#area-design-grafico');
@@ -186,6 +189,19 @@ async function formChecks(t) {
   // Keyboard: pick "Edição de vídeo" and continue with Tab + Enter.
   await page.locator('input[name=area][value="Edição de vídeo"]').focus();
   await page.keyboard.press('Space');
+  if (width === 390) {
+    // Windows high contrast: the chosen card keeps a visible dot and a system-colour outline.
+    await page.emulateMedia({forcedColors: 'active'});
+    await pause(300);
+    const forced = await page.evaluate(() => {
+      const option = document.querySelector('input[name=area]:checked').closest('.vg-option'), other = document.querySelector('input[name=area]:not(:checked)').closest('.vg-option');
+      const dot = getComputedStyle(option.querySelector('.vg-option-mark'), '::after'), s = getComputedStyle(option), o = getComputedStyle(other);
+      return {dot: dot.backgroundColor, scale: dot.transform, outline: s.outlineStyle, outlineColor: s.outlineColor, otherOutline: o.outlineStyle, canvas: getComputedStyle(document.body).backgroundColor};
+    });
+    check('Forced colors: the chosen radio card keeps its dot and an outline', forced.dot !== 'rgba(0, 0, 0, 0)' && forced.dot !== forced.canvas && /^matrix\(1, 0, 0, 1,/.test(forced.scale) &&
+      forced.outline === 'solid' && forced.outlineColor !== forced.canvas && forced.otherOutline === 'none', forced);
+    await page.emulateMedia({forcedColors: 'none'});
+  }
   check('Choosing another area hides and disables "Qual área?"', await page.evaluate(() => document.querySelector('input[name=area]:checked')?.value === 'Edição de vídeo' && document.getElementById('vg-area-outra').disabled) && !(await page.locator('#vg-area-outra').isVisible()));
   await page.keyboard.press('Tab');
   check('Tab goes from the options to "Continuar"', await page.evaluate(() => document.activeElement?.matches('[data-step-next]')));
@@ -279,12 +295,19 @@ async function formChecks(t) {
   check('"Continuar" is gone on the last step; both boxes start unchecked', !(await page.locator('[data-step-next]').isVisible()) && !(await page.locator('#vg-maior').isChecked()) && !(await page.locator('#vg-consentimento').isChecked()));
   check('Without both boxes the links do not exist and the placeholder explains why', await panel.locator('a[data-handoff][href]').count() === 0 && !(await page.locator('[data-handoff-actions]').isVisible()) &&
     await page.locator('[data-handoff-locked]').innerText() === 'Marque as duas caixas para ver os botões de envio.');
+  check('While locked, both boxes are described by the lock note, inside a polite live region', await page.evaluate(() =>
+    ['vg-maior', 'vg-consentimento'].every(id => document.getElementById(id).getAttribute('aria-describedby')?.split(' ').includes('vg-trava')) &&
+    document.querySelector('[data-handoff-gate]').getAttribute('aria-live') === 'polite' && document.querySelector('[data-handoff-gate]').contains(document.querySelector('[data-handoff-actions]'))));
   await page.locator('#vg-consentimento').check();
-  check('Consent alone keeps the links away', await panel.locator('a[data-handoff][href]').count() === 0);
+  check('Consent alone keeps the links away and shows the guardian path (18+ error with its help)', await panel.locator('a[data-handoff][href]').count() === 0 &&
+    await errorOf(page, 'vg-maior') === 'Confirme que você tem 18 anos ou mais.' && await page.locator('#vg-maior-ajuda-erro').innerText() === 'Por enquanto, o banco é só para maiores de 18 anos.' &&
+    await page.locator('#vg-maior').getAttribute('aria-invalid') === 'true' && await errorOf(page, 'vg-consentimento') === '');
   await page.locator('#vg-maior').focus();
   await page.keyboard.press('Space');
+  check('Ticking 18+ clears its error and the lock description', await errorOf(page, 'vg-maior') === '' && await page.locator('#vg-maior').getAttribute('aria-invalid') === null &&
+    await page.evaluate(() => ['vg-maior', 'vg-consentimento'].every(id => !(document.getElementById(id).getAttribute('aria-describedby') || '').split(' ').includes('vg-trava'))));
   check('Both boxes reveal "Abrir no WhatsApp", "Abrir no e-mail" and "Copiar mensagem"', await page.locator('[data-handoff-actions]').isVisible() && !(await page.locator('[data-handoff-locked]').isVisible()) &&
-    await page.evaluate(() => [...document.querySelectorAll('[data-handoff-actions] .pg-btn')].map(el => el.textContent.trim()).join('|') === 'Abrir no WhatsApp ↗|Abrir no e-mail ↗|Copiar mensagem'));
+    await page.evaluate(() => [...document.querySelectorAll('[data-handoff-actions] .pg-btn')].map(el => el.textContent.trim()).join('|') === 'Abrir no WhatsApp ↗ (abre em nova aba)|Abrir no e-mail ↗|Copiar mensagem'));
   check('WhatsApp href equals wa.me + encodeURIComponent(message)', await panel.locator('a[data-handoff="whatsapp"]').getAttribute('href') === WHATSAPP);
   check('E-mail href has the subject and %0D%0A line breaks', await panel.locator('a[data-handoff="email"]').getAttribute('href') === MAILTO);
   check('Nothing was requested from WhatsApp, no tab opened, no navigation', events.handoff.length === 0 && events.popups.length === 0 && page.url() === before && documents.length === 0);
@@ -292,6 +315,17 @@ async function formChecks(t) {
   await page.waitForFunction(() => { const s = getComputedStyle(document.querySelector('#vg-consentimento + .pg-check-box svg')); return s.opacity === '1' && parseFloat(s.strokeDashoffset) === 0; }, null, {timeout: 4000}).catch(() => {});
   const drawn = await page.evaluate(() => { const svg = document.querySelector('#vg-consentimento + .pg-check-box svg'), s = getComputedStyle(svg); return {opacity: s.opacity, dash: s.strokeDashoffset, checked: document.getElementById('vg-consentimento').checked}; });
   check('The consent check is drawn (K19)', drawn.checked && Number(drawn.opacity) === 1 && parseFloat(drawn.dash) === 0, drawn);
+  if (width === 390) {
+    await page.emulateMedia({forcedColors: 'active'});
+    await pause(100);
+    const tick = await page.evaluate(() => {
+      const svg = document.querySelector('#vg-consentimento + .pg-check-box svg'), section = svg.closest('section');
+      const box = getComputedStyle(document.querySelector('#vg-consentimento + .pg-check-box'), '::before');
+      return {stroke: getComputedStyle(svg).stroke, text: getComputedStyle(section).color, boxBorder: box.borderTopColor, canvas: getComputedStyle(section).backgroundColor};
+    });
+    check('Forced colors: the tick uses the text colour and the ticked box a system border', tick.stroke === tick.text && tick.stroke !== tick.canvas && tick.boxBorder !== tick.canvas, tick);
+    await page.emulateMedia({forcedColors: 'none'});
+  }
 
   await page.locator('#vg-maior').uncheck();
   check('Unchecking 18+ removes the links at once and shows the error with its help', await panel.locator('a[data-handoff][href]').count() === 0 && !(await page.locator('[data-handoff-actions]').isVisible()) &&
@@ -400,7 +434,15 @@ async function motionlessChecks(t, label) {
   await page.locator('#vg-nome').fill('Ana');
   await page.locator('[data-step-next]').click();
   await pause(50);
-  await page.locator('#vg-maior').check();
+  await page.locator('#vg-maior').focus();
+  await page.keyboard.press('Space');
+  check(`Ticking 18+ alone shows no premature error (${label})`, await errorOf(page, 'vg-consentimento') === '' && await errorOf(page, 'vg-maior') === '');
+  await page.locator('#vg-consentimento').focus();
+  await page.keyboard.press('Tab');
+  await page.keyboard.press('Tab');
+  check(`Leaving the two boxes with the authorization unticked explains it inline (${label})`,
+    await errorOf(page, 'vg-consentimento') === 'Para entrar no banco, marque a autorização. Sem ela, eu não posso guardar seus dados.' && await errorOf(page, 'vg-maior') === '' &&
+    !(await page.locator('[data-handoff-actions]').isVisible()));
   await page.locator('#vg-consentimento').check();
   await pause(50);
   check(`Step 5, the preview and the check appear without movement (${label})`, (await runningAnimations(page)) === 0 && await page.locator('[data-handoff-actions]').isVisible() &&

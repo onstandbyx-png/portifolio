@@ -1,5 +1,6 @@
 /* K9 · Chip builder, live summary and inline pt-BR validation (SPEC 4.0).
- * Chips are <button type="button" aria-pressed> inside <fieldset data-chips>:
+ * Chips are <button type="button" aria-pressed disabled> inside <fieldset data-chips>
+ *   (disabled in the HTML, so they never look tappable without JS; enabled here):
  *   data-chips="single" | "multi", data-name="<answer key>", data-optional (single
  *   choice that can be cleared) and data-exclusive on a chip that clears the
  *   others ("Ainda não sei"), and vice versa.
@@ -68,6 +69,8 @@ export function mountBuilder(form, {summary = null, describe = null, countLabel 
     group.chips().forEach(chip => {
       if (!chip.hasAttribute('type')) chip.type = 'button';
       if (!chip.hasAttribute('aria-pressed')) pressChip(chip, false);
+      // The HTML ships chips disabled: without JS they only list the options.
+      chip.disabled = false;
       chip.addEventListener('click', () => onChip(group, chip, form));
     });
   }

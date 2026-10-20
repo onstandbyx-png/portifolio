@@ -56,6 +56,17 @@ test('the @ field normalizes pasted links and explains every error in pt-BR', ()
   assert.equal(kit.handleError('a'.repeat(31)), 'O @ precisa ter de 2 a 30 caracteres.');
   assert.equal(kit.handleError('a'.repeat(30)), '');
   assert.equal(kit.handleError('https://www.tiktok.com/@ana.ceramica'), '');
+  // A pasted link to a post, a video or an id page never becomes a fake @.
+  for (const [raw, handle] of [['https://www.tiktok.com/@ana.ceramica/video/7351234567890', 'ana.ceramica'], ['https://x.com/ana_ceramica/status/1234567890', 'ana_ceramica'],
+    ['https://www.youtube.com/@ana.ceramica/videos', 'ana.ceramica'], ['https://www.instagram.com/ana.ceramica/reels/', 'ana.ceramica'], ['https://www.snapchat.com/add/ana.ceramica', 'ana.ceramica'],
+    ['https://www.facebook.com/ana.ceramica', 'ana.ceramica']])
+    assert.equal(kit.normalizeHandle(raw), handle, raw);
+  for (const raw of ['https://www.facebook.com/profile.php?id=100012345678', 'https://www.instagram.com/p/C1a2b3c4/', 'instagram.com/reel/C1a2b3c4',
+    'https://www.tiktok.com/video/7351234567890', 'https://www.instagram.com/stories/highlights/123/', 'https://www.facebook.com/share/abc123/']) {
+    assert.equal(kit.normalizeHandle(raw), '', raw);
+    assert.equal(kit.handleError(raw), 'Digite o @ do seu perfil principal.', raw);
+  }
+  assert.equal(kit.composeKit({perfil: 'https://www.facebook.com/profile.php?id=1', plataforma: 'Facebook', preciso: ['Mídia kit']}).subject, 'Kit para marcas · @', 'never "@profile.php"');
   assert.deepEqual(kit.KIT_ERRORS, {plataforma: 'Escolha a plataforma principal.', preciso: 'Escolha pelo menos uma opção em “Preciso de”.', maior: 'Confirme que você tem 18 anos ou mais.'});
   assert.equal(kit.guardianHelp('smillepls@gmail.com'), 'Por enquanto atendo só maiores de 18 anos. Se você é responsável por um criador menor de idade, escreva para smillepls@gmail.com e eu converso com você.');
 });

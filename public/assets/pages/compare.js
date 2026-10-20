@@ -64,9 +64,11 @@ export function mountCompare(root, {onChange} = {}) {
 
   stage.addEventListener('pointerdown', event => {
     if (drag || !event.isPrimary || (event.pointerType === 'mouse' && event.button !== 0)) return;
-    const onHandle = Boolean(event.target.closest('[data-compare-handle]'));
-    drag = {id: event.pointerId, x: event.clientX, y: event.clientY, axis: onHandle ? 'horizontal' : null};
-    if (onHandle) { event.preventDefault(); stage.setPointerCapture?.(event.pointerId); root.dataset.dragging = 'true'; paint(fromPointer(event)); }
+    // A mouse or pen on the divider drags at once. A finger, even on the divider,
+    // waits for the axis lock below, so a vertical swipe still scrolls the page.
+    const grab = Boolean(event.target.closest('[data-compare-handle]')) && event.pointerType !== 'touch';
+    drag = {id: event.pointerId, x: event.clientX, y: event.clientY, axis: grab ? 'horizontal' : null};
+    if (grab) { event.preventDefault(); stage.setPointerCapture?.(event.pointerId); root.dataset.dragging = 'true'; paint(fromPointer(event)); }
   });
   stage.addEventListener('pointermove', event => {
     if (!drag || drag.id !== event.pointerId) return;
@@ -90,7 +92,14 @@ export function mountCompare(root, {onChange} = {}) {
   };
   stage.addEventListener('pointerup', end);
   stage.addEventListener('pointercancel', end);
-  stage.addEventListener('lostpointercapture', () => { drag = null; delete root.dataset.dragging; });
+  // Only the stage's own capture ends a drag. With touch, the element under the
+  // finger holds an implicit capture; taking it over in setPointerCapture() fires
+  // lostpointercapture on that child, and the event bubbles up to here.
+  stage.addEventListener('lostpointercapture', event => {
+    if (event.target !== stage) return;
+    drag = null;
+    delete root.dataset.dragging;
+  });
   onMotionPreferenceChange(reduced => { if (reduced) { clearTimeout(glideTimer); root.classList.remove('is-gliding'); } });
 
   paint(value);

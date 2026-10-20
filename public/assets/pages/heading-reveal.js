@@ -145,7 +145,9 @@ export async function startHeadingReveal() {
       if (entry.isIntersecting) reveal(state);
       else if (state.animations.length) settle(state);
     }
-  }, {threshold: .18, rootMargin: '0px 0px -6% 0px'});
+    // Split just before the heading reaches the fold (12% early, about one wheel
+    // notch), so its plain text is never on screen first and then blanked to replay.
+  }, {threshold: 0, rootMargin: '0px 0px 12% 0px'});
   scan(); syncPreference();
   new MutationObserver(records => {
     if (records.some(record => [...record.addedNodes].some(node => node.nodeType === 1 && (node.matches?.(SELECTOR) || node.querySelector?.(SELECTOR))))) {

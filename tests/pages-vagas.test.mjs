@@ -149,7 +149,7 @@ test('vagas.html: verbatim copy for the status, the areas and the step 5 texts',
     'Não envie foto, documentos, data de nascimento, estado civil ou informações de saúde. Eles não entram na avaliação.',
     'Avalio portfólio e forma de trabalhar. Pessoas de todos os gêneros, raças, orientações e crenças, e pessoas com deficiência, são bem-vindas.'
   ]) assert.ok(text.includes(phrase), phrase);
-  const areas = [...html.matchAll(/<span class="vg-area-name">([^<]+)<\/span>/g)].map(m => m[1]);
+  const areas = [...html.matchAll(/<span class="vg-area-name" id="area-[a-z0-9-]+-nome">([^<]+)<\/span>/g)].map(m => m[1]);
   assert.deepEqual(areas, vagas.AREAS.map(a => a.value));
   assert.equal((html.match(/<dd>Combinado por projeto\.<\/dd>/g) || []).length, 11);
   assert.equal((html.match(/<span class="pg-tag vg-area-tag">Banco de talentos<\/span>/g) || []).length, 11);

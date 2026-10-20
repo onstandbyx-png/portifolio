@@ -34,17 +34,33 @@ export const PREVIEW_PLACEHOLDER = 'seuperfil';
 
 const HANDLE = /^[A-Za-z0-9._]+$/;
 const URLISH = /^(?:https?:\/\/|www\.)|^[a-z0-9-]+(?:\.[a-z0-9-]+)+\//i;
+/* Path segments that point to a post, a video, a story or an id page, never to a
+ * profile (Facebook profile.php?id=…, Instagram /p/ and /reel/, X /status/,
+ * TikTok /video/…). The @ before them, if any, is the profile. */
+const NOT_PROFILE = new Set(['p', 'reel', 'reels', 'tv', 'video', 'videos', 'photo', 'photos', 'status', 'stories',
+  'story', 'posts', 'watch', 'shorts', 'live', 'share', 'people', 'groups', 'events', 'hashtag', 'explore', 'search', 'channel']);
 const lower = value => String(value ?? '').trim().toLocaleLowerCase('pt-BR');
+const decode = text => { try { return decodeURIComponent(text); } catch { return text; } };
+
+/** Profile segment of a pasted link: the segment that starts with "@", else the one
+ * before a post/video path, else the last one. '' when the link names no profile. */
+function handleFromPath(pathname) {
+  const segments = pathname.split('/').filter(Boolean).map(decode);
+  const at = segments.find(segment => segment.startsWith('@'));
+  if (at) return at;
+  const marker = segments.findIndex(segment => NOT_PROFILE.has(segment.toLowerCase()) || /\.php$/i.test(segment));
+  if (marker === 0) return '';
+  return marker > 0 ? segments[marker - 1] : (segments.at(-1) ?? '');
+}
 
 /** "@ana", " ana ", "https://site.example/@ana?x=1" and "site.example/ana/" all give "ana".
+ * A link to a post, a video or an id page gives "" (the field then asks for the @).
  * Inner spaces stay, so validation can explain them. */
 export function normalizeHandle(raw) {
   let value = String(raw ?? '').trim();
   if (URLISH.test(value)) {
     try {
-      const url = new URL(/^https?:\/\//i.test(value) ? value : `https://${value}`);
-      const last = url.pathname.split('/').filter(Boolean).at(-1) ?? '';
-      try { value = decodeURIComponent(last); } catch { value = last; }
+      value = handleFromPath(new URL(/^https?:\/\//i.test(value) ? value : `https://${value}`).pathname);
     } catch { /* not a URL after all: validate the text as typed */ }
   }
   return value.trim().replace(/^@+/, '');

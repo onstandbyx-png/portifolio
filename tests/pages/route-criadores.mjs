@@ -250,6 +250,9 @@ export async function checks(t) {
     await player.locator('[data-hooks-title]').innerText() === 'Eu ia jogar esse pote rachado fora.' && await player.locator('[data-hooks-label]').innerText() === 'ABERTURA' &&
     await player.locator('[data-hooks-counter]').innerText() === '01 / 03' && await player.locator('.hk-badge').isVisible() && (await player.locator('.hk-badge').innerText()) === '#publi · Parceria paga');
   check('Frame title enters in 450 ms', (await animationDurations(page, '[data-hooks-title]')).includes(450));
+  // The frame label sits on the scenery (< 11:1), so it follows the 14 px floor of SPEC 2.4.
+  check('Every text on the hooks screen is at least 14 px', await player.evaluate(el => [...el.querySelectorAll('*')].filter(node => [...node.childNodes].some(c => c.nodeType === 3 && c.textContent.trim()))
+    .every(node => parseFloat(getComputedStyle(node).fontSize) >= 14)));
   await player.focus();
   await page.keyboard.press('ArrowRight');
   check('Arrow keys on the screen change the frame and announce it', await hooks.locator('[data-hooks-status]').innerText() === 'Quadro 2 de 3: contexto.' &&

@@ -16,7 +16,9 @@
 .av-hero-secondary{color:var(--papel)}
 .av-platforms{margin:0;max-width:54ch;color:var(--texto-2);font-size:.9375rem}
 .av-hero-figure{margin:0;min-width:0}
-.av-hero-notebook{--mbp-max-width:760px}
+/* The notebook base is 107% of the device (device-premium.css): the device stays
+   100%/1.07 of its column so the base never pokes past the gutter. */
+.av-hero-notebook{--mbp-max-width:min(760px,100% / 1.07)}
 .av-figure-label{margin-top:16px;text-align:center;font-size:.875rem;color:var(--salvia)}
 @media (max-width:599px){.av-hero-primary{width:100%}}
 @media (min-width:1024px){

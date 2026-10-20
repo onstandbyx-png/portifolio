@@ -1,11 +1,12 @@
 /* K14 · "Qual abertura prende mais?" (/criadores, C6).
    Ported from the portfolio's deck-demos "conteudo" back (.fdb-player, .fdb-scenery,
    .fdb-segments, .fdb-tap, .fdb-hook-panel), scoped to .hk, with every text at
-   14 px or more (12 px only for the 11:1 frame label) and the frame drawn by the
-   shared K8 notebook. Without JS only the static script is shown. */
+   14 px or more (the frame label too: over the scenery it measures below the
+   11:1 that a 12 px eyebrow needs) and the frame drawn by the shared K8 notebook. Without JS only the static script is shown. */
 .hk-stage{display:grid;gap:14px;min-width:0}
 .hk-device{display:flex;justify-content:center;width:100%;min-width:0}
-.hk-device .pg-notebook{--mbp-max-width:600px}
+/* The base is 107% of the device: 100%/1.07 keeps it inside the column. */
+.hk-device .pg-notebook{--mbp-max-width:min(600px,100% / 1.07)}
 .hk-device .mbp-screen{background:#0B241C}
 .hk-device .mbp-screen::after{display:none}
 
@@ -26,7 +27,7 @@
 .hk-badge{position:absolute;z-index:2;top:calc(9% + 12px);left:5%;margin:0}
 .hk-badge .fm-badge{background:var(--papel);color:var(--floresta)}
 .hk-copy{position:absolute;z-index:2;left:5%;right:16%;bottom:8%;display:grid;gap:4px;pointer-events:none}
-.hk-copy small{font-size:.75rem;font-weight:700;line-height:1.3;letter-spacing:.1em;text-transform:uppercase;color:var(--papel)}
+.hk-copy small{font-size:.875rem;font-weight:700;line-height:1.3;letter-spacing:.1em;text-transform:uppercase;color:var(--papel)}
 .hk-copy strong{font-size:clamp(1.0625rem,.95rem + .9vw,1.5rem);font-weight:700;line-height:1.15;letter-spacing:-.02em;text-wrap:balance}
 .hk-tap{position:absolute;z-index:3;top:0;bottom:0;display:flex;align-items:center;min-width:44px;padding:0 3% 18%;border:0;background:transparent;color:var(--papel);cursor:pointer}
 .hk-tap--prev{left:0;width:30%;justify-content:flex-start}

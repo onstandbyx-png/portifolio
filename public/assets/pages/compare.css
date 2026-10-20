@@ -1,14 +1,15 @@
 /* K16 · Comparison slider (see compare.js). The new layer is revealed from the
    left with clip-path up to --compare-x (50% before the script runs, so nothing
    shifts when it does). Keyboard steps glide in 500 ms (cubic-bezier(.25,.1,.25,1));
-   a drag follows the pointer with no easing. Without JavaScript
+   a drag follows the pointer with no easing. The divider keeps touch-action: pan-y
+   like the stage, so a vertical swipe that starts on it still scrolls. Without JavaScript
    (@media (scripting: none)) both layers sit side by side and the range and the
    divider are hidden, so both versions stay readable. */
 .pg-compare{--compare-x:50%;min-width:0}
 .pg-compare-stage{position:relative;aspect-ratio:16/9;overflow:hidden;border-radius:var(--raio-m,16px);touch-action:pan-y;user-select:none;-webkit-user-select:none}
 .pg-compare-layer{position:absolute;inset:0;min-width:0;margin:0}
 .pg-compare-after{clip-path:inset(0 calc(100% - var(--compare-x)) 0 0)}
-.pg-compare-divider{position:absolute;z-index:3;top:0;bottom:0;left:var(--compare-x);display:grid;place-items:center;width:44px;margin-left:-22px;cursor:ew-resize;touch-action:none}
+.pg-compare-divider{position:absolute;z-index:3;top:0;bottom:0;left:var(--compare-x);display:grid;place-items:center;width:44px;margin-left:-22px;cursor:ew-resize;touch-action:pan-y}
 .pg-compare-divider::before{content:'';position:absolute;top:0;bottom:0;left:50%;width:3px;margin-left:-1.5px;background:var(--papel,#F3F1E9);box-shadow:0 0 0 1px rgba(15,46,36,.55)}
 .pg-compare-divider>span{position:relative;display:grid;place-items:center;width:44px;height:44px;border-radius:50%;background:var(--papel,#F3F1E9);color:var(--floresta,#0F2E24);box-shadow:0 2px 10px rgba(15,46,36,.35);font:600 1rem/1 var(--sans)}
 .pg-compare[data-dragging=true] .pg-compare-stage{cursor:ew-resize}
