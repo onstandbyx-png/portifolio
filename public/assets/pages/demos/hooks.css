@@ -1,0 +1,63 @@
+/* K14 · "Qual abertura prende mais?" (/criadores, C6).
+   Ported from the portfolio's deck-demos "conteudo" back (.fdb-player, .fdb-scenery,
+   .fdb-segments, .fdb-tap, .fdb-hook-panel), scoped to .hk, with every text at
+   14 px or more (12 px only for the 11:1 frame label) and the frame drawn by the
+   shared K8 notebook. Without JS only the static script is shown. */
+.hk-stage{display:grid;gap:14px;min-width:0}
+.hk-device{display:flex;justify-content:center;width:100%;min-width:0}
+.hk-device .pg-notebook{--mbp-max-width:600px}
+.hk-device .mbp-screen{background:#0B241C}
+.hk-device .mbp-screen::after{display:none}
+
+/* Player (port of .fdb-player). */
+.hk-player{position:relative;width:100%;height:100%;min-height:0;overflow:hidden;background:#0B241C;color:var(--papel);--foco:var(--lima);outline-offset:-4px}
+.hk-player:focus-visible{outline:3px solid var(--lima);outline-offset:-4px}
+.hk-scenery{position:absolute;inset:0}
+.hk-landscape{position:absolute;inset:0;width:100%;height:100%;display:block;transition:opacity 500ms var(--pg-ease-step,cubic-bezier(.25,.1,.25,1)),transform 500ms var(--pg-ease-step,cubic-bezier(.25,.1,.25,1))}
+.hk-landscape:last-child{opacity:0}
+.hk-scenery[data-tone=dawn] .hk-landscape:last-child{opacity:1}
+.hk-player[data-step="1"] .hk-landscape{transform:scale(1.06) translateX(-2%)}
+.hk-player[data-step="2"] .hk-landscape{transform:scale(1.1) translate(-4%,-2%)}
+.hk-player::after{content:'';position:absolute;inset:0;z-index:1;background:linear-gradient(180deg,#0b241cb3 0%,transparent 34%,transparent 40%,#0b241cf0 100%);pointer-events:none}
+.hk-segments{position:absolute;z-index:2;top:9%;left:5%;right:calc(5% + 64px);display:flex;gap:4px}
+.hk-segments i{flex:1;height:3px;border-radius:3px;background:#f3f1e966}
+.hk-segments i.is-on{background:var(--papel)}
+.hk-counter{position:absolute;z-index:2;top:9%;right:5%;transform:translateY(-50%);font-size:.875rem;font-weight:650;line-height:1;font-variant-numeric:tabular-nums;color:var(--papel)}
+.hk-badge{position:absolute;z-index:2;top:calc(9% + 12px);left:5%;margin:0}
+.hk-badge .fm-badge{background:var(--papel);color:var(--floresta)}
+.hk-copy{position:absolute;z-index:2;left:5%;right:16%;bottom:8%;display:grid;gap:4px;pointer-events:none}
+.hk-copy small{font-size:.75rem;font-weight:700;line-height:1.3;letter-spacing:.1em;text-transform:uppercase;color:var(--papel)}
+.hk-copy strong{font-size:clamp(1.0625rem,.95rem + .9vw,1.5rem);font-weight:700;line-height:1.15;letter-spacing:-.02em;text-wrap:balance}
+.hk-tap{position:absolute;z-index:3;top:0;bottom:0;display:flex;align-items:center;min-width:44px;padding:0 3% 18%;border:0;background:transparent;color:var(--papel);cursor:pointer}
+.hk-tap--prev{left:0;width:30%;justify-content:flex-start}
+.hk-tap--next{right:0;width:70%;justify-content:flex-end}
+.hk-tap-icon{display:grid;place-items:center;width:40px;height:40px;border:1px solid #f3f1e966;border-radius:50%;background:#0b241cb3;font-size:1.5rem;line-height:1}
+.hk-tap:disabled{cursor:default}
+.hk-tap:disabled .hk-tap-icon{opacity:0}
+.hk-tap:focus-visible{outline:3px solid var(--lima);outline-offset:-4px}
+
+/* Hook panel (port of .fdb-hook-panel): papel surface, selected state with ✓ and border. */
+.hk-panel{padding:14px;border-radius:18px;background:var(--papel);color:var(--tinta);--foco:var(--floresta)}
+.hk-panel-title{margin:0 0 10px;font-size:.9375rem;font-weight:700}
+.hk-pair{display:grid;gap:8px}
+.hk-vs{display:none}
+.hk-hook{display:flex;align-items:center;gap:10px;min-height:52px;padding:8px 14px 8px 8px;border:1.5px solid #18251f40;border-radius:12px;background:#fff;color:var(--tinta);font-size:.9375rem;font-weight:600;line-height:1.3;text-align:left;cursor:pointer;transition:border-color 160ms ease,box-shadow 160ms ease}
+.hk-hook:hover{border-color:var(--floresta)}
+.hk-hook[aria-pressed=true]{border-color:var(--floresta);box-shadow:inset 0 0 0 2px var(--floresta)}
+.hk-hook[aria-pressed=true]::after{content:'✓';margin-left:auto;font-weight:700}
+.hk-hook-key{display:grid;place-items:center;flex:none;width:32px;height:32px;border-radius:50%;background:var(--floresta);color:var(--papel);font-weight:750}
+@media (min-width:520px){
+  .hk-pair{grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);align-items:center}
+  .hk-vs{display:grid;place-items:center;width:28px;height:28px;border-radius:50%;background:#e4e1d5;font-size:.875rem;font-weight:700;color:var(--tinta)}
+}
+
+/* Static script (no JS): both hooks, frame by frame. */
+.hk-script{display:grid;gap:12px}
+.hk-script-hook{padding:18px;border:1px solid var(--linha-floresta);border-radius:var(--raio-m,16px);background:var(--painel)}
+.hk-script-hook h4{margin:0 0 8px;font-size:1.0625rem;line-height:1.3}
+.hk-script-hook ol{display:grid;gap:6px;margin:0 0 10px;padding-left:1.25em}
+.hk-script-hook p{margin:0;color:var(--salvia)}
+.hk-script-badge{margin:0}
+
+@media (prefers-reduced-motion: reduce){.hk *{transition:none!important;animation:none!important}}
+body.is-paused .hk *{transition:none!important;animation:none!important}
