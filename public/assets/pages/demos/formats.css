@@ -1,0 +1,77 @@
+/* K13 · "Um conteúdo, cada formato" (/criadores, C6).
+   Ported from the portfolio's deck-demos "campanhas" back (.fdb-ad*, .fdb-phone,
+   .fdb-formats, ceramic scene) with the scope moved from #colecao to .fm and the
+   formats changed to vertical 9:16, feed 4:5 and text post. Neutral labels
+   ("Parceria paga", "#publi") on the first frame of every format; no platform
+   icons, colours or interface. Without JS the three formats are shown as cards;
+   inside the K7 phone one format at a time, the frame morphing in 350 ms. */
+.fm{--fm-ink:#18251F;--fm-paper:#F3F1E9;--fm-forest:#0F2E24}
+.fm-stage{display:grid;gap:16px;justify-items:center;min-width:0}
+.fm-device{display:flex;justify-content:center;width:100%;min-width:0;--pg-phone-width:248px}
+
+/* Format selector (port of .fdb-formats). */
+.fm-formats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;width:100%;max-width:440px}
+.fm-formats button{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;min-width:44px;min-height:76px;padding:10px 6px;border:1px solid var(--linha-floresta);border-radius:14px;background:transparent;color:var(--papel);font:inherit;text-align:center;cursor:pointer;transition:background-color 160ms ease,border-color 160ms ease,color 160ms ease}
+.fm-formats button:hover{border-color:var(--papel)}
+.fm-formats button[aria-pressed=true]{background:var(--papel);border-color:var(--papel);color:var(--floresta)}
+.fm-icon{width:22px;height:22px;flex:none;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.fm-format-text{display:grid;gap:1px;line-height:1.2}
+.fm-format-text b{font-size:.9375rem;font-weight:650}
+.fm-format-text small{font-size:.875rem;color:var(--salvia)}
+.fm-formats button[aria-pressed=true] small{color:var(--tinta-2)}
+@media (min-width:1100px){
+  .fm-stage{grid-template-columns:auto minmax(0,1fr);align-items:center;justify-items:start;gap:24px}
+  .fm-device{width:auto;--pg-phone-width:256px}
+  .fm-formats{grid-template-columns:minmax(0,1fr);max-width:180px}
+  .fm-formats button{flex-direction:row;justify-content:flex-start;gap:12px;min-height:60px;padding:8px 14px;text-align:left}
+}
+
+/* ---------- screen: cards without JS ---------- */
+.fm-screen{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr));gap:16px;width:100%;color:var(--fm-ink)}
+.fm-view{display:flex;flex-direction:column;gap:10px;min-width:0;padding:16px;border-radius:var(--raio-m,16px);background:var(--fm-paper)}
+.fm-view p{margin:0}
+.fm-profile{display:flex;align-items:center;gap:8px;font-size:.9375rem;font-weight:700;line-height:1.2}
+.fm-avatar{flex:none;width:26px;height:26px;border-radius:50%;background:radial-gradient(circle at 50% 72%,#e9b87e 0 28%,transparent 30%),linear-gradient(140deg,#2f5a47,#163a2d);box-shadow:0 0 0 2px var(--fm-paper),0 0 0 3.5px #9CCBB0}
+.fm-badges{display:flex;flex-wrap:wrap;gap:6px}
+.fm-badge{display:inline-flex;align-items:center;min-height:26px;padding:3px 10px;border-radius:999px;background:var(--fm-forest);color:var(--fm-paper);font-size:.875rem;font-weight:700;line-height:1.2}
+.fm-media{position:relative;width:100%;overflow:hidden;border-radius:12px;background:#4a2c14}
+.fm-view--vertical .fm-media{aspect-ratio:9/16}
+.fm-view--feed .fm-media{aspect-ratio:4/5}
+.fm-caption{font-size:.9375rem;line-height:1.4}
+.fm-post{padding:14px;border:1px solid #18251f2e;border-radius:12px;background:#fff;font-size:1rem;line-height:1.45}
+.fm-post p{margin:0}
+
+/* Vertical overlay: dark plates keep the text legible over the scene. */
+.fm-overlay{position:absolute;inset:0;z-index:2;display:flex;flex-direction:column;align-items:flex-start;gap:8px;padding:12px}
+.fm-overlay .fm-profile{padding:4px 12px 4px 4px;border-radius:999px;background:#0b241ce6;color:var(--fm-paper)}
+.fm-overlay .fm-avatar{box-shadow:0 0 0 2px #0b241c,0 0 0 3.5px #9CCBB0}
+.fm-overlay .fm-badge{background:var(--fm-paper);color:var(--fm-forest)}
+.fm-title{margin-top:auto!important;padding:10px 12px;border-radius:10px;background:#0b241ceb;color:var(--fm-paper);font-size:1rem;font-weight:700;line-height:1.2;letter-spacing:-.01em;text-wrap:balance}
+
+/* Ceramic scene (port of .fdb-product-scene, .fdb-vase, .fdb-bowl): CSS only, no image. */
+.fm-scene{position:absolute;inset:0;background:radial-gradient(90% 70% at 70% 25%,#f0c48c 0%,#c8894a 48%,#8e5a2f 100%)}
+.fm-scene::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,#0b241c33 0%,transparent 30%,transparent 55%,#3b230f99 100%)}
+.fm-sun{position:absolute;right:14%;top:12%;width:26%;aspect-ratio:1;border-radius:50%;background:#f8dfb4;opacity:.7}
+.fm-shelf{position:absolute;left:0;right:0;bottom:0;height:34%;background:linear-gradient(180deg,#7a4b26,#5c361a)}
+.fm-vase{position:absolute;left:46%;bottom:28%;width:30%;aspect-ratio:.72;border-radius:44% 44% 40% 40%/30% 30% 62% 62%;background:radial-gradient(70% 55% at 34% 30%,#f4ead6 0%,#d9c7a6 38%,#a98c66 78%,#7d6649 100%);box-shadow:inset -6px -5px 10px #5d4a3355}
+.fm-vase::before{content:'';position:absolute;left:31%;right:31%;top:-15%;height:22%;border-radius:30% 30% 12% 12%;background:linear-gradient(90deg,#a68a64,#ead9bb 45%,#b8996f)}
+.fm-bowl{position:absolute;left:14%;bottom:30%;width:34%;aspect-ratio:2.4;border-radius:8% 8% 50% 50%/16% 16% 100% 100%;background:linear-gradient(180deg,#2c4f42 0 12%,#4f7a66 13%,#3a6152 60%,#244436);box-shadow:inset 0 2px 0 #ffffff26}
+.fm-view--vertical .fm-shelf{height:26%}
+.fm-view--vertical .fm-vase{bottom:21%;width:40%;left:44%}
+.fm-view--vertical .fm-bowl{bottom:23%;width:40%;left:6%}
+
+/* ---------- inside the phone (K7): one format at a time ---------- */
+.fm-screen.is-in-device{position:absolute;inset:0;display:block;background:var(--fm-paper)}
+.fm-screen.is-in-device .fm-view{position:absolute;inset:0;gap:calc(16 * var(--df-pt));padding:calc(70 * var(--df-pt)) calc(22 * var(--df-pt)) calc(30 * var(--df-pt));border-radius:0}
+.fm-screen.is-in-device .fm-view--vertical{padding-top:calc(62 * var(--df-pt))}
+.fm-screen.is-in-device .fm-media,.fm-screen.is-in-device .fm-post{flex:none;border-radius:calc(22 * var(--df-pt))}
+.fm-screen.is-in-device .fm-profile{gap:calc(12 * var(--df-pt));font-size:max(14px,calc(23 * var(--df-pt)))}
+.fm-screen.is-in-device .fm-avatar{width:calc(40 * var(--df-pt));height:calc(40 * var(--df-pt))}
+.fm-screen.is-in-device .fm-badge{min-height:0;padding:calc(5 * var(--df-pt)) calc(14 * var(--df-pt));font-size:max(14px,calc(20 * var(--df-pt)))}
+.fm-screen.is-in-device .fm-overlay{gap:calc(12 * var(--df-pt));padding:calc(18 * var(--df-pt))}
+.fm-screen.is-in-device .fm-title{padding:calc(16 * var(--df-pt)) calc(18 * var(--df-pt));border-radius:calc(16 * var(--df-pt));font-size:max(15px,calc(28 * var(--df-pt)))}
+.fm-screen.is-in-device .fm-caption{font-size:max(14px,calc(22 * var(--df-pt)))}
+.fm-screen.is-in-device .fm-post{padding:calc(22 * var(--df-pt));font-size:max(15px,calc(26 * var(--df-pt)))}
+
+@media (prefers-reduced-motion: reduce){.fm *{transition:none!important;animation:none!important}}
+body.is-paused .fm *{transition:none!important;animation:none!important}

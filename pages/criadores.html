@@ -1,0 +1,571 @@
+<!doctype html>
+<!--
+  /criadores · redes sociais (SPEC 1.1, 3.A, 4.A, 5.1; copy-criadores.md, texto verbatim).
+  Casca do modelo de pages/privacidade.html. Entrada: /assets/pages/criadores.js.
+  Componentes: K1 casca, K4 seletor de trilha, K5 cartão do mídia kit, K6+K5 baralho de entregas,
+  K7 celular da prévia e da demo de formatos, K8 notebook da demo de ganchos, K9/K10 montador e
+  passagem, K11 FAQ, K12 títulos, K13/K14 demos, K19 check.
+  Banco de criadores (C11, 4.D) desligado na v1: #banco-de-criadores não existe e o FAQ usa a variante "desligado".
+  Sem JS: tudo legível; flip e baralho viram lista; demos mostram o roteiro estático; o botão do
+  formulário fica disabled e o mailto: com o modelo aparece abaixo dele.
+-->
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#0F2E24">
+  <title>Para criadores: kit para fechar com marcas · Smile N</title>
+  <meta name="description" content="Mídia kit, proposta para marcas, página de links, identidade, roteiro e edição para quem cria no TikTok, Instagram, X, Facebook e Snapchat. Você revisa a mensagem antes de enviar.">
+  <link rel="canonical" href="https://portifolio-github-production.up.railway.app/criadores">
+  <meta property="og:title" content="Seu perfil pronto para fechar com marcas">
+  <meta property="og:description" content="Mídia kit, proposta e página de links sob medida, com os seus números reais.">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="pt_BR">
+  <meta property="og:url" content="https://portifolio-github-production.up.railway.app/criadores">
+  <meta property="og:image" content="https://portifolio-github-production.up.railway.app/assets/creative/og-cover.png">
+  <meta name="author" content="Smile N">
+  <link rel="icon" href="/assets/creative/favicon.svg" type="image/svg+xml">
+  <link rel="preload" href="/assets/fonts/InterVariable.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="/assets/pages/base.css">
+  <link rel="stylesheet" href="/assets/pages/flip.css">
+  <link rel="stylesheet" href="/assets/pages/deck.css">
+  <link rel="stylesheet" href="/assets/pages/accordion.css">
+  <link rel="stylesheet" href="/assets/pages/check.css">
+  <link rel="stylesheet" href="/assets/showcase/device-frame.css">
+  <link rel="stylesheet" href="/assets/showcase/device-premium.css">
+  <link rel="stylesheet" href="/assets/pages/devices.css">
+  <link rel="stylesheet" href="/assets/pages/demos/formats.css">
+  <link rel="stylesheet" href="/assets/pages/demos/hooks.css">
+  <link rel="stylesheet" href="/assets/pages/criadores.css">
+  <noscript><style>.menu-toggle,.motion-toggle,[data-js-only]{display:none!important}</style></noscript>
+  <script src="/assets/profile.js" defer></script>
+  <script type="module" src="/assets/pages/criadores.js"></script>
+</head>
+<body class="pg" data-page="criadores">
+  <a class="pg-skip" href="#conteudo">Pular para o conteúdo</a>
+  <header class="site-header" id="topo">
+    <div class="pg-container site-header-inner">
+      <a class="pg-brand" href="/" aria-label="Smile N, início"><span class="pg-brand-name">Smile N</span><span class="pg-brand-signature">ideia ↗ execução.</span></a>
+      <nav class="pg-nav" aria-label="Navegação principal"><a href="/#trabalhos">Trabalhos</a><a href="/#categorias">Serviços</a><a href="/criadores" aria-current="page">Para criadores</a><a href="/criadores/ao-vivo">Ao vivo</a></nav>
+      <a class="pg-btn pg-btn--primary pg-header-cta" href="#montar" data-header-cta>Montar meu kit <span aria-hidden="true">↓</span></a>
+      <button id="motion-toggle" class="motion-toggle" type="button" aria-pressed="false" aria-label="Pausar movimento e reprodução" title="Pausar movimento e reprodução"><span class="motion-toggle-icon" aria-hidden="true">Ⅱ</span><span class="motion-toggle-text">Pausar movimento</span></button>
+      <button class="menu-toggle" id="menu-toggle" type="button" aria-label="Abrir menu" aria-controls="mobile-nav" aria-expanded="false"><span></span><span></span></button>
+    </div>
+    <div class="pg-menu" id="mobile-nav" hidden>
+      <nav aria-label="Navegação móvel"><a href="/#trabalhos" data-menu-item>Trabalhos</a><a href="/#categorias" data-menu-item>Serviços</a><a href="/criadores" aria-current="page" data-menu-item>Para criadores</a><a href="/criadores/ao-vivo" data-menu-item>Ao vivo</a></nav>
+      <a class="pg-btn pg-btn--primary" href="#montar" data-menu-item>Montar meu kit <span aria-hidden="true">↓</span></a>
+      <button class="pg-menu-motion" type="button" data-motion-proxy data-menu-item aria-pressed="false" aria-label="Pausar movimento e reprodução"><span class="motion-toggle-icon" aria-hidden="true">Ⅱ</span><span class="motion-toggle-text">Pausar movimento</span></button>
+    </div>
+  </header>
+
+  <main id="conteudo" class="cr-main" tabindex="-1">
+    <!-- C0 + C1 · seletor de trilha e hero (floresta) -->
+    <section class="pg-section pg-section--floresta pg-hero cr-hero" data-hero aria-labelledby="cr-titulo">
+      <div class="pg-container">
+        <nav class="pg-track cr-track" aria-label="Escolha a página do seu formato"><a href="/criadores" aria-current="page">Redes sociais</a><a href="/criadores/ao-vivo">Vídeo e live</a></nav>
+        <div class="cr-hero-grid">
+          <div class="cr-hero-copy">
+            <p class="pg-eyebrow">Para criadores · Redes sociais</p>
+            <h1 id="cr-titulo" data-reveal-heading>Seu perfil pronto <em>para fechar com marcas.</em></h1>
+            <p class="pg-lead">Mídia kit, proposta e página de links sob medida, com os seus números reais. Roteiro e edição quando você precisar.</p>
+            <div class="cr-hero-actions">
+              <div class="cr-hero-primary">
+                <a class="pg-btn pg-btn--primary cr-hero-cta" href="#montar">Montar meu kit <span aria-hidden="true">↓</span></a>
+                <p class="pg-small cr-hero-micro">Três escolhas. Você revisa a mensagem antes de abrir o WhatsApp.</p>
+              </div>
+              <a class="pg-btn pg-btn--link cr-hero-example" href="#exemplo">Ver um exemplo <span aria-hidden="true">↓</span></a>
+            </div>
+            <p class="pg-small cr-hero-platforms">Para quem publica no TikTok, Instagram, X, Facebook e Snapchat.</p>
+          </div>
+
+          <figure class="cr-kit">
+            <article class="pg-flip cr-kit-card" data-flip data-flip-surface>
+              <div class="pg-flip-stage"><div class="pg-flip-rotor">
+                <div class="pg-flip-face pg-flip-front cr-kit-face" data-flip-front>
+                  <p class="cr-kit-eyebrow">Mídia kit</p>
+                  <div class="cr-kit-cover" aria-hidden="true"><span class="cr-kit-avatar"></span><span class="cr-kit-bars"><i></i><i></i><i></i></span></div>
+                  <p class="cr-kit-handle">@seuperfil</p>
+                  <p class="cr-kit-line">Criador(a) de conteúdo · seu nicho aqui</p>
+                  <button class="pg-btn pg-btn--secondary cr-kit-toggle" type="button" data-flip-open aria-pressed="false">Ver o que a marca vê</button>
+                </div>
+                <div class="pg-flip-face pg-flip-back cr-kit-face" data-flip-back>
+                  <p class="cr-kit-back-title" tabindex="-1" data-flip-focus>O que a marca vê</p>
+                  <ul class="cr-check-list">
+                    <li>Quem é você, em duas linhas</li>
+                    <li>Nicho e público</li>
+                    <li>Formatos que você entrega</li>
+                    <li>Seus números, tirados dos insights da plataforma</li>
+                    <li>Como fechar: contato e próximos passos</li>
+                  </ul>
+                  <button class="pg-btn pg-btn--secondary cr-kit-toggle" type="button" data-flip-close>Voltar para a capa</button>
+                </div>
+              </div></div>
+            </article>
+            <figcaption class="pg-small cr-kit-label">Exemplo ilustrativo. Os números entram a partir dos seus insights.</figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <!-- C2 · para quem é (papel) -->
+    <section class="pg-section pg-section--papel cr-who" aria-labelledby="cr-para-quem">
+      <div class="pg-container">
+        <div class="pg-section-head">
+          <h2 id="cr-para-quem" data-reveal-heading>Para quem já cria e quer negociar melhor.</h2>
+        </div>
+        <ul class="cr-cards" data-reveal-group>
+          <li class="cr-card reveal"><h3>Recebo propostas e respondo no improviso.</h3><p>Você ganha um material pronto para mandar na hora.</p></li>
+          <li class="cr-card reveal"><h3>Quero começar a fechar com marcas.</h3><p>Você chega à primeira conversa com kit e proposta.</p></li>
+          <li class="cr-card reveal"><h3>Tenho agência, mas meu material não acompanha.</h3><p>Funciona com ou sem agência. Eu cuido do material, não do seu contrato.</p></li>
+        </ul>
+        <p class="cr-note">Atendo maiores de 18 anos.</p>
+      </div>
+    </section>
+
+    <!-- C3 · o que você recebe: baralho K6 com cartões K5 (floresta) -->
+    <section class="pg-section pg-section--floresta cr-deliverables" aria-labelledby="cr-recebe">
+      <div class="pg-container cr-split">
+        <div class="pg-section-head">
+          <h2 id="cr-recebe" data-reveal-heading>O que você recebe.</h2>
+          <p>Três frentes. Você escolhe uma ou todas.</p>
+        </div>
+        <div class="pg-deck cr-deck" data-deck>
+          <p class="pg-small cr-deck-hint">Arraste, use as setas ou toque no cartão para ver o que vem.</p>
+          <div class="pg-deck-stage" data-deck-stage role="region" aria-roledescription="baralho" aria-label="O que você recebe" tabindex="0">
+            <article class="pg-deck-card" data-deck-card aria-label="1 de 3: Kit para marcas">
+              <div class="pg-flip cr-offer" data-flip data-flip-reduced="stack" data-flip-surface>
+                <div class="pg-flip-stage"><div class="pg-flip-rotor">
+                  <div class="pg-flip-face pg-flip-front pg-panel cr-offer-face" data-flip-front>
+                    <span class="cr-offer-num" aria-hidden="true">01</span>
+                    <h3>Kit para marcas</h3>
+                    <p>O material que você manda quando a marca pergunta.</p>
+                    <button class="pg-btn pg-btn--secondary cr-offer-toggle" type="button" data-flip-open aria-pressed="false">Ver o que vem</button>
+                  </div>
+                  <div class="pg-flip-face pg-flip-back pg-panel cr-offer-face" data-flip-back>
+                    <p class="cr-offer-kicker">Kit para marcas</p>
+                    <p class="cr-offer-back-title" tabindex="-1" data-flip-focus>O que vem</p>
+                    <ul class="cr-check-list">
+                      <li>Mídia kit em PDF e em link</li>
+                      <li>Proposta para marcas: escopo, formatos e entregas</li>
+                      <li>Guia de publi identificada, no formato que o CONAR orienta</li>
+                      <li>Arquivos editáveis para atualizar seus números</li>
+                    </ul>
+                    <button class="pg-btn pg-btn--secondary cr-offer-toggle" type="button" data-flip-close>Voltar</button>
+                  </div>
+                </div></div>
+              </div>
+            </article>
+            <article class="pg-deck-card" data-deck-card aria-label="2 de 3: Conteúdo">
+              <div class="pg-flip cr-offer" data-flip data-flip-reduced="stack" data-flip-surface>
+                <div class="pg-flip-stage"><div class="pg-flip-rotor">
+                  <div class="pg-flip-face pg-flip-front pg-panel cr-offer-face" data-flip-front>
+                    <span class="cr-offer-num" aria-hidden="true">02</span>
+                    <h3>Conteúdo</h3>
+                    <p>Roteiro e edição com a sua voz.</p>
+                    <button class="pg-btn pg-btn--secondary cr-offer-toggle" type="button" data-flip-open aria-pressed="false">Ver o que vem</button>
+                  </div>
+                  <div class="pg-flip-face pg-flip-back pg-panel cr-offer-face" data-flip-back>
+                    <p class="cr-offer-kicker">Conteúdo</p>
+                    <p class="cr-offer-back-title" tabindex="-1" data-flip-focus>O que vem</p>
+                    <ul class="cr-check-list">
+                      <li>Roteiro com gancho, desenvolvimento e convite</li>
+                      <li>Edição vertical com legenda</li>
+                      <li>Versões para cada formato</li>
+                      <li>Publi identificada desde o primeiro quadro</li>
+                    </ul>
+                    <button class="pg-btn pg-btn--secondary cr-offer-toggle" type="button" data-flip-close>Voltar</button>
+                  </div>
+                </div></div>
+              </div>
+            </article>
+            <article class="pg-deck-card" data-deck-card aria-label="3 de 3: Presença">
+              <div class="pg-flip cr-offer" data-flip data-flip-reduced="stack" data-flip-surface>
+                <div class="pg-flip-stage"><div class="pg-flip-rotor">
+                  <div class="pg-flip-face pg-flip-front pg-panel cr-offer-face" data-flip-front>
+                    <span class="cr-offer-num" aria-hidden="true">03</span>
+                    <h3>Presença</h3>
+                    <p>Um lugar só para tudo o que você faz.</p>
+                    <button class="pg-btn pg-btn--secondary cr-offer-toggle" type="button" data-flip-open aria-pressed="false">Ver o que vem</button>
+                  </div>
+                  <div class="pg-flip-face pg-flip-back pg-panel cr-offer-face" data-flip-back>
+                    <p class="cr-offer-kicker">Presença</p>
+                    <p class="cr-offer-back-title" tabindex="-1" data-flip-focus>O que vem</p>
+                    <ul class="cr-check-list">
+                      <li>Identidade: assinatura, cores e capas</li>
+                      <li>Página de links organizada</li>
+                      <li>Landing page para lançamento ou serviço</li>
+                    </ul>
+                    <button class="pg-btn pg-btn--secondary cr-offer-toggle" type="button" data-flip-close>Voltar</button>
+                  </div>
+                </div></div>
+              </div>
+            </article>
+          </div>
+          <div class="pg-deck-nav" role="group" aria-label="Navegar pelos cartões">
+            <button type="button" data-deck-prev aria-label="Anterior"><span aria-hidden="true">←</span></button>
+            <p class="pg-deck-counter" role="status" data-deck-counter>1 de 3</p>
+            <button type="button" data-deck-next aria-label="Próximo"><span aria-hidden="true">→</span></button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- C4 · prévia ao vivo com celular K7 (papel) -->
+    <section class="pg-section pg-section--papel cr-preview" id="exemplo" aria-labelledby="cr-previa">
+      <div class="pg-container cr-split cr-split--preview">
+        <div class="cr-preview-copy">
+          <div class="pg-section-head">
+            <h2 id="cr-previa" data-reveal-heading>Veja seu kit tomar forma.</h2>
+            <p>Digite seu @. A prévia muda aqui mesmo, no seu aparelho. Nada é enviado.</p>
+          </div>
+          <div class="pg-field cr-preview-field" data-js-only>
+            <label class="pg-label" for="cr-previa-perfil">Seu @</label>
+            <p class="pg-hint" id="cr-previa-dica">Só para a prévia. Não guardo o que você digita aqui.</p>
+            <input class="pg-input" id="cr-previa-perfil" type="text" inputmode="text" autocomplete="off" autocapitalize="none" spellcheck="false" maxlength="120" aria-describedby="cr-previa-dica" data-preview-input>
+          </div>
+          <div class="cr-seg" role="group" aria-label="Ver como" data-js-only>
+            <button class="cr-seg-btn" type="button" aria-pressed="true" data-preview-view="perfil">Perfil</button>
+            <button class="cr-seg-btn" type="button" aria-pressed="false" data-preview-view="kit">Kit</button>
+          </div>
+          <p class="pg-visually-hidden" role="status" data-preview-status></p>
+          <p class="cr-preview-more">Gostou? <a class="pg-btn pg-btn--secondary" href="#montar">Montar meu kit <span aria-hidden="true">↓</span></a></p>
+        </div>
+        <figure class="cr-preview-device">
+          <div class="cr-phone-slot" data-preview-device>
+            <div class="cr-screen" data-preview-screen>
+              <div class="cr-view cr-view--perfil" data-view="perfil">
+                <span class="cr-view-avatar" aria-hidden="true"></span>
+                <p class="cr-view-handle" data-preview-handle>@seuperfil</p>
+                <p class="cr-view-role">Criador(a) de conteúdo</p>
+                <dl class="cr-slots">
+                  <div><dt>Seguidores</dt><dd>seus números</dd></div>
+                  <div><dt>Alcance médio</dt><dd>seus números</dd></div>
+                  <div><dt>Público</dt><dd>seus números</dd></div>
+                </dl>
+                <p class="cr-view-note">Seus números entram aqui, direto dos insights.</p>
+              </div>
+              <div class="cr-view cr-view--kit" data-view="kit">
+                <p class="cr-view-cover"><span class="cr-view-cover-mark" aria-hidden="true"></span><span class="cr-view-cover-text"><span class="cr-view-cover-handle" data-preview-handle>@seuperfil</span> · Mídia kit</span></p>
+                <div class="cr-proposal">
+                  <p class="cr-proposal-title">Proposta para Ateliê Exemplo</p>
+                  <dl>
+                    <div><dt>Formato</dt><dd>1 vídeo vertical + 3 stories</dd></div>
+                    <div><dt>Identificação</dt><dd>rótulo da plataforma + #publi</dd></div>
+                    <div><dt>Próximo passo</dt><dd>alinhar datas e entregas</dd></div>
+                  </dl>
+                </div>
+              </div>
+            </div>
+          </div>
+          <figcaption class="pg-small cr-demo-label">Ateliê Exemplo · exemplo fictício para mostrar o formato. Não é cliente real.</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <!-- C5 · como funciona (papel) -->
+    <section class="pg-section pg-section--papel cr-how" aria-labelledby="cr-como">
+      <div class="pg-container">
+        <div class="pg-section-head">
+          <h2 id="cr-como" data-reveal-heading>Como funciona.</h2>
+        </div>
+        <ol class="cr-steps" data-reveal-group>
+          <li class="cr-step reveal"><h3 class="pg-serif">Você monta a mensagem</h3><p>Três escolhas aqui na página. Você revisa e envia pelo WhatsApp ou pelo e-mail.</p></li>
+          <li class="cr-step reveal"><h3 class="pg-serif">Eu respondo com perguntas e proposta</h3><p>Escopo, prazo e valor por escrito, antes de começar.</p></li>
+          <li class="cr-step reveal"><h3 class="pg-serif">Criação e revisão</h3><p>Você acompanha as versões e pede ajustes dentro do combinado.</p></li>
+          <li class="cr-step reveal"><h3 class="pg-serif">Entrega dos arquivos</h3><p>Arquivos editáveis, para você atualizar seus números depois.</p></li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- C6 · na prática: demos K13 e K14 (floresta) -->
+    <section class="pg-section pg-section--floresta cr-practice" aria-labelledby="cr-pratica">
+      <div class="pg-container">
+        <div class="pg-section-head">
+          <h2 id="cr-pratica" data-reveal-heading>Na prática.</h2>
+          <p>Duas demonstrações com o Ateliê Exemplo, uma marca fictícia de cerâmica feita à mão.</p>
+        </div>
+        <div class="cr-demos">
+          <article class="cr-demo fm" data-formats aria-labelledby="cr-formatos">
+            <h3 id="cr-formatos">Um conteúdo, cada formato.</h3>
+            <p class="cr-demo-intro">A mesma publi do Ateliê Exemplo no vertical, no feed e em texto. A identificação aparece logo no primeiro quadro.</p>
+            <div class="fm-stage">
+              <div class="fm-device" data-formats-device>
+                <div class="fm-screen" data-formats-screen>
+                  <div class="fm-view fm-view--vertical" data-format="vertical"
+                    data-status="Vertical 9:16: a publi aparece identificada no primeiro quadro, sem abrir a legenda."
+                    data-label="Prévia vertical 9:16 de @seuperfil, com selo Parceria paga e #publi: Do barro à mesa, minha primeira peça no torno.">
+                    <div class="fm-media" data-format-media>
+                      <span class="fm-scene" aria-hidden="true"><i class="fm-sun"></i><i class="fm-shelf"></i><i class="fm-vase"></i><i class="fm-bowl"></i></span>
+                      <div class="fm-overlay">
+                        <p class="fm-profile"><span class="fm-avatar" aria-hidden="true"></span>@seuperfil</p>
+                        <p class="fm-badges"><span class="fm-badge">Parceria paga</span><span class="fm-badge">#publi</span></p>
+                        <p class="fm-title">Do barro à mesa: minha primeira peça no torno.</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="fm-view fm-view--feed" data-format="feed"
+                    data-status="Feed 4:5: rótulo da plataforma e #publi visíveis logo de cara."
+                    data-label="Prévia de feed 4:5 de @seuperfil, com selo Parceria paga. Legenda começa com #publi.">
+                    <p class="fm-profile"><span class="fm-avatar" aria-hidden="true"></span>@seuperfil</p>
+                    <p class="fm-badges"><span class="fm-badge">Parceria paga</span><span class="fm-badge">#publi</span></p>
+                    <div class="fm-media" data-format-media><span class="fm-scene" aria-hidden="true"><i class="fm-sun"></i><i class="fm-shelf"></i><i class="fm-vase"></i><i class="fm-bowl"></i></span></div>
+                    <p class="fm-caption">#publi Fiz minha primeira tigela no Ateliê Exemplo. Conto tudo no vídeo.</p>
+                  </div>
+                  <div class="fm-view fm-view--text" data-format="text"
+                    data-status="Post de texto: #publi no começo, não escondido no fim."
+                    data-label="Prévia de post de texto de @seuperfil, começando com #publi.">
+                    <p class="fm-profile"><span class="fm-avatar" aria-hidden="true"></span>@seuperfil</p>
+                    <p class="fm-badges"><span class="fm-badge">Parceria paga</span><span class="fm-badge">#publi</span></p>
+                    <div class="fm-post" data-format-media><p>#publi Passei a tarde no Ateliê Exemplo aprendendo torno. Três coisas que ninguém me contou:</p></div>
+                  </div>
+                </div>
+              </div>
+              <div class="fm-formats" role="group" aria-label="Formato da publicação" data-js-only>
+                <button type="button" aria-pressed="true" data-format-button="vertical"><svg class="fm-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect x="7.5" y="3" width="9" height="18" rx="2"/></svg><span class="fm-format-text"><b>Vertical</b><small>9:16</small></span></button>
+                <button type="button" aria-pressed="false" data-format-button="feed"><svg class="fm-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect x="5" y="3.5" width="14" height="17" rx="2"/></svg><span class="fm-format-text"><b>Feed</b><small>4:5</small></span></button>
+                <button type="button" aria-pressed="false" data-format-button="text"><svg class="fm-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 7h14M5 12h14M5 17h9"/></svg><span class="fm-format-text"><b>Texto</b><small>post</small></span></button>
+              </div>
+            </div>
+            <p class="cr-demo-status" role="status" data-formats-status data-js-only>Vertical 9:16: a publi aparece identificada no primeiro quadro, sem abrir a legenda.</p>
+            <p class="pg-small cr-demo-caption">Ateliê Exemplo · exemplo fictício para mostrar o formato. Não é cliente real. Na publicação de verdade, use o rótulo da própria plataforma.</p>
+          </article>
+
+          <article class="cr-demo hk" data-hooks aria-labelledby="cr-ganchos">
+            <h3 id="cr-ganchos">Qual abertura prende mais?</h3>
+            <p class="cr-demo-intro" id="cr-ganchos-dica">Dois começos para a mesma publi. Toque em A ou B e passe os quadros.</p>
+            <div class="hk-stage" data-hooks-stage data-js-only>
+              <div class="hk-device" data-hooks-device>
+                <div class="hk-player" data-hooks-player tabindex="0" role="group" aria-labelledby="cr-ganchos" aria-describedby="cr-ganchos-dica">
+                  <div class="hk-scenery" data-tone="dusk" data-hooks-scenery aria-hidden="true"></div>
+                  <div class="hk-segments" aria-hidden="true"><i></i><i></i><i></i></div>
+                  <span class="hk-counter" data-hooks-counter hidden>01 / 03</span>
+                  <p class="hk-badge"><span class="fm-badge">#publi · Parceria paga</span></p>
+                  <div class="hk-copy"><small data-hooks-label>Teste de gancho</small><strong data-hooks-title>Escolha uma abertura.</strong></div>
+                  <button class="hk-tap hk-tap--prev" type="button" data-hooks-prev aria-label="Quadro anterior" disabled><span class="hk-tap-icon" aria-hidden="true">‹</span></button>
+                  <button class="hk-tap hk-tap--next" type="button" data-hooks-next aria-label="Próximo quadro" disabled><span class="hk-tap-icon" aria-hidden="true">›</span></button>
+                </div>
+              </div>
+              <div class="hk-panel" role="group" aria-label="Teste de gancho">
+                <p class="hk-panel-title">Teste de gancho</p>
+                <div class="hk-pair">
+                  <button class="hk-hook" type="button" aria-pressed="false" data-hook-button="a"><span class="hk-hook-key">A</span> · Eu ia jogar fora.</button>
+                  <span class="hk-vs" aria-hidden="true">vs</span>
+                  <button class="hk-hook" type="button" aria-pressed="false" data-hook-button="b"><span class="hk-hook-key">B</span> · 3 coisas com barro</button>
+                </div>
+              </div>
+            </div>
+            <p class="cr-demo-status" role="status" data-hooks-status data-js-only></p>
+            <div class="hk-script" data-hooks-script>
+              <section class="hk-script-hook" data-hook="a" data-why="Gancho A: uma confissão curta desperta curiosidade." aria-labelledby="hk-a">
+                <h4 id="hk-a">A · Eu ia jogar fora.</h4>
+                <ol>
+                  <li data-frame data-frame-name="abertura"><span data-frame-label>ABERTURA</span>: <span data-frame-text>Eu ia jogar esse pote rachado fora.</span></li>
+                  <li data-frame data-frame-name="contexto"><span data-frame-label>CONTEXTO</span>: <span data-frame-text>Levei ao Ateliê Exemplo e olha como voltou.</span></li>
+                  <li data-frame data-frame-name="convite"><span data-frame-label>CONVITE</span>: <span data-frame-text>Quer ver o conserto? Está no próximo vídeo.</span></li>
+                </ol>
+                <p>Gancho A: uma confissão curta desperta curiosidade.</p>
+              </section>
+              <section class="hk-script-hook" data-hook="b" data-why="Gancho B: uma lista curta promete algo útil e fácil de seguir." aria-labelledby="hk-b">
+                <h4 id="hk-b">B · 3 coisas com barro</h4>
+                <ol>
+                  <li data-frame data-frame-name="abertura"><span data-frame-label>ABERTURA</span>: <span data-frame-text>3 coisas que dá para fazer com uma aula de torno.</span></li>
+                  <li data-frame data-frame-name="contexto"><span data-frame-label>CONTEXTO</span>: <span data-frame-text>A segunda o Ateliê Exemplo ensina numa tarde.</span></li>
+                  <li data-frame data-frame-name="convite"><span data-frame-label>CONVITE</span>: <span data-frame-text>Salve para lembrar quando for marcar a sua.</span></li>
+                </ol>
+                <p>Gancho B: uma lista curta promete algo útil e fácil de seguir.</p>
+              </section>
+              <p class="hk-script-badge"><span class="fm-badge">#publi · Parceria paga</span></p>
+            </div>
+            <p class="pg-small cr-demo-caption">Não tem vencedor aqui. Teste as duas no seu perfil e compare nos insights da sua conta.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- C7 · quem faz, publi identificada e transparência (papel) -->
+    <section class="pg-section pg-section--papel cr-about" aria-labelledby="cr-quem-faz">
+      <div class="pg-container">
+        <div class="cr-about-grid">
+          <div class="cr-about-who">
+            <h2 id="cr-quem-faz" data-reveal-heading>Quem faz.</h2>
+            <p class="pg-lead">Eu sou Smile N, diretor criativo e redator. Escrevo, desenho e monto a página. Você fala direto com quem cria.</p>
+            <a class="pg-btn pg-btn--link" href="/#trabalhos">Ver trabalhos no portfólio <span aria-hidden="true">→</span></a>
+            <p class="pg-small cr-muted">Alguns trabalhos do portfólio são estudos conceituais e estão marcados assim.</p>
+          </div>
+          <div class="cr-about-publi">
+            <h3>Publi identificada desde o primeiro quadro.</h3>
+            <p>Roteiros e peças já preveem o rótulo da própria plataforma e o #publi visível sem abrir a legenda, como orienta o Guia de Marketing e Publicidade por Influenciadores Digitais do CONAR (2026). Você publica já no formato certo.</p>
+            <a class="pg-btn pg-btn--link" href="https://conar.wpenginepowered.com/wp-content/uploads/2026/05/260525_GUIA_INFLUENCIADORES_CONAR_v6.pdf" target="_blank" rel="noopener noreferrer">Ler o guia do CONAR <span aria-hidden="true">↗</span></a>
+          </div>
+        </div>
+        <p class="cr-transparency">Não sou parceiro oficial, agência credenciada nem representante de TikTok, Instagram, Facebook, Meta, Snapchat ou X. Os nomes aparecem só para indicar onde seu conteúdo roda. As marcas pertencem aos seus titulares. Não peço senha nem acesso à sua conta.</p>
+      </div>
+    </section>
+
+    <!-- C8 · montar meu kit, SPEC 4.A (floresta) -->
+    <section class="pg-section pg-section--floresta cr-build" id="montar" aria-labelledby="cr-montar">
+      <div class="pg-container cr-split cr-split--form">
+        <div class="pg-section-head cr-build-head">
+          <h2 id="cr-montar" data-reveal-heading>Monte seu kit.</h2>
+          <p>Três escolhas. Depois você revisa a mensagem e decide por onde enviar.</p>
+        </div>
+        <form class="cr-form" id="cr-form" novalidate>
+          <div class="pg-error-summary" id="cr-erros" data-error-summary hidden></div>
+
+          <div class="pg-field">
+            <label class="pg-label" for="cr-perfil">Seu @ principal</label>
+            <p class="pg-hint" id="cr-perfil-dica">Pode colar o link do perfil. Eu pego só o @.</p>
+            <input class="pg-input" id="cr-perfil" name="perfil" type="text" inputmode="text" autocomplete="off" autocapitalize="none" spellcheck="false" maxlength="200" aria-describedby="cr-perfil-dica">
+            <button class="pg-btn pg-btn--link cr-use-handle" type="button" data-use-handle hidden><span>Usar @<span data-use-handle-value></span></span></button>
+          </div>
+
+          <fieldset class="pg-fieldset" id="cr-plataforma" data-chips="single" data-name="plataforma">
+            <legend>Plataforma principal</legend>
+            <div class="pg-chip-row">
+              <button class="pg-chip" type="button" aria-pressed="false" data-value="TikTok">TikTok</button>
+              <button class="pg-chip" type="button" aria-pressed="false" data-value="Instagram">Instagram</button>
+              <button class="pg-chip" type="button" aria-pressed="false" data-value="X">X</button>
+              <button class="pg-chip" type="button" aria-pressed="false" data-value="Facebook">Facebook</button>
+              <button class="pg-chip" type="button" aria-pressed="false" data-value="Snapchat">Snapchat</button>
+              <button class="pg-chip" type="button" aria-pressed="false" data-value="Outra">Outra</button>
+            </div>
+          </fieldset>
+
+          <fieldset class="pg-fieldset" id="cr-preciso" data-chips="multi" data-name="preciso" aria-describedby="cr-preciso-dica">
+            <legend>Preciso de</legend>
+            <p class="pg-hint cr-chip-hint" id="cr-preciso-dica">Marque quantas quiser.</p>
+            <div class="pg-chip-row">
+              <button class="pg-chip" type="button" aria-pressed="false" data-value="Mídia kit">Mídia kit</button>
+              <button class="pg-chip" type="button" aria-pressed="false" data-value="Proposta para marcas">Proposta para marcas</button>
+              <button class="pg-chip" type="button" aria-pressed="false" data-value="Página de links">Página de links</button>
+              <button class="pg-chip" type="button" aria-pressed="false" data-value="Identidade">Identidade</button>
+              <button class="pg-chip" type="button" aria-pressed="false" data-value="Roteiro">Roteiro</button>
+              <button class="pg-chip" type="button" aria-pressed="false" data-value="Edição">Edição</button>
+              <button class="pg-chip" type="button" aria-pressed="false" data-value="Landing page">Landing page</button>
+              <button class="pg-chip" type="button" aria-pressed="false" data-value="Ainda não sei" data-exclusive>Ainda não sei</button>
+            </div>
+          </fieldset>
+
+          <fieldset class="pg-fieldset" id="cr-prazo" data-chips="single" data-name="prazo" data-optional>
+            <legend>Para quando? (opcional)</legend>
+            <div class="pg-chip-row">
+              <button class="pg-chip" type="button" aria-pressed="false" data-value="Sem pressa">Sem pressa</button>
+              <button class="pg-chip" type="button" aria-pressed="false" data-value="Este mês">Este mês</button>
+              <button class="pg-chip" type="button" aria-pressed="false" data-value="Urgente">Urgente</button>
+            </div>
+          </fieldset>
+
+          <div class="pg-field cr-age">
+            <label class="pg-check"><input type="checkbox" id="cr-maior" name="maior"><span class="pg-check-box" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span><span class="pg-check-text">Tenho 18 anos ou mais.</span></label>
+          </div>
+
+          <div class="pg-summary cr-summary" id="cr-resumo" aria-labelledby="cr-resumo-titulo">
+            <p class="cr-summary-head"><span class="cr-summary-title" id="cr-resumo-titulo">Seu resumo</span> <span class="cr-summary-count" data-summary-count>0 escolhas</span></p>
+            <p class="cr-summary-empty" data-summary-empty>Seu resumo aparece aqui conforme você escolhe.</p>
+            <ul data-summary-list></ul>
+            <p class="pg-small cr-summary-note">Este resumo não gera preço.</p>
+          </div>
+
+          <div class="cr-submit">
+            <button class="pg-btn pg-btn--primary pg-btn--block" type="submit" disabled>Revisar mensagem</button>
+            <p class="pg-small cr-notice">Você revisa a mensagem antes de enviar. Uso seu @ e suas respostas só para preparar a proposta que você pediu. Nada sai daqui até você tocar em enviar no WhatsApp ou no e-mail. <a class="cr-nowrap" href="/privacidade">Como trato seus dados <span aria-hidden="true">→</span></a></p>
+            <p class="pg-small cr-nojs" data-nojs-fallback>Sem JavaScript? Escreva para <span data-profile-text="email">smillepls@gmail.com</span> com seu @, a plataforma principal e o que você precisa. <a class="pg-btn pg-btn--secondary cr-nojs-link" href="mailto:smillepls@gmail.com?subject=Kit%20para%20marcas&amp;body=Oi%2C%20Smile!%20Vim%20pela%20p%C3%A1gina%20de%20criadores.%0D%0AMeu%20perfil%20principal%3A%20%40%0D%0APlataforma%3A%0D%0AQuero%20ajuda%20com%3A%0D%0A%E2%80%94%20Tenho%2018%20anos%20ou%20mais%20e%20li%20o%20aviso%20de%20privacidade%20(vers%C3%A3o%202026-10)." data-kit-mailto>Escrever e-mail <span aria-hidden="true">↗</span></a></p>
+          </div>
+
+          <section class="pg-review cr-review" id="cr-revisao" data-handoff-panel hidden aria-labelledby="cr-revisao-titulo">
+            <h3 id="cr-revisao-titulo" data-handoff-title>Sua mensagem está pronta.</h3>
+            <p class="cr-review-intro">Confira abaixo. Ao tocar no botão, ela abre no WhatsApp para você revisar e enviar. Nada é enviado daqui.</p>
+            <div class="pg-review-message" data-handoff-message></div>
+            <div class="pg-review-actions">
+              <a class="pg-btn pg-btn--primary" data-handoff="whatsapp" target="_blank" rel="noopener noreferrer">Abrir no WhatsApp <span aria-hidden="true">↗</span></a>
+              <a class="pg-btn pg-btn--secondary" data-handoff="email">Prefiro e-mail <span aria-hidden="true">↗</span></a>
+              <button class="pg-btn pg-btn--secondary" type="button" data-handoff="copy">Copiar mensagem</button>
+              <button class="pg-btn pg-btn--link" type="button" data-handoff="edit">Editar respostas <span aria-hidden="true">↑</span></button>
+            </div>
+            <p class="pg-review-status" role="status" data-handoff-status></p>
+            <p class="pg-small cr-review-desktop">No computador, o link abre o WhatsApp Web ou o aplicativo.</p>
+            <div class="cr-after">
+              <h4>Depois de enviar</h4>
+              <p>Eu respondo com algumas perguntas e, se fizer sentido, uma proposta por escrito. Tenha à mão prints dos insights da sua conta.</p>
+            </div>
+          </section>
+        </form>
+      </div>
+    </section>
+
+    <!-- C9 · FAQ, <details name="faq"> (papel). Q1 (banco de criadores) desligado: variante padrão. -->
+    <section class="pg-section pg-section--papel cr-faq" aria-labelledby="cr-perguntas">
+      <div class="pg-container cr-faq-inner">
+        <div class="pg-section-head">
+          <h2 id="cr-perguntas" data-reveal-heading>Perguntas frequentes.</h2>
+        </div>
+        <div class="pg-accordion-list">
+          <details class="pg-accordion" name="faq"><summary><span class="pg-accordion-q">Preciso ter muitos seguidores?</span><span class="pg-accordion-icon" aria-hidden="true">+</span></summary><div class="pg-accordion-body"><p>O kit organiza os números que você já tem. Na conversa, eu digo com sinceridade se faz sentido agora.</p></div></details>
+          <details class="pg-accordion" name="faq"><summary><span class="pg-accordion-q">Já tenho agência. Posso contratar?</span><span class="pg-accordion-icon" aria-hidden="true">+</span></summary><div class="pg-accordion-body"><p>Pode. Eu faço o material, e o seu contrato com a agência continua igual. Se preferir, a sua agência fala comigo.</p></div></details>
+          <details class="pg-accordion" name="faq"><summary><span class="pg-accordion-q">Você garante publis ou campanhas?</span><span class="pg-accordion-icon" aria-hidden="true">+</span></summary><div class="pg-accordion-body"><p>Não. Eu entrego material para você negociar melhor. Fechar depende da marca, do momento e da conversa.</p></div></details>
+          <details class="pg-accordion" name="faq"><summary><span class="pg-accordion-q">Quanto custa?</span><span class="pg-accordion-icon" aria-hidden="true">+</span></summary><div class="pg-accordion-body"><p>O valor sai na proposta, de acordo com o escopo. Você recebe tudo por escrito antes de começar.</p></div></details>
+          <details class="pg-accordion" name="faq"><summary><span class="pg-accordion-q">Uso meus números reais?</span><span class="pg-accordion-icon" aria-hidden="true">+</span></summary><div class="pg-accordion-body"><p>Sim. Eles vêm dos insights da própria plataforma. Eu não estimo nem arredondo para cima.</p></div></details>
+          <details class="pg-accordion" name="faq"><summary><span class="pg-accordion-q">Você é parceiro do TikTok, da Meta ou de outra plataforma?</span><span class="pg-accordion-icon" aria-hidden="true">+</span></summary><div class="pg-accordion-body"><p>Não. Não tenho vínculo com nenhuma plataforma. Cito os nomes só para dizer onde o seu conteúdo roda.</p></div></details>
+          <details class="pg-accordion" name="faq"><summary><span class="pg-accordion-q">O que acontece com meus dados?</span><span class="pg-accordion-icon" aria-hidden="true">+</span></summary><div class="pg-accordion-body"><p>O formulário só monta uma mensagem. Nada sai daqui até você tocar em enviar no WhatsApp ou no e-mail. Guardo a conversa por até 12 meses depois do último contato. Os detalhes estão no <a href="/privacidade">aviso de privacidade <span aria-hidden="true">→</span></a></p></div></details>
+          <details class="pg-accordion" name="faq"><summary><span class="pg-accordion-q">Você atende menor de idade?</span><span class="pg-accordion-icon" aria-hidden="true">+</span></summary><div class="pg-accordion-body"><p>Por enquanto, só maiores de 18. Se você é responsável por um criador menor de idade, escreva para <a href="mailto:smillepls@gmail.com" data-profile-link="email"><span data-profile-text="email">smillepls@gmail.com</span></a>.</p></div></details>
+          <details class="pg-accordion" name="faq" id="cr-faq-casting"><summary><span class="pg-accordion-q">Você chama criadores para campanhas?</span><span class="pg-accordion-icon" aria-hidden="true">+</span></summary><div class="pg-accordion-body"><p>Hoje meu foco é o seu material: kit, proposta, conteúdo e presença. Se eu abrir um banco de criadores para campanhas, aviso aqui, com cadastro separado.</p></div></details>
+          <details class="pg-accordion" name="faq"><summary><span class="pg-accordion-q">E se eu fizer live?</span><span class="pg-accordion-icon" aria-hidden="true">+</span></summary><div class="pg-accordion-body"><p>Tem uma página só para isso: identidade da live, cortes e patrocínio. <a href="/criadores/ao-vivo">Ver a página para quem transmite <span aria-hidden="true">→</span></a></p></div></details>
+        </div>
+      </div>
+    </section>
+
+    <!-- C10 · faixa final (floresta) -->
+    <section class="pg-section pg-section--floresta cr-final" aria-labelledby="cr-final-titulo">
+      <div class="pg-container cr-final-inner">
+        <h2 id="cr-final-titulo" data-reveal-heading>Quando a marca pedir seu mídia kit, você já tem.</h2>
+        <div class="pg-actions pg-actions--stack-sm cr-final-actions">
+          <a class="pg-btn pg-btn--primary" href="#montar">Montar meu kit <span aria-hidden="true">↑</span></a>
+        </div>
+        <p class="cr-final-mail">Prefere e-mail? <a class="cr-final-mail-link" href="mailto:smillepls@gmail.com?subject=Kit%20para%20marcas&amp;body=Oi%2C%20Smile!%20Vim%20pela%20p%C3%A1gina%20de%20criadores.%0D%0AMeu%20perfil%20principal%3A%20%40%0D%0APlataforma%3A%0D%0AQuero%20ajuda%20com%3A%0D%0A%E2%80%94%20Tenho%2018%20anos%20ou%20mais%20e%20li%20o%20aviso%20de%20privacidade%20(vers%C3%A3o%202026-10)." data-kit-mailto>Escrever para <span data-profile-text="email">smillepls@gmail.com</span> <span aria-hidden="true">↗</span></a></p>
+        <a class="pg-btn pg-btn--link cr-cross" href="/criadores/ao-vivo">Faz live? Ver a página para quem transmite <span aria-hidden="true">→</span></a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="pg-container">
+      <div class="site-footer-grid">
+        <div class="site-footer-brand">
+          <a class="pg-brand" href="/" aria-label="Smile N, início"><span class="pg-brand-name">Smile N</span><span class="pg-brand-signature">ideia ↗ execução.</span></a>
+          <p>Smile N · Diretor criativo e redator · © 2026</p>
+        </div>
+        <nav aria-labelledby="rodape-navegar">
+          <h2 id="rodape-navegar">Navegar</h2>
+          <ul>
+            <li><a href="/">Início</a></li>
+            <li><a href="/#trabalhos">Trabalhos</a></li>
+            <li><a href="/criadores" aria-current="page">Para criadores</a></li>
+            <li><a href="/criadores/ao-vivo">Criadores ao vivo</a></li>
+            <li><a href="/vagas">Banco de talentos</a></li>
+          </ul>
+        </nav>
+        <div>
+          <h2 id="rodape-contato">Contato</h2>
+          <ul aria-labelledby="rodape-contato">
+            <li><a href="https://wa.me/5511985568208" target="_blank" rel="noopener noreferrer" data-profile-link="whatsapp">WhatsApp <span aria-hidden="true">↗</span></a></li>
+            <li><a href="mailto:smillepls@gmail.com" data-profile-link="email">E-mail <span aria-hidden="true">↗</span></a></li>
+          </ul>
+        </div>
+        <div>
+          <h2 id="rodape-privacidade">Privacidade</h2>
+          <ul aria-labelledby="rodape-privacidade">
+            <li><a href="/privacidade">Aviso de privacidade</a></li>
+            <li>Pedidos sobre seus dados: <a href="mailto:smillepls@gmail.com" data-profile-link="email"><span data-profile-text="email">smillepls@gmail.com</span></a></li>
+            <li><a href="/privacidade#acessibilidade"><svg class="pg-a11y-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="10.5" fill="none" stroke="currentColor" stroke-width="1.5"/><circle cx="12" cy="6.4" r="1.7" fill="currentColor"/><path d="M6.4 9.3c1.9.5 3.7.8 5.6.8s3.7-.3 5.6-.8M12 10.1v3.7M12 13.8l-2.5 4.5M12 13.8l2.5 4.5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>Acessibilidade</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="site-footer-legal">
+        <p>Smile N · contato e privacidade: <span data-profile-text="email">smillepls@gmail.com</span></p>
+        <p class="cr-footer-affiliation">Sem vínculo com TikTok, Instagram, Facebook, Meta, Snapchat ou X. As marcas citadas pertencem aos seus titulares.</p>
+      </div>
+      <a class="site-footer-top" href="#topo">Voltar ao topo <span aria-hidden="true">↑</span></a>
+    </div>
+  </footer>
+</body>
+</html>

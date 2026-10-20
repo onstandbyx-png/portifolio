@@ -1,0 +1,236 @@
+/* /criadores · page layout (SPEC 3.A). Mobile first at 390 px, then 960 px+.
+   Colour rhythm: hero (floresta) → para quem (papel) → entregas (floresta) →
+   prévia (papel) → como funciona (papel) → na prática (floresta) → quem faz
+   (papel) → montar (floresta) → FAQ (papel) → faixa final (floresta).
+   Text pairs follow SPEC 2.3: menta/salvia never as text on papel. Every
+   transition here is disabled by reduced motion and by the pause button. */
+
+/* ---------- shared bits ---------- */
+.cr-split{display:grid;gap:32px;min-width:0}
+.cr-split>*{min-width:0}
+.cr-check-list{display:grid;gap:10px;margin:0;padding:0;list-style:none}
+.cr-check-list li{display:grid;grid-template-columns:20px minmax(0,1fr);column-gap:8px;line-height:1.45}
+.cr-check-list li::before{content:'✓';font-weight:700;color:var(--floresta)}
+.pg-panel .cr-check-list li::before{color:var(--lima)}
+.cr-muted{color:var(--texto-2)}
+@media (min-width:960px){
+  .cr-split{grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);align-items:start;gap:64px}
+}
+
+/* ---------- C0/C1 · hero ---------- */
+.cr-hero{padding-block:20px 56px}
+.cr-track{margin:0 0 28px}
+.cr-hero-grid{display:grid;gap:40px;min-width:0}
+.cr-hero-copy{min-width:0}
+.cr-hero-copy h1{max-width:14ch}
+.cr-hero-actions{display:grid;gap:12px;margin-top:24px}
+.cr-hero-primary{display:grid;gap:10px}
+.cr-hero-primary .pg-btn{width:100%}
+.cr-hero-example{justify-self:center}
+.cr-hero-micro{margin:0;color:var(--salvia)}
+.cr-hero-platforms{margin:12px 0 0;color:var(--salvia)}
+@media (min-width:600px){
+  /* CTA and the secondary link side by side; the microcopy right below the CTA row. */
+  .cr-hero-actions{grid-template-columns:auto auto;justify-content:start;align-items:center;gap:10px 24px}
+  .cr-hero-primary{display:contents}
+  .cr-hero-primary .pg-btn{grid-area:1 / 1;width:auto}
+  .cr-hero-example{grid-area:1 / 2;justify-self:start}
+  .cr-hero-micro{grid-area:2 / 1 / 3 / 3;width:0;min-width:100%}
+}
+@media (min-width:960px){
+  .cr-hero{padding-block:32px 96px}
+  .cr-track{margin-bottom:48px}
+  .cr-hero-grid{grid-template-columns:minmax(0,1.15fr) minmax(300px,.85fr);align-items:center;gap:64px}
+}
+
+/* Media kit card (K5): 4:5, at most 420 px tall; papel surface inside the dark hero. */
+.cr-kit{display:grid;justify-items:center;gap:14px;margin:0;min-width:0}
+.cr-kit-card{width:100%;max-width:420px}
+.cr-kit-card[data-flip-ready] .pg-flip-rotor{aspect-ratio:4/5;max-height:420px}
+.cr-kit-face{display:flex;flex-direction:column;gap:10px;min-width:0;padding:24px;background:var(--papel);color:var(--tinta);box-shadow:0 28px 60px -32px #000c,inset 0 0 0 1px #18251f14;--foco:var(--floresta);--texto-2:var(--tinta-2)}
+.cr-kit-eyebrow{margin:0;font-size:.75rem;font-weight:600;line-height:1.4;letter-spacing:.08em;text-transform:uppercase;color:var(--floresta)}
+.cr-kit-cover{position:relative;display:flex;align-items:flex-end;gap:14px;flex:1 1 auto;min-height:96px;max-height:180px;padding:16px;border-radius:var(--raio-m);background:linear-gradient(150deg,var(--painel),var(--floresta) 60%);overflow:hidden}
+.cr-kit-cover::after{content:'';position:absolute;right:-18%;top:-30%;width:70%;aspect-ratio:1;border-radius:50%;background:radial-gradient(circle,#d9ed9338,transparent 68%)}
+.cr-kit-avatar{flex:none;width:56px;height:56px;border-radius:50%;background:radial-gradient(circle at 50% 38%,var(--papel) 0 22%,transparent 23%),radial-gradient(circle at 50% 100%,var(--papel) 0 42%,transparent 43%),var(--menta);box-shadow:0 0 0 3px var(--floresta),0 0 0 5px var(--lima)}
+.cr-kit-bars{display:grid;gap:7px;flex:1;padding-bottom:6px}
+.cr-kit-bars i{display:block;height:8px;border-radius:8px;background:#f3f1e955}
+.cr-kit-bars i:nth-child(1){width:72%;background:var(--lima)}
+.cr-kit-bars i:nth-child(2){width:92%}
+.cr-kit-bars i:nth-child(3){width:58%}
+.cr-kit-handle{margin:4px 0 0;font-size:clamp(1.75rem,1.35rem + 1.4vw,2.25rem);font-weight:650;line-height:1.08;letter-spacing:-.025em;overflow-wrap:anywhere}
+.cr-kit-line{margin:0;color:var(--tinta-2)}
+.cr-kit-toggle{align-self:flex-start;margin-top:auto}
+.cr-kit-back-title{margin:0 0 6px;font-size:1.5rem;font-weight:650;line-height:1.15;letter-spacing:-.02em}
+.cr-kit-back-title:focus{outline:none}
+.cr-kit-back-title:focus-visible{outline:3px solid var(--floresta);outline-offset:4px;border-radius:4px}
+.cr-kit .cr-check-list{gap:9px}
+.cr-kit-label{margin:0;max-width:34ch;text-align:center;color:var(--salvia)}
+@media (min-width:960px){
+  .cr-kit-card{max-width:336px}
+  .cr-kit-face{padding:28px}
+}
+
+/* ---------- C2 · para quem é ---------- */
+.cr-cards{display:grid;gap:12px;margin:0;padding:0;list-style:none}
+.cr-card{padding:24px;border:1px solid var(--linha-papel);border-radius:var(--raio-m);background:#FBFAF6}
+.cr-card h3{margin:0 0 10px}
+.cr-card p{margin:0;color:var(--tinta-2)}
+.cr-note{margin:24px 0 0;font-weight:600}
+@media (min-width:760px){.cr-cards{grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}.cr-card{padding:28px}}
+
+/* ---------- C3 · deck of deliverables (K6 + K5) ---------- */
+.cr-deck{width:calc(100% - 24px);margin-inline:auto}
+.cr-deck-hint{display:none;margin:0 0 8px;color:var(--salvia)}
+.pg-deck[data-deck-mode=stack] .cr-deck-hint{display:block}
+.cr-offer{height:100%}
+.cr-offer-face{position:relative;display:flex;flex-direction:column;gap:12px;min-width:0;overflow:hidden;border:1px solid var(--linha-floresta);box-shadow:0 22px 40px -26px #000d}
+.pg-deck[data-deck-mode=stack] .cr-offer-face{min-height:340px}
+/* Decorative numeral (aria-hidden): the card's place in the deck. */
+.cr-offer-num{align-self:flex-end;margin:-6px -4px -18px 0;font-family:var(--serif);font-size:clamp(4.5rem,3.6rem + 3vw,6rem);font-style:italic;font-weight:400;line-height:1;letter-spacing:-.04em;color:#9ccbb047}
+.cr-offer h3{font-size:clamp(1.5rem,1.3rem + .8vw,1.875rem);letter-spacing:-.02em}
+.cr-offer-face p{margin:0}
+.cr-offer-kicker{font-size:.875rem;font-weight:600;color:var(--salvia)}
+.cr-offer-back-title{font-size:1.375rem;font-weight:650;line-height:1.2}
+.cr-offer-back-title:focus{outline:none}
+.cr-offer-back-title:focus-visible{outline:3px solid var(--lima);outline-offset:4px;border-radius:4px}
+.cr-offer-toggle{align-self:flex-start;margin-top:auto}
+@media (min-width:960px){.cr-deck{width:100%;max-width:520px;margin:0}}
+
+/* ---------- C4 · live preview (K7 phone) ---------- */
+.cr-preview-copy{display:grid;gap:4px;align-content:start}
+.cr-preview-field{max-width:440px;margin-bottom:12px}
+.cr-seg{display:inline-grid;grid-template-columns:1fr 1fr;gap:4px;justify-self:start;padding:4px;margin:0 0 20px;border:1px solid var(--linha-papel);border-radius:999px;background:#FBFAF6}
+.cr-seg-btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;min-width:104px;min-height:44px;padding:8px 18px;border:0;border-radius:999px;background:transparent;color:var(--tinta);font-size:.9375rem;font-weight:500}
+.cr-seg-btn[aria-pressed=true]{background:var(--floresta);color:var(--papel);font-weight:600}
+.cr-seg-btn[aria-pressed=true]::before{content:'✓';font-weight:700}
+.cr-preview-more{display:flex;flex-wrap:wrap;align-items:center;gap:8px 14px;margin:0}
+.cr-preview-device{display:grid;justify-items:center;gap:16px;margin:0;min-width:0}
+.cr-phone-slot{display:flex;justify-content:center;width:100%;--pg-phone-width:280px}
+.cr-demo-label{margin:0;max-width:40ch;text-align:center;color:var(--tinta-2)}
+
+/* Screen content: without JS two cards; inside the phone one view at a time. */
+.cr-screen{display:grid;gap:12px;width:100%;max-width:360px;color:var(--tinta)}
+.cr-view{display:flex;flex-direction:column;align-items:flex-start;gap:8px;padding:20px;border:1px solid var(--linha-papel);border-radius:var(--raio-m);background:#FBFAF6}
+.cr-view--perfil{align-items:center;text-align:center}
+.cr-view p,.cr-view dl,.cr-view dd{margin:0}
+.cr-view-avatar{width:64px;height:64px;border-radius:50%;background:radial-gradient(circle at 50% 38%,var(--papel) 0 22%,transparent 23%),radial-gradient(circle at 50% 100%,var(--papel) 0 42%,transparent 43%),var(--painel);box-shadow:0 0 0 3px #FBFAF6,0 0 0 5px var(--menta)}
+.cr-view-handle{max-width:100%;font-size:1.375rem;font-weight:700;letter-spacing:-.02em;line-height:1.15;overflow-wrap:break-word}
+.cr-view-role{color:var(--tinta-2)}
+.cr-slots{display:grid;gap:8px;width:100%;margin-top:6px}
+.cr-slots>div{display:flex;justify-content:space-between;align-items:center;gap:10px;min-height:44px;padding:8px 12px;border:1.5px dashed #18251f59;border-radius:12px;text-align:left}
+.cr-slots dt{font-weight:600}
+.cr-slots dd{color:var(--tinta-2);font-style:italic}
+.cr-view-note{font-size:.875rem;color:var(--tinta-2)}
+.cr-view-cover{position:relative;display:flex;flex-direction:column;justify-content:space-between;gap:12px;width:100%;min-height:150px;padding:18px;border-radius:14px;background:linear-gradient(160deg,var(--painel),var(--floresta));color:var(--papel);font-size:1.25rem;font-weight:700;line-height:1.2;overflow:hidden}
+.cr-view-cover::after{content:'';position:absolute;right:-20%;top:-35%;width:75%;aspect-ratio:1;border-radius:50%;background:radial-gradient(circle,#d9ed9333,transparent 68%)}
+.cr-view-cover-mark{width:44px;height:44px;border-radius:50%;background:radial-gradient(circle at 50% 38%,var(--papel) 0 22%,transparent 23%),radial-gradient(circle at 50% 100%,var(--papel) 0 42%,transparent 43%),var(--menta);box-shadow:0 0 0 3px var(--floresta),0 0 0 5px var(--lima)}
+.cr-view-cover-text{position:relative;z-index:1;overflow-wrap:break-word}
+.cr-view-cover-handle{color:var(--lima)}
+.cr-proposal{display:grid;gap:10px;width:100%;padding:14px;border:1px solid var(--linha-papel);border-radius:14px;background:#fff}
+.cr-proposal-title{font-weight:700}
+.cr-proposal dl{display:grid;gap:8px}
+.cr-proposal dt{font-size:.875rem;font-weight:700}
+.cr-proposal dd{color:var(--tinta-2)}
+
+/* Inside the phone (createPhone, K7): sizes follow the frame's pt unit, never below 14 px. */
+.cr-screen.is-in-device{position:absolute;inset:0;display:block;max-width:none;background:var(--papel)}
+.cr-screen.is-in-device .cr-view{position:absolute;inset:0;gap:calc(14 * var(--df-pt));padding:calc(78 * var(--df-pt)) calc(28 * var(--df-pt)) calc(36 * var(--df-pt));border:0;border-radius:0;background:var(--papel);font-size:max(14px,calc(21 * var(--df-pt)))}
+.cr-screen.is-in-device .cr-view--perfil{justify-content:center;padding-bottom:calc(70 * var(--df-pt))}
+.cr-screen.is-in-device .cr-view-cover-mark{width:calc(76 * var(--df-pt));height:calc(76 * var(--df-pt))}
+.cr-screen.is-in-device .cr-view-avatar{width:calc(116 * var(--df-pt));height:calc(116 * var(--df-pt));margin-top:calc(18 * var(--df-pt));box-shadow:0 0 0 calc(5 * var(--df-pt)) var(--papel),0 0 0 calc(8 * var(--df-pt)) var(--menta)}
+.cr-screen.is-in-device .cr-view-handle{font-size:max(17px,calc(34 * var(--df-pt)))}
+.cr-screen.is-in-device .cr-slots{gap:calc(12 * var(--df-pt));margin-top:calc(10 * var(--df-pt))}
+.cr-screen.is-in-device .cr-slots>div{min-height:0;padding:calc(16 * var(--df-pt)) calc(18 * var(--df-pt));border-radius:calc(18 * var(--df-pt))}
+.cr-screen.is-in-device .cr-view-note{font-size:max(14px,calc(19 * var(--df-pt)))}
+.cr-screen.is-in-device .cr-view-cover{min-height:calc(300 * var(--df-pt));padding:calc(26 * var(--df-pt));border-radius:calc(24 * var(--df-pt));font-size:max(17px,calc(32 * var(--df-pt)))}
+.cr-screen.is-in-device .cr-proposal{gap:calc(12 * var(--df-pt));padding:calc(22 * var(--df-pt));border-radius:calc(22 * var(--df-pt))}
+.cr-screen.is-in-device .cr-proposal dt{font-size:max(14px,calc(18 * var(--df-pt)))}
+
+/* ---------- C5 · como funciona ---------- */
+.cr-preview+.cr-how{border-top:1px solid var(--linha-papel)}
+.cr-steps{display:grid;gap:0;margin:0;padding:0;list-style:none;counter-reset:cr-step}
+.cr-step{display:grid;grid-template-columns:44px minmax(0,1fr);align-content:start;column-gap:16px;padding:20px 0;border-top:1px solid var(--linha-papel);counter-increment:cr-step}
+.cr-step::before{content:counter(cr-step,decimal-leading-zero);grid-row:1 / span 2;display:grid;place-items:center;width:44px;height:44px;border-radius:50%;background:var(--floresta);color:var(--papel);font-size:.9375rem;font-weight:600}
+.cr-step h3{font-size:1.5rem;line-height:1.2}
+.cr-step p{margin:6px 0 0;color:var(--tinta-2)}
+@media (min-width:960px){
+  .cr-steps{grid-template-columns:repeat(4,minmax(0,1fr));gap:28px}
+  .cr-step{grid-template-columns:minmax(0,1fr);row-gap:14px;padding-top:24px}
+  .cr-step::before{grid-row:auto}
+}
+
+/* ---------- C6 · demos ---------- */
+.cr-demos{display:grid;gap:64px;min-width:0}
+.cr-demo{display:grid;gap:16px;align-content:start;min-width:0}
+.cr-demo h3{font-size:1.5rem;letter-spacing:-.015em}
+.cr-demo-intro{margin:0;max-width:52ch;color:var(--salvia)}
+.cr-demo-status{min-height:3em;margin:0;font-size:.9375rem;line-height:1.5;color:var(--papel)}
+.cr-demo-caption{margin:0;max-width:58ch;color:var(--salvia)}
+@media (min-width:1100px){.cr-demos{grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:56px}}
+
+/* ---------- C7 · quem faz, publi e transparência ---------- */
+.cr-about-grid{display:grid;gap:36px}
+.cr-about-who h2{margin-bottom:18px}
+.cr-about-who .pg-lead{margin:0 0 6px}
+.cr-about-who .pg-small{margin:4px 0 0}
+.cr-about-publi{padding:24px;border:1px solid var(--linha-papel);border-radius:var(--raio-l);background:#FBFAF6}
+.cr-about-publi h3{margin:0 0 12px}
+.cr-about-publi p{margin:0 0 6px;color:var(--tinta-2)}
+.cr-transparency{max-width:80ch;margin:40px 0 0;padding-top:20px;border-top:1px solid var(--linha-papel);font-size:.9375rem;color:var(--tinta-2)}
+@media (min-width:960px){.cr-about-grid{grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:64px;align-items:start}.cr-about-publi{padding:32px}}
+
+/* ---------- C8 · montar meu kit ---------- */
+.cr-form{min-width:0;max-width:680px}
+.cr-form .pg-chip{min-width:44px;justify-content:center}
+.cr-chip-hint{margin:-4px 0 10px}
+.cr-use-handle{justify-self:start;margin-top:2px;color:var(--lima)}
+.cr-age{margin-bottom:24px}
+.cr-age .pg-check{max-width:max-content}
+.cr-summary{margin:0 0 24px;background:var(--painel);border-color:var(--linha-floresta)}
+.cr-summary-head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:4px 12px;margin:0}
+.cr-summary-title{font-size:1.0625rem;font-weight:700}
+.cr-summary-count{font-size:.875rem;color:var(--salvia)}
+.cr-summary-empty{margin:8px 0 0;color:var(--salvia)}
+.cr-summary ul{margin:10px 0 0;padding-left:1.1em}
+.cr-summary ul:empty{display:none}
+.cr-summary li+li{margin-top:4px}
+.cr-summary-note{margin:10px 0 0;color:var(--salvia)}
+.cr-submit{display:grid;gap:14px}
+.cr-form [type=submit]:disabled{opacity:1;background:transparent;color:var(--salvia);border:2px dashed var(--salvia)}
+.cr-notice{margin:0;color:var(--salvia)}
+.cr-notice a{color:var(--papel)}
+.cr-nowrap{white-space:nowrap}
+/* Guardian help: the e-mail is a link inside the sentence (inline target exception). */
+.cr-form .pg-error-help{line-height:1.6}
+.cr-form .pg-error-help a{display:inline;min-height:0}
+.cr-nojs{display:grid;justify-items:start;gap:10px;margin:0;color:var(--papel)}
+.cr-review-intro{margin:10px 0 0;color:var(--salvia)}
+.cr-review-desktop{display:none;margin:8px 0 0;color:var(--salvia)}
+@media (hover:hover) and (pointer:fine){.cr-review-desktop{display:block}}
+.cr-after{margin-top:20px;padding-top:16px;border-top:1px solid var(--linha-floresta)}
+.cr-after h4{margin:0 0 6px;font-size:1.0625rem;line-height:1.3}
+.cr-after p{margin:0;color:var(--salvia)}
+@media (min-width:960px){.cr-build-head{position:sticky;top:calc(var(--header-h) + 32px)}}
+
+/* ---------- C9 · FAQ ---------- */
+.cr-faq-inner{max-width:880px}
+.cr-faq .pg-accordion-body a{text-decoration:underline}
+
+/* ---------- C10 · faixa final ---------- */
+.cr-final-inner{display:grid;justify-items:start;gap:20px;max-width:880px}
+.cr-final h2{max-width:20ch}
+.cr-final-actions{width:100%}
+.cr-final-mail{margin:0;line-height:2;color:var(--salvia)}
+.cr-final-mail-link{color:var(--papel);text-decoration:underline}
+.cr-cross{justify-content:flex-start;text-align:left}
+@media (min-width:960px){
+  .cr-final-inner{justify-items:center;margin-inline:auto;text-align:center}
+  .cr-final-actions{justify-content:center}
+  .cr-cross{justify-content:center;text-align:center}
+}
+
+/* ---------- reduced motion and the pause button: instant, no movement ---------- */
+@media (prefers-reduced-motion: reduce){
+  .cr-main *,.cr-main *::before,.cr-main *::after{transition:none!important;animation:none!important}
+}
+body.is-paused .cr-main *,body.is-paused .cr-main *::before,body.is-paused .cr-main *::after{transition:none!important;animation:none!important}

@@ -8,6 +8,8 @@
  * after the visitor's click. Nothing is ever sent. Scrolls use behavior
  * 'instant' because the pages scroll anchors smoothly. */
 import assert from 'node:assert/strict';
+import {writeFile} from 'node:fs/promises';
+import {stackPngs} from './png.mjs';
 
 export const VIEWPORTS = Object.freeze([[320, 740], [390, 844], [1440, 1000]]);
 export const SCREENSHOT_WIDTHS = Object.freeze([390, 1440]);
@@ -357,8 +359,17 @@ export async function noJsChecks(t) {
   check('No horizontal scroll without JS', await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth));
 }
 
+/* SwiftShader (the suite's GL) caps one capture at 8192 px; below that line a taller
+ * full-page shot repeats the top of the page. Taller pages are captured in slices. */
+const MAX_CAPTURE = 8000;
 export async function screenshot(t) {
   if (!SCREENSHOT_WIDTHS.includes(t.width)) return;
   await t.page.evaluate(() => window.scrollTo({top: 0, behavior: 'instant'}));
-  await t.page.screenshot({path: `${t.output}/${t.slug}-${t.width}.png`, fullPage: true, animations: 'disabled'});
+  const path = `${t.output}/${t.slug}-${t.width}.png`;
+  const height = await t.page.evaluate(() => Math.ceil(document.documentElement.scrollHeight));
+  if (height <= MAX_CAPTURE) { await t.page.screenshot({path, fullPage: true, animations: 'disabled'}); return; }
+  const slices = [];
+  for (let y = 0; y < height; y += MAX_CAPTURE)
+    slices.push(await t.page.screenshot({fullPage: true, clip: {x: 0, y, width: t.width, height: Math.min(MAX_CAPTURE, height - y)}, animations: 'disabled'}));
+  await writeFile(path, stackPngs(slices));
 }
