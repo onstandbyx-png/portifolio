@@ -1,0 +1,536 @@
+<!doctype html>
+<!--
+  /vagas · banco de talentos (SPEC 1.3, 3.C, 4.C, 5.3; texto: copy-vagas.md).
+  Casca e regras: modelo comentado em pages/privacidade.html.
+  Não há vaga aberta: nenhum dado estruturado de vaga (ld+json) e nenhum chamado de candidatura.
+  V3: cada área é um article com button aria-expanded (frente) e div (verso); vagas.js
+  vira o cartão a partir de 720 px (K5) e usa lista de divulgação abaixo disso.
+  V5: K18 (stepper.js) + K9 (builder.js) + K10 (handoff.js) + K19 (check.css) + K7 (devices.js).
+  Sem JS: as cinco etapas aparecem em lista, "Continuar" fica disabled e o mailto: do modelo fica visível.
+-->
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#0F2E24">
+  <title>Banco de talentos · Smile N</title>
+  <meta name="description" content="Ainda não há vaga aberta. Deixe seu portfólio no banco de talentos de Smile N: edição de vídeo, design, motion, atendimento, conteúdo, front-end e outras áreas.">
+  <link rel="canonical" href="https://portifolio-github-production.up.railway.app/vagas">
+  <meta property="og:title" content="Banco de talentos · Smile N">
+  <meta property="og:description" content="Nenhuma vaga aberta no momento. O banco de talentos está aberto.">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="pt_BR">
+  <meta property="og:url" content="https://portifolio-github-production.up.railway.app/vagas">
+  <meta property="og:image" content="https://portifolio-github-production.up.railway.app/assets/creative/og-cover.png">
+  <meta name="author" content="Smile N">
+  <link rel="icon" href="/assets/creative/favicon.svg" type="image/svg+xml">
+  <link rel="preload" href="/assets/fonts/InterVariable.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="/assets/pages/base.css">
+  <link rel="stylesheet" href="/assets/pages/accordion.css">
+  <link rel="stylesheet" href="/assets/pages/check.css">
+  <link rel="stylesheet" href="/assets/pages/flip.css">
+  <link rel="stylesheet" href="/assets/showcase/device-frame.css">
+  <link rel="stylesheet" href="/assets/showcase/device-premium.css">
+  <link rel="stylesheet" href="/assets/pages/devices.css">
+  <link rel="stylesheet" href="/assets/pages/vagas.css">
+  <noscript><style>.menu-toggle,.motion-toggle{display:none!important}</style></noscript>
+  <script src="/assets/profile.js" defer></script>
+  <script type="module" src="/assets/pages/vagas.js"></script>
+</head>
+<body class="pg" data-page="vagas">
+  <a class="pg-skip" href="#conteudo">Pular para o conteúdo</a>
+  <header class="site-header" id="topo">
+    <div class="pg-container site-header-inner">
+      <a class="pg-brand" href="/" aria-label="Smile N, início"><span class="pg-brand-name">Smile N</span><span class="pg-brand-signature">ideia ↗ execução.</span></a>
+      <nav class="pg-nav" aria-label="Navegação principal"><a href="/#trabalhos">Trabalhos</a><a href="/#categorias">Serviços</a><a href="/criadores">Para criadores</a><a href="/criadores/ao-vivo">Ao vivo</a></nav>
+      <a class="pg-btn pg-btn--primary pg-header-cta" href="#entrar" data-header-cta>Entrar no banco <span aria-hidden="true">↓</span></a>
+      <button id="motion-toggle" class="motion-toggle" type="button" aria-pressed="false" aria-label="Pausar movimento e reprodução" title="Pausar movimento e reprodução"><span class="motion-toggle-icon" aria-hidden="true">Ⅱ</span><span class="motion-toggle-text">Pausar movimento</span></button>
+      <button class="menu-toggle" id="menu-toggle" type="button" aria-label="Abrir menu" aria-controls="mobile-nav" aria-expanded="false"><span></span><span></span></button>
+    </div>
+    <div class="pg-menu" id="mobile-nav" hidden>
+      <nav aria-label="Navegação móvel"><a href="/#trabalhos" data-menu-item>Trabalhos</a><a href="/#categorias" data-menu-item>Serviços</a><a href="/criadores" data-menu-item>Para criadores</a><a href="/criadores/ao-vivo" data-menu-item>Ao vivo</a></nav>
+      <a class="pg-btn pg-btn--primary" href="#entrar" data-menu-item>Entrar no banco <span aria-hidden="true">↓</span></a>
+      <button class="pg-menu-motion" type="button" data-motion-proxy data-menu-item aria-pressed="false" aria-label="Pausar movimento e reprodução"><span class="motion-toggle-icon" aria-hidden="true">Ⅱ</span><span class="motion-toggle-text">Pausar movimento</span></button>
+    </div>
+  </header>
+
+  <main id="conteudo" tabindex="-1">
+    <!-- V1 · Hero: o status vem antes de tudo. -->
+    <section class="pg-section pg-section--floresta pg-hero vg-hero" data-hero aria-labelledby="vagas-titulo">
+      <div class="pg-container vg-hero-inner">
+        <ul class="vg-seals">
+          <li class="pg-seal pg-seal--closed">Vagas abertas: nenhuma no momento</li>
+          <li class="pg-seal pg-seal--open">Banco de talentos: aberto</li>
+        </ul>
+        <p class="pg-eyebrow">Trabalhe comigo</p>
+        <h1 id="vagas-titulo" data-reveal-heading>Banco de talentos</h1>
+        <p class="pg-lead vg-hero-sub">Ainda não tenho vaga aberta. Quando um projeto pedir alguém com o seu talento, é aqui que eu procuro primeiro.</p>
+        <div class="pg-actions pg-actions--stack-sm vg-hero-actions">
+          <a class="pg-btn pg-btn--primary" href="#entrar">Entrar no banco de talentos <span aria-hidden="true">↓</span></a>
+          <a class="pg-btn pg-btn--link" href="#como-funciona">Ver como funciona <span aria-hidden="true">↓</span></a>
+        </div>
+        <p class="pg-small vg-hero-micro">Cinco etapas curtas. Sem currículo e sem anexo. Você revisa a mensagem antes de enviar.</p>
+      </div>
+    </section>
+
+    <!-- V2 · Como é trabalhar comigo: só o item 1 (Q22). -->
+    <section class="pg-section pg-section--papel vg-about" id="como-e-trabalhar" aria-labelledby="trabalhar-titulo">
+      <div class="pg-container vg-about-grid">
+        <h2 id="trabalhar-titulo" data-reveal-heading>Como é trabalhar comigo.</h2>
+        <ul class="vg-facts">
+          <li class="vg-fact reveal">
+            <h3>Projetos de criação e desenvolvimento</h3>
+            <p>Identidade, conteúdo, campanhas, sites, sistemas e material para criadores.</p>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- V3 · Áreas: 11, na ordem de vagas.md §2.B; sem cartão de estágio. -->
+    <section class="pg-section pg-section--papel vg-areas-section" id="areas" aria-labelledby="areas-titulo">
+      <div class="pg-container">
+        <div class="pg-section-head vg-areas-head">
+          <h2 id="areas-titulo" data-reveal-heading>Áreas do banco.</h2>
+          <p>A ordem segue o que os projetos costumam pedir primeiro. Toque em uma área para ver o que eu peço no portfólio.</p>
+        </div>
+        <ul class="vg-areas" data-areas data-reveal-group>
+          <li class="vg-area-item reveal">
+            <article class="vg-area pg-flip" id="area-edicao-video" data-area>
+              <div class="pg-flip-stage"><div class="pg-flip-rotor">
+                <div class="pg-flip-face pg-flip-front vg-area-front">
+                  <h3 class="vg-area-heading"><button class="vg-area-toggle" type="button" aria-expanded="false" aria-controls="area-edicao-video-verso" data-area-toggle disabled><span class="vg-area-name">Edição de vídeo</span><span class="pg-tag vg-area-tag">Banco de talentos</span><span class="vg-area-action"><span data-area-label>Ver detalhes</span><span class="vg-area-icon" aria-hidden="true"></span></span></button></h3>
+                </div>
+                <div class="pg-flip-face pg-flip-back vg-area-back" id="area-edicao-video-verso" data-area-back>
+                  <p class="vg-area-back-title" tabindex="-1" data-area-focus>Edição de vídeo</p>
+                  <dl class="vg-area-details">
+                    <div><dt>O que faz aqui</dt><dd>Edita Reels, TikTok, Shorts, YouTube e cortes de live, a partir de briefing ou roteiro. Legenda e entrega versões 9:16 e 16:9.</dd></div>
+                    <div><dt>O que eu peço no portfólio</dt><dd>Um reel curto e 2 ou 3 peças completas por link (YouTube não listado, Vimeo ou Drive com acesso liberado). Diga o seu papel em cada uma: edição, cor ou som.</dd></div>
+                    <div><dt>Formato</dt><dd>Combinado por projeto.</dd></div>
+                  </dl>
+                  <button class="pg-btn pg-btn--secondary vg-area-close" type="button" data-area-close>Fechar</button>
+                </div>
+              </div></div>
+            </article>
+          </li>
+          <li class="vg-area-item reveal">
+            <article class="vg-area pg-flip" id="area-design-grafico" data-area>
+              <div class="pg-flip-stage"><div class="pg-flip-rotor">
+                <div class="pg-flip-face pg-flip-front vg-area-front">
+                  <h3 class="vg-area-heading"><button class="vg-area-toggle" type="button" aria-expanded="false" aria-controls="area-design-grafico-verso" data-area-toggle disabled><span class="vg-area-name">Design gráfico e identidade</span><span class="pg-tag vg-area-tag">Banco de talentos</span><span class="vg-area-action"><span data-area-label>Ver detalhes</span><span class="vg-area-icon" aria-hidden="true"></span></span></button></h3>
+                </div>
+                <div class="pg-flip-face pg-flip-back vg-area-back" id="area-design-grafico-verso" data-area-back>
+                  <p class="vg-area-back-title" tabindex="-1" data-area-focus>Design gráfico e identidade</p>
+                  <dl class="vg-area-details">
+                    <div><dt>O que faz aqui</dt><dd>Sistemas de identidade, mídia kits, apresentações, propostas e peças de campanha.</dd></div>
+                    <div><dt>O que eu peço no portfólio</dt><dd>3 a 5 casos com problema, processo e solução. Pelo menos um sistema aplicado em várias peças.</dd></div>
+                    <div><dt>Formato</dt><dd>Combinado por projeto.</dd></div>
+                  </dl>
+                  <button class="pg-btn pg-btn--secondary vg-area-close" type="button" data-area-close>Fechar</button>
+                </div>
+              </div></div>
+            </article>
+          </li>
+          <li class="vg-area-item reveal">
+            <article class="vg-area pg-flip" id="area-motion" data-area>
+              <div class="pg-flip-stage"><div class="pg-flip-rotor">
+                <div class="pg-flip-face pg-flip-front vg-area-front">
+                  <h3 class="vg-area-heading"><button class="vg-area-toggle" type="button" aria-expanded="false" aria-controls="area-motion-verso" data-area-toggle disabled><span class="vg-area-name">Motion design</span><span class="pg-tag vg-area-tag">Banco de talentos</span><span class="vg-area-action"><span data-area-label>Ver detalhes</span><span class="vg-area-icon" aria-hidden="true"></span></span></button></h3>
+                </div>
+                <div class="pg-flip-face pg-flip-back vg-area-back" id="area-motion-verso" data-area-back>
+                  <p class="vg-area-back-title" tabindex="-1" data-area-focus>Motion design</p>
+                  <dl class="vg-area-details">
+                    <div><dt>O que faz aqui</dt><dd>Vinhetas, lower thirds, overlays de live e animação de marca e de interface.</dd></div>
+                    <div><dt>O que eu peço no portfólio</dt><dd>Um reel e 2 projetos com styleframes ou storyboard. Diga o que é autoral e o que veio de template.</dd></div>
+                    <div><dt>Formato</dt><dd>Combinado por projeto.</dd></div>
+                  </dl>
+                  <button class="pg-btn pg-btn--secondary vg-area-close" type="button" data-area-close>Fechar</button>
+                </div>
+              </div></div>
+            </article>
+          </li>
+          <li class="vg-area-item reveal">
+            <article class="vg-area pg-flip" id="area-ui-web" data-area>
+              <div class="pg-flip-stage"><div class="pg-flip-rotor">
+                <div class="pg-flip-face pg-flip-front vg-area-front">
+                  <h3 class="vg-area-heading"><button class="vg-area-toggle" type="button" aria-expanded="false" aria-controls="area-ui-web-verso" data-area-toggle disabled><span class="vg-area-name">Design UI e web</span><span class="pg-tag vg-area-tag">Banco de talentos</span><span class="vg-area-action"><span data-area-label>Ver detalhes</span><span class="vg-area-icon" aria-hidden="true"></span></span></button></h3>
+                </div>
+                <div class="pg-flip-face pg-flip-back vg-area-back" id="area-ui-web-verso" data-area-back>
+                  <p class="vg-area-back-title" tabindex="-1" data-area-focus>Design UI e web</p>
+                  <dl class="vg-area-details">
+                    <div><dt>O que faz aqui</dt><dd>Landing pages, páginas de link e mídia kits na web, com entrega organizada para o código.</dd></div>
+                    <div><dt>O que eu peço no portfólio</dt><dd>Um protótipo navegável e um caso com fluxo, versão para celular e decisões de acessibilidade.</dd></div>
+                    <div><dt>Formato</dt><dd>Combinado por projeto.</dd></div>
+                  </dl>
+                  <button class="pg-btn pg-btn--secondary vg-area-close" type="button" data-area-close>Fechar</button>
+                </div>
+              </div></div>
+            </article>
+          </li>
+          <li class="vg-area-item reveal">
+            <article class="vg-area pg-flip" id="area-atendimento" data-area>
+              <div class="pg-flip-stage"><div class="pg-flip-rotor">
+                <div class="pg-flip-face pg-flip-front vg-area-front">
+                  <h3 class="vg-area-heading"><button class="vg-area-toggle" type="button" aria-expanded="false" aria-controls="area-atendimento-verso" data-area-toggle disabled><span class="vg-area-name">Atendimento e produção</span><span class="pg-tag vg-area-tag">Banco de talentos</span><span class="vg-area-action"><span data-area-label>Ver detalhes</span><span class="vg-area-icon" aria-hidden="true"></span></span></button></h3>
+                </div>
+                <div class="pg-flip-face pg-flip-back vg-area-back" id="area-atendimento-verso" data-area-back>
+                  <p class="vg-area-back-title" tabindex="-1" data-area-focus>Atendimento e produção</p>
+                  <dl class="vg-area-details">
+                    <div><dt>O que faz aqui</dt><dd>Ponto de contato com clientes e criadores: briefing, cronograma, aprovações e organização das entregas.</dd></div>
+                    <div><dt>O que eu peço no portfólio</dt><dd>Não precisa ser visual. Um cronograma ou brief que você organizou, sem dados de cliente, e um e-mail de status que você escreveu.</dd></div>
+                    <div><dt>Formato</dt><dd>Combinado por projeto.</dd></div>
+                  </dl>
+                  <button class="pg-btn pg-btn--secondary vg-area-close" type="button" data-area-close>Fechar</button>
+                </div>
+              </div></div>
+            </article>
+          </li>
+          <li class="vg-area-item reveal">
+            <article class="vg-area pg-flip" id="area-social" data-area>
+              <div class="pg-flip-stage"><div class="pg-flip-rotor">
+                <div class="pg-flip-face pg-flip-front vg-area-front">
+                  <h3 class="vg-area-heading"><button class="vg-area-toggle" type="button" aria-expanded="false" aria-controls="area-social-verso" data-area-toggle disabled><span class="vg-area-name">Social media e conteúdo</span><span class="pg-tag vg-area-tag">Banco de talentos</span><span class="vg-area-action"><span data-area-label>Ver detalhes</span><span class="vg-area-icon" aria-hidden="true"></span></span></button></h3>
+                </div>
+                <div class="pg-flip-face pg-flip-back vg-area-back" id="area-social-verso" data-area-back>
+                  <p class="vg-area-back-title" tabindex="-1" data-area-focus>Social media e conteúdo</p>
+                  <dl class="vg-area-details">
+                    <div><dt>O que faz aqui</dt><dd>Calendário, pauta, publicação, comunidade e relatório. Para criadores, planejamento e roteiro curto.</dd></div>
+                    <div><dt>O que eu peço no portfólio</dt><dd>Um calendário de exemplo, perfis que você gerenciou (com autorização) e um relatório sem dados sensíveis.</dd></div>
+                    <div><dt>Formato</dt><dd>Combinado por projeto.</dd></div>
+                  </dl>
+                  <button class="pg-btn pg-btn--secondary vg-area-close" type="button" data-area-close>Fechar</button>
+                </div>
+              </div></div>
+            </article>
+          </li>
+          <li class="vg-area-item reveal">
+            <article class="vg-area pg-flip" id="area-front-end" data-area>
+              <div class="pg-flip-stage"><div class="pg-flip-rotor">
+                <div class="pg-flip-face pg-flip-front vg-area-front">
+                  <h3 class="vg-area-heading"><button class="vg-area-toggle" type="button" aria-expanded="false" aria-controls="area-front-end-verso" data-area-toggle disabled><span class="vg-area-name">Desenvolvimento front-end</span><span class="pg-tag vg-area-tag">Banco de talentos</span><span class="vg-area-action"><span data-area-label>Ver detalhes</span><span class="vg-area-icon" aria-hidden="true"></span></span></button></h3>
+                </div>
+                <div class="pg-flip-face pg-flip-back vg-area-back" id="area-front-end-verso" data-area-back>
+                  <p class="vg-area-back-title" tabindex="-1" data-area-focus>Desenvolvimento front-end</p>
+                  <dl class="vg-area-details">
+                    <div><dt>O que faz aqui</dt><dd>HTML, CSS e JavaScript sem framework, com foco em acessibilidade, desempenho e segurança.</dd></div>
+                    <div><dt>O que eu peço no portfólio</dt><dd>Sites no ar e um repositório. Um trecho de código ou pull request comentado.</dd></div>
+                    <div><dt>Formato</dt><dd>Combinado por projeto.</dd></div>
+                  </dl>
+                  <button class="pg-btn pg-btn--secondary vg-area-close" type="button" data-area-close>Fechar</button>
+                </div>
+              </div></div>
+            </article>
+          </li>
+          <li class="vg-area-item reveal">
+            <article class="vg-area pg-flip" id="area-redacao" data-area>
+              <div class="pg-flip-stage"><div class="pg-flip-rotor">
+                <div class="pg-flip-face pg-flip-front vg-area-front">
+                  <h3 class="vg-area-heading"><button class="vg-area-toggle" type="button" aria-expanded="false" aria-controls="area-redacao-verso" data-area-toggle disabled><span class="vg-area-name">Redação e roteiro</span><span class="pg-tag vg-area-tag">Banco de talentos</span><span class="vg-area-action"><span data-area-label>Ver detalhes</span><span class="vg-area-icon" aria-hidden="true"></span></span></button></h3>
+                </div>
+                <div class="pg-flip-face pg-flip-back vg-area-back" id="area-redacao-verso" data-area-back>
+                  <p class="vg-area-back-title" tabindex="-1" data-area-focus>Redação e roteiro</p>
+                  <dl class="vg-area-details">
+                    <div><dt>O que faz aqui</dt><dd>Roteiro de vídeo curto, texto de landing page e propostas.</dd></div>
+                    <div><dt>O que eu peço no portfólio</dt><dd>3 peças com o briefing de cada uma: um roteiro curto, uma página e uma legenda ou thread.</dd></div>
+                    <div><dt>Formato</dt><dd>Combinado por projeto.</dd></div>
+                  </dl>
+                  <button class="pg-btn pg-btn--secondary vg-area-close" type="button" data-area-close>Fechar</button>
+                </div>
+              </div></div>
+            </article>
+          </li>
+          <li class="vg-area-item reveal">
+            <article class="vg-area pg-flip" id="area-captacao" data-area>
+              <div class="pg-flip-stage"><div class="pg-flip-rotor">
+                <div class="pg-flip-face pg-flip-front vg-area-front">
+                  <h3 class="vg-area-heading"><button class="vg-area-toggle" type="button" aria-expanded="false" aria-controls="area-captacao-verso" data-area-toggle disabled><span class="vg-area-name">Captação e videomaker</span><span class="pg-tag vg-area-tag">Banco de talentos</span><span class="vg-area-action"><span data-area-label>Ver detalhes</span><span class="vg-area-icon" aria-hidden="true"></span></span></button></h3>
+                </div>
+                <div class="pg-flip-face pg-flip-back vg-area-back" id="area-captacao-verso" data-area-back>
+                  <p class="vg-area-back-title" tabindex="-1" data-area-focus>Captação e videomaker</p>
+                  <dl class="vg-area-details">
+                    <div><dt>O que faz aqui</dt><dd>Gravação em locação ou estúdio, com luz e som.</dd></div>
+                    <div><dt>O que eu peço no portfólio</dt><dd>Um reel de captação e a ficha técnica: equipamento, luz e som.</dd></div>
+                    <div><dt>Formato</dt><dd>Combinado por projeto.</dd></div>
+                  </dl>
+                  <button class="pg-btn pg-btn--secondary vg-area-close" type="button" data-area-close>Fechar</button>
+                </div>
+              </div></div>
+            </article>
+          </li>
+          <li class="vg-area-item reveal">
+            <article class="vg-area pg-flip" id="area-trafego" data-area>
+              <div class="pg-flip-stage"><div class="pg-flip-rotor">
+                <div class="pg-flip-face pg-flip-front vg-area-front">
+                  <h3 class="vg-area-heading"><button class="vg-area-toggle" type="button" aria-expanded="false" aria-controls="area-trafego-verso" data-area-toggle disabled><span class="vg-area-name">Tráfego pago</span><span class="pg-tag vg-area-tag">Banco de talentos</span><span class="vg-area-action"><span data-area-label>Ver detalhes</span><span class="vg-area-icon" aria-hidden="true"></span></span></button></h3>
+                </div>
+                <div class="pg-flip-face pg-flip-back vg-area-back" id="area-trafego-verso" data-area-back>
+                  <p class="vg-area-back-title" tabindex="-1" data-area-focus>Tráfego pago</p>
+                  <dl class="vg-area-details">
+                    <div><dt>O que faz aqui</dt><dd>Campanhas em plataformas de anúncio, testes e relatório.</dd></div>
+                    <div><dt>O que eu peço no portfólio</dt><dd>Uma estrutura de campanha sem dados do cliente e o raciocínio dos testes. Não mande prints de faturamento de clientes.</dd></div>
+                    <div><dt>Formato</dt><dd>Combinado por projeto.</dd></div>
+                  </dl>
+                  <button class="pg-btn pg-btn--secondary vg-area-close" type="button" data-area-close>Fechar</button>
+                </div>
+              </div></div>
+            </article>
+          </li>
+          <li class="vg-area-item reveal">
+            <article class="vg-area pg-flip" id="area-comercial" data-area>
+              <div class="pg-flip-stage"><div class="pg-flip-rotor">
+                <div class="pg-flip-face pg-flip-front vg-area-front">
+                  <h3 class="vg-area-heading"><button class="vg-area-toggle" type="button" aria-expanded="false" aria-controls="area-comercial-verso" data-area-toggle disabled><span class="vg-area-name">Comercial</span><span class="pg-tag vg-area-tag">Banco de talentos</span><span class="vg-area-action"><span data-area-label>Ver detalhes</span><span class="vg-area-icon" aria-hidden="true"></span></span></button></h3>
+                </div>
+                <div class="pg-flip-face pg-flip-back vg-area-back" id="area-comercial-verso" data-area-back>
+                  <p class="vg-area-back-title" tabindex="-1" data-area-focus>Comercial</p>
+                  <dl class="vg-area-details">
+                    <div><dt>O que faz aqui</dt><dd>Prospecção, qualificação e agenda.</dd></div>
+                    <div><dt>O que eu peço no portfólio</dt><dd>Exemplos de mensagens de prospecção que você escreveu e um roteiro de qualificação.</dd></div>
+                    <div><dt>Formato</dt><dd>Combinado por projeto.</dd></div>
+                  </dl>
+                  <button class="pg-btn pg-btn--secondary vg-area-close" type="button" data-area-close>Fechar</button>
+                </div>
+              </div></div>
+            </article>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- V4 · Como funciona: passo 4 na variante padrão (Q11); guarda de 12 meses (Q7). -->
+    <section class="pg-section pg-section--floresta vg-process" id="como-funciona" aria-labelledby="funciona-titulo">
+      <div class="pg-container">
+        <h2 id="funciona-titulo" data-reveal-heading>Como funciona.</h2>
+        <ol class="vg-process-list" data-reveal-group>
+          <li class="vg-process-step reveal"><h3>Você se apresenta</h3><p>Cinco etapas aqui na página. A mensagem sai pelo seu WhatsApp ou pelo seu e-mail.</p></li>
+          <li class="vg-process-step reveal"><h3>Eu leio seu portfólio</h3><p>Com atenção ao seu papel em cada peça.</p></li>
+          <li class="vg-process-step reveal"><h3>Se houver projeto compatível, eu chamo</h3><p>Para uma conversa curta sobre o projeto.</p></li>
+          <li class="vg-process-step reveal"><h3>Tudo combinado antes de começar</h3><p>Escopo, prazo e valor combinados por escrito antes de qualquer trabalho.</p></li>
+        </ol>
+        <p class="vg-process-note">Se houver encaixe, eu falo com você. Seus dados ficam guardados por até 12 meses, e você pode pedir para apagar quando quiser.</p>
+      </div>
+    </section>
+
+    <!-- V5 · Entrar no banco (SPEC 4.C): cinco etapas, uma pergunta por etapa. -->
+    <section class="pg-section pg-section--floresta vg-join" id="entrar" aria-labelledby="entrar-titulo">
+      <div class="pg-container vg-join-grid">
+        <div class="vg-join-intro">
+          <h2 id="entrar-titulo" data-reveal-heading>Entrar no banco de talentos.</h2>
+          <p>Uma pergunta por etapa. No fim, você revisa a mensagem e escolhe por onde enviar.</p>
+        </div>
+        <div class="vg-join-main">
+          <form class="pg-panel vg-form" id="vg-form" data-talent-form novalidate aria-labelledby="entrar-titulo">
+            <p class="vg-step-counter" data-step-counter aria-live="polite" aria-atomic="true" hidden>Etapa 1 de 5</p>
+            <div class="pg-error-summary" id="vg-erros" data-error-summary hidden></div>
+            <div class="vg-steps" data-step-viewport>
+              <fieldset class="vg-step" id="vg-area" data-step>
+                <legend class="vg-step-legend"><span class="vg-step-caption" data-step-caption>Etapa 1 de 5</span><span class="vg-step-question">Em que área você quer entrar no radar?</span></legend>
+                <p class="pg-error" id="vg-area-erro" hidden></p>
+                <div class="vg-options vg-options--areas">
+                  <label class="vg-option"><input type="radio" name="area" value="Edição de vídeo"><span class="vg-option-mark" aria-hidden="true"></span><span class="vg-option-text">Edição de vídeo</span></label>
+                  <label class="vg-option"><input type="radio" name="area" value="Design gráfico e identidade"><span class="vg-option-mark" aria-hidden="true"></span><span class="vg-option-text">Design gráfico e identidade</span></label>
+                  <label class="vg-option"><input type="radio" name="area" value="Motion design"><span class="vg-option-mark" aria-hidden="true"></span><span class="vg-option-text">Motion design</span></label>
+                  <label class="vg-option"><input type="radio" name="area" value="Design UI e web"><span class="vg-option-mark" aria-hidden="true"></span><span class="vg-option-text">Design UI e web</span></label>
+                  <label class="vg-option"><input type="radio" name="area" value="Atendimento e produção"><span class="vg-option-mark" aria-hidden="true"></span><span class="vg-option-text">Atendimento e produção</span></label>
+                  <label class="vg-option"><input type="radio" name="area" value="Social media e conteúdo"><span class="vg-option-mark" aria-hidden="true"></span><span class="vg-option-text">Social media e conteúdo</span></label>
+                  <label class="vg-option"><input type="radio" name="area" value="Desenvolvimento front-end"><span class="vg-option-mark" aria-hidden="true"></span><span class="vg-option-text">Desenvolvimento front-end</span></label>
+                  <label class="vg-option"><input type="radio" name="area" value="Redação e roteiro"><span class="vg-option-mark" aria-hidden="true"></span><span class="vg-option-text">Redação e roteiro</span></label>
+                  <label class="vg-option"><input type="radio" name="area" value="Captação e videomaker"><span class="vg-option-mark" aria-hidden="true"></span><span class="vg-option-text">Captação e videomaker</span></label>
+                  <label class="vg-option"><input type="radio" name="area" value="Tráfego pago"><span class="vg-option-mark" aria-hidden="true"></span><span class="vg-option-text">Tráfego pago</span></label>
+                  <label class="vg-option"><input type="radio" name="area" value="Comercial"><span class="vg-option-mark" aria-hidden="true"></span><span class="vg-option-text">Comercial</span></label>
+                  <label class="vg-option"><input type="radio" name="area" value="Outra"><span class="vg-option-mark" aria-hidden="true"></span><span class="vg-option-text">Outra</span></label>
+                </div>
+                <div class="pg-field vg-other" data-area-other>
+                  <label class="pg-label" for="vg-area-outra">Qual área?</label>
+                  <p class="pg-hint" id="vg-area-outra-dica">Em poucas palavras.</p>
+                  <input class="pg-input" id="vg-area-outra" name="areaOutra" type="text" autocomplete="off" aria-describedby="vg-area-outra-dica">
+                </div>
+              </fieldset>
+
+              <fieldset class="vg-step" id="vg-nivel" data-step aria-describedby="vg-nivel-dica">
+                <legend class="vg-step-legend"><span class="vg-step-caption" data-step-caption>Etapa 2 de 5</span><span class="vg-step-question">Como você descreveria sua experiência?</span></legend>
+                <p class="pg-hint" id="vg-nivel-dica">Não precisa comprovar nada. É só para eu entender o seu momento.</p>
+                <p class="pg-error" id="vg-nivel-erro" hidden></p>
+                <div class="vg-options">
+                  <label class="vg-option"><input type="radio" name="nivel" value="Estudante"><span class="vg-option-mark" aria-hidden="true"></span><span class="vg-option-text">Estudante</span></label>
+                  <label class="vg-option"><input type="radio" name="nivel" value="Começando (até 2 anos de prática)"><span class="vg-option-mark" aria-hidden="true"></span><span class="vg-option-text">Começando (até 2 anos de prática)</span></label>
+                  <label class="vg-option"><input type="radio" name="nivel" value="Já toco projetos sozinho(a)"><span class="vg-option-mark" aria-hidden="true"></span><span class="vg-option-text">Já toco projetos sozinho(a)</span></label>
+                  <label class="vg-option"><input type="radio" name="nivel" value="Lidero ou oriento outras pessoas"><span class="vg-option-mark" aria-hidden="true"></span><span class="vg-option-text">Lidero ou oriento outras pessoas</span></label>
+                </div>
+              </fieldset>
+
+              <fieldset class="vg-step" id="vg-portfolio" data-step>
+                <legend class="vg-step-legend"><span class="vg-step-caption" data-step-caption>Etapa 3 de 5</span><span class="vg-step-question">Onde eu vejo seu trabalho?</span></legend>
+                <div class="pg-field">
+                  <label class="pg-label" for="vg-link1">Link do portfólio</label>
+                  <p class="pg-hint" id="vg-link1-dica">Site, Drive ou PDF com acesso liberado.</p>
+                  <input class="pg-input" id="vg-link1" name="link1" type="url" inputmode="url" autocomplete="url" autocapitalize="none" spellcheck="false" aria-describedby="vg-link1-dica">
+                </div>
+                <div class="pg-field">
+                  <label class="pg-label" for="vg-link2">Outro link (opcional)</label>
+                  <input class="pg-input" id="vg-link2" name="link2" type="url" inputmode="url" autocomplete="off" autocapitalize="none" spellcheck="false">
+                </div>
+                <div class="pg-field">
+                  <label class="pg-label" for="vg-destaque">Qual projeto você quer que eu veja primeiro, e qual foi seu papel? (opcional)</label>
+                  <p class="pg-hint" id="vg-destaque-dica">Até 280 caracteres. Não precisa colocar dados pessoais aqui.</p>
+                  <textarea class="pg-input" id="vg-destaque" name="destaque" rows="4" maxlength="280" aria-describedby="vg-destaque-dica vg-destaque-contador"></textarea>
+                  <p class="pg-hint vg-count" id="vg-destaque-contador" data-highlight-count>0/280</p>
+                </div>
+              </fieldset>
+
+              <fieldset class="vg-step" id="vg-disponibilidade" data-step>
+                <legend class="vg-step-legend"><span class="vg-step-caption" data-step-caption>Etapa 4 de 5</span><span class="vg-step-question">Como e quando você poderia trabalhar?</span></legend>
+                <fieldset class="pg-fieldset vg-subgroup" id="vg-formato">
+                  <legend>Formato</legend>
+                  <p class="pg-error" id="vg-formato-erro" hidden></p>
+                  <div class="vg-options vg-options--row">
+                    <label class="vg-option"><input type="radio" name="formato" value="Por projeto (freela)"><span class="vg-option-mark" aria-hidden="true"></span><span class="vg-option-text">Por projeto (freela)</span></label>
+                    <label class="vg-option"><input type="radio" name="formato" value="Meio período"><span class="vg-option-mark" aria-hidden="true"></span><span class="vg-option-text">Meio período</span></label>
+                    <label class="vg-option"><input type="radio" name="formato" value="Período integral"><span class="vg-option-mark" aria-hidden="true"></span><span class="vg-option-text">Período integral</span></label>
+                  </div>
+                </fieldset>
+                <fieldset class="pg-fieldset vg-subgroup" id="vg-inicio">
+                  <legend>Quando poderia começar?</legend>
+                  <p class="pg-error" id="vg-inicio-erro" hidden></p>
+                  <div class="vg-options vg-options--row">
+                    <label class="vg-option"><input type="radio" name="inicio" value="Agora"><span class="vg-option-mark" aria-hidden="true"></span><span class="vg-option-text">Agora</span></label>
+                    <label class="vg-option"><input type="radio" name="inicio" value="Em até 30 dias"><span class="vg-option-mark" aria-hidden="true"></span><span class="vg-option-text">Em até 30 dias</span></label>
+                    <label class="vg-option"><input type="radio" name="inicio" value="Só quero ficar no radar"><span class="vg-option-mark" aria-hidden="true"></span><span class="vg-option-text">Só quero ficar no radar</span></label>
+                  </div>
+                </fieldset>
+                <div class="pg-field">
+                  <label class="pg-label" for="vg-nome">Como quer ser chamado(a)?</label>
+                  <input class="pg-input" id="vg-nome" name="nome" type="text" autocomplete="nickname" autocapitalize="words" spellcheck="false">
+                </div>
+              </fieldset>
+
+              <fieldset class="vg-step" id="vg-revisao" data-step>
+                <legend class="vg-step-legend"><span class="vg-step-caption" data-step-caption>Etapa 5 de 5</span><span class="vg-step-question">Revise e escolha por onde enviar</span></legend>
+                <p class="vg-step-intro">Esta é a mensagem que vai sair. Você ainda pode editar no app antes de enviar.</p>
+                <div class="vg-review" data-handoff-panel>
+                  <div class="vg-preview-slot" data-preview-slot data-js-only hidden>
+                    <div class="vg-bubble" data-preview-bubble>
+                      <h3 class="vg-bubble-title">Sua mensagem</h3>
+                      <div class="pg-review-message vg-bubble-text" data-handoff-message></div>
+                    </div>
+                  </div>
+                  <div class="vg-review-side">
+                    <div class="vg-consent">
+                      <label class="pg-check"><input type="checkbox" id="vg-maior" name="maior"><span class="pg-check-box" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span><span class="pg-check-text">Tenho 18 anos ou mais.</span></label>
+                      <label class="pg-check"><input type="checkbox" id="vg-consentimento" name="consentimento"><span class="pg-check-box" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span><span class="pg-check-text">Autorizo Smile N a guardar estas informações no banco de talentos por até 12 meses para me contatar sobre oportunidades de trabalho. Posso pedir para ver, corrigir ou apagar a qualquer momento pelo <span data-profile-text="email">smillepls@gmail.com</span>. <a href="/privacidade" target="_blank" rel="noopener">Aviso de privacidade <span aria-hidden="true">→</span><span class="pg-visually-hidden"> (abre em outra aba)</span></a></span></label>
+                      <p class="pg-small vg-nothing-sent">Nada é enviado até você tocar em enviar no seu app.</p>
+                    </div>
+                    <p class="vg-locked" data-handoff-locked data-js-only hidden>Marque as duas caixas para ver os botões de envio.</p>
+                    <div class="vg-actions-wrap" data-handoff-actions hidden>
+                      <div class="pg-review-actions">
+                        <a class="pg-btn pg-btn--primary" data-handoff="whatsapp" target="_blank" rel="noopener noreferrer">Abrir no WhatsApp <span aria-hidden="true">↗</span></a>
+                        <a class="pg-btn pg-btn--secondary" data-handoff="email">Abrir no e-mail <span aria-hidden="true">↗</span></a>
+                        <button class="pg-btn pg-btn--secondary" type="button" data-handoff="copy">Copiar mensagem</button>
+                      </div>
+                      <p class="pg-small vg-desktop-note">No computador, o link abre o WhatsApp Web ou o aplicativo.</p>
+                    </div>
+                    <p class="pg-review-status" role="status" data-handoff-status></p>
+                    <div class="vg-after">
+                      <h3>Depois de enviar</h3>
+                      <p>Se houver um projeto compatível, eu falo com você. Se não houver encaixe agora, seu contato continua no banco pelo prazo combinado.</p>
+                    </div>
+                  </div>
+                </div>
+              </fieldset>
+            </div>
+            <div class="vg-step-nav">
+              <button class="pg-btn pg-btn--secondary" type="button" data-step-back hidden>Voltar</button>
+              <button class="pg-btn pg-btn--primary" type="submit" data-step-next disabled>Continuar</button>
+            </div>
+            <p class="vg-nojs" data-nojs-fallback>Sem JavaScript? Escreva para <span data-profile-text="email">smillepls@gmail.com</span> com seu nome, área, nível de experiência, link do portfólio e disponibilidade. <a class="vg-nojs-link" href="mailto:smillepls@gmail.com?subject=Banco%20de%20talentos&amp;body=Ol%C3%A1%2C%20Smile!%20Quero%20entrar%20no%20banco%20de%20talentos.%0D%0ANome%3A%0D%0A%C3%81rea%3A%0D%0AExperi%C3%AAncia%3A%0D%0APortf%C3%B3lio%3A%0D%0ADisponibilidade%3A%0D%0A%E2%80%94%20Tenho%2018%20anos%20ou%20mais.%20Li%20o%20aviso%20de%20privacidade%20(vers%C3%A3o%202026-10)%20e%20autorizo%20guardar%20estes%20dados%20no%20banco%20de%20talentos%20por%20at%C3%A9%2012%20meses%20para%20contato%20sobre%20oportunidades.%20Posso%20pedir%20a%20exclus%C3%A3o%20quando%20quiser.">Escrever e-mail <span aria-hidden="true">↗</span></a></p>
+          </form>
+          <p class="pg-small vg-notice">Não envie foto, documentos, data de nascimento, estado civil ou informações de saúde. Eles não entram na avaliação.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- V6 · FAQ: 7 perguntas publicadas; "teste pago" e "remoto" ficam fora até Q10/Q11. -->
+    <section class="pg-section pg-section--papel vg-faq" id="perguntas" aria-labelledby="perguntas-titulo">
+      <div class="pg-container vg-faq-grid">
+        <h2 id="perguntas-titulo" data-reveal-heading>Perguntas frequentes.</h2>
+        <div class="pg-accordion-list">
+          <details class="pg-accordion" name="faq">
+            <summary><span class="pg-accordion-q">Tem vaga aberta?</span><span class="pg-accordion-icon" aria-hidden="true">+</span></summary>
+            <div class="pg-accordion-body"><p>Não no momento. Quando abrir, ela aparece aqui com escopo, formato e prazo.</p></div>
+          </details>
+          <details class="pg-accordion" name="faq">
+            <summary><span class="pg-accordion-q">Por que você não pede currículo?</span><span class="pg-accordion-icon" aria-hidden="true">+</span></summary>
+            <div class="pg-accordion-body"><p>Porque o portfólio mostra o que importa. E assim eu guardo só o necessário.</p></div>
+          </details>
+          <details class="pg-accordion" name="faq">
+            <summary><span class="pg-accordion-q">Preciso ter CNPJ?</span><span class="pg-accordion-icon" aria-hidden="true">+</span></summary>
+            <div class="pg-accordion-body"><p>Depende do formato do projeto. Isso é combinado caso a caso, antes de começar.</p></div>
+          </details>
+          <details class="pg-accordion" name="faq">
+            <summary><span class="pg-accordion-q">Você aceita estágio?</span><span class="pg-accordion-icon" aria-hidden="true">+</span></summary>
+            <div class="pg-accordion-body"><p>Ainda não. Estágio exige supervisão e termo com a instituição de ensino, e por enquanto não tenho essa estrutura. Quando tiver, aviso aqui.</p></div>
+          </details>
+          <details class="pg-accordion" name="faq">
+            <summary><span class="pg-accordion-q">Por quanto tempo meus dados ficam guardados?</span><span class="pg-accordion-icon" aria-hidden="true">+</span></summary>
+            <div class="pg-accordion-body"><p>Até 12 meses. Para ver, corrigir ou apagar, escreva para <a href="mailto:smillepls@gmail.com" data-profile-link="email"><span data-profile-text="email">smillepls@gmail.com</span></a>. Os detalhes estão no <a href="/privacidade">aviso de privacidade <span aria-hidden="true">→</span></a></p></div>
+          </details>
+          <details class="pg-accordion" name="faq">
+            <summary><span class="pg-accordion-q">Sou menor de 18. Posso entrar?</span><span class="pg-accordion-icon" aria-hidden="true">+</span></summary>
+            <div class="pg-accordion-body"><p>Por enquanto, não. O banco é só para maiores de 18.</p></div>
+          </details>
+          <details class="pg-accordion" name="faq">
+            <summary><span class="pg-accordion-q">Sou criador de conteúdo. É aqui?</span><span class="pg-accordion-icon" aria-hidden="true">+</span></summary>
+            <div class="pg-accordion-body"><p>Para serviços para criadores, veja a <a href="/criadores">página para criadores <span aria-hidden="true">→</span></a></p></div>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <!-- V7 · Inclusão: adaptação só por e-mail, nenhum campo de saúde. -->
+    <section class="pg-section pg-section--papel vg-inclusion" aria-label="Inclusão">
+      <div class="pg-container">
+        <p class="vg-inclusion-text">Avalio portfólio e forma de trabalhar. Pessoas de todos os gêneros, raças, orientações e crenças, e pessoas com deficiência, são bem-vindas. Se precisar de alguma adaptação para participar do processo, escreva para <a href="mailto:smillepls@gmail.com" data-profile-link="email"><span data-profile-text="email">smillepls@gmail.com</span></a>.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="pg-container">
+      <div class="site-footer-grid">
+        <div class="site-footer-brand">
+          <a class="pg-brand" href="/" aria-label="Smile N, início"><span class="pg-brand-name">Smile N</span><span class="pg-brand-signature">ideia ↗ execução.</span></a>
+          <p>Smile N · Diretor criativo e redator · © 2026</p>
+        </div>
+        <nav aria-labelledby="rodape-navegar">
+          <h2 id="rodape-navegar">Navegar</h2>
+          <ul>
+            <li><a href="/">Início</a></li>
+            <li><a href="/#trabalhos">Trabalhos</a></li>
+            <li><a href="/criadores">Para criadores</a></li>
+            <li><a href="/criadores/ao-vivo">Criadores ao vivo</a></li>
+            <li><a href="/vagas" aria-current="page">Banco de talentos</a></li>
+          </ul>
+        </nav>
+        <div>
+          <h2 id="rodape-contato">Contato</h2>
+          <ul aria-labelledby="rodape-contato">
+            <li><a href="https://wa.me/5511985568208" target="_blank" rel="noopener noreferrer" data-profile-link="whatsapp">WhatsApp <span aria-hidden="true">↗</span></a></li>
+            <li><a href="mailto:smillepls@gmail.com" data-profile-link="email">E-mail <span aria-hidden="true">↗</span></a></li>
+          </ul>
+        </div>
+        <div>
+          <h2 id="rodape-privacidade">Privacidade</h2>
+          <ul aria-labelledby="rodape-privacidade">
+            <li><a href="/privacidade">Aviso de privacidade</a></li>
+            <li>Pedidos sobre seus dados: <a href="mailto:smillepls@gmail.com" data-profile-link="email"><span data-profile-text="email">smillepls@gmail.com</span></a></li>
+            <li><a href="/privacidade#acessibilidade"><svg class="pg-a11y-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="10.5" fill="none" stroke="currentColor" stroke-width="1.5"/><circle cx="12" cy="6.4" r="1.7" fill="currentColor"/><path d="M6.4 9.3c1.9.5 3.7.8 5.6.8s3.7-.3 5.6-.8M12 10.1v3.7M12 13.8l-2.5 4.5M12 13.8l2.5 4.5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>Acessibilidade</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="site-footer-legal">
+        <p>Smile N · contato e privacidade: <span data-profile-text="email">smillepls@gmail.com</span></p>
+      </div>
+      <a class="site-footer-top" href="#topo">Voltar ao topo <span aria-hidden="true">↑</span></a>
+    </div>
+  </footer>
+</body>
+</html>

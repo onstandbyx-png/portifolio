@@ -1,0 +1,197 @@
+/* /vagas · page styles (SPEC 3.C). Mobile first (390 px), then 720/960/1200 px.
+   Colour pairs follow SPEC 2.3: menta and salvia only on floresta/painel, never as
+   text on papel. Motion: flip (K5) and step slide (K18) run in vagas.js/stepper.js;
+   here only 150–160 ms state transitions, all removed by reduced motion and pause. */
+
+/* ---------- V1 · hero ---------- */
+.vg-hero-inner{display:grid;justify-items:start}
+.vg-seals{display:flex;flex-direction:column;align-items:flex-start;gap:10px;margin:0 0 28px;padding:0;list-style:none}
+.vg-hero h1{margin-bottom:20px}
+.vg-hero-sub{margin:0;max-width:34ch;font-family:var(--serif);font-style:italic;font-weight:400;font-size:clamp(1.25rem,1.05rem + .9vw,1.875rem);line-height:1.35;color:var(--papel)}
+.vg-hero-actions{width:100%;margin-top:28px}
+.vg-hero-micro{margin:16px 0 0;max-width:52ch;color:var(--salvia)}
+@media (min-width:600px){
+  .vg-seals{flex-direction:row;flex-wrap:wrap}
+  .vg-hero-actions{width:auto}
+}
+@media (min-width:960px){
+  .vg-seals .pg-seal{min-height:40px;padding:8px 16px 8px 12px;font-size:.9375rem}
+  .vg-hero-inner{padding-block:24px 8px}
+}
+
+/* ---------- V2 · como é trabalhar comigo ---------- */
+.vg-about{padding-bottom:clamp(40px,5vw,72px)}
+.vg-about-grid{display:grid;gap:24px}
+.vg-facts{display:grid;gap:16px;margin:0;padding:0;list-style:none}
+.vg-fact{padding-top:20px;border-top:2px solid var(--floresta)}
+.vg-fact h3{margin:0 0 8px;color:var(--floresta)}
+.vg-fact p{margin:0;max-width:52ch;color:var(--tinta-2)}
+@media (min-width:960px){.vg-about-grid{grid-template-columns:5fr 7fr;align-items:start;gap:48px}}
+
+/* ---------- V3 · áreas: one DOM, two presentations ---------- */
+.vg-areas-section{padding-top:8px;padding-bottom:24px}
+.vg-areas-head{gap:12px;margin-bottom:20px}
+.vg-areas{counter-reset:vg-area;display:grid;margin:0;padding:0;list-style:none;border-top:1px solid var(--linha-papel)}
+.vg-area-item{counter-increment:vg-area;min-width:0;border-bottom:1px solid var(--linha-papel)}
+.vg-area{--foco:var(--floresta)}
+.vg-area-heading{margin:0;font-size:inherit;line-height:inherit;letter-spacing:normal}
+.vg-area-toggle{display:grid;grid-template-columns:minmax(0,1fr) auto;grid-template-areas:"name action" "tag action";align-items:center;gap:4px 12px;width:100%;min-height:64px;margin:0;padding:7px 0;border:0;border-radius:4px;background:none;color:var(--tinta);font:inherit;text-align:left}
+.vg-area-toggle:disabled{cursor:default}
+.vg-area-name{grid-area:name;font-size:1rem;font-weight:600;line-height:1.3;color:var(--floresta)}
+.vg-area-tag{grid-area:tag;justify-self:start;min-height:24px;padding:2px 10px}
+.vg-area-action{grid-area:action;display:inline-flex;align-items:center;gap:8px;font-size:.875rem;font-weight:600;color:var(--floresta)}
+.vg-area-action>[data-area-label]{text-decoration:underline;text-underline-offset:.2em}
+.vg-area-icon{position:relative;flex:none;width:28px;height:28px;border:1.5px solid currentColor;border-radius:50%}
+.vg-area-icon::before,.vg-area-icon::after{content:'';position:absolute;left:50%;top:50%;width:11px;height:2px;border-radius:2px;background:currentColor;transform:translate(-50%,-50%);transition:transform 160ms ease}
+.vg-area-icon::after{transform:translate(-50%,-50%) rotate(90deg)}
+[aria-expanded=true] .vg-area-icon::after{transform:translate(-50%,-50%) rotate(0deg)}
+html:not(.pg-js) .vg-area-action{display:none}
+
+/* Back: the same dark panel in the list, in the grid and on the flipped card. */
+.vg-area-back{display:flex;flex-direction:column;gap:14px;margin:0 0 16px;padding:18px;border-radius:var(--raio-m);background:var(--floresta);color:var(--papel);--foco:var(--lima)}
+.vg-area-back-title{display:none;margin:0;font-size:1.125rem;font-weight:600;line-height:1.3}
+.vg-area-back-title:focus{outline:none}
+.vg-area-back-title:focus-visible{outline:3px solid var(--lima);outline-offset:4px;border-radius:4px}
+.vg-area-details{display:grid;gap:14px;margin:0}
+.vg-area-details dt{font-size:.875rem;font-weight:600;letter-spacing:.02em;color:var(--menta)}
+.vg-area-details dd{margin:4px 0 0;font-size:.9375rem;line-height:1.5}
+.vg-area-close{display:none;align-self:flex-start;margin-top:auto;color:var(--papel)}
+[data-area-mode=list] .vg-area .pg-flip-rotor{gap:0}
+
+@media (min-width:720px){
+  .vg-areas-section{padding-top:16px;padding-bottom:clamp(56px,7vw,112px)}
+  .vg-areas-head{margin-bottom:clamp(28px,4vw,48px)}
+  .vg-areas{grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;border-top:0}
+  .vg-area-item{border-bottom:0}
+  .vg-area,.vg-area .pg-flip-stage{height:100%}
+  .vg-area-front{border:1.5px solid color-mix(in srgb,var(--tinta) 30%,transparent);background:var(--papel)}
+  .vg-area-heading{height:100%}
+  .vg-area-toggle{display:flex;flex-direction:column;align-items:flex-start;gap:14px;height:100%;min-height:232px;padding:22px;border-radius:var(--raio-l)}
+  .vg-area-toggle::before{content:counter(vg-area,decimal-leading-zero) / "";order:-2;font-family:var(--serif);font-style:italic;font-size:1.5rem;line-height:1;color:var(--floresta)}
+  .vg-area-tag{order:-1}
+  .vg-area-name{margin-top:auto;padding-top:24px;font-size:1.375rem;line-height:1.2;letter-spacing:-.01em}
+  .vg-area-back{gap:12px;margin:0;padding:20px;border-radius:var(--raio-l)}
+  [data-area-mode=list] .vg-area-back{margin-top:8px}
+  [data-area-mode=flip] .vg-area-back-title{display:block}
+  [data-area-mode=flip] .vg-area-close{display:inline-flex}
+  [data-area-mode=flip] .vg-area-toggle:hover{background:color-mix(in srgb,var(--floresta) 6%,transparent)}
+}
+@media (min-width:1200px){.vg-areas{grid-template-columns:repeat(4,minmax(0,1fr))}}
+
+/* ---------- V4 · como funciona ---------- */
+.vg-process-list{counter-reset:vg-step;display:grid;margin:28px 0 0;padding:0;list-style:none}
+.vg-process-step{counter-increment:vg-step;display:grid;grid-template-columns:44px minmax(0,1fr);column-gap:16px;padding:20px 0;border-top:1px solid var(--linha-floresta)}
+.vg-process-step::before{content:counter(vg-step) / "";grid-row:1 / span 2;display:grid;place-items:center;width:40px;height:40px;border:1.5px solid var(--lima);border-radius:50%;color:var(--lima);font-size:.9375rem;font-weight:600}
+.vg-process-step h3{font-family:var(--serif);font-style:italic;font-weight:400;font-size:1.5rem;line-height:1.2;letter-spacing:-.01em}
+.vg-process-step p{margin:6px 0 0;color:var(--salvia)}
+.vg-process-note{margin:28px 0 0;padding:4px 0 4px 18px;max-width:60ch;border-left:3px solid var(--menta)}
+@media (min-width:960px){
+  .vg-process-list{grid-template-columns:repeat(4,minmax(0,1fr));gap:24px;margin-top:40px}
+  .vg-process-step{grid-template-columns:1fr;row-gap:16px;align-content:start;padding-top:24px;border-top:2px solid var(--lima)}
+  .vg-process-step::before{grid-row:auto}
+}
+
+/* ---------- V5 · entrar no banco (K18 + K9 + K10 + K19 + K7) ---------- */
+.vg-join{border-top:1px solid var(--linha-floresta)}
+.vg-join-grid{display:grid;gap:24px}
+.vg-join-intro h2{margin-bottom:14px}
+.vg-join-intro p{margin:0;max-width:40ch;color:var(--salvia)}
+.vg-form{min-width:0;padding:20px 16px}
+.vg-step-counter{margin:0 0 10px;font-size:.9375rem;font-weight:600;letter-spacing:.01em;color:var(--menta)}
+.vg-steps{position:relative}
+.vg-steps.is-sliding{overflow:clip}
+.vg-step{min-width:0;margin:0;padding:0;border:0}
+.vg-step.is-leaving{position:absolute;inset:0 0 auto 0}
+html:not(.pg-js) .vg-step+.vg-step{margin-top:56px}
+.vg-step-legend{display:block;max-width:100%;margin:0 0 16px;padding:0;font-family:var(--serif);font-style:italic;font-weight:400;font-size:clamp(1.625rem,1.3rem + 1.2vw,2.25rem);line-height:1.15;letter-spacing:-.01em;color:var(--papel)}
+.vg-step-legend:focus{outline:none}
+.vg-step-legend:focus-visible{outline:3px solid var(--lima);outline-offset:4px;border-radius:4px}
+.vg-step-caption{display:block;margin:0 0 6px;font-family:var(--sans);font-style:normal;font-size:.9375rem;font-weight:600;letter-spacing:.01em;color:var(--menta)}
+.vg-step>.pg-hint{margin:-6px 0 14px}
+.vg-step>.pg-error{margin:0 0 12px}
+
+/* Radio cards: the native radio covers the card (focusable, arrow keys); the
+   drawn mark and the border show the choice, never colour alone. */
+.vg-options{display:grid;gap:8px}
+.vg-option{position:relative;display:flex;align-items:center;gap:12px;min-height:48px;padding:10px 14px;border:1.5px solid var(--linha-floresta);border-radius:var(--raio-s);cursor:pointer;transition:border-color 160ms ease,background-color 160ms ease}
+.vg-option:hover{border-color:var(--papel)}
+.vg-option>input{position:absolute;inset:0;width:100%;height:100%;margin:0;opacity:0;cursor:pointer}
+.vg-option-mark{display:grid;place-items:center;flex:none;width:22px;height:22px;border:2px solid currentColor;border-radius:50%}
+.vg-option-mark::after{content:'';width:10px;height:10px;border-radius:50%;background:var(--lima);transform:scale(0);transition:transform 160ms ease}
+.vg-option-text{font-size:.9375rem;line-height:1.3}
+.vg-option:has(input:checked){border-color:var(--lima);background:color-mix(in srgb,var(--lima) 12%,transparent);font-weight:600}
+.vg-option:has(input:checked) .vg-option-mark{border-color:var(--lima)}
+.vg-option:has(input:checked) .vg-option-mark::after{transform:scale(1)}
+.vg-option:has(input:focus-visible){outline:3px solid var(--lima);outline-offset:2px}
+[data-invalid=true]>.vg-options .vg-option{border-color:var(--erro-cor)}
+.vg-other{margin:20px 0 0}
+.vg-subgroup{margin-bottom:24px}
+.vg-subgroup>legend{font-size:1.0625rem}
+.vg-subgroup>.pg-error{margin:0 0 10px}
+.vg-count{justify-self:end}
+@media (min-width:600px){
+  .vg-form{padding:clamp(24px,3vw,36px)}
+  .vg-options--areas{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .vg-options--row{grid-template-columns:repeat(3,minmax(0,1fr))}
+}
+
+.vg-step-nav{display:flex;gap:12px;margin-top:28px}
+.vg-step-nav .pg-btn{flex:1 1 0;min-height:48px}
+/* Without JS "Continuar" stays disabled (SPEC 2.7): shown as a dashed outline, not faded. */
+.vg-step-nav .pg-btn:disabled{opacity:1;border-style:dashed;border-color:var(--salvia);background:transparent;color:var(--papel)}
+@media (min-width:600px){.vg-step-nav .pg-btn{flex:0 0 auto;min-width:168px}}
+
+/* Step 5: the message, the two boxes and the links. */
+.vg-step-intro{margin:0 0 20px;max-width:56ch;color:var(--salvia)}
+.vg-review{display:grid;gap:24px}
+.vg-review-side{min-width:0}
+.vg-bubble{padding:16px 18px;border-radius:20px;background:var(--papel);color:var(--tinta);--foco:var(--floresta)}
+.vg-bubble-title{margin:0 0 8px;font-size:.9375rem;font-weight:600;line-height:1.4;color:var(--tinta-2)}
+.vg-bubble-text.pg-review-message{margin:0;padding:0;background:none;font-size:.9375rem;line-height:1.5}
+.vg-consent{display:grid;gap:10px}
+.vg-consent .pg-check-text a{text-decoration:underline;text-underline-offset:.2em}
+.vg-nothing-sent{margin:4px 0 0;color:var(--salvia)}
+.vg-locked{margin:16px 0 0;padding:14px 16px;border:1.5px dashed color-mix(in srgb,var(--papel) 45%,transparent);border-radius:var(--raio-m);color:var(--papel)}
+.vg-actions-wrap{margin-top:16px}
+.vg-desktop-note{display:none;margin:12px 0 0;color:var(--salvia)}
+@media (min-width:720px) and (hover:hover) and (pointer:fine){.vg-desktop-note{display:block}}
+.vg-after{margin-top:24px;padding-top:20px;border-top:1px solid var(--linha-floresta)}
+.vg-after h3{font-size:1.0625rem}
+.vg-after p{margin:6px 0 0;color:var(--salvia)}
+.vg-nojs{margin:20px 0 0}
+.vg-nojs-link{display:inline-flex;align-items:center;gap:.35em;min-height:44px;font-weight:600;text-decoration:underline}
+.vg-notice{margin:16px 0 0;max-width:62ch;color:var(--salvia)}
+
+/* From 960 px the preview sits in the phone frame (K7), as a neutral bubble:
+   no app colours, no avatar, no ticks, no input bar. */
+@media (min-width:960px){
+  .vg-review{grid-template-columns:minmax(0,1fr) auto;align-items:start;column-gap:28px}
+  .vg-preview-slot{grid-column:2;grid-row:1}
+  .vg-review-side{grid-column:1;grid-row:1}
+  .vg-preview-slot[data-frame=phone]{justify-self:end}
+  .vg-phone{--pg-phone-width:340px}
+  .vg-phone .df-screen{background:var(--papel)}
+  .vg-phone-scroll{position:absolute;inset:0;overflow-y:auto;padding:calc(66 * var(--df-pt)) 14px 30px;overscroll-behavior:contain;scrollbar-width:thin}
+  .vg-phone-scroll:focus-visible{outline:3px solid var(--floresta);outline-offset:-4px;border-radius:calc(56 * var(--df-pt))}
+  .vg-phone .vg-bubble{padding:12px 14px;border:1px solid var(--linha-papel);border-radius:18px;background:#fff}
+  .vg-phone .vg-bubble-text.pg-review-message{font-size:.875rem;line-height:1.45}
+}
+@media (min-width:1200px){
+  .vg-join-grid{grid-template-columns:4fr 8fr;align-items:start;gap:48px}
+  .vg-join-intro{position:sticky;top:calc(var(--header-h) + 32px)}
+}
+
+/* ---------- V6 · FAQ and V7 · inclusão ---------- */
+.vg-faq-grid{display:grid;gap:28px}
+.vg-faq .pg-accordion-body a{text-decoration:underline}
+@media (min-width:960px){.vg-faq-grid{grid-template-columns:4fr 8fr;align-items:start;gap:48px}}
+.vg-inclusion{padding-top:0}
+.vg-inclusion .pg-container{padding-top:clamp(32px,4vw,56px);border-top:1px solid var(--linha-papel)}
+.vg-inclusion-text{max-width:46ch;margin:0;font-family:var(--serif);font-style:italic;font-weight:400;font-size:clamp(1.25rem,1.05rem + .9vw,1.875rem);line-height:1.4;color:var(--floresta)}
+.vg-inclusion-text a{text-decoration:underline;text-underline-offset:.18em}
+
+/* ---------- reduced motion and pause: instant, no movement ---------- */
+@media (prefers-reduced-motion: reduce){
+  .vg-option,.vg-option-mark::after,.vg-area-icon::before,.vg-area-icon::after{transition:none!important}
+}
+body.is-paused .vg-option,body.is-paused .vg-option-mark::after,body.is-paused .vg-area-icon::before,body.is-paused .vg-area-icon::after{transition:none!important}
