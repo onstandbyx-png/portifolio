@@ -1,0 +1,236 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self'; font-src 'self'; base-uri 'none'; form-action 'none'">
+<title>Serviços · Protótipo A</title>
+<meta name="description" content="Protótipo A dos cards de serviço: card daisyUI e molduras de dispositivo AOSP, com telas ilustrativas da marca fictícia Ateliê Exemplo.">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="preload" href="assets/fonts/InterVariable.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="vendor/daisyui-port.css">
+<link rel="stylesheet" href="devices.css">
+<link rel="stylesheet" href="style.css">
+<script type="module" src="carousel.js"></script>
+</head>
+<body>
+<main>
+<section id="categorias" class="services" aria-labelledby="services-title">
+  <div class="services__inner">
+    <header class="services__head">
+      <div>
+        <span class="eyebrow">Serviços</span>
+        <h2 id="services-title" class="services__title">O que podemos colocar em prática.</h2>
+        <p class="services__lead">Cinco frentes de trabalho. Escolha uma e vamos conversar.</p>
+      </div>
+    </header>
+
+    <div class="carousel carousel-start svc-track" id="svc-track" role="region" aria-roledescription="carrossel" aria-label="Serviços">
+
+      <!-- 01 Sites e apps -->
+      <article class="carousel-item" id="svc-01" role="group" aria-roledescription="slide" aria-label="Sites e apps, 1 de 5">
+        <div class="card svc-card">
+          <div class="card-body">
+            <div class="svc-head">
+              <span class="badge svc-num">01</span>
+              <div>
+                <h3 class="card-title">Sites e apps</h3>
+                <p class="svc-sub">Sites / Apps / Agendamento</p>
+              </div>
+            </div>
+            <span class="svc-rule" aria-hidden="true"></span>
+            <p class="svc-headline">Do primeiro toque à próxima ação.</p>
+            <p class="svc-support">Interfaces claras que levam o visitante a agendar, pedir ou comprar.</p>
+            <figure class="stage" role="img" aria-label="Exemplo ilustrativo: celular com uma tela para agendar visita, com dias, horários e botão de confirmar.">
+              <div class="device device--phone">
+                <img class="frame" src="assets/device/phone-back.webp" width="720" height="1521" alt="">
+                <div class="screen">
+                  <div class="scr scr-agenda">
+                    <p class="s-brand"><span class="s-logo"></span>Ateliê Exemplo</p>
+                    <p class="s-title">Agende sua visita</p>
+                    <p class="s-label">Outubro</p>
+                    <div class="s-days"><span>Ter<b>27</b></span><span class="on">Qua<b>28</b></span><span>Qui<b>29</b></span><span>Sex<b>30</b></span></div>
+                    <p class="s-label">Horários</p>
+                    <div class="s-slots"><span>09:00</span><span class="on">10:30</span><span>14:00</span><span>16:30</span></div>
+                    <span class="s-btn">Confirmar visita</span>
+                  </div>
+                </div>
+                <img class="fore" src="assets/device/phone-mask.webp" width="649" height="1457" alt="">
+              </div>
+            </figure>
+            <div class="card-actions">
+              <a class="btn btn-block svc-cta" href="#contato">Conversar sobre sites <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- 02 Campanhas -->
+      <article class="carousel-item" id="svc-02" role="group" aria-roledescription="slide" aria-label="Campanhas, 2 de 5">
+        <div class="card svc-card">
+          <div class="card-body">
+            <div class="svc-head">
+              <span class="badge svc-num">02</span>
+              <div>
+                <h3 class="card-title">Campanhas</h3>
+                <p class="svc-sub">Social / Busca / Vídeo</p>
+              </div>
+            </div>
+            <span class="svc-rule" aria-hidden="true"></span>
+            <p class="svc-headline">A mensagem certa, no formato certo.</p>
+            <p class="svc-support">Uma oferta adaptada à linguagem e ao formato de cada canal.</p>
+            <figure class="stage" role="img" aria-label="Exemplo ilustrativo: tablet com o mesmo anúncio em três formatos, 9:16, 4:5 e 16:9.">
+              <div class="device device--tablet">
+                <img class="frame" src="assets/device/tablet-portrait-back.webp" width="880" height="1340" alt="">
+                <div class="screen">
+                  <div class="scr scr-formats">
+                    <p class="f-head"><b>Ateliê Exemplo</b><span>3 formatos</span></p>
+                    <div class="f-row">
+                      <div class="f f-story">
+                        <div class="f-art"><img src="assets/img/vase-sage.webp" width="720" height="900" alt=""><p>Feito à mão.</p></div>
+                        <span class="f-cap">9:16</span>
+                      </div>
+                      <div class="f f-feed">
+                        <div class="f-art"><img src="assets/img/vase-sage.webp" width="720" height="900" alt=""><p>Feito à mão.</p></div>
+                        <span class="f-cap">4:5</span>
+                      </div>
+                    </div>
+                    <div class="f f-banner">
+                      <div class="f-art"><img src="assets/img/vase-sage.webp" width="720" height="900" alt=""><div class="f-copy"><p>Feito à mão.</p><span class="f-pill">Conheça</span></div></div>
+                      <span class="f-cap">16:9</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </figure>
+            <div class="card-actions">
+              <a class="btn btn-block svc-cta" href="#contato">Conversar sobre campanhas <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- 05 Conteúdo -->
+      <article class="carousel-item" id="svc-05" role="group" aria-roledescription="slide" aria-label="Conteúdo, 3 de 5">
+        <div class="card svc-card">
+          <div class="card-body">
+            <div class="svc-head">
+              <span class="badge svc-num">05</span>
+              <div>
+                <h3 class="card-title">Conteúdo</h3>
+                <p class="svc-sub">Vídeo / Social / Blog</p>
+              </div>
+            </div>
+            <span class="svc-rule" aria-hidden="true"></span>
+            <p class="svc-headline">Uma ideia. Conteúdo para cada canal.</p>
+            <p class="svc-support">Uma pauta vira vídeo, post e artigo, cada um no seu canal.</p>
+            <figure class="stage" role="img" aria-label="Exemplo ilustrativo: celular com um player de vídeo vertical e o episódio em reprodução.">
+              <div class="device device--phone">
+                <img class="frame" src="assets/device/phone-back.webp" width="720" height="1521" alt="">
+                <div class="screen">
+                  <div class="scr scr-video">
+                    <p class="s-brand"><span class="s-logo"></span>Ateliê Exemplo</p>
+                    <div class="v-stage"><img src="assets/img/mountains-9x16.webp" width="540" height="965" alt=""><span class="v-play"></span></div>
+                    <p class="v-title">A cor da serra</p>
+                    <p class="v-ep">Episódio 3</p>
+                    <div class="v-meta"><span class="v-track"></span><span>0:42 / 1:30</span></div>
+                  </div>
+                </div>
+                <img class="fore" src="assets/device/phone-mask.webp" width="649" height="1457" alt="">
+              </div>
+            </figure>
+            <div class="card-actions">
+              <a class="btn btn-block svc-cta" href="#contato">Conversar sobre conteúdo <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- 08 E-commerce -->
+      <article class="carousel-item" id="svc-08" role="group" aria-roledescription="slide" aria-label="E-commerce, 4 de 5">
+        <div class="card svc-card">
+          <div class="card-body">
+            <div class="svc-head">
+              <span class="badge svc-num">08</span>
+              <div>
+                <h3 class="card-title">E-commerce</h3>
+                <p class="svc-sub">Loja / Conversão / CRM</p>
+              </div>
+            </div>
+            <span class="svc-rule" aria-hidden="true"></span>
+            <p class="svc-headline">Escolher e comprar, sem complicação.</p>
+            <p class="svc-support">Vitrine, produto e checkout claros para o cliente decidir com confiança.</p>
+            <figure class="stage" role="img" aria-label="Exemplo ilustrativo: tablet com a página de um produto, preço e botão de adicionar à sacola.">
+              <div class="device device--tablet">
+                <img class="frame" src="assets/device/tablet-portrait-back.webp" width="880" height="1340" alt="">
+                <div class="screen">
+                  <div class="scr scr-product">
+                    <div class="p-bar"><b>Ateliê Exemplo</b><span>Sacola (1)</span></div>
+                    <img class="p-media" src="assets/img/jar-amber.webp" width="720" height="900" alt="">
+                    <p class="p-kicker">Cerâmica</p>
+                    <div class="p-line"><p class="p-name">Pote âmbar</p><p class="p-price">R$ 89</p></div>
+                    <span class="p-btn">Adicionar à sacola</span>
+                  </div>
+                </div>
+              </div>
+            </figure>
+            <div class="card-actions">
+              <a class="btn btn-block svc-cta" href="#contato">Conversar sobre e-commerce <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- 09 Marca -->
+      <article class="carousel-item" id="svc-09" role="group" aria-roledescription="slide" aria-label="Marca, 5 de 5">
+        <div class="card svc-card">
+          <div class="card-body">
+            <div class="svc-head">
+              <span class="badge svc-num">09</span>
+              <div>
+                <h3 class="card-title">Marca</h3>
+                <p class="svc-sub">Identidade / Posicionamento</p>
+              </div>
+            </div>
+            <span class="svc-rule" aria-hidden="true"></span>
+            <p class="svc-headline">Sua identidade, em cada detalhe.</p>
+            <p class="svc-support">Logo, cores e tipografia que mantêm a marca reconhecível em qualquer lugar.</p>
+            <figure class="stage" role="img" aria-label="Exemplo ilustrativo: tablet com o quadro de uma marca: nome, foto, paleta de cores e tipografia.">
+              <div class="device device--tablet">
+                <img class="frame" src="assets/device/tablet-portrait-back.webp" width="880" height="1340" alt="">
+                <div class="screen">
+                  <div class="scr scr-brand">
+                    <p class="b-word">Ateliê Exemplo</p>
+                    <p class="b-tag">Cerâmica e cuidado</p>
+                    <img class="b-media" src="assets/img/ceramics-shelf.webp" width="1200" height="671" alt="">
+                    <div class="b-sw"><span class="c1"></span><span class="c2"></span><span class="c3"></span><span class="c4"></span></div>
+                    <div class="b-type"><b>Aa</b><span><strong>Inter</strong>0123456789</span></div>
+                  </div>
+                </div>
+              </div>
+            </figure>
+            <div class="card-actions">
+              <a class="btn btn-block svc-cta" href="#contato">Conversar sobre marca <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+            </div>
+          </div>
+        </div>
+      </article>
+    </div>
+
+    <div class="svc-foot">
+      <div class="svc-controls" hidden>
+        <button type="button" class="btn btn-circle btn-outline svc-nav" data-dir="-1" aria-controls="svc-track" aria-label="Serviço anterior"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"/></svg></button>
+        <p class="svc-count" aria-live="polite">1 de 5</p>
+        <button type="button" class="btn btn-circle btn-outline svc-nav" data-dir="1" aria-controls="svc-track" aria-label="Próximo serviço"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+      </div>
+      <p class="services__note">Telas ilustrativas, criadas para a marca fictícia Ateliê Exemplo.</p>
+    </div>
+  </div>
+</section>
+<section id="contato" class="contact-stub" aria-labelledby="contact-title" tabindex="-1">
+  <h2 id="contact-title">Contato</h2>
+  <p>Destino dos botões. No site, este é o formulário de briefing.</p>
+</section>
+</main>
+</body>
+</html>

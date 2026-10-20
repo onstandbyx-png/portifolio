@@ -1,0 +1,200 @@
+/* Protótipo C — cards de serviço
+   Card: port estático do BentoCard da Magic UI (MIT, (c) Magic UI), adaptado às referências do dono.
+   Molduras: port estático de Iphone e Safari ("simple") da Magic UI (MIT, (c) Magic UI).
+   Ícones de seta: Radix Icons ArrowLeftIcon/ArrowRightIcon (MIT, (c) 2022 WorkOS).
+   Sem Tailwind, sem React, sem animação própria. Fontes, imagens e scripts são locais. */
+
+@font-face{font-family:"Inter";src:url("assets/fonts/InterVariable.woff2") format("woff2");font-weight:100 900;font-style:normal;font-display:swap}
+@font-face{font-family:"Newsreader";src:url("assets/fonts/Newsreader-Italic-Variable.woff2") format("woff2");font-weight:200 800;font-style:italic;font-display:swap}
+
+:root{
+  /* Paleta do dono */
+  --green-900:#0F2E24;   /* fundo da página */
+  --green-800:#16362B;   /* card */
+  --green-750:#123632;   /* palco da demonstração */
+  --paper:#F3F1E9;       /* papel quente */
+  --mint:#9CCBB0;        /* acento */
+  --text:#F3F1E9;
+  --text-2:#BFD0C6;      /* 8,2:1 sobre o card */
+  --line:rgba(255,255,255,.10);
+  /* Telas (marca fictícia Ateliê Exemplo) */
+  --ink:#17241F;
+  --ink-2:#5B6B62;       /* 5,0:1 sobre o papel */
+  --leaf:#2F5D4A;
+  --sand:#E7E1D3;
+  /* Medidas */
+  --gutter:16px;
+  --radius-card:28px;
+  --radius-stage:20px;
+  --phone-h:360px;
+}
+
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
+body{margin:0;background:var(--green-900);color:var(--text);font-family:"Inter",system-ui,-apple-system,"Segoe UI",sans-serif;font-optical-sizing:auto;line-height:1.5;-webkit-font-smoothing:antialiased}
+h2,h3,p,ul{margin:0}
+img,svg{display:block}
+a{color:inherit}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+
+/* ---------- Seção ---------- */
+.svc{max-width:1328px;margin:0 auto;padding:16px var(--gutter) 40px}
+.svc-head{display:flex;align-items:center;justify-content:space-between;gap:16px;min-height:44px;margin-bottom:16px}
+.svc-title{font-size:24px;line-height:1.2;font-weight:700;letter-spacing:-.02em}
+.svc-nav{display:flex;align-items:center;gap:8px}
+.svc-count{min-width:4.5em;margin-right:4px;text-align:right;font-size:15px;font-weight:500;color:var(--text-2);font-variant-numeric:tabular-nums}
+.nav-btn{display:grid;place-items:center;width:44px;height:44px;padding:0;border:1px solid rgba(243,241,233,.32);border-radius:999px;background:transparent;color:var(--paper);cursor:pointer;transition:background-color .15s ease,border-color .15s ease}
+.nav-btn:hover{background:rgba(243,241,233,.10);border-color:rgba(243,241,233,.55)}
+.nav-btn[aria-disabled="true"]{opacity:.4;cursor:default}
+.nav-btn[aria-disabled="true"]:hover{background:transparent;border-color:rgba(243,241,233,.32)}
+/* Sem JS os botões não fazem nada: ficam escondidos e a rolagem nativa continua. */
+html:not(.js) .nav-btn{display:none}
+
+:focus-visible{outline:3px solid var(--mint);outline-offset:3px}
+
+/* ---------- Carrossel nativo (scroll-snap) ---------- */
+.rail{list-style:none;padding:0;display:grid;grid-auto-flow:column;grid-auto-columns:100%;gap:16px;align-items:start;
+  overflow-x:auto;overscroll-behavior-x:contain;scroll-snap-type:x mandatory;scrollbar-width:none;border-radius:var(--radius-card)}
+.rail::-webkit-scrollbar{display:none}
+.rail:focus-visible{outline-offset:4px}
+.rail-item{scroll-snap-align:start;min-width:0}
+
+/* ---------- Card: BentoCard (Magic UI) em CSS puro ----------
+   Mantido do original: flex em coluna, overflow-hidden, borda 1px rgba(255,255,255,.1) e o brilho
+   interno do modo escuro (0 -20px 80px -20px #ffffff1f inset); ícone 48px (h-12 w-12); nome text-xl
+   semibold; descrição em tom secundário; CTA com ArrowRightIcon.
+   Adaptado: raio 12px -> 28px, cores da paleta, ordem conteúdo -> demonstração -> CTA, CTA sempre
+   visível em forma de pílula. Removido: todo translate/scale/opacity no hover e o overlay de hover. */
+.mu-card{position:relative;display:flex;flex-direction:column;height:100%;overflow:hidden;padding:20px;
+  border-radius:var(--radius-card);background:var(--green-800);
+  border:1px solid rgba(255,255,255,.1);box-shadow:0 -20px 80px -20px #ffffff1f inset}
+.mu-card-head{display:flex;align-items:center;gap:14px}
+.mu-badge{flex:none;display:grid;place-items:center;width:48px;height:48px;border-radius:12px;
+  border:1px solid rgba(243,241,233,.32);background:rgba(243,241,233,.04);
+  font-size:18px;font-weight:600;letter-spacing:.01em;font-variant-numeric:tabular-nums;color:var(--paper)}
+.mu-card-name{font-size:20px;line-height:1.3;font-weight:600;letter-spacing:-.01em;color:var(--text)}
+.mu-card-sub{font-size:14px;line-height:1.4;color:var(--text-2)}
+.mu-rule{display:block;width:40px;height:3px;margin-top:18px;border-radius:2px;background:var(--mint)}
+.mu-card-title{margin-top:14px;font-size:28px;line-height:1.1;font-weight:700;letter-spacing:-.025em;color:var(--text);text-wrap:balance}
+.mu-card-title .dot{color:var(--mint)}
+.mu-card-desc{margin-top:10px;font-size:15px;line-height:1.45;color:var(--text-2);text-wrap:pretty}
+
+/* Palco da demonstração: um painel interno, um aparelho, nada sobreposto. */
+.mu-stage{flex:1 0 auto;display:grid;place-items:center;margin-top:20px;padding:14px;border-radius:var(--radius-stage);
+  background:radial-gradient(120% 70% at 50% 0%,rgba(156,203,176,.12),rgba(156,203,176,0) 70%),var(--green-750);
+  border:1px solid rgba(255,255,255,.06)}
+
+.mu-cta{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:52px;margin-top:20px;padding:0 20px 0 24px;
+  border-radius:999px;background:var(--paper);color:var(--green-900);text-decoration:none;
+  font-size:16px;line-height:1.25;font-weight:600;letter-spacing:-.005em;transition:background-color .15s ease}
+.mu-cta svg{flex:none}
+.mu-cta:hover{background:#FFFFFF}
+
+/* ---------- Molduras: Iphone e Safari (Magic UI) em SVG estático ----------
+   A tela fica no retângulo exato da fonte; a moldura (com o furo) vai por cima. */
+.mu-iphone,.mu-browser{position:relative;line-height:0}
+.mu-iphone{height:var(--phone-h);aspect-ratio:433/882}
+.mu-browser{width:100%;aspect-ratio:1203/753}
+.mu-frame{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+.mu-iphone .mu-screen{position:absolute;left:4.9076%;top:2.1825%;width:89.9538%;height:95.6349%;border-radius:14.313% / 6.609%}
+.mu-browser .mu-screen{position:absolute;left:.0831%;top:6.9057%;width:99.7506%;height:92.9615%;border-radius:0 0 .9167% .9167% / 0 0 1.5714% 1.5714%}
+.mu-screen{overflow:hidden;container-type:inline-size;line-height:1.2}
+
+/* ---------- Telas (HTML vivo) ----------
+   .mu-screen é o container (container-type); .scr dentro dele ocupa 100% e usa cqw = 1% da largura
+   da tela. Texto mínimo: 7cqw no celular (11 px) e 4,2cqw no navegador (11-14 px). Imagens sempre na
+   proporção natural (largura OU altura fixa, a outra automática), nunca object-fit: cover. */
+.scr{display:flex;flex-direction:column;width:100%;height:100%;background:var(--paper);color:var(--ink);text-align:left}
+.scr-img{width:100%;height:auto}
+.scr-brand{font-family:"Newsreader",Georgia,serif;font-style:italic;font-weight:500;color:var(--leaf);letter-spacing:-.01em}
+.scr-btn{display:flex;align-items:center;justify-content:center;background:var(--leaf);color:var(--paper);font-weight:600;white-space:nowrap}
+
+/* Celular: agenda (01) e anúncio (02). Topo livre de 16cqw para a ilha da câmera. */
+.scr-agenda,.scr-ad{gap:4.5cqw;padding:17cqw 7cqw 8cqw}
+.scr-agenda .scr-brand{font-size:9cqw;line-height:1.1}
+.scr-agenda .scr-h,.scr-ad .scr-h{font-size:11.5cqw;line-height:1.05;font-weight:700;letter-spacing:-.025em}
+.scr-ad .scr-h{font-size:11cqw}
+.scr-agenda .scr-img,.scr-ad .scr-img{border-radius:4cqw}
+.scr-label{font-size:7.5cqw;font-weight:500;color:var(--ink-2)}
+.slots{display:grid;grid-template-columns:1fr 1fr;gap:3cqw}
+.slots span{display:grid;place-items:center;height:16cqw;border-radius:4cqw;border:.6cqw solid #D3CBBA;font-size:8cqw;font-weight:600;font-variant-numeric:tabular-nums}
+.slots span.on{border-color:var(--leaf);background:var(--leaf);color:var(--paper)}
+.scr-agenda .scr-btn,.scr-ad .scr-btn{margin-top:auto;height:18cqw;border-radius:9cqw;font-size:8cqw}
+.ad-top{display:flex;align-items:center;gap:3cqw}
+.ad-mark{flex:none;display:grid;place-items:center;width:13cqw;height:13cqw;border-radius:50%;background:var(--leaf);color:var(--paper);
+  font-family:"Newsreader",Georgia,serif;font-style:italic;font-size:8cqw;font-weight:600;line-height:1}
+.ad-name{display:flex;flex-direction:column;font-size:8cqw;font-weight:650;line-height:1.2}
+.ad-name small{font-size:7cqw;font-weight:450;color:var(--ink-2)}
+
+/* Navegador: player de vídeo (05) */
+.scr-video{flex-direction:row;align-items:flex-start;gap:4cqw;padding:4.5cqw;background:#111815;color:var(--paper)}
+.v-main{flex:none;width:50cqw;display:flex;flex-direction:column}
+.v-frame{position:relative;border-radius:1.6cqw;overflow:hidden}
+.v-play{position:absolute;left:50%;top:50%;width:10cqw;height:10cqw;margin:-5cqw 0 0 -5cqw;border-radius:50%;background:rgba(243,241,233,.92)}
+.v-play::after{content:"";position:absolute;left:39%;top:30%;width:30%;height:40%;background:var(--green-900);clip-path:polygon(0 0,100% 50%,0 100%)}
+.v-bar{height:1cqw;margin-top:2.4cqw;border-radius:1cqw;background:rgba(243,241,233,.22)}
+.v-bar i{display:block;width:38%;height:100%;border-radius:inherit;background:var(--mint)}
+.v-title{margin-top:2.6cqw;font-size:5.2cqw;line-height:1.1;font-weight:650;letter-spacing:-.015em;white-space:nowrap}
+.v-meta{margin-top:1.2cqw;font-size:4.2cqw;color:#B9C7BF;white-space:nowrap}
+.v-side{flex:1;min-width:0;display:flex;flex-direction:column;gap:2.6cqw}
+.v-label{font-size:4.2cqw;color:#B9C7BF;white-space:nowrap}
+.v-chip{display:flex;align-items:center;height:10cqw;padding:0 3cqw;border-radius:5cqw;border:.3cqw solid rgba(243,241,233,.24);font-size:4.2cqw;font-weight:550;white-space:nowrap}
+.v-chip.on{border-color:var(--mint);color:var(--mint)}
+
+/* Navegador: página de produto (08) */
+.shop-nav{flex:none;display:flex;align-items:center;justify-content:space-between;height:10cqw;padding:0 4.5cqw;border-bottom:.25cqw solid #DDD6C6}
+.scr-shop .scr-brand{font-size:5.2cqw}
+.shop-links{display:flex;gap:4cqw;font-size:4.2cqw;font-weight:500;color:var(--ink-2)}
+.shop-body{flex:1;min-height:0;display:flex;align-items:center;gap:5cqw;padding:0 4.5cqw}
+.shop-body .scr-img{flex:none;width:auto;height:39cqw;border-radius:2cqw}
+.shop-info{display:flex;flex-direction:column;align-items:flex-start;gap:2.4cqw}
+.shop-name{font-size:7.5cqw;line-height:1.05;font-weight:700;letter-spacing:-.025em;white-space:nowrap}
+.shop-desc{font-size:4.2cqw;color:var(--ink-2);white-space:nowrap}
+.shop-price{font-size:6cqw;line-height:1.1;font-weight:700;color:var(--leaf);font-variant-numeric:tabular-nums}
+.scr-shop .scr-btn{height:10cqw;padding:0 3.6cqw;border-radius:5cqw;font-size:4.2cqw;margin-top:.6cqw}
+
+/* Navegador: quadro de marca (09) */
+.scr-board{flex-direction:row;align-items:center;gap:4.5cqw;padding:4.5cqw}
+.b-col{flex:1;min-width:0;align-self:stretch;display:flex;flex-direction:column;justify-content:space-between;padding:.6cqw 0}
+.b-logo{display:flex;flex-direction:column;gap:1.6cqw}
+.b-word{font-family:"Newsreader",Georgia,serif;font-style:italic;font-weight:500;font-size:7cqw;line-height:1;letter-spacing:-.02em;color:var(--leaf);white-space:nowrap}
+.b-tag{font-size:4.2cqw;font-weight:500;color:var(--ink-2);white-space:nowrap}
+.b-sw{display:flex;gap:2.4cqw}
+.b-sw i{display:block;width:9cqw;height:9cqw;border-radius:50%}
+.b-sw .c1{background:#2F5D4A}.b-sw .c2{background:#9CCBB0}.b-sw .c3{background:#D9C7A7}.b-sw .c4{background:#FFFFFF;box-shadow:inset 0 0 0 .3cqw #D3CBBA}
+.b-type{display:flex;align-items:center;gap:3cqw}
+.b-aa{font-family:"Newsreader",Georgia,serif;font-style:italic;font-weight:500;font-size:12cqw;line-height:1;color:var(--ink)}
+.b-names{font-size:4.2cqw;line-height:1.3;font-weight:500;color:var(--ink-2)}
+.scr-board .scr-img{flex:none;width:auto;height:49cqw;border-radius:2cqw}
+
+/* ---------- Contato (só destino da âncora) ---------- */
+.contact{max-width:1328px;margin:0 auto;padding:32px var(--gutter) 64px;color:var(--text-2)}
+.contact h2{font-size:20px;color:var(--text);margin-bottom:6px}
+.contact p{font-size:15px}
+
+/* ---------- Celulares estreitos (360 px): CTA em uma linha ---------- */
+@media (max-width:379px){
+  .mu-card{padding:18px}
+  .mu-cta{gap:10px;padding:0 18px 0 20px;font-size:15px}
+}
+
+/* ---------- Telas maiores ---------- */
+@media (min-width:640px){
+  :root{--gutter:24px}
+  /* Dois ou mais cards lado a lado: mesma altura; o palco absorve a diferença. */
+  .rail{grid-auto-columns:calc((100% - 16px) / 2);align-items:stretch}
+}
+@media (min-width:1024px){
+  :root{--gutter:24px}
+  .svc{padding-top:40px;padding-bottom:40px}
+  .svc-head{margin-bottom:24px}
+  .svc-title{font-size:28px}
+  .rail{grid-auto-columns:calc((100% - 48px) / 3);gap:24px;align-items:stretch}
+  .mu-card{padding:24px}
+  .mu-card-title{font-size:30px}
+  .mu-stage{min-height:calc(var(--phone-h) + 30px)}
+}
+
+@media (prefers-reduced-motion:reduce){
+  *{transition:none!important;scroll-behavior:auto!important}
+}

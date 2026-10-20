@@ -1,0 +1,20 @@
+Molduras de dispositivo: Android Open Source Project (Apache License 2.0).
+
+Origem (Android Studio device art):
+  https://android.googlesource.com/platform/tools/adt/idea/+/refs/heads/mirror-goog-studio-main/artwork/resources/device-art-resources/
+  pixel_9/back.webp, pixel_9/mask.webp, pixel_9/layout
+  pixel_tablet/back.webp, pixel_tablet/layout
+  Obtidos em 2026-10-20 (árvore device-art-resources a177e3a2d906ae1715c8974f39eee71be0ca4c8d).
+  O arquivo device-art.xml da mesma pasta traz o cabeçalho
+  "Copyright (C) 2025 The Android Open Source Project / Licensed under the Apache License, Version 2.0".
+  Texto da licença: LICENSE-Apache-2.0.txt (nesta pasta).
+
+Arquivos modificados (Apache-2.0, seção 4b):
+  phone-back.webp           <- pixel_9/back.webp     redimensionado de 1198x2531 para 720x1521 (Lanczos). Sem outra alteração.
+  phone-mask.webp           <- pixel_9/mask.webp     redimensionado de 1080x2424 para 649x1457 (Lanczos). Sem outra alteração.
+  tablet-portrait-back.webp <- pixel_tablet/back.webp girado 90 graus (horário) para retrato; moldura clara
+                               recolorida para grafite (cada canal: v' = 12 + 0,115 v); borda externa de ~5 px (na resolução original)
+                               clareada para (96,98,94); redimensionado de 1837x2798 para 880x1340 (Lanczos).
+
+As molduras são usadas sem nome de produto. "Pixel", "Android" e "Wear OS" são marcas do Google
+e não aparecem no site.

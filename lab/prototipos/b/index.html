@@ -1,0 +1,196 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self'; font-src 'self'; base-uri 'none'; form-action 'none'">
+<title>Serviços · Protótipo B</title>
+<meta name="description" content="Protótipo B dos cards de serviço: card Flowbite adaptado e molduras de dispositivo react-mockframe, sem animação customizada.">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="preload" href="assets/fonts/InterVariable.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="vendor/mockframe-subset.css">
+<link rel="stylesheet" href="style.css">
+<script type="module" src="carousel.js"></script>
+</head>
+<body>
+<main>
+<section class="svc" aria-labelledby="svc-title">
+  <header class="svc-head">
+    <p class="svc-eyebrow">Serviços</p>
+    <h2 id="svc-title" class="svc-title">Escolha por onde começar.</h2>
+    <div class="svc-nav">
+      <p class="svc-count" aria-live="polite" aria-atomic="true"><span class="sr-only">Mostrando serviço </span><span data-count>1 de 5</span></p>
+      <button type="button" class="nav-btn" data-prev aria-controls="svc-track" aria-label="Serviço anterior">
+        <svg aria-hidden="true" viewBox="0 0 24 24" width="22" height="22"><path d="M19 12H5m0 0 6 6m-6-6 6-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <button type="button" class="nav-btn" data-next aria-controls="svc-track" aria-label="Próximo serviço">
+        <svg aria-hidden="true" viewBox="0 0 24 24" width="22" height="22"><path d="M5 12h14m0 0-6 6m6-6-6-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <ol class="track" id="svc-track" tabindex="0" aria-label="Serviços: role para o lado ou use as setas">
+
+    <!-- 01 Sites e apps -->
+    <li class="slide">
+      <article class="fb-card" aria-labelledby="c01-name">
+        <div class="fb-card-head">
+          <span class="fb-badge" aria-hidden="true">01</span>
+          <div>
+            <h3 class="fb-card-name" id="c01-name"><span class="sr-only">01. </span>Sites e apps</h3>
+            <p class="fb-card-sub">Sites / Apps / Agendamento</p>
+          </div>
+        </div>
+        <span class="fb-rule" aria-hidden="true"></span>
+        <p class="fb-card-title">Do primeiro toque à próxima ação.</p>
+        <p class="fb-card-text">Páginas rápidas e claras que levam a pessoa a agendar, comprar ou falar.</p>
+        <div class="stage" role="img" aria-label="Celular com a tela de agendamento de visita do Ateliê Exemplo, marca fictícia">
+          <div class="fit fit--phone" aria-hidden="true">
+            <div class="dev">
+<div class="mockframe pixel10 obsidian"><div class="inner"></div><div class="top-bar"></div><div class="sleep"></div><div class="bottom-bar"></div><div class="volume"></div><div class="camera"></div><div class="sensor"></div><div class="speaker"></div><div class="sensors"></div><div class="more-sensors"></div><div class="inner-shadow"></div><div class="screen"><div class="scr scr--agenda">
+  <p class="s-brand">Ateliê Exemplo</p>
+  <img class="s-img" src="assets/img/ceramics-shelf.webp" width="1200" height="671" alt="">
+  <p class="s-h">Agende sua visita</p>
+  <p class="s-meta">Sábado, 15 de nov.</p>
+  <div class="s-slots"><span class="on">10:30</span><span>14:00</span></div>
+  <span class="s-btn">Confirmar</span>
+</div></div><div class="home"></div></div>
+            </div>
+          </div>
+        </div>
+        <a class="fb-btn" href="#contato">Conversar sobre sites e apps<svg aria-hidden="true" viewBox="0 0 24 24" width="20" height="20"><path d="M5 12h14m0 0-6 6m6-6-6-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+      </article>
+    </li>
+
+    <!-- 02 Campanhas -->
+    <li class="slide">
+      <article class="fb-card" aria-labelledby="c02-name">
+        <div class="fb-card-head">
+          <span class="fb-badge" aria-hidden="true">02</span>
+          <div>
+            <h3 class="fb-card-name" id="c02-name"><span class="sr-only">02. </span>Campanhas</h3>
+            <p class="fb-card-sub">Meta / Google / TikTok / YouTube</p>
+          </div>
+        </div>
+        <span class="fb-rule" aria-hidden="true"></span>
+        <p class="fb-card-title">A mensagem certa, no formato certo.</p>
+        <p class="fb-card-text">Estratégia, criativos e mídia trabalhando juntos, do planejamento à otimização.</p>
+        <div class="stage" role="img" aria-label="Tablet com um anúncio do Ateliê Exemplo, marca fictícia: vaso de cerâmica e o título Feito à mão, para durar">
+          <div class="fit fit--tablet-l" aria-hidden="true">
+            <div class="dev">
+<div class="mockframe ipad-pro space-black landscape"><div class="inner"></div><div class="volume-up"></div><div class="volume-down"></div><div class="top-bar"></div><div class="sleep"></div><div class="bottom-bar"></div><div class="volume"></div><div class="camera"></div><div class="sensor"></div><div class="speaker"></div><div class="sensors"></div><div class="more-sensors"></div><div class="inner-shadow"></div><div class="screen"><div class="scr scr--ad">
+  <img class="s-img" src="assets/img/vase-sage.webp" width="720" height="900" alt="">
+  <div class="s-col">
+    <span class="s-chip">Anúncio</span>
+    <p class="s-h">Feito à mão, para durar.</p>
+    <span class="s-btn">Ver coleção</span>
+  </div>
+</div></div><div class="home"></div></div>
+            </div>
+          </div>
+        </div>
+        <a class="fb-btn" href="#contato">Conversar sobre campanhas<svg aria-hidden="true" viewBox="0 0 24 24" width="20" height="20"><path d="M5 12h14m0 0-6 6m6-6-6-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+      </article>
+    </li>
+
+    <!-- 05 Conteúdo -->
+    <li class="slide">
+      <article class="fb-card" aria-labelledby="c05-name">
+        <div class="fb-card-head">
+          <span class="fb-badge" aria-hidden="true">05</span>
+          <div>
+            <h3 class="fb-card-name" id="c05-name"><span class="sr-only">05. </span>Conteúdo</h3>
+            <p class="fb-card-sub">Vídeo / Social / Blog</p>
+          </div>
+        </div>
+        <span class="fb-rule" aria-hidden="true"></span>
+        <p class="fb-card-title">Uma ideia. Conteúdo para cada canal.</p>
+        <p class="fb-card-text">Planejamento, roteiro e produção para vídeo, redes sociais e blog.</p>
+        <div class="stage" role="img" aria-label="Notebook com um player de vídeo do Ateliê Exemplo, marca fictícia, mostrando montanhas ao entardecer">
+          <div class="fit fit--laptop" aria-hidden="true">
+            <div class="dev">
+<div class="mockframe macbook-pro space-black"><div class="inner"></div><div class="notch"><div class="camera"></div></div><div class="top-bar"></div><div class="sleep"></div><div class="bottom-bar"></div><div class="volume"></div><div class="camera"></div><div class="sensor"></div><div class="speaker"></div><div class="sensors"></div><div class="more-sensors"></div><div class="inner-shadow"></div><div class="screen"><div class="scr scr--video">
+  <div class="s-media">
+    <img class="s-img" src="assets/img/mountains-16x9.webp" width="1200" height="671" alt="">
+    <span class="s-play"></span>
+    <p class="s-h">Uma ideia, cinco formatos.</p>
+  </div>
+  <div class="s-bar"><span class="s-progress"><i></i></span></div>
+</div></div><div class="home"></div></div>
+            </div>
+          </div>
+        </div>
+        <a class="fb-btn" href="#contato">Conversar sobre conteúdo<svg aria-hidden="true" viewBox="0 0 24 24" width="20" height="20"><path d="M5 12h14m0 0-6 6m6-6-6-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+      </article>
+    </li>
+
+    <!-- 08 E-commerce -->
+    <li class="slide">
+      <article class="fb-card" aria-labelledby="c08-name">
+        <div class="fb-card-head">
+          <span class="fb-badge" aria-hidden="true">08</span>
+          <div>
+            <h3 class="fb-card-name" id="c08-name"><span class="sr-only">08. </span>E-commerce</h3>
+            <p class="fb-card-sub">Loja / Conversão / CRM</p>
+          </div>
+        </div>
+        <span class="fb-rule" aria-hidden="true"></span>
+        <p class="fb-card-title">Escolher e comprar, sem complicação.</p>
+        <p class="fb-card-text">Produto, checkout e relacionamento pensados para a compra fluir.</p>
+        <div class="stage" role="img" aria-label="Celular com a página de produto do Ateliê Exemplo, marca fictícia: pote âmbar por 89 reais">
+          <div class="fit fit--phone" aria-hidden="true">
+            <div class="dev">
+<div class="mockframe pixel10 obsidian"><div class="inner"></div><div class="top-bar"></div><div class="sleep"></div><div class="bottom-bar"></div><div class="volume"></div><div class="camera"></div><div class="sensor"></div><div class="speaker"></div><div class="sensors"></div><div class="more-sensors"></div><div class="inner-shadow"></div><div class="screen"><div class="scr scr--product">
+  <p class="s-brand">Ateliê Exemplo<svg viewBox="0 0 24 24" width="40" height="40"><path d="M6 8h12l-1 12H7L6 8Zm3 0V6a3 3 0 0 1 6 0v2" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg></p>
+  <img class="s-img" src="assets/img/jar-amber.webp" width="720" height="900" alt="">
+  <p class="s-h">Pote âmbar</p>
+  <p class="s-price">R$ 89</p>
+  <span class="s-btn">Adicionar à sacola</span>
+</div></div><div class="home"></div></div>
+            </div>
+          </div>
+        </div>
+        <a class="fb-btn" href="#contato">Conversar sobre e-commerce<svg aria-hidden="true" viewBox="0 0 24 24" width="20" height="20"><path d="M5 12h14m0 0-6 6m6-6-6-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+      </article>
+    </li>
+
+    <!-- 09 Marca -->
+    <li class="slide">
+      <article class="fb-card" aria-labelledby="c09-name">
+        <div class="fb-card-head">
+          <span class="fb-badge" aria-hidden="true">09</span>
+          <div>
+            <h3 class="fb-card-name" id="c09-name"><span class="sr-only">09. </span>Marca</h3>
+            <p class="fb-card-sub">Identidade / Posicionamento</p>
+          </div>
+        </div>
+        <span class="fb-rule" aria-hidden="true"></span>
+        <p class="fb-card-title">Sua identidade, em cada detalhe.</p>
+        <p class="fb-card-text">Estratégia, identidade visual e aplicações reunidas em um sistema coeso.</p>
+        <div class="stage" role="img" aria-label="Tablet com o quadro de marca do Ateliê Exemplo, marca fictícia: logotipo, quatro cores e a fonte Inter">
+          <div class="fit fit--tablet-p" aria-hidden="true">
+            <div class="dev">
+<div class="mockframe ipad-pro space-black"><div class="inner"></div><div class="volume-up"></div><div class="volume-down"></div><div class="top-bar"></div><div class="sleep"></div><div class="bottom-bar"></div><div class="volume"></div><div class="camera"></div><div class="sensor"></div><div class="speaker"></div><div class="sensors"></div><div class="more-sensors"></div><div class="inner-shadow"></div><div class="screen"><div class="scr scr--brand">
+  <img class="s-img" src="assets/img/ceramics-shelf.webp" width="1200" height="671" alt="">
+  <p class="s-word">Ateliê Exemplo</p>
+  <p class="s-tag">Cerâmica feita à mão</p>
+  <div class="s-swatches"><span class="c1"></span><span class="c2"></span><span class="c3"></span><span class="c4"></span></div>
+  <div class="s-type"><b>Aa</b><span>Inter<small>Títulos e textos</small></span></div>
+</div></div><div class="home"></div></div>
+            </div>
+          </div>
+        </div>
+        <a class="fb-btn" href="#contato">Conversar sobre marca<svg aria-hidden="true" viewBox="0 0 24 24" width="20" height="20"><path d="M5 12h14m0 0-6 6m6-6-6-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+      </article>
+    </li>
+
+  </ol>
+</section>
+
+<section class="contact" id="contato" aria-labelledby="contato-title">
+  <h2 id="contato-title">Contato</h2>
+  <p>No site, os botões dos cards levam para esta seção de contato. Neste protótipo, ela é só o destino do link.</p>
+</section>
+</main>
+</body>
+</html>

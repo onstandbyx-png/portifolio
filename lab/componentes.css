@@ -1,0 +1,15 @@
+/* Lab-only layout around the real components (the components keep their own CSS). */
+.lab-k-block{padding-block:48px}
+.lab-k-head{display:grid;gap:8px;max-width:70ch;margin-bottom:24px}
+.lab-k-head h2{font-size:clamp(22px,3vw,30px);line-height:1.15;letter-spacing:-.01em}
+.lab-k-head p{opacity:.85}
+.lab-k-code{justify-self:start;padding:2px 8px;border:1px solid currentColor;border-radius:999px;font-size:12px;font-weight:600;letter-spacing:.06em;opacity:.8}
+.lab-k-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:20px}
+.lab-k-form{display:grid;gap:20px;max-width:640px}
+.lab-k-layer{display:grid;align-content:center;gap:8px;margin:0;padding:32px;min-height:220px}
+.lab-k-layer figcaption{font-weight:650;font-size:20px}
+.lab-k-layer--antes{background:#D9D5CA;color:#18251F;justify-items:end;text-align:right}
+.lab-k-layer--depois{background:#0F2E24;color:#F3F1E9}
+.lab-k-devices{display:flex;flex-wrap:wrap;gap:32px;align-items:flex-end;justify-content:center}
+.lab-k-screen{display:grid;place-content:center;gap:6px;width:100%;height:100%;padding:16px;background:#F3F1E9;color:#18251F;text-align:center;font-size:14px}
+.lab-k-screen b{font-size:16px}

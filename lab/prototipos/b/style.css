@@ -1,0 +1,511 @@
+/* Protótipo B - cards de serviço.
+   Card: Flowbite 4 "Card with image" / "Card with button" + Badge + Button (MIT, (c) 2023 Bergside Inc.),
+   portado de utilitários Tailwind para CSS puro e adaptado à paleta das referências.
+   Molduras: react-mockframe 1.3.0 (MIT) em vendor/mockframe-subset.css. Ver CREDITS.md. */
+
+@font-face {
+  font-family: "Inter";
+  src: url("assets/fonts/InterVariable.woff2") format("woff2");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  color-scheme: dark;
+  /* Nomes de token do Flowbite (src/themes/default.css), reapontados para a paleta do dono */
+  --color-neutral-primary: #0F2E24;       /* fundo da página */
+  --color-neutral-primary-soft: #16362B;  /* bg-neutral-primary-soft (fundo do card) */
+  --color-neutral-secondary: #123632;     /* fim do degradê do card */
+  --color-default: rgba(156, 203, 176, .22); /* border-default */
+  --color-heading: #F3F1E9;               /* text-heading */
+  --color-body: #C9D6CE;                  /* text-body */
+  --color-brand: #F3F1E9;                 /* bg-brand (CTA) */
+  --color-brand-strong: #FFFFFF;          /* hover:bg-brand-strong */
+  --color-fg-brand: #9CCBB0;              /* destaque menta */
+  --radius-base: 12px;                    /* rounded-base */
+  --radius-card: 28px;
+  --paper: #F3F1E9;
+  --mint: #9CCBB0;
+  --ink: #0F2E24;
+  --screen-green: #1E4D3A;
+  --screen-ink: #14281F;
+  --screen-muted: #4A5E54;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html { background: var(--color-neutral-primary); }
+
+body {
+  margin: 0;
+  background: var(--color-neutral-primary);
+  color: var(--color-body);
+  font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  font-optical-sizing: auto;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h2, h3, p { margin: 0; }
+
+.sr-only {
+  position: absolute !important;
+  width: 1px; height: 1px;
+  margin: -1px; padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+:focus-visible {
+  outline: 3px solid var(--mint);
+  outline-offset: 3px;
+}
+
+/* ---------- Seção ---------- */
+.svc {
+  max-width: 1264px;
+  margin: 0 auto;
+  padding: 20px 16px 40px;
+}
+
+.svc-head {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  grid-template-areas: "eyebrow nav" "title title";
+  align-items: center;
+  gap: 4px 16px;
+  margin-bottom: 16px;
+}
+
+.svc-eyebrow {
+  grid-area: eyebrow;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--mint);
+}
+
+.svc-title {
+  grid-area: title;
+  font-size: clamp(24px, 6.4vw, 40px);
+  line-height: 1.1;
+  font-weight: 700;
+  letter-spacing: -.02em;
+  color: var(--color-heading);
+}
+
+.svc-nav {
+  grid-area: nav;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.svc-count {
+  margin-right: 4px;
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--color-body);
+  font-variant-numeric: tabular-nums;
+}
+
+.nav-btn {
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  padding: 0;
+  border: 1px solid rgba(243, 241, 233, .4);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--paper);
+  cursor: pointer;
+  transition: background-color .15s ease;
+}
+.nav-btn:hover { background: rgba(243, 241, 233, .1); }
+.nav-btn[aria-disabled="true"] { opacity: .4; cursor: default; }
+.nav-btn[aria-disabled="true"]:hover { background: transparent; }
+
+@media (min-width: 900px) {
+  .svc { padding: 40px 32px 40px; }
+  .svc-head { grid-template-areas: "eyebrow nav" "title nav"; align-items: end; row-gap: 6px; margin-bottom: 24px; }
+  .svc-title { font-size: clamp(30px, 3vw, 40px); }
+  .svc-count { margin-right: 8px; }
+}
+
+/* ---------- Carrossel: scroll-snap nativo, sem movimento customizado ---------- */
+.track {
+  position: relative; /* contém os .sr-only absolutos dos cards fora da tela */
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 100%;
+  gap: 16px;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  border-radius: var(--radius-card);
+}
+.track::-webkit-scrollbar { display: none; }
+
+@media (prefers-reduced-motion: no-preference) {
+  .track { scroll-behavior: smooth; }
+}
+
+.slide {
+  display: flex;
+  min-width: 0;
+  scroll-snap-align: start;
+}
+
+@media (min-width: 720px) {
+  .track { grid-auto-columns: calc((100% - 16px) / 2); }
+}
+@media (min-width: 1080px) {
+  .track { grid-auto-columns: calc((100% - 48px) / 3); gap: 24px; }
+}
+
+/* ---------- Card (porte do Flowbite) ----------
+   Flowbite: bg-neutral-primary-soft block max-w-sm p-6 border border-default rounded-base shadow-xs */
+.fb-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-width: 0;
+  padding: 20px;
+  background: linear-gradient(180deg, var(--color-neutral-primary-soft) 0%, var(--color-neutral-secondary) 100%);
+  border: 1px solid var(--color-default);
+  border-radius: var(--radius-card);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, .2);
+  color: var(--color-body);
+}
+
+@media (min-width: 900px) {
+  .fb-card { padding: 26px; }
+}
+
+.fb-card-head {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+/* Flowbite badge (inline-flex items-center border text-xs font-medium rounded-sm) -> bloco numerado quadrado */
+.fb-badge {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border: 1px solid rgba(243, 241, 233, .34);
+  border-radius: var(--radius-base);
+  background: rgba(243, 241, 233, .04);
+  color: var(--paper);
+  font-size: 18px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.fb-card-name {
+  font-size: 19px;
+  line-height: 1.2;
+  font-weight: 650;
+  color: var(--color-heading);
+}
+
+.fb-card-sub {
+  margin-top: 3px;
+  font-size: 14px;
+  line-height: 1.35;
+  color: var(--color-body);
+}
+
+.fb-rule {
+  display: block;
+  width: 44px;
+  height: 3px;
+  margin: 18px 0 16px;
+  border-radius: 2px;
+  background: var(--mint);
+}
+
+/* Flowbite: mt-3 mb-6 text-2xl font-semibold tracking-tight text-heading */
+.fb-card-title {
+  font-size: 26px;
+  line-height: 1.12;
+  font-weight: 700;
+  letter-spacing: -.02em;
+  color: var(--color-heading);
+  text-wrap: balance;
+}
+
+/* Flowbite: text-body mb-6 */
+.fb-card-text {
+  margin-top: 10px;
+  font-size: 15px;
+  line-height: 1.45;
+  color: var(--color-body);
+  text-wrap: pretty;
+}
+
+@media (min-width: 900px) {
+  .fb-card-title { font-size: 28px; }
+  .fb-card-text { font-size: 16px; }
+}
+
+/* Palco da demonstração: altura fixa, o dispositivo é escalado para caber inteiro (contain) */
+.stage {
+  container-type: size;
+  height: 340px;
+  margin: 20px 0;
+  display: grid;
+  place-items: center;
+}
+
+/* Flowbite button: inline-flex items-center bg-brand border border-transparent hover:bg-brand-strong
+   focus:ring-4 shadow-xs font-medium leading-5 rounded-base text-sm px-4 py-2.5 -> pílula larga */
+.fb-btn {
+  margin-top: auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-height: 54px;
+  padding: 0 22px 0 24px;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  background: var(--color-brand);
+  color: var(--ink);
+  font-size: 16px;
+  line-height: 1.25;
+  font-weight: 600;
+  text-decoration: none;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, .2);
+  transition: background-color .15s ease;
+}
+.fb-btn:hover { background: var(--color-brand-strong); }
+.fb-btn svg { flex: none; }
+
+/* ---------- Ajuste das molduras (tamanho fixo em px) ao palco ----------
+   --w/--h = caixa natural do dispositivo, incluindo botões laterais e a base do notebook.
+   --s = min(1, larguraDoPalco / --w, alturaDoPalco / --h), calculado só com CSS
+   (tan(atan2(a, b)) = a / b converte comprimento em número). Nada é cortado. */
+.fit {
+  --s: min(1, tan(atan2(100cqw, calc(var(--w) * 1px))), tan(atan2(100cqh, calc(var(--h) * 1px))));
+  position: relative;
+  flex: none;
+  width: calc(var(--w) * 1px * var(--s));
+  height: calc(var(--h) * 1px * var(--s));
+  filter: drop-shadow(0 14px 18px rgba(0, 0, 0, .32));
+}
+.fit > .dev {
+  position: absolute;
+  left: 0;
+  top: 0;
+  display: flex;
+  transform-origin: 0 0;
+  transform: scale(var(--s)) translate(calc(var(--ox) * 1px), calc(var(--oy) * 1px));
+}
+.fit--phone    { --w: 461;  --h: 967; --ox: 3;   --oy: 0; }
+.fit--tablet-l { --w: 731;  --h: 560; --ox: 1.5; --oy: 1.5; }
+.fit--tablet-p { --w: 560;  --h: 731; --ox: 1.5; --oy: 1.5; }
+.fit--laptop   { --w: 1208; --h: 729; --ox: 106; --oy: 0; }
+
+/* Navegadores sem funções trigonométricas em CSS: escalas fixas seguras para o palco de 340px */
+@supports not (width: calc(1px * tan(atan2(1px, 1px)))) {
+  .fit--phone    { --s: .34; }
+  .fit--tablet-l { --s: .38; }
+  .fit--tablet-p { --s: .44; }
+  .fit--laptop   { --s: .23; }
+}
+
+/* ---------- Telas (HTML ao vivo, medidas em px do dispositivo) ----------
+   Texto mínimo de 32px no dispositivo, para ficar com 12px ou mais depois da escala. */
+.scr {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  font-family: "Inter", system-ui, sans-serif;
+  color: var(--screen-ink);
+  background: var(--paper);
+  line-height: 1.15;
+}
+:where(.scr) p { margin: 0; } /* especificidade baixa: as margens das classes abaixo valem */
+.scr .s-img { display: block; width: 100%; height: auto; }
+
+.s-btn {
+  display: grid;
+  place-items: center;
+  border-radius: 999px;
+  background: var(--screen-green);
+  color: var(--paper);
+  font-weight: 600;
+}
+
+/* Celular (tela 412 x 924) */
+.scr--agenda, .scr--product { padding: 76px 28px 34px; }
+.s-brand {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 34px;
+  font-weight: 650;
+  letter-spacing: -.01em;
+  color: var(--screen-green);
+}
+.scr--agenda .s-img, .scr--product .s-img { margin-top: 26px; border-radius: 28px; }
+.scr--agenda .s-h, .scr--product .s-h {
+  margin-top: 30px;
+  font-size: 52px;
+  line-height: 1.04;
+  font-weight: 700;
+  letter-spacing: -.025em;
+}
+.scr--agenda .s-meta { margin-top: 16px; font-size: 34px; color: var(--screen-muted); }
+.s-slots { display: flex; gap: 16px; margin-top: 24px; }
+.s-slots span {
+  flex: 1;
+  display: grid;
+  place-items: center;
+  height: 88px;
+  border: 3px solid #C3CEC7;
+  border-radius: 24px;
+  font-size: 38px;
+  font-weight: 600;
+}
+.s-slots .on { background: #DCEBE2; border-color: var(--screen-green); color: var(--screen-green); }
+.scr--agenda .s-btn, .scr--product .s-btn { height: 104px; margin-top: auto; font-size: 38px; }
+.scr--product .s-price { margin-top: 10px; font-size: 44px; font-weight: 650; color: var(--screen-green); }
+
+/* Tablet deitado (tela 683 x 512): anúncio */
+.scr--ad {
+  flex-direction: row;
+  align-items: center;
+  gap: 32px;
+  padding: 0 36px 0 40px;
+  background: #EAE4D9;
+}
+.scr--ad .s-img { flex: none; width: auto; height: 380px; border-radius: 20px; }
+.scr--ad .s-col { display: flex; flex-direction: column; align-items: flex-start; min-width: 0; }
+.s-chip {
+  padding: 6px 20px;
+  border: 3px solid var(--screen-green);
+  border-radius: 999px;
+  color: var(--screen-green);
+  font-size: 32px;
+  font-weight: 600;
+}
+.scr--ad .s-h {
+  margin-top: 22px;
+  font-size: 44px;
+  line-height: 1.06;
+  font-weight: 700;
+  letter-spacing: -.025em;
+}
+.scr--ad .s-btn { margin-top: 30px; height: 78px; padding: 0 34px; font-size: 32px; }
+
+/* Notebook (tela 960 x 624): player de vídeo */
+.scr--video { background: #0C1713; }
+.s-media { position: relative; }
+.s-media::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(5, 12, 9, .62), rgba(5, 12, 9, 0) 55%);
+}
+.s-play {
+  position: absolute;
+  z-index: 1;
+  left: 50%;
+  top: 44%;
+  width: 150px;
+  height: 150px;
+  margin: -75px 0 0 -75px;
+  border-radius: 50%;
+  background: rgba(243, 241, 233, .94);
+}
+.s-play::before {
+  content: "";
+  position: absolute;
+  left: 58px;
+  top: 42px;
+  border-style: solid;
+  border-width: 33px 0 33px 54px;
+  border-color: transparent transparent transparent var(--screen-green);
+}
+.scr--video .s-h {
+  position: absolute;
+  z-index: 1;
+  left: 48px;
+  bottom: 38px;
+  font-size: 60px;
+  line-height: 1;
+  font-weight: 700;
+  letter-spacing: -.02em;
+  color: #FFFFFF;
+}
+.s-bar { flex: 1; display: flex; align-items: center; padding: 0 48px; }
+.s-progress { position: relative; flex: 1; height: 12px; border-radius: 6px; background: rgba(243, 241, 233, .22); }
+.s-progress i { position: absolute; left: 0; top: 0; bottom: 0; width: 42%; border-radius: 6px; background: var(--mint); }
+.s-progress i::after {
+  content: "";
+  position: absolute;
+  right: -14px;
+  top: 50%;
+  width: 28px;
+  height: 28px;
+  margin-top: -14px;
+  border-radius: 50%;
+  background: #FFFFFF;
+}
+
+/* Tablet em pé (tela 512 x 683): quadro de marca */
+.scr--brand { padding: 36px 40px; }
+.scr--brand .s-img { border-radius: 20px; }
+.s-word {
+  margin-top: 32px;
+  font-size: 50px;
+  line-height: 1;
+  font-weight: 750;
+  letter-spacing: -.035em;
+  color: var(--screen-green);
+}
+.s-tag {
+  margin-top: 12px;
+  font-size: 26px;
+  font-weight: 600;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--screen-muted);
+}
+.s-swatches { display: flex; gap: 16px; margin-top: 40px; }
+.s-swatches span { flex: 1; height: 76px; border-radius: 18px; }
+.s-swatches .c1 { background: var(--screen-green); }
+.s-swatches .c2 { background: var(--mint); }
+.s-swatches .c3 { background: #D8C9AE; }
+.s-swatches .c4 { background: #FFFFFF; box-shadow: inset 0 0 0 3px #D9D4C7; }
+.s-type { display: flex; align-items: center; gap: 24px; margin-top: 36px; }
+.s-type b { font-size: 104px; line-height: 1; font-weight: 600; letter-spacing: -.03em; }
+.s-type span { display: flex; flex-direction: column; font-size: 34px; font-weight: 650; }
+.s-type small { margin-top: 4px; font-size: 28px; font-weight: 450; color: var(--screen-muted); }
+
+/* ---------- Destino do CTA ---------- */
+.contact {
+  max-width: 1264px;
+  margin: 0 auto;
+  padding: 32px 16px 64px;
+  border-top: 1px solid var(--color-default);
+}
+.contact h2 { font-size: 22px; font-weight: 700; color: var(--color-heading); }
+.contact p { margin-top: 8px; font-size: 15px; line-height: 1.5; max-width: 60ch; }
+@media (min-width: 900px) { .contact { padding: 32px 32px 64px; } }
