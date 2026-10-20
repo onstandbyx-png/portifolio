@@ -1,0 +1,604 @@
+<!doctype html>
+<!--
+  /criadores/ao-vivo · página para quem transmite (SPEC 1.2, 3.B, 4.B, 5.2; texto final em copy-ao-vivo.md).
+  Casca e contrato do formulário: ver o comentário no topo de pages/privacidade.html.
+  Entrada: /assets/pages/ao-vivo.js (shell, cartões que viram, cenas do overlay, da live ao corte,
+  thumbnail antes e depois, diagnóstico). Sem JS: tudo fica legível (@media (scripting: none) nas folhas
+  das demos), o botão do formulário continua disabled e o mailto: com o modelo da mensagem fica visível.
+  Nenhum embed, nenhum logo de plataforma, nenhuma marca além do Ateliê Exemplo (cliente fictício).
+-->
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#0F2E24">
+  <title>Para quem transmite: identidade, cortes e patrocínio · Smile N</title>
+  <meta name="description" content="Identidade da live, cortes do VOD, roteiro de patrocínio e de venda ao vivo para quem transmite no YouTube, Twitch, Kick, TikTok LIVE, Instagram Live ou Kwai. Você revisa a mensagem antes de enviar.">
+  <link rel="canonical" href="https://portifolio-github-production.up.railway.app/criadores/ao-vivo">
+  <meta property="og:title" content="A live acaba. O que ela rende, não.">
+  <meta property="og:description" content="Identidade da transmissão, cortes da semana e proposta para marcas.">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="pt_BR">
+  <meta property="og:url" content="https://portifolio-github-production.up.railway.app/criadores/ao-vivo">
+  <meta property="og:image" content="https://portifolio-github-production.up.railway.app/assets/creative/og-cover.png">
+  <meta name="author" content="Smile N">
+  <link rel="icon" href="/assets/creative/favicon.svg" type="image/svg+xml">
+  <link rel="preload" href="/assets/fonts/InterVariable.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="/assets/pages/base.css">
+  <link rel="stylesheet" href="/assets/pages/accordion.css">
+  <link rel="stylesheet" href="/assets/pages/check.css">
+  <link rel="stylesheet" href="/assets/pages/flip.css">
+  <link rel="stylesheet" href="/assets/pages/deck.css">
+  <link rel="stylesheet" href="/assets/showcase/device-premium.css">
+  <link rel="stylesheet" href="/assets/pages/devices.css">
+  <link rel="stylesheet" href="/assets/pages/compare.css">
+  <link rel="stylesheet" href="/assets/pages/demos/overlay.css">
+  <link rel="stylesheet" href="/assets/pages/demos/live-cut.css">
+  <link rel="stylesheet" href="/assets/pages/ao-vivo.css">
+  <noscript><style>.menu-toggle,.motion-toggle,[data-js-only]{display:none!important}</style></noscript>
+  <script src="/assets/profile.js" defer></script>
+  <script type="module" src="/assets/pages/ao-vivo.js"></script>
+</head>
+<body class="pg av-page" data-page="criadores-ao-vivo">
+  <a class="pg-skip" href="#conteudo">Pular para o conteúdo</a>
+  <header class="site-header" id="topo">
+    <div class="pg-container site-header-inner">
+      <a class="pg-brand" href="/" aria-label="Smile N, início"><span class="pg-brand-name">Smile N</span><span class="pg-brand-signature">ideia ↗ execução.</span></a>
+      <nav class="pg-nav" aria-label="Navegação principal"><a href="/#trabalhos">Trabalhos</a><a href="/#categorias">Serviços</a><a href="/criadores">Para criadores</a><a href="/criadores/ao-vivo" aria-current="page">Ao vivo</a></nav>
+      <a class="pg-btn pg-btn--primary pg-header-cta" href="#diagnostico" data-header-cta>Montar meu diagnóstico <span aria-hidden="true">↓</span></a>
+      <button id="motion-toggle" class="motion-toggle" type="button" aria-pressed="false" aria-label="Pausar movimento e reprodução" title="Pausar movimento e reprodução"><span class="motion-toggle-icon" aria-hidden="true">Ⅱ</span><span class="motion-toggle-text">Pausar movimento</span></button>
+      <button class="menu-toggle" id="menu-toggle" type="button" aria-label="Abrir menu" aria-controls="mobile-nav" aria-expanded="false"><span></span><span></span></button>
+    </div>
+    <div class="pg-menu" id="mobile-nav" hidden>
+      <nav aria-label="Navegação móvel"><a href="/#trabalhos" data-menu-item>Trabalhos</a><a href="/#categorias" data-menu-item>Serviços</a><a href="/criadores" data-menu-item>Para criadores</a><a href="/criadores/ao-vivo" aria-current="page" data-menu-item>Ao vivo</a></nav>
+      <a class="pg-btn pg-btn--primary" href="#diagnostico" data-menu-item>Montar meu diagnóstico <span aria-hidden="true">↓</span></a>
+      <button class="pg-menu-motion" type="button" data-motion-proxy data-menu-item aria-pressed="false" aria-label="Pausar movimento e reprodução"><span class="motion-toggle-icon" aria-hidden="true">Ⅱ</span><span class="motion-toggle-text">Pausar movimento</span></button>
+    </div>
+  </header>
+
+  <main id="conteudo" tabindex="-1">
+    <!-- AV1 · Hero -->
+    <section class="pg-section pg-section--floresta pg-hero av-hero" data-hero aria-labelledby="av-titulo">
+      <div class="pg-container">
+        <nav class="pg-track av-track" aria-label="Escolha a página do seu formato"><a href="/criadores">Redes sociais</a><a href="/criadores/ao-vivo" aria-current="page">Vídeo e live</a></nav>
+        <div class="av-hero-grid">
+          <div class="av-hero-copy">
+            <p class="pg-eyebrow">PARA QUEM TRANSMITE · VÍDEO E LIVE</p>
+            <h1 id="av-titulo" data-reveal-heading>A live acaba. <em>O que ela rende, não.</em></h1>
+            <p class="pg-lead">Identidade da transmissão, cortes da semana e proposta para marcas. Para quem transmite com agenda.</p>
+            <div class="av-hero-cta">
+              <a class="pg-btn pg-btn--primary av-hero-primary" href="#diagnostico">Montar meu diagnóstico <span aria-hidden="true">↓</span></a>
+              <p class="pg-small av-hero-micro">Cinco toques. Você revisa a mensagem antes de abrir o WhatsApp.</p>
+              <a class="pg-btn pg-btn--link av-hero-secondary" href="#exemplos">Ver exemplos <span aria-hidden="true">↓</span></a>
+            </div>
+            <p class="av-platforms">Para quem transmite no YouTube, Twitch, Kick, TikTok LIVE, Instagram Live ou Kwai, ou faz venda ao vivo.</p>
+          </div>
+          <figure class="av-hero-figure">
+            <div class="es-hardware es-hardware--macbook rf-macbook pg-notebook av-hero-notebook" data-model="notebook" role="img" aria-label="Exemplo de overlay de live do Ateliê Exemplo, cena Ao vivo, com espaço reservado para marca parceira.">
+              <div class="mbp-device">
+                <div class="mbp-lid">
+                  <div class="mbp-display"><div class="mbp-screen">
+                    <div class="av-scene av-scene--live">
+                      <div class="av-scene-cam" aria-hidden="true"><i class="av-cam-table"></i><i class="av-cam-wheel"></i><i class="av-cam-vase"></i><i class="av-cam-shelf"></i><i class="av-cam-pot av-cam-pot--a"></i><i class="av-cam-pot av-cam-pot--b"></i></div>
+                      <div class="av-scene-tags"><p class="av-scene-badge">AO VIVO</p></div>
+                      <p class="av-scene-title">Torno do zero · aula 3</p>
+                      <div class="av-scene-side">
+                        <div class="av-scene-chat" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></div>
+                        <p class="av-scene-sponsor">Espaço da marca parceira</p>
+                      </div>
+                      <p class="av-scene-bar">Ateliê Exemplo</p>
+                    </div>
+                  </div></div>
+                  <div class="mbp-camera" aria-hidden="true"><i></i></div>
+                </div>
+                <div class="mbp-hinge" aria-hidden="true"></div>
+                <div class="mbp-base" aria-hidden="true"><span class="mbp-front-groove"></span></div>
+                <span class="mbp-ground-shadow" aria-hidden="true"></span>
+              </div>
+            </div>
+            <figcaption class="av-figure-label">Exemplo ilustrativo · Ateliê Exemplo (cliente fictício)</figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <!-- AV2 · Antes, durante e depois -->
+    <section class="pg-section pg-section--papel av-cycle" id="ciclo" aria-labelledby="ciclo-titulo">
+      <div class="pg-container">
+        <div class="pg-section-head"><h2 id="ciclo-titulo">Antes, durante e depois da live.</h2></div>
+        <div class="av-cycle-grid" data-reveal-group>
+          <article class="av-cycle-item reveal"><h3 class="av-cycle-label"><span class="av-cycle-dot" aria-hidden="true"></span>Antes</h3><p>Agenda, thumbnail e aviso de live. Quem segue sabe quando entrar.</p></article>
+          <article class="av-cycle-item reveal"><h3 class="av-cycle-label"><span class="av-cycle-dot" aria-hidden="true"></span>Durante</h3><p>Overlay, cenas e roteiro de abertura. Segmento patrocinado identificado do começo ao fim.</p></article>
+          <article class="av-cycle-item reveal"><h3 class="av-cycle-label"><span class="av-cycle-dot" aria-hidden="true"></span>Depois</h3><p>VOD em cortes verticais, títulos e proposta para marcas. A live continua trabalhando.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <!-- AV3 · Serviços: três cartões que viram -->
+    <section class="pg-section pg-section--floresta av-services" id="servicos" aria-labelledby="servicos-titulo">
+      <div class="pg-container">
+        <div class="pg-section-head">
+          <h2 id="servicos-titulo">Três frentes. Uma voz.</h2>
+          <p>Você pode começar por uma e somar as outras depois.</p>
+        </div>
+        <div class="av-flip-grid">
+          <article class="pg-flip av-flip" id="frente-identidade" data-flip data-flip-reduced="stack" data-flip-surface aria-labelledby="frente-identidade-titulo">
+            <div class="pg-flip-stage"><div class="pg-flip-rotor">
+              <div class="pg-flip-face pg-flip-front av-flip-front" data-flip-front>
+                <div class="av-flip-top" aria-hidden="true"><p class="av-flip-index">01</p><svg class="av-flip-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect x="3" y="4.5" width="18" height="13" rx="2"/><path d="M3 14.5h18M8 20.5h8"/><circle cx="7.2" cy="8.6" r="1.4"/></svg></div>
+                <h3 id="frente-identidade-titulo">Identidade da live</h3>
+                <p class="av-flip-line">Sua transmissão com cara de canal.</p>
+                <button class="pg-btn pg-btn--secondary av-flip-button" type="button" data-flip-open aria-pressed="false">Ver o que vem</button>
+              </div>
+              <div class="pg-flip-face pg-flip-back av-flip-back" data-flip-back>
+                <h4 class="av-flip-back-title" tabindex="-1" data-flip-focus>O que vem<span class="pg-visually-hidden"> em Identidade da live</span></h4>
+                <ul class="av-flip-list">
+                  <li>Cenas: começando, ao vivo, intervalo, encerrando e offline</li>
+                  <li>Molduras 16:9 e 9:16</li>
+                  <li>Painéis, banner e alertas</li>
+                  <li>Área reservada para patrocinador e rótulo de publicidade</li>
+                </ul>
+                <button class="pg-btn pg-btn--secondary av-flip-button" type="button" data-flip-close>Voltar</button>
+              </div>
+            </div></div>
+          </article>
+          <article class="pg-flip av-flip" id="frente-cortes" data-flip data-flip-reduced="stack" data-flip-surface aria-labelledby="frente-cortes-titulo">
+            <div class="pg-flip-stage"><div class="pg-flip-rotor">
+              <div class="pg-flip-face pg-flip-front av-flip-front" data-flip-front>
+                <div class="av-flip-top" aria-hidden="true"><p class="av-flip-index">02</p><svg class="av-flip-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect x="8.5" y="2.5" width="7" height="12.5" rx="1.6"/><path d="M3 20h18M6 20v-2.2M12 20v-2.2M18 20v-2.2"/></svg></div>
+                <h3 id="frente-cortes-titulo">Cortes e VOD</h3>
+                <p class="av-flip-line">Horas de live viram cortes da semana.</p>
+                <button class="pg-btn pg-btn--secondary av-flip-button" type="button" data-flip-open aria-pressed="false">Ver o que vem</button>
+              </div>
+              <div class="pg-flip-face pg-flip-back av-flip-back" data-flip-back>
+                <h4 class="av-flip-back-title" tabindex="-1" data-flip-focus>O que vem<span class="pg-visually-hidden"> em Cortes e VOD</span></h4>
+                <ul class="av-flip-list">
+                  <li>Escolha editorial dos melhores trechos</li>
+                  <li>Gancho, título e legenda</li>
+                  <li>Versão vertical 9:16</li>
+                  <li>Capítulos, descrição e thumbnail</li>
+                  <li>Edição com transformação real, não compilado</li>
+                </ul>
+                <button class="pg-btn pg-btn--secondary av-flip-button" type="button" data-flip-close>Voltar</button>
+              </div>
+            </div></div>
+          </article>
+          <article class="pg-flip av-flip" id="frente-patrocinio" data-flip data-flip-reduced="stack" data-flip-surface aria-labelledby="frente-patrocinio-titulo">
+            <div class="pg-flip-stage"><div class="pg-flip-rotor">
+              <div class="pg-flip-face pg-flip-front av-flip-front" data-flip-front>
+                <div class="av-flip-top" aria-hidden="true"><p class="av-flip-index">03</p><svg class="av-flip-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M3.5 12.5V4.5h8l9 9-8 8z"/><circle cx="8" cy="9" r="1.4"/></svg></div>
+                <h3 id="frente-patrocinio-titulo">Patrocínio e venda ao vivo</h3>
+                <p class="av-flip-line">A marca entra na live do jeito certo.</p>
+                <button class="pg-btn pg-btn--secondary av-flip-button" type="button" data-flip-open aria-pressed="false">Ver o que vem</button>
+              </div>
+              <div class="pg-flip-face pg-flip-back av-flip-back" data-flip-back>
+                <h4 class="av-flip-back-title" tabindex="-1" data-flip-focus>O que vem<span class="pg-visually-hidden"> em Patrocínio e venda ao vivo</span></h4>
+                <ul class="av-flip-list">
+                  <li>Mídia kit e proposta para marcas</li>
+                  <li>Roteiro do segmento patrocinado, com publi identificada</li>
+                  <li>Roteiro de abertura: os primeiros minutos</li>
+                  <li>Roteiro de oferta para venda ao vivo, com preço e condições claros</li>
+                  <li>Página de links e agenda</li>
+                </ul>
+                <button class="pg-btn pg-btn--secondary av-flip-button" type="button" data-flip-close>Voltar</button>
+              </div>
+            </div></div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- AV4 · Veja funcionando -->
+    <section class="pg-section pg-section--papel av-examples" id="exemplos" aria-labelledby="exemplos-titulo">
+      <div class="pg-container">
+        <div class="pg-section-head">
+          <h2 id="exemplos-titulo">Veja funcionando.</h2>
+          <p>Três demonstrações com o Ateliê Exemplo, um canal fictício. Nada aqui é métrica real.</p>
+        </div>
+
+        <!-- 4.1 · Cenas do overlay (K17 + K6 + K8) -->
+        <article class="av-demo av-overlay" id="demo-overlay" aria-labelledby="demo-overlay-titulo">
+          <div class="av-demo-text">
+            <h3 id="demo-overlay-titulo">Cenas do overlay.</h3>
+            <p>Quatro cenas, uma identidade. Toque para trocar e veja como fica no celular.</p>
+          </div>
+          <div class="av-demo-controls" data-js-only>
+            <div class="av-seg av-seg--wrap" role="group" aria-label="Cena">
+              <button type="button" aria-pressed="true" data-scene-go="0">Começando</button><button type="button" aria-pressed="false" data-scene-go="1">Ao vivo</button><button type="button" aria-pressed="false" data-scene-go="2">Intervalo</button><button type="button" aria-pressed="false" data-scene-go="3">Encerrando</button>
+            </div>
+            <div class="av-seg" role="group" aria-label="Formato da tela">
+              <button type="button" aria-pressed="true" data-overlay-ratio="16:9">16:9</button><button type="button" aria-pressed="false" data-overlay-ratio="9:16">9:16</button>
+            </div>
+          </div>
+          <div class="av-demo-stage av-ov-stage">
+            <div class="es-hardware es-hardware--macbook rf-macbook av-ov-device" data-overlay-device data-ratio="16:9" data-model="notebook" role="group" aria-label="Notebook com as cenas do overlay">
+              <div class="mbp-device">
+                <div class="mbp-lid">
+                  <div class="mbp-display"><div class="mbp-screen">
+                    <div class="pg-deck av-scenes" data-deck>
+                      <div class="pg-deck-stage" data-deck-stage role="region" aria-roledescription="pilha de cenas" aria-label="Cenas do overlay do Ateliê Exemplo" tabindex="0">
+                        <article class="pg-deck-card av-scene av-scene--card av-scene--start" data-deck-card aria-label="1 de 4: Começando">
+                          <i class="av-scene-rings" aria-hidden="true"></i>
+                          <p class="av-scene-brand">Ateliê Exemplo</p>
+                          <p class="av-scene-big">Começa em instantes</p>
+                          <p class="av-scene-sub">Torno do zero, aula 3</p>
+                        </article>
+                        <article class="pg-deck-card av-scene av-scene--live" data-deck-card aria-label="2 de 4: Ao vivo">
+                          <div class="av-scene-cam" aria-hidden="true"><i class="av-cam-table"></i><i class="av-cam-wheel"></i><i class="av-cam-vase"></i><i class="av-cam-shelf"></i><i class="av-cam-pot av-cam-pot--a"></i><i class="av-cam-pot av-cam-pot--b"></i></div>
+                          <div class="av-scene-tags"><p class="av-scene-badge">AO VIVO</p><p class="av-scene-publi" data-publi>#publi · Publicidade</p></div>
+                          <p class="av-scene-title">Torno do zero · aula 3</p>
+                          <div class="av-scene-side">
+                            <div class="av-scene-chat" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></div>
+                            <p class="av-scene-sponsor">Espaço da marca parceira</p>
+                          </div>
+                          <p class="av-scene-bar">Ateliê Exemplo</p>
+                        </article>
+                        <article class="pg-deck-card av-scene av-scene--card av-scene--break" data-deck-card aria-label="3 de 4: Intervalo">
+                          <i class="av-scene-lump" aria-hidden="true"></i>
+                          <p class="av-scene-big">Já volto</p>
+                          <p class="av-scene-sub">Separando o barro para a próxima peça</p>
+                        </article>
+                        <article class="pg-deck-card av-scene av-scene--card av-scene--end" data-deck-card aria-label="4 de 4: Encerrando">
+                          <i class="av-scene-rings" aria-hidden="true"></i>
+                          <p class="av-scene-big">Obrigado por ficar até o fim</p>
+                          <p class="av-scene-sub">Próxima live: quinta</p>
+                          <p class="av-scene-brand">Ateliê Exemplo</p>
+                        </article>
+                      </div>
+                    </div>
+                  </div></div>
+                  <div class="mbp-camera" aria-hidden="true"><i></i></div>
+                </div>
+                <div class="mbp-hinge" aria-hidden="true"></div>
+                <div class="mbp-base" aria-hidden="true"><span class="mbp-front-groove"></span></div>
+                <span class="mbp-ground-shadow" aria-hidden="true"></span>
+              </div>
+            </div>
+          </div>
+          <div class="av-demo-notes">
+            <p class="av-demo-status" role="status" data-overlay-status>Começando: a tela de espera já avisa o tema da live.</p>
+            <p class="av-demo-caption">Na live, o rótulo de publicidade fica na tela durante todo o segmento patrocinado, e você avisa em voz alta de tempos em tempos.</p>
+            <p class="av-demo-label">Exemplo ilustrativo · Ateliê Exemplo (cliente fictício)</p>
+          </div>
+        </article>
+
+        <!-- 4.2 · Da live ao corte (K15) -->
+        <article class="av-demo av-cut" id="demo-corte" aria-labelledby="demo-corte-titulo">
+          <div class="av-demo-text">
+            <h3 id="demo-corte-titulo">Da live ao corte.</h3>
+            <p>Escolha um momento da live. Ele vira um corte vertical com gancho e legenda.</p>
+          </div>
+          <div class="av-demo-controls av-cut-timeline" data-cut-timeline role="group" aria-label="Linha do tempo de uma live de 3 horas">
+            <p class="av-cut-timeline-label">Live de 3 h</p>
+            <div class="av-cut-track" aria-hidden="true"><span class="av-cut-fill"></span><i style="--at:.2333"><b>00:42</b></i><i style="--at:.4167"><b>01:15</b></i><i style="--at:.8333"><b>02:30</b></i><span class="av-cut-rail"><span class="av-cut-head"></span></span></div>
+            <div class="av-cut-marks" data-js-only>
+              <button class="pg-chip" type="button" aria-pressed="false" data-cut-mark="0"><b>00:42</b> · A peça rachou</button>
+              <button class="pg-chip" type="button" aria-pressed="false" data-cut-mark="1"><b>01:15</b> · Pergunta do chat</button>
+              <button class="pg-chip" type="button" aria-pressed="false" data-cut-mark="2"><b>02:30</b> · Forno aberto</button>
+            </div>
+            <noscript>
+              <ul class="av-cut-static">
+                <li><b>00:42 · A peça rachou</b> Rachou ao vivo. E agora? "Calma, dá para salvar. Olha só."</li>
+                <li><b>01:15 · Pergunta do chat</b> Qual barro usar para começar? "Essa pergunta apareceu três vezes no chat."</li>
+                <li><b>02:30 · Forno aberto</b> O momento de abrir o forno "Nunca sei o que vou encontrar."</li>
+              </ul>
+            </noscript>
+          </div>
+          <div class="av-demo-stage av-cut-stage">
+            <div class="av-cut-device" data-cut-device data-ratio="16:9">
+              <div class="av-cut-frame">
+                <div class="av-cut-screen" data-cut-screen data-scene="0" role="group" aria-label="Storyboard de dez segundos do corte, sem som">
+                  <div class="av-cut-art" aria-hidden="true"><div class="av-cut-art-inner"><i class="av-cam-table"></i><i class="av-cam-wheel"></i><i class="av-cam-vase"></i></div><i class="av-cut-end"></i></div>
+                  <div class="av-cut-copy">
+                    <p class="av-cut-tag" data-cut-tag>01 · GANCHO</p>
+                    <p class="av-cut-title" data-cut-title>Rachou ao vivo. E agora?</p>
+                    <p class="av-cut-caption" data-cut-caption>"Calma, dá para salvar. Olha só."</p>
+                  </div>
+                  <div class="av-cut-bar"><span class="av-cut-progress-track" aria-hidden="true"><i data-cut-progress></i></span><span class="av-cut-clock"><span data-cut-clock>00:00</span> / 00:10</span></div>
+                </div>
+              </div>
+              <div class="av-cut-base" aria-hidden="true"></div>
+            </div>
+          </div>
+          <div class="av-demo-player av-cut-controls" data-js-only>
+            <button class="av-play" type="button" data-cut-play aria-label="Assistir"><svg class="av-icon-play" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M8 5.5v13l11-6.5z"/></svg><svg class="av-icon-pause" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M7.5 5h3.2v14H7.5zM13.3 5h3.2v14h-3.2z"/></svg><span data-cut-play-label>Assistir</span></button>
+            <button class="av-round" type="button" data-cut-replay aria-label="Reiniciar"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4.5 12a7.5 7.5 0 1 0 2.2-5.3"/><path d="M4.5 4.5v4h4"/></svg></button>
+            <div class="av-seg" role="group" aria-label="Formato do vídeo">
+              <button type="button" aria-pressed="true" data-cut-ratio="16:9">16:9</button><button type="button" aria-pressed="false" data-cut-ratio="9:16">9:16</button>
+            </div>
+          </div>
+          <div class="av-demo-notes">
+            <p class="av-demo-status" role="status" data-cut-status></p>
+            <p class="av-demo-caption">Corte bom tem gancho, contexto e legenda. É isso que separa um corte de um repost. Demonstração sem som.</p>
+            <p class="av-demo-label">Exemplo ilustrativo · Ateliê Exemplo (cliente fictício)</p>
+          </div>
+        </article>
+
+        <!-- 4.3 · Thumbnail antes e depois (K16) -->
+        <article class="av-demo av-thumb" id="demo-thumb" aria-labelledby="demo-thumb-titulo">
+          <div class="av-demo-text">
+            <h3 id="demo-thumb-titulo">Thumbnail antes e depois.</h3>
+            <p>A mesma live, duas capas. Arraste para comparar.</p>
+          </div>
+          <div class="av-demo-stage pg-compare" data-compare>
+            <div class="pg-compare-stage" data-compare-stage>
+              <figure class="pg-compare-layer pg-compare-before">
+                <div class="av-thumb-art" role="img" aria-label="Thumbnail genérica com texto pequeno e sem foco.">
+                  <svg viewBox="0 0 640 360" aria-hidden="true" focusable="false" preserveAspectRatio="xMidYMid slice">
+                    <rect width="640" height="360" fill="#56665D"/>
+                    <rect y="250" width="640" height="110" fill="#4A5952"/>
+                    <ellipse cx="420" cy="268" rx="70" ry="13" fill="#3A4741"/>
+                    <path d="M402 262c-12-30-10-58 6-74h24c16 16 18 44 6 74z" fill="#8C6A55"/>
+                    <circle cx="150" cy="215" r="32" fill="#6E7D74"/>
+                    <rect x="120" y="245" width="62" height="70" rx="22" fill="#6E7D74"/>
+                    <text x="612" y="306" text-anchor="end" fill="#F3F1E9" font-family="Inter Variable, Inter, system-ui, sans-serif" font-size="22" font-weight="400"><tspan x="612">Aula de torno ao vivo,</tspan><tspan x="612" dy="28">parte 3</tspan></text>
+                  </svg>
+                </div>
+                <figcaption class="pg-compare-tag pg-compare-tag--before">Antes</figcaption>
+              </figure>
+              <figure class="pg-compare-layer pg-compare-after">
+                <div class="av-thumb-art" role="img" aria-label="Thumbnail com rosto, três palavras grandes e contraste alto.">
+                  <svg viewBox="0 0 640 360" aria-hidden="true" focusable="false" preserveAspectRatio="xMidYMid slice">
+                    <rect width="640" height="360" fill="#0F2E24"/>
+                    <circle cx="500" cy="190" r="190" fill="#16362B"/>
+                    <path d="M410 360c4-62 40-96 92-96s88 34 92 96z" fill="#D9ED93"/>
+                    <circle cx="502" cy="176" r="74" fill="#D9A27E"/>
+                    <path d="M428 168c0-52 34-80 76-80s72 30 72 74c-14-22-38-34-72-34-30 0-56 14-76 40z" fill="#18251F"/>
+                    <ellipse cx="476" cy="176" rx="9" ry="11" fill="#18251F"/>
+                    <ellipse cx="528" cy="176" rx="9" ry="11" fill="#18251F"/>
+                    <path d="M462 156l26-8M516 148l26 8" stroke="#18251F" stroke-width="6" stroke-linecap="round"/>
+                    <ellipse cx="502" cy="214" rx="14" ry="17" fill="#18251F"/>
+                    <path d="M330 300c-14-34-12-66 8-84h28c20 18 22 50 8 84z" fill="#B8754F"/>
+                    <path d="M352 222l-8 22 12 10-10 24 9 18" stroke="#18251F" stroke-width="5" fill="none" stroke-linejoin="round"/>
+                    <text x="34" y="128" fill="#D9ED93" font-family="Inter Variable, Inter, system-ui, sans-serif" font-size="92" font-weight="850" letter-spacing="-3">RACHOU</text>
+                    <text x="34" y="222" fill="#F3F1E9" font-family="Inter Variable, Inter, system-ui, sans-serif" font-size="92" font-weight="850" letter-spacing="-3">AO VIVO</text>
+                  </svg>
+                </div>
+                <figcaption class="pg-compare-tag pg-compare-tag--after">Depois</figcaption>
+              </figure>
+              <span class="pg-compare-divider" data-compare-handle aria-hidden="true"><span><svg viewBox="0 0 24 24" focusable="false" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 7l-5 5 5 5M14.5 7l5 5-5 5"/></svg></span></span>
+            </div>
+            <div class="pg-compare-control">
+              <label for="av-thumb-range">Comparar thumbnails</label>
+              <input class="pg-compare-range" id="av-thumb-range" type="range" min="0" max="100" step="1" value="50" data-compare-range aria-valuetext="Mostrando 50% da versão nova">
+            </div>
+          </div>
+          <div class="av-demo-notes">
+            <p class="av-demo-caption">Para medir no seu canal, use o teste A/B de títulos e miniaturas do YouTube Studio. Aqui é só uma demonstração de acabamento.</p>
+            <p><a class="av-link" href="https://support.google.com/youtube/answer/16391400" target="_blank" rel="noopener noreferrer">Como funciona o teste A/B do YouTube <span aria-hidden="true">↗</span><span class="pg-visually-hidden"> (abre em nova aba)</span></a></p>
+            <p class="av-demo-label">Exemplo ilustrativo · Ateliê Exemplo (cliente fictício)</p>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- AV5 · Como funciona -->
+    <section class="pg-section pg-section--papel av-steps-section" id="como-funciona" aria-labelledby="como-funciona-titulo">
+      <div class="pg-container">
+        <div class="pg-section-head"><h2 id="como-funciona-titulo">Como funciona.</h2></div>
+        <ol class="av-steps" data-reveal-group>
+          <li class="av-step reveal"><span class="av-step-n" aria-hidden="true">1</span><div><h3>Diagnóstico em cinco toques</h3><p>Você responde aqui e revisa a mensagem antes de enviar.</p></div></li>
+          <li class="av-step reveal"><span class="av-step-n" aria-hidden="true">2</span><div><h3>Proposta por escrito</h3><p>Escopo, prazo e valor antes de começar.</p></div></li>
+          <li class="av-step reveal"><span class="av-step-n" aria-hidden="true">3</span><div><h3>Produção no ritmo da sua agenda</h3><p>Ciclos combinados com você, por semana ou por mês.</p></div></li>
+          <li class="av-step reveal"><span class="av-step-n" aria-hidden="true">4</span><div><h3>Entrega com instruções</h3><p>Arquivos organizados e um guia rápido de uso.</p></div></li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- AV6 · O que eu não faço e patrocínio identificado -->
+    <section class="pg-section pg-section--floresta av-limits" id="o-que-nao-faco" aria-labelledby="nao-faco-titulo">
+      <div class="pg-container av-limits-grid">
+        <div>
+          <h2 id="nao-faco-titulo">O que eu não faço.</h2>
+          <ul class="av-donts">
+            <li><svg class="av-x" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 6l12 12M18 6L6 18"/></svg><span>Não sou agência de LIVE nem parceiro oficial de nenhuma plataforma.</span></li>
+            <li><svg class="av-x" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 6l12 12M18 6L6 18"/></svg><span>Não peço senha, chave de transmissão, vínculo de conta nem porcentagem de presentes ou de ganhos.</span></li>
+            <li><svg class="av-x" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 6l12 12M18 6L6 18"/></svg><span>Não prometo seguidores, monetização nem patrocínio.</span></li>
+            <li><svg class="av-x" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 6l12 12M18 6L6 18"/></svg><span>Não faço publi de apostas ou cassino.</span></li>
+            <li><svg class="av-x" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 6l12 12M18 6L6 18"/></svg><span>Não vendo compilado nem repost de live alheia.</span></li>
+            <li><svg class="av-x" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 6l12 12M18 6L6 18"/></svg><span>Não atendo menores de 18 pelo formulário.</span></li>
+          </ul>
+        </div>
+        <div class="av-sponsor pg-panel" aria-labelledby="patrocinio-titulo" role="group">
+          <h3 id="patrocinio-titulo">Patrocínio identificado do começo ao fim da live.</h3>
+          <p>O roteiro prevê o rótulo da plataforma, quando existir, o #publi na tela durante todo o segmento e o aviso falado repetido. É o que orienta o Guia de Marketing e Publicidade por Influenciadores Digitais do CONAR (2026) para conteúdo ao vivo.</p>
+          <p>Em live de venda, preço, condições e troca são ditos com clareza.</p>
+          <p><a class="av-link" href="https://conar.wpenginepowered.com/wp-content/uploads/2026/05/260525_GUIA_INFLUENCIADORES_CONAR_v6.pdf" target="_blank" rel="noopener noreferrer">Ler o guia do CONAR <span aria-hidden="true">↗</span><span class="pg-visually-hidden"> (abre em nova aba)</span></a></p>
+        </div>
+        <p class="av-transparency">Não sou parceiro oficial, agência credenciada nem representante de YouTube, Twitch, Kick, TikTok, Instagram, Meta ou Kwai. Os nomes aparecem só para indicar onde você transmite. As marcas pertencem aos seus titulares. Não peço senha, chave de transmissão nem acesso à sua conta.</p>
+      </div>
+    </section>
+
+    <!-- AV7 · Diagnóstico (SPEC 4.B) -->
+    <section class="pg-section pg-section--floresta av-diag" id="diagnostico" aria-labelledby="diagnostico-titulo">
+      <div class="pg-container">
+        <div class="pg-section-head">
+          <h2 id="diagnostico-titulo">Monte seu diagnóstico.</h2>
+          <p>Cinco toques sobre a sua live. Depois você revisa a mensagem e decide por onde enviar.</p>
+        </div>
+        <form class="av-form" id="diagnostico-form" novalidate aria-labelledby="diagnostico-titulo">
+          <div class="pg-error-summary av-form-errors" id="av-erros" data-error-summary hidden></div>
+          <div class="av-form-fields">
+            <fieldset class="pg-fieldset" id="av-plataformas" data-chips="multi" data-name="plataformas" aria-describedby="av-plataformas-dica">
+              <legend>Onde você transmite?</legend>
+              <p class="pg-hint av-hint" id="av-plataformas-dica">Marque todas as que usa.</p>
+              <div class="pg-chip-row">
+                <button class="pg-chip" type="button" aria-pressed="false" data-value="YouTube">YouTube</button>
+                <button class="pg-chip" type="button" aria-pressed="false" data-value="Twitch">Twitch</button>
+                <button class="pg-chip" type="button" aria-pressed="false" data-value="Kick">Kick</button>
+                <button class="pg-chip" type="button" aria-pressed="false" data-value="TikTok LIVE">TikTok LIVE</button>
+                <button class="pg-chip" type="button" aria-pressed="false" data-value="Instagram Live">Instagram Live</button>
+                <button class="pg-chip" type="button" aria-pressed="false" data-value="Kwai">Kwai</button>
+                <button class="pg-chip" type="button" aria-pressed="false" data-value="Venda ao vivo (TikTok Shop, Shopee ou outra)">Venda ao vivo (TikTok Shop, Shopee ou outra)</button>
+                <button class="pg-chip" type="button" aria-pressed="false" data-value="Outra">Outra</button>
+              </div>
+            </fieldset>
+            <fieldset class="pg-fieldset" id="av-frequencia" data-chips="single" data-name="frequencia">
+              <legend>Com que frequência?</legend>
+              <div class="pg-chip-row">
+                <button class="pg-chip" type="button" aria-pressed="false" data-value="1 vez por semana">1 vez por semana</button>
+                <button class="pg-chip" type="button" aria-pressed="false" data-value="2 a 3 vezes por semana">2 a 3 vezes por semana</button>
+                <button class="pg-chip" type="button" aria-pressed="false" data-value="4 ou mais vezes por semana">4 ou mais vezes por semana</button>
+                <button class="pg-chip" type="button" aria-pressed="false" data-value="Sem agenda fixa">Sem agenda fixa</button>
+              </div>
+            </fieldset>
+            <fieldset class="pg-fieldset" id="av-duracao" data-chips="single" data-name="duracao">
+              <legend>Quanto dura uma live, em média?</legend>
+              <div class="pg-chip-row">
+                <button class="pg-chip" type="button" aria-pressed="false" data-value="Até 1 h">Até 1 h</button>
+                <button class="pg-chip" type="button" aria-pressed="false" data-value="De 1 a 3 h">De 1 a 3 h</button>
+                <button class="pg-chip" type="button" aria-pressed="false" data-value="De 3 a 6 h">De 3 a 6 h</button>
+                <button class="pg-chip" type="button" aria-pressed="false" data-value="Mais de 6 h">Mais de 6 h</button>
+              </div>
+            </fieldset>
+            <fieldset class="pg-fieldset" id="av-nicho" data-chips="single" data-name="nicho">
+              <legend>Qual o seu nicho?</legend>
+              <div class="pg-chip-row">
+                <button class="pg-chip" type="button" aria-pressed="false" data-value="Games">Games</button>
+                <button class="pg-chip" type="button" aria-pressed="false" data-value="Conversa (Just Chatting)">Conversa (Just Chatting)</button>
+                <button class="pg-chip" type="button" aria-pressed="false" data-value="Música">Música</button>
+                <button class="pg-chip" type="button" aria-pressed="false" data-value="Educação">Educação</button>
+                <button class="pg-chip" type="button" aria-pressed="false" data-value="Venda ao vivo">Venda ao vivo</button>
+                <button class="pg-chip" type="button" aria-pressed="false" data-value="Esporte">Esporte</button>
+                <button class="pg-chip" type="button" aria-pressed="false" data-value="IRL (vida real)">IRL (vida real)</button>
+                <button class="pg-chip" type="button" aria-pressed="false" data-value="Outro" aria-controls="av-nicho-outro-campo">Outro</button>
+              </div>
+            </fieldset>
+            <div class="pg-field av-other" id="av-nicho-outro-campo" hidden>
+              <label class="pg-label" for="av-nicho-outro">Qual?</label>
+              <p class="pg-hint" id="av-nicho-outro-dica">Em poucas palavras.</p>
+              <input class="pg-input" id="av-nicho-outro" name="nichoOutro" type="text" autocomplete="off" aria-describedby="av-nicho-outro-dica" disabled>
+            </div>
+            <fieldset class="pg-fieldset" id="av-objetivo" data-chips="single" data-name="objetivo">
+              <legend>O que você quer resolver primeiro?</legend>
+              <div class="pg-chip-row av-chip-cards">
+                <button class="pg-chip av-chip-card" type="button" aria-pressed="false" data-value="Live com cara profissional"><span class="av-chip-main">Live com cara profissional</span><span class="av-chip-sub">identidade e overlay</span></button>
+                <button class="pg-chip av-chip-card" type="button" aria-pressed="false" data-value="Crescer fora da live"><span class="av-chip-main">Crescer fora da live</span><span class="av-chip-sub">cortes e Shorts</span></button>
+                <button class="pg-chip av-chip-card" type="button" aria-pressed="false" data-value="Fechar patrocínio"><span class="av-chip-main">Fechar patrocínio</span><span class="av-chip-sub">proposta e roteiro de publi</span></button>
+                <button class="pg-chip av-chip-card" type="button" aria-pressed="false" data-value="Vender ao vivo"><span class="av-chip-main">Vender ao vivo</span><span class="av-chip-sub">roteiro e cenário</span></button>
+              </div>
+            </fieldset>
+            <div class="pg-field">
+              <label class="pg-label" for="av-canal">Link do canal (opcional)</label>
+              <p class="pg-hint" id="av-canal-dica">Pode ser do YouTube, Twitch, Kick ou outra plataforma.</p>
+              <input class="pg-input" id="av-canal" name="canal" type="url" inputmode="url" autocomplete="url" autocapitalize="none" spellcheck="false" aria-describedby="av-canal-dica">
+            </div>
+            <label class="pg-check av-check"><input type="checkbox" id="av-maior" name="maior"><span class="pg-check-box" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span><span class="pg-check-text">Tenho 18 anos ou mais.</span></label>
+          </div>
+          <div class="av-form-side">
+            <div class="pg-summary av-summary" id="av-resumo" role="group" aria-labelledby="av-resumo-titulo">
+              <h3 id="av-resumo-titulo">Seu resumo</h3>
+              <p class="av-summary-empty" data-summary-empty>Seu resumo aparece aqui conforme você escolhe.</p>
+              <ul data-summary-list></ul>
+              <p class="pg-small av-summary-note">Este resumo não gera preço.</p>
+            </div>
+            <button class="pg-btn pg-btn--primary pg-btn--block av-submit" type="submit" disabled>Revisar mensagem</button>
+            <p class="pg-small av-form-notice">Você revisa a mensagem antes de enviar. Uso suas respostas só para preparar a proposta que você pediu. Nada sai daqui até você tocar em enviar no WhatsApp ou no e-mail. <a href="/privacidade">Como trato seus dados <span aria-hidden="true">→</span></a></p>
+            <div class="av-nojs" data-nojs-fallback>
+              <p>Sem JavaScript? Escreva para <span data-profile-text="email">smillepls@gmail.com</span> contando onde você transmite, com que frequência, quanto dura a live, seu nicho e o que quer resolver primeiro.</p>
+              <a class="pg-btn pg-btn--secondary" data-mailto-model="diagnostico" href="mailto:smillepls@gmail.com?subject=Diagn%C3%B3stico%20de%20live&amp;body=Oi%2C%20Smile!%20Vim%20pela%20p%C3%A1gina%20de%20criadores%20ao%20vivo.%0D%0ATransmito%20em%3A%0D%0AFrequ%C3%AAncia%3A%0D%0ADura%C3%A7%C3%A3o%20m%C3%A9dia%3A%0D%0ANicho%3A%0D%0AQuero%20resolver%20primeiro%3A%0D%0A%E2%80%94%20Tenho%2018%20anos%20ou%20mais%20e%20li%20o%20aviso%20de%20privacidade%20(vers%C3%A3o%202026-10).">Escrever e-mail <span aria-hidden="true">↗</span></a>
+            </div>
+            <section class="pg-review av-review" id="av-revisao" data-handoff-panel hidden aria-labelledby="av-revisao-titulo">
+              <h3 id="av-revisao-titulo" data-handoff-title>Seu diagnóstico está pronto.</h3>
+              <p>Confira abaixo. Ao tocar no botão, ele abre no WhatsApp para você revisar e enviar. Nada é enviado daqui.</p>
+              <div class="pg-review-message" data-handoff-message></div>
+              <div class="pg-review-actions">
+                <a class="pg-btn pg-btn--primary" data-handoff="whatsapp" target="_blank" rel="noopener noreferrer">Abrir no WhatsApp <span aria-hidden="true">↗</span></a>
+                <a class="pg-btn pg-btn--secondary" data-handoff="email">Prefiro e-mail <span aria-hidden="true">↗</span></a>
+                <button class="pg-btn pg-btn--secondary" type="button" data-handoff="copy">Copiar mensagem</button>
+                <button class="pg-btn pg-btn--link" type="button" data-handoff="edit">Editar respostas <span aria-hidden="true">↑</span></button>
+              </div>
+              <p class="pg-review-status" role="status" data-handoff-status></p>
+              <p class="pg-small av-desktop-note">No computador, o link abre o WhatsApp Web ou o aplicativo.</p>
+              <h4 class="av-after-title">Depois de enviar</h4>
+              <p class="av-after-text">Eu respondo com duas ou três perguntas e, se fizer sentido, uma proposta por escrito. Se puder, tenha à mão o link de uma live recente e a sua agenda.</p>
+            </section>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <!-- AV8 · FAQ -->
+    <section class="pg-section pg-section--papel av-faq" id="perguntas" aria-labelledby="perguntas-titulo">
+      <div class="pg-container">
+        <div class="pg-section-head"><h2 id="perguntas-titulo">Perguntas frequentes.</h2></div>
+        <div class="pg-accordion-list">
+          <details class="pg-accordion" name="faq"><summary><span class="pg-accordion-q">Você é agência do TikTok LIVE?</span><span class="pg-accordion-icon" aria-hidden="true">+</span></summary><div class="pg-accordion-body"><p>Não. Não sou agência de LIVE, não uso painel de agência e não peço vínculo da sua conta. Trabalho com direção criativa: identidade, cortes, roteiro e proposta.</p></div></details>
+          <details class="pg-accordion" name="faq"><summary><span class="pg-accordion-q">Preciso estar monetizado?</span><span class="pg-accordion-icon" aria-hidden="true">+</span></summary><div class="pg-accordion-body"><p>Não. O serviço não depende de programa de monetização. Os requisitos de cada plataforma estão nos links oficiais da próxima pergunta.</p></div></details>
+          <details class="pg-accordion" name="faq"><summary><span class="pg-accordion-q">Onde vejo os requisitos oficiais de cada plataforma?</span><span class="pg-accordion-icon" aria-hidden="true">+</span></summary><div class="pg-accordion-body">
+            <p>Direto na fonte:</p>
+            <ul class="av-official-links">
+              <li><a href="https://help.twitch.tv/s/article/joining-the-affiliate-program" target="_blank" rel="noopener noreferrer">Twitch, programa de Afiliados <span aria-hidden="true">↗</span><span class="pg-visually-hidden"> (abre em nova aba)</span></a></li>
+              <li><a href="https://help.kick.com/en/articles/8894103-how-to-join-the-kick-partner-program" target="_blank" rel="noopener noreferrer">Kick, programa de parceiros <span aria-hidden="true">↗</span><span class="pg-visually-hidden"> (abre em nova aba)</span></a></li>
+              <li><a href="https://support.google.com/youtube/answer/72851?hl=pt-BR" target="_blank" rel="noopener noreferrer">YouTube, Programa de Parcerias <span aria-hidden="true">↗</span><span class="pg-visually-hidden"> (abre em nova aba)</span></a></li>
+              <li><a href="https://seller-br.tiktok.com/university/essay?knowledge_id=1396756526679824" target="_blank" rel="noopener noreferrer">TikTok Shop, criadores afiliados no Brasil <span aria-hidden="true">↗</span><span class="pg-visually-hidden"> (abre em nova aba)</span></a></li>
+            </ul>
+            <p>Links conferidos em outubro de 2026. As regras mudam, então confira sempre na fonte.</p>
+          </div></details>
+          <details class="pg-accordion" name="faq"><summary><span class="pg-accordion-q">Você corta live de outros canais?</span><span class="pg-accordion-icon" aria-hidden="true">+</span></summary><div class="pg-accordion-body"><p>Só com autorização por escrito do dono do canal, e sempre com edição de verdade: gancho, contexto e legenda.</p></div></details>
+          <details class="pg-accordion" name="faq"><summary><span class="pg-accordion-q">Quanto custa?</span><span class="pg-accordion-icon" aria-hidden="true">+</span></summary><div class="pg-accordion-body"><p>O valor sai na proposta, por escopo ou por ciclo. Você recebe tudo por escrito antes de começar.</p></div></details>
+          <details class="pg-accordion" name="faq"><summary><span class="pg-accordion-q">Em que formato vêm os arquivos?</span><span class="pg-accordion-icon" aria-hidden="true">+</span></summary><div class="pg-accordion-body"><p>Os formatos de entrega entram na proposta, de acordo com o programa que você usa para transmitir.</p></div></details>
+          <details class="pg-accordion" name="faq"><summary><span class="pg-accordion-q">Você faz publi de apostas?</span><span class="pg-accordion-icon" aria-hidden="true">+</span></summary><div class="pg-accordion-body"><p>Não.</p></div></details>
+          <details class="pg-accordion" name="faq"><summary><span class="pg-accordion-q">Quero ser chamado para campanhas.</span><span class="pg-accordion-icon" aria-hidden="true">+</span></summary><div class="pg-accordion-body"><p>Hoje meu foco é o seu material: identidade, cortes e proposta. Se eu abrir um banco de criadores para campanhas, aviso aqui, com cadastro separado.</p></div></details>
+          <details class="pg-accordion" name="faq"><summary><span class="pg-accordion-q">O que acontece com meus dados?</span><span class="pg-accordion-icon" aria-hidden="true">+</span></summary><div class="pg-accordion-body"><p>O formulário só monta uma mensagem. Nada sai daqui até você tocar em enviar no WhatsApp ou no e-mail. Guardo a conversa por até 12 meses depois do último contato. Os detalhes estão no <a href="/privacidade">aviso de privacidade <span aria-hidden="true">→</span></a></p></div></details>
+          <details class="pg-accordion" name="faq"><summary><span class="pg-accordion-q">Você atende menor de idade?</span><span class="pg-accordion-icon" aria-hidden="true">+</span></summary><div class="pg-accordion-body"><p>Não pelo formulário. Live com menor de idade tem regras próprias, inclusive autorização judicial em alguns casos. Se você é responsável, escreva para <a href="mailto:smillepls@gmail.com" data-profile-link="email"><span data-profile-text="email">smillepls@gmail.com</span></a>.</p></div></details>
+          <details class="pg-accordion" name="faq"><summary><span class="pg-accordion-q">Eu posto no feed, não faço live.</span><span class="pg-accordion-icon" aria-hidden="true">+</span></summary><div class="pg-accordion-body"><p>Então a página certa é a outra: <a href="/criadores">Ver a página para redes sociais <span aria-hidden="true">→</span></a></p></div></details>
+        </div>
+      </div>
+    </section>
+
+    <!-- AV9 · Faixa final -->
+    <section class="pg-section pg-section--floresta av-final" id="comece" aria-labelledby="comece-titulo">
+      <div class="pg-container">
+        <h2 id="comece-titulo">Comece pelo diagnóstico. São cinco toques.</h2>
+        <div class="pg-actions pg-actions--stack-sm av-final-actions">
+          <a class="pg-btn pg-btn--primary" href="#diagnostico">Montar meu diagnóstico <span aria-hidden="true">↑</span></a>
+        </div>
+        <p class="av-final-line">Prefere e-mail? <a class="av-link" data-mailto-model="diagnostico" href="mailto:smillepls@gmail.com?subject=Diagn%C3%B3stico%20de%20live&amp;body=Oi%2C%20Smile!%20Vim%20pela%20p%C3%A1gina%20de%20criadores%20ao%20vivo.%0D%0ATransmito%20em%3A%0D%0AFrequ%C3%AAncia%3A%0D%0ADura%C3%A7%C3%A3o%20m%C3%A9dia%3A%0D%0ANicho%3A%0D%0AQuero%20resolver%20primeiro%3A%0D%0A%E2%80%94%20Tenho%2018%20anos%20ou%20mais%20e%20li%20o%20aviso%20de%20privacidade%20(vers%C3%A3o%202026-10).">Escrever para <span data-profile-text="email">smillepls@gmail.com</span> <span aria-hidden="true">↗</span></a></p>
+        <p class="av-final-line">Posta no feed? <a class="av-link" href="/criadores">Ver a página para redes sociais <span aria-hidden="true">→</span></a></p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="pg-container">
+      <div class="site-footer-grid">
+        <div class="site-footer-brand">
+          <a class="pg-brand" href="/" aria-label="Smile N, início"><span class="pg-brand-name">Smile N</span><span class="pg-brand-signature">ideia ↗ execução.</span></a>
+          <p>Smile N · Diretor criativo e redator · © 2026</p>
+        </div>
+        <nav aria-labelledby="rodape-navegar">
+          <h2 id="rodape-navegar">Navegar</h2>
+          <ul>
+            <li><a href="/">Início</a></li>
+            <li><a href="/#trabalhos">Trabalhos</a></li>
+            <li><a href="/criadores">Para criadores</a></li>
+            <li><a href="/criadores/ao-vivo" aria-current="page">Criadores ao vivo</a></li>
+            <li><a href="/vagas">Banco de talentos</a></li>
+          </ul>
+        </nav>
+        <div>
+          <h2 id="rodape-contato">Contato</h2>
+          <ul aria-labelledby="rodape-contato">
+            <li><a href="https://wa.me/5511985568208" target="_blank" rel="noopener noreferrer" data-profile-link="whatsapp">WhatsApp <span aria-hidden="true">↗</span></a></li>
+            <li><a href="mailto:smillepls@gmail.com" data-profile-link="email">E-mail <span aria-hidden="true">↗</span></a></li>
+          </ul>
+        </div>
+        <div>
+          <h2 id="rodape-privacidade">Privacidade</h2>
+          <ul aria-labelledby="rodape-privacidade">
+            <li><a href="/privacidade">Aviso de privacidade</a></li>
+            <li>Pedidos sobre seus dados: <a href="mailto:smillepls@gmail.com" data-profile-link="email"><span data-profile-text="email">smillepls@gmail.com</span></a></li>
+            <li><a href="/privacidade#acessibilidade"><svg class="pg-a11y-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="10.5" fill="none" stroke="currentColor" stroke-width="1.5"/><circle cx="12" cy="6.4" r="1.7" fill="currentColor"/><path d="M6.4 9.3c1.9.5 3.7.8 5.6.8s3.7-.3 5.6-.8M12 10.1v3.7M12 13.8l-2.5 4.5M12 13.8l2.5 4.5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>Acessibilidade</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="site-footer-legal">
+        <p>Smile N · contato e privacidade: <span data-profile-text="email">smillepls@gmail.com</span></p>
+        <p class="pg-small">Sem vínculo com YouTube, Twitch, Kick, TikTok, Instagram, Meta ou Kwai. As marcas citadas pertencem aos seus titulares.</p>
+      </div>
+      <a class="site-footer-top" href="#topo">Voltar ao topo <span aria-hidden="true">↑</span></a>
+    </div>
+  </footer>
+</body>
+</html>
