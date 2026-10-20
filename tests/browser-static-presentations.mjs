@@ -43,20 +43,35 @@ try{
         check('Mobile header controls do not overlap',await page.evaluate(()=>{const mark=document.querySelector('.wordmark').getBoundingClientRect(),pause=document.querySelector('#motion-toggle').getBoundingClientRect(),menu=document.querySelector('#menu-toggle').getBoundingClientRect();return mark.right<=pause.left+1&&pause.right<=menu.left+1&&menu.right<=innerWidth&&menu.width>=44&&menu.height>=44;}));
         await page.locator('#menu-toggle').click();
         check('Mobile menu opens and focuses its first destination',await page.locator('#menu-toggle').getAttribute('aria-expanded')==='true'&&await page.locator('#mobile-nav').isVisible()&&await page.locator('#mobile-nav a').first().evaluate(el=>el===document.activeElement));
+        check('Open mobile menu locks the page, makes it inert and ends with a contact action',await page.evaluate(()=>getComputedStyle(document.documentElement).overflow==='hidden'&&document.querySelector('main').inert&&document.querySelector('.site-footer-band').inert)&&await page.locator('#mobile-nav .mobile-nav-cta[href="#contato"]').isVisible());
+        await page.keyboard.press('Shift+Tab');await page.keyboard.press('Shift+Tab');
+        check('Focus stays inside the open mobile menu',await page.locator('#mobile-nav .mobile-nav-cta').evaluate(el=>el===document.activeElement));
+        await page.keyboard.press('Tab');
+        check('Focus wraps from the last menu item to the close control',await page.locator('#menu-toggle').evaluate(el=>el===document.activeElement));
         await page.keyboard.press('Escape');
         check('Escape closes navigation and restores focus',await page.locator('#menu-toggle').getAttribute('aria-expanded')==='false'&&await page.locator('#menu-toggle').evaluate(el=>el===document.activeElement));
+        check('Closing the menu restores page scroll and interactivity',await page.evaluate(()=>getComputedStyle(document.documentElement).overflow!=='hidden'&&!document.querySelector('main').inert&&!document.querySelector('.site-footer-band').inert));
         await page.locator('#menu-toggle').click();await page.locator('#mobile-nav a[href="#categorias"]').click();
         check('Mobile navigation reaches the service catalogue',await page.locator('#menu-toggle').getAttribute('aria-expanded')==='false'&&await page.locator('#categorias').evaluate(el=>el===document.activeElement));
+        await page.locator('#menu-toggle').click();await page.locator('#mobile-nav .mobile-nav-cta').click();
+        await page.waitForFunction(()=>{const top=document.querySelector('#brief-form').getBoundingClientRect().top;return top>=60&&top<=120;});
+        check('Mobile contact action scrolls to the form and focuses its heading',await page.locator('#brief-title').evaluate(el=>el===document.activeElement&&el.tabIndex===-1));
       }
       const rail=page.locator('[data-brand-rail]');await rail.scrollIntoViewIfNeeded();
       await page.waitForFunction(()=>document.querySelector('[data-brand-rail]').dataset.railMotion);
       if(reduced)check('Reduced motion presents a stationary brand rail',await rail.getAttribute('data-rail-motion')==='static'&&await rail.getAttribute('data-rail-running')==='false');
       else await page.waitForFunction(()=>document.querySelector('[data-brand-rail]').dataset.railRunning==='true');
-      await page.locator('#motion-toggle').click();
+      // Under the system preference the toggle is aria-disabled, so the click is forced to prove it changes nothing.
+      const toggleMotion=()=>page.locator('#motion-toggle').click({force:reduced});
+      check('Motion toggle draws SVG icons instead of emoji-prone glyphs',await page.locator('#motion-toggle').evaluate(button=>button.querySelectorAll('svg[aria-hidden="true"]').length===2&&!/[\u25b6\u2161]/.test(button.textContent)));
+      if(reduced)check('The system reduced-motion preference is reflected in the toggle state and label',await page.locator('#motion-toggle').evaluate(button=>button.getAttribute('aria-pressed')==='true'&&button.getAttribute('aria-disabled')==='true'&&/sistema/.test(button.getAttribute('aria-label'))&&document.body.classList.contains('is-paused')));
+      await toggleMotion();
       await page.waitForFunction(()=>document.querySelector('[data-brand-rail]').dataset.railRunning==='false');
       check('Global pause stops decorative motion and announces its state',await page.locator('#motion-toggle').getAttribute('aria-pressed')==='true'&&await page.locator('body').evaluate(el=>el.classList.contains('is-paused')));
-      await page.locator('#motion-toggle').click();
-      check('The visitor can resume the motion preference',await page.locator('#motion-toggle').getAttribute('aria-pressed')==='false'&&!await page.locator('body').evaluate(el=>el.classList.contains('is-paused')));
+      await toggleMotion();
+      // With reduced motion the system preference wins: the toggle stays paused instead of claiming to resume.
+      if(reduced)check('The system preference keeps motion paused after a click',await page.locator('#motion-toggle').getAttribute('aria-pressed')==='true'&&await page.locator('body').evaluate(el=>el.classList.contains('is-paused')));
+      else check('The visitor can resume the motion preference',await page.locator('#motion-toggle').getAttribute('aria-pressed')==='false'&&!await page.locator('body').evaluate(el=>el.classList.contains('is-paused')));
 
       await verifyGallery({page,width,reduced,check,capture});
       await verifyEditorial({page,width,reduced,check,capture});
@@ -84,10 +99,10 @@ try{
       check('End selects the final campaign',await tabs.nth(2).getAttribute('aria-selected')==='true'&&await tabs.nth(2).evaluate(el=>el===document.activeElement));
       await page.keyboard.press('Home');
       check('Home restores the first campaign',await tabs.first().getAttribute('aria-selected')==='true'&&await tabs.first().evaluate(el=>el===document.activeElement));
-      await page.locator('#motion-toggle').click();
+      await toggleMotion();
       const pausedAnimations=await page.evaluate(()=>window.__presentationAnimations.length);await tabs.nth(2).click();
       check('Global pause keeps campaign selection usable without starting an animation',await tabs.nth(2).getAttribute('aria-selected')==='true'&&await page.evaluate(count=>window.__presentationAnimations.length===count,pausedAnimations));
-      await page.locator('#motion-toggle').click();await tabs.first().click();
+      await toggleMotion();await tabs.first().click();
 
       check('Hidden product presentation has no visible or focusable controls',await page.locator('#trilhas').evaluate(root=>root.hidden&&root.inert&&root.getBoundingClientRect().height===0));
       for(const id of ['trabalhos','editorial','colecao','narrativa-visual']){await page.locator(`#${id}`).scrollIntoViewIfNeeded();await capture(id);}
@@ -157,6 +172,15 @@ try{
       const copied=await page.evaluate(()=>window.__copiedBrief);
       check('Copying the briefing preserves its service and text without sending',copied?.includes('Sites e landing pages')&&copied.includes(brief)&&row.mutations.length===0);
       check('The real contact destinations remain available',await page.locator('[data-contact-direct="whatsapp"]').getAttribute('href')==='https://wa.me/5511985568208'&&await page.locator('[data-contact-direct="email"]').getAttribute('href')==='mailto:smillepls@gmail.com');
+      await page.locator('#service').selectOption('');await page.locator('#brief').fill('');await page.locator('#brief-form button[type="submit"]').click();
+      check('An empty brief shows inline pt-BR errors tied to its fields, without sending',await page.evaluate(()=>{const form=document.querySelector('#brief-form'),fields=[...form.querySelectorAll('#service,#brief')];return form.noValidate&&fields.every(field=>{const error=document.getElementById(field.getAttribute('aria-describedby')||'');return field.getAttribute('aria-invalid')==='true'&&error&&!error.hidden&&error.textContent.trim().length>10;})&&document.activeElement===fields[0];})&&row.mutations.length===0);
+      await page.locator('#service').selectOption({label:'Sites e landing pages'});await page.locator('#brief').fill(brief);
+      check('Correcting the fields clears their errors',await page.locator('#service,#brief').evaluateAll(fields=>fields.every(field=>!field.hasAttribute('aria-invalid')&&document.getElementById(field.id+'-error').hidden)));
+      check('The footer is a contentinfo landmark outside main, with 44px targets and the navigation names',await page.evaluate(()=>{const footer=document.querySelector('body>footer');const links=[...footer.querySelectorAll('a')];return footer&&!footer.closest('main')&&links.every(link=>link.getBoundingClientRect().height>=44)&&[...document.querySelectorAll('.main-nav a')].every(nav=>links.some(link=>link.hash===nav.hash&&link.textContent.trim()===nav.textContent.trim()));}));
+      if(width>900)for(const id of ['editorial','laboratorio','sistemas']){
+        await page.locator('#'+id).evaluate(el=>scrollTo({top:scrollY+el.getBoundingClientRect().top-84,behavior:'instant'}));
+        check(`#${id} keeps Trabalhos marked in the header`,await page.waitForFunction(()=>document.querySelector('.main-nav a[aria-current="location"]')?.hash==='#trabalhos',null,{timeout:4000}).then(()=>true,()=>false));
+      }
       check('No horizontal document overflow',await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+2));
       check('No broken local resources or JavaScript exceptions',row.failedRequests.length===0&&row.errors.length===0);
     }catch(error){row.failure=String(error);await capture('failure').catch(()=>{});console.error(`[static ${width}${reduced?'/reduced':''}] ${error}`);}

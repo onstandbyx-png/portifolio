@@ -76,10 +76,10 @@
       <a href="#inicio" class="wordmark" aria-label="Smile N, início"><span class="wordmark-name">Smile N</span><span class="wordmark-signature">ideia ↗ execução.</span></a>
       <nav class="main-nav" aria-label="Navegação principal"><a href="#trabalhos">Trabalhos</a><a href="#categorias">Serviços</a><a href="#como-trabalho">Como trabalho</a><a href="#contato">Contato</a></nav>
       <a class="header-cta" href="#contato">Conversar sobre um projeto <span aria-hidden="true">↗</span></a>
-      <button id="motion-toggle" class="motion-toggle" type="button" aria-pressed="false" aria-label="Pausar movimento e reprodução" title="Pausar movimento e reprodução">Ⅱ <span>Pausar movimento</span></button>
+      <button id="motion-toggle" class="motion-toggle" type="button" aria-pressed="false" aria-label="Pausar movimento e reprodução" title="Pausar movimento e reprodução"><svg class="motion-icon motion-icon-pause" viewBox="0 0 16 16" width="16" height="16" fill="currentColor" aria-hidden="true" focusable="false"><path d="M4 3h3v10H4zM9 3h3v10H9z"/></svg><svg class="motion-icon motion-icon-play" viewBox="0 0 16 16" width="16" height="16" fill="currentColor" aria-hidden="true" focusable="false"><path d="M5 2.5v11L13.5 8z"/></svg><span>Pausar movimento</span></button>
       <button class="menu-toggle" id="menu-toggle" type="button" aria-label="Abrir menu" aria-controls="mobile-nav" aria-expanded="false"><span></span><span></span></button>
     </div>
-    <nav class="mobile-nav" id="mobile-nav" aria-label="Navegação móvel" hidden><a href="#trabalhos">Trabalhos</a><a href="#categorias">Serviços</a><a href="#como-trabalho">Como trabalho</a><a href="#contato">Contato</a><p>Smile N · Diretor criativo e redator<br>Criação e desenvolvimento para sua empresa.</p></nav>
+    <nav class="mobile-nav" id="mobile-nav" aria-label="Navegação móvel" hidden><a href="#trabalhos">Trabalhos</a><a href="#categorias">Serviços</a><a href="#como-trabalho">Como trabalho</a><a href="#contato">Contato</a><p>Smile N · Diretor criativo e redator<br>Criação e desenvolvimento para sua empresa.</p><a class="mobile-nav-cta" href="#contato">Conversar sobre um projeto <span aria-hidden="true">↗</span></a></nav>
   </header>
 
   <main id="inicio">
@@ -136,7 +136,7 @@
       </div>
     </section>
 
-<section class="editorial-section" id="editorial" data-editorial-story aria-labelledby="editorial-title">
+<section class="editorial-section" id="editorial" data-nav-group="trabalhos" data-editorial-story aria-labelledby="editorial-title">
   <header class="shell es-heading">
     <span class="eyebrow">DO CONCEITO À ENTREGA</span>
     <span class="es-heading-progress" data-es-heading-count aria-hidden="true">01 / 03</span>
@@ -163,7 +163,7 @@
   </div>
 </section>
 
-<section class="ads-section shell section-block" id="laboratorio" aria-labelledby="ads-title">
+<section class="ads-section shell section-block" id="laboratorio" data-nav-group="trabalhos" aria-labelledby="ads-title">
   <div class="work-heading ads-heading"><span class="eyebrow">Campanhas e anúncios</span><h2 id="ads-title">Sua oferta.<br><em>Em cada canal.</em></h2></div>
   <div class="ads-lab">
     <figure class="sp-campaign"><img src="/assets/portfolio/static-r8/campanha-meta.webp" width="960" height="1200" alt="Campanha conceitual smiile para Meta: Sua ideia ganha vida." loading="lazy" decoding="async"></figure>
@@ -183,7 +183,7 @@
 </section>
 
 
-<section id="sistemas" class="workflow-section" aria-labelledby="systems-title">
+<section id="sistemas" class="workflow-section" data-nav-group="trabalhos" aria-labelledby="systems-title">
  <div class="shell">
   <div class="systems-intro"><div><span class="eyebrow">Sistemas e automações</span><h2 id="systems-title">Do pedido à<br>informação organizada.</h2></div><div><p>Interfaces e fluxos que reduzem etapas manuais. Veja uma solicitação ganhar responsável, prioridade e próximo passo.</p></div></div>
   <div class="workflow" data-workflow>
@@ -213,11 +213,11 @@
     <section class="contact-section" id="contato" aria-labelledby="contact-title">
  <div class="shell contact-grid">
   <div class="contact-intro"><span class="eyebrow">Vamos conversar</span><h2 id="contact-title">Conte o que<br>sua empresa precisa.</h2><p>Descreva o que você quer melhorar ou colocar em prática. Vamos definir a entrega a partir dessa necessidade.</p><div class="contact-person"><span class="contact-monogram" aria-hidden="true">S<span>↗</span></span><div><strong>Smile N</strong><span>Diretor criativo e redator</span></div></div><div class="contact-direct"><a href="https://wa.me/5511985568208" target="_blank" rel="noopener noreferrer" data-contact-direct="whatsapp">Conversar pelo WhatsApp <span aria-hidden="true">↗</span><small>+55 11 98556-8208</small></a><a href="mailto:smillepls@gmail.com" data-contact-direct="email">smillepls@gmail.com <span aria-hidden="true">↗</span></a></div></div>
-  <form id="brief-form" class="contact-form"><div class="brief-heading"><h3>Seu projeto, em poucas palavras.</h3></div><label for="service">Como posso ajudar sua empresa?</label><select id="service" required><option value="">Escolha uma frente de trabalho</option><option>Identidade visual</option><option>Conteúdo e redação</option><option>Campanhas e anúncios</option><option>Sites e landing pages</option><option>Sistemas e automações</option><option>Projeto integrado</option><option>Ainda estou definindo</option></select><label for="brief">Conte um pouco sobre o projeto</label><textarea id="brief" rows="4" minlength="8" maxlength="3000" placeholder="O que sua empresa faz? O que você quer melhorar ou lançar? Há um prazo?" required></textarea><button type="submit" class="form-submit" disabled>Continuar no WhatsApp <span aria-hidden="true">↗</span></button><p id="form-status" role="status">Você revisa a mensagem e confirma o envio no WhatsApp.</p><noscript><p>Use o WhatsApp ou o e-mail ao lado para conversar diretamente com Smile N.</p></noscript></form>
+  <form id="brief-form" class="contact-form" aria-labelledby="brief-title" novalidate><div class="brief-heading"><h3 id="brief-title" tabindex="-1">Seu projeto, em poucas palavras.</h3></div><label for="service">Como posso ajudar sua empresa?</label><select id="service" required><option value="">Escolha uma frente de trabalho</option><option>Identidade visual</option><option>Conteúdo e redação</option><option>Campanhas e anúncios</option><option>Sites e landing pages</option><option>Sistemas e automações</option><option>Projeto integrado</option><option>Ainda estou definindo</option></select><p class="field-error" id="service-error" hidden></p><label for="brief">Conte um pouco sobre o projeto</label><textarea id="brief" rows="4" minlength="8" maxlength="3000" placeholder="O que sua empresa faz? O que você quer melhorar ou lançar? Há um prazo?" required></textarea><p class="field-error" id="brief-error" hidden></p><button type="submit" class="form-submit" disabled>Continuar no WhatsApp <span aria-hidden="true">↗</span></button><p id="form-status" role="status">Você revisa a mensagem e confirma o envio no WhatsApp.</p><noscript><p>Use o WhatsApp ou o e-mail ao lado para conversar diretamente com Smile N.</p></noscript></form>
  </div>
- <footer class="shell site-footer"><a class="wordmark" href="#inicio">ideia<span class="wordmark-arrow" aria-hidden="true">↗</span>execução.</a><span>SMILE N · DIREÇÃO CRIATIVA / 2026</span><div><a href="#trabalhos">Projetos</a><a href="#inicio">Voltar ao topo ↑</a></div></footer>
 </section>
   </main>
+  <footer class="site-footer-band"><div class="shell site-footer"><a class="wordmark" href="#inicio">ideia<span class="wordmark-arrow" aria-hidden="true">↗</span>execução.</a><span>SMILE N · DIREÇÃO CRIATIVA / 2026</span><nav aria-label="Rodapé"><a href="#trabalhos">Trabalhos</a><a href="#categorias">Serviços</a><a href="#como-trabalho">Como trabalho</a><a href="#contato">Contato</a><a href="#inicio">Voltar ao início ↑</a></nav></div></footer>
 
 </body>
 </html>

@@ -11,7 +11,7 @@
 .es-transcript summary{min-height:44px;padding:12px 0;font-size:15px;font-weight:550;cursor:pointer;color:#25452f}
 .es-transcript[open]{padding-bottom:12px}
 .es-transcript blockquote{padding-top:12px}
-.es-transcript summary:focus-visible,.sm-brief-summary summary:focus-visible{outline:3px solid #4d7096;outline-offset:4px}
+.es-transcript summary:focus-visible{outline:3px solid #4d7096;outline-offset:4px}
 .es-context{min-height:260px}
 .sp-campaign{width:min(100%,1120px)}
 .sp-campaign-layout{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);align-items:center;gap:64px}
