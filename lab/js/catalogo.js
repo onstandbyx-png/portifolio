@@ -10,7 +10,7 @@ export const FAMILIAS = [['todas', 'Todas'], ['cartoes', 'Cartões'], ['cracha',
 export const STATUS = {atual: 'atual', substituido: 'substituído', rejeitado: 'recusado', legado: 'legado', removido: 'removido', rascunho: 'rascunho'};
 export const PROJETOS = {portfolio: 'Portfólio', smiile: 'smiile', fatos: 'Fatos'};
 
-const VAZIO = {elementos: {}, versoes: {}, fontes: {}, linha: [], naoImplementados: []};
+const VAZIO = {elementos: {}, versoes: {}, fontes: {}, linha: [], naoImplementados: [], referencias: []};
 let cache = null;
 export function carregar() {
   cache ||= Promise.all([

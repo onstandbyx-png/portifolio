@@ -194,6 +194,11 @@ function notasHtml(notas, fontes) {
     return lista.length ? `<h4>${titulo} (Drive)</h4><ul class="q-notas">${lista.map(n => `<li>${esc(n.texto)}${n.tempos ? ` <code>${esc(n.tempos)}</code>` : ''}${fonte(n)}</li>`).join('')}</ul>` : '';
   }).join('');
 }
+// Reference videos the element was built from (private deploy only, under /_lab/referencias/).
+function referenciasHtml(refs) {
+  if (!refs.length) return '';
+  return `<h4>Referência em vídeo</h4>${refs.map(r => `<figure class="q-ref"><video src="/_lab/referencias/${encodeURI(r.arquivo)}" controls muted playsinline loop preload="none"></video><figcaption>${esc(r.titulo)}${r.medida ? ` · ${esc(r.medida)}` : ''}${r.descricao ? `<br>${esc(r.descricao)}` : ''}</figcaption></figure>`).join('')}`;
+}
 function temposHtml(anims) {
   if (!anims.length) return '<li><span>nenhuma animação CSS ou Web Animation ativa agora</span><span></span></li>';
   const vistos = new Set();
@@ -333,10 +338,11 @@ function tocador(card, p, st, {aoMedir}) {
 function quadroElemento(e, ctx) {
   const versoes = e.versoes.filter(id => ctx.porId.has(id));
   const notas = ctx.contexto.elementos[e.id] || [];
+  const refs = (ctx.contexto.referencias || []).filter(r => (r.elementos || []).includes(e.id));
   const card = html(`<article class="card q-card" id="q-${esc(e.id)}">
     <div class="stage q-stage"><span class="stage-msg">${versoes.length ? 'entra ao vivo quando chegar aqui' : 'sem versão viva deste elemento'}</span></div>
     <div><h3>${esc(e.nome)}</h3><p class="by">${esc(PROJETOS[e.projeto])} · ${esc(e.era || '')} · <a data-q-abrir target="_blank" rel="noopener">abrir na versão ↗</a></p></div>
-    <div class="meta"><span class="tag${e.status === 'atual' ? ' tag--ok' : e.status === 'rejeitado' || e.status === 'removido' ? ' tag--warn' : ''}">${esc(STATUS[e.status] || e.status || '')}</span><span class="tag">${esc(FAMILIA[e.familia] || e.familia || '')}</span><span class="tag" data-q-medida>tamanho medido ao vivo</span><span class="tag" data-q-anim hidden></span>${notas.length ? `<span class="tag tag--ok">${notas.length} ${notas.length > 1 ? 'notas' : 'nota'} do Drive</span>` : ''}</div>
+    <div class="meta"><span class="tag${e.status === 'atual' ? ' tag--ok' : e.status === 'rejeitado' || e.status === 'removido' ? ' tag--warn' : ''}">${esc(STATUS[e.status] || e.status || '')}</span><span class="tag">${esc(FAMILIA[e.familia] || e.familia || '')}</span><span class="tag" data-q-medida>tamanho medido ao vivo</span><span class="tag" data-q-anim hidden></span>${notas.length ? `<span class="tag tag--ok">${notas.length} ${notas.length > 1 ? 'notas' : 'nota'} do Drive</span>` : ''}${refs.length ? `<span class="tag tag--ok">${refs.length > 1 ? `${refs.length} vídeos` : 'vídeo'} de referência</span>` : ''}</div>
     ${versoes.length > 6 ? `<label class="vs-field q-versao-sel">Versão <select data-q-versao-sel>${versoes.map((id, i) => `<option value="${esc(id)}"${i === versoes.length - 1 ? ' selected' : ''}>${esc(`${ctx.porId.get(id).data} · ${ctx.porId.get(id).rotulo}`)}</option>`).join('')}</select></label>`
       : versoes.length > 1 ? `<div class="seg-group q-versoes" role="group" aria-label="Versão">${versoes.map((id, i) => `<button type="button" class="seg" data-q-versao="${esc(id)}" title="${esc(ctx.porId.get(id).rotulo)}"${i === versoes.length - 1 ? ' aria-pressed="true"' : ''}>${esc(rotuloVersao(ctx.porId.get(id)))}</button>`).join('')}</div>` : ''}
     <div class="controls">
@@ -362,6 +368,7 @@ function quadroElemento(e, ctx) {
       ${e.aprovacao ? `<h4>Histórico</h4><p>${esc(e.aprovacao)}</p>` : ''}
       <h4>Onde está</h4><p>${esc(e.tipo || '')}${e.seletor ? ` · <code>${esc(e.seletor)}</code>` : ''}${e.caminho ? ` · <code>${esc(e.caminho)}</code>` : ''}<br>${versoes.length ? versoes.map(id => esc(`${ctx.porId.get(id).data} · ${ctx.porId.get(id).rotulo}`)).join('<br>') : 'sem versão viva'}</p>
       <h4>Tempos medidos ao vivo</h4><ul class="times" data-q-tempos><li><span>aparecem quando o quadro está ao vivo</span><span></span></li></ul>
+      ${referenciasHtml(refs)}
       ${notasHtml(notas, ctx.contexto.fontes)}
     </div></details>
   </article>`);
