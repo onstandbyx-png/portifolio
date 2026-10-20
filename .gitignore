@@ -8,3 +8,4 @@ coverage/
 # Build outputs and local browser evidence
 public/assets/badge-build/
 qa/
+lab/.versoes/

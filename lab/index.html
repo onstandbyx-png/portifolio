@@ -29,7 +29,8 @@
 
 <nav class="tabs" aria-label="Seções do laboratório">
   <div class="wrap tabs-inner" role="tablist">
-    <button type="button" role="tab" id="tab-recriados" aria-controls="recriados" aria-selected="true">Recriados <span class="count" data-count="recriados"></span></button>
+    <button type="button" role="tab" id="tab-versoes" aria-controls="versoes" aria-selected="true">Versões ao vivo <span class="count" data-count="versoes"></span></button>
+    <button type="button" role="tab" id="tab-recriados" aria-controls="recriados" aria-selected="false" tabindex="-1">Recriados <span class="count" data-count="recriados"></span></button>
     <button type="button" role="tab" id="tab-componentes" aria-controls="componentes" aria-selected="false" tabindex="-1">Componentes das páginas</button>
     <button type="button" role="tab" id="tab-cartoes" aria-controls="cartoes" aria-selected="false" tabindex="-1">Cartões e protótipos</button>
     <button type="button" role="tab" id="tab-rive" aria-controls="rive" aria-selected="false" tabindex="-1">Originais Rive <span class="count" data-count="rive"></span></button>
@@ -39,7 +40,15 @@
 </nav>
 
 <main class="wrap">
-  <section class="panel" id="recriados" role="tabpanel" aria-labelledby="tab-recriados" tabindex="-1">
+  <section class="panel" id="versoes" role="tabpanel" aria-labelledby="tab-versoes" tabindex="-1">
+    <div class="intro">
+      <h2>Versões ao vivo</h2>
+      <p>Cada fase dos seus projetos rodando com o código daquela data. Escolha um elemento (cartões, crachá, aparelhos…) para abrir a versão já nele; use <b>Isolar</b> para ver só o elemento e <b>Comparar versões</b> para ver o mesmo elemento em todas as fases lado a lado.</p>
+    </div>
+    <div data-versoes><p class="note">Carregando as versões…</p></div>
+  </section>
+
+  <section class="panel" id="recriados" role="tabpanel" aria-labelledby="tab-recriados" tabindex="-1" hidden>
     <div class="intro">
       <h2>Original × recriação</h2>
       <p>Cada par mostra o arquivo original, carregado ao vivo da fonte, e a recriação em código próprio. Toque em cada lado, ou use <b>Tocar os dois</b> para ver a mesma ação ao mesmo tempo. O tempo da recriação é medido no seu navegador; o do original vem da medição quadro a quadro.</p>

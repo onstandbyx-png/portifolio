@@ -1,4 +1,5 @@
 import {PAIRS} from './recriados.js';
+import {mountVersoes} from './versoes.js';
 import {mountLottie, mountRive, reducedMotion, renderInputs, whenNear} from './runtime.js';
 
 const PREVIEW = 'https://portfolio-visual-review-production.up.railway.app';
@@ -25,6 +26,8 @@ function showTab(id, {focus = false, push = true} = {}) {
   if (!opened.has(id)) {
     opened.add(id);
     $$('iframe[data-src]', $('#' + id)).forEach(f => { f.src = f.dataset.src; });
+    if (id === 'versoes') mountVersoes($('[data-versoes]')).then(n => { $('[data-count="versoes"]').textContent = n.versoes; })
+      .catch(error => { $('[data-versoes]').innerHTML = `<p class="note">As versões não carregaram: ${esc(error.message)}</p>`; });
   }
   if (focus) tab.focus();
   if (push && location.hash !== '#' + id) history.replaceState(null, '', '#' + id);
@@ -45,7 +48,7 @@ document.addEventListener('click', event => {
   scrollTo({top: 0});
 });
 addEventListener('hashchange', () => showTab(location.hash.slice(1), {push: false}));
-showTab(location.hash.slice(1) || 'recriados', {push: false});
+showTab(location.hash.slice(1) || 'versoes', {push: false});
 
 /* Frames: width presets and prototype switch */
 document.addEventListener('click', event => {
