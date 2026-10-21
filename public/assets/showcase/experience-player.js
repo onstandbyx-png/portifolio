@@ -14,7 +14,7 @@
  */
 import { createMotion, clamp } from '../sections/motion.js';
 import { channels, channelById, renderMock, marca, clienteChip, CLIENTES } from './campaign-channels.js';
-import { logoSvg, CHANNEL_LOGO } from './channel-logos.js';
+import { logoSvg, CHANNEL_LOGO, LOGOS } from './channel-logos.js';
 
 const escape = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 const ICONS = {
@@ -268,6 +268,7 @@ export function mountCampaignExperience(lab, underlay) {
     const fine = noteSlot?.querySelector('[data-note-fine]');
     if (fine) fine.textContent = FINE + (AI_IMAGES.test(renderMock(pl)) ? ' Imagens geradas por IA.' : '');
     player.dataset.platform = ch.id; player.dataset.placement = pl.id;
+    player.style.setProperty('--ch', id ? LOGOS[id].cor : '#1e4530');
     lab.dataset.placement = String(placementIndex);
   }
   /* Replaces the placement. With motion and an open peel, a ghost of the old

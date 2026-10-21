@@ -14,7 +14,10 @@
 #laboratorio .cx-chips{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:10px 0 8px}
 #laboratorio .cx-placements{display:flex;flex-wrap:wrap;gap:6px;min-width:0}
 #laboratorio .cx-placement{display:inline-flex;align-items:center;min-height:44px;padding:0 14px;border:1px solid #b9cab8;border-radius:999px;background:transparent;color:#3f5c46;font:550 13px/1.2 var(--sans,Inter,Arial,sans-serif);cursor:pointer}
-#laboratorio .cx-placement[aria-pressed="true"]{border-color:#1e4530;background:#1e4530;color:#f8fbf7}
+#laboratorio .cx-placement[aria-pressed="true"]{border-color:#1e4530;background:#1e4530;color:#f8fbf7;box-shadow:0 0 0 2px #fff,0 0 0 4px var(--ch,#1e4530)}
+#laboratorio .cx-placement{transition:background .2s,color .2s,box-shadow .25s,transform .2s}
+#laboratorio .cx-placement:hover:not([aria-pressed="true"]){border-color:var(--ch,#1e4530);transform:translateY(-1px)}
+@media (prefers-reduced-motion:reduce){#laboratorio .cx-placement{transition:none}#laboratorio .cx-placement:hover{transform:none}}
 #laboratorio .cx-placement--static{min-height:32px;border-color:#1e4530;background:#1e4530;color:#f8fbf7;cursor:default}
 #laboratorio .cx-label{display:inline-flex;align-items:center;gap:6px;min-height:32px;margin-left:auto;padding:0 12px;border-radius:999px;background:#fff;color:#2b3e31;font:600 12.5px/1.2 var(--sans,Inter,Arial,sans-serif);box-shadow:inset 0 0 0 1px #c9d4c4}
 #laboratorio .cx-label::before{content:"";width:7px;height:7px;border-radius:50%;background:#b8660f}

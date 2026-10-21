@@ -6,7 +6,7 @@
 import { createMotion, clamp } from '../sections/motion.js';
 import { mountArtworkDialog } from './artwork-dialog.js';
 import { channels, groups, IMG, CLIENTES, marca } from './campaign-channels.js';
-import { logoSvg, CHANNEL_LOGO } from './channel-logos.js';
+import { logoSvg, CHANNEL_LOGO, LOGOS } from './channel-logos.js';
 const ART = '/assets/portfolio/static-r8/';
 const esc = value => String(value).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 
@@ -17,7 +17,7 @@ function picture(file, alt, className = '') {
 function tabMarkup(channel, index) {
   const id = CHANNEL_LOGO[channel.id];
   const mark = id ? logoSvg(id, { altura: 16, classe: 'sp-platform-logo' }) : '';
-  return `<button type="button" id="tab-${channel.id}" role="tab" data-sp-tab="${channel.id}" aria-controls="panel-${channel.id}" aria-describedby="sp-group-${channel.group}" aria-selected="${index === 0}" tabindex="${index === 0 ? '0' : '-1'}">${mark}<span>${esc(channel.name)}</span></button>`;
+  return `<button type="button" id="tab-${channel.id}" role="tab" data-sp-tab="${channel.id}" aria-controls="panel-${channel.id}" aria-describedby="sp-group-${channel.group}" aria-selected="${index === 0}" tabindex="${index === 0 ? '0' : '-1'}"${id ? ` style="--ch:${LOGOS[id].cor}"` : ''}>${mark}<span>${esc(channel.name)}</span><small class="sp-tab-count" aria-hidden="true">${channel.placements.length}</small></button>`;
 }
 
 /* The front of the peel: one photo and the piece's text in HTML (brand, headline, fictitious-brand notice). */
