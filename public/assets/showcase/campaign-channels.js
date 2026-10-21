@@ -425,8 +425,17 @@ const mocks = {
       <p><b>Doces</b><span>Ver tudo</span></p><ul><li>${pic('pudim11')}<span><b>Pudim de leite</b><small>Inteiro, feito na casa.</small></span></li></ul></div></div>`) +
     scene('item', 'push', 'claro', `<div class="cm-safe"><div class="cm-wa-bar">${I('back')}<span></span>${I('share')}</div><span class="cm-wa-photo">${pic('panela11')}</span><div class="cm-wa-item"><b>Feijoada no tacho para 4</b><p>Carnes separadas, arroz, couve e farofa. Encomenda até sexta.</p>${btn('Conversar com a empresa', 'cta', '3', 'cm-btn--wa')}</div></div>`) +
     scene('chat', 'push', 'claro', `<div class="cm-wa-head">${I('back')}${marca('restaurante')}<span><b>Tacho Miúdo</b><small>Conta comercial</small></span>${I('video')}${I('phone')}</div>
-      <div class="cm-wa-body"><span class="cm-wa-day">Hoje</span><div class="cm-wa-out"><span class="cm-wa-quote cm-wa-quote--item">${pic('panela11')}<span><b>Feijoada no tacho para 4</b><small>Ver</small></span></span>Olá! Quero encomendar este item para sábado.<small>10:09 ${I('ticks')}</small></div>
-        <div class="cm-wa-in">Anotado! Retira no local ou prefere entrega?<small>10:09</small></div><span class="cm-wa-replies" data-hs="3"><span>Retirar</span><span>Entrega</span></span></div>
+      <div class="cm-wa-body"><span class="cm-wa-day">Hoje</span>
+        <div class="cm-wa-out"><span class="cm-wa-quote cm-wa-quote--item">${pic('panela11')}<span><b>Feijoada no tacho para 4</b><small>Ver</small></span></span>Olá! Quero encomendar este item para sábado.<small>10:09 ${I('ticks')}</small></div>
+        <div class="cm-wa-in cm-wc1"><em class="cm-wa-auto">Mensagem automática</em>Oi! Aqui é o atendimento do Tacho Miúdo. Como prefere receber?<small>10:09</small></div>
+        <span class="cm-wa-replies cm-wc1 cm-wcg cm-wr1" data-hs="3"><span data-tap="r1">Retirar no balcão</span><span>Entrega</span></span>
+        <div class="cm-wa-out cm-wc2">Retirar no balcão<small>10:09 ${I('ticks')}</small></div>
+        <div class="cm-wa-in cm-wc2"><em class="cm-wa-auto">Mensagem automática</em>Perfeito. Para qual horário de sábado?<small>10:09</small></div>
+        <span class="cm-wa-replies cm-wa-replies--row cm-wc2 cm-wcg cm-wr2"><span>11h</span><span data-tap="r2">12h</span><span>13h</span></span>
+        <div class="cm-wa-out cm-wc3">12h<small>10:09 ${I('ticks')}</small></div>
+        <div class="cm-wa-in cm-wa-order cm-wc3"><b>Resumo do pedido</b><span>Feijoada no tacho para 4</span><span>Retirada no balcão, sábado às 12h</span><span class="cm-wa-order-btn cm-wr3" data-tap="ok">Confirmar pedido</span><small>10:09</small></div>
+        <div class="cm-wa-in cm-wc4"><em class="cm-wa-auto">Mensagem automática</em>Pedido confirmado. Você recebe um lembrete no sábado às 9h.<small>10:09</small></div>
+      </div>
       <div class="cm-wa-compose"><span class="cm-wa-row">${I('plus')}<span class="cm-wa-field cm-wa-field--empty"></span>${I('camera')}${I('mic')}</span></div>`)),
 
   /* 2.15 Publieditorial: a wealth manager's sponsored article in a fictitious magazine, identified before the title. */
@@ -683,14 +692,21 @@ export const channels = [
           { ms: 1800, cena: 'chat', estado: 'm2', toque: 'reply', desc: 'Resposta automática pergunta o horário. Toque em Quinta, 9h.' },
           { ms: 1900, cena: 'chat', estado: 'm2 m3', desc: 'Horário escolhido: quinta, 9h. A clínica confirma pela conversa.' },
         ] },
-      { id: 'catalog', label: 'Catálogo', mock: 'waCatalog', cliente: 'restaurante', selo: 'Catálogo, não é anúncio', frase: 'Um restaurante recebe encomendas pelo catálogo.',
-        passos: [P('Atenção', 'Vitrine dentro do perfil', [0]), P('Retenção', 'Itens organizados por ocasião', [1, 2]), P('Conversão', 'Item vai junto na mensagem', [3, 4])],
+      { id: 'catalog', label: 'Catálogo', mock: 'waCatalog', cliente: 'restaurante', selo: 'Catálogo, não é anúncio', frase: 'Um restaurante recebe a encomenda pelo catálogo e fecha o pedido no atendimento automático.',
+        passos: [P('Atenção', 'Vitrine dentro do perfil', [0, 1]), P('Retenção', 'Itens organizados por ocasião', [2, 3]), P('Conversão', 'Atendimento automático até o pedido', [4, 5, 6, 7, 8, 9, 10, 11])],
         quadros: [
           { ms: 1400, cena: 'profile', desc: 'Perfil comercial do Tacho Miúdo no WhatsApp, com a faixa Catálogo.' },
           { ms: 900, cena: 'profile', toque: 'more', desc: 'Toque em Ver tudo.' },
           { ms: 1500, cena: 'catalog', toque: 'item', desc: 'Catálogo com as coleções Encomendas de sábado e Doces. Toque em Feijoada no tacho para 4.' },
           { ms: 1500, cena: 'item', toque: 'cta', desc: 'Página do item, sem preço. Toque em Conversar com a empresa.' },
-          { ms: 2200, cena: 'chat', desc: 'A conversa abre com o item anexado e a mensagem enviada. O restaurante pergunta se é retirada ou entrega.' },
+          { ms: 1300, cena: 'chat', desc: 'A conversa abre com o item anexado e a mensagem enviada.' },
+          { ms: 1500, cena: 'chat', estado: 'k1', desc: 'Mensagem automática: como prefere receber? Opções Retirar no balcão e Entrega.' },
+          { ms: 900, cena: 'chat', estado: 'k1', toque: 'r1', desc: 'Toque em Retirar no balcão.' },
+          { ms: 1400, cena: 'chat', estado: 'k1 k2', desc: 'A automação pergunta o horário de sábado: 11h, 12h ou 13h.' },
+          { ms: 900, cena: 'chat', estado: 'k1 k2', toque: 'r2', desc: 'Toque em 12h.' },
+          { ms: 1600, cena: 'chat', estado: 'k1 k2 k3', desc: 'Resumo do pedido: feijoada para 4, retirada no balcão sábado às 12h, com o botão Confirmar pedido.' },
+          { ms: 900, cena: 'chat', estado: 'k1 k2 k3', toque: 'ok', desc: 'Toque em Confirmar pedido.' },
+          { ms: 2200, cena: 'chat', estado: 'k1 k2 k3 k4', desc: 'Pedido confirmado, com lembrete no sábado às 9h.' },
         ] },
     ] },
   { id: 'blog', name: 'Publieditorial', group: 'content', benefit: 'Explicar antes de vender, sempre identificado.',

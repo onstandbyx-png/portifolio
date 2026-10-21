@@ -970,3 +970,18 @@ body.is-paused #laboratorio .cm-screen[data-state~="typing"] .cm-typed>span{max-
 #laboratorio .cm-maps-chips span{display:inline-flex;align-items:center;gap:calc(var(--u)*5);height:calc(var(--u)*32);padding:0 calc(var(--u)*13);border-radius:calc(var(--u)*16);background:#fff;color:#3c4043;font-size:calc(var(--u)*13);font-weight:500;box-shadow:0 calc(var(--u)*1) calc(var(--u)*3) #0000002e}
 #laboratorio .cm-maps-chips span.is-on{background:#e8f0fe;color:#174ea6}
 #laboratorio .cm-maps-chips .cm-i{width:calc(var(--u)*15);height:calc(var(--u)*15)}
+
+/* WhatsApp catalog: automated replies until the order is confirmed (22/10/2026). */
+#laboratorio .cm-wacat .cm-wa-body{justify-content:flex-end;overflow:hidden}
+#laboratorio .cm-wacat .cm-wc1,#laboratorio .cm-wacat .cm-wc2,#laboratorio .cm-wacat .cm-wc3,#laboratorio .cm-wacat .cm-wc4{display:none!important}
+#laboratorio .cm-screen[data-state~="k1"] .cm-wc1,#laboratorio .cm-screen[data-state~="k2"] .cm-wc2,#laboratorio .cm-screen[data-state~="k3"] .cm-wc3,#laboratorio .cm-screen[data-state~="k4"] .cm-wc4{display:block!important}
+#laboratorio .cm-screen[data-state~="k1"] .cm-wc1.cm-wcg,#laboratorio .cm-screen[data-state~="k2"] .cm-wc2.cm-wcg{display:grid!important}
+#laboratorio .cm-screen[data-state~="k2"] .cm-wa-replies.cm-wcg.cm-wr1,#laboratorio .cm-screen[data-state~="k3"] .cm-wa-replies.cm-wcg.cm-wr2{display:none!important}
+#laboratorio .cm-screen[data-state~="k3"] .cm-wa-in.cm-wa-order.cm-wc3{display:grid!important}
+#laboratorio .cm-screen[data-state~="k4"] .cm-wr3{opacity:.45}
+#laboratorio .cm-wa-replies--row{grid-template-columns:repeat(3,1fr)}
+#laboratorio .cm-wa-auto{display:block;margin-bottom:calc(var(--u)*3);color:#667781;font-size:calc(var(--u)*10.5);font-style:normal}
+#laboratorio .cm-wa-order{display:grid;gap:calc(var(--u)*2);min-width:72%}
+#laboratorio .cm-wa-order b{font-size:calc(var(--u)*14)}
+#laboratorio .cm-wa-order>span{font-size:calc(var(--u)*13);color:#3b4a54}
+#laboratorio .cm-wa-order .cm-wa-order-btn{display:grid;place-items:center;margin:calc(var(--u)*6) calc(var(--u)*-9) calc(var(--u)*-6);padding-top:calc(var(--u)*8);border-top:1px solid #e9edef;color:#008069;font-weight:600}
