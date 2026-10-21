@@ -142,5 +142,7 @@ if (process.env.LAB_CONTEXTO && existsSync(process.env.LAB_CONTEXTO)) copy(proce
 else put('contexto.json', '{}');
 // Private reference videos (LAB_REFERENCIAS), linked to elements by contexto.json.
 if (process.env.LAB_REFERENCIAS && existsSync(process.env.LAB_REFERENCIAS)) for (const file of walk(process.env.LAB_REFERENCIAS)) copy(file, join('_lab', 'referencias', relative(process.env.LAB_REFERENCIAS, file)));
+// Private reuse packages per element and version (LAB_REUSO, from lab-build/reuso), read by the cards.
+if (process.env.LAB_REUSO && existsSync(process.env.LAB_REUSO)) for (const file of walk(process.env.LAB_REUSO)) copy(file, join('_lab', 'reuso', relative(process.env.LAB_REUSO, file)));
 put('versoes.json', JSON.stringify({versoes: ok.map(id => ({id, kind: 'static'})), privadas}));
 console.log(`exportado: ${ok.length} versões, ${stored.size} arquivos únicos (${Math.round(bytes / 1e6)} MB) em ${OUT}`);
