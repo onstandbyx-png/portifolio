@@ -127,9 +127,11 @@ export function mountCampaignExperience(lab, underlay) {
   function target(selector) {
     const scene = activeScene();
     if (!scene) return null;
+    // Skip what the frame has not shown yet (a pin before the search ends, an answer still behind the typing dots).
+    const shown = node => { for (let el = node; el && el !== scene; el = el.parentElement) if (getComputedStyle(el).opacity === '0') return false; return true; };
     const found = [...scene.querySelectorAll(selector)].filter(node => {
       const r = node.getBoundingClientRect();
-      return r.width > 0 && getComputedStyle(node).visibility === 'visible';
+      return r.width > 0 && r.height > 0 && getComputedStyle(node).visibility === 'visible' && shown(node);
     });
     return found[found.length - 1] || null;
   }

@@ -992,3 +992,55 @@ body.is-paused #laboratorio .cm-screen[data-state~="typing"] .cm-typed>span{max-
 #laboratorio .cm-fbpost .cm-fbpost-cta,#laboratorio .cm-fb-post .cm-fbpost-cta{margin:0;padding:calc(var(--u)*10) calc(var(--u)*12)}
 #laboratorio .cm-fbpost-cta small{font-size:calc(var(--u)*11);letter-spacing:.02em;color:#65676b}
 #laboratorio .cm-fbpost-cta b{font-size:calc(var(--u)*14);font-weight:600;color:#050505}
+
+/* Behaviours from the lab, played along the real flow of each step (22/10/2026). */
+/* WhatsApp: the business is typing before each automatic answer (lab: smiile chat
+   fila de mensagens); the answer and its quick replies arrive after the dots. */
+#laboratorio .cm-wa-typing{grid-auto-flow:column;align-items:center;align-self:flex-start;width:fit-content;max-height:calc(var(--u)*40);margin-bottom:0;padding:calc(var(--u)*12) calc(var(--u)*13);overflow:hidden;border-radius:calc(var(--u)*8);border-top-left-radius:calc(var(--u)*2);background:#fff;line-height:0;box-shadow:0 calc(var(--u)*1) calc(var(--u)*1) #0000001a;animation:cm-typing-life .85s ease forwards}
+#laboratorio .cm-wa-typing i{display:inline-block;width:calc(var(--u)*7);height:calc(var(--u)*7);margin:0 calc(var(--u)*1.5);border-radius:50%;background:#8696a0;animation:cm-typing-dot .9s ease-in-out infinite}
+#laboratorio .cm-wa-typing i:nth-child(2){animation-delay:.15s}
+#laboratorio .cm-wa-typing i:nth-child(3){animation-delay:.3s}
+@keyframes cm-typing-dot{0%,60%,100%{transform:translateY(0);opacity:.5}30%{transform:translateY(calc(var(--u)*-3));opacity:1}}
+@keyframes cm-typing-life{0%,82%{max-height:calc(var(--u)*40);opacity:1;padding-block:calc(var(--u)*12);margin-bottom:0}100%{max-height:0;opacity:0;padding-block:0;margin-bottom:calc(var(--u)*-7)}}
+#laboratorio .cm-wa-body .cm-arrive{overflow:hidden;transform-origin:0 100%;animation:cm-arrive .4s cubic-bezier(.2,.8,.2,1) .78s both}
+#laboratorio .cm-wa-body .cm-wa-replies.cm-arrive{transform-origin:50% 100%;animation-delay:1s}
+@keyframes cm-arrive{0%{max-height:0;opacity:0;transform:translateY(calc(var(--u)*8)) scale(.94);margin-top:calc(var(--u)*-7)}100%{max-height:calc(var(--u)*320);opacity:1;transform:none;margin-top:0}}
+/* In-app browsers and Safari: the page loads (a progress line) and its content rises in (lab: esqueleto do estúdio). */
+#laboratorio .cm-browser::after{content:"";position:absolute;left:0;right:0;bottom:calc(var(--u)*-.6);height:calc(var(--u)*2.4);background:#3478f6;transform:scaleX(0);transform-origin:0 50%;opacity:0;pointer-events:none}
+#laboratorio .cm-scene[data-pos="on"] .cm-browser::after{animation:cm-load .9s ease-out .1s both}
+#laboratorio .cm-safari-url{position:relative}
+#laboratorio .cm-safari-url::after{content:"";position:absolute;left:calc(var(--u)*16);right:calc(var(--u)*16);bottom:calc(var(--u)*4);height:calc(var(--u)*2.2);border-radius:2px;background:#3478f6;transform:scaleX(0);transform-origin:0 50%;opacity:0}
+#laboratorio .cm-scene[data-kind="push"][data-pos="on"] .cm-safari-url::after,#laboratorio .cm-scene[data-kind="sheet"][data-pos="on"] .cm-safari-url::after{animation:cm-load .9s ease-out .1s both}
+@keyframes cm-load{0%{transform:scaleX(0);opacity:1}70%{transform:scaleX(.82);opacity:1}100%{transform:scaleX(1);opacity:0}}
+#laboratorio .cm-scene:is([data-kind="push"],[data-kind="sheet"])[data-pos="on"] .cm-lp-hero,#laboratorio .cm-scene:is([data-kind="push"],[data-kind="sheet"])[data-pos="on"] .cm-lp-body>*{animation:cm-page-in .5s cubic-bezier(.2,.8,.2,1) var(--cm-d,.3s) both}
+#laboratorio .cm-lp-hero{--cm-d:.2s}
+#laboratorio .cm-lp-body>:nth-child(2){--cm-d:.36s}
+#laboratorio .cm-lp-body>:nth-child(3){--cm-d:.42s}
+#laboratorio .cm-lp-body>:nth-child(4){--cm-d:.48s}
+#laboratorio .cm-lp-body>:nth-child(n+5){--cm-d:.54s}
+@keyframes cm-page-in{0%{opacity:0;transform:translateY(calc(var(--u)*10))}100%{opacity:1;transform:none}}
+/* Google Maps: the search is typed first; then the pins drop and the sponsored sheet rises. */
+#laboratorio .cm-maps .cm-typed>span{min-width:0}
+#laboratorio .cm-maps .cm-drop,#laboratorio .cm-maps .cm-promo{transition:opacity .25s ease,scale .5s cubic-bezier(.34,1.56,.64,1)}
+#laboratorio .cm-maps[data-state~="typing"] .cm-drop,#laboratorio .cm-maps[data-state~="typing"] .cm-promo{opacity:0;scale:.3;transition-delay:0s}
+#laboratorio .cm-maps .cm-drop:nth-of-type(2){transition-delay:.05s}
+#laboratorio .cm-maps .cm-drop:nth-of-type(3){transition-delay:.1s}
+#laboratorio .cm-maps .cm-drop:nth-of-type(4){transition-delay:.15s}
+#laboratorio .cm-maps .cm-promo{transition-delay:.2s}
+#laboratorio .cm-maps .cm-place{transition:height .48s var(--cm-ios),transform .48s var(--cm-ios) .25s}
+#laboratorio .cm-maps[data-state~="typing"] .cm-place{transform:translateY(105%)}
+/* iOS notification banner: the confirmation the page promised arrives on the phone. */
+#laboratorio .cm-push{position:absolute;z-index:120;top:calc(var(--topo) + var(--u)*2);left:calc(var(--u)*10);right:calc(var(--u)*10);display:flex;align-items:center;gap:calc(var(--u)*11);padding:calc(var(--u)*12) calc(var(--u)*14);border-radius:calc(var(--u)*26);background:rgb(246 246 248 / .86);-webkit-backdrop-filter:blur(calc(var(--u)*18)) saturate(1.8);backdrop-filter:blur(calc(var(--u)*18)) saturate(1.8);box-shadow:0 calc(var(--u)*8) calc(var(--u)*30) rgb(0 0 0 / .22),inset 0 0 0 calc(var(--u)*.7) rgb(255 255 255 / .6);color:#111;opacity:0;transform:translateY(calc(var(--u)*-120)) scale(.92);visibility:hidden;transition:transform .55s cubic-bezier(.34,1.3,.64,1),opacity .25s ease,visibility 0s .55s;pointer-events:none}
+#laboratorio .cm-screen[data-state~="aviso"] .cm-push{opacity:1;transform:none;visibility:visible;transition:transform .55s cubic-bezier(.34,1.3,.64,1),opacity .25s ease,visibility 0s}
+#laboratorio .cm-push-icon{display:grid;flex:none;place-items:center;width:calc(var(--u)*38);height:calc(var(--u)*38);border-radius:calc(var(--u)*9);background:#4b5563;color:#fff}
+#laboratorio .cm-push-icon--whatsapp{background:#25d366}
+#laboratorio .cm-push-icon .cm-i{width:calc(var(--u)*22);height:calc(var(--u)*22);stroke-width:2}
+#laboratorio .cm-push-glyph{display:block;width:calc(var(--u)*22);height:auto}
+#laboratorio .cm-push-body{display:grid;flex:1;min-width:0;gap:calc(var(--u)*1)}
+#laboratorio .cm-push-top{display:flex;align-items:baseline;justify-content:space-between;gap:calc(var(--u)*8)}
+#laboratorio .cm-push-top b{overflow:hidden;font-size:calc(var(--u)*14.5);font-weight:600;text-overflow:ellipsis;white-space:nowrap}
+#laboratorio .cm-push-top small{flex:none;color:#3c3c4399;font-size:calc(var(--u)*12.5)}
+#laboratorio .cm-push-text{display:-webkit-box;overflow:hidden;font-size:calc(var(--u)*14);line-height:1.3;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+/* Without motion: no typing dots, everything already in place. */
+@media(prefers-reduced-motion:reduce){#laboratorio .cm-wa-typing{display:none!important}}
+body.is-paused #laboratorio .cm-wa-typing{display:none!important}

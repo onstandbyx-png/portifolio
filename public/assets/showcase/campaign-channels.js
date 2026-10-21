@@ -137,6 +137,7 @@ const PATHS = {
   disc: 'M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM12 14a2 2 0 1 0 0-4 2 2 0 0 0 0 4z',
   user: 'M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM4.5 20.5c.8-4 3.8-6 7.5-6s6.7 2 7.5 6',
   location: 'M12 21.5s6.5-6 6.5-11.5a6.5 6.5 0 1 0-13 0c0 5.5 6.5 11.5 6.5 11.5zM12 12.4a2.4 2.4 0 1 0 0-4.8 2.4 2.4 0 0 0 0 4.8z',
+  mail: 'M3.5 6h17v12h-17zM3.5 6.5l8.5 6.5 8.5-6.5',
 };
 const I = (name, cls = '') => `<svg class="cm-i cm-i--${name}${cls ? ' ' + cls : ''}" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="${PATHS[name]}"/></svg>`;
 /* Every picture is lazy and sized; alt text only on the first view of a scene (the stage carries the description). */
@@ -387,7 +388,7 @@ const mocks = {
     const area = inner => `<div class="cm-map">${pic('mapa', { cls: 'cm-map-bg' })}<div class="cm-map-area">${inner}</div></div>`;
     const drops = [[86, 150], [178, 118], [130, 360], [300, 420], [60, 290]].map(([x, y]) => `<span class="cm-drop" style="left:${x / 3.6}%;top:${y / 6.4}%">${I('fork')}</span>`).join('');
     return screen('maps', scene('map', 'base', 'claro', `${area(`${drops}<span class="cm-promo cm-promo--left" style="left:${252 / 3.6}%;top:${224 / 6.4}%"><span class="cm-promo-sq" data-hs="1">${I('fork')}</span><span class="cm-promo-text"><b>Tacho Miúdo</b><small>Feijoada no tacho aos sábados</small></span></span><span class="cm-me" style="left:${108 / 3.6}%;top:${544 / 6.4}%"></span>`)}
-      <div class="cm-maps-search">${I('back')}<span>feijoada perto de mim</span>${I('close')}</div>
+      <div class="cm-maps-search">${I('back')}<span class="cm-typed"><span>feijoada perto de mim</span></span>${I('close')}</div>
       <div class="cm-maps-chips" aria-hidden="true"><span class="is-on">${I('fork')}Restaurantes</span><span>Aberto agora</span><span>Para o almoço</span><span>Mais bem localizados</span></div>
       <div class="cm-place"><span class="cm-grabber"></span>
         <div class="cm-place-row"><span><small class="cm-sp">Patrocinado</small><b>Tacho Miúdo</b><small>Restaurante · <em>Aberto</em></small></span>${pic('fachada43', { alt: 'Fachada de madeira do restaurante à noite, com flores e mesas na calçada.', pos: '50% 40%' })}</div>
@@ -410,10 +411,12 @@ const mocks = {
     scene('chat', 'push', 'claro', `<span class="cm-crumb">${I('back')}Instagram</span><div class="cm-wa-head">${I('back')}${marca('clinica')}<span><b>Seixo Odontologia</b><small>Conta comercial</small></span>${I('video')}${I('phone')}</div>
       <div class="cm-wa-body"><span class="cm-wa-sys">As mensagens são protegidas com a criptografia de ponta a ponta.</span><span class="cm-wa-day">Hoje</span>
         <div class="cm-wa-out cm-wa-msg1"><span class="cm-wa-quote">${pic('consultorio45')}<span><b>Seixo Odontologia</b><small>Avaliação com hora marcada</small></span></span>Olá! Quero agendar uma avaliação.<small>10:09 ${I('ticks')}</small></div>
-        <div class="cm-wa-in cm-wa-msg2">Olá! Que bom falar com você. Qual horário fica melhor para a avaliação?<small>10:09</small></div>
-        <span class="cm-wa-replies cm-wa-msg2" data-hs="3"><span data-tap="reply">Quinta, 9h</span><span>Sexta, 14h</span><span>Outro horário</span></span>
+<span class="cm-wa-typing cm-wa-msg2" aria-hidden="true"><i></i><i></i><i></i></span>
+        <div class="cm-wa-in cm-wa-msg2 cm-arrive">Olá! Que bom falar com você. Qual horário fica melhor para a avaliação?<small>10:09</small></div>
+        <span class="cm-wa-replies cm-wa-msg2 cm-arrive cm-arrive--late" data-hs="3"><span data-tap="reply">Quinta, 9h</span><span>Sexta, 14h</span><span>Outro horário</span></span>
         <div class="cm-wa-out cm-wa-msg3">Quinta, 9h<small>10:09 ${I('ticks')}</small></div>
-        <div class="cm-wa-in cm-wa-msg3" data-hs="3">Combinado. Enviamos a confirmação por aqui.<small>10:09</small></div></div>
+<span class="cm-wa-typing cm-wa-msg3" aria-hidden="true"><i></i><i></i><i></i></span>
+        <div class="cm-wa-in cm-wa-msg3 cm-arrive" data-hs="3">Combinado. Enviamos a confirmação por aqui.<small>10:09</small></div></div>
       <div class="cm-wa-compose"><span class="cm-wa-preview">${pic('consultorio45')}<span><b>Seixo Odontologia</b><small>Avaliação com hora marcada</small></span></span><span class="cm-wa-row">${I('plus')}<span class="cm-wa-field">Olá! Quero agendar uma avaliação.</span><span class="cm-wa-send" data-tap="send" data-hs="3">${I('send')}</span><span class="cm-wa-idle">${I('camera')}${I('mic')}</span></span></div>`)),
 
   /* 2.13 WhatsApp Business catalog (not an ad): profile, collections, item, message with the item attached. */
@@ -427,14 +430,18 @@ const mocks = {
     scene('chat', 'push', 'claro', `<div class="cm-wa-head">${I('back')}${marca('restaurante')}<span><b>Tacho Miúdo</b><small>Conta comercial</small></span>${I('video')}${I('phone')}</div>
       <div class="cm-wa-body"><span class="cm-wa-day">Hoje</span>
         <div class="cm-wa-out"><span class="cm-wa-quote cm-wa-quote--item">${pic('panela11')}<span><b>Feijoada no tacho para 4</b><small>Ver</small></span></span>Olá! Quero encomendar este item para sábado.<small>10:09 ${I('ticks')}</small></div>
-        <div class="cm-wa-in cm-wc1"><em class="cm-wa-auto">Mensagem automática</em>Oi! Aqui é o atendimento do Tacho Miúdo. Como prefere receber?<small>10:09</small></div>
-        <span class="cm-wa-replies cm-wc1 cm-wcg cm-wr1" data-hs="3"><span data-tap="r1">Retirar no balcão</span><span>Entrega</span></span>
+<span class="cm-wa-typing cm-wc1" aria-hidden="true"><i></i><i></i><i></i></span>
+        <div class="cm-wa-in cm-wc1 cm-arrive"><em class="cm-wa-auto">Mensagem automática</em>Oi! Aqui é o atendimento do Tacho Miúdo. Como prefere receber?<small>10:09</small></div>
+        <span class="cm-wa-replies cm-wc1 cm-wcg cm-wr1 cm-arrive cm-arrive--late" data-hs="3"><span data-tap="r1">Retirar no balcão</span><span>Entrega</span></span>
         <div class="cm-wa-out cm-wc2">Retirar no balcão<small>10:09 ${I('ticks')}</small></div>
-        <div class="cm-wa-in cm-wc2"><em class="cm-wa-auto">Mensagem automática</em>Perfeito. Para qual horário de sábado?<small>10:09</small></div>
-        <span class="cm-wa-replies cm-wa-replies--row cm-wc2 cm-wcg cm-wr2"><span>11h</span><span data-tap="r2">12h</span><span>13h</span></span>
+<span class="cm-wa-typing cm-wc2" aria-hidden="true"><i></i><i></i><i></i></span>
+        <div class="cm-wa-in cm-wc2 cm-arrive"><em class="cm-wa-auto">Mensagem automática</em>Perfeito. Para qual horário de sábado?<small>10:09</small></div>
+        <span class="cm-wa-replies cm-wa-replies--row cm-wc2 cm-wcg cm-wr2 cm-arrive cm-arrive--late"><span>11h</span><span data-tap="r2">12h</span><span>13h</span></span>
         <div class="cm-wa-out cm-wc3">12h<small>10:09 ${I('ticks')}</small></div>
-        <div class="cm-wa-in cm-wa-order cm-wc3"><b>Resumo do pedido</b><span>Feijoada no tacho para 4</span><span>Retirada no balcão, sábado às 12h</span><span class="cm-wa-order-btn cm-wr3" data-tap="ok">Confirmar pedido</span><small>10:09</small></div>
-        <div class="cm-wa-in cm-wc4"><em class="cm-wa-auto">Mensagem automática</em>Pedido confirmado. Você recebe um lembrete no sábado às 9h.<small>10:09</small></div>
+<span class="cm-wa-typing cm-wc3" aria-hidden="true"><i></i><i></i><i></i></span>
+        <div class="cm-wa-in cm-wa-order cm-wc3 cm-arrive"><b>Resumo do pedido</b><span>Feijoada no tacho para 4</span><span>Retirada no balcão, sábado às 12h</span><span class="cm-wa-order-btn cm-wr3" data-tap="ok">Confirmar pedido</span><small>10:09</small></div>
+<span class="cm-wa-typing cm-wc4" aria-hidden="true"><i></i><i></i><i></i></span>
+        <div class="cm-wa-in cm-wc4 cm-arrive"><em class="cm-wa-auto">Mensagem automática</em>Pedido confirmado. Você recebe um lembrete no sábado às 9h.<small>10:09</small></div>
       </div>
       <div class="cm-wa-compose"><span class="cm-wa-row">${I('plus')}<span class="cm-wa-field cm-wa-field--empty"></span>${I('camera')}${I('mic')}</span></div>`)),
 
@@ -670,8 +677,9 @@ export const channels = [
     art: art('restaurante', 'fachada45', '50% 50%', 'Feijoada no tacho aos sábados', 'Peça do Tacho Miúdo, restaurante fictício: fachada de madeira à noite, com flores e mesas na calçada.'),
     placements: [
       { id: 'local', label: 'Local', mock: 'mapsLocal', cliente: 'restaurante', selo: 'Patrocinado', frase: 'Um restaurante aparece no mapa e traça a rota.',
-        passos: [P('Atenção', 'Pin destacado no caminho', [0]), P('Retenção', 'Ficha mostra prato e horário', [1]), P('Conversão', 'Rota traçada com um toque', [2, 3, 4])],
+        passos: [P('Atenção', 'Pin destacado no caminho', [0, 1]), P('Retenção', 'Ficha mostra prato e horário', [2]), P('Conversão', 'Rota traçada com um toque', [3, 4, 5])],
         quadros: [
+          { ms: 1300, cena: 'map', estado: 'typing', desc: 'Busca no Google Maps: feijoada perto de mim.' },
           { ms: 1500, cena: 'map', desc: 'Busca feijoada perto de mim no Google Maps: alfinete quadrado do Tacho Miúdo e o resultado Patrocinado.' },
           { ms: 1900, cena: 'map', estado: 's2', desc: 'A ficha patrocinada sobe: restaurante aberto, fecha às 23h, feijoada no tacho aos sábados.' },
           { ms: 1000, cena: 'map', estado: 's2', toque: 'cta', desc: 'Toque em Rotas.' },
@@ -683,13 +691,14 @@ export const channels = [
     art: art('clinica', 'recepcao45', '50% 50%', 'Conte o que sente e escolha o horário', 'Peça da Seixo Odontologia, clínica odontológica fictícia: recepção com parede terracota, sofá e plantas.'),
     placements: [
       { id: 'ctwa', label: 'Clique para conversar', mock: 'waAd', cliente: 'clinica', selo: 'Patrocinado', frase: 'Uma clínica começa o agendamento numa conversa.',
-        passos: [P('Atenção', 'Hora marcada na própria imagem', [0]), P('Retenção', 'Legenda convida a contar mais', [1]), P('Conversão', 'Mensagem pronta e horário', [2, 3, 4, 5])],
+        passos: [P('Atenção', 'Hora marcada na própria imagem', [0]), P('Retenção', 'Legenda convida a contar mais', [1]), P('Conversão', 'Mensagem pronta e horário', [2, 3, 4, 5, 6])],
         quadros: [
           { ms: 1400, cena: 'ad', desc: 'Anúncio patrocinado da Seixo Odontologia no Instagram: Avaliação com hora marcada.' },
           { ms: 1700, cena: 'ad', estado: 'open lit', desc: 'A legenda abre: conte o que você sente e escolha o horário pela conversa. A barra Enviar mensagem pelo WhatsApp acende.' },
           { ms: 1000, cena: 'ad', estado: 'open lit', toque: 'cta', desc: 'Toque em Enviar mensagem pelo WhatsApp.' },
           { ms: 1600, cena: 'chat', toque: 'send', desc: 'O WhatsApp abre a conversa com a mensagem pronta: Olá! Quero agendar uma avaliação. Toque em enviar.' },
-          { ms: 1800, cena: 'chat', estado: 'm2', toque: 'reply', desc: 'Resposta automática pergunta o horário. Toque em Quinta, 9h.' },
+          { ms: 1700, cena: 'chat', estado: 'm2', desc: 'A clínica está digitando. A resposta automática pergunta o horário, com três opções.' },
+          { ms: 900, cena: 'chat', estado: 'm2', toque: 'reply', desc: 'Toque em Quinta, 9h.' },
           { ms: 1900, cena: 'chat', estado: 'm2 m3', desc: 'Horário escolhido: quinta, 9h. A clínica confirma pela conversa.' },
         ] },
       { id: 'catalog', label: 'Catálogo', mock: 'waCatalog', cliente: 'restaurante', selo: 'Catálogo, não é anúncio', frase: 'Um restaurante recebe a encomenda pelo catálogo e fecha o pedido no atendimento automático.',
@@ -700,11 +709,11 @@ export const channels = [
           { ms: 1500, cena: 'catalog', toque: 'item', desc: 'Catálogo com as coleções Encomendas de sábado e Doces. Toque em Feijoada no tacho para 4.' },
           { ms: 1500, cena: 'item', toque: 'cta', desc: 'Página do item, sem preço. Toque em Conversar com a empresa.' },
           { ms: 1300, cena: 'chat', desc: 'A conversa abre com o item anexado e a mensagem enviada.' },
-          { ms: 1500, cena: 'chat', estado: 'k1', desc: 'Mensagem automática: como prefere receber? Opções Retirar no balcão e Entrega.' },
+          { ms: 1700, cena: 'chat', estado: 'k1', desc: 'O atendimento automático digita: como prefere receber? Opções Retirar no balcão e Entrega.' },
           { ms: 900, cena: 'chat', estado: 'k1', toque: 'r1', desc: 'Toque em Retirar no balcão.' },
-          { ms: 1400, cena: 'chat', estado: 'k1 k2', desc: 'A automação pergunta o horário de sábado: 11h, 12h ou 13h.' },
+          { ms: 1700, cena: 'chat', estado: 'k1 k2', desc: 'A automação digita e pergunta o horário de sábado: 11h, 12h ou 13h.' },
           { ms: 900, cena: 'chat', estado: 'k1 k2', toque: 'r2', desc: 'Toque em 12h.' },
-          { ms: 1600, cena: 'chat', estado: 'k1 k2 k3', desc: 'Resumo do pedido: feijoada para 4, retirada no balcão sábado às 12h, com o botão Confirmar pedido.' },
+          { ms: 1800, cena: 'chat', estado: 'k1 k2 k3', desc: 'Resumo do pedido: feijoada para 4, retirada no balcão sábado às 12h, com o botão Confirmar pedido.' },
           { ms: 900, cena: 'chat', estado: 'k1 k2 k3', toque: 'ok', desc: 'Toque em Confirmar pedido.' },
           { ms: 2200, cena: 'chat', estado: 'k1 k2 k3 k4', desc: 'Pedido confirmado, com lembrete no sábado às 9h.' },
         ] },
@@ -723,6 +732,31 @@ export const channels = [
         ] },
     ] },
 ];
+/* What happens after the conversion, as it happens on the phone: a confirmation
+   that the page promises by WhatsApp or by e-mail ends the journey on the iOS
+   notification banner (lab: fatos-mk-barra-celular-toast, redrawn as iOS). */
+const AVISOS = {
+  'instagram/feed': { app: 'mail', cliente: 'educacao', texto: 'Aula experimental confirmada: quinta, às 19h.', desc: 'A confirmação da aula chega por e-mail, na notificação do iPhone.' },
+  'instagram/reels': { app: 'whatsapp', cliente: 'restaurante', texto: 'Reserva confirmada: sábado, 13h, mesa para 2.', desc: 'O restaurante confirma a reserva pelo WhatsApp.' },
+  'instagram/story': { app: 'mail', cliente: 'educacao', texto: 'Aula experimental confirmada: quinta, às 19h.', desc: 'A confirmação da aula chega por e-mail, na notificação do iPhone.' },
+  'instagram/live': { app: 'whatsapp', cliente: 'restaurante', texto: 'Recebemos seu pedido de reserva. Confirmamos em seguida.', desc: 'O restaurante responde pelo WhatsApp.' },
+  'instagram/explorar': { app: 'whatsapp', cliente: 'clinica', texto: 'Sua avaliação está agendada. Qualquer dúvida, é só responder.', desc: 'A clínica confirma a avaliação pelo WhatsApp.' },
+  'facebook/post': { app: 'mail', cliente: 'incorporadora', texto: 'Visita ao decorado agendada. Endereço e horário neste e-mail.', desc: 'A confirmação da visita chega por e-mail.' },
+  'facebook/video': { app: 'whatsapp', cliente: 'restaurante', texto: 'Recebemos seu pedido de reserva. Confirmamos em seguida.', desc: 'O restaurante responde pelo WhatsApp.' },
+  'facebook/breaks': { app: 'mail', cliente: 'educacao', texto: 'Aula experimental confirmada: quinta, às 19h.', desc: 'A confirmação da aula chega por e-mail.' },
+  'youtube/instream': { app: 'whatsapp', cliente: 'automotivo', texto: 'Recebemos seu pedido de test drive para sábado de manhã.', desc: 'A concessionária confirma o horário pelo WhatsApp.' },
+  'google/display': { app: 'whatsapp', cliente: 'turismo', texto: 'Recebemos sua pré-reserva da saída de junho.', desc: 'A agência confirma a pré-reserva pelo WhatsApp.' },
+  'seo/organic': { app: 'mail', cliente: 'incorporadora', texto: 'Plantas de 3 e 4 quartos, em PDF.', desc: 'O e-mail com as plantas chega na notificação do iPhone.' },
+  'blog/article': { app: 'mail', cliente: 'financas', texto: 'Convite: conversa de 30 minutos, terça às 10h.', desc: 'O convite da conversa chega por e-mail.' },
+};
+channels.forEach(channel => channel.placements.forEach(placement => {
+  const aviso = AVISOS[`${channel.id}/${placement.id}`];
+  if (!aviso) return;
+  const last = placement.quadros[placement.quadros.length - 1];
+  placement.aviso = aviso;
+  placement.quadros.push({ ms: 2400, cena: last.cena, estado: `${last.estado || ''} aviso`.trim(), desc: aviso.desc });
+  placement.passos[placement.passos.length - 1].quadros.push(placement.quadros.length - 1);
+}));
 export const channelById = id => channels.find(channel => channel.id === id) || channels[0];
 
 /* App theme behind the status bar and the screen colour while a placement loads. */
@@ -762,7 +796,12 @@ export function iphone(content, { tema = 'claro', temaGestos = tema, fundo = '#f
     '<span class="ch-iphone-gestos" data-tema="' + temaGestos + '" aria-hidden="true"></span>' +
     '</div></div></div></div>';
 }
+/* iOS notification banner: app icon, sender, "agora" and two lines of text. */
+const push = ({ app, cliente, texto }) => `<div class="cm-push" aria-hidden="true"><span class="cm-push-icon cm-push-icon--${app}">${app === 'whatsapp' ? logoSvg('whatsapp', { altura: 22, mono: 'branco', classe: 'cm-push-glyph' }) : I('mail')}</span><span class="cm-push-body"><span class="cm-push-top"><b>${esc(CLIENTES[cliente].marca)}</b><small>agora</small></span><span class="cm-push-text">${esc(texto)}</span></span></div>`;
 export function renderMock(placement) {
   const name = mocks[placement.mock] ? placement.mock : 'igFeed';
-  return iphone(mocks[name](), SCREEN[name]);
+  let html = mocks[name]();
+  // The banner lives inside the screen, so the frame states (data-state~="aviso") show it.
+  if (placement.aviso) html = html.slice(0, -'</div>'.length) + push(placement.aviso) + '</div>';
+  return iphone(html, SCREEN[name]);
 }
