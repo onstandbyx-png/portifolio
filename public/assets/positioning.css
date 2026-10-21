@@ -58,7 +58,7 @@ body.is-paused .path-scope::details-content{transition:none!important}
 .campaign-logo{display:block;flex:none;width:auto;height:20px}
 .campaign-chips{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 12px;padding:0;list-style:none}
 .campaign-chips li{display:inline-flex;align-items:center;min-height:30px;padding:0 12px;border-radius:999px;box-shadow:inset 0 0 0 1px #b9cab8;color:#3f5c46;font-size:13px;font-weight:550}
-.campaign-chips li[aria-current="true"]{background:#1e4530;box-shadow:none;color:#f8fbf7}
+.campaign-chips li[aria-current="true"]{box-shadow:inset 0 0 0 1.5px #1e4530;color:#1e4530;font-weight:650}
 .campaign-chips li.is-label{background:#fff;box-shadow:inset 0 0 0 1px #c9d4c4;color:#2b3e31}
 .campaign-summary .campaign-client{display:inline-flex;align-items:center;gap:8px;max-width:100%;margin:0 0 22px;padding:4px 13px 4px 5px;border-radius:999px;background:#f4f6ef;box-shadow:inset 0 0 0 1px #c9d4c4;color:#3d4639;font-size:13px;line-height:1.3}
 .campaign-client .cm-mark{display:grid;flex:none;place-items:center;width:22px;height:22px;overflow:hidden;border-radius:50%;background:var(--c)}

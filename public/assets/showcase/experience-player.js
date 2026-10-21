@@ -140,10 +140,10 @@ export function mountCampaignExperience(lab, underlay) {
     const r = node.getBoundingClientRect();
     const was = dot.hidden || dot.textContent !== String(n);
     dot.textContent = String(n);
-    // On a picture or a card the point sits inside its corner; on a line of text or a button, on the corner itself.
+    // On a picture or a card the point sits inside its corner; on a line of text or a button, just above its right end.
     // data-hs-at="tl" keeps the point inside the top-left corner (away from an ad label in the top right).
     const big = r.height > 64, left = node.dataset.hsAt === 'tl';
-    place(dot, r, left ? r.left + 20 : big ? r.right - 20 : r.right - 3, big || left ? r.top + 20 : r.top - 3);
+    place(dot, r, left ? r.left + 20 : big ? r.right - 20 : r.right - 4, big || left ? r.top + 20 : r.top - 12);
     dot.hidden = false;
     if (animate && was && live()) {
       const spring = motion.spring(dot, p => ({ transform: `translate(-50%,-50%) scale(${.6 + .4 * p})`, opacity: clamp(p * 1.6) }), { duration: 420 });
