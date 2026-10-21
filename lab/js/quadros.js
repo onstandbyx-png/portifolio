@@ -22,7 +22,18 @@ const MAX_VIVOS = CELULAR ? 2 : 4;
 const TELA = CELULAR ? 390 : 1280;
 const reduzido = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
 const FAMILIA = Object.fromEntries(FAMILIAS);
-const TIPOS_NOTA = [['especificacao', 'Especificação'], ['tempo', 'Tempos'], ['recriacao', 'Como recriar'], ['decisao', 'Decisões'], ['pendencia', 'Pendências'], ['problema', 'Problemas']];
+// Where an element was found: the ChatGPT conversations, the Drive export or a git commit (it can be several).
+const ORIGENS = [['conversas', 'Conversas'], ['drive', 'Drive'], ['git', 'Git']];
+function origens(e, ctx) {
+  if (e.__origens) return e.__origens;
+  const fonte = `${e.fonte || ''} ${e.sem_versao_viva || ''}`, notas = ctx.contexto.elementos[e.id] || [], vs = e.versoes || [];
+  const o = new Set();
+  if (/chatgpt:|conversa/i.test(fonte) || notas.some(n => n.tipo === 'conversa')) o.add('conversas');
+  if (/drive:|Originais_parte|\.zip\b|libfile_/i.test(fonte) || vs.some(v => /^[spf]-d-|^s-ux2-/.test(v))) o.add('drive');
+  if (/@[0-9a-f]{7,}/i.test(fonte) || vs.some(v => /^(e|x)\d|^[sf]-(l|e|v)\d|^[spf]-c-/.test(v))) o.add('git');
+  return (e.__origens = o);
+}
+const TIPOS_NOTA = [['conversa', 'Nas conversas'], ['especificacao', 'Especificação'], ['tempo', 'Tempos'], ['recriacao', 'Como recriar'], ['decisao', 'Decisões'], ['pendencia', 'Pendências'], ['problema', 'Problemas']];
 const curto = (texto, n) => (texto.length > n ? `${texto.slice(0, n - 1)}…` : texto);
 const rotuloVersao = v => `${v.data} · ${curto(v.rotulo, 26)}`;
 const guardar = (chave, valor) => { try { if (valor == null) localStorage.removeItem(chave); else localStorage.setItem(chave, valor); } catch {} };
@@ -216,7 +227,7 @@ function notasHtml(notas, fontes) {
   const fonte = n => { const f = fontes[n.fonte]; return f ? ` <a href="${esc(f.url)}" target="_blank" rel="noopener">${esc(curto(f.titulo || 'fonte', 48))}${f.data ? `, ${esc(f.data)}` : ''} ↗</a>` : ''; };
   return TIPOS_NOTA.map(([tipo, titulo]) => {
     const lista = notas.filter(n => (n.tipo || 'especificacao') === tipo);
-    return lista.length ? `<h4>${titulo} (Drive)</h4><ul class="q-notas">${lista.map(n => `<li>${esc(n.texto)}${n.tempos ? ` <code>${esc(n.tempos)}</code>` : ''}${fonte(n)}</li>`).join('')}</ul>` : '';
+    return lista.length ? `<h4>${titulo}${tipo === 'conversa' ? '' : ' (Drive)'}</h4><ul class="q-notas">${lista.map(n => `<li>${esc(n.texto)}${n.tempos ? ` <code>${esc(n.tempos)}</code>` : ''}${fonte(n)}</li>`).join('')}</ul>` : '';
   }).join('');
 }
 // Reference videos the element was built from (private deploy only, under /_lab/referencias/).
@@ -731,6 +742,7 @@ export async function mountQuadros(root) {
       <label class="vs-field">Projeto <select data-q-projeto><option value="todos">Todos</option>${Object.entries(PROJETOS).map(([id, t]) => `<option value="${id}">${t}</option>`).join('')}</select></label>
       <label class="vs-field">Versão <select data-q-fver></select></label>
       <label class="vs-field">Família <select data-q-familia>${familias.map(([id, t]) => `<option value="${id}">${t}</option>`).join('')}</select></label>
+      <label class="vs-field">Origem <select data-q-origem><option value="todas">Todas</option>${ORIGENS.map(([id, t]) => `<option value="${id}">${t} (${elementos.filter(e => origens(e, ctx).has(id)).length})</option>`).join('')}</select></label>
       <label class="vs-field">Situação <select data-q-status><option value="todas">Todas</option>${Object.entries(STATUS).map(([id, t]) => `<option value="${id}">${t}</option>`).join('')}</select></label>
       <label class="vs-field q-busca">Buscar <input type="search" data-q-busca placeholder="nome, seletor ou nota" autocomplete="off"></label>
     </div>
@@ -738,7 +750,7 @@ export async function mountQuadros(root) {
     <div class="grid q-grid" data-q-grid></div>
     <div class="q-mais"><button type="button" class="btn" data-q-mais hidden>Mostrar mais quadros</button></div>`;
   const grid = $('[data-q-grid]', root), mais = $('[data-q-mais]', root);
-  const f = {tipo: 'elementos', projeto: $('[data-q-projeto]', root), versao: $('[data-q-fver]', root), familia: $('[data-q-familia]', root), status: $('[data-q-status]', root), busca: $('[data-q-busca]', root)};
+  const f = {tipo: 'elementos', projeto: $('[data-q-projeto]', root), versao: $('[data-q-fver]', root), familia: $('[data-q-familia]', root), origem: $('[data-q-origem]', root), status: $('[data-q-status]', root), busca: $('[data-q-busca]', root)};
   const feitos = new Map();
   let lista = [], mostrados = 0;
 
@@ -748,10 +760,10 @@ export async function mountQuadros(root) {
   };
   const texto = e => `${e.nome} ${e.seletor || ''} ${e.tipo || ''} ${e.interacao || ''} ${(ctx.contexto.elementos[e.id] || []).map(n => n.texto).join(' ')}`.toLowerCase();
   function filtrar() {
-    const p = f.projeto.value, ver = f.versao.value, fam = f.familia.value, sit = f.status.value, busca = f.busca.value.trim().toLowerCase();
+    const p = f.projeto.value, ver = f.versao.value, fam = f.familia.value, ori = f.origem.value, sit = f.status.value, busca = f.busca.value.trim().toLowerCase();
     if (f.tipo === 'versoes') lista = versoes.filter(v => (p === 'todos' || v.projeto === p) && (ver === 'todas' || v.id === ver) && (!busca || `${v.rotulo} ${v.nota || ''} ${v.id}`.toLowerCase().includes(busca)));
-    else lista = elementos.filter(e => (p === 'todos' || e.projeto === p) && (ver === 'todas' || e.versoes.includes(ver)) && (fam === 'todas' || e.familia === fam) && (sit === 'todas' || e.status === sit) && (!busca || texto(e).includes(busca)));
-    [f.familia, f.status].forEach(s => { s.closest('label').hidden = f.tipo === 'versoes'; });
+    else lista = elementos.filter(e => (p === 'todos' || e.projeto === p) && (ver === 'todas' || e.versoes.includes(ver)) && (fam === 'todas' || e.familia === fam) && (ori === 'todas' || origens(e, ctx).has(ori)) && (sit === 'todas' || e.status === sit) && (!busca || texto(e).includes(busca)));
+    [f.familia, f.origem, f.status].forEach(s => { s.closest('label').hidden = f.tipo === 'versoes'; });
     grid.replaceChildren();
     mostrados = 0;
     vivos.slice().forEach(q => q.desligar());
@@ -781,7 +793,7 @@ export async function mountQuadros(root) {
   });
   mais.addEventListener('click', () => pagina());
   f.projeto.addEventListener('change', () => { opcoesVersao(); filtrar(); });
-  [f.versao, f.familia, f.status].forEach(s => s.addEventListener('change', filtrar));
+  [f.versao, f.familia, f.origem, f.status].forEach(s => s.addEventListener('change', filtrar));
   let atraso = 0;
   f.busca.addEventListener('input', () => { clearTimeout(atraso); atraso = setTimeout(filtrar, 250); });
 
@@ -796,7 +808,7 @@ export async function mountQuadros(root) {
       if (f.tipo !== tipo || !lista.some(i => i.id === id)) {
         f.tipo = tipo;
         $$('[data-q-tipo]', root).forEach(b => b.setAttribute('aria-pressed', String(b.dataset.qTipo === tipo)));
-        f.projeto.value = 'todos'; opcoesVersao(); f.familia.value = 'todas'; f.status.value = 'todas'; f.busca.value = '';
+        f.projeto.value = 'todos'; opcoesVersao(); f.familia.value = 'todas'; f.origem.value = 'todas'; f.status.value = 'todas'; f.busca.value = '';
         filtrar();
       }
       const i = lista.findIndex(x => x.id === id);
