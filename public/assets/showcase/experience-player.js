@@ -171,7 +171,8 @@ export function mountCampaignExperience(lab, underlay) {
     clearTimeout(settleTimer);
     const dot = body.querySelector('[data-cx-dot]'), tap = body.querySelector('[data-cx-tap]');
     if (tap) { tap.hidden = true; tap.classList.remove('is-on'); }
-    const wait = live() ? 440 : 20;
+    // A new page waits for its content to load before the finger or the point lands on it.
+    const wait = live() ? (moved ? 820 : 440) : 20;
     // The point stays put inside a scene; it only hides while a new scene slides in.
     if (dot && live() && moved) dot.hidden = true;
     settleTimer = setTimeout(() => { positionDot(animate); showTap(); }, wait);

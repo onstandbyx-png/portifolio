@@ -21,6 +21,7 @@
  * point of step n sits on; [data-tap="key"] is the element a frame taps.
  */
 import { logoSvg } from './channel-logos.js';
+import { makeSites } from './campaign-sites.js';
 
 const A = '/assets/portfolio/';
 export const IMG = {
@@ -173,6 +174,9 @@ const igActions = (middle = '') => `<div class="cm-ig-actions">${I('heart')}${I(
 /* A landing page of the advertiser: hero, title, choices and one primary button. */
 const landing = ({ key, hero = '', title, sub = '', body = '', button, tap = 'go', confirm }) => `<div class="cm-lp" style="--brand:${CLIENTES[key].cor}">${hero}<div class="cm-lp-body"><span class="cm-lp-brand">${marca(key)}<b>${esc(CLIENTES[key].marca)}</b></span><b class="cm-lp-title">${esc(title)}</b>${sub ? `<p class="cm-lp-sub">${esc(sub)}</p>` : ''}${body}${btn(button, tap)}</div>${confirm || ''}</div>`;
 
+/* Each client's own site, with the steps of its real flow (campaign-sites.js). */
+const SITES = makeSites({ I, pic, marca, esc, CLIENTES });
+
 /* Floor plan of the incorporadora (3 or 4 bedrooms), an original line drawing. */
 const planta = cls => `<svg class="cm-planta${cls ? ' ' + cls : ''}" viewBox="0 0 200 150" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="3"><rect x="6" y="6" width="188" height="138" rx="2"/><path d="M6 78h86M92 6v138M92 60h102M150 60v84"/><path class="cm-planta-4" d="M150 6v54M6 112h86"/></g><g fill="currentColor" font-family="Inter,Arial,sans-serif" font-size="10"><text x="22" y="44">Sala</text><text x="104" y="38">Varanda</text><text x="104" y="108">Quarto</text><text x="158" y="108">Suíte</text><text x="22" y="104">Cozinha</text></g></svg>`;
 
@@ -187,7 +191,7 @@ const mocks = {
     <div class="cm-ig-cta" data-tap="cta" data-hs="3"><b>Inscrever-se agora</b>${I('chevron')}</div>
     ${igActions('<span class="cm-pager" data-hs="2"><i></i><i></i><i></i></span>')}
     <p class="cm-ig-caption"><b>sotaquelivre</b> Aula experimental com horário marcado. Escolha o nível e o horário no link. <span>mais</span></p></article></div>${tabbar(TABS.instagram)}`) +
-    scene('page', 'sheet', 'claro', `${browserBar('Aula experimental', 'sotaquelivre.exemplo')}${landing({ key: 'educacao', title: 'Aula experimental', sub: 'Escolha o nível e o horário da sua aula.', body: chips('Qual é o seu nível?', ['Começando', 'Intermediário', 'Avançado'], 1) + chips('Escolha um horário', ['Ter 19h', 'Qui 19h', 'Sáb 10h'], 1), button: 'Agendar aula experimental', confirm: done('Aula experimental agendada', 'Quinta, 19h. O link da aula chega por e-mail.', btn('Adicionar ao calendário', '', '', 'cm-btn--ghost')) })}`)),
+    scene('page', 'sheet', 'claro', `${browserBar('Sotaque Livre', 'sotaquelivre.exemplo')}${SITES.sotaque()}`)),
 
   /* 2.3 Instagram Story: a language school, the sticker that holds the tap, then the course page. */
   igstory: () => screen('igstory', scene('story', 'base', 'escuro', `<div class="cm-st">
@@ -196,7 +200,7 @@ const mocks = {
       <div class="cm-st-top">${marca('educacao')}<span><b>sotaquelivre</b><small>Patrocinado</small></span>${I('dots')}${I('close')}</div>
       <p class="cm-st-text" data-hs="1">Você entende a série sem legenda?</p>
       <div class="cm-st-cta"><span class="cm-st-sticker" data-tap="cta" data-hs="3">${I('arrow')}<b>Agendar aula</b></span></div>
-    </div>`) + scene('page', 'sheet', 'claro', `${browserBar('Aula experimental', 'sotaquelivre.exemplo')}${landing({ key: 'educacao', title: 'Aula experimental', sub: 'Escolha o nível e o horário da sua aula.', body: chips('Qual é o seu nível?', ['Começando', 'Intermediário', 'Avançado'], 1), button: 'Agendar aula experimental', confirm: done('Aula experimental agendada', 'Quinta, 19h. O link da aula chega por e-mail.') })}`)),
+    </div>`) + scene('page', 'sheet', 'claro', `${browserBar('Sotaque Livre', 'sotaquelivre.exemplo')}${SITES.sotaque({ variant: 'agenda' })}`)),
 
   /* 2.4 Instagram Live: a restaurant cooking live with the paid label, comments and the menu sheet. */
   iglive: () => screen('iglive', scene('live', 'base', 'escuro', `<div class="cm-lv">
@@ -206,7 +210,7 @@ const mocks = {
       <p class="cm-lv-comment" data-hs="1"><b>cliente_12</b> Qual o horário do almoço?</p>
       <p class="cm-lv-comment"><b>tachomiudo</b> Sábado, feijoada no tacho a partir das 12h.</p>
       <div class="cm-lv-cta" data-tap="cta" data-hs="3"><b>Ver cardápio</b>${I('chevron')}</div>
-    </div>`) + scene('page', 'sheet', 'claro', `${browserBar('Cardápio de sábado', 'tachomiudo.exemplo')}${landing({ key: 'restaurante', title: 'Cardápio de sábado', sub: 'Feijoada no tacho, com mesa para o almoço.', body: chips('Quantas pessoas?', ['2', '4', '6'], 0), button: 'Reservar mesa', confirm: done('Pedido de reserva enviado', 'O restaurante confirma pelo WhatsApp.') })}`)),
+    </div>`) + scene('page', 'sheet', 'claro', `${browserBar('Tacho Miúdo', 'tachomiudo.exemplo')}${SITES.tacho({ variant: 'retirada' })}`)),
 
   /* 2.5 Instagram Explorar: a grid of photos with one sponsored post that opens full screen, then the booking page. */
   igexplore: () => screen('igexplore', scene('grid', 'base', 'claro', `<div class="cm-xp">
@@ -216,7 +220,7 @@ const mocks = {
         ${pic('recepcao45', { alt: '' })}<span class="cm-xp-ad" data-tap="ad" data-hs="1">${pic('consultorio45', { alt: 'Consultório odontológico com cadeira e luz natural, publicação patrocinada.' })}<em>Patrocinado</em></span>${pic('escondidinho11', { alt: '' })}
         ${pic('salaMar11', { alt: '' })}${pic('fachada45', { alt: '' })}${pic('pudim11', { alt: '' })}
       </div></div>
-    <div class="cm-tabbar-wrap">${tabbar(TABS.instagram)}</div>`) + scene('post', 'sheet', 'claro', `<article class="cm-post-full">${igHead('clinica')}${pic('consultorio45', { alt: 'Consultório odontológico com cadeira e luz natural.' })}<div class="cm-ig-cta" data-tap="cta" data-hs="3"><b>Agendar avaliação</b>${I('chevron')}</div><p class="cm-ig-caption"><b>seixoodontologia</b> Avaliação com dentista, horário marcado. <span>mais</span></p></article>`) + scene('page', 'sheet', 'claro', `${browserBar('Agendar avaliação', 'seixo.exemplo')}${landing({ key: 'clinica', title: 'Agendar avaliação', sub: 'Escolha o dia e o horário.', body: chips('Dia', ['Seg', 'Ter', 'Qua'], 1) + chips('Horário', ['9h', '14h', '17h'], 0), button: 'Confirmar horário', confirm: done('Avaliação agendada', 'Você recebe a confirmação por mensagem.') })}`)),
+    <div class="cm-tabbar-wrap">${tabbar(TABS.instagram)}</div>`) + scene('post', 'sheet', 'claro', `<article class="cm-post-full">${igHead('clinica')}${pic('consultorio45', { alt: 'Consultório odontológico com cadeira e luz natural.' })}<div class="cm-ig-cta" data-tap="cta" data-hs="3"><b>Agendar avaliação</b>${I('chevron')}</div><p class="cm-ig-caption"><b>seixoodontologia</b> Avaliação com dentista, horário marcado. <span>mais</span></p></article>`) + scene('page', 'sheet', 'claro', `${browserBar('Agendamento online', 'seixo.exemplo')}${SITES.seixo()}`)),
 
   /* 2.2 Instagram Reels: a restaurant, two cuts, Instagram browser with the menu and the table booking sheet. */
   igReels: () => screen('reels', scene('video', 'base', 'escuro', `<div class="cm-shots">
@@ -228,10 +232,7 @@ const mocks = {
     <div class="cm-vmeta"><span class="cm-who">${marca('restaurante')}<b>tachomiudo</b><span class="cm-follow">Seguir</span></span><small>Patrocinado</small><p>Feijoada no tacho aos sábados. Mesa para o almoço. <span>mais</span></p><small class="cm-audio">${I('music')}Áudio original</small></div>
     <div class="cm-vcta" data-tap="cta" data-hs="3"><b>Ver cardápio</b>${I('chevron')}</div>
     <div class="cm-vprogress" data-hs="2"><i data-cx-progress></i></div>${tabbar(TABS.reels, 'cm-tabbar--dark')}`) +
-    scene('page', 'sheet', 'claro', `${browserBar('Cardápio de sábado', 'tachomiudo.exemplo')}<div class="cm-lp" style="--brand:${CLIENTES.restaurante.cor}"><div class="cm-lp-body"><span class="cm-lp-brand">${marca('restaurante')}<b>Tacho Miúdo</b></span><b class="cm-lp-title">Cardápio de sábado</b>
-      <ul class="cm-menu"><li>${pic('panela11')}<span><b>Feijoada no tacho</b><small>Carnes separadas, arroz, couve e farofa.</small></span></li><li>${pic('escondidinho11')}<span><b>Escondidinho de carne-seca</b><small>Gratinado na panelinha.</small></span></li><li>${pic('pudim11')}<span><b>Pudim de leite</b><small>Feito na casa.</small></span></li></ul>
-      ${btn('Reservar mesa', 'go')}</div></div>`) +
-    scene('reserva', 'sheet', 'claro', `<div class="cm-sheet cm-sheet--part" style="--brand:${CLIENTES.restaurante.cor}"><span class="cm-grabber"></span><b class="cm-lp-title">Reservar mesa</b>${chips('Pessoas', ['2', '4', '6'], 0)}${chips('Horário', ['12h', '13h', '14h'], 1)}${btn('Pedir reserva', 'send')}${done('Pedido de reserva enviado', 'O restaurante confirma pelo WhatsApp.')}</div>`, 'cm-scene--part')),
+    scene('page', 'sheet', 'claro', `${browserBar('Tacho Miúdo', 'tachomiudo.exemplo')}${SITES.tacho()}`)),
 
   /* 2.3 Facebook feed: lead ad carousel of a developer and the Meta instant form. */
   /* 3.2 Facebook feed post: one photo of a development, the link bar that holds the tap, then the visit page. */
@@ -240,7 +241,7 @@ const mocks = {
       <p class="cm-fb-text">Casas na falésia com a sala voltada para o mar. Agende uma visita ao decorado.</p>
       <span class="cm-fbpost-img" data-hs="1">${pic('salaMar45', { alt: 'Sala de estar com janela para o mar, em luz de fim de tarde.', pos: '50% 60%' })}</span>
       <div class="cm-fbpost-cta" data-hs="3"><span><small>MORADAFALESIA.EXEMPLO</small><b>Visita ao decorado</b></span><span class="cm-fbpost-btn" data-tap="cta">Agendar agora</span></div>
-      <div class="cm-fb-actions" data-hs="2"><span>${I('thumb')}Curtir</span><span>${I('comment')}Comentar</span><span>${I('forward')}Compartilhar</span></div></article><div class="cm-fb-post cm-fb-next">${skel(4)}</div></div>${tabbar(TABS.facebook)}`) + scene('page', 'sheet', 'claro', `${browserBar('Visita ao decorado', 'moradafalesia.exemplo')}${landing({ key: 'incorporadora', title: 'Visita ao decorado', sub: 'Escolha o dia da visita.', body: chips('Quando prefere visitar?', ['Durante a semana', 'Fim de semana'], 1), button: 'Agendar visita', confirm: done('Visita agendada', 'Você recebe a confirmação por e-mail.') })}`)),
+      <div class="cm-fb-actions" data-hs="2"><span>${I('thumb')}Curtir</span><span>${I('comment')}Comentar</span><span>${I('forward')}Compartilhar</span></div></article><div class="cm-fb-post cm-fb-next">${skel(4)}</div></div>${tabbar(TABS.facebook)}`) + scene('page', 'sheet', 'claro', `${browserBar('Morada Falésia', 'moradafalesia.exemplo')}${SITES.falesia()}`)),
 
   /* 3.3 Facebook video: a restaurant video in portrait with the reserve button that lights up. */
   fbvid: () => screen('fbvid', scene('video', 'base', 'escuro', `<div class="cm-fbv">
@@ -248,7 +249,7 @@ const mocks = {
       <span class="cm-fbv-play" aria-hidden="true">${I('video')}</span>
       <div class="cm-fbv-meta" data-hs="1"><span>${marca('restaurante')}<span><b>tachomiudo</b><small>Patrocinado</small></span></span><p>Feijoada no tacho aos sábados. Mesa para o almoço.</p></div>
       <div class="cm-fbv-cta" data-tap="cta" data-hs="3"><b>Reservar mesa</b>${I('chevron')}</div>
-    </div>`) + scene('page', 'sheet', 'claro', `${browserBar('Reserva', 'tachomiudo.exemplo')}${landing({ key: 'restaurante', title: 'Reservar mesa', sub: 'Feijoada aos sábados, com mesa para o almoço.', body: chips('Quantas pessoas?', ['2', '4', '6'], 0), button: 'Pedir reserva', confirm: done('Pedido de reserva enviado', 'O restaurante confirma pelo WhatsApp.') })}`)),
+    </div>`) + scene('page', 'sheet', 'claro', `${browserBar('Tacho Miúdo', 'tachomiudo.exemplo')}${SITES.tacho({ variant: 'direto', slot: '12:30', people: '4', area: 'Varanda' })}`)),
 
   /* 3.4 Facebook ad break: a video pauses for an ad card with a skip button, then the course page. */
   fbbreak: () => screen('fbbreak', scene('video', 'base', 'escuro', `<div class="cm-fbb">
@@ -258,7 +259,7 @@ const mocks = {
       <span class="cm-fbb-label">Patrocinado</span>
       <span class="cm-fbb-skip" data-hs="1"><span class="cm-fbb-s1">Pular em 5</span><span class="cm-fbb-s2">Pular</span></span>
       <div class="cm-fbb-cta" data-tap="cta" data-hs="3"><span><b>Sotaque Livre Idiomas</b><small>Aula experimental</small></span>${I('chevron')}</div>
-    </div>`) + scene('page', 'sheet', 'claro', `${browserBar('Aula experimental', 'sotaquelivre.exemplo')}${landing({ key: 'educacao', title: 'Aula experimental', sub: 'Escolha o nível e o horário da sua aula.', body: chips('Qual é o seu nível?', ['Começando', 'Intermediário', 'Avançado'], 1), button: 'Agendar aula experimental', confirm: done('Aula experimental agendada', 'Quinta, 19h. O link da aula chega por e-mail.') })}`)),
+    </div>`) + scene('page', 'sheet', 'claro', `${browserBar('Sotaque Livre', 'sotaquelivre.exemplo')}${SITES.sotaque({ variant: 'agenda', pick: 'modalidade' })}`)),
 
   fbFeed: () => screen('fb', scene('ad', 'base', 'claro', `<div class="cm-safe"><div class="cm-fb-bar"><b class="cm-fb-name">Facebook</b><span><i>${I('plus')}</i><i>${I('search')}</i><i>${I('comment')}</i></span></div>
     <article class="cm-fb-post"><header class="cm-fb-head">${marca('incorporadora')}<span><b>Morada Falésia</b><small>Patrocinado · ${I('globe', 'cm-i--inline')}</small></span>${I('dots')}${I('close')}</header>
@@ -472,52 +473,81 @@ export const channels = [
     art: art('educacao', 'escola45', '50% 50%', 'Você entende a série sem legenda?', 'Peça da Sotaque Livre Idiomas, escola de idiomas fictícia: fone de ouvido sobre a mesa e a pergunta Você entende a série sem legenda?'),
     placements: [
       { id: 'feed', label: 'Feed', mock: 'igFeed', cliente: 'educacao', selo: 'Patrocinado', frase: 'Uma escola de idiomas leva do carrossel à aula experimental.',
-        passos: [P('Atenção', 'Pergunta que o aluno reconhece', [0]), P('Retenção', 'Deslizar revela a resposta', [1, 2]), P('Conversão', 'Nível e horário em dois toques', [3, 4, 5])],
+        passos: [P('Atenção', 'Pergunta que o aluno reconhece', [0]), P('Retenção', 'Deslizar revela a resposta', [1, 2]), P('Conversão', 'Teste de nível e aula marcada', [3, 4, 5, 6, 7, 8, 9, 10, 11, 12])],
         quadros: [
           { ms: 1300, cena: 'ad', desc: 'Post patrocinado da Sotaque Livre no feed do Instagram: Você entende a série sem legenda?' },
-          { ms: 1500, cena: 'ad', estado: 'c2', desc: 'O carrossel desliza: três expressões que a legenda traduz errado.' },
-          { ms: 1500, cena: 'ad', estado: 'c3 lit', desc: 'Último cartão: I\'m looking forward to it, mal posso esperar. A barra Inscrever-se agora acende.' },
-          { ms: 1000, cena: 'ad', estado: 'c3 lit', toque: 'cta', desc: 'Toque em Inscrever-se agora.' },
-          { ms: 1700, cena: 'page', toque: 'go', desc: 'O navegador do Instagram abre a aula experimental: nível intermediário, quinta às 19h. Toque em Agendar.' },
-          { ms: 2000, cena: 'page', estado: 'done', desc: 'Aula experimental agendada para quinta, 19h.' },
+          { ms: 1400, cena: 'ad', estado: 'c2', desc: 'O carrossel desliza: três expressões que a legenda traduz errado.' },
+          { ms: 1400, cena: 'ad', estado: 'c3 lit', desc: 'Último cartão: I\'m looking forward to it, mal posso esperar. A barra Inscrever-se agora acende.' },
+          { ms: 900, cena: 'ad', estado: 'c3 lit', toque: 'cta', desc: 'Toque em Inscrever-se agora.' },
+          { ms: 1700, cena: 'page', toque: 'a', desc: 'O navegador do Instagram abre o site da Sotaque Livre: descubra seu nível e marque uma aula de 30 minutos. Toque em Fazer o teste de nível.' },
+          { ms: 1200, cena: 'page', estado: 'w2', desc: 'Teste de nível, pergunta 3 de 3: como se diz mal posso esperar em inglês?' },
+          { ms: 1100, cena: 'page', estado: 'w2 q1', toque: 'b', desc: 'Toque em I\'m looking forward to it. A resposta está certa, de nível intermediário.' },
+          { ms: 800, cena: 'page', estado: 'w2 q1', toque: 'c', desc: 'Toque em Ver meu resultado.' },
+          { ms: 1400, cena: 'page', estado: 'w3', desc: 'Resultado: nível intermediário, B1. Quinta, 29, já escolhida, com horários às 18h, 19h e 20h, online.' },
+          { ms: 900, cena: 'page', estado: 'w3 q2', toque: 'd', desc: 'Toque em 19:00.' },
+          { ms: 800, cena: 'page', estado: 'w3 q2', toque: 'e', desc: 'Toque em Continuar.' },
+          { ms: 1400, cena: 'page', estado: 'w4', toque: 'f', desc: 'Nome, e-mail e WhatsApp preenchidos. Toque em Confirmar aula.' },
+          { ms: 2000, cena: 'page', estado: 'w5 done', desc: 'Aula marcada: quinta, 29 de outubro, 19h, online, 30 minutos. Lista do que preparar antes da aula.' },
         ] },
       { id: 'reels', label: 'Reels', mock: 'igReels', cliente: 'restaurante', selo: 'Patrocinado', frase: 'Um restaurante leva do Reels à reserva de mesa.',
-        passos: [P('Atenção', 'Tacho fervendo no primeiro segundo', [0]), P('Retenção', 'Corte curto segura até a mesa', [1]), P('Conversão', 'Cardápio e reserva sem sair', [2, 3, 4, 5])],
+        passos: [P('Atenção', 'Tacho fervendo no primeiro segundo', [0]), P('Retenção', 'Corte curto segura até a mesa', [1]), P('Conversão', 'Cardápio, horário e reserva', [2, 3, 4, 5, 6, 7, 8, 9, 10])],
         quadros: [
           { ms: 1400, cena: 'video', video: 1, desc: 'Reels patrocinado do Tacho Miúdo: o tacho de feijoada e o texto Sábado tem feijoada no tacho.' },
           { ms: 1800, cena: 'video', estado: 's2 lit', video: 1, desc: 'Corte para o prato servido: Fogo baixo desde cedo. O botão Ver cardápio ganha cor.' },
-          { ms: 1000, cena: 'video', estado: 's2 lit', video: 1, toque: 'cta', desc: 'Toque em Ver cardápio.' },
-          { ms: 1700, cena: 'page', toque: 'go', desc: 'O navegador do Instagram abre o cardápio de sábado. Toque em Reservar mesa.' },
-          { ms: 1500, cena: 'reserva', toque: 'send', desc: 'Reserva para 2 pessoas às 13h. Toque em Pedir reserva.' },
-          { ms: 2000, cena: 'reserva', estado: 'done', desc: 'Pedido de reserva enviado. O restaurante confirma pelo WhatsApp.' },
+          { ms: 900, cena: 'video', estado: 's2 lit', video: 1, toque: 'cta', desc: 'Toque em Ver cardápio.' },
+          { ms: 1700, cena: 'page', toque: 'a', desc: 'O navegador do Instagram abre o site do Tacho Miúdo: aberto agora, cardápio de sábado. Toque em Reservar mesa.' },
+          { ms: 1200, cena: 'page', estado: 'w2', desc: 'Reserva: sábado, 24, já escolhido, 2 pessoas, salão. Horários do almoço.' },
+          { ms: 900, cena: 'page', estado: 'w2 q1', toque: 'b', desc: 'Toque em 13:00.' },
+          { ms: 800, cena: 'page', estado: 'w2 q1', toque: 'c', desc: 'Toque em Continuar.' },
+          { ms: 1200, cena: 'page', estado: 'w3', desc: 'Seus dados: nome e WhatsApp preenchidos. É uma ocasião especial?' },
+          { ms: 900, cena: 'page', estado: 'w3 q2', toque: 'd', desc: 'Toque em Aniversário.' },
+          { ms: 800, cena: 'page', estado: 'w3 q2', toque: 'e', desc: 'Toque em Confirmar reserva.' },
+          { ms: 1900, cena: 'page', estado: 'w4 done', desc: 'Reserva solicitada: sábado, 24 de outubro, 13h, 2 pessoas, aniversário. O restaurante confirma pelo WhatsApp.' },
         ] },
       { id: 'story', label: 'Story', mock: 'igstory', cliente: 'educacao', selo: 'Patrocinado', frase: 'Uma escola de idiomas leva da história à aula experimental.',
-        passos: [P('Atenção', 'Pergunta sobre a foto', [0]), P('Retenção', 'Adesivo de link aparece', [1]), P('Conversão', 'Agendamento na página', [2, 3, 4])],
+        passos: [P('Atenção', 'Pergunta sobre a foto', [0]), P('Retenção', 'Adesivo de link aparece', [1]), P('Conversão', 'Nível, horário e aula marcada', [2, 3, 4, 5, 6, 7, 8])],
         quadros: [
           { ms: 1300, cena: 'story', desc: 'Story patrocinado da Sotaque Livre: foto da escola e a pergunta Você entende a série sem legenda?' },
           { ms: 1400, cena: 'story', estado: 'lit', desc: 'O adesivo Agendar aula ganha cor no fim da história.' },
           { ms: 900, cena: 'story', estado: 'lit', toque: 'cta', desc: 'Toque no adesivo.' },
-          { ms: 1700, cena: 'page', toque: 'go', desc: 'A página da aula abre no navegador do Instagram. Toque em Agendar aula experimental.' },
-          { ms: 2000, cena: 'page', estado: 'done', desc: 'Aula experimental agendada para quinta, 19h.' },
+          { ms: 1500, cena: 'page', desc: 'O site da Sotaque Livre abre na aula experimental: nível, dia e horário.' },
+          { ms: 900, cena: 'page', estado: 'q1', toque: 'a', desc: 'Toque em Intermediário.' },
+          { ms: 900, cena: 'page', estado: 'q1 q2', toque: 'b', desc: 'Toque em 19:00 de quinta.' },
+          { ms: 800, cena: 'page', estado: 'q1 q2', toque: 'c', desc: 'Toque em Continuar.' },
+          { ms: 1400, cena: 'page', estado: 'w2', toque: 'd', desc: 'Dados preenchidos. Toque em Confirmar aula.' },
+          { ms: 2000, cena: 'page', estado: 'w3 done', desc: 'Aula marcada: quinta, 29 de outubro, 19h, online.' },
         ] },
       { id: 'live', label: 'Live', mock: 'iglive', cliente: 'restaurante', selo: 'Patrocinado', frase: 'Um restaurante cozinha ao vivo e leva à reserva.',
-        passos: [P('Atenção', 'Selo Ao vivo e o tacho', [0]), P('Retenção', 'Comentário respondido pela marca', [1]), P('Conversão', 'Cardápio e reserva', [2, 3, 4])],
+        passos: [P('Atenção', 'Selo Ao vivo e o tacho', [0]), P('Retenção', 'Comentário respondido pela marca', [1]), P('Conversão', 'Sacola, retirada e pedido', [2, 3, 4, 5, 6, 7, 8, 9, 10])],
         quadros: [
           { ms: 1400, cena: 'live', desc: 'Live patrocinada do Tacho Miúdo: o tacho de feijoada com o selo Ao vivo.' },
           { ms: 1600, cena: 'live', estado: 'lit', desc: 'Um comentário pergunta o horário do almoço. O botão Ver cardápio ganha cor.' },
           { ms: 900, cena: 'live', estado: 'lit', toque: 'cta', desc: 'Toque em Ver cardápio.' },
-          { ms: 1700, cena: 'page', toque: 'go', desc: 'O cardápio de sábado abre no navegador. Toque em Reservar mesa.' },
-          { ms: 2000, cena: 'page', estado: 'done', desc: 'Pedido de reserva enviado.' },
+          { ms: 1500, cena: 'page', desc: 'O site do Tacho Miúdo abre na aba Retirada, com o cardápio de sábado.' },
+          { ms: 1000, cena: 'page', estado: 'q1', toque: 'a', desc: 'Toque em adicionar a feijoada no tacho. A sacola aparece embaixo.' },
+          { ms: 800, cena: 'page', estado: 'q1', toque: 'b', desc: 'Toque em Ver sacola.' },
+          { ms: 1200, cena: 'page', estado: 'w2', desc: 'Sacola com a feijoada para 2 e as janelas de retirada de sábado.' },
+          { ms: 900, cena: 'page', estado: 'w2 q2', toque: 'c', desc: 'Toque em 12:30 a 13:00.' },
+          { ms: 800, cena: 'page', estado: 'w2 q2', toque: 'd', desc: 'Toque em Continuar.' },
+          { ms: 1400, cena: 'page', estado: 'w3', toque: 'e', desc: 'Pagamento na retirada, por Pix ou cartão, e quem retira. Toque em Fazer pedido.' },
+          { ms: 2000, cena: 'page', estado: 'w4 done', desc: 'Pedido 0427 recebido, com o acompanhamento: recebido, em preparo e pronto para retirar.' },
         ] },
       { id: 'explorar', label: 'Explorar', mock: 'igexplore', cliente: 'clinica', selo: 'Patrocinado', frase: 'Uma clínica aparece entre fotos de interesse e leva ao horário.',
-        passos: [P('Atenção', 'Publicação entre as fotos', [0]), P('Retenção', 'Publicação abre em tela cheia', [1, 2]), P('Conversão', 'Agendamento em dois toques', [3, 4, 5])],
+        passos: [P('Atenção', 'Publicação entre as fotos', [0]), P('Retenção', 'Publicação abre em tela cheia', [1, 2]), P('Conversão', 'Serviço, dia, horário e dados', [3, 4, 5, 6, 7, 8, 9, 10, 11, 12])],
         quadros: [
           { ms: 1300, cena: 'grid', desc: 'Explorar: grade de fotos e uma publicação patrocinada da Seixo Odontologia.' },
-          { ms: 1200, cena: 'grid', estado: 'lit', toque: 'ad', desc: 'Toque na publicação patrocinada.' },
-          { ms: 1600, cena: 'post', desc: 'A publicação abre em tela cheia, com Patrocinado e o botão Agendar avaliação.' },
+          { ms: 1100, cena: 'grid', estado: 'lit', toque: 'ad', desc: 'Toque na publicação patrocinada.' },
+          { ms: 1500, cena: 'post', desc: 'A publicação abre em tela cheia, com Patrocinado e o botão Agendar avaliação.' },
           { ms: 900, cena: 'post', estado: 'lit', toque: 'cta', desc: 'Toque em Agendar avaliação.' },
-          { ms: 1700, cena: 'page', toque: 'go', desc: 'Página de agendamento: dia e horário. Toque em Confirmar horário.' },
-          { ms: 2000, cena: 'page', estado: 'done', desc: 'Avaliação agendada.' },
+          { ms: 1500, cena: 'page', desc: 'Agendamento online da Seixo, em três etapas: serviço, horário e dados.' },
+          { ms: 900, cena: 'page', estado: 'q1', toque: 'a', desc: 'Toque em Avaliação odontológica.' },
+          { ms: 800, cena: 'page', estado: 'q1', toque: 'b', desc: 'Toque em Ver horários.' },
+          { ms: 1100, cena: 'page', estado: 'w2', desc: 'Calendário de outubro com os dias livres marcados.' },
+          { ms: 900, cena: 'page', estado: 'w2 q2', toque: 'c', desc: 'Toque em quinta, 29. Os horários do dia aparecem.' },
+          { ms: 900, cena: 'page', estado: 'w2 q2 q3', toque: 'd', desc: 'Toque em 09:00.' },
+          { ms: 800, cena: 'page', estado: 'w2 q2 q3', toque: 'e', desc: 'Toque em Continuar.' },
+          { ms: 1400, cena: 'page', estado: 'w3', toque: 'f', desc: 'Dados do paciente preenchidos e lembrete pelo WhatsApp marcado. Toque em Confirmar agendamento.' },
+          { ms: 2000, cena: 'page', estado: 'w4 done', desc: 'Avaliação agendada para quinta, 29 de outubro, às 9h, com o endereço no mapa.' },
         ] },
     ] },
   { id: 'facebook', name: 'Facebook', group: 'social', benefit: 'Receber o pedido sem sair do app.',
@@ -534,32 +564,44 @@ export const channels = [
           { ms: 2200, cena: 'form', estado: 'done', desc: 'Obrigado. Recebemos seu pedido de visita.' },
         ] },
       { id: 'post', label: 'Post', mock: 'fbpost', cliente: 'incorporadora', selo: 'Patrocinado', frase: 'Uma incorporadora leva a foto da sala à visita agendada.',
-        passos: [P('Atenção', 'Sala com vista para o mar', [0]), P('Retenção', 'Legenda e link à mostra', [1]), P('Conversão', 'Agendamento na página', [2, 3, 4])],
+        passos: [P('Atenção', 'Sala com vista para o mar', [0]), P('Retenção', 'Legenda e link à mostra', [1]), P('Conversão', 'Tipo de visita, horário e contato', [2, 3, 4, 5, 6, 7, 8, 9])],
         quadros: [
           { ms: 1300, cena: 'post', desc: 'Post patrocinado da Morada Falésia no feed: a sala voltada para o mar e o texto de convite.' },
           { ms: 1200, cena: 'post', estado: 'lit', desc: 'O botão Agendar agora ganha cor na barra do link.' },
           { ms: 900, cena: 'post', estado: 'lit', toque: 'cta', desc: 'Toque em Agendar agora.' },
-          { ms: 1700, cena: 'page', toque: 'go', desc: 'A página da visita abre no navegador. Toque em Agendar visita.' },
-          { ms: 2000, cena: 'page', estado: 'done', desc: 'Visita agendada. A confirmação chega por e-mail.' },
+          { ms: 1900, cena: 'page', toque: 'a', desc: 'O site da Morada Falésia abre na galeria do decorado: 3 e 4 quartos, sala voltada para o mar. Toque em Agendar visita.' },
+          { ms: 1100, cena: 'page', estado: 'w2', desc: 'Como você quer conhecer: no decorado ou por vídeo.' },
+          { ms: 900, cena: 'page', estado: 'w2 q1', toque: 'b', desc: 'Toque em No decorado.' },
+          { ms: 900, cena: 'page', estado: 'w2 q1 q2', toque: 'c', desc: 'Toque em 11:30 de sábado.' },
+          { ms: 800, cena: 'page', estado: 'w2 q1 q2', toque: 'd', desc: 'Toque em Continuar.' },
+          { ms: 1400, cena: 'page', estado: 'w3', toque: 'e', desc: 'Contato preenchido e interesse em 4 quartos. Toque em Confirmar visita.' },
+          { ms: 2000, cena: 'page', estado: 'w4 done', desc: 'Visita agendada: sábado, 24 de outubro, 11h30, no decorado, com o endereço no mapa.' },
         ] },
       { id: 'video', label: 'Vídeo', mock: 'fbvid', cliente: 'restaurante', selo: 'Patrocinado', frase: 'Um restaurante leva do vídeo à reserva de mesa.',
-        passos: [P('Atenção', 'Feijoada no primeiro quadro', [0]), P('Retenção', 'Convite antes do fim do vídeo', [1]), P('Conversão', 'Reserva em duas etapas', [2, 3, 4])],
+        passos: [P('Atenção', 'Feijoada no primeiro quadro', [0]), P('Retenção', 'Convite antes do fim do vídeo', [1]), P('Conversão', 'Reserva direto no horário', [2, 3, 4, 5, 6, 7])],
         quadros: [
           { ms: 1500, cena: 'video', desc: 'Vídeo patrocinado do Tacho Miúdo: o prato de feijoada e o texto Feijoada no tacho aos sábados.' },
           { ms: 1800, cena: 'video', estado: 'lit', desc: 'No fim do vídeo, o botão Reservar mesa ganha cor.' },
           { ms: 900, cena: 'video', estado: 'lit', toque: 'cta', desc: 'Toque em Reservar mesa.' },
-          { ms: 1700, cena: 'page', toque: 'go', desc: 'A página de reserva abre no navegador. Toque em Pedir reserva.' },
-          { ms: 2000, cena: 'page', estado: 'done', desc: 'Pedido de reserva enviado.' },
+          { ms: 1500, cena: 'page', desc: 'O site do Tacho Miúdo abre direto na reserva: sábado, 4 pessoas, varanda.' },
+          { ms: 900, cena: 'page', estado: 'q1', toque: 'b', desc: 'Toque em 12:30.' },
+          { ms: 800, cena: 'page', estado: 'q1', toque: 'c', desc: 'Toque em Continuar.' },
+          { ms: 1400, cena: 'page', estado: 'w2', toque: 'e', desc: 'Nome e WhatsApp preenchidos. Toque em Confirmar reserva.' },
+          { ms: 1900, cena: 'page', estado: 'w3 done', desc: 'Reserva solicitada: sábado, 24 de outubro, 12h30, 4 pessoas, na varanda.' },
         ] },
       { id: 'breaks', label: 'Ad breaks', mock: 'fbbreak', cliente: 'educacao', selo: 'Patrocinado', frase: 'Uma escola de idiomas entra na pausa do vídeo e leva à aula.',
-        passos: [P('Atenção', 'Vídeo começa e a pausa aparece', [0]), P('Retenção', 'Anúncio com pular em 5 segundos', [1, 2]), P('Conversão', 'Aula experimental em dois toques', [3, 4, 5])],
+        passos: [P('Atenção', 'Vídeo começa e a pausa aparece', [0]), P('Retenção', 'Anúncio com pular em 5 segundos', [1, 2]), P('Conversão', 'Aula na unidade em três toques', [3, 4, 5, 6, 7, 8, 9])],
         quadros: [
           { ms: 1300, cena: 'video', desc: 'O vídeo do Tacho Miúdo começa; a pausa do anúncio chega com o selo Patrocinado.' },
           { ms: 1500, cena: 'ad', desc: 'Anúncio da Sotaque Livre na pausa, com o botão Pular em 5 segundos.' },
-          { ms: 1600, cena: 'ad', estado: 'skip', desc: 'Depois de cinco segundos, o botão vira Pular.' },
+          { ms: 1500, cena: 'ad', estado: 'skip', desc: 'Depois de cinco segundos, o botão vira Pular.' },
           { ms: 900, cena: 'ad', estado: 'skip lit', toque: 'cta', desc: 'O cartão Aula experimental acende. Toque nele.' },
-          { ms: 1700, cena: 'page', toque: 'go', desc: 'A página da aula abre no navegador. Toque em Agendar aula experimental.' },
-          { ms: 2000, cena: 'page', estado: 'done', desc: 'Aula experimental agendada para quinta, 19h.' },
+          { ms: 1500, cena: 'page', desc: 'O site da Sotaque Livre abre na aula experimental: nível, dia, horário e onde fazer a aula.' },
+          { ms: 900, cena: 'page', estado: 'q1', toque: 'a', desc: 'Toque em Na unidade.' },
+          { ms: 900, cena: 'page', estado: 'q1 q2', toque: 'b', desc: 'Toque em 19:00 de quinta.' },
+          { ms: 800, cena: 'page', estado: 'q1 q2', toque: 'c', desc: 'Toque em Continuar.' },
+          { ms: 1400, cena: 'page', estado: 'w2', toque: 'd', desc: 'Dados preenchidos. Toque em Confirmar aula.' },
+          { ms: 2000, cena: 'page', estado: 'w3 done', desc: 'Aula marcada na unidade: quinta, 29 de outubro, 19h.' },
         ] },
     ] },
   { id: 'tiktok', name: 'TikTok', group: 'social', benefit: 'Do vídeo ao carrinho em um toque.',
@@ -736,14 +778,14 @@ export const channels = [
    that the page promises by WhatsApp or by e-mail ends the journey on the iOS
    notification banner (lab: fatos-mk-barra-celular-toast, redrawn as iOS). */
 const AVISOS = {
-  'instagram/feed': { app: 'mail', cliente: 'educacao', texto: 'Aula experimental confirmada: quinta, às 19h.', desc: 'A confirmação da aula chega por e-mail, na notificação do iPhone.' },
-  'instagram/reels': { app: 'whatsapp', cliente: 'restaurante', texto: 'Reserva confirmada: sábado, 13h, mesa para 2.', desc: 'O restaurante confirma a reserva pelo WhatsApp.' },
-  'instagram/story': { app: 'mail', cliente: 'educacao', texto: 'Aula experimental confirmada: quinta, às 19h.', desc: 'A confirmação da aula chega por e-mail, na notificação do iPhone.' },
-  'instagram/live': { app: 'whatsapp', cliente: 'restaurante', texto: 'Recebemos seu pedido de reserva. Confirmamos em seguida.', desc: 'O restaurante responde pelo WhatsApp.' },
-  'instagram/explorar': { app: 'whatsapp', cliente: 'clinica', texto: 'Sua avaliação está agendada. Qualquer dúvida, é só responder.', desc: 'A clínica confirma a avaliação pelo WhatsApp.' },
-  'facebook/post': { app: 'mail', cliente: 'incorporadora', texto: 'Visita ao decorado agendada. Endereço e horário neste e-mail.', desc: 'A confirmação da visita chega por e-mail.' },
-  'facebook/video': { app: 'whatsapp', cliente: 'restaurante', texto: 'Recebemos seu pedido de reserva. Confirmamos em seguida.', desc: 'O restaurante responde pelo WhatsApp.' },
-  'facebook/breaks': { app: 'mail', cliente: 'educacao', texto: 'Aula experimental confirmada: quinta, às 19h.', desc: 'A confirmação da aula chega por e-mail.' },
+  'instagram/feed': { app: 'mail', cliente: 'educacao', texto: 'Sua aula experimental: quinta, 29, às 19h. O link da sala está aqui.', desc: 'A confirmação da aula chega por e-mail, na notificação do iPhone.' },
+  'instagram/reels': { app: 'whatsapp', cliente: 'restaurante', texto: 'Reserva confirmada: sábado, 24, às 13h, mesa para 2. Parabéns pelo aniversário!', desc: 'O restaurante confirma a reserva pelo WhatsApp.' },
+  'instagram/story': { app: 'mail', cliente: 'educacao', texto: 'Sua aula experimental: quinta, 29, às 19h. O link da sala está aqui.', desc: 'A confirmação da aula chega por e-mail, na notificação do iPhone.' },
+  'instagram/live': { app: 'whatsapp', cliente: 'restaurante', texto: 'Pedido 0427 recebido. Avisamos aqui quando estiver pronto para retirar.', desc: 'O restaurante avisa pelo WhatsApp que recebeu o pedido.' },
+  'instagram/explorar': { app: 'whatsapp', cliente: 'clinica', texto: 'Avaliação confirmada: quinta, 29, às 9h. Qualquer dúvida, é só responder.', desc: 'A clínica confirma a avaliação pelo WhatsApp.' },
+  'facebook/post': { app: 'mail', cliente: 'incorporadora', texto: 'Visita ao decorado: sábado, 24, às 11h30. Endereço e corretor neste e-mail.', desc: 'A confirmação da visita chega por e-mail.' },
+  'facebook/video': { app: 'whatsapp', cliente: 'restaurante', texto: 'Reserva confirmada: sábado, 24, às 12h30, varanda para 4.', desc: 'O restaurante responde pelo WhatsApp.' },
+  'facebook/breaks': { app: 'mail', cliente: 'educacao', texto: 'Aula experimental na unidade: quinta, 29, às 19h. Veja o endereço.', desc: 'A confirmação da aula chega por e-mail.' },
   'youtube/instream': { app: 'whatsapp', cliente: 'automotivo', texto: 'Recebemos seu pedido de test drive para sábado de manhã.', desc: 'A concessionária confirma o horário pelo WhatsApp.' },
   'google/display': { app: 'whatsapp', cliente: 'turismo', texto: 'Recebemos sua pré-reserva da saída de junho.', desc: 'A agência confirma a pré-reserva pelo WhatsApp.' },
   'seo/organic': { app: 'mail', cliente: 'incorporadora', texto: 'Plantas de 3 e 4 quartos, em PDF.', desc: 'O e-mail com as plantas chega na notificação do iPhone.' },
