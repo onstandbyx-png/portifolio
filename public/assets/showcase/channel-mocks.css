@@ -1044,3 +1044,92 @@ body.is-paused #laboratorio .cm-screen[data-state~="typing"] .cm-typed>span{max-
 /* Without motion: no typing dots, everything already in place. */
 @media(prefers-reduced-motion:reduce){#laboratorio .cm-wa-typing{display:none!important}}
 body.is-paused #laboratorio .cm-wa-typing{display:none!important}
+
+/* Conversations with depth (22/10/2026). WhatsApp click-to-chat: list message
+   with its sheet, reply buttons for period and time, confirmation and location. */
+#laboratorio .cm-wa-msg4,#laboratorio .cm-wa-msg5{display:none!important}
+#laboratorio .cm-screen[data-state~="m3"] span.cm-wa-replies.cm-wa-msg3,#laboratorio .cm-screen[data-state~="m4"] span.cm-wa-replies.cm-wa-msg4{display:grid!important}
+#laboratorio .cm-screen[data-state~="m4"] .cm-wa-msg4,#laboratorio .cm-screen[data-state~="m5"] .cm-wa-msg5{display:block!important}
+#laboratorio .cm-screen[data-state~="m4"] span.cm-wa-replies.cm-wa-msg4{display:grid!important}
+#laboratorio .cm-wa-listbtn{display:flex;align-items:center;justify-content:center;gap:calc(var(--u)*6);margin:calc(var(--u)*8) calc(var(--u)*-9) calc(var(--u)*-20);padding:calc(var(--u)*9) 0;border-top:calc(var(--u)*.8) solid #e9edef;color:#027eb5;font-size:calc(var(--u)*14.5);font-weight:500;transition:filter .12s,transform .12s}
+#laboratorio .cm-wa-listbtn .cm-i{width:calc(var(--u)*17);height:calc(var(--u)*17)}
+#laboratorio .cm-wa-in:has(.cm-wa-listbtn)>small{position:static;display:block;margin-top:calc(var(--u)*2);text-align:right}
+#laboratorio .cm-screen[data-state~="m5"] .cm-wa-confirm{display:grid!important;gap:calc(var(--u)*3)}
+#laboratorio .cm-screen:not([data-state~="m5"]) .cm-wa-confirm{display:none!important}
+#laboratorio .cm-wa-confirm b{font-size:calc(var(--u)*15);font-weight:600}
+#laboratorio .cm-wa-loc{width:68%;padding:calc(var(--u)*4) calc(var(--u)*4) calc(var(--u)*20)}
+#laboratorio .cm-wa-map{position:relative;display:block;height:calc(var(--u)*110);margin-bottom:calc(var(--u)*6);overflow:hidden;border-radius:calc(var(--u)*6)}
+#laboratorio .cm-wa-map img{width:100%;height:100%;object-fit:cover}
+#laboratorio .cm-wa-map i{position:absolute;left:50%;top:45%;display:grid;place-items:center;width:calc(var(--u)*30);height:calc(var(--u)*30);translate:-50% -50%;border-radius:50%;background:#ea4335;color:#fff;box-shadow:0 calc(var(--u)*2) calc(var(--u)*6) #0004}
+#laboratorio .cm-wa-map .cm-i{width:calc(var(--u)*16);height:calc(var(--u)*16)}
+#laboratorio .cm-wa-loc b,#laboratorio .cm-wa-loc>span:not(.cm-wa-map){display:block;padding:0 calc(var(--u)*5)}
+#laboratorio .cm-wa-loc>span:not(.cm-wa-map){color:#54656f;font-size:calc(var(--u)*13)}
+/* The list sheet over the conversation (state ls), the picked option (lp). */
+#laboratorio .cm-wa-sheet{position:absolute;z-index:60;left:0;right:0;bottom:0;display:grid;gap:calc(var(--u)*2);padding:calc(var(--u)*8) calc(var(--u)*16) calc(var(--pe) + var(--u)*12);border-radius:calc(var(--u)*18) calc(var(--u)*18) 0 0;background:#fff;color:#111b21;box-shadow:0 calc(var(--u)*-6) calc(var(--u)*24) #0003;transform:translateY(105%);visibility:hidden;transition:transform .42s var(--cm-ios),visibility 0s .42s}
+#laboratorio .cm-screen[data-state~="ls"] .cm-wa-sheet{transform:none;visibility:visible;transition:transform .42s var(--cm-ios),visibility 0s}
+#laboratorio .cm-wa .cm-scene[data-scene="chat"]::before{content:"";position:absolute;inset:0;z-index:55;background:#000;opacity:0;pointer-events:none;transition:opacity .35s}
+#laboratorio .cm-screen[data-state~="ls"] .cm-scene[data-scene="chat"]::before{opacity:.35}
+#laboratorio .cm-wa-sheet-top{display:grid;grid-template-columns:calc(var(--u)*24) 1fr calc(var(--u)*24);align-items:center;margin-bottom:calc(var(--u)*6)!important;text-align:center}
+#laboratorio .cm-wa-sheet-top b{font-size:calc(var(--u)*16)}
+#laboratorio .cm-wa-sheet-top .cm-i{width:calc(var(--u)*20);height:calc(var(--u)*20)}
+#laboratorio .cm-wa-sheet>small{color:#008069;font-size:calc(var(--u)*13);font-weight:600}
+#laboratorio .cm-wa-opt{display:flex;align-items:center;gap:calc(var(--u)*10);padding:calc(var(--u)*10) 0;border-bottom:calc(var(--u)*.8) solid #e9edef;transition:filter .12s,transform .12s}
+#laboratorio .cm-wa-opt>span{display:grid;flex:1;line-height:1.3}
+#laboratorio .cm-wa-opt b{font-size:calc(var(--u)*15);font-weight:500}
+#laboratorio .cm-wa-opt small{color:#667781;font-size:calc(var(--u)*12.5)}
+#laboratorio .cm-wa-opt i{flex:none;width:calc(var(--u)*20);height:calc(var(--u)*20);border:calc(var(--u)*2) solid #8696a0;border-radius:50%;transition:box-shadow .2s ease .4s,border-color .2s ease .4s}
+#laboratorio .cm-screen[data-state~="lp"] .cm-wa-opt--pick i{border-color:#008069;box-shadow:inset 0 0 0 calc(var(--u)*3.5) #fff,inset 0 0 0 calc(var(--u)*10) #008069}
+#laboratorio .cm-wa-sheet-send{display:grid;place-items:center;height:calc(var(--u)*46);margin-top:calc(var(--u)*10);border-radius:99px;background:#d1d7db;color:#fff;font-size:calc(var(--u)*15);font-weight:600;transition:background .2s ease .4s,filter .12s,transform .12s}
+#laboratorio .cm-screen[data-state~="lp"] .cm-wa-sheet-send{background:#1daa61}
+/* WhatsApp catalog: quantity, add to cart, cart bar (ct), cart sheet, the order message. */
+#laboratorio .cm-wa-qty{display:inline-flex;align-self:flex-start;align-items:center;gap:calc(var(--u)*16);height:calc(var(--u)*38);padding:0 calc(var(--u)*6);border:calc(var(--u)*1) solid #d1d7db;border-radius:99px}
+#laboratorio .cm-wa-qty i{display:grid;place-items:center;width:calc(var(--u)*28);height:calc(var(--u)*28);border-radius:50%;background:#f0f2f5;color:#008069;font-style:normal;font-size:calc(var(--u)*17);font-weight:600}
+#laboratorio .cm-wa-qty b{font-size:calc(var(--u)*15)}
+#laboratorio .cm-wa-qty--sm{height:calc(var(--u)*32)}
+#laboratorio .cm-wa-qty--sm i{width:calc(var(--u)*24);height:calc(var(--u)*24)}
+#laboratorio .cm-wa-item{display:grid;gap:calc(var(--u)*10)}
+#laboratorio .cm-wa-msglink{display:flex;align-items:center;justify-content:center;gap:calc(var(--u)*6);color:#008069;font-size:calc(var(--u)*14);font-weight:500}
+#laboratorio .cm-wa-cartbar{position:absolute;z-index:8;left:calc(var(--u)*14);right:calc(var(--u)*14);bottom:calc(var(--pe) + var(--u)*10);display:flex;align-items:center;gap:calc(var(--u)*10);height:calc(var(--u)*52);padding:0 calc(var(--u)*16);border-radius:99px;background:#008069;color:#fff;box-shadow:0 calc(var(--u)*6) calc(var(--u)*18) #0004;transform:translateY(170%);transition:transform .45s cubic-bezier(.34,1.3,.64,1) .45s,filter .12s}
+#laboratorio .cm-screen[data-state~="ct"] .cm-wa-cartbar{transform:none}
+#laboratorio .cm-wa-cartbar .cm-i{width:calc(var(--u)*21);height:calc(var(--u)*21)}
+#laboratorio .cm-wa-cartbar b{flex:1;font-size:calc(var(--u)*15)}
+#laboratorio .cm-wa-cartbar small{opacity:.85;font-size:calc(var(--u)*13)}
+#laboratorio .cm-wa-cart{gap:calc(var(--u)*12)}
+#laboratorio .cm-wa-cartline{display:flex;align-items:center;gap:calc(var(--u)*12)}
+#laboratorio .cm-wa-cartline img{width:calc(var(--u)*54);height:calc(var(--u)*54);border-radius:calc(var(--u)*8);object-fit:cover}
+#laboratorio .cm-wa-cartline>span:not(.cm-wa-qty){display:grid;flex:1}
+#laboratorio .cm-wa-cartline small{color:#667781;font-size:calc(var(--u)*12.5)}
+#laboratorio .cm-wa-note{display:flex;align-items:center;gap:calc(var(--u)*7);padding:calc(var(--u)*10) calc(var(--u)*12);border-radius:calc(var(--u)*10);background:#f0f2f5;color:#3b4a54;font-size:calc(var(--u)*13.5)}
+#laboratorio .cm-wa-orderout{width:72%}
+#laboratorio .cm-wa-orderthumb{display:flex;align-items:center;gap:calc(var(--u)*10);padding:calc(var(--u)*5);border-radius:calc(var(--u)*6);background:#0000000d}
+#laboratorio .cm-wa-orderthumb img{width:calc(var(--u)*52);height:calc(var(--u)*52);border-radius:calc(var(--u)*5);object-fit:cover}
+#laboratorio .cm-wa-orderthumb>span{display:grid;line-height:1.3}
+#laboratorio .cm-wa-orderthumb b{font-size:calc(var(--u)*14);font-weight:600}
+#laboratorio .cm-wa-orderthumb small{position:static;color:#54656f;font-size:calc(var(--u)*12.5)}
+#laboratorio .cm-wa-orderlink{display:block;margin:calc(var(--u)*7) calc(var(--u)*-9) calc(var(--u)*-6);padding:calc(var(--u)*8) 0 calc(var(--u)*2);border-top:calc(var(--u)*.8) solid #0000001a;color:#027eb5;font-size:calc(var(--u)*14);text-align:center}
+#laboratorio .cm-screen[data-tap="list"] [data-tap="list"],#laboratorio .cm-screen[data-tap="opt"] [data-tap="opt"],#laboratorio .cm-screen[data-tap="lsend"] [data-tap="lsend"],#laboratorio .cm-screen[data-tap="per"] [data-tap="per"],#laboratorio .cm-screen[data-tap="hor"] [data-tap="hor"],#laboratorio .cm-screen[data-tap="add"] [data-tap="add"],#laboratorio .cm-screen[data-tap="cart"] [data-tap="cart"],#laboratorio .cm-screen[data-tap="order"] [data-tap="order"],#laboratorio .cm-screen[data-tap="gsend"] [data-tap="gsend"]{filter:brightness(.9);transform:scale(.97)}
+/* ChatGPT: a second turn. The reply is typed in the field (ty), the question
+   rises to the top (s3), the second answer streams in (s4), then the ad (s2). */
+#laboratorio .cm-gpt-flow{transition:transform .55s var(--cm-ios)}
+#laboratorio .cm-screen[data-state~="s3"] .cm-gpt-flow{transform:translateY(calc(var(--u)*-318))}
+#laboratorio .cm-gpt-q2,#laboratorio .cm-gpt-think2{display:none}
+#laboratorio .cm-screen[data-state~="s3"] .cm-gpt-q2{display:block}
+#laboratorio .cm-screen[data-state~="s3"] .cm-gpt-think2{display:block}
+#laboratorio .cm-screen[data-state~="s4"] .cm-gpt-think2{display:none}
+#laboratorio .cm-screen[data-state~="s1"] .cm-gpt-a2{opacity:0;clip-path:inset(0 0 100% 0)}
+#laboratorio .cm-gpt-a2{display:none}
+#laboratorio .cm-screen[data-state~="s3"] .cm-gpt-a2{display:block}
+#laboratorio .cm-screen[data-state~="s3"] .cm-gpt-actions.cm-gpt-a2{display:flex}
+#laboratorio .cm-screen[data-state~="s4"] .cm-gpt-a2{opacity:1;clip-path:inset(0)}
+#laboratorio .cm-gpt-typed,#laboratorio .cm-gpt-send{display:none}
+#laboratorio .cm-screen[data-state~="ty"] .cm-gpt-ph,#laboratorio .cm-screen[data-state~="ty"] .cm-gpt-wave{display:none}
+#laboratorio .cm-screen[data-state~="ty"] .cm-gpt-typed{display:block;color:#0d0d0d}
+#laboratorio .cm-screen[data-state~="ty"] .cm-gpt-typed>span{max-width:0;animation:cm-type 1s steps(32,end) .15s forwards;box-shadow:calc(var(--u)*1.5) 0 0 #0d0d0d}
+#laboratorio .cm-screen[data-state~="ty"] .cm-gpt-send{display:grid;transition:filter .12s,transform .12s}
+#laboratorio .cm-gpt-input .cm-gpt-typed{flex:1;font-size:calc(var(--u)*15)}
+@media(prefers-reduced-motion:reduce){#laboratorio .cm-screen[data-state~="ty"] .cm-gpt-typed>span{max-width:100%}}
+body.is-paused #laboratorio .cm-screen[data-state~="ty"] .cm-gpt-typed>span{max-width:100%}
+#laboratorio .cm-gpt-top{background:#fff}
+#laboratorio .cm-gpt-top::before{content:"";position:absolute;left:0;right:0;bottom:100%;height:var(--topo);background:#fff}
+#laboratorio .cm-gpt-top::after{content:"";position:absolute;left:0;right:0;top:100%;height:calc(var(--u)*14);background:linear-gradient(#fff,#fff0);pointer-events:none}
+#laboratorio .cm-wa-body>*{flex-shrink:0}

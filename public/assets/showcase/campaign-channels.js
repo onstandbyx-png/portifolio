@@ -368,10 +368,14 @@ const mocks = {
       <span class="cm-gpt-think" aria-hidden="true"><i></i></span>
       <div class="cm-gpt-answer"><p>Se você me disser:</p><ul><li>quantos <b>dias</b> você tem,</li><li>de qual <b>cidade</b> sai,</li><li>se prefere <b>procissão, música ou cavalhadas</b>,</li><li>e se viaja <b>com crianças</b>,</li></ul><p>eu indico as 3 cidades que mais combinam com a sua viagem.</p></div>
       <div class="cm-gpt-actions">${I('copy')}${I('thumb', 'cm-i--flip')}${I('share')}${I('regen')}${I('dots')}<span class="cm-gpt-src"><i>R</i><i>G</i><i>T</i>Fontes</span></div>
-      <hr><p class="cm-gpt-lead">Para a sua busca por festas de junho no interior, aqui está uma opção para considerar.</p>
+      <p class="cm-gpt-user cm-gpt-q2" data-hs="1" data-hs-at="tl">3 dias, saindo de SP, cavalhadas</p>
+      <span class="cm-gpt-think cm-gpt-think2" aria-hidden="true"><i></i></span>
+      <div class="cm-gpt-answer cm-gpt-a2"><p>Com 3 dias, eu iria para <b>Pirenópolis (GO)</b>: na Festa do Divino tem mascarados pelas ruas e as cavalhadas no fim de semana.</p><ul><li><b>Dia 1:</b> voo até Brasília e 2 horas de carro;</li><li><b>Dia 2:</b> centro histórico e mascarados;</li><li><b>Dia 3:</b> cavalhadas e volta.</li></ul></div>
+      <div class="cm-gpt-actions cm-gpt-a2">${I('copy')}${I('thumb', 'cm-i--flip')}${I('share')}${I('regen')}${I('dots')}</div>
+      <hr><p class="cm-gpt-lead">Para a sua viagem para ver as cavalhadas, aqui está uma opção para considerar.</p>
       <div class="cm-gpt-ad" data-tap="cta" data-hs="2 3" data-hs-at="tl">${pic('crencas', { cls: 'cm-gpt-ad-img', pos: '50% 8%' })}<span class="cm-gpt-ad-body"><span class="cm-gpt-ad-top">${marca('turismo', 'fav')}<span>Bandeirola Viagens</span><small class="cm-gpt-chip">Anúncio</small>${I('dots')}</span><b>Festas de junho em grupo pequeno</b><small>Roteiros com guia da cidade e hotel no centro histórico. Saiba mais.</small></span></div>
       <span class="cm-gpt-down" aria-hidden="true">${I('up', 'cm-i--flip')}</span></div>
-    <div class="cm-gpt-input">${I('plus')}<span>Pergunte ao ChatGPT</span>${I('mic')}<i>${I('wave')}</i></div>`) +
+    <div class="cm-gpt-input">${I('plus')}<span class="cm-gpt-ph">Pergunte ao ChatGPT</span><span class="cm-typed cm-gpt-typed"><span>3 dias, saindo de SP, cavalhadas</span></span>${I('mic')}<i class="cm-gpt-wave">${I('wave')}</i><i class="cm-gpt-send" data-tap="gsend">${I('up')}</i></div>`) +
     scene('page', 'sheet', 'claro', `${browserBar('Bandeirola Viagens', 'bandeirola.exemplo', 'share')}${SITES.bandeirola()}`)),
 
   /* 2.11 Google Maps: promoted square pin and sponsored place sheet of a restaurant, then the route. */
@@ -402,12 +406,26 @@ const mocks = {
     scene('chat', 'push', 'claro', `<span class="cm-crumb">${I('back')}Instagram</span><div class="cm-wa-head">${I('back')}${marca('clinica')}<span><b>Seixo Odontologia</b><small>Conta comercial</small></span>${I('video')}${I('phone')}</div>
       <div class="cm-wa-body"><span class="cm-wa-sys">As mensagens são protegidas com a criptografia de ponta a ponta.</span><span class="cm-wa-day">Hoje</span>
         <div class="cm-wa-out cm-wa-msg1"><span class="cm-wa-quote">${pic('consultorio45')}<span><b>Seixo Odontologia</b><small>Avaliação com hora marcada</small></span></span>Olá! Quero agendar uma avaliação.<small>10:09 ${I('ticks')}</small></div>
-<span class="cm-wa-typing cm-wa-msg2" aria-hidden="true"><i></i><i></i><i></i></span>
-        <div class="cm-wa-in cm-wa-msg2 cm-arrive">Olá! Que bom falar com você. Qual horário fica melhor para a avaliação?<small>10:09</small></div>
-        <span class="cm-wa-replies cm-wa-msg2 cm-arrive cm-arrive--late" data-hs="3"><span data-tap="reply">Quinta, 9h</span><span>Sexta, 14h</span><span>Outro horário</span></span>
-        <div class="cm-wa-out cm-wa-msg3">Quinta, 9h<small>10:09 ${I('ticks')}</small></div>
-<span class="cm-wa-typing cm-wa-msg3" aria-hidden="true"><i></i><i></i><i></i></span>
-        <div class="cm-wa-in cm-wa-msg3 cm-arrive" data-hs="3">Combinado. Enviamos a confirmação por aqui.<small>10:09</small></div></div>
+        <span class="cm-wa-typing cm-wa-msg2" aria-hidden="true"><i></i><i></i><i></i></span>
+        <div class="cm-wa-in cm-wa-msg2 cm-arrive"><em class="cm-wa-auto">Mensagem automática</em>Olá! Aqui é o atendimento da Seixo Odontologia. Como podemos ajudar?<small>10:09</small><span class="cm-wa-listbtn" data-tap="list" data-hs="3">${I('menu')}Ver opções</span></div>
+        <div class="cm-wa-out cm-wa-msg3">Avaliação odontológica<small>10:09 ${I('ticks')}</small></div>
+        <span class="cm-wa-typing cm-wa-msg3" aria-hidden="true"><i></i><i></i><i></i></span>
+        <div class="cm-wa-in cm-wa-msg3 cm-arrive"><em class="cm-wa-auto">Mensagem automática</em>Perfeito. Qual período fica melhor para você?<small>10:09</small></div>
+        <span class="cm-wa-replies cm-wa-replies--row cm-wa-msg3 cm-wa-r3 cm-arrive cm-arrive--late"><span data-tap="per">Manhã</span><span>Tarde</span><span>Noite</span></span>
+        <div class="cm-wa-out cm-wa-msg4">Manhã<small>10:10 ${I('ticks')}</small></div>
+        <span class="cm-wa-typing cm-wa-msg4" aria-hidden="true"><i></i><i></i><i></i></span>
+        <div class="cm-wa-in cm-wa-msg4 cm-arrive"><em class="cm-wa-auto">Mensagem automática</em>Tenho estes horários pela manhã:<small>10:10</small></div>
+        <span class="cm-wa-replies cm-wa-msg4 cm-wa-r4 cm-arrive cm-arrive--late" data-hs="3"><span data-tap="hor">Qui, 29 de out, 9h</span><span>Sex, 30 de out, 10h30</span><span>Outro dia</span></span>
+        <div class="cm-wa-out cm-wa-msg5">Qui, 29 de out, 9h<small>10:10 ${I('ticks')}</small></div>
+        <span class="cm-wa-typing cm-wa-msg5" aria-hidden="true"><i></i><i></i><i></i></span>
+        <div class="cm-wa-in cm-wa-msg5 cm-arrive cm-wa-confirm" data-hs="3"><b>Avaliação agendada</b><span>Quinta, 29 de outubro, às 9h</span><span>Avaliação odontológica, 30 minutos</span><span>Se precisar remarcar, é só responder aqui.</span><small>10:10</small></div>
+        <div class="cm-wa-in cm-wa-msg5 cm-arrive cm-arrive--late cm-wa-loc"><span class="cm-wa-map">${pic('mapa', { pos: '62% 36%' })}<i>${I('location')}</i></span><b>Seixo Odontologia</b><span>Rua Exemplo, 120, Pinheiros</span><small>10:10</small></div></div>
+      <div class="cm-wa-sheet" aria-hidden="true"><span class="cm-grabber"></span><p class="cm-wa-sheet-top">${I('close')}<b>Ver opções</b><i></i></p><small>Atendimentos</small>
+        <span class="cm-wa-opt cm-wa-opt--pick" data-tap="opt"><span><b>Avaliação odontológica</b><small>Primeira consulta, 30 minutos</small></span><i></i></span>
+        <span class="cm-wa-opt"><span><b>Limpeza e prevenção</b><small>45 minutos</small></span><i></i></span>
+        <span class="cm-wa-opt"><span><b>Dor ou urgência</b><small>Encaixe no mesmo dia, conforme a agenda</small></span><i></i></span>
+        <span class="cm-wa-opt"><span><b>Falar com a recepção</b><small>Horário comercial</small></span><i></i></span>
+        <span class="cm-wa-sheet-send" data-tap="lsend">Enviar</span></div>
       <div class="cm-wa-compose"><span class="cm-wa-preview">${pic('consultorio45')}<span><b>Seixo Odontologia</b><small>Avaliação com hora marcada</small></span></span><span class="cm-wa-row">${I('plus')}<span class="cm-wa-field">Olá! Quero agendar uma avaliação.</span><span class="cm-wa-send" data-tap="send" data-hs="3">${I('send')}</span><span class="cm-wa-idle">${I('camera')}${I('mic')}</span></span></div>`)),
 
   /* 2.13 WhatsApp Business catalog (not an ad): profile, collections, item, message with the item attached. */
@@ -417,10 +435,12 @@ const mocks = {
     scene('catalog', 'push', 'claro', `<div class="cm-safe"><div class="cm-wa-bar">${I('back')}<span><b>Catálogo</b><small>Tacho Miúdo</small></span>${I('share')}</div>
       <div class="cm-wa-coll"><p><b>Encomendas de sábado</b><span>Ver tudo</span></p><ul data-hs="2"><li data-tap="item">${pic('panela11')}<span><b>Feijoada no tacho para 4</b><small>Carnes separadas, arroz, couve e farofa.</small></span></li><li>${pic('escondidinho11')}<span><b>Escondidinho de carne-seca</b><small>Gratinado na panelinha, para 2.</small></span></li></ul>
       <p><b>Doces</b><span>Ver tudo</span></p><ul><li>${pic('pudim11')}<span><b>Pudim de leite</b><small>Inteiro, feito na casa.</small></span></li></ul></div></div>`) +
-    scene('item', 'push', 'claro', `<div class="cm-safe"><div class="cm-wa-bar">${I('back')}<span></span>${I('share')}</div><span class="cm-wa-photo">${pic('panela11')}</span><div class="cm-wa-item"><b>Feijoada no tacho para 4</b><p>Carnes separadas, arroz, couve e farofa. Encomenda até sexta.</p>${btn('Conversar com a empresa', 'cta', '3', 'cm-btn--wa')}</div></div>`) +
+    scene('item', 'push', 'claro', `<div class="cm-safe"><div class="cm-wa-bar">${I('back')}<span></span>${I('share')}</div><span class="cm-wa-photo">${pic('panela11')}</span><div class="cm-wa-item"><b>Feijoada no tacho para 4</b><p>Carnes separadas, arroz, couve e farofa. Encomenda até sexta.</p><span class="cm-wa-qty"><i>−</i><b>1</b><i>+</i></span>${btn('Adicionar ao carrinho', 'add', '3', 'cm-btn--wa')}<span class="cm-wa-msglink">${I('comment', 'cm-i--inline')}Conversar com a empresa</span></div>
+      <span class="cm-wa-cartbar" data-tap="cart">${I('cart')}<b>Ver carrinho</b><small>1 item</small></span></div>`) +
+    scene('cart', 'sheet', 'claro', `<div class="cm-sheet cm-wa-cart"><span class="cm-grabber"></span><p class="cm-wa-sheet-top">${I('close')}<b>Carrinho</b><i></i></p><div class="cm-wa-cartline">${pic('panela11')}<span><b>Feijoada no tacho para 4</b><small>Tacho Miúdo</small></span><span class="cm-wa-qty cm-wa-qty--sm"><i>−</i><b>1</b><i>+</i></span></div><span class="cm-wa-note">${I('edit', 'cm-i--inline')}Adicionar observação: para sábado</span>${btn('Fazer pedido', 'order', '3', 'cm-btn--wa')}</div>`, 'cm-scene--part') +
     scene('chat', 'push', 'claro', `<div class="cm-wa-head">${I('back')}${marca('restaurante')}<span><b>Tacho Miúdo</b><small>Conta comercial</small></span>${I('video')}${I('phone')}</div>
       <div class="cm-wa-body"><span class="cm-wa-day">Hoje</span>
-        <div class="cm-wa-out"><span class="cm-wa-quote cm-wa-quote--item">${pic('panela11')}<span><b>Feijoada no tacho para 4</b><small>Ver</small></span></span>Olá! Quero encomendar este item para sábado.<small>10:09 ${I('ticks')}</small></div>
+        <div class="cm-wa-out cm-wa-orderout"><span class="cm-wa-orderthumb">${pic('panela11')}<span><b>${I('cart', 'cm-i--inline')}1 item</b><small>Pedido para sábado</small></span></span><span class="cm-wa-orderlink">Ver itens enviados</span><small>10:09 ${I('ticks')}</small></div>
 <span class="cm-wa-typing cm-wc1" aria-hidden="true"><i></i><i></i><i></i></span>
         <div class="cm-wa-in cm-wc1 cm-arrive"><em class="cm-wa-auto">Mensagem automática</em>Oi! Aqui é o atendimento do Tacho Miúdo. Como prefere receber?<small>10:09</small></div>
         <span class="cm-wa-replies cm-wc1 cm-wcg cm-wr1 cm-arrive cm-arrive--late" data-hs="3"><span data-tap="r1">Retirar no balcão</span><span>Entrega</span></span>
@@ -715,12 +735,16 @@ export const channels = [
     art: art('turismo', 'crencas', '50% 22%', 'Festas tradicionais em grupo pequeno', 'Peça da Bandeirola Viagens, agência de viagens fictícia: rua de pedra com bandeirolas e igreja ao entardecer.'),
     placements: [
       { id: 'answer', label: 'Resposta', mock: 'gptAnswer', cliente: 'turismo', selo: 'Anúncio', frase: 'Uma agência aparece depois da resposta, separada dela.',
-        passos: [P('Atenção', 'Pergunta de quem planeja a viagem', [0, 1]), P('Retenção', 'Opção logo abaixo da resposta', [2]), P('Conversão', 'Roteiro montado e consultor', [3, 4, 5, 6, 7, 8, 9, 10])],
+        passos: [P('Atenção', 'Conversa de quem planeja a viagem', [0, 1, 2, 3, 4, 5]), P('Retenção', 'Opção logo abaixo da resposta', [6]), P('Conversão', 'Roteiro montado e consultor', [7, 8, 9, 10, 11, 12, 13, 14])],
         quadros: [
           { ms: 1100, cena: 'chat', desc: 'Conversa no ChatGPT: quero ver uma festa tradicional no interior em junho. O ChatGPT começa a responder.' },
-          { ms: 1700, cena: 'chat', estado: 's1', desc: 'A resposta pede dias, cidade de saída, tipo de festa e se a viagem é com crianças. Abaixo, ações e o chip Fontes.' },
-          { ms: 1900, cena: 'chat', estado: 's1 s2', desc: 'Depois de um divisor, uma frase cinza apresenta a opção e o cartão com a etiqueta Anúncio: Bandeirola Viagens, Festas de junho em grupo pequeno.' },
-          { ms: 900, cena: 'chat', estado: 's1 s2', toque: 'cta', desc: 'Toque no cartão do anúncio.' },
+          { ms: 1700, cena: 'chat', estado: 's1', desc: 'A resposta pede dias, cidade de saída, tipo de festa e se a viagem é com crianças.' },
+          { ms: 1500, cena: 'chat', estado: 's1 ty', desc: 'Você responde no campo: 3 dias, saindo de SP, cavalhadas.' },
+          { ms: 700, cena: 'chat', estado: 's1 ty', toque: 'gsend', desc: 'Toque em enviar.' },
+          { ms: 1100, cena: 'chat', estado: 's1 s3', desc: 'A pergunta sobe para o alto da tela e o ChatGPT pensa.' },
+          { ms: 1900, cena: 'chat', estado: 's1 s3 s4', desc: 'A resposta indica Pirenópolis, com mascarados e cavalhadas, e um roteiro de 3 dias.' },
+          { ms: 1900, cena: 'chat', estado: 's1 s3 s4 s2', desc: 'Depois de um divisor, uma frase cinza apresenta a opção e o cartão com a etiqueta Anúncio: Bandeirola Viagens, separado da resposta.' },
+          { ms: 900, cena: 'chat', estado: 's1 s3 s4 s2', toque: 'cta', desc: 'Toque no cartão do anúncio.' },
           { ms: 1400, cena: 'page', desc: 'O navegador do ChatGPT abre Monte seu roteiro, da Bandeirola: quantos dias você tem?' },
           { ms: 900, cena: 'page', estado: 'q1', toque: 'a', desc: 'Toque em 3 dias.' },
           { ms: 900, cena: 'page', estado: 'q1', toque: 'b', desc: 'Saindo de São Paulo, viagem de casal. Toque em Continuar.' },
@@ -748,30 +772,39 @@ export const channels = [
     art: art('clinica', 'recepcao45', '50% 50%', 'Conte o que sente e escolha o horário', 'Peça da Seixo Odontologia, clínica odontológica fictícia: recepção com parede terracota, sofá e plantas.'),
     placements: [
       { id: 'ctwa', label: 'Clique para conversar', mock: 'waAd', cliente: 'clinica', selo: 'Patrocinado', frase: 'Uma clínica começa o agendamento numa conversa.',
-        passos: [P('Atenção', 'Hora marcada na própria imagem', [0]), P('Retenção', 'Legenda convida a contar mais', [1]), P('Conversão', 'Mensagem pronta e horário', [2, 3, 4, 5, 6])],
+        passos: [P('Atenção', 'Hora marcada na própria imagem', [0]), P('Retenção', 'Legenda convida a contar mais', [1]), P('Conversão', 'Menu, período, horário e endereço', [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13])],
         quadros: [
           { ms: 1400, cena: 'ad', desc: 'Anúncio patrocinado da Seixo Odontologia no Instagram: Avaliação com hora marcada.' },
           { ms: 1700, cena: 'ad', estado: 'open lit', desc: 'A legenda abre: conte o que você sente e escolha o horário pela conversa. A barra Enviar mensagem pelo WhatsApp acende.' },
-          { ms: 1000, cena: 'ad', estado: 'open lit', toque: 'cta', desc: 'Toque em Enviar mensagem pelo WhatsApp.' },
-          { ms: 1600, cena: 'chat', toque: 'send', desc: 'O WhatsApp abre a conversa com a mensagem pronta: Olá! Quero agendar uma avaliação. Toque em enviar.' },
-          { ms: 1700, cena: 'chat', estado: 'm2', desc: 'A clínica está digitando. A resposta automática pergunta o horário, com três opções.' },
-          { ms: 900, cena: 'chat', estado: 'm2', toque: 'reply', desc: 'Toque em Quinta, 9h.' },
-          { ms: 1900, cena: 'chat', estado: 'm2 m3', desc: 'Horário escolhido: quinta, 9h. A clínica confirma pela conversa.' },
+          { ms: 900, cena: 'ad', estado: 'open lit', toque: 'cta', desc: 'Toque em Enviar mensagem pelo WhatsApp.' },
+          { ms: 1500, cena: 'chat', toque: 'send', desc: 'O WhatsApp abre a conversa com a mensagem pronta e a prévia do anúncio: Olá! Quero agendar uma avaliação. Toque em enviar.' },
+          { ms: 1700, cena: 'chat', estado: 'm2', desc: 'A clínica digita. A mensagem automática pergunta como pode ajudar, com o botão Ver opções.' },
+          { ms: 800, cena: 'chat', estado: 'm2', toque: 'list', desc: 'Toque em Ver opções.' },
+          { ms: 1100, cena: 'chat', estado: 'm2 ls', desc: 'A lista de atendimentos abre: avaliação, limpeza, dor ou urgência, recepção.' },
+          { ms: 900, cena: 'chat', estado: 'm2 ls lp', toque: 'opt', desc: 'Toque em Avaliação odontológica.' },
+          { ms: 800, cena: 'chat', estado: 'm2 ls lp', toque: 'lsend', desc: 'Toque em Enviar.' },
+          { ms: 1700, cena: 'chat', estado: 'm2 m3', desc: 'A escolha vira mensagem. A clínica digita e pergunta o período: manhã, tarde ou noite.' },
+          { ms: 800, cena: 'chat', estado: 'm2 m3', toque: 'per', desc: 'Toque em Manhã.' },
+          { ms: 1700, cena: 'chat', estado: 'm2 m3 m4', desc: 'Horários da manhã: quinta, 29, às 9h; sexta, 30, às 10h30; ou outro dia.' },
+          { ms: 800, cena: 'chat', estado: 'm2 m3 m4', toque: 'hor', desc: 'Toque em quinta, 29 de outubro, 9h.' },
+          { ms: 2400, cena: 'chat', estado: 'm2 m3 m4 m5', desc: 'Avaliação agendada para quinta, 29, às 9h, e a localização da clínica na própria conversa.' },
         ] },
       { id: 'catalog', label: 'Catálogo', mock: 'waCatalog', cliente: 'restaurante', selo: 'Catálogo, não é anúncio', frase: 'Um restaurante recebe a encomenda pelo catálogo e fecha o pedido no atendimento automático.',
-        passos: [P('Atenção', 'Vitrine dentro do perfil', [0, 1]), P('Retenção', 'Itens organizados por ocasião', [2, 3]), P('Conversão', 'Atendimento automático até o pedido', [4, 5, 6, 7, 8, 9, 10, 11])],
+        passos: [P('Atenção', 'Vitrine dentro do perfil', [0, 1]), P('Retenção', 'Itens organizados por ocasião', [2, 3]), P('Conversão', 'Carrinho, pedido e atendimento automático', [4, 5, 6, 7, 8, 9, 10, 11, 12, 13])],
         quadros: [
           { ms: 1400, cena: 'profile', desc: 'Perfil comercial do Tacho Miúdo no WhatsApp, com a faixa Catálogo.' },
           { ms: 900, cena: 'profile', toque: 'more', desc: 'Toque em Ver tudo.' },
           { ms: 1500, cena: 'catalog', toque: 'item', desc: 'Catálogo com as coleções Encomendas de sábado e Doces. Toque em Feijoada no tacho para 4.' },
-          { ms: 1500, cena: 'item', toque: 'cta', desc: 'Página do item, sem preço. Toque em Conversar com a empresa.' },
-          { ms: 1300, cena: 'chat', desc: 'A conversa abre com o item anexado e a mensagem enviada.' },
+          { ms: 1400, cena: 'item', toque: 'add', desc: 'Página do item, sem preço, com quantidade. Toque em Adicionar ao carrinho.' },
+          { ms: 1000, cena: 'item', estado: 'ct', toque: 'cart', desc: 'A barra Ver carrinho, 1 item, aparece embaixo. Toque nela.' },
+          { ms: 1400, cena: 'cart', toque: 'order', desc: 'Carrinho com a feijoada e a observação para sábado. Toque em Fazer pedido.' },
+          { ms: 1300, cena: 'chat', desc: 'O pedido chega na conversa como uma mensagem de carrinho: 1 item, pedido para sábado.' },
           { ms: 1700, cena: 'chat', estado: 'k1', desc: 'O atendimento automático digita: como prefere receber? Opções Retirar no balcão e Entrega.' },
-          { ms: 900, cena: 'chat', estado: 'k1', toque: 'r1', desc: 'Toque em Retirar no balcão.' },
+          { ms: 800, cena: 'chat', estado: 'k1', toque: 'r1', desc: 'Toque em Retirar no balcão.' },
           { ms: 1700, cena: 'chat', estado: 'k1 k2', desc: 'A automação digita e pergunta o horário de sábado: 11h, 12h ou 13h.' },
-          { ms: 900, cena: 'chat', estado: 'k1 k2', toque: 'r2', desc: 'Toque em 12h.' },
+          { ms: 800, cena: 'chat', estado: 'k1 k2', toque: 'r2', desc: 'Toque em 12h.' },
           { ms: 1800, cena: 'chat', estado: 'k1 k2 k3', desc: 'Resumo do pedido: feijoada para 4, retirada no balcão sábado às 12h, com o botão Confirmar pedido.' },
-          { ms: 900, cena: 'chat', estado: 'k1 k2 k3', toque: 'ok', desc: 'Toque em Confirmar pedido.' },
+          { ms: 800, cena: 'chat', estado: 'k1 k2 k3', toque: 'ok', desc: 'Toque em Confirmar pedido.' },
           { ms: 2200, cena: 'chat', estado: 'k1 k2 k3 k4', desc: 'Pedido confirmado, com lembrete no sábado às 9h.' },
         ] },
     ] },
