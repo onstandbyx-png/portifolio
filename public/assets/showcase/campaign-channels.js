@@ -188,6 +188,35 @@ const mocks = {
     <p class="cm-ig-caption"><b>sotaquelivre</b> Aula experimental com horário marcado. Escolha o nível e o horário no link. <span>mais</span></p></article></div>${tabbar(TABS.instagram)}`) +
     scene('page', 'sheet', 'claro', `${browserBar('Aula experimental', 'sotaquelivre.exemplo')}${landing({ key: 'educacao', title: 'Aula experimental', sub: 'Escolha o nível e o horário da sua aula.', body: chips('Qual é o seu nível?', ['Começando', 'Intermediário', 'Avançado'], 1) + chips('Escolha um horário', ['Ter 19h', 'Qui 19h', 'Sáb 10h'], 1), button: 'Agendar aula experimental', confirm: done('Aula experimental agendada', 'Quinta, 19h. O link da aula chega por e-mail.', btn('Adicionar ao calendário', '', '', 'cm-btn--ghost')) })}`)),
 
+  /* 2.3 Instagram Story: a language school, the sticker that holds the tap, then the course page. */
+  igstory: () => screen('igstory', scene('story', 'base', 'escuro', `<div class="cm-st">
+      ${pic('escola916', { alt: 'Fone de ouvido sobre o caderno de anotações, em luz de fim de tarde.' })}
+      <div class="cm-st-bars" aria-hidden="true"><i class="is-on"></i><i></i></div>
+      <div class="cm-st-top">${marca('educacao')}<span><b>sotaquelivre</b><small>Patrocinado</small></span>${I('dots')}${I('close')}</div>
+      <p class="cm-st-text" data-hs="1">Você entende a série sem legenda?</p>
+      <div class="cm-st-cta"><span class="cm-st-sticker" data-tap="cta" data-hs="3">${I('arrow')}<b>Agendar aula</b></span></div>
+    </div>`) + scene('page', 'sheet', 'claro', `${browserBar('Aula experimental', 'sotaquelivre.exemplo')}${landing({ key: 'educacao', title: 'Aula experimental', sub: 'Escolha o nível e o horário da sua aula.', body: chips('Qual é o seu nível?', ['Começando', 'Intermediário', 'Avançado'], 1), button: 'Agendar aula experimental', confirm: done('Aula experimental agendada', 'Quinta, 19h. O link da aula chega por e-mail.') })}`)),
+
+  /* 2.4 Instagram Live: a restaurant cooking live with the paid label, comments and the menu sheet. */
+  iglive: () => screen('iglive', scene('live', 'base', 'escuro', `<div class="cm-lv">
+      ${pic('panela916', { alt: 'Tacho de feijoada no fogão, com a concha erguendo a linguiça.' })}
+      <span class="cm-lv-badge">Ao vivo</span>
+      <div class="cm-lv-top">${marca('restaurante')}<span><b>tachomiudo</b><small>Patrocinado</small></span>${I('close')}</div>
+      <p class="cm-lv-comment" data-hs="1"><b>cliente_12</b> Qual o horário do almoço?</p>
+      <p class="cm-lv-comment"><b>tachomiudo</b> Sábado, feijoada no tacho a partir das 12h.</p>
+      <div class="cm-lv-cta" data-tap="cta" data-hs="3"><b>Ver cardápio</b>${I('chevron')}</div>
+    </div>`) + scene('page', 'sheet', 'claro', `${browserBar('Cardápio de sábado', 'tachomiudo.exemplo')}${landing({ key: 'restaurante', title: 'Cardápio de sábado', sub: 'Feijoada no tacho, com mesa para o almoço.', body: chips('Quantas pessoas?', ['2', '4', '6'], 0), button: 'Reservar mesa', confirm: done('Pedido de reserva enviado', 'O restaurante confirma pelo WhatsApp.') })}`)),
+
+  /* 2.5 Instagram Explorar: a grid of photos with one sponsored post that opens full screen, then the booking page. */
+  igexplore: () => screen('igexplore', scene('grid', 'base', 'claro', `<div class="cm-xp">
+      <div class="cm-xp-bar">${I('search')}<span>Pesquisar</span></div>
+      <div class="cm-xp-grid">
+        ${pic('prato11', { alt: '' })}${pic('pudim11', { alt: '' })}${pic('panela11', { alt: '' })}
+        ${pic('recepcao45', { alt: '' })}<span class="cm-xp-ad" data-tap="ad" data-hs="1">${pic('consultorio45', { alt: 'Consultório odontológico com cadeira e luz natural, publicação patrocinada.' })}<em>Patrocinado</em></span>${pic('escondidinho11', { alt: '' })}
+        ${pic('salaMar11', { alt: '' })}${pic('fachada45', { alt: '' })}${pic('pudim11', { alt: '' })}
+      </div></div>
+    <div class="cm-tabbar-wrap">${tabbar(TABS.instagram)}</div>`) + scene('post', 'sheet', 'claro', `<article class="cm-post-full">${igHead('clinica')}${pic('consultorio45', { alt: 'Consultório odontológico com cadeira e luz natural.' })}<div class="cm-ig-cta" data-tap="cta" data-hs="3"><b>Agendar avaliação</b>${I('chevron')}</div><p class="cm-ig-caption"><b>seixoodontologia</b> Avaliação com dentista, horário marcado. <span>mais</span></p></article>`) + scene('page', 'sheet', 'claro', `${browserBar('Agendar avaliação', 'seixo.exemplo')}${landing({ key: 'clinica', title: 'Agendar avaliação', sub: 'Escolha o dia e o horário.', body: chips('Dia', ['Seg', 'Ter', 'Qua'], 1) + chips('Horário', ['9h', '14h', '17h'], 0), button: 'Confirmar horário', confirm: done('Avaliação agendada', 'Você recebe a confirmação por mensagem.') })}`)),
+
   /* 2.2 Instagram Reels: a restaurant, two cuts, Instagram browser with the menu and the table booking sheet. */
   igReels: () => screen('reels', scene('video', 'base', 'escuro', `<div class="cm-shots">
       <figure class="cm-shot" data-shot="1">${pic('panela916', { alt: 'Tacho de feijoada com a concha erguendo linguiça.' })}<p class="cm-ontext" data-hs="1">Sábado tem feijoada no tacho.</p></figure>
@@ -418,6 +447,34 @@ export const channels = [
           { ms: 1500, cena: 'reserva', toque: 'send', desc: 'Reserva para 2 pessoas às 13h. Toque em Pedir reserva.' },
           { ms: 2000, cena: 'reserva', estado: 'done', desc: 'Pedido de reserva enviado. O restaurante confirma pelo WhatsApp.' },
         ] },
+      { id: 'story', label: 'Story', mock: 'igstory', cliente: 'educacao', selo: 'Patrocinado', frase: 'Uma escola de idiomas leva da história à aula experimental.',
+        passos: [P('Atenção', 'Pergunta sobre a foto', [0]), P('Retenção', 'Adesivo de link aparece', [1]), P('Conversão', 'Agendamento na página', [2, 3, 4])],
+        quadros: [
+          { ms: 1300, cena: 'story', desc: 'Story patrocinado da Sotaque Livre: foto da escola e a pergunta Você entende a série sem legenda?' },
+          { ms: 1400, cena: 'story', estado: 'lit', desc: 'O adesivo Agendar aula ganha cor no fim da história.' },
+          { ms: 900, cena: 'story', estado: 'lit', toque: 'cta', desc: 'Toque no adesivo.' },
+          { ms: 1700, cena: 'page', toque: 'go', desc: 'A página da aula abre no navegador do Instagram. Toque em Agendar aula experimental.' },
+          { ms: 2000, cena: 'page', estado: 'done', desc: 'Aula experimental agendada para quinta, 19h.' },
+        ] },
+      { id: 'live', label: 'Live', mock: 'iglive', cliente: 'restaurante', selo: 'Patrocinado', frase: 'Um restaurante cozinha ao vivo e leva à reserva.',
+        passos: [P('Atenção', 'Selo Ao vivo e o tacho', [0]), P('Retenção', 'Comentário respondido pela marca', [1]), P('Conversão', 'Cardápio e reserva', [2, 3, 4])],
+        quadros: [
+          { ms: 1400, cena: 'live', desc: 'Live patrocinada do Tacho Miúdo: o tacho de feijoada com o selo Ao vivo.' },
+          { ms: 1600, cena: 'live', estado: 'lit', desc: 'Um comentário pergunta o horário do almoço. O botão Ver cardápio ganha cor.' },
+          { ms: 900, cena: 'live', estado: 'lit', toque: 'cta', desc: 'Toque em Ver cardápio.' },
+          { ms: 1700, cena: 'page', toque: 'go', desc: 'O cardápio de sábado abre no navegador. Toque em Reservar mesa.' },
+          { ms: 2000, cena: 'page', estado: 'done', desc: 'Pedido de reserva enviado.' },
+        ] },
+      { id: 'explorar', label: 'Explorar', mock: 'igexplore', cliente: 'clinica', selo: 'Patrocinado', frase: 'Uma clínica aparece entre fotos de interesse e leva ao horário.',
+        passos: [P('Atenção', 'Publicação entre as fotos', [0]), P('Retenção', 'Publicação abre em tela cheia', [1, 2]), P('Conversão', 'Agendamento em dois toques', [3, 4, 5])],
+        quadros: [
+          { ms: 1300, cena: 'grid', desc: 'Explorar: grade de fotos e uma publicação patrocinada da Seixo Odontologia.' },
+          { ms: 1200, cena: 'grid', estado: 'lit', toque: 'ad', desc: 'Toque na publicação patrocinada.' },
+          { ms: 1600, cena: 'post', desc: 'A publicação abre em tela cheia, com Patrocinado e o botão Agendar avaliação.' },
+          { ms: 900, cena: 'post', estado: 'lit', toque: 'cta', desc: 'Toque em Agendar avaliação.' },
+          { ms: 1700, cena: 'page', toque: 'go', desc: 'Página de agendamento: dia e horário. Toque em Confirmar horário.' },
+          { ms: 2000, cena: 'page', estado: 'done', desc: 'Avaliação agendada.' },
+        ] },
     ] },
   { id: 'facebook', name: 'Facebook', group: 'social', benefit: 'Receber o pedido sem sair do app.',
     art: art('incorporadora', 'coast', '30% 50%', 'Casas na falésia com a sala voltada para o mar.', 'Peça da Morada Falésia, incorporadora fictícia: casa de concreto e madeira na falésia, sobre o mar.'),
@@ -598,6 +655,9 @@ export const channelById = id => channels.find(channel => channel.id === id) || 
 /* App theme behind the status bar and the screen colour while a placement loads. */
 const SCREEN = {
   igReels: { tema: 'escuro', fundo: '#000' },
+  igstory: { tema: 'escuro', fundo: '#000' },
+  iglive: { tema: 'escuro', fundo: '#000' },
+  igexplore: { tema: 'claro', fundo: '#fff' },
   ttFeed: { tema: 'escuro', fundo: '#000' },
   ytShorts: { tema: 'escuro', fundo: '#000' },
   liFeed: { fundo: '#f4f2ee' },
