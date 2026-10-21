@@ -23,7 +23,7 @@ const TELA = CELULAR ? 390 : 1280;
 const reduzido = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
 const FAMILIA = Object.fromEntries(FAMILIAS);
 // Where an element was found: the ChatGPT conversations, the Drive export or a git commit (it can be several).
-const ORIGENS = [['conversas', 'Conversas'], ['drive', 'Drive'], ['git', 'Git']];
+const ORIGENS = [['conversas', 'Conversas'], ['drive', 'Drive'], ['git', 'Git'], ['claude', 'Claude']];
 function origens(e, ctx) {
   if (e.__origens) return e.__origens;
   const fonte = `${e.fonte || ''} ${e.sem_versao_viva || ''}`, notas = ctx.contexto.elementos[e.id] || [], vs = e.versoes || [];
@@ -31,6 +31,7 @@ function origens(e, ctx) {
   if (/chatgpt:|conversa/i.test(fonte) || notas.some(n => n.tipo === 'conversa')) o.add('conversas');
   if (/drive:|Originais_parte|\.zip\b|libfile_/i.test(fonte) || vs.some(v => /^[spf]-d-|^s-ux2-/.test(v))) o.add('drive');
   if (/@[0-9a-f]{7,}/i.test(fonte) || vs.some(v => /^(e|x)\d|^[sf]-(l|e|v)\d|^[spf]-c-/.test(v))) o.add('git');
+  if (/claude artifact|claude\.ai\/artifact/i.test(fonte) || vs.some(v => /^a-/.test(v))) o.add('claude');
   return (e.__origens = o);
 }
 const TIPOS_NOTA = [['conversa', 'Nas conversas'], ['especificacao', 'Especificação'], ['tempo', 'Tempos'], ['recriacao', 'Como recriar'], ['decisao', 'Decisões'], ['pendencia', 'Pendências'], ['problema', 'Problemas']];

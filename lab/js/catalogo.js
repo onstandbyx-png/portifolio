@@ -8,7 +8,7 @@ export const FAMILIAS = [['todas', 'Todas'], ['cartoes', 'Cartões'], ['cracha',
   ['galeria-rolagem', 'Galeria e rolagem'], ['anuncio-post', 'Anúncios e posts'], ['formulario', 'Formulários'], ['navegacao', 'Navegação'],
   ['microinteracao', 'Microinterações'], ['marca', 'Marca'], ['secoes', 'Seções']];
 export const STATUS = {atual: 'atual', substituido: 'substituído', rejeitado: 'recusado', legado: 'legado', removido: 'removido', rascunho: 'rascunho'};
-export const PROJETOS = {portfolio: 'Portfólio', smiile: 'smiile', fatos: 'Fatos'};
+export const PROJETOS = {portfolio: 'Portfólio', smiile: 'smiile', fatos: 'Fatos', outros: 'Outros (Claude)'};
 
 const VAZIO = {elementos: {}, versoes: {}, fontes: {}, linha: [], naoImplementados: [], referencias: []};
 let cache = null;
