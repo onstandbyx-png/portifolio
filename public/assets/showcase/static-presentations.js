@@ -1,6 +1,6 @@
 /* Static artwork remains inside the moving portfolio presentation.
-   Campaign channels: grouped tabs with the official platform marks and a
-   sliding marker; the outgoing piece leaves to the side (30px, 300ms) and the
+   Campaign channels: a grid of channel tiles with the official platform marks
+   and a sliding highlight, all visible at once on a phone; the outgoing piece leaves to the side (30px, 300ms) and the
    new one enters with a spring (42px, 620ms), as in the earlier channel switch
    of the portfolio. Each front is the piece of a fictitious client. */
 import { createMotion, clamp } from '../sections/motion.js';
@@ -14,10 +14,18 @@ function picture(file, alt, className = '') {
   return `<img class="${className}" src="${ART}${file}.webp" alt="${alt}" width="960" height="1200" loading="lazy" decoding="async">`;
 }
 
+/* Channel tiles (pattern of the Fatos studio platform selector, lab f-e3): the
+   official mark over a short name, every channel visible at once, no scrolling. */
+const SHORT = { google: 'Google Ads', maps: 'Maps', whatsapp: 'WhatsApp' };
+const TINY = { blog: 'Publi' }; // under 360px, where the full name does not fit a quarter of the row
+const tileName = channel => { const name = esc(SHORT[channel.id] || channel.name); return TINY[channel.id] ? `<span class="sp-n-long">${name}</span><span class="sp-n-short">${esc(TINY[channel.id])}</span>` : name; };
+const DOC_MARK = '<svg class="sp-platform-logo sp-platform-logo--doc" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 3.5h8l4 4V20.5H6zM14 3.5v4h4M9 12h6M9 15.5h6"/></svg>';
+const groupLabel = id => groups.find(group => group.id === id)?.label || '';
+const formats = n => `${n} ${n > 1 ? 'formatos' : 'formato'}`;
 function tabMarkup(channel, index) {
-  const id = CHANNEL_LOGO[channel.id];
-  const mark = id ? logoSvg(id, { altura: 16, classe: 'sp-platform-logo' }) : '';
-  return `<button type="button" id="tab-${channel.id}" role="tab" data-sp-tab="${channel.id}" aria-controls="panel-${channel.id}" aria-describedby="sp-group-${channel.group}" aria-selected="${index === 0}" tabindex="${index === 0 ? '0' : '-1'}"${id ? ` style="--ch:${LOGOS[id].cor}"` : ''}>${mark}<span>${esc(channel.name)}</span><small class="sp-tab-count" aria-hidden="true">${channel.placements.length}</small></button>`;
+  const id = CHANNEL_LOGO[channel.id], n = channel.placements.length;
+  const mark = id ? logoSvg(id, { altura: 22, classe: 'sp-platform-logo' }) : DOC_MARK;
+  return `<button type="button" id="tab-${channel.id}" role="tab" data-sp-tab="${channel.id}" aria-controls="panel-${channel.id}" aria-label="${esc(`${channel.name}, ${groupLabel(channel.group)}, ${formats(n)}`)}" aria-selected="${index === 0}" tabindex="${index === 0 ? '0' : '-1'}"${id ? ` style="--ch:${LOGOS[id].cor}"` : ''}>${mark}<span class="sp-tab-name">${tileName(channel)}</span>${n > 1 ? `<small class="sp-tab-count" aria-hidden="true">${n}</small>` : ''}</button>`;
 }
 
 /* The front of the peel: one photo and the piece's text in HTML (brand, headline, fictitious-brand notice). */
@@ -30,8 +38,7 @@ function mountCampaign(motion) {
   const lab = document.querySelector('#laboratorio .ads-lab, #laboratorio .sp-campaign');
   if (!lab) return;
   lab.className = 'sp-campaign';
-  const groupMarkup = groups.map(group => `<div class="sp-tab-group" role="presentation"><span class="sp-tab-group-label" id="sp-group-${group.id}" aria-hidden="true">${esc(group.label)}</span><div class="sp-tab-group-tabs" role="presentation">${channels.filter(channel => channel.group === group.id).map(channel => tabMarkup(channel, channels.indexOf(channel))).join('')}</div></div>`).join('');
-  lab.innerHTML = `<div class="sp-platforms-wrap"><div class="sp-platforms" role="tablist" aria-label="Canais de anúncio"><span class="sp-tab-marker is-instant" aria-hidden="true"></span>${groupMarkup}</div></div>
+  lab.innerHTML = `<div class="sp-platforms-wrap"><div class="sp-platforms" role="tablist" aria-label="Canais de anúncio"><span class="sp-tab-marker is-instant" aria-hidden="true"></span>${channels.map(tabMarkup).join('')}</div><p class="sp-channel-cap" aria-hidden="true"><b data-cap-name></b><span data-cap-benefit></span></p></div>
     <div class="sp-campaign-art">${channels.map(panelMarkup).join('')}</div>`;
   const layout=document.createElement('div');layout.className='sp-campaign-layout';
   const art=lab.querySelector('.sp-campaign-art');art.before(layout);layout.append(art);
@@ -65,23 +72,11 @@ function mountCampaign(motion) {
     marker.style.transform = `translate(${a.left - b.left + list.scrollLeft}px,${a.top - b.top + list.scrollTop}px)`;
     if (instant) requestAnimationFrame(() => requestAnimationFrame(() => marker.classList.remove('is-instant')));
   }
-  // Keeps the chosen tab visible inside its own row without scrolling the page.
-  function reveal(tab, smooth) {
-    const box = tab.getBoundingClientRect(), row = list.getBoundingClientRect();
-    const pad = 28, left = box.left - row.left + list.scrollLeft, right = left + box.width;
-    let target = null;
-    if (left - pad < list.scrollLeft) target = Math.max(0, left - pad);
-    else if (right + pad > list.scrollLeft + list.clientWidth) target = right + pad - list.clientWidth;
-    if (target !== null) list.scrollTo({ left: target, behavior: smooth ? 'smooth' : 'auto' });
-  }
-  function edges() {
-    const max = list.scrollWidth - list.clientWidth;
-    wrap.dataset.scrollStart = String(list.scrollLeft > 2);
-    wrap.dataset.scrollEnd = String(max - list.scrollLeft > 2);
-  }
-  list.addEventListener('scroll', edges, { passive: true });
-  if ('ResizeObserver' in window) new ResizeObserver(() => { mark(undefined, true); edges(); }).observe(list);
-  document.fonts?.ready.then(() => { mark(undefined, true); edges(); });
+  if ('ResizeObserver' in window) new ResizeObserver(() => mark(undefined, true)).observe(list);
+  document.fonts?.ready.then(() => mark(undefined, true));
+  const capName = wrap.querySelector('[data-cap-name]'), capBenefit = wrap.querySelector('[data-cap-benefit]');
+  // Columns of the tile grid, for the up and down arrows.
+  const columns = () => getComputedStyle(list).gridTemplateColumns.split(' ').filter(Boolean).length || 1;
 
   function settle() {
     transitions.forEach(animation => animation?.cancel());
@@ -119,8 +114,9 @@ function mountCampaign(motion) {
     note.querySelector('[data-note-title]').textContent = channel.placements[0].frase;
     panels[index].setAttribute('aria-describedby','campaign-note');
     mark(tabs[index], !isChange);
-    if (isChange) reveal(tabs[index], motion.available());
-    edges();
+    capName.textContent = channel.name;
+    capBenefit.textContent = channel.benefit;
+    if (isChange && motion.available()) motion.animate(wrap.querySelector('.sp-channel-cap'), [{ opacity: 0, transform: `translateX(${10 * direction}px)` }, { opacity: 1, transform: 'none' }], { duration: 320 });
     if (isChange && motion.available()) {
       lab.dataset.transitioning = 'true';
       panels.forEach((panel, i) => {
@@ -158,13 +154,15 @@ function mountCampaign(motion) {
       else if (event.key === 'ArrowLeft') next = (index + tabs.length - 1) % tabs.length;
       else if (event.key === 'Home') next = 0;
       else if (event.key === 'End') next = tabs.length - 1;
+      else if (event.key === 'ArrowDown') next = Math.min(tabs.length - 1, index + columns());
+      else if (event.key === 'ArrowUp') next = Math.max(0, index - columns());
       else return;
       event.preventDefault();
       select(next, true);
     });
   });
   select(0);
-  requestAnimationFrame(() => { mark(undefined, true); edges(); });
+  requestAnimationFrame(() => mark(undefined, true));
   return lab;
 }
 

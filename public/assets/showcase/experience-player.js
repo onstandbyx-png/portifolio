@@ -3,9 +3,10 @@
  * client's ad in its native placement and plays the journey as a finite
  * storyboard: hook, retention beat, the tap on the CTA and the native
  * conversion screen, stopping on that screen with a replay control. Around the
- * phone only a compact interface: official platform mark and name, format
- * chips, the ad label, the client chip ("marca fictícia"), a three-step journey
- * bar synced to the storyboard and one numbered point on the mock.
+ * phone only a compact interface: official platform mark and name, the formats
+ * as one segmented control, the client chip ("marca fictícia") with the ad
+ * label, a three-step journey bar over the phone (beside it on wide screens)
+ * synced to the storyboard and one numbered point on the mock.
  * Switching channels while the peel is open keeps it open: the old placement
  * leaves to the side (30px, 300ms), the new one enters with a spring (42px,
  * 620ms) and the journey rises in sequence. Without motion (reduced motion,
@@ -13,7 +14,7 @@
  * selectable, and the header button shows the next frame.
  */
 import { createMotion, clamp } from '../sections/motion.js';
-import { channels, channelById, renderMock, marca, clienteChip, CLIENTES } from './campaign-channels.js';
+import { channels, channelById, renderMock, marca, CLIENTES } from './campaign-channels.js';
 import { logoSvg, CHANNEL_LOGO, LOGOS } from './channel-logos.js';
 
 const escape = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
@@ -28,8 +29,6 @@ const icon = name => `<svg viewBox="0 0 24 24" aria-hidden="true" focusable="fal
 const AI_IMAGES = /campanha-(crencas|esportes|negocios|nerd)/;
 const FINE = 'Exemplo ilustrativo, marca fictícia. Interface aproximada.';
 
-/* Edge fades of the one-line format row: none at an end the row has reached. */
-const edges = row => { row.classList.toggle('is-start', row.scrollLeft <= 4); row.classList.toggle('is-end', row.scrollLeft + row.clientWidth >= row.scrollWidth - 4); };
 export function mountCampaignExperience(lab, underlay) {
   if (!lab || !underlay || underlay.querySelector('.cx-player')) return null;
   const motion = createMotion();
@@ -39,8 +38,8 @@ export function mountCampaignExperience(lab, underlay) {
   player.innerHTML = [
     '<header class="cx-head"><p class="cx-brand" data-cx-brand></p>',
     `<button type="button" class="cx-play" data-cx-play>${icon('play')}<span data-cx-play-label>Reproduzir</span></button></header>`,
-    '<div class="cx-chips"><div class="cx-placements" data-cx-placements></div><span class="cx-label" data-cx-label></span></div>',
-    '<p class="cx-client" data-cx-client></p>',
+    '<div class="cx-placements" data-cx-placements></div>',
+    '<p class="cx-meta"><span class="cx-label" data-cx-label></span><span class="cx-client" data-cx-client></span></p>',
     '<div class="cx-body" data-cx-body></div>',
     '<p class="sr-only" role="status" aria-live="polite" data-cx-status></p>',
   ].join('');
@@ -208,6 +207,8 @@ export function mountCampaignExperience(lab, underlay) {
       button.tabIndex = k === step ? 0 : -1;
       button.setAttribute('aria-label', `Passo ${k + 1}, ${placement().passos[k].fase.toLowerCase()}: ${placement().passos[k].rotulo}${state === 'done' ? ', concluído' : ''}`);
     });
+    const now = body.querySelector('[data-cx-now]');
+    if (now && stepChanged) now.textContent = placement().passos[step].rotulo;
     const desc = body.querySelector('[data-cx-desc]');
     if (desc) desc.textContent = item.desc;
     if (stepChanged || fin) status.textContent = `Passo ${step + 1} de 3, ${placement().passos[step].fase.toLowerCase()}. ${item.desc}`;
@@ -251,32 +252,44 @@ export function mountCampaignExperience(lab, underlay) {
     const ch = channel(), pl = placement();
     const aria = `${ch.name}, ${pl.label}. Exemplo de ${CLIENTES[pl.cliente].tipo}, marca fictícia.`;
     const steps = pl.passos.map((item, k) => `<li data-state="${k ? 'next' : 'on'}"><button type="button" data-cx-step="${k}"><span class="cx-step-n" aria-hidden="true">${k + 1}</span><span class="cx-step-t"><b>${escape(item.fase)}</b><small>${escape(item.rotulo)}</small></span><i class="cx-rail" aria-hidden="true"><i data-cx-rail></i></i></button></li>`).join('');
-    return `<div class="cx-stage-col"><div class="cx-stage" data-cx-stage data-frames="${pl.quadros.length}" role="group" tabindex="0" aria-label="${escape(aria)}" aria-describedby="cx-desc cx-keys">${renderMock(pl)}<span class="cx-dot" data-cx-dot aria-hidden="true" hidden>1</span><span class="cx-tap" data-cx-tap aria-hidden="true" hidden></span></div><p class="sr-only" id="cx-desc" data-cx-desc></p><span class="sr-only" id="cx-keys">Use as setas para trocar de quadro.</span></div>
-      <div class="cx-side"><ol class="cx-journey" aria-label="Jornada do anúncio em 3 passos">${steps}</ol></div>`;
+    return `<div class="cx-steps"><ol class="cx-journey" aria-label="Jornada do anúncio em 3 passos">${steps}</ol><p class="cx-now" aria-hidden="true" data-cx-now></p></div><div class="cx-stage-col"><div class="cx-stage" data-cx-stage data-frames="${pl.quadros.length}" role="group" tabindex="0" aria-label="${escape(aria)}" aria-describedby="cx-desc cx-keys">${renderMock(pl)}<span class="cx-dot" data-cx-dot aria-hidden="true" hidden>1</span><span class="cx-tap" data-cx-tap aria-hidden="true" hidden></span></div><p class="sr-only" id="cx-desc" data-cx-desc></p><span class="sr-only" id="cx-keys">Use as setas para trocar de quadro.</span></div>
+      <div class="cx-side"></div>`;
   }
   function header() {
     const ch = channel(), pl = placement(), id = CHANNEL_LOGO[ch.id];
     brand.innerHTML = (id ? logoSvg(id, { altura: 22, classe: 'cx-logo' }) : '') + `<b>${escape(ch.name)}</b>`;
-    placements.innerHTML = ch.placements.length > 1
-      ? `<span class="sr-only" id="cx-format-label">Formato do anúncio</span>` + ch.placements.map((item, i) => `<button type="button" class="cx-placement" aria-pressed="${i === placementIndex}" data-cx-placement="${i}" aria-describedby="cx-format-label">${escape(item.label)}</button>`).join('')
-      : `<span class="cx-placement cx-placement--static">${escape(pl.label)}</span>`;
+    /* Formats as one segmented control (lab: smiile-segmented-control): equal row,
+       a thumb that slides to the chosen format; rebuilt only when the channel changes. */
+    if (placements.dataset.channel !== ch.id) {
+      placements.dataset.channel = ch.id;
+      placements.innerHTML = '<span class="cx-thumb is-instant" aria-hidden="true"></span>' + (ch.placements.length > 1
+        ? ch.placements.map((item, i) => `<button type="button" class="cx-placement" aria-pressed="${i === placementIndex}" data-cx-placement="${i}">${escape(item.label)}</button>`).join('')
+        : `<span class="cx-placement cx-placement--static" aria-current="true"><span class="sr-only">Formato: </span>${escape(pl.label)}</span>`);
+    } else placements.querySelectorAll('[data-cx-placement]').forEach((item, i) => item.setAttribute('aria-pressed', String(i === placementIndex)));
     placements.setAttribute('role', ch.placements.length > 1 ? 'group' : 'presentation');
     if (ch.placements.length > 1) placements.setAttribute('aria-label', 'Formato do anúncio'); else placements.removeAttribute('aria-label');
+    requestAnimationFrame(thumb);
     label.textContent = pl.selo;
     label.dataset.kind = /Orgânico|não é anúncio/.test(pl.selo) ? 'organic' : 'ad';
-    client.innerHTML = `${marca(pl.cliente, 'circulo', 'cx-client-mark')}<span>${escape(clienteChip(pl.cliente)).replace('marca fictícia', '<b>marca fictícia</b>')}</span>`;
+    // Short on a phone: the type of client and "marca fictícia" (the note under the phone says it is an illustrative example).
+    const tipo = CLIENTES[pl.cliente].tipo;
+    client.innerHTML = `${marca(pl.cliente, 'circulo', 'cx-client-mark')}<span>${escape(tipo.charAt(0).toUpperCase() + tipo.slice(1))}, <b>marca fictícia</b></span>`;
     const note = noteSlot?.querySelector('[data-note-title]');
     if (note) note.textContent = pl.frase;
     const fine = noteSlot?.querySelector('[data-note-fine]');
     if (fine) fine.textContent = FINE + (AI_IMAGES.test(renderMock(pl)) ? ' Imagens geradas por IA.' : '');
     player.dataset.platform = ch.id; player.dataset.placement = pl.id;
     player.style.setProperty('--ch', id ? LOGOS[id].cor : '#1e4530');
-    /* One line of formats: keep the active one in view and drop the edge fade at the end of the row. */
-    const row = placements.parentElement, on = placements.querySelector('[aria-pressed="true"]');
-    if (row && on) row.scrollLeft = Math.max(0, on.offsetLeft - row.offsetLeft - 24);
-    if (row && !row.dataset.fade) { row.dataset.fade = '1'; row.addEventListener('scroll', () => edges(row), { passive: true }); }
-    if (row) requestAnimationFrame(() => edges(row));
     lab.dataset.placement = String(placementIndex);
+  }
+  function thumb() {
+    const knob = placements.querySelector('.cx-thumb'), on = placements.querySelector('[aria-pressed="true"], [aria-current]');
+    if (!knob || !on || !on.offsetWidth) return;
+    knob.style.width = on.offsetWidth + 'px';
+    knob.style.transform = `translateX(${on.offsetLeft}px)`;
+    // Narrow screens: a format that does not fit stays reachable inside the row.
+    if (on.offsetLeft < placements.scrollLeft || on.offsetLeft + on.offsetWidth > placements.scrollLeft + placements.clientWidth) placements.scrollLeft = on.offsetLeft - 8;
+    if (knob.classList.contains('is-instant')) requestAnimationFrame(() => requestAnimationFrame(() => knob.classList.remove('is-instant')));
   }
   /* Replaces the placement. With motion and an open peel, a ghost of the old
      placement leaves to the side while the new one springs in from the other. */
@@ -307,7 +320,7 @@ export function mountCampaignExperience(lab, underlay) {
       if (out) { animations.push(out); out.finished.catch(() => {}).finally(() => { old.remove(); if (ghost === old) ghost = null; }); } else { old.remove(); ghost = null; }
       const entry = motion.spring(body.querySelector('.cx-stage'), p => ({ opacity: clamp(p * 1.8), transform: `translateX(${42 * direction * (1 - p)}px) scale(${.96 + .04 * p})` }), { duration: 620 });
       if (entry) animations.push(entry);
-      [...body.querySelectorAll('.cx-journey > li, .cx-side .sp-campaign-note > *')].forEach((node, j) => {
+      [...body.querySelectorAll('.cx-journey > li, .cx-now, .cx-side .sp-campaign-note > *')].forEach((node, j) => {
         const rise = motion.spring(node, p => ({ opacity: clamp(p), transform: `translateY(${16 * (1 - p)}px)` }), { delay: 80 + j * 45 });
         if (rise) animations.push(rise);
       });
@@ -387,7 +400,7 @@ export function mountCampaignExperience(lab, underlay) {
   // A journey that has not started (and was not paused by the visitor) starts when it comes into view.
   if ('IntersectionObserver' in window) new IntersectionObserver(([entry]) => { visible = entry.isIntersecting; if (!visible) stop(); else if (!playing && !held && elapsed === 0 && open()) start(true); }, { threshold: .02 }).observe(player);
   else visible = true;
-  if ('ResizeObserver' in window) new ResizeObserver(() => { if (frame >= 0) { positionDot(false); if (frames()[frame]?.toque && !body.querySelector('[data-cx-tap]')?.hidden) showTap(); } }).observe(body);
+  if ('ResizeObserver' in window) new ResizeObserver(() => { const knob = placements.querySelector('.cx-thumb'); knob?.classList.add('is-instant'); thumb(); if (frame >= 0) { positionDot(false); if (frames()[frame]?.toque && !body.querySelector('[data-cx-tap]')?.hidden) showTap(); } }).observe(body);
   document.addEventListener('visibilitychange', () => { if (document.hidden) stop(); });
   reduce.addEventListener('change', () => { stop(); cancelAnimations(); paint({ instant: true, force: true }); });
   motion.onStop(() => { stop(); ghost?.remove(); ghost = null; });
