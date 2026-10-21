@@ -372,12 +372,13 @@ const mocks = {
 
   /* 2.14 ChatGPT: the travel agency card below an answer, separated from it, and the in-app browser. */
   gptAnswer: () => screen('gpt', scene('chat', 'base', 'claro', `<div class="cm-gpt-top"><span class="cm-glass">${I('menu2')}</span><b>ChatGPT</b><span class="cm-glass cm-glass--pill">${I('edit')}${I('dots')}</span></div>
-    <div class="cm-gpt-flow"><p class="cm-gpt-user" data-hs="1">Quero ver uma festa tradicional no interior em junho. Por onde começo?</p>
-      <div class="cm-gpt-answer"><p>Três passos ajudam a escolher:</p><ol><li><b>Escolha a festa</b> pelo que quer ver: procissão, música ou cavalhadas.</li><li><b>Reserve cedo</b> a hospedagem perto do centro histórico.</li><li><b>Vá com guia</b> para entender o calendário de cada dia.</li></ol></div>
-      <div class="cm-gpt-actions">${I('copy')}${I('speaker')}${I('thumb')}${I('thumb', 'cm-i--flip')}${I('regen')}${I('share')}</div>
-      <hr><p class="cm-gpt-lead">Para viajar com guia e grupo pequeno:</p>
-      <div class="cm-gpt-ad" data-tap="cta" data-hs="2 3" data-hs-at="tl">${pic('crencas', { cls: 'cm-gpt-ad-img', pos: '50% 8%' })}<span class="cm-gpt-ad-body"><span class="cm-gpt-ad-top">${marca('turismo', 'fav')}<span>Bandeirola Viagens</span><small class="cm-gpt-chip">Anúncio</small>${I('dots')}</span><b>Festas tradicionais em grupo pequeno</b><small>Roteiros com guia da cidade e hotel no centro.</small></span></div>
-      <p class="cm-gpt-note">Os anúncios não influenciam as respostas do ChatGPT.</p></div>
+    <div class="cm-gpt-flow"><p class="cm-gpt-user" data-hs="1" data-hs-at="tl">Quero ver uma festa tradicional no interior em junho. Por onde começo?</p>
+      <span class="cm-gpt-think" aria-hidden="true"><i></i></span>
+      <div class="cm-gpt-answer"><p>Se você me disser:</p><ul><li>quantos <b>dias</b> você tem,</li><li>de qual <b>cidade</b> sai,</li><li>se prefere <b>procissão, música ou cavalhadas</b>,</li><li>e se viaja <b>com crianças</b>,</li></ul><p>eu indico as 3 cidades que mais combinam com a sua viagem.</p></div>
+      <div class="cm-gpt-actions">${I('copy')}${I('thumb', 'cm-i--flip')}${I('share')}${I('regen')}${I('dots')}<span class="cm-gpt-src"><i>R</i><i>G</i><i>T</i>Fontes</span></div>
+      <hr><p class="cm-gpt-lead">Para a sua busca por festas de junho no interior, aqui está uma opção para considerar.</p>
+      <div class="cm-gpt-ad" data-tap="cta" data-hs="2 3" data-hs-at="tl">${pic('crencas', { cls: 'cm-gpt-ad-img', pos: '50% 8%' })}<span class="cm-gpt-ad-body"><span class="cm-gpt-ad-top">${marca('turismo', 'fav')}<span>Bandeirola Viagens</span><small class="cm-gpt-chip">Anúncio</small>${I('dots')}</span><b>Festas de junho em grupo pequeno</b><small>Roteiros com guia da cidade e hotel no centro histórico. Saiba mais.</small></span></div>
+      <span class="cm-gpt-down" aria-hidden="true">${I('up', 'cm-i--flip')}</span></div>
     <div class="cm-gpt-input">${I('plus')}<span>Pergunte ao ChatGPT</span>${I('mic')}<i>${I('wave')}</i></div>`) +
     scene('page', 'sheet', 'claro', `${browserBar('Bandeirola Viagens', 'bandeirola.exemplo', 'share')}${landing({ key: 'turismo', hero: `<span class="cm-lp-hero">${pic('crencas', { pos: '50% 14%' })}</span>`, title: 'Monte seu roteiro', body: chips('Quantos dias?', ['3', '5'], 0) + chips('O que você quer ver?', ['Festas', 'Cidades históricas'], 0), button: 'Ver roteiro sugerido', confirm: `<div class="cm-done cm-done--list" data-hs="3"><b>Roteiro sugerido: 3 dias em Pirenópolis</b><ol><li><b>Dia 1</b> Chegada e centro histórico</li><li><b>Dia 2</b> Mascarados nas ruas</li><li><b>Dia 3</b> Cavalhadas</li></ol>${btn('Falar com um consultor', '', '')}</div>` })}`)),
 
@@ -645,11 +646,12 @@ export const channels = [
     art: art('turismo', 'crencas', '50% 22%', 'Festas tradicionais em grupo pequeno', 'Peça da Bandeirola Viagens, agência de viagens fictícia: rua de pedra com bandeirolas e igreja ao entardecer.'),
     placements: [
       { id: 'answer', label: 'Resposta', mock: 'gptAnswer', cliente: 'turismo', selo: 'Anúncio', frase: 'Uma agência aparece depois da resposta, separada dela.',
-        passos: [P('Atenção', 'Pergunta de quem planeja a viagem', [0]), P('Retenção', 'Cartão separado da resposta', [1]), P('Conversão', 'Roteiro montado em dois toques', [2, 3, 4])],
+        passos: [P('Atenção', 'Pergunta de quem planeja a viagem', [0, 1]), P('Retenção', 'Opção logo abaixo da resposta', [2]), P('Conversão', 'Roteiro montado em dois toques', [3, 4, 5])],
         quadros: [
-          { ms: 1500, cena: 'chat', desc: 'Conversa no ChatGPT: quero ver uma festa tradicional no interior em junho. A resposta lista três passos.' },
-          { ms: 1800, cena: 'chat', estado: 's2', desc: 'Abaixo da resposta, separado por um divisor, o cartão com a etiqueta Anúncio: Bandeirola Viagens.' },
-          { ms: 1000, cena: 'chat', estado: 's2', toque: 'cta', desc: 'Toque no cartão do anúncio.' },
+          { ms: 1100, cena: 'chat', desc: 'Conversa no ChatGPT: quero ver uma festa tradicional no interior em junho. O ChatGPT começa a responder.' },
+          { ms: 1700, cena: 'chat', estado: 's1', desc: 'A resposta pede dias, cidade de saída, tipo de festa e se a viagem é com crianças. Abaixo, ações e o chip Fontes.' },
+          { ms: 1900, cena: 'chat', estado: 's1 s2', desc: 'Depois de um divisor, uma frase cinza apresenta a opção e o cartão com a etiqueta Anúncio: Bandeirola Viagens, Festas de junho em grupo pequeno.' },
+          { ms: 1000, cena: 'chat', estado: 's1 s2', toque: 'cta', desc: 'Toque no cartão do anúncio.' },
           { ms: 1700, cena: 'page', toque: 'go', desc: 'O navegador do ChatGPT abre Monte seu roteiro: 3 dias, festas. Toque em Ver roteiro sugerido.' },
           { ms: 2000, cena: 'page', estado: 'done', desc: 'Roteiro sugerido de 3 dias em Pirenópolis e o botão Falar com um consultor.' },
         ] },
