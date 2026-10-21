@@ -11,18 +11,22 @@
 #laboratorio .cx-play{display:inline-flex;flex:none;align-items:center;gap:7px;min-width:44px;min-height:44px;padding:0 15px 0 12px;border:1px solid #bccdb9;border-radius:999px;background:#f9fbf6;color:#234530;font:600 13px/1 var(--sans,Inter,Arial,sans-serif);cursor:pointer}
 #laboratorio .cx-play svg{width:17px;height:17px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 #laboratorio .cx-play[aria-pressed="false"] svg path[d^="M8 5.5v13l"],#laboratorio .cx-play:not([aria-pressed]) svg path[d^="M8 5.5v13l"]{fill:currentColor}
-#laboratorio .cx-chips{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:10px 0 8px}
-#laboratorio .cx-placements{display:flex;flex-wrap:wrap;gap:6px;min-width:0}
-#laboratorio .cx-placement{display:inline-flex;align-items:center;min-height:44px;padding:0 14px;border:1px solid #b9cab8;border-radius:999px;background:transparent;color:#3f5c46;font:550 13px/1.2 var(--sans,Inter,Arial,sans-serif);cursor:pointer}
+#laboratorio .cx-chips{display:flex;flex-wrap:nowrap;align-items:center;gap:8px;margin:10px -4px 8px;padding:4px;overflow-x:auto;overscroll-behavior-x:contain;scroll-behavior:smooth;scrollbar-width:none;-webkit-mask-image:linear-gradient(90deg,#000 calc(100% - 28px),transparent);mask-image:linear-gradient(90deg,#000 calc(100% - 28px),transparent)}
+#laboratorio .cx-chips::-webkit-scrollbar{display:none}
+#laboratorio .cx-chips:not(.is-start){-webkit-mask-image:linear-gradient(90deg,transparent,#000 28px,#000 calc(100% - 28px),transparent);mask-image:linear-gradient(90deg,transparent,#000 28px,#000 calc(100% - 28px),transparent)}
+#laboratorio .cx-chips.is-end:not(.is-start){-webkit-mask-image:linear-gradient(90deg,transparent,#000 28px);mask-image:linear-gradient(90deg,transparent,#000 28px)}
+#laboratorio .cx-chips.is-start.is-end{-webkit-mask-image:none;mask-image:none}
+#laboratorio .cx-placements{display:flex;flex:none;flex-wrap:nowrap;gap:6px}
+#laboratorio .cx-placement{display:inline-flex;flex:none;align-items:center;min-height:44px;padding:0 14px;white-space:nowrap;border:1px solid #b9cab8;border-radius:999px;background:transparent;color:#3f5c46;font:550 13px/1.2 var(--sans,Inter,Arial,sans-serif);cursor:pointer}
 #laboratorio .cx-placement[aria-pressed="true"]{border-color:#1e4530;background:#1e4530;color:#f8fbf7;box-shadow:0 0 0 2px #fff,0 0 0 4px var(--ch,#1e4530)}
 #laboratorio .cx-placement{transition:background .2s,color .2s,box-shadow .25s,transform .2s}
 #laboratorio .cx-placement:hover:not([aria-pressed="true"]){border-color:var(--ch,#1e4530);transform:translateY(-1px)}
 @media (prefers-reduced-motion:reduce){#laboratorio .cx-placement{transition:none}#laboratorio .cx-placement:hover{transform:none}}
 #laboratorio .cx-placement--static{min-height:32px;border-color:#1e4530;background:#1e4530;color:#f8fbf7;cursor:default}
-#laboratorio .cx-label{display:inline-flex;align-items:center;gap:6px;min-height:32px;margin-left:auto;padding:0 12px;border-radius:999px;background:#fff;color:#2b3e31;font:600 12.5px/1.2 var(--sans,Inter,Arial,sans-serif);box-shadow:inset 0 0 0 1px #c9d4c4}
+#laboratorio .cx-label{display:inline-flex;flex:none;align-items:center;gap:6px;min-height:32px;margin-left:2px;padding:0 12px;white-space:nowrap;border-radius:999px;background:#fff;color:#2b3e31;font:600 12.5px/1.2 var(--sans,Inter,Arial,sans-serif);box-shadow:inset 0 0 0 1px #c9d4c4}
 #laboratorio .cx-label::before{content:"";width:7px;height:7px;border-radius:50%;background:#b8660f}
 #laboratorio .cx-label[data-kind="organic"]::before{background:#3f7d4f}
-#laboratorio .cx-client{display:inline-flex;align-items:center;gap:8px;max-width:100%;margin:0 0 14px;padding:4px 13px 4px 5px;border-radius:999px;background:#f4f6ef;color:#3d4639;font:500 13px/1.3 var(--sans,Inter,Arial,sans-serif);box-shadow:inset 0 0 0 1px #c9d4c4}
+#laboratorio .cx-client{display:inline-flex;align-items:center;gap:8px;max-width:100%;white-space:nowrap;margin:0 0 14px;padding:4px 13px 4px 5px;border-radius:999px;background:#f4f6ef;color:#3d4639;font:500 13px/1.3 var(--sans,Inter,Arial,sans-serif);box-shadow:inset 0 0 0 1px #c9d4c4}
 #laboratorio .cx-client b{font-weight:650;color:#26372b}
 #laboratorio .cx-client .cm-mark{display:grid;flex:none;place-items:center;width:22px;height:22px;overflow:hidden;border-radius:50%;background:var(--c)}
 #laboratorio .cx-client .cm-mark svg{width:72%;height:72%}

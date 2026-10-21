@@ -985,3 +985,10 @@ body.is-paused #laboratorio .cm-screen[data-state~="typing"] .cm-typed>span{max-
 #laboratorio .cm-wa-order b{font-size:calc(var(--u)*14)}
 #laboratorio .cm-wa-order>span{font-size:calc(var(--u)*13);color:#3b4a54}
 #laboratorio .cm-wa-order .cm-wa-order-btn{display:grid;place-items:center;margin:calc(var(--u)*6) calc(var(--u)*-9) calc(var(--u)*-6);padding-top:calc(var(--u)*8);border-top:1px solid #e9edef;color:#008069;font-weight:600}
+
+/* Facebook post inside the app chrome (22/10/2026): square photo, link bar right under it, then the actions. */
+#laboratorio .cm-fbpost-img{display:block;width:100%;aspect-ratio:1 / 1;overflow:hidden}
+#laboratorio .cm-fbpost-img img{width:100%;height:100%;object-fit:cover;display:block}
+#laboratorio .cm-fbpost .cm-fbpost-cta,#laboratorio .cm-fb-post .cm-fbpost-cta{margin:0;padding:calc(var(--u)*10) calc(var(--u)*12)}
+#laboratorio .cm-fbpost-cta small{font-size:calc(var(--u)*11);letter-spacing:.02em;color:#65676b}
+#laboratorio .cm-fbpost-cta b{font-size:calc(var(--u)*14);font-weight:600;color:#050505}

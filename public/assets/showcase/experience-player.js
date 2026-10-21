@@ -28,6 +28,8 @@ const icon = name => `<svg viewBox="0 0 24 24" aria-hidden="true" focusable="fal
 const AI_IMAGES = /campanha-(crencas|esportes|negocios|nerd)/;
 const FINE = 'Exemplo ilustrativo, marca fictícia. Interface aproximada.';
 
+/* Edge fades of the one-line format row: none at an end the row has reached. */
+const edges = row => { row.classList.toggle('is-start', row.scrollLeft <= 4); row.classList.toggle('is-end', row.scrollLeft + row.clientWidth >= row.scrollWidth - 4); };
 export function mountCampaignExperience(lab, underlay) {
   if (!lab || !underlay || underlay.querySelector('.cx-player')) return null;
   const motion = createMotion();
@@ -269,6 +271,11 @@ export function mountCampaignExperience(lab, underlay) {
     if (fine) fine.textContent = FINE + (AI_IMAGES.test(renderMock(pl)) ? ' Imagens geradas por IA.' : '');
     player.dataset.platform = ch.id; player.dataset.placement = pl.id;
     player.style.setProperty('--ch', id ? LOGOS[id].cor : '#1e4530');
+    /* One line of formats: keep the active one in view and drop the edge fade at the end of the row. */
+    const row = placements.parentElement, on = placements.querySelector('[aria-pressed="true"]');
+    if (row && on) row.scrollLeft = Math.max(0, on.offsetLeft - row.offsetLeft - 24);
+    if (row && !row.dataset.fade) { row.dataset.fade = '1'; row.addEventListener('scroll', () => edges(row), { passive: true }); }
+    if (row) requestAnimationFrame(() => edges(row));
     lab.dataset.placement = String(placementIndex);
   }
   /* Replaces the placement. With motion and an open peel, a ghost of the old

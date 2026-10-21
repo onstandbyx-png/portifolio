@@ -234,12 +234,12 @@ const mocks = {
 
   /* 2.3 Facebook feed: lead ad carousel of a developer and the Meta instant form. */
   /* 3.2 Facebook feed post: one photo of a development, the link bar that holds the tap, then the visit page. */
-  fbpost: () => screen('fbpost', scene('post', 'base', 'claro', `<article class="cm-fbpost">
-      <header class="cm-fbpost-head">${marca('incorporadora')}<span><b>Morada Falésia</b><small>Patrocinado · ${I('globe', 'cm-i--inline')}</small></span>${I('dots')}${I('close')}</header>
-      <p class="cm-fbpost-text">Casas na falésia com a sala voltada para o mar. Agende uma visita ao decorado.</p>
-      ${pic('salaMar45', { alt: 'Sala de estar com janela para o mar, em luz de fim de tarde.', cls: 'cm-fbpost-photo' })}
-      <div class="cm-fbpost-cta" data-hs="3"><span><b>moradafalesia.exemplo</b><small>Visita ao decorado</small></span><span class="cm-fbpost-btn" data-tap="cta">Agendar agora</span></div>
-    </article>`) + scene('page', 'sheet', 'claro', `${browserBar('Visita ao decorado', 'moradafalesia.exemplo')}${landing({ key: 'incorporadora', title: 'Visita ao decorado', sub: 'Escolha o dia da visita.', body: chips('Quando prefere visitar?', ['Durante a semana', 'Fim de semana'], 1), button: 'Agendar visita', confirm: done('Visita agendada', 'Você recebe a confirmação por e-mail.') })}`)),
+  fbpost: () => screen('fbpost', scene('post', 'base', 'claro', `<div class="cm-safe"><div class="cm-fb-bar"><b class="cm-fb-name">Facebook</b><span><i>${I('plus')}</i><i>${I('search')}</i><i>${I('comment')}</i></span></div>
+      <article class="cm-fb-post"><header class="cm-fb-head">${marca('incorporadora')}<span><b>Morada Falésia</b><small>Patrocinado · ${I('globe', 'cm-i--inline')}</small></span>${I('dots')}${I('close')}</header>
+      <p class="cm-fb-text">Casas na falésia com a sala voltada para o mar. Agende uma visita ao decorado.</p>
+      <span class="cm-fbpost-img" data-hs="1">${pic('salaMar45', { alt: 'Sala de estar com janela para o mar, em luz de fim de tarde.', pos: '50% 60%' })}</span>
+      <div class="cm-fbpost-cta" data-hs="3"><span><small>MORADAFALESIA.EXEMPLO</small><b>Visita ao decorado</b></span><span class="cm-fbpost-btn" data-tap="cta">Agendar agora</span></div>
+      <div class="cm-fb-actions" data-hs="2"><span>${I('thumb')}Curtir</span><span>${I('comment')}Comentar</span><span>${I('forward')}Compartilhar</span></div></article><div class="cm-fb-post cm-fb-next">${skel(4)}</div></div>${tabbar(TABS.facebook)}`) + scene('page', 'sheet', 'claro', `${browserBar('Visita ao decorado', 'moradafalesia.exemplo')}${landing({ key: 'incorporadora', title: 'Visita ao decorado', sub: 'Escolha o dia da visita.', body: chips('Quando prefere visitar?', ['Durante a semana', 'Fim de semana'], 1), button: 'Agendar visita', confirm: done('Visita agendada', 'Você recebe a confirmação por e-mail.') })}`)),
 
   /* 3.3 Facebook video: a restaurant video in portrait with the reserve button that lights up. */
   fbvid: () => screen('fbvid', scene('video', 'base', 'escuro', `<div class="cm-fbv">
