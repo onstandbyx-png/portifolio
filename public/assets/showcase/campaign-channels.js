@@ -139,6 +139,7 @@ const PATHS = {
   user: 'M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM4.5 20.5c.8-4 3.8-6 7.5-6s6.7 2 7.5 6',
   location: 'M12 21.5s6.5-6 6.5-11.5a6.5 6.5 0 1 0-13 0c0 5.5 6.5 11.5 6.5 11.5zM12 12.4a2.4 2.4 0 1 0 0-4.8 2.4 2.4 0 0 0 0 4.8z',
   mail: 'M3.5 6h17v12h-17zM3.5 6.5l8.5 6.5 8.5-6.5',
+  down: 'M12 4v11.5M6.5 10.5 12 16l5.5-5.5M5 20h14',
 };
 const I = (name, cls = '') => `<svg class="cm-i cm-i--${name}${cls ? ' ' + cls : ''}" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="${PATHS[name]}"/></svg>`;
 /* Every picture is lazy and sized; alt text only on the first view of a scene (the stage carries the description). */
@@ -150,7 +151,6 @@ const scene = (id, kind, tema, html, cls = '', gestos = '') => `<div class="cm-s
 const screen = (key, html) => `<div class="cm-screen cm-${key}" data-frame="0">${html}</div>`;
 const skel = (rows, cls = '') => `<span class="cm-skel${cls ? ' ' + cls : ''}" aria-hidden="true">${Array.from({ length: rows }, (_, i) => `<i style="--w:${[92, 74, 84, 58, 88][i % 5]}%"></i>`).join('')}</span>`;
 /* Page parts shared by the advertisers' landing pages. */
-const chips = (label, options, on, cls = '') => `<div class="cm-field${cls ? ' ' + cls : ''}"><small>${esc(label)}</small><span class="cm-chips">${options.map((o, i) => `<span class="cm-chip${i === on ? ' is-on' : ''}">${i === on ? I('check') : ''}${esc(o)}</span>`).join('')}</span></div>`;
 const input = (label, value) => `<div class="cm-input"><small>${esc(label)}</small><span>${esc(value)}</span></div>`;
 const btn = (text, tap, hs = '3', cls = '') => `<span class="cm-btn${cls ? ' ' + cls : ''}"${tap ? ` data-tap="${tap}"` : ''}${hs ? ` data-hs="${hs}"` : ''}>${esc(text)}</span>`;
 const done = (title, text, extra = '') => `<div class="cm-done" data-hs="3"><span class="cm-done-check">${I('check')}</span><b>${esc(title)}</b><p>${esc(text)}</p>${extra}</div>`;
@@ -171,8 +171,6 @@ const TABS = {
 const igHead = key => `<header class="cm-ig-head">${marca(key)}<span><b>${CLIENTES[key].arroba}</b><small>Patrocinado</small></span>${I('dots')}</header>`;
 const igBar = `<div class="cm-ig-bar">${I('plus')}<b class="cm-ig-name">Instagram</b>${I('heart')}</div>`;
 const igActions = (middle = '') => `<div class="cm-ig-actions">${I('heart')}${I('comment')}${I('repost')}${I('send')}<span class="cm-ig-mid">${middle}</span>${I('bookmark')}</div>`;
-/* A landing page of the advertiser: hero, title, choices and one primary button. */
-const landing = ({ key, hero = '', title, sub = '', body = '', button, tap = 'go', confirm }) => `<div class="cm-lp" style="--brand:${CLIENTES[key].cor}">${hero}<div class="cm-lp-body"><span class="cm-lp-brand">${marca(key)}<b>${esc(CLIENTES[key].marca)}</b></span><b class="cm-lp-title">${esc(title)}</b>${sub ? `<p class="cm-lp-sub">${esc(sub)}</p>` : ''}${body}${btn(button, tap)}</div>${confirm || ''}</div>`;
 
 /* Each client's own site, with the steps of its real flow (campaign-sites.js). */
 const SITES = makeSites({ I, pic, marca, esc, CLIENTES });
@@ -270,11 +268,7 @@ const mocks = {
       <figure class="cm-fb-card"><span class="cm-fb-img cm-fb-img--plan">${planta()}</span><figcaption><span><b>Plantas de 3 e 4 quartos</b><small>Visita ao decorado</small></span><span class="cm-fb-btn" data-tap="cta" data-hs="3">Agendar agora</span></figcaption></figure>
     </div></div>
     <div class="cm-fb-actions"><span>${I('thumb')}Curtir</span><span>${I('comment')}Comentar</span><span>${I('forward')}Compartilhar</span></div></article><div class="cm-fb-post cm-fb-next">${skel(4)}</div></div>${tabbar(TABS.facebook)}`) +
-    scene('form', 'sheet', 'escuro', `<div class="cm-mf"><div class="cm-mf-cover">${pic('coast', { pos: '40% 60%' })}<span class="cm-mf-x">${I('close')}</span></div><div class="cm-mf-body">${marca('incorporadora')}<small>Morada Falésia</small><b class="cm-mf-title">Visita ao decorado</b>
-      <p class="cm-mf-section">Seus dados</p>${input('Nome completo', 'Seu nome')}${input('E-mail', 'voce@exemplo.com')}${input('Telefone', '(11) 90000-0000')}${chips('Quando prefere visitar?', ['Durante a semana', 'Fim de semana'], 1)}
-      <p class="cm-mf-legal">Ao tocar em Enviar, você envia suas informações para Morada Falésia, que as usa conforme a própria política de privacidade.</p></div>
-      <div class="cm-mf-foot">${btn('Enviar', 'send')}</div>
-      ${done('Obrigado!', 'Recebemos seu pedido de visita. Um corretor entra em contato para combinar o horário.', btn('Ver site', '', '', 'cm-btn--ghost') + '<small class="cm-legal">Imagens ilustrativas. CRECI e registro de incorporação aparecem aqui.</small>')}</div>`, '', 'claro')),
+    scene('form', 'sheet', 'escuro', SITES.metaForm(), 'cm-scene--part', 'claro')),
 
   /* 2.4 TikTok In-Feed: a tech store, native text, CTA that takes the brand colour, TikTok browser. */
   ttFeed: () => screen('tt', scene('video', 'base', 'escuro', `<div class="cm-shots">
@@ -286,7 +280,7 @@ const mocks = {
     <div class="cm-vmeta cm-vmeta--tt"><b>teclaria</b><p>Um notebook para os dois turnos.</p><small class="cm-pill">Patrocinado</small><small class="cm-audio">${I('music')}Música promocional</small></div>
     <div class="cm-vcta cm-vcta--tt" data-tap="cta" data-hs="3"><b>Comprar agora</b>${I('chevron')}</div>
     <div class="cm-vprogress cm-vprogress--tt"><i data-cx-progress></i></div>${tabbar(TABS.tiktok, 'cm-tabbar--dark')}`) +
-    scene('page', 'sheet', 'claro', `${browserBar('teclaria', 'teclaria.exemplo')}${landing({ key: 'varejo', hero: `<span class="cm-lp-hero cm-lp-hero--sq">${pic('nerd', { pos: '50% 30%' })}</span>`, title: 'Teclaria Pro 15', sub: 'Notebook para jogar e editar.', body: chips('Memória', ['16 GB', '32 GB'], 1) + chips('Cor', ['Grafite', 'Branco'], 0), button: 'Adicionar ao carrinho', confirm: done('Adicionado ao carrinho', 'Teclaria Pro 15, 32 GB, grafite.', btn('Ver carrinho', '', '', 'cm-btn--ghost')) })}`)),
+    scene('page', 'sheet', 'claro', `${browserBar('teclaria', 'teclaria.exemplo')}${SITES.teclaria()}`)),
 
   /* 2.5 YouTube in-stream: a car dealer before a chosen video, skip after 5 s, panel CTA, test drive page. */
   ytInstream: () => screen('yt', scene('watch', 'base', 'claro', `<div class="cm-safe"><div class="cm-yt-player">${pic('esportes', { alt: 'SUV elétrico verde carregando no estacionamento de um estádio ao pôr do sol.', pos: '50% 32%' })}<span class="cm-yt-dim"></span>
@@ -297,7 +291,7 @@ const mocks = {
     <div class="cm-yt-panel">${marca('automotivo')}<span><b>Test drive do SUV elétrico</b><small><b>Patrocinado</b> · ondara.exemplo</small></span><span class="cm-yt-btn" data-tap="cta" data-hs="3">Agendar</span></div>
     <div class="cm-yt-info"><b>Melhores momentos da rodada</b><span class="cm-yt-channel"><i></i><b>Canal Exemplo</b><span class="cm-yt-sub">Inscrever-se</span></span></div>
     <div class="cm-yt-recs">${Array.from({ length: 4 }, () => `<span><i></i>${skel(2)}</span>`).join('')}</div></div>`) +
-    scene('page', 'push', 'claro', `${browserBar('Test drive', 'ondara.exemplo')}${landing({ key: 'automotivo', hero: `<span class="cm-lp-hero">${pic('esportes', { pos: '50% 34%' })}</span>`, title: 'Test drive do SUV elétrico', body: chips('Escolha o dia', ['Sáb', 'Dom'], 0) + chips('Período', ['Manhã', 'Tarde'], 0) + input('Seu WhatsApp', '(11) 90000-0000'), button: 'Solicitar test drive', confirm: done('Pedido enviado', 'A Ondara confirma o horário com você.', '<small class="cm-legal">Mensagem educativa de trânsito aqui (CTB, art. 77‑B).</small>') })}`)),
+    scene('page', 'push', 'claro', `${browserBar('Test drive', 'ondara.exemplo')}${SITES.ondara()}`)),
 
   /* 2.6 YouTube Shorts: the app of a language school, an exercise that holds attention, App Store sheet. */
   ytShorts: () => screen('shorts', scene('video', 'base', 'escuro', `<div class="cm-shots"><figure class="cm-shot" data-shot="1">${pic('escola916', { alt: 'Fone de ouvido sobre a mesa de madeira.' })}<p class="cm-ontext" data-hs="1">Pare de traduzir na cabeça.</p></figure></div>
@@ -321,7 +315,7 @@ const mocks = {
       <div class="cm-chat-pin">${I('pin')}<span><b>Canal Exemplo</b> Lista de espera do Teclaria Pro 15 branco: <u data-tap="link" data-hs="3">teclaria.exemplo/branco</u></span></div>
       <div class="cm-chat-list"><p><i></i><b>bia.rocha</b> boa noite, canal!</p><p><i></i><b>lucas_dev</b> que setup bonito</p><p><i></i><b>marina.t</b> qual programa de edição você usa?</p><p><i></i><b>jogador1</b> qual é esse notebook?</p><p><i></i><b>edita_noite</b> a tela aguenta bem as cores?</p><p class="cm-chat-more"><i></i><b>ana.cortes</b> vai ter branco?</p><p class="cm-chat-more"><i></i><b>pedro_lima</b> curti o teclado</p></div>
       <span class="cm-chat-input">Diga algo…</span></div></div>`) +
-    scene('page', 'push', 'claro', `${browserBar('Teclaria Pro 15 branco', 'teclaria.exemplo')}${landing({ key: 'varejo', hero: `<span class="cm-lp-hero">${pic('nerd', { pos: '50% 22%' })}</span>`, title: 'Teclaria Pro 15 branco', sub: 'Avise-me quando chegar.', body: input('Seu e-mail', 'voce@exemplo.com'), button: 'Quero ser avisado', confirm: done('Pronto', 'Você recebe só esse aviso.') })}`)),
+    scene('page', 'push', 'claro', `${browserBar('Teclaria Pro 15 branco', 'teclaria.exemplo')}${SITES.teclaria({ variant: 'espera' })}`)),
 
   /* 2.8 LinkedIn: document ad with a lead form of a wealth manager. */
   liFeed: () => screen('li', scene('feed', 'base', 'claro', `<div class="cm-safe"><div class="cm-li-top"><i class="cm-tab-me"></i><span class="cm-li-search">${I('search')}Pesquisar</span>${I('comment')}</div>
@@ -334,11 +328,7 @@ const mocks = {
       <figure class="cm-doc-page cm-doc-page--gate">${skel(5)}<span><b>Para continuar lendo, envie suas informações.</b>${btn('Desbloquear', 'cta')}</span></figure>
     </div><span class="cm-doc-count"><i>1</i><i>2</i><i>3</i><i>4</i> de 4</span></div></div>
     <div class="cm-li-actions"><span>${I('thumb')}Gostei</span><span>${I('comment')}Comentar</span><span>${I('repost')}Compartilhar</span><span>${I('send')}Enviar</span></div></article><div class="cm-li-post">${skel(3)}</div></div>${tabbar(TABS.linkedin)}`) +
-    scene('form', 'sheet', 'claro', `<div class="cm-lf"><div class="cm-lf-top">${I('close')}<b>Arrimo Patrimônio</b></div><div class="cm-lf-body">${marca('financas', 'quadrado')}<b class="cm-lf-title">Guia: patrimônio da empresa e da família</b>
-      <p class="cm-mf-section">Informações de contato</p>${input('Nome', 'Seu nome')}${input('Sobrenome', 'Seu sobrenome')}${input('E-mail', 'voce@exemplo.com')}${input('Cargo', 'Seu cargo')}${input('Empresa', 'Sua empresa')}
-      <p class="cm-mf-legal">Suas informações serão enviadas para Arrimo Patrimônio. Política de privacidade da Arrimo Patrimônio.</p></div>
-      <div class="cm-lf-foot">${btn('Enviar', 'send')}</div>
-      ${done('Informações enviadas para Arrimo Patrimônio', 'O guia completo já está liberado no post.', btn('Visitar site', '', '', 'cm-btn--ghost') + '<small class="cm-legal">Investimentos envolvem riscos.</small>')}</div>`)),
+    scene('form', 'sheet', 'claro', SITES.linkedinForm())),
 
   /* 2.9 Google Search: a dental clinic answers "dentista perto de mim" with a call. */
   gSearch: () => screen('g', scene('serp', 'base', 'claro', `<div class="cm-safe"><div class="cm-g-box" data-hs="1">${logoSvg('google', { altura: 18, classe: 'cm-g-logo' })}<span class="cm-typed"><span>dentista perto de mim</span></span>${I('close')}${I('mic')}${I('lens')}</div>
@@ -357,7 +347,7 @@ const mocks = {
   gDisplay: () => screen('gd', scene('article', 'base', 'claro', `<div class="cm-safe cm-web"><div class="cm-web-host"><b>Portal Exemplo</b>${I('menu')}</div><small class="cm-web-kicker">Viagem</small><b class="cm-web-title">O que ver nas festas de junho no interior</b>${skel(5)}
     <div class="cm-gd-ad"><span class="cm-gd-flag">Anúncio ${I('close')}</span><span class="cm-gd-img" data-hs="1" data-hs-at="tl">${pic('crencas', { alt: 'Rua de pedra com bandeirolas e igreja ao entardecer.', pos: '50% 9%' })}</span>
       <div class="cm-gd-body"><span><b class="cm-gd-h" data-hs="2"><span>Festa do Divino em grupo pequeno</span><span>Guia da cidade e hotel no centro</span></b><small>Bandeirola Viagens</small></span><span class="cm-gd-go" data-tap="cta" data-hs="3">${I('chevron')}</span></div></div>${skel(5)}${skel(4)}</div>${safari('portal.exemplo')}`) +
-    scene('page', 'push', 'claro', `${landing({ key: 'turismo', hero: `<span class="cm-lp-hero cm-lp-hero--wide">${pic('crencas', { pos: '50% 9%' })}</span>`, title: 'Festa do Divino em grupo pequeno', sub: 'Grupo pequeno, guia da cidade e hotel no centro.', body: chips('Próximas saídas', ['Maio', 'Junho'], 1) + input('Seu nome', 'Seu nome') + input('Seu WhatsApp', '(11) 90000-0000'), button: 'Garantir minha vaga', confirm: done('Pré-reserva recebida', 'Falamos com você pelo WhatsApp para confirmar.') })}${safari('bandeirola.exemplo')}`, 'cm-scene--web')),
+    scene('page', 'push', 'claro', `${SITES.bandeirola({ variant: 'saida' })}${safari('bandeirola.exemplo')}`, 'cm-scene--web')),
 
   /* 2.10 SEO: organic result of a developer with sitelinks; the floor plans page trades the PDF for an e-mail. */
   seoOrganic: () => screen('g', scene('serp', 'base', 'claro', `<div class="cm-safe"><div class="cm-g-box">${logoSvg('google', { altura: 18, classe: 'cm-g-logo' })}<span class="cm-typed is-done"><span>casa na falésia à venda</span></span>${I('close')}${I('mic')}${I('lens')}</div>
@@ -382,7 +372,7 @@ const mocks = {
       <div class="cm-gpt-ad" data-tap="cta" data-hs="2 3" data-hs-at="tl">${pic('crencas', { cls: 'cm-gpt-ad-img', pos: '50% 8%' })}<span class="cm-gpt-ad-body"><span class="cm-gpt-ad-top">${marca('turismo', 'fav')}<span>Bandeirola Viagens</span><small class="cm-gpt-chip">Anúncio</small>${I('dots')}</span><b>Festas de junho em grupo pequeno</b><small>Roteiros com guia da cidade e hotel no centro histórico. Saiba mais.</small></span></div>
       <span class="cm-gpt-down" aria-hidden="true">${I('up', 'cm-i--flip')}</span></div>
     <div class="cm-gpt-input">${I('plus')}<span>Pergunte ao ChatGPT</span>${I('mic')}<i>${I('wave')}</i></div>`) +
-    scene('page', 'sheet', 'claro', `${browserBar('Bandeirola Viagens', 'bandeirola.exemplo', 'share')}${landing({ key: 'turismo', hero: `<span class="cm-lp-hero">${pic('crencas', { pos: '50% 14%' })}</span>`, title: 'Monte seu roteiro', body: chips('Quantos dias?', ['3', '5'], 0) + chips('O que você quer ver?', ['Festas', 'Cidades históricas'], 0), button: 'Ver roteiro sugerido', confirm: `<div class="cm-done cm-done--list" data-hs="3"><b>Roteiro sugerido: 3 dias em Pirenópolis</b><ol><li><b>Dia 1</b> Chegada e centro histórico</li><li><b>Dia 2</b> Mascarados nas ruas</li><li><b>Dia 3</b> Cavalhadas</li></ol>${btn('Falar com um consultor', '', '')}</div>` })}`)),
+    scene('page', 'sheet', 'claro', `${browserBar('Bandeirola Viagens', 'bandeirola.exemplo', 'share')}${SITES.bandeirola()}`)),
 
   /* 2.11 Google Maps: promoted square pin and sponsored place sheet of a restaurant, then the route. */
   mapsLocal: () => {
@@ -454,7 +444,7 @@ const mocks = {
       <p class="cm-blog-p">Patrimônio da família e da empresa costumam crescer juntos. Separar os dois evita decisões apressadas.</p>
       <div class="cm-blog-steps" data-hs="2"><b>1. Separe o que é da empresa</b><p class="cm-blog-p">Contas, bens e despesas em nomes diferentes.</p><b>2. Escreva os objetivos</b><p class="cm-blog-p">Proteger, transmitir ou investir pedem caminhos diferentes.</p><b>3. Pergunte antes de assinar</b><p class="cm-blog-p">Cada documento tem consequências para a família.</p></div>
       <aside class="cm-blog-brand"><small>Oferecido por</small><span class="cm-blog-brand-head">${marca('financas')}<b>Arrimo Patrimônio</b></span><p>Um especialista explica cada decisão antes de você assinar.</p>${btn('Agendar conversa', 'cta', '3')}</aside></div>${safari('revista.exemplo')}`) +
-    scene('page', 'push', 'claro', `${landing({ key: 'financas', title: 'Agendar conversa', sub: '30 minutos, por vídeo.', body: chips('Dia', ['Ter', 'Qua'], 0) + chips('Horário', ['10h', '15h'], 0), button: 'Confirmar', confirm: done('Conversa agendada', 'O convite chega por e-mail.', '<small class="cm-legal">Investimentos envolvem riscos.</small>') })}${safari('arrimo.exemplo')}`, 'cm-scene--web')),
+    scene('page', 'push', 'claro', `${SITES.arrimo()}${safari('arrimo.exemplo')}`, 'cm-scene--web')),
 };
 
 /* Front of the peel per channel: the piece of the first placement's client. */
@@ -554,14 +544,18 @@ export const channels = [
     art: art('incorporadora', 'coast', '30% 50%', 'Casas na falésia com a sala voltada para o mar.', 'Peça da Morada Falésia, incorporadora fictícia: casa de concreto e madeira na falésia, sobre o mar.'),
     placements: [
       { id: 'feed', label: 'Feed', mock: 'fbFeed', cliente: 'incorporadora', selo: 'Patrocinado', frase: 'Uma incorporadora recebe o pedido de visita sem sair do Facebook.',
-        passos: [P('Atenção', 'Vista do mar no primeiro cartão', [0]), P('Retenção', 'Deslizar mostra sala e planta', [1, 2]), P('Conversão', 'Formulário já vem preenchido', [3, 4, 5])],
+        passos: [P('Atenção', 'Vista do mar no primeiro cartão', [0]), P('Retenção', 'Deslizar mostra sala e planta', [1, 2]), P('Conversão', 'Formulário em três telas', [3, 4, 5, 6, 7, 8, 9])],
         quadros: [
           { ms: 1400, cena: 'ad', desc: 'Anúncio patrocinado da Morada Falésia no feed do Facebook: casa na falésia e o botão Agendar agora.' },
           { ms: 1400, cena: 'ad', estado: 'c2', desc: 'O carrossel desliza para a sala voltada para o mar.' },
           { ms: 1400, cena: 'ad', estado: 'c3', desc: 'Terceiro cartão: plantas de 3 e 4 quartos.' },
-          { ms: 1000, cena: 'ad', estado: 'c3', toque: 'cta', desc: 'Toque em Agendar agora.' },
-          { ms: 1800, cena: 'form', toque: 'send', desc: 'O formulário instantâneo abre com os dados do perfil e a preferência fim de semana. Toque em Enviar.' },
-          { ms: 2200, cena: 'form', estado: 'done', desc: 'Obrigado. Recebemos seu pedido de visita.' },
+          { ms: 900, cena: 'ad', estado: 'c3', toque: 'cta', desc: 'Toque em Agendar agora.' },
+          { ms: 1700, cena: 'form', toque: 'a', desc: 'O formulário instantâneo abre por cima do feed: visita ao decorado da Morada Falésia. Toque em Continuar.' },
+          { ms: 1200, cena: 'form', estado: 'w2', desc: 'Quando prefere visitar? Nome, e-mail e telefone já vêm do perfil.' },
+          { ms: 900, cena: 'form', estado: 'w2 q1', toque: 'b', desc: 'Toque em Fim de semana.' },
+          { ms: 800, cena: 'form', estado: 'w2 q1', toque: 'c', desc: 'Toque em Continuar.' },
+          { ms: 1300, cena: 'form', estado: 'w3', toque: 'd', desc: 'Revise suas informações. Toque em Enviar.' },
+          { ms: 2100, cena: 'form', estado: 'w4 done', desc: 'Obrigado: recebemos seu pedido de visita. Um corretor combina o horário.' },
         ] },
       { id: 'post', label: 'Post', mock: 'fbpost', cliente: 'incorporadora', selo: 'Patrocinado', frase: 'Uma incorporadora leva a foto da sala à visita agendada.',
         passos: [P('Atenção', 'Sala com vista para o mar', [0]), P('Retenção', 'Legenda e link à mostra', [1]), P('Conversão', 'Tipo de visita, horário e contato', [2, 3, 4, 5, 6, 7, 8, 9])],
@@ -608,26 +602,38 @@ export const channels = [
     art: art('varejo', 'nerd', '50% 28%', 'Joga à noite e edita de dia?', 'Peça da Teclaria, loja de tecnologia fictícia: notebook com a tela acesa numa mesa escura.'),
     placements: [
       { id: 'infeed', label: 'In-Feed', mock: 'ttFeed', cliente: 'varejo', selo: 'Patrocinado', frase: 'Uma loja de tecnologia leva do vídeo ao carrinho.',
-        passos: [P('Atenção', 'Pergunta nativa no primeiro segundo', [0]), P('Retenção', 'Corte mostra os dois usos', [1]), P('Conversão', 'Do vídeo ao carrinho', [2, 3, 4])],
+        passos: [P('Atenção', 'Pergunta nativa no primeiro segundo', [0]), P('Retenção', 'Corte mostra os dois usos', [1]), P('Conversão', 'Produto, carrinho e Pix', [2, 3, 4, 5, 6, 7, 8, 9, 10, 11])],
         quadros: [
           { ms: 1400, cena: 'video', video: 1, desc: 'Vídeo patrocinado da Teclaria no Para você do TikTok: Joga à noite e edita de dia?' },
           { ms: 1900, cena: 'video', estado: 's2 lit', video: 1, desc: 'Corte para a tela: De noite, o jogo. De dia, a edição. O botão Comprar agora ganha cor.' },
-          { ms: 1000, cena: 'video', estado: 's2 lit', video: 1, toque: 'cta', desc: 'Toque em Comprar agora.' },
-          { ms: 1700, cena: 'page', toque: 'go', desc: 'O navegador do TikTok abre o Teclaria Pro 15 com 32 GB e cor grafite. Toque em Adicionar ao carrinho.' },
-          { ms: 2000, cena: 'page', estado: 'done', desc: 'Adicionado ao carrinho.' },
+          { ms: 900, cena: 'video', estado: 's2 lit', video: 1, toque: 'cta', desc: 'Toque em Comprar agora.' },
+          { ms: 1500, cena: 'page', desc: 'O navegador do TikTok abre a página do Teclaria Pro 15: memória, cor e entrega no CEP.' },
+          { ms: 900, cena: 'page', estado: 'q1', toque: 'a', desc: 'Toque em 32 GB.' },
+          { ms: 1500, cena: 'page', estado: 'q1 q2', toque: 'b', desc: 'Toque em Adicionar ao carrinho. O botão enche, vira No carrinho, e o contador do carrinho sobe para 1.' },
+          { ms: 800, cena: 'page', estado: 'q1 q2', toque: 'c', desc: 'Toque no carrinho.' },
+          { ms: 1500, cena: 'page', estado: 'w2 q2', toque: 'd', desc: 'Carrinho: Teclaria Pro 15, 32 GB, grafite, entrega padrão. Toque em Finalizar compra.' },
+          { ms: 1100, cena: 'page', estado: 'w3 q2', desc: 'Pagamento: endereço já preenchido; Pix, cartão ou boleto.' },
+          { ms: 900, cena: 'page', estado: 'w3 q2 q3', toque: 'e', desc: 'Toque em Pix.' },
+          { ms: 800, cena: 'page', estado: 'w3 q2 q3', toque: 'f', desc: 'Toque em Finalizar pedido.' },
+          { ms: 2000, cena: 'page', estado: 'w4 q2 done', desc: 'Pedido 10482 feito, com o Pix copia e cola e o acompanhamento até o envio.' },
         ] },
     ] },
   { id: 'youtube', name: 'YouTube', group: 'social', benefit: 'Ganhar os primeiros segundos.',
     art: art('automotivo', 'esportes', '50% 58%', 'Saiu do jogo. Quanto de carga sobra?', 'Peça da Ondara Elétricos, concessionária fictícia: SUV elétrico verde carregando no estacionamento do estádio ao pôr do sol.'),
     placements: [
       { id: 'instream', label: 'Anúncio no vídeo', mock: 'ytInstream', cliente: 'automotivo', selo: 'Patrocinado', frase: 'Uma concessionária leva do anúncio ao test drive.',
-        passos: [P('Atenção', 'Mensagem antes do Pular', [0]), P('Retenção', 'Painel responde à dúvida', [1]), P('Conversão', 'Dia e período, sem ligação', [2, 3, 4])],
+        passos: [P('Atenção', 'Mensagem antes do Pular', [0]), P('Retenção', 'Painel responde à dúvida', [1]), P('Conversão', 'Versão, loja e horário', [2, 3, 4, 5, 6, 7, 8, 9])],
         quadros: [
           { ms: 1500, cena: 'watch', video: 1, desc: 'Anúncio patrocinado da Ondara antes de um vídeo no YouTube: Saiu do jogo. Quanto de carga sobra?' },
           { ms: 2000, cena: 'watch', estado: 's2', video: 1, desc: 'O painel do carro mostra a carga para a volta. O botão Pular aparece, e o vídeo continua.' },
-          { ms: 1000, cena: 'watch', estado: 's2', video: 1, toque: 'cta', desc: 'Toque em Agendar, no painel abaixo do vídeo.' },
-          { ms: 1700, cena: 'page', toque: 'go', desc: 'A página de test drive abre com sábado de manhã escolhido. Toque em Solicitar test drive.' },
-          { ms: 2000, cena: 'page', estado: 'done', desc: 'Pedido enviado. A Ondara confirma o horário.' },
+          { ms: 900, cena: 'watch', estado: 's2', video: 1, toque: 'cta', desc: 'Toque em Agendar, no painel abaixo do vídeo.' },
+          { ms: 1400, cena: 'page', desc: 'A página de test drive da Ondara abre: qual versão você quer dirigir?' },
+          { ms: 900, cena: 'page', estado: 'q1', toque: 'a', desc: 'Toque em Ondara S.' },
+          { ms: 800, cena: 'page', estado: 'q1', toque: 'b', desc: 'Toque em Escolher loja.' },
+          { ms: 1300, cena: 'page', estado: 'w2 q2', toque: 'c', desc: 'Toque em Ondara Pinheiros, a 2,1 km. Sábado de manhã já escolhido.' },
+          { ms: 800, cena: 'page', estado: 'w2 q2', toque: 'd', desc: 'Toque em Continuar.' },
+          { ms: 1400, cena: 'page', estado: 'w3', toque: 'e', desc: 'Nome, WhatsApp e carteira de motorista. Toque em Solicitar test drive.' },
+          { ms: 2000, cena: 'page', estado: 'w4 done', desc: 'Pedido enviado: Ondara S, sábado de manhã, na loja de Pinheiros.' },
         ] },
       { id: 'shorts', label: 'Shorts', mock: 'ytShorts', cliente: 'educacao', selo: 'Patrocinado', frase: 'Uma escola de idiomas leva do Shorts ao app instalado.',
         passos: [P('Atenção', 'Frase curta antes da marca', [0]), P('Retenção', 'Exercício segura até a resposta', [1, 2]), P('Conversão', 'Instalar sem sair do vídeo', [3, 4, 5, 6])],
@@ -646,22 +652,23 @@ export const channels = [
           { ms: 1500, cena: 'live', estado: 'paid', desc: 'Live de um criador no YouTube com o aviso Inclui promoção paga.' },
           { ms: 1800, cena: 'live', estado: 's2', desc: 'Cartela #publi Teclaria: o notebook deste setup. O chat continua.' },
           { ms: 1400, cena: 'live', estado: 's2 s3', toque: 'link', desc: 'Mensagem fixada do criador com a lista de espera. Toque no link.' },
-          { ms: 1700, cena: 'page', toque: 'go', desc: 'A página Teclaria Pro 15 branco abre com o e-mail preenchido. Toque em Quero ser avisado.' },
-          { ms: 2000, cena: 'page', estado: 'done', desc: 'Pronto. Você recebe só esse aviso.' },
+          { ms: 1800, cena: 'page', toque: 'a', desc: 'A página do Teclaria Pro 15 branco abre: lista de espera, com o e-mail preenchido. Toque em Quero ser avisado.' },
+          { ms: 2000, cena: 'page', estado: 'w2 done', desc: 'Você está na lista e recebe só o aviso de chegada.' },
         ] },
     ] },
   { id: 'linkedin', name: 'LinkedIn', group: 'social', benefit: 'Falar com quem decide.',
     art: art('financas', 'negocios', '50% 100%', 'Guia: patrimônio da empresa e da família', 'Peça da Arrimo Patrimônio, gestora de patrimônio fictícia: mesa escura com caneta e cartão, capa do guia.'),
     placements: [
       { id: 'feed', label: 'Documento', mock: 'liFeed', cliente: 'financas', selo: 'Promovido', frase: 'Uma gestora entrega o guia em troca do contato.',
-        passos: [P('Atenção', 'Problema do sócio na primeira frase', [0]), P('Retenção', 'Páginas de amostra no feed', [1, 2]), P('Conversão', 'Formulário com dados do perfil', [3, 4, 5])],
+        passos: [P('Atenção', 'Problema do sócio na primeira frase', [0]), P('Retenção', 'Páginas de amostra no feed', [1, 2]), P('Conversão', 'Dados do perfil, revisão e PDF', [3, 4, 5, 6])],
         quadros: [
           { ms: 1400, cena: 'feed', desc: 'Post promovido da Arrimo Patrimônio no LinkedIn: Empresa e família no mesmo patrimônio?' },
           { ms: 1300, cena: 'feed', estado: 'p2', desc: 'O documento passa para a página 1: contas que se misturam.' },
           { ms: 1300, cena: 'feed', estado: 'p3', desc: 'Página 2: sucessão sem plano.' },
           { ms: 1300, cena: 'feed', estado: 'p4', toque: 'cta', desc: 'Para continuar lendo, envie suas informações. Toque em Desbloquear.' },
-          { ms: 1800, cena: 'form', toque: 'send', desc: 'O formulário abre com os dados do perfil preenchidos. Toque em Enviar.' },
-          { ms: 2100, cena: 'form', estado: 'done', desc: 'Informações enviadas para Arrimo Patrimônio. O guia completo está liberado.' },
+          { ms: 1600, cena: 'form', toque: 'a', desc: 'O formulário do LinkedIn abre com nome, e-mail, cargo e empresa do perfil. Toque em Avançar.' },
+          { ms: 1400, cena: 'form', estado: 'w2', toque: 'b', desc: 'Revise suas informações. Toque em Enviar.' },
+          { ms: 2000, cena: 'form', estado: 'w3 done', desc: 'Obrigado, Marina. O guia completo em PDF está liberado.' },
         ] },
     ] },
   { id: 'google', name: 'Google Ads', group: 'search', benefit: 'Responder a quem já procura.',
@@ -677,13 +684,16 @@ export const channels = [
           { ms: 2000, cena: 'call', estado: 'done', desc: 'Chamando Seixo Odontologia.' },
         ] },
       { id: 'display', label: 'Display', mock: 'gDisplay', cliente: 'turismo', selo: 'Anúncio', frase: 'Uma agência lembra quem já leu sobre o destino.',
-        passos: [P('Atenção', 'Banner no assunto da matéria', [0]), P('Retenção', 'Título muda, oferta continua', [1]), P('Conversão', 'Data escolhida, vaga pré-reservada', [2, 3, 4])],
+        passos: [P('Atenção', 'Banner no assunto da matéria', [0]), P('Retenção', 'Título muda, oferta continua', [1]), P('Conversão', 'Saída escolhida, pré-reserva sem pagar', [2, 3, 4, 5, 6, 7])],
         quadros: [
           { ms: 1500, cena: 'article', desc: 'Anúncio da Bandeirola Viagens numa matéria sobre festas de junho: Festa do Divino em grupo pequeno.' },
           { ms: 1700, cena: 'article', estado: 's2', desc: 'O título do anúncio muda: guia da cidade e hotel no centro.' },
-          { ms: 1000, cena: 'article', estado: 's2', toque: 'cta', desc: 'Toque na seta do anúncio.' },
-          { ms: 1700, cena: 'page', toque: 'go', desc: 'A página da agência abre com a saída de junho escolhida. Toque em Garantir minha vaga.' },
-          { ms: 2000, cena: 'page', estado: 'done', desc: 'Pré-reserva recebida. A agência confirma pelo WhatsApp.' },
+          { ms: 900, cena: 'article', estado: 's2', toque: 'cta', desc: 'Toque na seta do anúncio.' },
+          { ms: 1500, cena: 'page', desc: 'A página da agência abre no Safari: Festa do Divino em grupo pequeno, 4 dias, até 12 pessoas.' },
+          { ms: 900, cena: 'page', estado: 'q1', toque: 'a', desc: 'Toque na saída de 18 a 21 de junho.' },
+          { ms: 800, cena: 'page', estado: 'q1', toque: 'b', desc: 'Toque em Garantir minha vaga.' },
+          { ms: 1400, cena: 'page', estado: 'w2', toque: 'c', desc: 'Dados preenchidos, sem pagamento agora. Toque em Enviar pré-reserva.' },
+          { ms: 2000, cena: 'page', estado: 'w3 done', desc: 'Pré-reserva recebida, com os próximos passos: confirmação pelo WhatsApp e sinal só depois.' },
         ] },
     ] },
   { id: 'seo', name: 'SEO', group: 'search', benefit: 'Ser encontrado sem pagar pelo clique.',
@@ -705,14 +715,19 @@ export const channels = [
     art: art('turismo', 'crencas', '50% 22%', 'Festas tradicionais em grupo pequeno', 'Peça da Bandeirola Viagens, agência de viagens fictícia: rua de pedra com bandeirolas e igreja ao entardecer.'),
     placements: [
       { id: 'answer', label: 'Resposta', mock: 'gptAnswer', cliente: 'turismo', selo: 'Anúncio', frase: 'Uma agência aparece depois da resposta, separada dela.',
-        passos: [P('Atenção', 'Pergunta de quem planeja a viagem', [0, 1]), P('Retenção', 'Opção logo abaixo da resposta', [2]), P('Conversão', 'Roteiro montado em dois toques', [3, 4, 5])],
+        passos: [P('Atenção', 'Pergunta de quem planeja a viagem', [0, 1]), P('Retenção', 'Opção logo abaixo da resposta', [2]), P('Conversão', 'Roteiro montado e consultor', [3, 4, 5, 6, 7, 8, 9, 10])],
         quadros: [
           { ms: 1100, cena: 'chat', desc: 'Conversa no ChatGPT: quero ver uma festa tradicional no interior em junho. O ChatGPT começa a responder.' },
           { ms: 1700, cena: 'chat', estado: 's1', desc: 'A resposta pede dias, cidade de saída, tipo de festa e se a viagem é com crianças. Abaixo, ações e o chip Fontes.' },
           { ms: 1900, cena: 'chat', estado: 's1 s2', desc: 'Depois de um divisor, uma frase cinza apresenta a opção e o cartão com a etiqueta Anúncio: Bandeirola Viagens, Festas de junho em grupo pequeno.' },
-          { ms: 1000, cena: 'chat', estado: 's1 s2', toque: 'cta', desc: 'Toque no cartão do anúncio.' },
-          { ms: 1700, cena: 'page', toque: 'go', desc: 'O navegador do ChatGPT abre Monte seu roteiro: 3 dias, festas. Toque em Ver roteiro sugerido.' },
-          { ms: 2000, cena: 'page', estado: 'done', desc: 'Roteiro sugerido de 3 dias em Pirenópolis e o botão Falar com um consultor.' },
+          { ms: 900, cena: 'chat', estado: 's1 s2', toque: 'cta', desc: 'Toque no cartão do anúncio.' },
+          { ms: 1400, cena: 'page', desc: 'O navegador do ChatGPT abre Monte seu roteiro, da Bandeirola: quantos dias você tem?' },
+          { ms: 900, cena: 'page', estado: 'q1', toque: 'a', desc: 'Toque em 3 dias.' },
+          { ms: 900, cena: 'page', estado: 'q1', toque: 'b', desc: 'Saindo de São Paulo, viagem de casal. Toque em Continuar.' },
+          { ms: 1300, cena: 'page', estado: 'w2 q2', toque: 'c', desc: 'O que você quer ver: mascarados já marcado. Toque em Cavalhadas.' },
+          { ms: 800, cena: 'page', estado: 'w2 q2', toque: 'd', desc: 'Toque em Gerar roteiro.' },
+          { ms: 1500, cena: 'page', estado: 'w3', desc: 'Roteiro sugerido: 3 dias em Pirenópolis, com mascarados e cavalhadas e hotel no centro histórico.' },
+          { ms: 2000, cena: 'page', estado: 'w3 q3 done', toque: 'e', desc: 'Toque em Falar com um consultor. Um consultor vai chamar no WhatsApp.' },
         ] },
     ] },
   { id: 'maps', name: 'Google Maps', group: 'local', benefit: 'Ser a escolha no caminho.',
@@ -764,13 +779,18 @@ export const channels = [
     art: art('financas', 'negocios', '50% 100%', 'Por onde começar a organizar o patrimônio da família', 'Peça da Arrimo Patrimônio, gestora de patrimônio fictícia: mesa escura com caneta e cartão.'),
     placements: [
       { id: 'article', label: 'Artigo', mock: 'blogArticle', cliente: 'financas', selo: 'Conteúdo patrocinado', frase: 'Uma gestora explica antes de vender, sempre identificada.',
-        passos: [P('Atenção', 'Aviso de patrocínio antes do título', [0]), P('Retenção', 'Leitura útil, marca no fim', [1]), P('Conversão', 'Conversa marcada pelo próprio bloco', [2, 3, 4])],
+        passos: [P('Atenção', 'Aviso de patrocínio antes do título', [0]), P('Retenção', 'Leitura útil, marca no fim', [1]), P('Conversão', 'Dia, horário e assunto da conversa', [2, 3, 4, 5, 6, 7, 8, 9])],
         quadros: [
           { ms: 1500, cena: 'article', desc: 'Artigo na Revista Exemplo com o aviso Conteúdo patrocinado por Arrimo Patrimônio acima do título.' },
           { ms: 1900, cena: 'article', estado: 's2', desc: 'A leitura passa pelos três passos: separe o que é da empresa, escreva os objetivos, pergunte antes de assinar.' },
           { ms: 1400, cena: 'article', estado: 's3', toque: 'cta', desc: 'Bloco Oferecido por Arrimo Patrimônio. Toque em Agendar conversa.' },
-          { ms: 1600, cena: 'page', toque: 'go', desc: 'A página da Arrimo abre com terça às 10h. Toque em Confirmar.' },
-          { ms: 2000, cena: 'page', estado: 'done', desc: 'Conversa agendada. O convite chega por e-mail.' },
+          { ms: 1400, cena: 'page', desc: 'A agenda da Arrimo abre: conversa de 30 minutos por vídeo, com os dias livres de outubro.' },
+          { ms: 1000, cena: 'page', estado: 'q1', toque: 'a', desc: 'Toque em terça, 27. Os horários do dia aparecem.' },
+          { ms: 900, cena: 'page', estado: 'q1 q2', toque: 'b', desc: 'Toque em 10:00.' },
+          { ms: 800, cena: 'page', estado: 'q1 q2', toque: 'c', desc: 'Toque em Próximo.' },
+          { ms: 1300, cena: 'page', estado: 'w2 q3', toque: 'd', desc: 'Nome e e-mail preenchidos. Toque em Separar patrimônio.' },
+          { ms: 800, cena: 'page', estado: 'w2 q3', toque: 'e', desc: 'Toque em Agendar.' },
+          { ms: 2000, cena: 'page', estado: 'w3 done', desc: 'Conversa agendada: terça, 27 de outubro, 10h, 30 minutos, por vídeo.' },
         ] },
     ] },
 ];
@@ -789,6 +809,8 @@ const AVISOS = {
   'youtube/instream': { app: 'whatsapp', cliente: 'automotivo', texto: 'Recebemos seu pedido de test drive para sábado de manhã.', desc: 'A concessionária confirma o horário pelo WhatsApp.' },
   'google/display': { app: 'whatsapp', cliente: 'turismo', texto: 'Recebemos sua pré-reserva da saída de junho.', desc: 'A agência confirma a pré-reserva pelo WhatsApp.' },
   'seo/organic': { app: 'mail', cliente: 'incorporadora', texto: 'Plantas de 3 e 4 quartos, em PDF.', desc: 'O e-mail com as plantas chega na notificação do iPhone.' },
+  'tiktok/infeed': { app: 'mail', cliente: 'varejo', texto: 'Pedido 10482 recebido. Pague o Pix para confirmar o envio.', desc: 'O e-mail do pedido chega na notificação do iPhone.' },
+  'facebook/feed': { app: 'whatsapp', cliente: 'incorporadora', texto: 'Olá, Marina! Sou corretor da Morada Falésia. Podemos combinar a visita de sábado?', desc: 'Um corretor da incorporadora chama pelo WhatsApp.' },
   'blog/article': { app: 'mail', cliente: 'financas', texto: 'Convite: conversa de 30 minutos, terça às 10h.', desc: 'O convite da conversa chega por e-mail.' },
 };
 channels.forEach(channel => channel.placements.forEach(placement => {

@@ -194,7 +194,7 @@ try{
         await page.waitForTimeout(80);
         check('Choosing the conversion step shows the tap on the CTA as a static mark',await campaignCard.locator('[data-cx-body] [data-cx-step="2"]').getAttribute('aria-current')==='step'&&await campaignCard.locator('[data-cx-body] .cx-tap.is-static:not([hidden])').count()===1&&Boolean(await campaignCard.locator('[data-cx-body] .cm-screen').getAttribute('data-tap')));
       }else{
-        await page.waitForFunction(last=>document.querySelector('#laboratorio [data-cx-body] .cm-screen')?.dataset.frame===last&&document.querySelector('#laboratorio [data-cx-play]').getAttribute('aria-pressed')==='false',lastFrame,{timeout:16000});
+        await page.waitForFunction(last=>document.querySelector('#laboratorio [data-cx-body] .cm-screen')?.dataset.frame===last&&document.querySelector('#laboratorio [data-cx-play]').getAttribute('aria-pressed')==='false',lastFrame,{timeout:30000});
         await page.waitForTimeout(700);
         check('The journey plays once to the native conversion screen and stops there with a replay control',await screenFrame()===lastFrame&&/(^| )done( |$)/.test(await campaignCard.locator('[data-cx-body] .cm-screen').getAttribute('data-state'))&&await campaignCard.locator('[data-cx-body] .cx-journey li[data-state="done"]').count()===3&&/Rever/.test(await campaignCard.locator('[data-cx-play]').innerText()));
       }
