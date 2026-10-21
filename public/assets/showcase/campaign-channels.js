@@ -233,6 +233,32 @@ const mocks = {
     scene('reserva', 'sheet', 'claro', `<div class="cm-sheet cm-sheet--part" style="--brand:${CLIENTES.restaurante.cor}"><span class="cm-grabber"></span><b class="cm-lp-title">Reservar mesa</b>${chips('Pessoas', ['2', '4', '6'], 0)}${chips('Horário', ['12h', '13h', '14h'], 1)}${btn('Pedir reserva', 'send')}${done('Pedido de reserva enviado', 'O restaurante confirma pelo WhatsApp.')}</div>`, 'cm-scene--part')),
 
   /* 2.3 Facebook feed: lead ad carousel of a developer and the Meta instant form. */
+  /* 3.2 Facebook feed post: one photo of a development, the link bar that holds the tap, then the visit page. */
+  fbpost: () => screen('fbpost', scene('post', 'base', 'claro', `<article class="cm-fbpost">
+      <header class="cm-fbpost-head">${marca('incorporadora')}<span><b>Morada Falésia</b><small>Patrocinado · ${I('globe', 'cm-i--inline')}</small></span>${I('dots')}${I('close')}</header>
+      <p class="cm-fbpost-text">Casas na falésia com a sala voltada para o mar. Agende uma visita ao decorado.</p>
+      ${pic('salaMar45', { alt: 'Sala de estar com janela para o mar, em luz de fim de tarde.', cls: 'cm-fbpost-photo' })}
+      <div class="cm-fbpost-cta" data-hs="3"><span><b>moradafalesia.exemplo</b><small>Visita ao decorado</small></span><span class="cm-fbpost-btn" data-tap="cta">Agendar agora</span></div>
+    </article>`) + scene('page', 'sheet', 'claro', `${browserBar('Visita ao decorado', 'moradafalesia.exemplo')}${landing({ key: 'incorporadora', title: 'Visita ao decorado', sub: 'Escolha o dia da visita.', body: chips('Quando prefere visitar?', ['Durante a semana', 'Fim de semana'], 1), button: 'Agendar visita', confirm: done('Visita agendada', 'Você recebe a confirmação por e-mail.') })}`)),
+
+  /* 3.3 Facebook video: a restaurant video in portrait with the reserve button that lights up. */
+  fbvid: () => screen('fbvid', scene('video', 'base', 'escuro', `<div class="cm-fbv">
+      ${pic('prato916', { alt: 'Prato de feijoada servido com farofa e couve.' })}
+      <span class="cm-fbv-play" aria-hidden="true">${I('video')}</span>
+      <div class="cm-fbv-meta" data-hs="1"><span>${marca('restaurante')}<span><b>tachomiudo</b><small>Patrocinado</small></span></span><p>Feijoada no tacho aos sábados. Mesa para o almoço.</p></div>
+      <div class="cm-fbv-cta" data-tap="cta" data-hs="3"><b>Reservar mesa</b>${I('chevron')}</div>
+    </div>`) + scene('page', 'sheet', 'claro', `${browserBar('Reserva', 'tachomiudo.exemplo')}${landing({ key: 'restaurante', title: 'Reservar mesa', sub: 'Feijoada aos sábados, com mesa para o almoço.', body: chips('Quantas pessoas?', ['2', '4', '6'], 0), button: 'Pedir reserva', confirm: done('Pedido de reserva enviado', 'O restaurante confirma pelo WhatsApp.') })}`)),
+
+  /* 3.4 Facebook ad break: a video pauses for an ad card with a skip button, then the course page. */
+  fbbreak: () => screen('fbbreak', scene('video', 'base', 'escuro', `<div class="cm-fbb">
+      ${pic('panela916', { alt: 'Tacho de feijoada no fogão, em plano fechado.' })}
+      <span class="cm-fbb-tag">Vídeo</span></div>`) + scene('ad', 'sheet', 'escuro', `<div class="cm-fbb-ad">
+      ${pic('escola916', { alt: 'Fone de ouvido sobre o caderno de anotações.' })}
+      <span class="cm-fbb-label">Patrocinado</span>
+      <span class="cm-fbb-skip" data-hs="1"><span class="cm-fbb-s1">Pular em 5</span><span class="cm-fbb-s2">Pular</span></span>
+      <div class="cm-fbb-cta" data-tap="cta" data-hs="3"><span><b>Sotaque Livre Idiomas</b><small>Aula experimental</small></span>${I('chevron')}</div>
+    </div>`) + scene('page', 'sheet', 'claro', `${browserBar('Aula experimental', 'sotaquelivre.exemplo')}${landing({ key: 'educacao', title: 'Aula experimental', sub: 'Escolha o nível e o horário da sua aula.', body: chips('Qual é o seu nível?', ['Começando', 'Intermediário', 'Avançado'], 1), button: 'Agendar aula experimental', confirm: done('Aula experimental agendada', 'Quinta, 19h. O link da aula chega por e-mail.') })}`)),
+
   fbFeed: () => screen('fb', scene('ad', 'base', 'claro', `<div class="cm-safe"><div class="cm-fb-bar"><b class="cm-fb-name">Facebook</b><span><i>${I('plus')}</i><i>${I('search')}</i><i>${I('comment')}</i></span></div>
     <article class="cm-fb-post"><header class="cm-fb-head">${marca('incorporadora')}<span><b>Morada Falésia</b><small>Patrocinado · ${I('globe', 'cm-i--inline')}</small></span>${I('dots')}${I('close')}</header>
     <p class="cm-fb-text">Casas na falésia com a sala voltada para o mar. Agende uma visita ao decorado.</p>
@@ -489,6 +515,34 @@ export const channels = [
           { ms: 1800, cena: 'form', toque: 'send', desc: 'O formulário instantâneo abre com os dados do perfil e a preferência fim de semana. Toque em Enviar.' },
           { ms: 2200, cena: 'form', estado: 'done', desc: 'Obrigado. Recebemos seu pedido de visita.' },
         ] },
+      { id: 'post', label: 'Post', mock: 'fbpost', cliente: 'incorporadora', selo: 'Patrocinado', frase: 'Uma incorporadora leva a foto da sala à visita agendada.',
+        passos: [P('Atenção', 'Sala com vista para o mar', [0]), P('Retenção', 'Legenda e link à mostra', [1]), P('Conversão', 'Agendamento na página', [2, 3, 4])],
+        quadros: [
+          { ms: 1300, cena: 'post', desc: 'Post patrocinado da Morada Falésia no feed: a sala voltada para o mar e o texto de convite.' },
+          { ms: 1200, cena: 'post', estado: 'lit', desc: 'O botão Agendar agora ganha cor na barra do link.' },
+          { ms: 900, cena: 'post', estado: 'lit', toque: 'cta', desc: 'Toque em Agendar agora.' },
+          { ms: 1700, cena: 'page', toque: 'go', desc: 'A página da visita abre no navegador. Toque em Agendar visita.' },
+          { ms: 2000, cena: 'page', estado: 'done', desc: 'Visita agendada. A confirmação chega por e-mail.' },
+        ] },
+      { id: 'video', label: 'Vídeo', mock: 'fbvid', cliente: 'restaurante', selo: 'Patrocinado', frase: 'Um restaurante leva do vídeo à reserva de mesa.',
+        passos: [P('Atenção', 'Feijoada no primeiro quadro', [0]), P('Retenção', 'Convite antes do fim do vídeo', [1]), P('Conversão', 'Reserva em duas etapas', [2, 3, 4])],
+        quadros: [
+          { ms: 1500, cena: 'video', desc: 'Vídeo patrocinado do Tacho Miúdo: o prato de feijoada e o texto Feijoada no tacho aos sábados.' },
+          { ms: 1800, cena: 'video', estado: 'lit', desc: 'No fim do vídeo, o botão Reservar mesa ganha cor.' },
+          { ms: 900, cena: 'video', estado: 'lit', toque: 'cta', desc: 'Toque em Reservar mesa.' },
+          { ms: 1700, cena: 'page', toque: 'go', desc: 'A página de reserva abre no navegador. Toque em Pedir reserva.' },
+          { ms: 2000, cena: 'page', estado: 'done', desc: 'Pedido de reserva enviado.' },
+        ] },
+      { id: 'breaks', label: 'Ad breaks', mock: 'fbbreak', cliente: 'educacao', selo: 'Patrocinado', frase: 'Uma escola de idiomas entra na pausa do vídeo e leva à aula.',
+        passos: [P('Atenção', 'Vídeo começa e a pausa aparece', [0]), P('Retenção', 'Anúncio com pular em 5 segundos', [1, 2]), P('Conversão', 'Aula experimental em dois toques', [3, 4, 5])],
+        quadros: [
+          { ms: 1300, cena: 'video', desc: 'O vídeo do Tacho Miúdo começa; a pausa do anúncio chega com o selo Patrocinado.' },
+          { ms: 1500, cena: 'ad', desc: 'Anúncio da Sotaque Livre na pausa, com o botão Pular em 5 segundos.' },
+          { ms: 1600, cena: 'ad', estado: 'skip', desc: 'Depois de cinco segundos, o botão vira Pular.' },
+          { ms: 900, cena: 'ad', estado: 'skip lit', toque: 'cta', desc: 'O cartão Aula experimental acende. Toque nele.' },
+          { ms: 1700, cena: 'page', toque: 'go', desc: 'A página da aula abre no navegador. Toque em Agendar aula experimental.' },
+          { ms: 2000, cena: 'page', estado: 'done', desc: 'Aula experimental agendada para quinta, 19h.' },
+        ] },
     ] },
   { id: 'tiktok', name: 'TikTok', group: 'social', benefit: 'Do vídeo ao carrinho em um toque.',
     art: art('varejo', 'nerd', '50% 28%', 'Joga à noite e edita de dia?', 'Peça da Teclaria, loja de tecnologia fictícia: notebook com a tela acesa numa mesa escura.'),
@@ -658,6 +712,9 @@ const SCREEN = {
   igstory: { tema: 'escuro', fundo: '#000' },
   iglive: { tema: 'escuro', fundo: '#000' },
   igexplore: { tema: 'claro', fundo: '#fff' },
+  fbpost: { tema: 'claro', fundo: '#fff' },
+  fbvid: { tema: 'escuro', fundo: '#000' },
+  fbbreak: { tema: 'escuro', fundo: '#000' },
   ttFeed: { tema: 'escuro', fundo: '#000' },
   ytShorts: { tema: 'escuro', fundo: '#000' },
   liFeed: { fundo: '#f4f2ee' },

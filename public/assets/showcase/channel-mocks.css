@@ -898,3 +898,52 @@ body.is-paused #laboratorio .cm-screen[data-state~="typing"] .cm-typed>span{max-
 #laboratorio .cm-post-full{position:absolute;inset:0;background:#fff;color:#111;display:flex;flex-direction:column;overflow:hidden}
 #laboratorio .cm-post-full>img{width:100%;aspect-ratio:4 / 5;object-fit:cover;flex:none}
 #laboratorio .cm-post-full .cm-ig-cta{margin-top:auto}
+
+/* Facebook post, video and ad break (22/10/2026). */
+#laboratorio .cm-fbpost{position:absolute;inset:0;background:#fff;color:#111;display:flex;flex-direction:column;overflow:hidden}
+#laboratorio .cm-fbpost-head{display:flex;align-items:center;gap:calc(var(--u)*8);padding:calc(var(--topo) + var(--u)*6) calc(var(--u)*12) calc(var(--u)*8)}
+#laboratorio .cm-fbpost-head .cm-mark{flex:none;width:calc(var(--u)*34);height:calc(var(--u)*34)}
+#laboratorio .cm-fbpost-head>span{flex:1;display:grid;line-height:1.2;min-width:0}
+#laboratorio .cm-fbpost-head b{font-size:calc(var(--u)*14)}
+#laboratorio .cm-fbpost-head small{font-size:calc(var(--u)*12);color:#65676b}
+#laboratorio .cm-fbpost-head .cm-i{width:calc(var(--u)*18);height:calc(var(--u)*18);color:#65676b}
+#laboratorio .cm-fbpost-text{margin:0 0 calc(var(--u)*8);padding:0 calc(var(--u)*12);font-size:calc(var(--u)*14);line-height:1.35}
+#laboratorio .cm-fbpost-photo{width:100%;flex:1 1 auto;min-height:0;object-fit:cover;display:block}
+#laboratorio .cm-fbpost-cta{margin-top:auto;display:flex;align-items:center;justify-content:space-between;gap:calc(var(--u)*8);padding:calc(var(--u)*10) calc(var(--u)*12) calc(var(--pe) + var(--u)*8);background:#f0f2f5;border-top:1px solid #dadde1}
+#laboratorio .cm-fbpost-cta>span:first-child{display:grid;line-height:1.2;min-width:0}
+#laboratorio .cm-fbpost-cta b{font-size:calc(var(--u)*13)}
+#laboratorio .cm-fbpost-cta small{font-size:calc(var(--u)*11);color:#65676b}
+#laboratorio .cm-fbpost-btn{padding:calc(var(--u)*9) calc(var(--u)*14);border-radius:calc(var(--u)*6);background:#e4e6eb;font-size:calc(var(--u)*13);font-weight:700;color:#050505;transition:background .3s,color .3s}
+#laboratorio .cm-screen[data-state~="lit"] .cm-fbpost-btn{background:#1877f2;color:#fff}
+#laboratorio .cm-fbv{position:absolute;inset:0;overflow:hidden;background:#000;color:#fff}
+#laboratorio .cm-fbv>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+#laboratorio .cm-fbv::after{content:"";position:absolute;inset:auto 0 0;height:52%;background:linear-gradient(transparent,#000d);pointer-events:none;z-index:2}
+#laboratorio .cm-fbv-play{position:absolute;z-index:3;left:50%;top:44%;translate:-50% -50%;width:calc(var(--u)*64);height:calc(var(--u)*64);border-radius:50%;background:#0008;display:grid;place-items:center}
+#laboratorio .cm-fbv-play .cm-i{width:calc(var(--u)*30);height:calc(var(--u)*30);color:#fff}
+#laboratorio .cm-fbv-meta{position:absolute;z-index:3;left:calc(var(--u)*14);right:calc(var(--u)*14);bottom:calc(var(--pe) + var(--u)*120)}
+#laboratorio .cm-fbv-meta>span{display:flex;align-items:center;gap:calc(var(--u)*8)}
+#laboratorio .cm-fbv-meta .cm-mark{flex:none;width:calc(var(--u)*34);height:calc(var(--u)*34)}
+#laboratorio .cm-fbv-meta>span>span{display:grid;line-height:1.2}
+#laboratorio .cm-fbv-meta b{font-size:calc(var(--u)*14)}
+#laboratorio .cm-fbv-meta small{font-size:calc(var(--u)*12);opacity:.85}
+#laboratorio .cm-fbv-meta p{margin:calc(var(--u)*6) 0 0;font-size:calc(var(--u)*14);line-height:1.3}
+#laboratorio .cm-fbv-cta{position:absolute;z-index:4;left:calc(var(--u)*14);right:calc(var(--u)*14);bottom:calc(var(--pe) + var(--u)*36);display:flex;justify-content:space-between;align-items:center;padding:calc(var(--u)*14) calc(var(--u)*18);border-radius:calc(var(--u)*10);background:#fff;color:#111;font-size:calc(var(--u)*15);transition:background .3s,color .3s}
+#laboratorio .cm-fbv-cta .cm-i{width:calc(var(--u)*16);height:calc(var(--u)*16)}
+#laboratorio .cm-screen[data-state~="lit"] .cm-fbv-cta{background:#1877f2;color:#fff}
+#laboratorio .cm-fbb{position:absolute;inset:0;overflow:hidden;background:#000}
+#laboratorio .cm-fbb>img,#laboratorio .cm-fbb-ad>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+#laboratorio .cm-fbb-tag{position:absolute;z-index:3;left:calc(var(--u)*14);top:calc(var(--topo) + var(--u)*10);padding:calc(var(--u)*3) calc(var(--u)*8);border-radius:calc(var(--u)*4);background:#0009;color:#fff;font-size:calc(var(--u)*12)}
+#laboratorio .cm-fbb-ad{position:absolute;inset:0;overflow:hidden;background:#000;color:#fff}
+#laboratorio .cm-fbb-ad::after{content:"";position:absolute;inset:auto 0 0;height:50%;background:linear-gradient(transparent,#000d);pointer-events:none;z-index:2}
+#laboratorio .cm-fbb-label{position:absolute;z-index:4;left:calc(var(--u)*14);top:calc(var(--topo) + var(--u)*10);padding:calc(var(--u)*3) calc(var(--u)*8);border-radius:calc(var(--u)*4);background:#fff;color:#111;font-size:calc(var(--u)*12);font-weight:700}
+#laboratorio .cm-fbb-skip{position:absolute;z-index:4;right:calc(var(--u)*14);top:calc(var(--topo) + var(--u)*10);padding:calc(var(--u)*6) calc(var(--u)*12);border-radius:calc(var(--u)*6);background:#0009;color:#fff;font-size:calc(var(--u)*13)}
+#laboratorio .cm-fbb-skip .cm-fbb-s2{display:none}
+#laboratorio .cm-screen[data-state~="skip"] .cm-fbb-skip .cm-fbb-s1{display:none}
+#laboratorio .cm-screen[data-state~="skip"] .cm-fbb-skip .cm-fbb-s2{display:inline}
+#laboratorio .cm-fbb-cta{position:absolute;z-index:4;left:calc(var(--u)*14);right:calc(var(--u)*14);bottom:calc(var(--pe) + var(--u)*36);display:flex;justify-content:space-between;align-items:center;gap:calc(var(--u)*8);padding:calc(var(--u)*12) calc(var(--u)*16);border-radius:calc(var(--u)*10);background:#fff;color:#111;transition:background .3s,color .3s}
+#laboratorio .cm-fbb-cta>span{display:grid;line-height:1.2;min-width:0}
+#laboratorio .cm-fbb-cta b{font-size:calc(var(--u)*14)}
+#laboratorio .cm-fbb-cta small{font-size:calc(var(--u)*11);color:#65676b}
+#laboratorio .cm-fbb-cta .cm-i{width:calc(var(--u)*16);height:calc(var(--u)*16)}
+#laboratorio .cm-screen[data-state~="lit"] .cm-fbb-cta{background:#1877f2;color:#fff}
+#laboratorio .cm-screen[data-state~="lit"] .cm-fbb-cta small{color:#dbe7ff}
