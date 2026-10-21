@@ -964,3 +964,9 @@ body.is-paused #laboratorio .cm-screen[data-state~="typing"] .cm-typed>span{max-
 #laboratorio .cm-gpt-down{justify-self:center;display:grid;place-items:center;width:calc(var(--u)*34);height:calc(var(--u)*34);border:calc(var(--u)*.9) solid #e3e3e3;border-radius:50%;background:#fff;box-shadow:0 calc(var(--u)*2) calc(var(--u)*6) #0000000f}
 #laboratorio .cm-gpt-down .cm-i{width:calc(var(--u)*17);height:calc(var(--u)*17);color:#0d0d0d}
 @media (prefers-reduced-motion:reduce){#laboratorio .cm-gpt-think{animation:none}#laboratorio .cm-gpt-answer,#laboratorio .cm-gpt-actions{transition:none}}
+
+/* Google Maps: category chips under the search box (22/10/2026). */
+#laboratorio .cm-maps-chips{position:absolute;z-index:4;left:0;right:0;top:calc(var(--topo) + var(--u)*52);display:flex;gap:calc(var(--u)*7);padding:0 calc(var(--u)*12);overflow:hidden;white-space:nowrap}
+#laboratorio .cm-maps-chips span{display:inline-flex;align-items:center;gap:calc(var(--u)*5);height:calc(var(--u)*32);padding:0 calc(var(--u)*13);border-radius:calc(var(--u)*16);background:#fff;color:#3c4043;font-size:calc(var(--u)*13);font-weight:500;box-shadow:0 calc(var(--u)*1) calc(var(--u)*3) #0000002e}
+#laboratorio .cm-maps-chips span.is-on{background:#e8f0fe;color:#174ea6}
+#laboratorio .cm-maps-chips .cm-i{width:calc(var(--u)*15);height:calc(var(--u)*15)}

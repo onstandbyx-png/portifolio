@@ -388,6 +388,7 @@ const mocks = {
     const drops = [[86, 150], [178, 118], [130, 360], [300, 420], [60, 290]].map(([x, y]) => `<span class="cm-drop" style="left:${x / 3.6}%;top:${y / 6.4}%">${I('fork')}</span>`).join('');
     return screen('maps', scene('map', 'base', 'claro', `${area(`${drops}<span class="cm-promo cm-promo--left" style="left:${252 / 3.6}%;top:${224 / 6.4}%"><span class="cm-promo-sq" data-hs="1">${I('fork')}</span><span class="cm-promo-text"><b>Tacho Miúdo</b><small>Feijoada no tacho aos sábados</small></span></span><span class="cm-me" style="left:${108 / 3.6}%;top:${544 / 6.4}%"></span>`)}
       <div class="cm-maps-search">${I('back')}<span>feijoada perto de mim</span>${I('close')}</div>
+      <div class="cm-maps-chips" aria-hidden="true"><span class="is-on">${I('fork')}Restaurantes</span><span>Aberto agora</span><span>Para o almoço</span><span>Mais bem localizados</span></div>
       <div class="cm-place"><span class="cm-grabber"></span>
         <div class="cm-place-row"><span><small class="cm-sp">Patrocinado</small><b>Tacho Miúdo</b><small>Restaurante · <em>Aberto</em></small></span>${pic('fachada43', { alt: 'Fachada de madeira do restaurante à noite, com flores e mesas na calçada.', pos: '50% 40%' })}</div>
         <div class="cm-place-full"><span class="cm-place-top"><small class="cm-sp">Patrocinado ${I('vdots')}</small><span><i>${I('share')}</i><i>${I('close')}</i></span></span><b class="cm-place-name">Tacho Miúdo</b><small>Restaurante</small><small><em>Aberto</em> · Fecha às 23:00</small>
