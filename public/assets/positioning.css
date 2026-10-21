@@ -174,3 +174,5 @@ body.portfolio-r10 #sistemas{padding:88px 0;background:#193b2d;color:#f4f5e9}
  .workflow-result dl{grid-template-columns:1fr;gap:12px}
  .workflow-head h3{font-size:16px}
 }
+#laboratorio .campaign-summary .campaign-client .cm-mark{display:grid;flex:none;place-items:center;width:22px;height:22px;overflow:hidden;border-radius:50%;background:var(--c)}
+#laboratorio .campaign-summary .campaign-client .cm-mark svg{width:72%;height:72%}

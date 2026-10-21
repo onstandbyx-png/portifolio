@@ -18,7 +18,7 @@ body.portfolio-r6 #laboratorio .ads-heading { padding-top: 0; }
   position: relative;
   display: flex;
   align-items: flex-end;
-  gap: 0 14px;
+  gap: 0 4px;
   overflow-x: auto;
   overflow-y: hidden;
   overscroll-behavior-x: contain;
@@ -45,16 +45,16 @@ body.portfolio-r6 #laboratorio .ads-heading { padding-top: 0; }
   flex: none;
   align-items: center;
   justify-content: center;
-  gap: 10px;
+  gap: 8px;
   min-width: 44px;
   min-height: 50px;
-  padding: 12px 11px 14px;
+  padding: 12px 6px 14px;
   border: 0;
   border-radius: 3px 3px 0 0;
   background: transparent;
   color: #66725f;
   font-family: inherit;
-  font-size: 13.5px;
+  font-size: 13px;
   font-weight: 550;
   line-height: 1.2;
   white-space: nowrap;
@@ -63,7 +63,7 @@ body.portfolio-r6 #laboratorio .ads-heading { padding-top: 0; }
 }
 .sp-platforms [role='tab'][aria-selected='true'] { color: #1b3627; }
 .sp-platforms [role='tab']:hover { color: #193827; }
-.sp-platforms .sp-platform-logo { display: block; flex: none; width: auto; height: 18px; }
+.sp-platforms .sp-platform-logo { display: block; flex: none; width: auto; height: 16px; }
 /* Front of the peel: the piece of a fictitious client. One photo (4:5, cover) and its text in HTML. */
 #laboratorio .sp-campaign-panel .sp-art { position: relative; margin: 0; overflow: hidden; background: #1b211d; }
 #laboratorio .sp-campaign-panel .sp-art-photo { object-fit: cover; }

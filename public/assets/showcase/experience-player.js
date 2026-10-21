@@ -118,7 +118,8 @@ export function mountCampaignExperience(lab, underlay) {
   function activeScene() { return screenEl()?.querySelector('.cm-scene[data-pos="on"]'); }
   function place(node, rect, x, y) {
     const box = stage().getBoundingClientRect(), tela = stage().querySelector('.ch-iphone-tela').getBoundingClientRect();
-    const px = clamp(x, tela.left + 12, tela.right - 12) - box.left, py = clamp(y, tela.top + 12, tela.bottom - 12) - box.top;
+    // Never over the status bar and the Dynamic Island (62 of the 412 logical px), never off the screen.
+    const px = clamp(x, tela.left + 14, tela.right - 14) - box.left, py = clamp(y, tela.top + tela.width * 62 / 412, tela.bottom - 14) - box.top;
     node.style.left = (px / box.width * 100).toFixed(2) + '%';
     node.style.top = (py / box.height * 100).toFixed(2) + '%';
   }
@@ -139,7 +140,10 @@ export function mountCampaignExperience(lab, underlay) {
     const r = node.getBoundingClientRect();
     const was = dot.hidden || dot.textContent !== String(n);
     dot.textContent = String(n);
-    place(dot, r, r.right - 8, r.top - 10);
+    // On a picture or a card the point sits inside its corner; on a line of text or a button, on the corner itself.
+    // data-hs-at="tl" keeps the point inside the top-left corner (away from an ad label in the top right).
+    const big = r.height > 64, left = node.dataset.hsAt === 'tl';
+    place(dot, r, left ? r.left + 20 : big ? r.right - 20 : r.right - 3, big || left ? r.top + 20 : r.top - 3);
     dot.hidden = false;
     if (animate && was && live()) {
       const spring = motion.spring(dot, p => ({ transform: `translate(-50%,-50%) scale(${.6 + .4 * p})`, opacity: clamp(p * 1.6) }), { duration: 420 });
@@ -178,7 +182,10 @@ export function mountCampaignExperience(lab, underlay) {
     const moved = screen.dataset.scene !== item.cena;
     screen.dataset.frame = String(frame);
     screen.dataset.scene = item.cena;
-    screen.dataset.state = item.estado || '';
+    // A scene left behind keeps the state it last showed (the video under a sheet stays on its last cut).
+    const kept = {};
+    for (let k = 0; k < frame; k++) if (list[k].cena !== item.cena) kept[list[k].cena] = list[k].estado || '';
+    screen.dataset.state = [...Object.values(kept), item.estado || ''].join(' ').replace(/\s+/g, ' ').trim();
     delete screen.dataset.tap;
     const scenes = [...screen.querySelectorAll('.cm-scene')];
     const current = scenes.find(node => node.dataset.scene === item.cena) || scenes[0];

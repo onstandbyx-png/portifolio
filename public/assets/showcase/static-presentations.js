@@ -16,7 +16,7 @@ function picture(file, alt, className = '') {
 
 function tabMarkup(channel, index) {
   const id = CHANNEL_LOGO[channel.id];
-  const mark = id ? logoSvg(id, { altura: 18, classe: 'sp-platform-logo' }) : '';
+  const mark = id ? logoSvg(id, { altura: 16, classe: 'sp-platform-logo' }) : '';
   return `<button type="button" id="tab-${channel.id}" role="tab" data-sp-tab="${channel.id}" aria-controls="panel-${channel.id}" aria-describedby="sp-group-${channel.group}" aria-selected="${index === 0}" tabindex="${index === 0 ? '0' : '-1'}">${mark}<span>${esc(channel.name)}</span></button>`;
 }
 

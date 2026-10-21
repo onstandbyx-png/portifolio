@@ -212,23 +212,23 @@ const mocks = {
       <figure class="cm-fb-card"><span class="cm-fb-img">${pic('salaMar11')}</span><figcaption><span><b>Sala voltada para o mar</b><small>Visita ao decorado</small></span><span class="cm-fb-btn">Agendar agora</span></figcaption></figure>
       <figure class="cm-fb-card"><span class="cm-fb-img cm-fb-img--plan">${planta()}</span><figcaption><span><b>Plantas de 3 e 4 quartos</b><small>Visita ao decorado</small></span><span class="cm-fb-btn" data-tap="cta" data-hs="3">Agendar agora</span></figcaption></figure>
     </div></div>
-    <div class="cm-fb-actions"><span>${I('thumb')}Curtir</span><span>${I('comment')}Comentar</span><span>${I('forward')}Compartilhar</span></div></article></div>${tabbar(TABS.facebook)}`) +
-    scene('form', 'sheet', 'claro', `<div class="cm-mf"><div class="cm-mf-cover">${pic('coast', { pos: '40% 60%' })}<span class="cm-mf-x">${I('close')}</span></div><div class="cm-mf-body">${marca('incorporadora')}<small>Morada Falésia</small><b class="cm-mf-title">Visita ao decorado</b>
+    <div class="cm-fb-actions"><span>${I('thumb')}Curtir</span><span>${I('comment')}Comentar</span><span>${I('forward')}Compartilhar</span></div></article><div class="cm-fb-post cm-fb-next">${skel(4)}</div></div>${tabbar(TABS.facebook)}`) +
+    scene('form', 'sheet', 'escuro', `<div class="cm-mf"><div class="cm-mf-cover">${pic('coast', { pos: '40% 60%' })}<span class="cm-mf-x">${I('close')}</span></div><div class="cm-mf-body">${marca('incorporadora')}<small>Morada Falésia</small><b class="cm-mf-title">Visita ao decorado</b>
       <p class="cm-mf-section">Seus dados</p>${input('Nome completo', 'Seu nome')}${input('E-mail', 'voce@exemplo.com')}${input('Telefone', '(11) 90000-0000')}${chips('Quando prefere visitar?', ['Durante a semana', 'Fim de semana'], 1)}
       <p class="cm-mf-legal">Ao tocar em Enviar, você envia suas informações para Morada Falésia, que as usa conforme a própria política de privacidade.</p></div>
       <div class="cm-mf-foot">${btn('Enviar', 'send')}</div>
-      ${done('Obrigado!', 'Recebemos seu pedido de visita. Um corretor entra em contato para combinar o horário.', btn('Ver site', '', '', 'cm-btn--ghost') + '<small class="cm-legal">Imagens ilustrativas. CRECI e registro de incorporação aparecem aqui.</small>')}</div>`)),
+      ${done('Obrigado!', 'Recebemos seu pedido de visita. Um corretor entra em contato para combinar o horário.', btn('Ver site', '', '', 'cm-btn--ghost') + '<small class="cm-legal">Imagens ilustrativas. CRECI e registro de incorporação aparecem aqui.</small>')}</div>`, '', 'claro')),
 
   /* 2.4 TikTok In-Feed: a tech store, native text, CTA that takes the brand colour, TikTok browser. */
   ttFeed: () => screen('tt', scene('video', 'base', 'escuro', `<div class="cm-shots">
       <figure class="cm-shot" data-shot="1">${pic('nerd', { alt: 'Notebook com a tela acesa numa mesa escura.' })}<p class="cm-tt-text" data-hs="1"><span>Joga à noite</span><span>e edita de dia?</span></p></figure>
-      <figure class="cm-shot cm-shot--zoom" data-shot="2">${pic('nerd', { pos: '50% 34%' })}<p class="cm-tt-text"><span>De noite, o jogo.</span><span>De dia, a edição.</span></p></figure></div>
+      <figure class="cm-shot cm-shot--zoom" data-shot="2">${pic('nerd', { pos: '50% 34%' })}<p class="cm-tt-text" data-hs="2"><span>De noite, o jogo.</span><span>De dia, a edição.</span></p></figure></div>
     <span class="cm-shade"></span>
     <div class="cm-tt-top">${I('tv')}<span><span>Seguindo</span><b>Para você</b></span>${I('search')}</div>
     <div class="cm-rail cm-rail--tt"><span class="cm-tt-avatar">${marca('varejo')}<i>${I('plus')}</i></span>${I('heart')}${I('comment')}${I('bookmark')}${I('forward')}<span class="cm-disc">${marca('varejo')}</span></div>
     <div class="cm-vmeta cm-vmeta--tt"><b>teclaria</b><p>Um notebook para os dois turnos.</p><small class="cm-pill">Patrocinado</small><small class="cm-audio">${I('music')}Música promocional</small></div>
     <div class="cm-vcta cm-vcta--tt" data-tap="cta" data-hs="3"><b>Comprar agora</b>${I('chevron')}</div>
-    <div class="cm-vprogress cm-vprogress--tt" data-hs="2"><i data-cx-progress></i></div>${tabbar(TABS.tiktok, 'cm-tabbar--dark')}`) +
+    <div class="cm-vprogress cm-vprogress--tt"><i data-cx-progress></i></div>${tabbar(TABS.tiktok, 'cm-tabbar--dark')}`) +
     scene('page', 'sheet', 'claro', `${browserBar('teclaria', 'teclaria.exemplo')}${landing({ key: 'varejo', hero: `<span class="cm-lp-hero cm-lp-hero--sq">${pic('nerd', { pos: '50% 30%' })}</span>`, title: 'Teclaria Pro 15', sub: 'Notebook para jogar e editar.', body: chips('Memória', ['16 GB', '32 GB'], 1) + chips('Cor', ['Grafite', 'Branco'], 0), button: 'Adicionar ao carrinho', confirm: done('Adicionado ao carrinho', 'Teclaria Pro 15, 32 GB, grafite.', btn('Ver carrinho', '', '', 'cm-btn--ghost')) })}`)),
 
   /* 2.5 YouTube in-stream: a car dealer before a chosen video, skip after 5 s, panel CTA, test drive page. */
@@ -239,8 +239,8 @@ const mocks = {
       <span class="cm-yt-adbar"><i data-cx-progress></i></span></div>
     <div class="cm-yt-panel">${marca('automotivo')}<span><b>Test drive do SUV elétrico</b><small><b>Patrocinado</b> · ondara.exemplo</small></span><span class="cm-yt-btn" data-tap="cta" data-hs="3">Agendar</span></div>
     <div class="cm-yt-info"><b>Melhores momentos da rodada</b><span class="cm-yt-channel"><i></i><b>Canal Exemplo</b><span class="cm-yt-sub">Inscrever-se</span></span></div>
-    <div class="cm-yt-recs">${Array.from({ length: 2 }, () => `<span><i></i>${skel(2)}</span>`).join('')}</div></div>`) +
-    scene('page', 'push', 'claro', `${browserBar('Test drive', 'ondara.exemplo')}${landing({ key: 'automotivo', hero: `<span class="cm-lp-hero">${pic('esportes', { pos: '50% 34%' })}</span>`, title: 'Test drive do SUV elétrico', body: chips('Escolha o dia', ['Sáb', 'Dom'], 0) + chips('Período', ['Manhã', 'Tarde'], 0) + input('Seu WhatsApp', '(11) 90000-0000'), button: 'Solicitar test drive', confirm: done('Pedido enviado', 'A Ondara confirma o horário com você.', '<small class="cm-legal">Mensagem educativa de trânsito aqui (CTB, art. 77-B).</small>') })}`)),
+    <div class="cm-yt-recs">${Array.from({ length: 4 }, () => `<span><i></i>${skel(2)}</span>`).join('')}</div></div>`) +
+    scene('page', 'push', 'claro', `${browserBar('Test drive', 'ondara.exemplo')}${landing({ key: 'automotivo', hero: `<span class="cm-lp-hero">${pic('esportes', { pos: '50% 34%' })}</span>`, title: 'Test drive do SUV elétrico', body: chips('Escolha o dia', ['Sáb', 'Dom'], 0) + chips('Período', ['Manhã', 'Tarde'], 0) + input('Seu WhatsApp', '(11) 90000-0000'), button: 'Solicitar test drive', confirm: done('Pedido enviado', 'A Ondara confirma o horário com você.', '<small class="cm-legal">Mensagem educativa de trânsito aqui (CTB, art. 77‑B).</small>') })}`)),
 
   /* 2.6 YouTube Shorts: the app of a language school, an exercise that holds attention, App Store sheet. */
   ytShorts: () => screen('shorts', scene('video', 'base', 'escuro', `<div class="cm-shots"><figure class="cm-shot" data-shot="1">${pic('escola916', { alt: 'Fone de ouvido sobre a mesa de madeira.' })}<p class="cm-ontext" data-hs="1">Pare de traduzir na cabeça.</p></figure></div>
@@ -251,18 +251,18 @@ const mocks = {
     <div class="cm-vmeta cm-vmeta--yt"><span class="cm-who">${marca('educacao')}<b>@sotaquelivre</b><small class="cm-pill">Patrocinado</small></span><p>Conversação em inglês, um pouco por dia.</p></div>
     <div class="cm-vcta cm-vcta--yt" data-tap="cta" data-hs="3"><b>Instalar</b></div>
     <div class="cm-vprogress"><i data-cx-progress></i></div>${tabbar(TABS.youtube, 'cm-tabbar--dark')}`) +
-    scene('store', 'sheet', 'escuro', `<div class="cm-sheet cm-store"><span class="cm-grabber"></span><div class="cm-store-head">${marca('educacao', 'app')}<span><b>Sotaque Livre</b><small>Conversação todos os dias</small><span class="cm-store-get" data-tap="go" data-hs="3"><b>Obter</b><i class="cm-ring"></i><b>Abrir</b></span></span></div>
+    scene('store', 'sheet', 'escuro', `<div class="cm-sheet cm-store"><span class="cm-grabber"></span><div class="cm-store-head">${marca('educacao', 'app')}<span><b>Sotaque Livre</b><small>Conversação todos os dias</small></span><span class="cm-store-get" data-tap="go" data-hs="3"><b>Obter</b><i class="cm-ring"></i><b>Abrir</b></span></div>
       <div class="cm-store-shots"><span><i class="cm-bubble">How was your day?</i><i class="cm-bubble cm-bubble--me">Pretty good, thanks!</i></span><span><small>Uma frase por dia</small><b>I'm looking forward to it.</b><i class="cm-bubble">Mal posso esperar.</i></span></div>
       </div>`, 'cm-scene--part', 'claro')),
 
   /* 2.7 YouTube live: a creator shows the tech store's notebook, paid promotion notice, pinned link. */
-  ytLive: () => screen('live', scene('live', 'base', 'claro', `<div class="cm-safe"><div class="cm-yt-player">${pic('nerd', { alt: 'Setup do criador: notebook com a tela acesa na mesa.', pos: '50% 19%' })}
-      <span class="cm-paid" data-hs="1">${I('tag')}Inclui promoção paga${I('chevron')}</span><span class="cm-live">Ao vivo</span>
+  ytLive: () => screen('ytlive', scene('live', 'base', 'claro', `<div class="cm-safe"><div class="cm-yt-player">${pic('nerd', { alt: 'Setup do criador: notebook com a tela acesa na mesa.', pos: '50% 19%' })}
+      <span class="cm-paid" data-hs="1">${I('tag')}Inclui promoção paga${I('chevron')}</span><span class="cm-onair">Ao vivo</span>
       <span class="cm-lower" data-hs="2"><small>#publi</small><b>Teclaria</b><span>O notebook deste setup</span></span></div>
     <div class="cm-yt-info"><b>Montando o setup de edição ao vivo</b><span class="cm-yt-channel"><i>C</i><b>Canal Exemplo</b><span class="cm-yt-sub">Inscrever-se</span></span></div>
     <div class="cm-chat"><div class="cm-chat-head"><b>Chat ao vivo</b>${I('vdots')}</div>
       <div class="cm-chat-pin">${I('pin')}<span><b>Canal Exemplo</b> Lista de espera do Teclaria Pro 15 branco: <u data-tap="link" data-hs="3">teclaria.exemplo/branco</u></span></div>
-      <div class="cm-chat-list"><p><i></i><b>jogador1</b> qual é esse notebook?</p><p><i></i><b>edita_noite</b> a tela aguenta bem as cores?</p><p class="cm-chat-more"><i></i><b>ana.cortes</b> vai ter branco?</p><p class="cm-chat-more"><i></i><b>pedro_lima</b> curti o teclado</p></div>
+      <div class="cm-chat-list"><p><i></i><b>bia.rocha</b> boa noite, canal!</p><p><i></i><b>lucas_dev</b> que setup bonito</p><p><i></i><b>marina.t</b> qual programa de edição você usa?</p><p><i></i><b>jogador1</b> qual é esse notebook?</p><p><i></i><b>edita_noite</b> a tela aguenta bem as cores?</p><p class="cm-chat-more"><i></i><b>ana.cortes</b> vai ter branco?</p><p class="cm-chat-more"><i></i><b>pedro_lima</b> curti o teclado</p></div>
       <span class="cm-chat-input">Diga algo…</span></div></div>`) +
     scene('page', 'push', 'claro', `${browserBar('Teclaria Pro 15 branco', 'teclaria.exemplo')}${landing({ key: 'varejo', hero: `<span class="cm-lp-hero">${pic('nerd', { pos: '50% 22%' })}</span>`, title: 'Teclaria Pro 15 branco', sub: 'Avise-me quando chegar.', body: input('Seu e-mail', 'voce@exemplo.com'), button: 'Quero ser avisado', confirm: done('Pronto', 'Você recebe só esse aviso.') })}`)),
 
@@ -276,7 +276,7 @@ const mocks = {
       <figure class="cm-doc-page"><small>2</small><b>Sucessão sem plano</b>${skel(4)}</figure>
       <figure class="cm-doc-page cm-doc-page--gate">${skel(5)}<span><b>Para continuar lendo, envie suas informações.</b>${btn('Desbloquear', 'cta')}</span></figure>
     </div><span class="cm-doc-count"><i>1</i><i>2</i><i>3</i><i>4</i> de 4</span></div></div>
-    <div class="cm-li-actions"><span>${I('thumb')}Gostei</span><span>${I('comment')}Comentar</span><span>${I('repost')}Compartilhar</span><span>${I('send')}Enviar</span></div></article></div>${tabbar(TABS.linkedin)}`) +
+    <div class="cm-li-actions"><span>${I('thumb')}Gostei</span><span>${I('comment')}Comentar</span><span>${I('repost')}Compartilhar</span><span>${I('send')}Enviar</span></div></article><div class="cm-li-post">${skel(3)}</div></div>${tabbar(TABS.linkedin)}`) +
     scene('form', 'sheet', 'claro', `<div class="cm-lf"><div class="cm-lf-top">${I('close')}<b>Arrimo Patrimônio</b></div><div class="cm-lf-body">${marca('financas', 'quadrado')}<b class="cm-lf-title">Guia: patrimônio da empresa e da família</b>
       <p class="cm-mf-section">Informações de contato</p>${input('Nome', 'Seu nome')}${input('Sobrenome', 'Seu sobrenome')}${input('E-mail', 'voce@exemplo.com')}${input('Cargo', 'Seu cargo')}${input('Empresa', 'Sua empresa')}
       <p class="cm-mf-legal">Suas informações serão enviadas para Arrimo Patrimônio. Política de privacidade da Arrimo Patrimônio.</p></div>
@@ -286,7 +286,7 @@ const mocks = {
   /* 2.9 Google Search: a dental clinic answers "dentista perto de mim" with a call. */
   gSearch: () => screen('g', scene('serp', 'base', 'claro', `<div class="cm-safe"><div class="cm-g-box" data-hs="1">${logoSvg('google', { altura: 18, classe: 'cm-g-logo' })}<span class="cm-typed"><span>dentista perto de mim</span></span>${I('close')}${I('mic')}${I('lens')}</div>
     <div class="cm-g-tabs"><span>Modo IA</span><b>Todas</b><span>Mapas</span><span>Imagens</span><span>Notícias</span></div>
-    <div class="cm-g-results"><p class="cm-g-group">Resultado patrocinado</p>
+    <ul class="cm-g-suggest"><li>${I('search')}dentista perto de mim</li><li>${I('search')}dentista perto de mim aberto agora</li><li>${I('search')}dentista perto de mim avaliação</li></ul><div class="cm-g-results"><p class="cm-g-group">Resultado patrocinado</p>
       <div class="cm-g-ad"><div class="cm-g-site">${marca('clinica', 'fav')}<span><b>Seixo Odontologia</b><small>https://www.seixo.exemplo › avaliacao</small></span>${I('vdots')}</div>
       <b class="cm-g-title" data-hs="2">Avaliação com hora marcada | Seixo Odontologia</b>
       <p>Consulta de avaliação para planejar o tratamento com calma. Agende pelo site ou ligue. [RT e CRO]</p>
@@ -294,12 +294,12 @@ const mocks = {
       <span class="cm-g-call" data-tap="cta" data-hs="3">${I('phone')}Ligar</span></div>
       <span class="cm-g-hide">Ocultar resultados patrocinados ${I('up')}</span>${skel(4, 'cm-skel--result')}${skel(3, 'cm-skel--result')}</div></div>`) +
     scene('call', 'sheet', 'claro', `<div class="cm-ios-sheet"><span class="cm-ios-group"><small>(11) 0000-0000</small><span data-tap="go" data-hs="3">${I('phone')}Ligar</span></span><span class="cm-ios-cancel">Cancelar</span></div>
-      <div class="cm-call"><small>chamando…</small><b>Seixo Odontologia</b><span class="cm-call-keys"><i></i><i></i><i></i><i></i><i></i><i></i></span><span class="cm-call-end">${I('phone')}</span></div>`, 'cm-scene--part')),
+      <div class="cm-call"><small>chamando…</small><b data-hs="3">Seixo Odontologia</b><span class="cm-call-keys"><i></i><i></i><i></i><i></i><i></i><i></i></span><span class="cm-call-end">${I('phone')}</span></div>`, 'cm-scene--part')),
 
   /* 2.16 Google Display: a travel agency banner inside an article; the headline rotates as Google combines assets. */
-  gDisplay: () => screen('gd', scene('article', 'base', 'claro', `<div class="cm-safe cm-web"><div class="cm-web-host"><b>Portal Exemplo</b>${I('menu')}</div><small class="cm-web-kicker">Viagem</small><b class="cm-web-title">O que ver nas festas de junho no interior</b>${skel(4)}
-    <div class="cm-gd-ad" data-hs="1"><span class="cm-gd-flag">Anúncio ${I('close')}</span><span class="cm-gd-img">${pic('crencas', { alt: 'Rua de pedra com bandeirolas e igreja ao entardecer.', pos: '50% 9%' })}</span>
-      <div class="cm-gd-body"><span><b class="cm-gd-h" data-hs="2"><span>Festa do Divino em grupo pequeno</span><span>Guia da cidade e hotel no centro</span></b><small>Bandeirola Viagens</small></span><span class="cm-gd-go" data-tap="cta" data-hs="3">${I('chevron')}</span></div></div>${skel(4)}</div>${safari('portal.exemplo')}`) +
+  gDisplay: () => screen('gd', scene('article', 'base', 'claro', `<div class="cm-safe cm-web"><div class="cm-web-host"><b>Portal Exemplo</b>${I('menu')}</div><small class="cm-web-kicker">Viagem</small><b class="cm-web-title">O que ver nas festas de junho no interior</b>${skel(5)}
+    <div class="cm-gd-ad"><span class="cm-gd-flag">Anúncio ${I('close')}</span><span class="cm-gd-img" data-hs="1" data-hs-at="tl">${pic('crencas', { alt: 'Rua de pedra com bandeirolas e igreja ao entardecer.', pos: '50% 9%' })}</span>
+      <div class="cm-gd-body"><span><b class="cm-gd-h" data-hs="2"><span>Festa do Divino em grupo pequeno</span><span>Guia da cidade e hotel no centro</span></b><small>Bandeirola Viagens</small></span><span class="cm-gd-go" data-tap="cta" data-hs="3">${I('chevron')}</span></div></div>${skel(5)}${skel(4)}</div>${safari('portal.exemplo')}`) +
     scene('page', 'push', 'claro', `${landing({ key: 'turismo', hero: `<span class="cm-lp-hero cm-lp-hero--wide">${pic('crencas', { pos: '50% 9%' })}</span>`, title: 'Festa do Divino em grupo pequeno', sub: 'Grupo pequeno, guia da cidade e hotel no centro.', body: chips('Próximas saídas', ['Maio', 'Junho'], 1) + input('Seu nome', 'Seu nome') + input('Seu WhatsApp', '(11) 90000-0000'), button: 'Garantir minha vaga', confirm: done('Pré-reserva recebida', 'Falamos com você pelo WhatsApp para confirmar.') })}${safari('bandeirola.exemplo')}`, 'cm-scene--web')),
 
   /* 2.10 SEO: organic result of a developer with sitelinks; the floor plans page trades the PDF for an e-mail. */
@@ -321,7 +321,7 @@ const mocks = {
       <div class="cm-gpt-answer"><p>Três passos ajudam a escolher:</p><ol><li><b>Escolha a festa</b> pelo que quer ver: procissão, música ou cavalhadas.</li><li><b>Reserve cedo</b> a hospedagem perto do centro histórico.</li><li><b>Vá com guia</b> para entender o calendário de cada dia.</li></ol></div>
       <div class="cm-gpt-actions">${I('copy')}${I('speaker')}${I('thumb')}${I('thumb', 'cm-i--flip')}${I('regen')}${I('share')}</div>
       <hr><p class="cm-gpt-lead">Para viajar com guia e grupo pequeno:</p>
-      <div class="cm-gpt-ad" data-tap="cta" data-hs="2 3">${pic('crencas', { cls: 'cm-gpt-ad-img', pos: '50% 8%' })}<span class="cm-gpt-ad-body"><span class="cm-gpt-ad-top">${marca('turismo', 'fav')}<span>Bandeirola Viagens</span><small class="cm-gpt-chip">Anúncio</small>${I('dots')}</span><b>Festas tradicionais em grupo pequeno</b><small>Roteiros com guia da cidade e hotel no centro.</small></span></div>
+      <div class="cm-gpt-ad" data-tap="cta" data-hs="2 3" data-hs-at="tl">${pic('crencas', { cls: 'cm-gpt-ad-img', pos: '50% 8%' })}<span class="cm-gpt-ad-body"><span class="cm-gpt-ad-top">${marca('turismo', 'fav')}<span>Bandeirola Viagens</span><small class="cm-gpt-chip">Anúncio</small>${I('dots')}</span><b>Festas tradicionais em grupo pequeno</b><small>Roteiros com guia da cidade e hotel no centro.</small></span></div>
       <p class="cm-gpt-note">Os anúncios não influenciam as respostas do ChatGPT.</p></div>
     <div class="cm-gpt-input">${I('plus')}<span>Pergunte ao ChatGPT</span>${I('mic')}<i>${I('wave')}</i></div>`) +
     scene('page', 'sheet', 'claro', `${browserBar('Bandeirola Viagens', 'bandeirola.exemplo', 'share')}${landing({ key: 'turismo', hero: `<span class="cm-lp-hero">${pic('crencas', { pos: '50% 14%' })}</span>`, title: 'Monte seu roteiro', body: chips('Quantos dias?', ['3', '5'], 0) + chips('O que você quer ver?', ['Festas', 'Cidades históricas'], 0), button: 'Ver roteiro sugerido', confirm: `<div class="cm-done cm-done--list" data-hs="3"><b>Roteiro sugerido: 3 dias em Pirenópolis</b><ol><li><b>Dia 1</b> Chegada e centro histórico</li><li><b>Dia 2</b> Mascarados nas ruas</li><li><b>Dia 3</b> Cavalhadas</li></ol>${btn('Falar com um consultor', '', '')}</div>` })}`)),
@@ -330,7 +330,7 @@ const mocks = {
   mapsLocal: () => {
     const area = inner => `<div class="cm-map">${pic('mapa', { cls: 'cm-map-bg' })}<div class="cm-map-area">${inner}</div></div>`;
     const drops = [[86, 150], [178, 118], [130, 360], [300, 420], [60, 290]].map(([x, y]) => `<span class="cm-drop" style="left:${x / 3.6}%;top:${y / 6.4}%">${I('fork')}</span>`).join('');
-    return screen('maps', scene('map', 'base', 'claro', `${area(`${drops}<span class="cm-promo" style="left:${252 / 3.6}%;top:${224 / 6.4}%" data-hs="1"><span class="cm-promo-sq">${I('fork')}</span><span class="cm-promo-text"><b>Tacho Miúdo</b><small>Feijoada no tacho aos sábados</small></span></span><span class="cm-me" style="left:${108 / 3.6}%;top:${544 / 6.4}%"></span>`)}
+    return screen('maps', scene('map', 'base', 'claro', `${area(`${drops}<span class="cm-promo cm-promo--left" style="left:${252 / 3.6}%;top:${224 / 6.4}%"><span class="cm-promo-sq" data-hs="1">${I('fork')}</span><span class="cm-promo-text"><b>Tacho Miúdo</b><small>Feijoada no tacho aos sábados</small></span></span><span class="cm-me" style="left:${108 / 3.6}%;top:${544 / 6.4}%"></span>`)}
       <div class="cm-maps-search">${I('back')}<span>feijoada perto de mim</span>${I('close')}</div>
       <div class="cm-place"><span class="cm-grabber"></span>
         <div class="cm-place-row"><span><small class="cm-sp">Patrocinado</small><b>Tacho Miúdo</b><small>Restaurante · <em>Aberto</em></small></span>${pic('fachada43', { alt: 'Fachada de madeira do restaurante à noite, com flores e mesas na calçada.', pos: '50% 40%' })}</div>
@@ -340,8 +340,8 @@ const mocks = {
           <span class="cm-place-photos">${pic('fachada43', { pos: '50% 40%' })}${pic('prato11')}</span></div></div>`) +
       scene('route', 'fade', 'claro', `${area(`<svg class="cm-route" viewBox="0 0 360 640" preserveAspectRatio="none" aria-hidden="true"><path d="M108,544 L108,464 L180,464 L180,304 L252,304 L252,224" fill="none" stroke="#fff" stroke-width="9" stroke-linejoin="round" stroke-linecap="round"/><path d="M108,544 L108,464 L180,464 L180,304 L252,304 L252,224" fill="none" stroke="#1a73e8" stroke-width="5.5" stroke-linejoin="round" stroke-linecap="round"/></svg><span class="cm-promo cm-promo--end" style="left:${252 / 3.6}%;top:${224 / 6.4}%"><span class="cm-promo-sq">${I('fork')}</span></span><span class="cm-me" style="left:${108 / 3.6}%;top:${544 / 6.4}%"></span>`)}
       <div class="cm-route-top"><span class="cm-route-ends"><span><i class="cm-route-a"></i>Seu local</span><span>${I('location')}Tacho Miúdo</span></span><span class="cm-route-modes"><b>${I('car')}</b>${I('bus')}${I('walk')}</span></div>
-      <div class="cm-route-nav"><b>Siga pela avenida</b><small>Navegação iniciada até Tacho Miúdo</small></div>
-      <div class="cm-route-sheet"><span class="cm-grabber"></span><b>De carro</b><small>Pelo caminho indicado no mapa</small>${btn('Iniciar', 'go', '3', 'cm-btn--maps')}</div>`));
+      <div class="cm-route-sheet"><span class="cm-grabber"></span><b>De carro</b><small>Pelo caminho indicado no mapa</small>${btn('Iniciar', 'go', '3', 'cm-btn--maps')}</div>
+      <div class="cm-route-nav" data-hs="3"><b>Siga pela avenida</b><small>Navegação iniciada até Tacho Miúdo</small></div>`));
   },
 
   /* 2.12 WhatsApp click-to-chat: Instagram ad of a dental clinic, app switch, pre-filled message, quick replies. */
@@ -354,17 +354,17 @@ const mocks = {
       <div class="cm-wa-body"><span class="cm-wa-sys">As mensagens são protegidas com a criptografia de ponta a ponta.</span><span class="cm-wa-day">Hoje</span>
         <div class="cm-wa-out cm-wa-msg1"><span class="cm-wa-quote">${pic('consultorio45')}<span><b>Seixo Odontologia</b><small>Avaliação com hora marcada</small></span></span>Olá! Quero agendar uma avaliação.<small>10:09 ${I('ticks')}</small></div>
         <div class="cm-wa-in cm-wa-msg2">Olá! Que bom falar com você. Qual horário fica melhor para a avaliação?<small>10:09</small></div>
-        <span class="cm-wa-replies cm-wa-msg2"><span data-tap="reply">Quinta, 9h</span><span>Sexta, 14h</span><span>Outro horário</span></span>
+        <span class="cm-wa-replies cm-wa-msg2" data-hs="3"><span data-tap="reply">Quinta, 9h</span><span>Sexta, 14h</span><span>Outro horário</span></span>
         <div class="cm-wa-out cm-wa-msg3">Quinta, 9h<small>10:09 ${I('ticks')}</small></div>
         <div class="cm-wa-in cm-wa-msg3" data-hs="3">Combinado. Enviamos a confirmação por aqui.<small>10:09</small></div></div>
-      <div class="cm-wa-compose"><span class="cm-wa-preview">${pic('consultorio45')}<span><b>Seixo Odontologia</b><small>Avaliação com hora marcada</small></span></span><span class="cm-wa-row">${I('plus')}<span class="cm-wa-field">Olá! Quero agendar uma avaliação.</span><span class="cm-wa-send" data-tap="send" data-hs="3">${I('send')}</span></span></div>`)),
+      <div class="cm-wa-compose"><span class="cm-wa-preview">${pic('consultorio45')}<span><b>Seixo Odontologia</b><small>Avaliação com hora marcada</small></span></span><span class="cm-wa-row">${I('plus')}<span class="cm-wa-field">Olá! Quero agendar uma avaliação.</span><span class="cm-wa-send" data-tap="send" data-hs="3">${I('send')}</span><span class="cm-wa-idle">${I('camera')}${I('mic')}</span></span></div>`)),
 
   /* 2.13 WhatsApp Business catalog (not an ad): profile, collections, item, message with the item attached. */
   waCatalog: () => screen('wacat', scene('profile', 'base', 'claro', `<div class="cm-safe"><div class="cm-wa-bar">${I('back')}<span></span>${I('dots')}</div><div class="cm-wa-profile">${marca('restaurante', 'circulo', 'cm-mark--xl')}<b>Tacho Miúdo</b><small>Conta comercial</small><span class="cm-wa-tools"><span>${I('phone')}Áudio</span><span>${I('video')}Vídeo</span><span>${I('search')}Pesquisar</span></span><small class="cm-wa-cat">Restaurante · Cozinha brasileira</small></div>
-    <div class="cm-wa-shelf" data-hs="1"><p><b>Catálogo</b><span data-tap="more">Ver tudo ${I('chevron')}</span></p><span class="cm-wa-thumbs">${pic('panela11')}${pic('escondidinho11')}${pic('pudim11')}</span></div>
+    <div class="cm-wa-shelf"><p><b>Catálogo</b><span data-tap="more">Ver tudo ${I('chevron')}</span></p><span class="cm-wa-thumbs" data-hs="1">${pic('panela11')}${pic('escondidinho11')}${pic('pudim11')}</span></div>
     <div class="cm-wa-rows"><span>${I('bell')}Silenciar notificações</span><span>${I('lock')}Criptografia</span></div></div>`) +
     scene('catalog', 'push', 'claro', `<div class="cm-safe"><div class="cm-wa-bar">${I('back')}<span><b>Catálogo</b><small>Tacho Miúdo</small></span>${I('share')}</div>
-      <div class="cm-wa-coll" data-hs="2"><p><b>Encomendas de sábado</b><span>Ver tudo</span></p><ul><li data-tap="item">${pic('panela11')}<span><b>Feijoada no tacho para 4</b><small>Carnes separadas, arroz, couve e farofa.</small></span></li><li>${pic('escondidinho11')}<span><b>Escondidinho de carne-seca</b><small>Gratinado na panelinha, para 2.</small></span></li></ul>
+      <div class="cm-wa-coll"><p><b>Encomendas de sábado</b><span>Ver tudo</span></p><ul data-hs="2"><li data-tap="item">${pic('panela11')}<span><b>Feijoada no tacho para 4</b><small>Carnes separadas, arroz, couve e farofa.</small></span></li><li>${pic('escondidinho11')}<span><b>Escondidinho de carne-seca</b><small>Gratinado na panelinha, para 2.</small></span></li></ul>
       <p><b>Doces</b><span>Ver tudo</span></p><ul><li>${pic('pudim11')}<span><b>Pudim de leite</b><small>Inteiro, feito na casa.</small></span></li></ul></div></div>`) +
     scene('item', 'push', 'claro', `<div class="cm-safe"><div class="cm-wa-bar">${I('back')}<span></span>${I('share')}</div><span class="cm-wa-photo">${pic('panela11')}</span><div class="cm-wa-item"><b>Feijoada no tacho para 4</b><p>Carnes separadas, arroz, couve e farofa. Encomenda até sexta.</p>${btn('Conversar com a empresa', 'cta', '3', 'cm-btn--wa')}</div></div>`) +
     scene('chat', 'push', 'claro', `<div class="cm-wa-head">${I('back')}${marca('restaurante')}<span><b>Tacho Miúdo</b><small>Conta comercial</small></span>${I('video')}${I('phone')}</div>

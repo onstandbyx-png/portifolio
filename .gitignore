@@ -14,3 +14,6 @@ dist-lab/
 lab/vercel/out/
 lab/vercel/repo/
 lab/vercel/node_modules/
+
+# Vercel preview build
+dist/
