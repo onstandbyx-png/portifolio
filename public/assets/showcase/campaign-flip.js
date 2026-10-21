@@ -20,7 +20,7 @@ export function mountCampaignFlip() {
   card.innerHTML=[
     '<div class="sp-peel-stack">',
       '<section class="sp-peel-underlay" data-sp-card-back aria-hidden="true" inert>',
-        '<span class="sp-peel-underlay-kicker" aria-hidden="true">O QUE ESTÁ POR TRÁS DA PEÇA</span>',
+        '<span class="sp-peel-underlay-kicker" aria-hidden="true">O anúncio no canal</span>',
         '<div class="sp-campaign-note-slot"></div>',
         '<button type="button" class="sp-peel-return" data-sp-card-turn="back" aria-label="Recolocar a arte na frente"><span aria-hidden="true">↗</span> Recolocar a peça</button>',
       '</section>',
@@ -132,11 +132,6 @@ export function mountCampaignFlip() {
     animation=requestAnimationFrame(tick);
     if(focus)(goingOpen?backButton:grip).focus({preventScroll:true});
   }
-  function reset(){
-    stopAnimation();
-    semantics(false);
-    paint(BASE);
-  }
   // The entire artwork can still be tapped, but the distinctive interaction
   // is pulling the folded corner with real-time physical feedback.
   grip.addEventListener('click',event=>{
@@ -193,13 +188,13 @@ export function mountCampaignFlip() {
   const observer=new ResizeObserver(()=>paint(progress));
   observer.observe(sheet);
   paint(BASE);
-  // Channel switching replaces the content behind the same paper sheet,
-  // and restores the corner without jarring rotation or stale CTA focus.
+  // Channel switching replaces what is behind the same paper sheet: a closed
+  // sheet keeps its corner ready for the new channel, and an open one stays
+  // open while the player swaps the placement, so channels can be compared.
+  // If focus was inside the replaced placement, it returns to the open back.
   new MutationObserver(()=>{
-    const refocus=card.dataset.side==='back'&&underlay.contains(document.activeElement);
-    campaignExperience?.reset();
-    reset();
-    if(refocus)grip.focus({preventScroll:true});
+    if(card.dataset.side==='back'&&!underlay.contains(document.activeElement)&&card.contains(document.activeElement))backButton.focus({preventScroll:true});
+    if(card.dataset.side==='front')paint(progress);
   }).observe(lab,{attributes:true,attributeFilter:['data-channel']});
   const motionSwitch=document.querySelector('#motion-toggle');
   if(motionSwitch)new MutationObserver(()=>{

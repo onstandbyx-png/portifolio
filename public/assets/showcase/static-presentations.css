@@ -11,59 +11,108 @@
 body.portfolio-r6 #laboratorio { padding-block: 112px; }
 body.portfolio-r6 #laboratorio .ads-heading { padding-top: 0; }
 .sp-campaign { width: min(100%, 680px); margin: 36px auto 0; }
+/* Channel tabs: grouped, in one row that scrolls inside itself when narrow.
+   A sliding marker (background and 3px rule) follows the selected tab. */
+.sp-platforms-wrap { position: relative; margin-bottom: 28px; }
 .sp-platforms {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 8px;
-  margin-bottom: 28px;
-  border-bottom: 1px solid #d0d6c9;
-}
-.sp-platforms > button {
   position: relative;
   display: flex;
+  align-items: flex-end;
+  gap: 0 14px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  overscroll-behavior-x: contain;
+  scrollbar-width: thin;
+  scrollbar-color: #b9c4b3 transparent;
+  border-bottom: 1px solid #d0d6c9;
+}
+.sp-platforms::-webkit-scrollbar { height: 4px; }
+.sp-platforms::-webkit-scrollbar-thumb { background: #b9c4b3; border-radius: 4px; }
+.sp-tab-group { display: flex; flex: none; flex-direction: column; min-width: 0; }
+.sp-tab-group-label {
+  padding: 0 11px 8px;
+  color: #5c6a58;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.4;
+  white-space: nowrap;
+}
+.sp-tab-group-tabs { display: flex; gap: 0; }
+.sp-platforms [role='tab'] {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  flex: none;
   align-items: center;
   justify-content: center;
-  flex-direction: column;
   gap: 10px;
-  min-width: 0;
-  min-height: 94px;
-  padding: 16px 12px 20px;
+  min-width: 44px;
+  min-height: 50px;
+  padding: 12px 11px 14px;
   border: 0;
   border-radius: 3px 3px 0 0;
   background: transparent;
-  color: #6b7667;
+  color: #66725f;
   font-family: inherit;
-  font-size: 14px;
+  font-size: 13.5px;
   font-weight: 550;
-  line-height: 1.3;
+  line-height: 1.2;
+  white-space: nowrap;
   cursor: pointer;
-  transition: color 180ms ease, background-color 180ms ease;
+  transition: color 180ms ease;
 }
-.sp-platforms > button::after {
+.sp-platforms [role='tab'][aria-selected='true'] { color: #1b3627; }
+.sp-platforms [role='tab']:hover { color: #193827; }
+.sp-platforms .sp-platform-logo { display: block; flex: none; width: auto; height: 18px; }
+/* Front of the peel: the piece of a fictitious client. One photo (4:5, cover) and its text in HTML. */
+#laboratorio .sp-campaign-panel .sp-art { position: relative; margin: 0; overflow: hidden; background: #1b211d; }
+#laboratorio .sp-campaign-panel .sp-art-photo { object-fit: cover; }
+#laboratorio .sp-art-cap { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: flex-end; gap: 10px; padding: clamp(18px, 4.5vw, 34px); background: linear-gradient(180deg, #0000 38%, #000000d6 92%); color: #fff; pointer-events: none; }
+#laboratorio .sp-art-brand { position: absolute; top: clamp(16px, 4vw, 28px); left: clamp(16px, 4vw, 28px); display: inline-flex; align-items: center; gap: 9px; padding: 5px 13px 5px 5px; border-radius: 999px; background: #0000005c; font: 600 14px/1.2 var(--sans, Inter, Arial, sans-serif); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); }
+#laboratorio .sp-art-brand .cm-mark { display: grid; flex: none; place-items: center; width: 30px; height: 30px; overflow: hidden; border-radius: 50%; background: var(--c); box-shadow: 0 0 0 1.5px #fff; }
+#laboratorio .sp-art-brand .cm-mark svg { width: 72%; height: 72%; }
+#laboratorio .sp-art-title { max-width: 15ch; font: 700 clamp(30px, 6.4vw, 48px)/1.04 var(--sans, Inter, Arial, sans-serif); letter-spacing: -.035em; text-wrap: balance; }
+#laboratorio .sp-art-fine { color: #ffffffd6; font: 500 12.5px/1.4 var(--sans, Inter, Arial, sans-serif); }
+.sp-tab-marker {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 0;
+  width: 0;
+  height: 0;
+  border-radius: 3px 3px 0 0;
+  background: #e9ede1;
+  box-shadow: inset 0 -3px 0 #294c36;
+  pointer-events: none;
+  transition: transform .48s cubic-bezier(.16,1,.3,1), width .4s cubic-bezier(.16,1,.3,1), height .4s cubic-bezier(.16,1,.3,1);
+}
+.sp-tab-marker.is-instant { transition: none; }
+/* Edge fades tell that the row continues; they never cover the focus ring. */
+.sp-platforms-wrap::before, .sp-platforms-wrap::after {
   content: '';
   position: absolute;
-  right: 0;
-  bottom: -1px;
-  left: 0;
-  height: 3px;
-  background: transparent;
-  transition: background-color 220ms ease;
+  z-index: 2;
+  top: 0;
+  bottom: 1px;
+  width: 28px;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 180ms ease;
 }
-.sp-platforms > button[aria-selected='true'] { background: #e9ede1; color: #1b3627; }
-.sp-platforms > button[aria-selected='true']::after { background: #294c36; }
-.sp-platforms > button:hover { color: #193827; background: #e9ede180; }
-.sp-platforms .sp-platform-logo { width: 30px; height: 30px; object-fit: contain; flex: none; }
-.sp-platforms .sp-platform-logo--meta { width: 88px; }
+.sp-platforms-wrap::before { left: 0; background: linear-gradient(90deg, var(--paper, #f3f1e9), transparent); }
+.sp-platforms-wrap::after { right: 0; background: linear-gradient(270deg, var(--paper, #f3f1e9), transparent); }
+.sp-platforms-wrap[data-scroll-start='true']::before, .sp-platforms-wrap[data-scroll-end='true']::after { opacity: 1; }
 .sp-campaign-art { display: grid; align-items: start; overflow: clip; isolation: isolate; }
 .sp-campaign-panel { grid-area: 1 / 1; position: relative; min-width: 0; }
 .sp-campaign-panel[hidden] { display: none !important; }
 /* Exit-only painting never restores focus or screen-reader ownership. */
 .sp-campaign-panel[hidden][data-leaving='true'] { display: block !important; pointer-events: none; }
 .sp-campaign-panel > figure { margin: 0; }
-.sp-platforms > button:focus-visible, .sp-campaign-panel:focus-visible {
+.sp-campaign-panel:focus-visible {
   outline: 3px solid #406fca;
   outline-offset: 4px;
 }
+.sp-platforms [role='tab']:focus-visible { outline: 3px solid #406fca; outline-offset: -3px; }
 body.portfolio-r6 .sa-campaign-services {
   display: grid;
   grid-template-columns: 1.1fr .9fr;
@@ -167,9 +216,10 @@ body.portfolio-r6 #editorial { padding-bottom: 96px; }
 @media (max-width: 760px) {
   body.portfolio-r6 #laboratorio { padding-block: 88px; }
   .sp-campaign { margin-top: 32px; }
-  .sp-platforms { gap: 4px; margin-bottom: 24px; }
-  .sp-platforms > button { min-height: 88px; padding: 12px 8px 16px; font-size: 13px; }
-  .sp-platforms .sp-platform-logo--meta { width: 76px; }
+  .sp-platforms-wrap { margin-bottom: 24px; }
+  .sp-platforms { gap: 0 14px; }
+  .sp-platforms [role='tab'] { min-height: 48px; padding: 11px 11px 13px; font-size: 13.5px; }
+  .sp-tab-group-label { padding-inline: 11px; }
   body.portfolio-r6 .sa-campaign-services { grid-template-columns: minmax(0, 1fr); gap: 24px; margin-top: 40px; padding-top: 32px; }
   body.portfolio-r6 .sa-campaign-services h3 { font-size: 29px; }
   body.portfolio-r6 .sa-campaign-services p { font-size: 16px; }
@@ -183,6 +233,6 @@ body.portfolio-r6 #editorial { padding-bottom: 96px; }
 }
 @media (max-width: 360px) { .pf-fatos-context { min-height: 340px; } }
 @media (prefers-reduced-motion: reduce) {
-  .sp-platforms > button, .sp-platforms > button::after { transition: none; }
+  .sp-platforms [role='tab'], .sp-tab-marker, .sp-platforms-wrap::before, .sp-platforms-wrap::after { transition: none; }
 }
-body.is-paused .sp-platforms > button, body.is-paused .sp-platforms > button::after { transition: none; }
+body.is-paused .sp-platforms [role='tab'], body.is-paused .sp-tab-marker { transition: none; }

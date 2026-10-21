@@ -82,21 +82,29 @@ try{
       check('Archived studio is absent from public navigation',await page.locator('a[href$="#estudio-interativo"],video.ks-video').count()===0);
 
       const tabs=page.locator('#laboratorio [data-sp-tab]');
-      check('Only the three actual campaign channels remain selectable',await tabs.count()===3&&await tabs.evaluateAll(items=>items.every(tab=>{const r=tab.getBoundingClientRect();return tab.getAttribute('role')==='tab'&&r.width>=44&&r.height>=44;})));
-      for(let index=0;index<3;index++){
+      const channelIds=['instagram','facebook','tiktok','youtube','linkedin','google','seo','chatgpt','maps','whatsapp','blog'];
+      check('The eleven campaign channels are selectable tabs in four groups',JSON.stringify(await tabs.evaluateAll(items=>items.map(tab=>tab.dataset.spTab)))===JSON.stringify(channelIds)&&await tabs.evaluateAll(items=>items.every(tab=>{const r=tab.getBoundingClientRect();return tab.getAttribute('role')==='tab'&&r.width>=44&&r.height>=44&&document.getElementById(tab.getAttribute('aria-describedby'))?.textContent.trim().length>3;}))&&await page.locator('#laboratorio .sp-tab-group').count()===4);
+      check('Each channel tab carries its official platform mark as inline SVG (the publieditorial has none)',await tabs.evaluateAll(items=>items.every(tab=>tab.dataset.spTab==='blog'?!tab.querySelector('svg,img'):Boolean(tab.querySelector('svg.ch-logo'))&&!tab.querySelector('img'))));
+      check('The channel row scrolls inside itself without widening the page',await page.locator('#laboratorio .sp-platforms').evaluate(list=>getComputedStyle(list).overflowX==='auto'&&list.getBoundingClientRect().right<=innerWidth+1&&document.documentElement.scrollWidth<=innerWidth+2));
+      const markerOnTab=()=>page.locator('#laboratorio .sp-platforms').evaluate(list=>{const tab=list.querySelector('[aria-selected="true"]'),marker=list.querySelector('.sp-tab-marker');const a=tab.getBoundingClientRect(),b=list.getBoundingClientRect(),m=getComputedStyle(marker).transform;const x=new DOMMatrixReadOnly(m==='none'?undefined:m).m41;return Math.abs(x-(a.left-b.left+list.scrollLeft))<2&&Math.abs(parseFloat(marker.style.width)-a.width)<2&&a.left>=b.left-1&&a.right<=b.right+1;});
+      for(let index=0;index<channelIds.length;index++){
         const beforeMotion=await page.evaluate(()=>window.__presentationAnimations.filter(item=>item.kind==='campaign').length);
         await tabs.nth(index).click();
         const panelId=await tabs.nth(index).getAttribute('aria-controls'),panel=page.locator(`#${panelId}`);
         if(index>0)check(`Campaign ${index+1}: outer transition respects the motion preference`,await page.evaluate(({beforeMotion,reduced})=>{const after=window.__presentationAnimations.filter(item=>item.kind==='campaign').length;return reduced?after===beforeMotion:after>beforeMotion;},{beforeMotion,reduced}));
         check(`Campaign ${index+1}: selection exposes exactly its labelled static panel`,await tabs.nth(index).getAttribute('aria-selected')==='true'&&await panel.isVisible()&&await panel.getAttribute('aria-labelledby')===await tabs.nth(index).getAttribute('id')&&await page.locator('.sp-campaign-panel:not([hidden])').count()===1);
+        // Containment is measured once the entrance (a 42px spring) has settled.
+        await page.waitForFunction(()=>!document.querySelector('#laboratorio .sp-campaign').dataset.transitioning);
         await panel.locator('img').evaluate(img=>img.decode());
         check(`Campaign ${index+1}: the local artwork is decoded and contained`,await panel.locator('img').evaluate(img=>{const r=img.getBoundingClientRect();return img.naturalWidth>0&&img.getAttribute('src').startsWith('/assets/')&&img.alt.trim().length>12&&r.width>0&&r.left>=-1&&r.right<=innerWidth+1;}));
-        await capture(`campaign-${index}`);
+        await page.waitForTimeout(reduced?30:560);
+        check(`Campaign ${index+1}: the sliding marker sits under the selected tab, which stays visible in its row`,await markerOnTab());
+        if(index<3||index===channelIds.length-1)await capture(`campaign-${index}`);
       }
       await tabs.first().focus();await page.keyboard.press('ArrowRight');
       check('Arrow navigation selects and focuses the next campaign',await tabs.nth(1).getAttribute('aria-selected')==='true'&&await tabs.nth(1).evaluate(el=>el===document.activeElement));
       await page.keyboard.press('End');
-      check('End selects the final campaign',await tabs.nth(2).getAttribute('aria-selected')==='true'&&await tabs.nth(2).evaluate(el=>el===document.activeElement));
+      check('End selects the final campaign',await tabs.last().getAttribute('aria-selected')==='true'&&await tabs.last().evaluate(el=>el===document.activeElement));
       await page.keyboard.press('Home');
       check('Home restores the first campaign',await tabs.first().getAttribute('aria-selected')==='true'&&await tabs.first().evaluate(el=>el===document.activeElement));
       await toggleMotion();
@@ -153,6 +161,45 @@ try{
         await campaignCard.locator('[data-sp-card-back]').getAttribute('aria-hidden')==='false'&&
         Number(await campaignCard.getAttribute('data-peel-progress'))>.99&&
         await campaignCard.locator('[data-campaign-note]').count()===1);
+      // Behind the paper: a fictitious client's ad in its native placement, inside the orange iPhone,
+      // with the official platform mark, the ad label, the client chip and the three-step journey (no long text block).
+      check('The back shows the selected channel placement with its ad label, client chip and journey',
+        await campaignCard.locator('.cx-player').getAttribute('data-platform')===await page.locator('.sp-campaign').getAttribute('data-channel')&&
+        /Patrocinado/.test(await campaignCard.locator('.cx-stage').innerText())&&
+        await campaignCard.locator('.cx-stage .ch-iphone[data-cor="laranja"]').count()===1&&
+        await campaignCard.locator('.cx-brand svg.ch-logo').count()===1&&
+        /Patrocinado/.test(await campaignCard.locator('.cx-label').innerText())&&
+        /marca fictícia/.test(await campaignCard.locator('.cx-client').innerText())&&
+        await campaignCard.locator('.cx-journey li').count()===3&&
+        await campaignCard.locator('.cx-journey [aria-current="step"]').count()===1&&
+        await campaignCard.locator('.cx-positioning,.campaign-facts').count()===0&&
+        !/smiile/i.test(await campaignCard.locator('.cx-player').innerText()));
+      const labels={tiktok:/Patrocinado/,linkedin:/Promovido/,chatgpt:/Anúncio/,maps:/Patrocinado/,blog:/Conteúdo patrocinado por Arrimo Patrimônio/,seo:/moradafalesia\.exemplo/};
+      for(const [id,label] of Object.entries(labels)){
+        await page.locator('#tab-'+id).click();
+        await page.waitForFunction(id=>document.querySelector('#laboratorio .cx-player')?.dataset.platform===id,id);
+        check(`Switching to ${id} keeps the peel open and updates what is behind`,await campaignCard.getAttribute('data-side')==='back'&&label.test(await campaignCard.locator('.cx-stage').first().innerText()));
+      }
+      check('The organic result is not labelled as an ad',!/Patrocinado/.test(await campaignCard.locator('.cm-g-result--organic').innerText()));
+      await page.locator('#tab-tiktok').click();
+      await page.waitForFunction(()=>document.querySelector('#laboratorio .cx-player')?.dataset.platform==='tiktok');
+      await campaignCard.locator('[data-cx-body] .cx-stage').scrollIntoViewIfNeeded();
+      const screenFrame=()=>campaignCard.locator('[data-cx-body] .cm-screen').getAttribute('data-frame');
+      const lastFrame=String(Number(await campaignCard.locator('[data-cx-body] .cx-stage').getAttribute('data-frames'))-1);
+      if(reduced){
+        check('Reduced motion never autoplays the journey and offers the next frame',await screenFrame()==='0'&&await campaignCard.locator('[data-cx-body] [data-cx-step="0"]').getAttribute('aria-current')==='step'&&/Próximo/.test(await campaignCard.locator('[data-cx-play]').innerText()));
+        await campaignCard.locator('[data-cx-play]').click();
+        check('Without motion the journey advances one frame on request',await screenFrame()==='1');
+        await campaignCard.locator('[data-cx-body] [data-cx-step="2"]').click();
+        await page.waitForTimeout(80);
+        check('Choosing the conversion step shows the tap on the CTA as a static mark',await campaignCard.locator('[data-cx-body] [data-cx-step="2"]').getAttribute('aria-current')==='step'&&await campaignCard.locator('[data-cx-body] .cx-tap.is-static:not([hidden])').count()===1&&Boolean(await campaignCard.locator('[data-cx-body] .cm-screen').getAttribute('data-tap')));
+      }else{
+        await page.waitForFunction(last=>document.querySelector('#laboratorio [data-cx-body] .cm-screen')?.dataset.frame===last&&document.querySelector('#laboratorio [data-cx-play]').getAttribute('aria-pressed')==='false',lastFrame,{timeout:16000});
+        await page.waitForTimeout(700);
+        check('The journey plays once to the native conversion screen and stops there with a replay control',await screenFrame()===lastFrame&&/(^| )done( |$)/.test(await campaignCard.locator('[data-cx-body] .cm-screen').getAttribute('data-state'))&&await campaignCard.locator('[data-cx-body] .cx-journey li[data-state="done"]').count()===3&&/Rever/.test(await campaignCard.locator('[data-cx-play]').innerText()));
+      }
+      await page.locator('#tab-instagram').click();
+      await page.waitForFunction(()=>document.querySelector('#laboratorio .cx-player')?.dataset.platform==='instagram');
       await campaignCard.locator('[data-sp-card-turn="back"]').click();
       await page.waitForFunction(()=>document.querySelector('#laboratorio .sp-campaign-card')?.dataset.peelState==='closed');
       check('The return control restores the artwork after peeling',

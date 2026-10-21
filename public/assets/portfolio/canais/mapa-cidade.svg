@@ -1,0 +1,92 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 640" width="360" height="640" role="img" aria-label="Mapa ilustrativo de bairro, sem nomes reais">
+<!-- Mapa ilustrativo desenhado para o portfólio (21/10/2026). Sem nomes, sem dados reais e sem o estilo dos blocos do Google.
+     Pontos sugeridos para o mock do Google Maps (coordenadas do viewBox 360 x 640):
+     restaurante (pin quadrado destacado): 252,224   seu local (ponto azul): 108,544
+     rota pelas ruas: M108,544 L108,464 L180,464 L180,304 L252,304 L252,224 -->
+<rect width="360" height="640" fill="#efece4"/>
+<rect x="7" y="7" width="22" height="50" rx="4" fill="#e7e3d9"/>
+<rect x="7" y="71" width="22" height="66" rx="4" fill="#e4e0d5"/>
+<rect x="7" y="151" width="22" height="66" rx="4" fill="#e7e3d9"/>
+<rect x="7" y="231" width="22" height="66" rx="4" fill="#e9e5dc"/>
+<rect x="7" y="311" width="22" height="66" rx="4" fill="#e4e0d5"/>
+<rect x="7" y="391" width="22" height="66" rx="4" fill="#e4e0d5"/>
+<rect x="7" y="471" width="22" height="66" rx="4" fill="#e7e3d9"/>
+<rect x="7" y="551" width="22" height="58" rx="4" fill="#e7e3d9"/>
+<rect x="7" y="623" width="22" height="10" rx="4" fill="#e7e3d9"/>
+<rect x="43" y="7" width="58" height="50" rx="4" fill="#e7e3d9"/>
+<rect x="43" y="71" width="58" height="66" rx="4" fill="#e4e0d5"/>
+<rect x="43" y="151" width="58" height="66" rx="4" fill="#e9e5dc"/>
+<rect x="43" y="231" width="58" height="66" rx="4" fill="#e4e0d5"/>
+<rect x="43" y="311" width="58" height="66" rx="4" fill="#e7e3d9"/>
+<rect x="43" y="391" width="58" height="66" rx="4" fill="#e7e3d9"/>
+<rect x="43" y="471" width="58" height="66" rx="4" fill="#e9e5dc"/>
+<rect x="43" y="551" width="58" height="58" rx="4" fill="#e9e5dc"/>
+<rect x="43" y="623" width="58" height="10" rx="4" fill="#e4e0d5"/>
+<rect x="115" y="7" width="58" height="50" rx="4" fill="#e4e0d5"/>
+<rect x="115" y="71" width="58" height="66" rx="4" fill="#e7e3d9"/>
+<rect x="115" y="151" width="58" height="66" rx="4" fill="#e7e3d9"/>
+<rect x="115" y="231" width="58" height="66" rx="4" fill="#e4e0d5"/>
+<rect x="115" y="311" width="58" height="66" rx="4" fill="#e7e3d9"/>
+<rect x="115" y="391" width="58" height="66" rx="4" fill="#e7e3d9"/>
+<rect x="115" y="471" width="58" height="66" rx="4" fill="#e9e5dc"/>
+<rect x="115" y="551" width="58" height="58" rx="4" fill="#e4e0d5"/>
+<rect x="115" y="623" width="58" height="10" rx="4" fill="#e4e0d5"/>
+<rect x="187" y="7" width="58" height="50" rx="4" fill="#e7e3d9"/>
+<rect x="187" y="71" width="58" height="66" rx="4" fill="#e7e3d9"/>
+<rect x="187" y="151" width="58" height="66" rx="4" fill="#e4e0d5"/>
+<rect x="187" y="231" width="58" height="66" rx="4" fill="#e4e0d5"/>
+<rect x="187" y="311" width="58" height="66" rx="4" fill="#e9e5dc"/>
+<rect x="187" y="391" width="58" height="66" rx="4" fill="#e9e5dc"/>
+<rect x="187" y="471" width="58" height="66" rx="4" fill="#e4e0d5"/>
+<rect x="187" y="551" width="58" height="58" rx="4" fill="#e7e3d9"/>
+<rect x="187" y="623" width="58" height="10" rx="4" fill="#e9e5dc"/>
+<rect x="259" y="7" width="58" height="50" rx="4" fill="#e4e0d5"/>
+<rect x="259" y="71" width="58" height="66" rx="4" fill="#e9e5dc"/>
+<rect x="259" y="151" width="58" height="66" rx="4" fill="#e4e0d5"/>
+<rect x="259" y="231" width="58" height="66" rx="4" fill="#e9e5dc"/>
+<rect x="259" y="311" width="58" height="66" rx="4" fill="#e7e3d9"/>
+<rect x="259" y="391" width="58" height="66" rx="4" fill="#e7e3d9"/>
+<rect x="259" y="471" width="58" height="66" rx="4" fill="#e7e3d9"/>
+<rect x="259" y="551" width="58" height="58" rx="4" fill="#e4e0d5"/>
+<rect x="259" y="623" width="58" height="10" rx="4" fill="#e4e0d5"/>
+<rect x="331" y="7" width="22" height="50" rx="4" fill="#e7e3d9"/>
+<rect x="331" y="71" width="22" height="66" rx="4" fill="#e9e5dc"/>
+<rect x="331" y="151" width="22" height="66" rx="4" fill="#e4e0d5"/>
+<rect x="331" y="231" width="22" height="66" rx="4" fill="#e7e3d9"/>
+<rect x="331" y="311" width="22" height="66" rx="4" fill="#e4e0d5"/>
+<rect x="331" y="391" width="22" height="66" rx="4" fill="#e9e5dc"/>
+<rect x="331" y="471" width="22" height="66" rx="4" fill="#e9e5dc"/>
+<rect x="331" y="551" width="22" height="58" rx="4" fill="#e4e0d5"/>
+<rect x="331" y="623" width="22" height="10" rx="4" fill="#e9e5dc"/>
+<rect x="115" y="311" width="58" height="66" rx="6" fill="#cfe3c2"/>
+<circle cx="128" cy="325" r="6" fill="#b9d6a8"/>
+<circle cx="158" cy="322" r="6" fill="#b9d6a8"/>
+<circle cx="142" cy="346" r="6" fill="#b9d6a8"/>
+<circle cx="127" cy="364" r="6" fill="#b9d6a8"/>
+<circle cx="160" cy="362" r="6" fill="#b9d6a8"/>
+<path d="M118 344 Q144 338 170 350" stroke="#f6f4ee" stroke-width="3" fill="none" stroke-linecap="round"/>
+<g stroke="#ffffff" stroke-width="10" stroke-linecap="square">
+<line x1="36" y1="0" x2="36" y2="640"/>
+<line x1="108" y1="0" x2="108" y2="640"/>
+<line x1="252" y1="0" x2="252" y2="640"/>
+<line x1="324" y1="0" x2="324" y2="640"/>
+<line x1="0" y1="64" x2="360" y2="64"/>
+<line x1="0" y1="144" x2="360" y2="144"/>
+<line x1="0" y1="224" x2="360" y2="224"/>
+<line x1="0" y1="384" x2="360" y2="384"/>
+<line x1="0" y1="464" x2="360" y2="464"/>
+<line x1="0" y1="544" x2="360" y2="544"/>
+<line x1="0" y1="616" x2="360" y2="616"/>
+</g>
+<path d="M259 0 H360 V118 Q330 132 300 120 Q268 108 259 80 Z" fill="#cfe3c2"/>
+<path d="M286 0 H360 V86 Q334 98 312 84 Q292 70 290 40 Z" fill="#bcd6e8"/>
+<g stroke-linecap="square">
+<line x1="180" y1="0" x2="180" y2="640" stroke="#e2d3a4" stroke-width="18"/>
+<line x1="0" y1="304" x2="360" y2="304" stroke="#e2d3a4" stroke-width="18"/>
+<line x1="180" y1="0" x2="180" y2="640" stroke="#f6ecc8" stroke-width="14"/>
+<line x1="0" y1="304" x2="360" y2="304" stroke="#f6ecc8" stroke-width="14"/>
+</g>
+<rect x="259" y="471" width="58" height="66" rx="6" fill="#cfe3c2"/>
+<circle cx="276" cy="490" r="6" fill="#b9d6a8"/>
+<circle cx="300" cy="514" r="6" fill="#b9d6a8"/>
+</svg>

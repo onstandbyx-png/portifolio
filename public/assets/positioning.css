@@ -51,8 +51,20 @@ body.is-paused .path-scope::details-content{transition:none!important}
 .portfolio-r10 #laboratorio .sp-peel-layout{width:min(100%,1120px);display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,.8fr);gap:clamp(32px,5vw,72px);align-items:center}
 .campaign-summary{min-width:0}
 .campaign-summary>.eyebrow{color:#56664f;font-size:12px;line-height:1.6}
-.campaign-summary h3{font-size:clamp(28px,3.2vw,42px);line-height:1.12;letter-spacing:-.045em;font-weight:500;max-width:17ch;margin:18px 0}
+.campaign-summary h3{font-size:clamp(28px,3.2vw,42px);line-height:1.12;letter-spacing:-.045em;font-weight:500;max-width:17ch;margin:14px 0 16px}
 .campaign-summary p{max-width:34ch;font-size:16px;line-height:1.7;color:#53664c;margin:0 0 22px}
+/* Compact summary: platform mark and name, benefit, format chips with the ad label, client chip, actions. */
+.campaign-summary .campaign-channel{display:flex;align-items:center;gap:10px;max-width:none;margin:0;color:#2b4231;font:650 15px/1.3 var(--sans)}
+.campaign-logo{display:block;flex:none;width:auto;height:20px}
+.campaign-chips{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 12px;padding:0;list-style:none}
+.campaign-chips li{display:inline-flex;align-items:center;min-height:30px;padding:0 12px;border-radius:999px;box-shadow:inset 0 0 0 1px #b9cab8;color:#3f5c46;font-size:13px;font-weight:550}
+.campaign-chips li[aria-current="true"]{background:#1e4530;box-shadow:none;color:#f8fbf7}
+.campaign-chips li.is-label{background:#fff;box-shadow:inset 0 0 0 1px #c9d4c4;color:#2b3e31}
+.campaign-summary .campaign-client{display:inline-flex;align-items:center;gap:8px;max-width:100%;margin:0 0 22px;padding:4px 13px 4px 5px;border-radius:999px;background:#f4f6ef;box-shadow:inset 0 0 0 1px #c9d4c4;color:#3d4639;font-size:13px;line-height:1.3}
+.campaign-client .cm-mark{display:grid;flex:none;place-items:center;width:22px;height:22px;overflow:hidden;border-radius:50%;background:var(--c)}
+.campaign-client .cm-mark svg{width:72%;height:72%}
+.campaign-actions{display:flex;flex-wrap:wrap;align-items:center;gap:6px 22px}
+.campaign-actions>a{display:inline-flex;align-items:center;min-height:44px;color:#36543b;font-size:13px;line-height:1.4;text-underline-offset:4px}
 .campaign-decision{display:flex;align-items:center;justify-content:space-between;gap:24px;min-height:48px;padding:12px 16px;background:#1d402d;border:1px solid #1d402d;border-radius:6px;color:#f4f5eb;font:550 14px/1.4 var(--sans);cursor:pointer}
 .campaign-summary>a{display:inline-flex;align-items:center;min-height:44px;margin-top:12px;color:#36543b;font-size:13px;line-height:1.4;text-underline-offset:4px}
 .campaign-decision:hover{background:#315c3e}
@@ -129,6 +141,7 @@ body.portfolio-r10 #sistemas{padding:88px 0;background:#193b2d;color:#f4f5e9}
  .portfolio-r10 #laboratorio .sp-peel-layout{grid-template-columns:1fr;gap:28px}
  .campaign-summary h3{max-width:26ch;margin:8px 0;font-size:25px}
  .campaign-summary p{max-width:none;font-size:15px;margin-bottom:16px}
+ .campaign-summary .campaign-client{margin-bottom:16px}
  .campaign-summary>a{margin-top:4px}
  body.portfolio-r10 #sistemas{padding:58px 0}
  .systems-intro{grid-template-columns:1fr;gap:22px;margin-bottom:28px}

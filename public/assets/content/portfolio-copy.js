@@ -139,11 +139,11 @@ export const portfolioCopy = {
         {
           "id": "ads",
           "label": "Campanhas e anúncios",
-          "nature": "smiile · Estudo de campanha",
-          "title": "Uma oferta.\nTrês abordagens.",
-          "body": "Conceito, copy e direção de arte adaptados ao feed, à busca e ao vídeo vertical.",
+          "nature": "Exemplos com marcas fictícias",
+          "title": "Do anúncio\nao contato.",
+          "body": "Exemplos para oito tipos de cliente em onze canais, da atenção à conversão.",
           "contribution": "Conceito, copy e direção de arte",
-          "cta": "Ver campanha",
+          "cta": "Ver os exemplos",
           "href": "#laboratorio",
           "decision": "No feed, a peça desperta interesse. Na busca, responde a uma intenção. No vídeo vertical, o ritmo conduz a mensagem."
         },
@@ -354,7 +354,7 @@ export const portfolioCopy = {
       "purpose": "Vender criação e gestão de campanhas com uma demonstração criativa coerente entre canais.",
       "eyebrow": "Campanhas e anúncios",
       "title": "Sua oferta.\nEm cada canal.",
-      "body": "Conceito, copy e direção de arte. Compare a mesma oferta no feed, na busca e na tela vertical.",
+      "body": "Conceito, copy e direção de arte. Compare a mesma oferta em redes sociais, busca, IA, mapas, conversa e blog.",
       "nature": "Estudo de campanha · smiile",
       "campaignName": "Sua ideia ganha vida.",
       "campaignIntent": "Apresentar possibilidades de sites e aplicativos e levar o público a explorar os projetos.",
@@ -678,7 +678,7 @@ export const portfolioCopy = {
           ],
           "cta": "Começar briefing de campanha",
           "proofHref": "#laboratorio",
-          "proofLabel": "Comparar a mesma oferta em três canais"
+          "proofLabel": "Ver anúncios de clientes em onze canais"
         },
         {
           "id": "web",

@@ -1,45 +1,51 @@
-/* Static artwork remains inside the moving portfolio presentation. */
-import { createMotion } from '../sections/motion.js';
+/* Static artwork remains inside the moving portfolio presentation.
+   Campaign channels: grouped tabs with the official platform marks and a
+   sliding marker; the outgoing piece leaves to the side (30px, 300ms) and the
+   new one enters with a spring (42px, 620ms), as in the earlier channel switch
+   of the portfolio. Each front is the piece of a fictitious client. */
+import { createMotion, clamp } from '../sections/motion.js';
 import { mountArtworkDialog } from './artwork-dialog.js';
+import { channels, groups, IMG, CLIENTES, marca } from './campaign-channels.js';
+import { logoSvg, CHANNEL_LOGO } from './channel-logos.js';
 const ART = '/assets/portfolio/static-r8/';
-
-const campaignNotes = [
- {title:'Mostrar a ideia antes de explicá-la.',message:'Sua ideia ganha forma.',decision:'A proposta vem primeiro. As duas composições mostram como a mesma direção visual se desdobra em site e aplicativo.',delivery:'Conceito, copy e direção de arte para uma peça de feed.'},
- {title:'Responder à intenção de busca.',message:'Um site à altura da sua ideia.',decision:'A busca parte de uma necessidade concreta. O título responde ao pedido e a imagem conecta o anúncio ao projeto Casa Costa.',delivery:'Estudo de anúncio de pesquisa e ligação visual com o destino.'},
- {title:'Um convite pensado para a tela vertical.',message:'O próximo passo começa com um olhar.',decision:'O cenário ocupa a tela vertical. O texto conduz o olhar até a apresentação do aplicativo, mantendo um único convite.',delivery:'Peça vertical e direção visual para desdobramento em vídeo.'}
-];
-
-const campaigns = [
-  { id: 'meta', name: 'Meta', logo: '/assets/brands/meta-official-primary.webp', width: 100, height: 28,
-    alt: 'Campanha smiile para Meta: direção de arte para apresentar sites e aplicativos.',
-    text: ['Ideias que se tornam reais', 'Do conceito à experiência', 'Sites. Aplicativos. Uma nova forma de apresentar'] },
-  { id: 'google', name: 'Google Ads', logo: '/assets/brands/google-ads-official-reference.webp', width: 32, height: 32,
-    alt: 'Campanha smiile para Google: anúncio de pesquisa e continuidade visual da página.',
-    text: ['Busca: “um site para minha ideia”', 'smiile, design e desenvolvimento', 'Da primeira impressão ao próximo passo', 'Uma mensagem. Uma intenção'] },
-  { id: 'tiktok', name: 'TikTok', logo: '/assets/brands/tiktok-official-icon-black-circle.png', width: 32, height: 32,
-    alt: 'Campanha smiile para TikTok: composição vertical sobre explorar uma nova experiência.',
-    text: ['Uma nova perspectiva', 'Um app. Outro caminho', 'Trilha do Arco: descubra o que vem depois'] },
-];
+const esc = value => String(value).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 
 function picture(file, alt, className = '') {
   return `<img class="${className}" src="${ART}${file}.webp" alt="${alt}" width="960" height="1200" loading="lazy" decoding="async">`;
+}
+
+function tabMarkup(channel, index) {
+  const id = CHANNEL_LOGO[channel.id];
+  const mark = id ? logoSvg(id, { altura: 18, classe: 'sp-platform-logo' }) : '';
+  return `<button type="button" id="tab-${channel.id}" role="tab" data-sp-tab="${channel.id}" aria-controls="panel-${channel.id}" aria-describedby="sp-group-${channel.group}" aria-selected="${index === 0}" tabindex="${index === 0 ? '0' : '-1'}">${mark}<span>${esc(channel.name)}</span></button>`;
+}
+
+/* The front of the peel: one photo and the piece's text in HTML (brand, headline, fictitious-brand notice). */
+function panelMarkup(channel, index) {
+  const { art } = channel, im = IMG[art.img], client = CLIENTES[art.cliente];
+  return `<div class="sp-campaign-panel" id="panel-${channel.id}" role="tabpanel" aria-labelledby="tab-${channel.id}" tabindex="0"${index ? ' hidden' : ''}><figure class="sp-art"><img class="sp-art-photo" src="${im.src}" alt="${esc(art.alt)}" width="${im.w}" height="${im.h}" loading="lazy" decoding="async" style="object-position:${art.pos}"><figcaption class="sp-art-cap"><span class="sp-art-brand">${marca(art.cliente)}<b>${esc(client.marca)}</b></span><b class="sp-art-title">${esc(art.titulo)}</b><small class="sp-art-fine">Exemplo ilustrativo de ${esc(client.tipo)}, marca fictícia.</small></figcaption></figure></div>`;
 }
 
 function mountCampaign(motion) {
   const lab = document.querySelector('#laboratorio .ads-lab, #laboratorio .sp-campaign');
   if (!lab) return;
   lab.className = 'sp-campaign';
-  lab.innerHTML = `<div class="sp-platforms" role="tablist" aria-label="Canais da campanha smiile">${campaigns.map((campaign, i) => `<button type="button" id="tab-${campaign.id}" role="tab" data-sp-tab="${campaign.id}" aria-controls="panel-${campaign.id}" aria-selected="${i === 0}" tabindex="${i === 0 ? '0' : '-1'}"><img class="sp-platform-logo sp-platform-logo--${campaign.id}" src="${campaign.logo}" alt="" width="${campaign.width}" height="${campaign.height}" aria-hidden="true"><span>${campaign.name}</span></button>`).join('')}</div>
-    <div class="sp-campaign-art">${campaigns.map((campaign, i) => `<div class="sp-campaign-panel" id="panel-${campaign.id}" role="tabpanel" aria-labelledby="tab-${campaign.id}" tabindex="0"${i ? ' hidden' : ''}><figure>${picture(`campanha-${campaign.id}`, campaign.alt)}<figcaption class="sp-art-text"><b>Texto da peça</b> ${campaign.text.join(' · ')}</figcaption></figure></div>`).join('')}</div>`;
+  const groupMarkup = groups.map(group => `<div class="sp-tab-group" role="presentation"><span class="sp-tab-group-label" id="sp-group-${group.id}" aria-hidden="true">${esc(group.label)}</span><div class="sp-tab-group-tabs" role="presentation">${channels.filter(channel => channel.group === group.id).map(channel => tabMarkup(channel, channels.indexOf(channel))).join('')}</div></div>`).join('');
+  lab.innerHTML = `<div class="sp-platforms-wrap"><div class="sp-platforms" role="tablist" aria-label="Canais de anúncio"><span class="sp-tab-marker is-instant" aria-hidden="true"></span>${groupMarkup}</div></div>
+    <div class="sp-campaign-art">${channels.map(panelMarkup).join('')}</div>`;
   const layout=document.createElement('div');layout.className='sp-campaign-layout';
   const art=lab.querySelector('.sp-campaign-art');art.before(layout);layout.append(art);
-  const note=document.createElement('aside');note.className='sp-campaign-note';note.id='campaign-note';note.setAttribute('data-campaign-note','');note.setAttribute('aria-live','polite');note.setAttribute('aria-atomic','true');
-  note.innerHTML='<span class="eyebrow">A decisão por trás da peça</span><h3 data-note-title></h3><dl><div><dt>Mensagem</dt><dd data-note-message></dd></div><div><dt>Adaptação ao canal</dt><dd data-note-decision></dd></div><div><dt>Entrega</dt><dd data-note-delivery></dd></div></dl><a href="#contato" data-contact-service="Campanhas e anúncios">Conversar sobre uma campanha ↓</a>';
+  // One short sentence per placement, the fictitious-brand notice and the contact link (the player keeps them in sync with the format).
+  const note=document.createElement('aside');note.className='sp-campaign-note';note.id='campaign-note';note.setAttribute('data-campaign-note','');
+  note.innerHTML='<p class="sp-note-frase" data-note-title></p><p class="sp-note-fine" data-note-fine>Exemplo ilustrativo, marca fictícia. Interface aproximada.</p><a href="#contato" data-contact-service="Campanhas e anúncios">Conversar sobre uma campanha ↓</a>';
   layout.append(note);
+  const wrap = lab.querySelector('.sp-platforms-wrap');
+  const list = lab.querySelector('.sp-platforms');
+  const marker = list.querySelector('.sp-tab-marker');
   const tabs = Array.from(lab.querySelectorAll('[data-sp-tab]'));
   const panels = Array.from(lab.querySelectorAll('.sp-campaign-panel'));
   const figures = panels.map(panel => panel.querySelector('figure'));
-  // The three artworks load as the section approaches the viewport, not at page start.
+  // The artworks load as the section approaches the viewport, not at page start.
   const warm = () => panels.forEach(panel => { panel.querySelector('img').loading = 'eager'; });
   if ('IntersectionObserver' in window) {
     const near = new IntersectionObserver(entries => { if (entries.some(entry => entry.isIntersecting)) { near.disconnect(); warm(); } }, { rootMargin: '900px 0px' });
@@ -48,6 +54,34 @@ function mountCampaign(motion) {
   let active = -1;
   let generation = 0;
   let transitions = [];
+
+  // The marker lives inside the scrolling row, so its offset includes scrollLeft.
+  function mark(tab = tabs[Math.max(0, active)], instant = false) {
+    if (!tab || !list.getClientRects().length) return;
+    const a = tab.getBoundingClientRect(), b = list.getBoundingClientRect();
+    if (instant) marker.classList.add('is-instant');
+    marker.style.width = `${a.width}px`;
+    marker.style.height = `${a.height}px`;
+    marker.style.transform = `translate(${a.left - b.left + list.scrollLeft}px,${a.top - b.top + list.scrollTop}px)`;
+    if (instant) requestAnimationFrame(() => requestAnimationFrame(() => marker.classList.remove('is-instant')));
+  }
+  // Keeps the chosen tab visible inside its own row without scrolling the page.
+  function reveal(tab, smooth) {
+    const box = tab.getBoundingClientRect(), row = list.getBoundingClientRect();
+    const pad = 28, left = box.left - row.left + list.scrollLeft, right = left + box.width;
+    let target = null;
+    if (left - pad < list.scrollLeft) target = Math.max(0, left - pad);
+    else if (right + pad > list.scrollLeft + list.clientWidth) target = right + pad - list.clientWidth;
+    if (target !== null) list.scrollTo({ left: target, behavior: smooth ? 'smooth' : 'auto' });
+  }
+  function edges() {
+    const max = list.scrollWidth - list.clientWidth;
+    wrap.dataset.scrollStart = String(list.scrollLeft > 2);
+    wrap.dataset.scrollEnd = String(max - list.scrollLeft > 2);
+  }
+  list.addEventListener('scroll', edges, { passive: true });
+  if ('ResizeObserver' in window) new ResizeObserver(() => { mark(undefined, true); edges(); }).observe(list);
+  document.fonts?.ready.then(() => { mark(undefined, true); edges(); });
 
   function settle() {
     transitions.forEach(animation => animation?.cancel());
@@ -64,6 +98,7 @@ function mountCampaign(motion) {
   function select(index, focus = false) {
     if (index === active) return;
     const isChange = active !== -1;
+    const direction = index > active ? 1 : -1;
     const token = ++generation;
     const opacity = figures.map((figure, i) => getComputedStyle(panels[i]).display === 'none' ? 0 : Number(getComputedStyle(figure).opacity));
     transitions.forEach(animation => animation?.cancel());
@@ -78,23 +113,34 @@ function mountCampaign(motion) {
       panels[i].inert = !selected;
       panels[i].tabIndex = selected ? 0 : -1;
     });
-    lab.dataset.channel = campaigns[index].id;
-    for(const field of ['title','message','decision','delivery'])note.querySelector('[data-note-'+field+']').textContent=campaignNotes[index][field];
+    const channel = channels[index];
+    lab.dataset.direction = direction > 0 ? 'next' : 'prev';
+    lab.dataset.channel = channel.id;
+    note.querySelector('[data-note-title]').textContent = channel.placements[0].frase;
     panels[index].setAttribute('aria-describedby','campaign-note');
+    mark(tabs[index], !isChange);
+    if (isChange) reveal(tabs[index], motion.available());
+    edges();
     if (isChange && motion.available()) {
       lab.dataset.transitioning = 'true';
       panels.forEach((panel, i) => {
         const selected = i === index;
-        // The outgoing panel is inaccessible immediately, but its exit remains
-        // painted until the fade finishes. Exactly one panel owns focus.
+        // The outgoing piece is inaccessible immediately, but it stays painted
+        // above the new one while it slides away. Exactly one panel owns focus.
         if (!selected && opacity[i] > 0) panel.dataset.leaving = 'true';
         else delete panel.dataset.leaving;
         if (!selected && opacity[i] <= 0) return;
-        panel.style.zIndex = selected ? '2' : '1';
-        figures[i].style.opacity = selected ? '1' : '0';
-        const animation = motion.animate(figures[i], [
-          { opacity: opacity[i] }, { opacity: selected ? 1 : 0 },
-        ], { duration: 280, easing: 'cubic-bezier(.4,0,.2,1)' });
+        panel.style.zIndex = selected ? '1' : '2';
+        let animation;
+        if (selected) {
+          animation = motion.spring(figures[i], p => ({ opacity: clamp(p * 1.8), transform: `translateX(${42 * direction * (1 - p)}px) scale(${.96 + .04 * p})` }), { duration: 620 });
+        } else {
+          figures[i].style.opacity = '0';
+          animation = motion.animate(figures[i], [
+            { opacity: opacity[i], transform: 'translateX(0) scale(1)' },
+            { opacity: 0, transform: `translateX(${-30 * direction}px) scale(.97)` },
+          ], { duration: 300 });
+        }
         if (animation) transitions.push(animation);
       });
       Promise.all(transitions.map(animation => animation.finished.catch(() => {}))).then(() => {
@@ -118,6 +164,7 @@ function mountCampaign(motion) {
     });
   });
   select(0);
+  requestAnimationFrame(() => { mark(undefined, true); edges(); });
   return lab;
 }
 

@@ -77,8 +77,9 @@ try{
   check(`${width}: delayed entrance has no flash`,delayed===0,delayed);
   await page.locator('#tab-google').click();await page.evaluate(()=>document.querySelectorAll('.sp-campaign-panel figure').forEach(figure=>figure.getAnimations().forEach(a=>{a.pause();a.currentTime=a.effect.getTiming().duration/2})));await frames(page);
   const overlap=await page.locator('.sp-campaign-panel').evaluateAll(es=>es.filter(e=>getComputedStyle(e).display!=='none').map(e=>({id:e.id,opacity:Number(getComputedStyle(e.querySelector('figure')).opacity),accessible:e.getAttribute('aria-hidden')!=='true'&&!e.inert})));
-  check(`${width}: two painted layers, one accessible panel`,overlap.length===2&&overlap.every(e=>e.opacity>0&&e.opacity<1)&&overlap.filter(e=>e.accessible).length===1,overlap);
-  await page.evaluate(()=>['meta','tiktok','google','tiktok'].forEach(id=>document.querySelector('#tab-'+id).click()));await page.waitForTimeout(800);
+  // The outgoing piece slides away while fading; the incoming one springs in and is already opaque by mid-transition.
+  check(`${width}: two painted layers, one accessible panel`,overlap.length===2&&overlap.every(e=>e.opacity>0)&&overlap.some(e=>!e.accessible&&e.opacity<1)&&overlap.filter(e=>e.accessible).length===1,overlap);
+  await page.evaluate(()=>['instagram','tiktok','google','tiktok'].forEach(id=>document.querySelector('#tab-'+id).click()));await page.waitForTimeout(800);
   const final=await page.locator('.sp-campaign-panel').evaluateAll(es=>es.filter(e=>getComputedStyle(e).display!=='none').map(e=>e.id));
   check(`${width}: rapid navigation settles on last request`,final.length===1&&final[0]==='panel-tiktok',final);
   const tops=[];

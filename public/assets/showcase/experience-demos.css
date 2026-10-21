@@ -1,59 +1,96 @@
-/* Rich platform-accurate creative demos: retained inside the peel underlay. */
+/* Channel placement behind the campaign peel: a compact interface around the
+   iPhone. Header (official platform mark, name, play), format chips with the ad
+   label, the client chip, the phone with one numbered point and the finger on
+   tap frames, and the three-step journey bar synced to the storyboard. */
 #laboratorio .sp-peel-underlay{background:#ecf0e7;align-items:stretch;justify-content:flex-start}
-#laboratorio .cx-player{width:100%;padding:clamp(13px,3vw,23px);box-sizing:border-box;position:relative;z-index:2;color:#17362a;touch-action:pan-y;cursor:default}
-#laboratorio .cx-header{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:0 0 10px}
-#laboratorio .cx-header small{display:block;font-size:12px;line-height:1.35;letter-spacing:.06em;color:#4f6350}
-#laboratorio .cx-header h3{font-size:clamp(16px,3vw,22px);margin:3px 0 0;line-height:1.2;letter-spacing:-.025em}
-#laboratorio .cx-playing{flex:none;min-width:max-content;min-height:44px;padding:9px 14px;border:1px solid #bccdb9;border-radius:9px;background:#f9fbf6;color:#234530;font-weight:600;cursor:pointer}
-#laboratorio .cx-placements{display:flex;gap:5px;flex-wrap:wrap;margin:0 0 11px}
-#laboratorio .cx-placement{padding:7px 12px;min-width:44px;min-height:44px;background:transparent;border:1px solid #b9cab8;color:#4d6953;border-radius:6px;cursor:pointer;font-size:12px}
-#laboratorio .cx-placement[aria-pressed=true]{background:#1e4530;border-color:#1e4530;color:#f8fbf7}
-#laboratorio .cx-stage{display:grid;place-items:center;margin:0 auto;min-height:230px;max-height:350px;overflow:hidden;border-radius:13px;background:#e2e9df;position:relative;touch-action:pan-y;cursor:default}
-#laboratorio .cx-frame{width:min(100%,255px);height:min(330px,100%);aspect-ratio:9/13;position:relative;isolation:isolate;background:#1e3029;color:white;border-radius:11px;overflow:hidden;box-shadow:0 8px 20px #162d282b}
-#laboratorio .cx-art{position:absolute;inset:0}
-#laboratorio .cx-art img{width:100%;height:100%;object-fit:cover;display:block;filter:saturate(.88)}
-#laboratorio .cx-art:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,#0c241b6e,transparent 36%,#0b201dbd 100%)}
-#laboratorio .cx-social-chrome{position:absolute;left:14px;right:14px;top:19px;display:flex;justify-content:space-between;z-index:2;gap:10px;font:500 12px Inter,Arial,sans-serif}
-#laboratorio .cx-overlay{position:absolute;left:15px;right:15px;bottom:23px;z-index:2;text-shadow:0 1px 2px #0008}
-#laboratorio .cx-overlay small{font-size:12px;letter-spacing:.06em}
-#laboratorio .cx-overlay h4{font-size:clamp(20px,4vw,26px);line-height:1.07;letter-spacing:-.04em;margin:8px 0}
-#laboratorio .cx-overlay p{font-size:12px;line-height:1.4;margin:0;color:#f3f6f0}
-#laboratorio .cx-progress{position:absolute;z-index:5;left:12px;right:12px;top:8px;height:3px;background:#ffffff55;border-radius:3px;overflow:hidden}
-#laboratorio .cx-progress i{display:block;width:100%;height:100%;background:#fff;transform-origin:left;transform:scaleX(0)}
-#laboratorio .cx-player[data-platform=meta] .cx-frame[data-placement=feed]{aspect-ratio:4/5;height:290px;width:235px;background:#fcfcfc}
-#laboratorio .cx-player[data-platform=meta] .cx-frame[data-placement=reels]{aspect-ratio:9/16;height:330px;width:186px}
-#laboratorio .cx-player[data-platform=google] .cx-frame{width:min(100%,350px);height:275px;aspect-ratio:auto;background:#fdfefb;color:#223629}
-#laboratorio .cx-player[data-platform=google] .cx-frame[data-placement=youtube]{aspect-ratio:16/9;height:230px;width:100%;max-width:365px}
-#laboratorio .cx-player[data-platform=google] .cx-frame[data-placement=display]{aspect-ratio:1.9;height:220px;width:100%;max-width:335px}
-#laboratorio .cx-player[data-platform=google] .cx-overlay{left:14px;bottom:18px;right:14px}
-#laboratorio .cx-player[data-platform=tiktok] .cx-frame{aspect-ratio:9/16;width:187px;height:330px;border:5px solid #0b0d0f;border-radius:22px}
-#laboratorio .cx-player[data-platform=tiktok] .cx-social-chrome{top:27px}
-#laboratorio .cx-search{position:absolute;z-index:4;inset:0;padding:20px 15px;background:#fffefa;color:#1d3b2c;text-shadow:none}
-#laboratorio .cx-search[hidden]{display:none!important}
-#laboratorio .cx-search .cx-query{display:flex;gap:8px;align-items:center;margin:15px 0 17px;border:1px solid #d5ddd4;border-radius:22px;padding:10px;font-size:12px;color:#4f6350}
-#laboratorio .cx-search>small{color:#4f6357;font-size:12px}
-#laboratorio .cx-search>h4{font-size:18px;line-height:1.15;color:#1a6e55;margin:10px 0 7px}
-#laboratorio .cx-search>p{font-size:12px;line-height:1.4}
-#laboratorio .cx-end-mark{position:absolute;right:8px;bottom:3px;font-weight:700;opacity:.8;font-size:12px}
-#laboratorio .cx-tap-regions{display:none}
-#laboratorio .cx-transport{display:flex;align-items:center;justify-content:center;gap:8px;margin:13px 0}
-#laboratorio .cx-transport button{display:grid;place-items:center;min-width:44px;min-height:44px;border-radius:50%;border:1px solid #bfcebd;color:#284b36;background:#fff;cursor:pointer}
-#laboratorio .cx-transport button:disabled{opacity:.36;cursor:default}
-#laboratorio .cx-transport span{flex:1;text-align:center;white-space:nowrap;font-size:12px;color:#3a5a42}
-#laboratorio .cx-contribution{font-size:13px;line-height:1.45;margin:3px 0 8px;color:#4c604d}
-#laboratorio .sp-peel-underlay .sp-campaign-note-slot{flex:none!important}
-#laboratorio .sp-peel-underlay .sp-campaign-note{padding:9px 20px}
-#laboratorio .sp-peel-underlay .sp-campaign-note h3{font-size:19px;margin:8px 0}
-#laboratorio .sp-peel-underlay .sp-campaign-note dl{display:none}
-#laboratorio .sp-peel-underlay-kicker{display:none}
-#laboratorio .cx-player button:focus-visible,#laboratorio .cx-stage:focus-visible{outline:3px solid #416da2;outline-offset:2px}
-@media(max-width:440px){
- #laboratorio .cx-player{padding:12px}
- #laboratorio .cx-stage{max-height:310px;min-height:225px}
- #laboratorio .cx-frame{max-height:300px;width:min(100%,210px)}
- #laboratorio .cx-player[data-platform=tiktok] .cx-frame{height:290px;width:165px}
- #laboratorio .cx-player[data-platform=google] .cx-frame{height:250px}
- #laboratorio .cx-overlay h4{font-size:20px}
- #laboratorio .cx-header h3{font-size:16px}
+#laboratorio .cx-player{position:relative;z-index:2;width:100%;box-sizing:border-box;padding:clamp(14px,3vw,24px) clamp(14px,3vw,24px) 6px;color:#17362a;touch-action:pan-y;cursor:default;overflow-x:clip;container-type:inline-size;container-name:cx}
+#laboratorio .cx-head{display:flex;align-items:center;justify-content:space-between;gap:10px;min-height:44px}
+#laboratorio .cx-brand{display:flex;align-items:center;gap:10px;min-width:0;margin:0;color:#17362a;font:650 17px/1.2 var(--sans,Inter,Arial,sans-serif);letter-spacing:-.015em}
+#laboratorio .cx-brand b{font-weight:650;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#laboratorio .cx-logo{display:block;flex:none;width:auto;height:22px}
+#laboratorio .cx-play{display:inline-flex;flex:none;align-items:center;gap:7px;min-width:44px;min-height:44px;padding:0 15px 0 12px;border:1px solid #bccdb9;border-radius:999px;background:#f9fbf6;color:#234530;font:600 13px/1 var(--sans,Inter,Arial,sans-serif);cursor:pointer}
+#laboratorio .cx-play svg{width:17px;height:17px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+#laboratorio .cx-play[aria-pressed="false"] svg path[d^="M8 5.5v13l"],#laboratorio .cx-play:not([aria-pressed]) svg path[d^="M8 5.5v13l"]{fill:currentColor}
+#laboratorio .cx-chips{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:10px 0 8px}
+#laboratorio .cx-placements{display:flex;flex-wrap:wrap;gap:6px;min-width:0}
+#laboratorio .cx-placement{display:inline-flex;align-items:center;min-height:44px;padding:0 14px;border:1px solid #b9cab8;border-radius:999px;background:transparent;color:#3f5c46;font:550 13px/1.2 var(--sans,Inter,Arial,sans-serif);cursor:pointer}
+#laboratorio .cx-placement[aria-pressed="true"]{border-color:#1e4530;background:#1e4530;color:#f8fbf7}
+#laboratorio .cx-placement--static{min-height:32px;border-color:#1e4530;background:#1e4530;color:#f8fbf7;cursor:default}
+#laboratorio .cx-label{display:inline-flex;align-items:center;gap:6px;min-height:32px;margin-left:auto;padding:0 12px;border-radius:999px;background:#fff;color:#2b3e31;font:600 12.5px/1.2 var(--sans,Inter,Arial,sans-serif);box-shadow:inset 0 0 0 1px #c9d4c4}
+#laboratorio .cx-label::before{content:"";width:7px;height:7px;border-radius:50%;background:#b8660f}
+#laboratorio .cx-label[data-kind="organic"]::before{background:#3f7d4f}
+#laboratorio .cx-client{display:inline-flex;align-items:center;gap:8px;max-width:100%;margin:0 0 14px;padding:4px 13px 4px 5px;border-radius:999px;background:#f4f6ef;color:#3d4639;font:500 13px/1.3 var(--sans,Inter,Arial,sans-serif);box-shadow:inset 0 0 0 1px #c9d4c4}
+#laboratorio .cx-client b{font-weight:650;color:#26372b}
+#laboratorio .cx-client .cm-mark{display:grid;flex:none;place-items:center;width:22px;height:22px;overflow:hidden;border-radius:50%;background:var(--c)}
+#laboratorio .cx-client .cm-mark svg{width:72%;height:72%}
+#laboratorio .cx-body{display:grid;grid-template-columns:minmax(0,1fr);justify-items:center;gap:18px}
+@container cx (min-width:560px){
+ #laboratorio .cx-body{grid-template-columns:300px minmax(0,1fr);justify-items:stretch;align-items:start;gap:26px}
 }
-@media(prefers-reduced-motion:reduce){#laboratorio .cx-player *{transition:none!important;animation:none!important}}
+/* The iPhone is sized by its column (never scaled with transform): up to 320px
+   wide alone, 300px beside the journey. Its screen keeps 412 x 895.2 logical px. */
+#laboratorio .cx-stage-col{width:100%;max-width:320px;min-width:0}
+#laboratorio .cx-stage{position:relative;display:block;width:100%;border-radius:16% / 7.7%;touch-action:pan-y;cursor:pointer}
+#laboratorio .cx-stage>.ch-iphone{max-width:none}
+#laboratorio .cx-side{width:100%;min-width:0}
+/* The numbered point of the active step, on the element it describes. */
+#laboratorio .cx-dot{position:absolute;z-index:6;display:grid;place-items:center;width:26px;height:26px;border-radius:50%;background:#294c36;color:#fff;font:700 13px/1 var(--sans,Inter,Arial,sans-serif);box-shadow:0 0 0 2px #fff,0 4px 10px #0005;transform:translate(-50%,-50%);pointer-events:none;transition:left .35s cubic-bezier(.16,1,.3,1),top .35s cubic-bezier(.16,1,.3,1)}
+#laboratorio .cx-dot::after{content:"";position:absolute;inset:-2px;border-radius:50%;box-shadow:0 0 0 2px #294c36;opacity:0}
+#laboratorio .cx-dot.is-ping::after{animation:cx-ping .9s ease-out 1}
+@keyframes cx-ping{0%{transform:scale(1);opacity:.5}100%{transform:scale(1.6);opacity:0}}
+/* The finger: appears on the CTA, presses it and leaves a ripple. */
+#laboratorio .cx-tap{position:absolute;z-index:7;width:36px;height:36px;border-radius:50%;background:rgb(255 255 255 / .55);box-shadow:0 0 0 2px #fff,0 4px 14px #0006;transform:translate(-50%,-50%) scale(.5);opacity:0;pointer-events:none}
+#laboratorio .cx-tap::after{content:"";position:absolute;inset:-2px;border-radius:50%;box-shadow:0 0 0 2px #fff;opacity:0}
+#laboratorio .cx-tap.is-on{animation:cx-tap .5s cubic-bezier(.16,1,.3,1) forwards}
+#laboratorio .cx-tap.is-on::after{animation:cx-ripple .42s ease-out .16s 1}
+@keyframes cx-tap{0%{opacity:0;transform:translate(-50%,-50%) scale(.5)}32%{opacity:1;transform:translate(-50%,-50%) scale(1)}100%{opacity:.9;transform:translate(-50%,-50%) scale(.92)}}
+@keyframes cx-ripple{0%{transform:scale(1);opacity:.6}100%{transform:scale(1.8);opacity:0}}
+#laboratorio .cx-tap.is-static,#laboratorio .cx-tap.is-static.is-on{animation:none;opacity:1;transform:translate(-50%,-50%);background:rgb(255 255 255 / .35);box-shadow:0 0 0 3px #fff,0 0 0 5px #294c36}
+/* Journey: Atenção, Retenção, Conversão. A rail fills during the step; state never relies on colour alone. */
+#laboratorio .cx-journey{display:grid;grid-template-columns:minmax(0,1fr);gap:4px;margin:0;padding:0;list-style:none}
+#laboratorio .cx-journey li{min-width:0}
+#laboratorio .cx-journey button{position:relative;display:grid;grid-template-columns:24px minmax(0,1fr);align-items:start;gap:3px 10px;width:100%;min-height:52px;padding:11px 10px 10px 14px;border:0;border-radius:10px;background:transparent;color:#5f6a5a;text-align:left;font:inherit;cursor:pointer}
+#laboratorio .cx-journey button:hover{background:#e3eadb}
+#laboratorio .cx-step-n{display:grid;place-items:center;width:24px;height:24px;border:1.5px solid #8fa886;border-radius:50%;background:transparent;color:#4f6350;font:650 12px/1 var(--sans,Inter,Arial,sans-serif)}
+#laboratorio .cx-step-t{display:grid;gap:1px;min-width:0}
+#laboratorio .cx-step-t b{color:#3b4c3e;font:550 14px/1.3 var(--sans,Inter,Arial,sans-serif)}
+#laboratorio .cx-step-t small{color:#5f6a5a;font:400 12.5px/1.35 var(--sans,Inter,Arial,sans-serif)}
+#laboratorio .cx-rail{position:absolute;top:10px;bottom:10px;left:0;width:3px;overflow:hidden;border-radius:3px;background:#d3dccd}
+#laboratorio .cx-rail i{display:block;width:100%;height:100%;background:#294c36;transform:scaleY(var(--p,0));transform-origin:top}
+#laboratorio .cx-journey li[data-state="on"] .cx-step-n{border-color:#294c36;background:#294c36;color:#fff}
+#laboratorio .cx-journey li[data-state="on"] .cx-step-t b{color:#17362a;font-weight:700}
+#laboratorio .cx-journey li[data-state="on"] .cx-step-t small{color:#2e4535}
+#laboratorio .cx-journey li[data-state="on"] button{background:#f8faf5}
+#laboratorio .cx-journey li[data-state="done"] .cx-step-n{border-color:#8fa886;background:#8fa886;color:#fff}
+#laboratorio .cx-journey li[data-state="done"] .cx-rail i{background:#8fa886}
+@container cx (min-width:380px) and (max-width:559px){
+ #laboratorio .cx-journey{grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+ #laboratorio .cx-journey button{grid-template-columns:minmax(0,1fr);gap:6px;min-height:84px;padding:14px 8px 8px}
+ #laboratorio .cx-rail{top:0;bottom:auto;left:8px;right:8px;width:auto;height:3px}
+ #laboratorio .cx-rail i{transform:scaleX(var(--p,0));transform-origin:left}
+}
+@container cx (min-width:560px){
+ #laboratorio .cx-side{padding-top:6px}
+ #laboratorio .cx-journey{gap:8px}
+ #laboratorio .cx-journey button{grid-template-columns:28px minmax(0,1fr);min-height:72px;padding:14px 12px 12px 16px}
+ #laboratorio .cx-step-n{width:28px;height:28px;font-size:13px}
+ #laboratorio .cx-step-t b{font-size:15px}
+ #laboratorio .cx-step-t small{font-size:14px}
+}
+/* The short sentence, the fine print and the contact link sit under the journey. */
+#laboratorio .cx-side .sp-campaign-note-slot{display:block;flex:none!important;min-height:0}
+#laboratorio .cx-side .sp-campaign-note{min-height:0;width:auto;margin:14px 0 0;padding:0 2px}
+#laboratorio .sp-note-frase{margin:0;color:#1f3a2a;font:550 15px/1.45 var(--sans,Inter,Arial,sans-serif);letter-spacing:-.01em}
+#laboratorio .sp-note-fine{margin:6px 0 0;color:#5f6a5a;font:400 12px/1.45 var(--sans,Inter,Arial,sans-serif)}
+#laboratorio .cx-side .sp-campaign-note a{min-height:44px;padding:8px 0;font-size:14px}
+/* The outgoing placement: a painted, inert copy that slides away over the new one. */
+#laboratorio .cx-ghost{position:absolute;z-index:5;margin:0;overflow:hidden;background:#ecf0e7;pointer-events:none}
+#laboratorio .sp-peel-underlay-kicker{display:none}
+#laboratorio .cx-player button:focus-visible,#laboratorio .cx-stage:focus-visible{outline:3px solid #406fca;outline-offset:2px}
+@media(max-width:440px){
+ #laboratorio .cx-player{padding:14px 12px 4px}
+ #laboratorio .cx-brand{font-size:16px}
+ #laboratorio .cx-chips{margin-top:8px}
+}
+@media(prefers-reduced-motion:reduce){#laboratorio .cx-player *,#laboratorio .cx-player *::after{transition:none!important;animation:none!important}}
+body.is-paused #laboratorio .cx-player *,body.is-paused #laboratorio .cx-player *::after{transition:none!important;animation:none!important}
