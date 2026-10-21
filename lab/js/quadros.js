@@ -432,7 +432,7 @@ function quadroElemento(e, ctx) {
     <details data-q-detalhes><summary>O que mostra, tempos e como recriar</summary><div class="body">
       ${e.interacao ? `<h4>O que mostra</h4><p>${esc(e.interacao)}</p>` : ''}
       ${e.aprovacao ? `<h4>Histórico</h4><p>${esc(e.aprovacao)}</p>` : ''}
-      <h4>Onde está</h4><p>${esc(e.tipo || '')}${e.seletor ? ` · <code>${esc(e.seletor)}</code>` : ''}${e.caminho ? ` · <code>${esc(e.caminho)}</code>` : ''}<br>${versoes.length ? versoes.map(id => esc(`${ctx.porId.get(id).data} · ${ctx.porId.get(id).rotulo}`)).join('<br>') : 'sem versão viva'}</p>
+      <h4>Onde está</h4><p>${esc(e.tipo || '')}${e.seletor ? ` · <code>${esc(e.seletor)}</code>` : ''}${e.caminho ? ` · <code>${esc(e.caminho)}</code>` : ''}<br>${versoes.length ? versoes.map(id => esc(`${ctx.porId.get(id).data} · ${ctx.porId.get(id).rotulo}`)).join('<br>') : `sem versão viva${e.sem_versao_viva ? `: ${esc(e.sem_versao_viva)}` : ''}`}</p>
       <h4>Código para reaproveitar</h4><div class="q-reuso" data-q-reuso><p class="hint">carrega quando os detalhes abrem</p></div>
       <h4>Tempos medidos ao vivo</h4><ul class="times" data-q-tempos><li><span>aparecem quando o quadro está ao vivo</span><span></span></li></ul>
       ${referenciasHtml(refs)}
