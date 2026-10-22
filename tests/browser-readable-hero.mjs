@@ -84,8 +84,8 @@ try{
      layoutCheck.title.width>0&&layoutCheck.title.left>=-1&&layoutCheck.title.right<=layoutCheck.viewport+1 &&
      layoutCheck.exhibit.left>=-1&&layoutCheck.exhibit.right<=layoutCheck.viewport+1 &&
      layoutCheck.actions.every(a=>a.height>=44)&&layoutCheck.scrollWidth<=layoutCheck.viewport+2);
-   check('The hero has a shared forest surface rather than two independent panels',
-     layoutCheck.surfaceIsShared&&layoutCheck.surfaceBackground==='rgb(25, 59, 45)');
+   check('The hero has a shared black Planes-inspired surface',
+     layoutCheck.surfaceIsShared&&layoutCheck.surfaceBackground==='rgb(8, 9, 10)');
    if(width>=960){
      check('Desktop and desktop-request touch integrate copy and badges side by side',
        layoutCheck.copy.right+18<=layoutCheck.exhibit.left&&layoutCheck.exhibit.width>=350);
