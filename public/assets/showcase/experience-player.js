@@ -25,8 +25,8 @@ const ICONS = {
   next: 'M5 12h13M13 6.5 18.5 12 13 17.5',
 };
 const icon = name => `<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="${ICONS[name]}"/></svg>`;
-/* Fatos studio photos are AI-generated: the fine print says so where they appear. */
-const AI_IMAGES = /campanha-(crencas|esportes|negocios|nerd)/;
+/* Fatos studio photos (campaign pieces and scenes) are AI-generated: the fine print says so where they appear. */
+const AI_IMAGES = /(campanha|cena)-(crencas|esportes|negocios|nerd)/;
 const FINE = 'Exemplo ilustrativo, marca fictícia. Interface aproximada.';
 
 export function mountCampaignExperience(lab, underlay) {

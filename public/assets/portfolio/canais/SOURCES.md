@@ -1,6 +1,6 @@
 # Imagens dos exemplos de cliente: "Sua oferta. Em cada canal."
 
-Fotos dos anunciantes fictícios da seção `#laboratorio` (plano em `clientes.md`, seções 2 e 7). Organizado em 21/10/2026.
+Fotos dos anunciantes fictícios da seção `#laboratorio` (plano em `docs/plans/clientes-canais-20261021.md`, seções 2 e 7). Organizado em 21/10/2026.
 
 Todas as marcas que aparecem com estas fotos são fictícias, e cada exemplo leva "Exemplo ilustrativo, marca fictícia." fora do aparelho. Nenhuma foto mostra pessoa identificável, logotipo, marca ou texto legível, e nenhuma traz preço. Nada aqui indica cliente real, resultado ou parceria com as plataformas.
 
@@ -34,7 +34,7 @@ Download em 21/10/2026, direto do CDN do Pexels (`images.pexels.com/photos/<id>/
 
 ## Arquivos do estúdio Fatos (estúdio Fatos, foto gerada, marca fictícia)
 
-Copiados sem alteração da pasta de fotos do estúdio Fatos (repositório privado) (mesmo md5), com autorização do dono para este repositório. Fotos geradas no Higgsfield para o estúdio do mídia kit Fatos, sem pessoas reais e sem marcas reais (`roblox/CLAUDE.md`). Aqui servem a anunciantes fictícios com nomes novos, porque Arco, Rota Viva e Kairo coincidem com empresas reais do mesmo ramo (`clientes.md`, seção 2.2).
+Copiados sem alteração da pasta de fotos do estúdio Fatos (repositório privado) (mesmo md5), com autorização do dono para este repositório. Fotos geradas no Higgsfield para o estúdio do mídia kit Fatos, sem pessoas reais e sem marcas reais (`roblox/CLAUDE.md`). Aqui servem a anunciantes fictícios com nomes novos, porque Arco, Rota Viva e Kairo coincidem com empresas reais do mesmo ramo (`docs/plans/clientes-canais-20261021.md`, seção 2.2).
 
 | Arquivo | O que mostra | Uso nesta seção |
 |---|---|---|

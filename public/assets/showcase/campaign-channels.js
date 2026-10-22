@@ -1,4 +1,4 @@
-/** "Sua oferta. Em cada canal.": eleven channels, sixteen placements, each one
+/** "Sua oferta. Em cada canal.": eleven channels, twenty-two placements, each one
  * advertising a fictitious CLIENT brand of one of the main client types the
  * portfolio serves (restaurant, dental clinic, developer, tech store, travel
  * agency, language school, wealth manager, car dealer). Every placement is a
@@ -53,7 +53,7 @@ export const IMG = {
 };
 
 /* Fictitious advertisers, one per client type. Names checked on 21/10/2026
-   (clientes.md, 2.2); every mark is a simple shape drawn for this section,
+   (docs/plans/clientes-canais-20261021.md, 2.2); every mark is a simple shape drawn for this section,
    except Arrimo, the glyph of the Fatos studio logo (LogosFicticios.tsx). */
 export const CLIENTES = {
   restaurante: { tipo: 'restaurante', marca: 'Tacho Miúdo', arroba: 'tachomiudo', dominio: 'tachomiudo.exemplo', cor: '#a4462a' },
