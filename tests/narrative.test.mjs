@@ -5,7 +5,7 @@ import {sectionCopy} from '../public/assets/content/portfolio-copy.js';
 const read=p=>readFileSync(new URL('../'+p,import.meta.url),'utf8');
 test('The offer and links describe the actual presentation',()=>{
  assert.match(read('index.html'),/Direção criativa/);
- assert.match(read('index.html'),/Ver campanhas/);
+ assert.match(read('index.html'),/href="#laboratorio">Campanhas</);
  assert.match(read('index.html'),/Estudo conceitual/);
  assert.doesNotMatch(sectionCopy('narrativa-visual').cta.label,/Entrar no site/);
  assert.match(sectionCopy('narrativa-visual').cta.label,/Ampliar/);
