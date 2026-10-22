@@ -379,3 +379,14 @@ body.is-paused #laboratorio .tt-disco,body.is-paused #laboratorio .tt-som-texto>
 #laboratorio .blog-leia{display:grid;gap:calc(var(--u)*8);margin-top:calc(var(--u)*16);padding-top:calc(var(--u)*12);border-top:calc(var(--u)*.9) solid #e3e6eb}
 #laboratorio .blog-leia b{font-size:calc(var(--u)*12.6)}
 #laboratorio .blog-leia span{color:#1f2430;font-family:Newsreader,Georgia,serif;font-size:calc(var(--u)*15);line-height:1.25}
+
+/* ----------------------------------------------------------------- ChatGPT: chat elements of the smiile chat in the lab
+   (smiile-chat-fiel-atividade-v1: activity line with a breathing dot; smiile-chatfiel-pedidos-sugeridos-v1: suggested requests) */
+#laboratorio .cm-gpt-think.sf-activity{display:flex;align-items:center;gap:calc(var(--u)*8);justify-self:start;width:auto;height:auto;min-height:calc(var(--u)*24);border-radius:0;background:none;color:#6b6b6b;font-size:calc(var(--u)*13.4);animation:none}
+#laboratorio .sf-activity-dot{flex:none;width:calc(var(--u)*7);height:calc(var(--u)*7);border-radius:50%;background:#999992;animation:sf-breathe 1.4s ease infinite}
+@keyframes sf-breathe{50%{opacity:.3}}
+#laboratorio .sf-suggestions{display:none;flex-wrap:wrap;gap:calc(var(--u)*8)}
+#laboratorio .cm-screen[data-state~="s3"] .sf-suggestions.cm-gpt-a2{display:flex}
+#laboratorio .sf-suggestion{display:inline-flex;align-items:center;min-height:calc(var(--u)*34);padding:calc(var(--u)*7) calc(var(--u)*11);border:calc(var(--u)*.9) solid #e3e3e3;border-radius:calc(var(--u)*10);background:#fff;color:#0d0d0d;font-size:calc(var(--u)*12.6);line-height:1.25}
+@media(prefers-reduced-motion:reduce){#laboratorio .sf-activity-dot{animation:none}}
+body.is-paused #laboratorio .sf-activity-dot{animation:none}

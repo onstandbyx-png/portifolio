@@ -335,13 +335,14 @@ const mocks = {
   /* 2.14 ChatGPT: the travel agency card below an answer, separated from it, and the in-app browser. */
   gptAnswer: () => screen('gpt', scene('chat', 'base', 'claro', `<div class="cm-gpt-top"><span class="cm-glass">${I('menu2')}</span><b>ChatGPT</b><span class="cm-glass cm-glass--pill">${I('edit')}${I('dots')}</span></div>
     <div class="cm-gpt-flow"><p class="cm-gpt-user" data-hs="1" data-hs-at="tl">Quero ver uma festa tradicional no interior em junho. Por onde começo?</p>
-      <span class="cm-gpt-think" aria-hidden="true"><i></i></span>
+      <span class="cm-gpt-think sf-activity" aria-hidden="true"><span class="sf-activity-dot"></span><span>Procurando festas tradicionais de junho</span></span>
       <div class="cm-gpt-answer"><p>Se você me disser:</p><ul><li>quantos <b>dias</b> você tem,</li><li>de qual <b>cidade</b> sai,</li><li>se prefere <b>procissão, música ou cavalhadas</b>,</li><li>e se viaja <b>com crianças</b>,</li></ul><p>eu indico as 3 cidades que mais combinam com a sua viagem.</p></div>
       <div class="cm-gpt-actions">${I('copy')}${I('thumb', 'cm-i--flip')}${I('share')}${I('regen')}${I('dots')}<span class="cm-gpt-src"><i>R</i><i>G</i><i>T</i>Fontes</span></div>
       <p class="cm-gpt-user cm-gpt-q2" data-hs="1" data-hs-at="tl">3 dias, saindo de SP, cavalhadas</p>
-      <span class="cm-gpt-think cm-gpt-think2" aria-hidden="true"><i></i></span>
+      <span class="cm-gpt-think cm-gpt-think2 sf-activity" aria-hidden="true"><span class="sf-activity-dot"></span><span>Comparando cidades com cavalhadas</span></span>
       <div class="cm-gpt-answer cm-gpt-a2"><p>Com 3 dias, eu iria para <b>Pirenópolis (GO)</b>: na Festa do Divino tem mascarados pelas ruas e as cavalhadas no fim de semana.</p><ul><li><b>Dia 1:</b> voo até Brasília e 2 horas de carro;</li><li><b>Dia 2:</b> centro histórico e mascarados;</li><li><b>Dia 3:</b> cavalhadas e volta.</li></ul></div>
       <div class="cm-gpt-actions cm-gpt-a2">${I('copy')}${I('thumb', 'cm-i--flip')}${I('share')}${I('regen')}${I('dots')}</div>
+      <div class="sf-suggestions cm-gpt-a2" aria-hidden="true"><span class="sf-suggestion">Quando são as cavalhadas?</span><span class="sf-suggestion">Onde ficar em Pirenópolis?</span></div>
       <hr><p class="cm-gpt-lead">Para a sua viagem para ver as cavalhadas, aqui está uma opção para considerar.</p>
       <div class="cm-gpt-ad" data-tap="cta" data-hs="2 3" data-hs-at="tl">${pic('crencas', { cls: 'cm-gpt-ad-img', pos: '50% 8%' })}<span class="cm-gpt-ad-body"><span class="cm-gpt-ad-top">${marca('turismo', 'fav')}<span>Bandeirola Viagens</span><small class="cm-gpt-chip">Anúncio</small>${I('dots')}</span><b>Festas de junho em grupo pequeno</b><small>Roteiros com guia da cidade e hotel no centro histórico. Saiba mais.</small></span></div>
       <span class="cm-gpt-down" aria-hidden="true">${I('up', 'cm-i--flip')}</span></div>

@@ -1131,3 +1131,6 @@ body.is-paused #laboratorio .cm-screen[data-state~="ty"] .cm-gpt-typed>span{max-
 #laboratorio .cm-gpt-top::before{content:"";position:absolute;left:0;right:0;bottom:100%;height:var(--topo);background:#fff}
 #laboratorio .cm-gpt-top::after{content:"";position:absolute;left:0;right:0;top:100%;height:calc(var(--u)*14);background:linear-gradient(#fff,#fff0);pointer-events:none}
 #laboratorio .cm-wa-body>*{flex-shrink:0}
+#laboratorio .cm-gpt-input>.cm-gpt-send{display:none}
+#laboratorio .cm-screen[data-state~="ty"] .cm-gpt-input>.cm-gpt-send{display:grid}
+#laboratorio .cm-screen[data-state~="ty"] .cm-gpt-input>.cm-gpt-wave{display:none}
