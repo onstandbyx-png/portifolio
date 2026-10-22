@@ -20,7 +20,7 @@ try{
   const check=(name,pass)=>{row.checks.push({name,pass:!!pass});assert(pass,name)};
   try{
    await page.goto(base,{waitUntil:'domcontentloaded'});await page.evaluate(()=>document.fonts.ready);
-   await page.waitForSelector('.campaign-summary');await page.waitForSelector('[data-vitrine="automacao"] .cm-screen');
+   await page.waitForSelector('.campaign-summary');await page.waitForSelector('[data-vitrine="sistemas"] .cm-screen');
    check('The first screen states role and five concrete services',/DIRETOR CRIATIVO E REDATOR/.test(await page.locator('.hero-issue').innerText())&&/identidades, conteúdos, anúncios, sites e sistemas/.test(await page.locator('.hero-description').innerText()));
    const order=await page.evaluate(()=>['laboratorio','editorial','sistemas','categorias','como-trabalho','contato'].map(id=>({id,top:document.getElementById(id).getBoundingClientRect().top+scrollY})));
    row.sectionOrder=order;
@@ -42,8 +42,8 @@ try{
    await page.locator('.campaign-decision').click();await page.waitForFunction(()=>document.querySelector('.sp-peel-card').dataset.peelState==='closed');
    await page.locator('#laboratorio').evaluate(el=>scrollTo({top:scrollY+el.getBoundingClientRect().top-84,behavior:'instant'}));
    await page.screenshot({path:`${output}/campaign-${width}${reduced?'-reduced':''}.png`,animations:'disabled'});
-   check('Automation demo mounts the lab flow in its own phone, with three steps',await page.locator('[data-vitrine="automacao"] .cm-screen').count()===1&&await page.locator('[data-vitrine="automacao"] [data-vitrine-step]').count()===3);
-   check('Store demo mounts the lab flow in its own phone, with three steps',await page.locator('[data-vitrine="loja"] .cm-screen').count()===1&&await page.locator('[data-vitrine="loja"] [data-vitrine-step]').count()===3);
+   check('Automation demo mounts the lab flow in its own phone, with three steps',await page.locator('[data-vitrine="sistemas"] .cm-screen').count()===1&&await page.locator('[data-vitrine="sistemas"] [data-vitrine-step]').count()===3);
+   check('Store demo mounts the lab flow in its own phone, with three steps',await page.locator('[data-vitrine="sites"] .cm-screen').count()===1&&await page.locator('[data-vitrine="sites"] [data-vitrine-step]').count()===3);
    await page.locator('#sistemas').evaluate(el=>scrollTo({top:scrollY+el.getBoundingClientRect().top-84,behavior:'instant'}));
    await page.screenshot({path:`${output}/systems-${width}${reduced?'-reduced':''}.png`,animations:'disabled'});
    await page.locator('#sistemas .systems-contact').click();check('Systems example leads to the correct service',await page.locator('#service').inputValue()==='Sistemas e automações');

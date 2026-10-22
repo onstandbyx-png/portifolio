@@ -21,3 +21,8 @@
 /* Sites e lojas sits on the light page: its header keeps the dark ink of the page. */
 #editorial .systems-intro .eyebrow{color:#4f6357}
 #editorial .systems-intro p{color:#3d4a40}
+/* Formats: one row of choices above the phone, like the segmented control of the campaigns. */
+.vitrine-formatos{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:8px;width:min(100%,520px)}
+.vitrine-formatos button{min-height:44px;padding:8px 12px;border:1px solid #bccdb9;border-radius:12px;background:#f9fbf6;color:#234530;font:600 14px/1.2 var(--sans,Inter,Arial,sans-serif);cursor:pointer}
+.vitrine-formatos button[aria-pressed="true"]{border-color:#1e4530;background:#1e4530;color:#f8fbf7}
+@media (min-width:900px){.vitrine-formatos{grid-column:1/-1}}

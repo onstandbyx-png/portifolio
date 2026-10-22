@@ -5,7 +5,7 @@ import {sectionCopy} from '../public/assets/content/portfolio-copy.js';
 const read=p=>readFileSync(new URL('../'+p,import.meta.url),'utf8');
 test('The offer and links describe the actual presentation',()=>{
  assert.match(read('index.html'),/Direção criativa/);
- assert.match(read('index.html'),/Explorar trabalhos/);
+ assert.match(read('index.html'),/Ver campanhas/);
  assert.match(read('index.html'),/Estudo conceitual/);
  assert.doesNotMatch(sectionCopy('narrativa-visual').cta.label,/Entrar no site/);
  assert.match(sectionCopy('narrativa-visual').cta.label,/Ampliar/);
@@ -16,8 +16,8 @@ test('Every gallery reverse explains a decision',()=>{
 });
 test('Sites e lojas and Sistemas e automações mount the lab flows, without the old device transcript',()=>{
  const html=read('index.html');
- assert.match(html,/id="editorial"[\s\S]*?data-vitrine="loja"/);
- assert.match(html,/id="sistemas"[\s\S]*?data-vitrine="automacao"/);
+ assert.match(html,/id="editorial"[\s\S]*?data-vitrine="sites"/);
+ assert.match(html,/id="sistemas"[\s\S]*?data-vitrine="sistemas"/);
  assert.doesNotMatch(html,/<details class="es-transcript">/);
  assert.equal(sectionCopy('colecao').cards.length,6);
 });

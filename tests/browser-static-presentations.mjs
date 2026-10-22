@@ -74,7 +74,7 @@ try{
       else check('The visitor can resume the motion preference',await page.locator('#motion-toggle').getAttribute('aria-pressed')==='false'&&!await page.locator('body').evaluate(el=>el.classList.contains('is-paused')));
 
       await verifyGallery({page,width,reduced,check,capture});
-      check('Sites e lojas and Sistemas e automações mount the lab flows',await page.locator('[data-vitrine="loja"] .cm-screen').count()===1&&await page.locator('[data-vitrine="automacao"] .cm-screen').count()===1);
+      check('Sites e lojas and Sistemas e automações mount the lab flows',await page.locator('[data-vitrine="sites"] .cm-screen').count()===1&&await page.locator('[data-vitrine="sistemas"] .cm-screen').count()===1);
       await verifyFilm({page,width,reduced,check,capture});
       check('Standalone Trilhas is hidden without removing the Digital destination',await page.locator('#trilhas[hidden]').count()===1&&!await page.locator('#trilhas').isVisible()&&await page.locator('#sites.digital-anchor').count()===1);
       check('Campaign and product interiors have no nested fake controls or media',await page.locator('.sp-products,.sp-campaign-panel').evaluateAll(roots=>roots.every(root=>!root.querySelector('button,input,select,textarea,[contenteditable],iframe,video,audio,canvas,[role="button"],[role="tab"],.df-explore'))));

@@ -1,18 +1,34 @@
-/* Two demonstrations of the home, "Sistemas e automações" and "Sites e lojas", cut
-   from the lab's own storyboards: the same iPhone, mocks and frames as "Sua oferta.
-   Em cada canal.", one flow each. The phone plays once when it comes into view and
-   stops on its last frame; the steps jump to a part of the flow. Without motion
-   (reduced motion, hidden tab, no IntersectionObserver) nothing plays by itself: the
-   button shows the next frame. The markup is in index.html: <div data-vitrine="...">. */
+/* Two demonstrations of the home, "Sites e lojas" and "Sistemas e automações". Each one
+   has a selector of formats, like "Sua oferta. Em cada canal.", and each format is a cut
+   of a storyboard that already exists in the lab (campaign-channels.js), on the same
+   iPhone. Every format says which screen of the campaign section it repeats. The phone
+   plays once when it comes into view and stops on its last frame; the steps jump to a
+   part of the flow. Without motion (reduced motion, hidden tab, no IntersectionObserver)
+   nothing plays by itself: the button shows the next frame. Markup: index.html,
+   <div class="vitrine lab-escopo" data-vitrine="sites|sistemas">. */
 import { channelById, renderMock } from './campaign-channels.js';
 
 /* from and to are indexes of the placement's frames (inclusive). The steps are
    [label, first, last] in the cut's own indexes. */
 const DEMOS = {
-  automacao: { channel: 'whatsapp', placement: 'catalog', from: 4, to: 13,
-    steps: [['Pedido no carrinho', 0, 1], ['Atendimento automático', 2, 6], ['Confirmação', 7, 9]] },
-  loja: { channel: 'tiktok', placement: 'infeed', from: 3, to: 12,
-    steps: [['Produto', 0, 2], ['Carrinho', 3, 5], ['Pagamento e pedido', 6, 9]] },
+  sites: [
+    { label: 'Site', channel: 'instagram', placement: 'explorar', from: 4, to: 12, repete: 'Instagram · Explorar',
+      steps: [['Serviço', 0, 2], ['Horário', 3, 5], ['Confirmação', 6, 8]] },
+    { label: 'Loja', channel: 'tiktok', placement: 'infeed', from: 3, to: 12, repete: 'TikTok · In-Feed',
+      steps: [['Produto', 0, 2], ['Carrinho', 3, 5], ['Pagamento e pedido', 6, 9]] },
+    { label: 'Landing', channel: 'instagram', placement: 'feed', from: 4, to: 13, repete: 'Instagram · Feed',
+      steps: [['Oferta', 0, 0], ['Teste de nível', 1, 3], ['Horário e confirmação', 4, 9]] },
+    { label: 'Blog', channel: 'blog', placement: 'article', from: 0, to: 10, repete: 'Publieditorial · Artigo',
+      steps: [['Leitura', 0, 2], ['Agenda', 3, 7], ['Confirmação', 8, 10]] },
+  ],
+  sistemas: [
+    { label: 'WhatsApp · pedido', channel: 'whatsapp', placement: 'catalog', from: 4, to: 13, repete: 'WhatsApp · Catálogo',
+      steps: [['Pedido no carrinho', 0, 1], ['Atendimento automático', 2, 6], ['Confirmação', 7, 9]] },
+    { label: 'WhatsApp · atendimento', channel: 'whatsapp', placement: 'ctwa', from: 3, to: 13, repete: 'WhatsApp · Clique para conversar',
+      steps: [['Conversa pronta', 0, 1], ['Opções', 2, 6], ['Agendamento', 7, 10]] },
+    { label: 'E-mail', channel: 'blog', placement: 'article', from: 3, to: 10, repete: 'Publieditorial · Artigo (agenda)',
+      steps: [['Agenda', 0, 3], ['Dados', 4, 5], ['Confirmação por e-mail', 6, 7]] },
+  ],
 };
 const reduce = matchMedia('(prefers-reduced-motion: reduce)');
 
@@ -36,57 +52,74 @@ function apply(screen, list, index) {
 }
 
 function mountOne(root) {
-  const demo = DEMOS[root.dataset.vitrine];
-  const placement = channelById(demo.channel).placements.find(item => item.id === demo.placement);
-  const frames = placement.quadros.slice(demo.from, demo.to + 1);
-  root.innerHTML = `<div class="vitrine-phone">${renderMock(placement)}</div>
+  const formats = DEMOS[root.dataset.vitrine];
+  root.innerHTML = `<div class="vitrine-formatos" role="group" aria-label="Formato">${formats.map((f, k) => `<button type="button" data-formato="${k}" aria-pressed="${k === 0}">${f.label}</button>`).join('')}</div>
+    <div class="vitrine-phone" data-phone></div>
     <div class="vitrine-side">
-      <ol class="vitrine-steps">${demo.steps.map(([label], k) => `<li><button type="button" data-vitrine-step="${k}"><span aria-hidden="true">${k + 1}</span>${label}</button></li>`).join('')}</ol>
+      <ol class="vitrine-steps" data-steps></ol>
       <p class="vitrine-caption" data-caption></p>
       <button type="button" class="vitrine-play" data-play>Reproduzir</button>
-      <p class="vitrine-nota">Exemplo ilustrativo, marca fictícia. Interface aproximada.</p>
+      <p class="vitrine-nota" data-nota></p>
     </div>`;
-  const screen = root.querySelector('.cm-screen');
-  const play = root.querySelector('[data-play]');
-  const caption = root.querySelector('[data-caption]');
-  const steps = [...root.querySelectorAll('[data-vitrine-step]')];
-  const last = frames.length - 1;
-  let index = 0, timer = 0, playing = false, started = false;
+  const $ = selector => root.querySelector(selector);
+  const play = $('[data-play]'), caption = $('[data-caption]'), nota = $('[data-nota]');
+  let demo = null, frames = [], screen = null, index = 0, timer = 0, playing = false, started = false;
+  const last = () => frames.length - 1;
 
   function stepOf(i) { return demo.steps.findIndex(([, first, end]) => i >= first && i <= end); }
   function label() {
-    play.textContent = playing ? 'Pausar' : index >= last ? 'Rever' : reduce.matches ? 'Próximo quadro' : 'Reproduzir';
+    play.textContent = playing ? 'Pausar' : index >= last() ? 'Rever' : reduce.matches ? 'Próximo quadro' : 'Reproduzir';
   }
   function show(i) {
-    index = Math.max(0, Math.min(last, i));
+    index = Math.max(0, Math.min(last(), i));
     screen.classList.add('is-instant');
     apply(screen, frames, index);
     requestAnimationFrame(() => requestAnimationFrame(() => screen.classList.remove('is-instant')));
     caption.textContent = frames[index].desc;
     const current = stepOf(index);
-    steps.forEach((button, k) => { if (k === current) button.setAttribute('aria-current', 'step'); else button.removeAttribute('aria-current'); });
+    root.querySelectorAll('[data-vitrine-step]').forEach(button => {
+      if (Number(button.dataset.vitrineStep) === current) button.setAttribute('aria-current', 'step');
+      else button.removeAttribute('aria-current');
+    });
     label();
   }
   function tick() {
     clearTimeout(timer);
     if (!playing) return;
-    if (index >= last) { playing = false; label(); return; }
+    if (index >= last()) { playing = false; label(); return; }
     timer = setTimeout(() => { show(index + 1); tick(); }, frames[index].ms);
   }
   function go(on) {
     playing = on && !reduce.matches;
-    if (playing && index >= last) show(0);
+    if (playing && index >= last()) show(0);
     tick();
     label();
   }
+  function load(k) {
+    go(false);
+    demo = formats[k];
+    const placement = channelById(demo.channel).placements.find(item => item.id === demo.placement);
+    frames = placement.quadros.slice(demo.from, demo.to + 1);
+    $('[data-phone]').innerHTML = renderMock(placement);
+    screen = $('.cm-screen');
+    $('[data-steps]').innerHTML = demo.steps.map(([text], s) => `<li><button type="button" data-vitrine-step="${s}"><span aria-hidden="true">${s + 1}</span>${text}</button></li>`).join('');
+    root.querySelectorAll('[data-formato]').forEach(button => button.setAttribute('aria-pressed', String(Number(button.dataset.formato) === k)));
+    nota.textContent = `Repete a seção de campanhas: ${demo.repete}. Exemplo ilustrativo, marca fictícia. Interface aproximada.`;
+    show(0);
+  }
 
-  play.addEventListener('click', () => {
-    if (reduce.matches) { show(index >= last ? 0 : index + 1); return; }
-    go(!playing);
+  root.addEventListener('click', event => {
+    const format = event.target.closest('[data-formato]');
+    if (format) { started = true; load(Number(format.dataset.formato)); return; }
+    const step = event.target.closest('[data-vitrine-step]');
+    if (step) { go(false); show(demo.steps[Number(step.dataset.vitrineStep)][1]); return; }
+    if (event.target.closest('[data-play]')) {
+      if (reduce.matches) { show(index >= last() ? 0 : index + 1); return; }
+      go(!playing);
+    }
   });
-  steps.forEach((button, k) => button.addEventListener('click', () => { go(false); show(demo.steps[k][1]); }));
 
-  show(0);
+  load(0);
   // Plays once when the phone comes into view; leaving the view pauses it.
   if ('IntersectionObserver' in window) {
     new IntersectionObserver(([entry]) => {
