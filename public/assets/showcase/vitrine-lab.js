@@ -57,12 +57,9 @@ function mountOne(root) {
     <div class="vitrine-phone" data-phone></div>
     <div class="vitrine-side">
       <ol class="vitrine-steps" data-steps></ol>
-      <p class="vitrine-caption" data-caption></p>
-      <button type="button" class="vitrine-play" data-play>Reproduzir</button>
-      <p class="vitrine-nota" data-nota aria-live="polite"></p>
     </div>`;
   const $ = selector => root.querySelector(selector);
-  const play = $('[data-play]'), caption = $('[data-caption]'), nota = $('[data-nota]');
+  const play = document.createElement('button'), caption = {}, nota = {};
   let demo = null, all = [], frames = [], screen = null, index = 0, timer = 0, playing = false, started = false;
   const last = () => frames.length - 1;
 

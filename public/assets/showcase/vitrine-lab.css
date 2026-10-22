@@ -30,3 +30,12 @@
 .vitrine-formatos button[aria-pressed="true"],.vitrine-steps button[aria-current="step"]{box-shadow:inset 0 0 0 1.5px #f8fbf7}
 .vitrine-formatos button:focus-visible,.vitrine-steps button:focus-visible,.vitrine-play:focus-visible{outline:3px solid #e8a33d;outline-offset:3px}
 @media (min-width:900px){.vitrine-formatos{justify-self:center}}
+/* Removed on request (2026-10-22): campaign meta chips, note link, peel return, badge controls and footer. */
+#laboratorio .cx-meta,#laboratorio .sp-campaign-note a,#laboratorio .sp-peel-return,.hero-badge-controls,.hero-badge-foot{display:none!important}
+#laboratorio a[data-contact-service]{display:none!important}
+/* Tighter rhythm between sections after the removals. */
+#laboratorio.ads-section,#editorial,#sistemas.workflow-section{padding-top:clamp(36px,6vw,64px)!important;padding-bottom:clamp(28px,5vw,56px)!important}
+#categorias{padding-top:clamp(32px,5vw,56px)!important}
+#contato{padding-top:clamp(32px,5vw,56px)!important}
+#editorial .systems-intro,#sistemas .systems-intro{margin-bottom:8px!important}
+.vitrine{margin-top:16px;gap:16px}
