@@ -174,7 +174,7 @@ export function makeSites({ I, pic, marca, esc, CLIENTES }) {
       `${head}${body(`<div class="cm-sl-q"><small>Monte seu roteiro, 2 de 2</small><span class="cm-site-progress" style="--p:1"><i></i></span></div><b class="cm-bd-title">O que você quer ver?</b>
         <div class="cm-bd-tiles">${tile('music', 'Mascarados', { on: true })}${tile('car', 'Cavalhadas', { q: 'q2', tap: 'c' })}${tile('people', 'Procissão')}${tile('fork', 'Comida típica')}</div>
         <p class="cm-site-note">${I('info')}Escolha quantos quiser. O roteiro muda conforme a escolha.</p>`)}${foot(cta('Gerar roteiro', 'd'))}`,
-      `${head}${body(`<div class="cm-bd-hero cm-bd-hero--sm">${pic('crencas', { pos: '50% 20%' })}<span>Roteiro sugerido</span></div><b class="cm-bd-title">3 dias em Pirenópolis</b>
+      `${head}${body(`<div class="cm-bd-hero cm-bd-hero--sm">${pic('cenaCrencas', { pos: '50% 52%' })}<span>Roteiro sugerido</span></div><b class="cm-bd-title">3 dias em Pirenópolis</b>
         <ol class="cm-bd-days"><li><b>Dia 1</b><span>Chegada e centro histórico</span></li><li><b>Dia 2</b><span>Mascarados nas ruas</span></li><li><b>Dia 3</b><span>Cavalhadas</span></li></ol>
         <div class="cm-bd-hotel">${I('home')}<span><b>Hotel no centro histórico</b><small>A pé das festas</small></span></div>
         ${show('q3', `<p class="cm-bd-toast">${I('check')}Um consultor vai chamar você no WhatsApp.</p>`)}`)}${foot(`<span class="cm-site-cta cm-site-cta--wa" data-tap="e" data-pick="q3" data-hs="3">${I('comment')}Falar com um consultor</span>`)}`,

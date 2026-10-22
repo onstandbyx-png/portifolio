@@ -28,7 +28,36 @@ const mais = cls => `<svg class="${cls}" viewBox="0 0 24 24" aria-hidden="true">
 const opcoes = '<svg class="ig-opcoes" viewBox="0 0 18 10" aria-hidden="true"><path d="M1 1.2h16M1 8.8h11.5" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/></svg>';
 const reelsIco = '<svg class="igr-nav-ico igr-nav-reels" viewBox="0 0 24 24" aria-hidden="true"><rect x="2.8" y="2.8" width="18.4" height="18.4" rx="5.2"/><path d="M3 8.2h18M8.4 3l2.9 5.2M14.4 3l2.9 5.2"/><path class="igr-nav-play" d="M10 11.2v6.4l5.4-3.2z"/></svg>';
 
-export function makeLabScreens({ marca, esc, CLIENTES }) {
+/* TikTok "Para você" (fatos-tiktok-para-voce-v1, TikTok.tsx): filled and stroked icons of the app, no brand glyph. */
+const TT = {
+  coracao: 'M12 21.2c-.4 0-.8-.1-1.1-.4C6.3 17 2 13.4 2 8.9 2 5.8 4.4 3.4 7.4 3.4c1.9 0 3.6 1 4.6 2.5 1-1.5 2.7-2.5 4.6-2.5 3 0 5.4 2.4 5.4 5.5 0 4.5-4.3 8.1-8.9 11.9-.3.3-.7.4-1.1.4z',
+  balao: 'M12 3.2c-5.3 0-9.6 3.6-9.6 8.1 0 2.5 1.3 4.8 3.4 6.3l-.5 3.4 3.8-1.9c.9.2 1.9.3 2.9.3 5.3 0 9.6-3.6 9.6-8.1S17.3 3.2 12 3.2z',
+  favorito: 'M6.2 2.6h11.6c.9 0 1.6.7 1.6 1.6v16.6c0 .6-.7 1-1.2.6L12 17.2l-6.2 4.2c-.5.4-1.2 0-1.2-.6V4.2c0-.9.7-1.6 1.6-1.6z',
+  compartilhar: 'M13.4 3.6c0-.7.8-1 1.3-.6l7.6 7.2c.4.4.4 1 0 1.3l-7.6 7.3c-.5.5-1.3.1-1.3-.6v-3.6C7.6 14.5 4.6 16.7 2.4 20.4 2.6 13.3 6 8.5 13.4 7.6z',
+  inicio: 'M3.4 10.1 12 3l8.6 7.1v10.2c0 .6-.5 1.1-1.1 1.1h-4.9v-6.2H9.4v6.2H4.5c-.6 0-1.1-.5-1.1-1.1z',
+  amigos: 'M9.2 11.4a3.9 3.9 0 1 0 0-7.8 3.9 3.9 0 0 0 0 7.8zM2.2 20.6c.5-4 3.3-6.2 7-6.2s6.5 2.2 7 6.2M15.6 3.8a3.9 3.9 0 0 1 0 7.4M17.8 14.6c2.3.7 3.6 2.8 4 6',
+  caixa: 'M4.6 4h14.8c.9 0 1.6.7 1.6 1.6v10.6c0 .9-.7 1.6-1.6 1.6h-5.2L12 20.6l-2.2-2.8H4.6c-.9 0-1.6-.7-1.6-1.6V5.6C3 4.7 3.7 4 4.6 4z',
+  perfil: 'M12 12.2a4.3 4.3 0 1 0 0-8.6 4.3 4.3 0 0 0 0 8.6zM4.2 21c.6-4.3 3.6-6.6 7.8-6.6s7.2 2.3 7.8 6.6',
+  busca: 'M10.6 18a7.4 7.4 0 1 0 0-14.8 7.4 7.4 0 0 0 0 14.8zM16 16l5 5',
+  nota: 'M9 17.6V5.4l10-2v12.2M9 17.6a2.6 2.6 0 1 1-5.2 0 2.6 2.6 0 0 1 5.2 0zM19 15.6a2.6 2.6 0 1 1-5.2 0 2.6 2.6 0 0 1 5.2 0z',
+};
+const cheio = (d, cls = '') => `<svg${cls ? ` class="${cls}"` : ''} viewBox="0 0 24 24" aria-hidden="true"><path d="${d}" fill="currentColor"/></svg>`;
+const traco = (d, cls = '') => `<svg${cls ? ` class="${cls}"` : ''} viewBox="0 0 24 24" aria-hidden="true"><path d="${d}" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+const ttLive = '<svg class="tt-live" viewBox="0 0 30 24" aria-hidden="true"><path d="M11 2.6 15 6.2l4-3.6" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/><rect x="2" y="6.4" width="26" height="15.6" rx="3.4" fill="none" stroke="currentColor" stroke-width="1.9"/><text x="15" y="17.6" text-anchor="middle" font-size="8.4" font-weight="800" fill="currentColor">LIVE</text></svg>';
+const mais12 = '<svg viewBox="0 0 12 12" aria-hidden="true"><path d="M6 2v8M2 6h8" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/></svg>';
+/* YouTube watch screen (fatos-youtube-player-v1, YouTube.tsx): generic stroked action glyphs. */
+const YT = {
+  gostei: 'M7.5 10.5V20H4.2a1 1 0 0 1-1-1v-7.5a1 1 0 0 1 1-1zM7.5 10.5l3.6-6.6c.3-.6 1-.9 1.6-.6 1 .4 1.5 1.5 1.2 2.6l-.8 3h5.1a2 2 0 0 1 2 2.4l-1.3 6.8a2.4 2.4 0 0 1-2.4 1.9H7.5',
+  naoGostei: 'M16.5 13.5V4h3.3a1 1 0 0 1 1 1v7.5a1 1 0 0 1-1 1zM16.5 13.5l-3.6 6.6c-.3.6-1 .9-1.6.6-1-.4-1.5-1.5-1.2-2.6l.8-3H5.8a2 2 0 0 1-2-2.4l1.3-6.8A2.4 2.4 0 0 1 7.5 4h9',
+  compartilhar: 'M13.5 5 20.5 11.6l-7 6.6v-3.7c-4.8 0-7.7 1.4-9.7 4.6.5-5.2 3.4-9.3 9.7-10.2z',
+  remixar: 'M5 7h9.5a4.5 4.5 0 0 1 0 9H8M8 13l-3 3 3 3M17 4l3 3-3 3',
+  baixar: 'M12 4v11M7.5 10.5 12 15l4.5-4.5M5 19.5h14',
+  salvar: 'M4 6.5h11M4 11.5h11M4 16.5h7M18 13v7M14.5 16.5h7',
+  opcoes: 'M12 5.5h.01M12 12h.01M12 18.5h.01',
+};
+const yti = (d, cls = 'yt-i') => `<svg class="${cls}" viewBox="0 0 24 24" aria-hidden="true"><path d="${d}" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+
+export function makeLabScreens({ marca, esc, CLIENTES, pic }) {
   const user = key => CLIENTES[key].arroba;
   /* Post header: avatar, user name and the second line (Posts screen measurements). */
   const cab = (key, second = 'Patrocinado') => `<div class="ig-cab" data-linhas="2">${marca(key, 'circulo', 'ig-avatar')}<div class="ig-cab-txt"><b>${esc(user(key))}</b><span class="ig-parceria">${esc(second)}</span></div>${opcoes}</div>`;
@@ -94,5 +123,38 @@ export function makeLabScreens({ marca, esc, CLIENTES }) {
         ${acoes()}<p class="ig-legenda cm-ig-caption"><b>${esc(user(key))}</b> ${caption}</p></article><span class="ig-navegacao"></span></div>`;
   }
 
-  return { feedAd, storyAd, liveAd, reelsAd, explore, postAberto };
+  /** TikTok "Para você" with an ad: LIVE, tabs and search; video to the app bar; the action column without counts;
+      name, caption, the Patrocinado label, the sound line, the ad CTA; the app bar of 2026. */
+  function tiktokAd({ key, video, caption, cta, sound }) {
+    return `<div class="tt"><div class="tt-video">${video}<span class="tt-progresso" data-hs="2"><i data-cx-progress></i></span></div>
+      <div class="tt-topo">${ttLive}<span class="tt-abas"><span class="tt-aba">Seguindo</span><span class="tt-aba" data-on>Para você</span></span>${traco(TT.busca, 'tt-busca')}</div>
+      <div class="tt-trilho"><span class="tt-perfil">${marca(key, 'circulo', 'tt-av')}<span class="tt-seguir">${mais12}</span></span>${cheio(TT.coracao, 'tt-acao')}<span class="tt-acao tt-comentar">${cheio(TT.balao)}<i></i></span>${cheio(TT.favorito, 'tt-acao tt-favorito')}${cheio(TT.compartilhar, 'tt-acao')}<span class="tt-disco">${marca(key, 'circulo', 'tt-disco-av')}</span></div>
+      <div class="tt-info"><b class="tt-nome">${esc(user(key))}</b><p class="tt-legenda">${esc(caption)}</p><span class="tt-selo">Patrocinado</span><span class="tt-som">${traco(TT.nota)}<span class="tt-som-texto"><span><span>${esc(sound)}</span><span>${esc(sound)}</span></span></span></span>
+        <span class="tt-cta" data-tap="${cta.tap || 'cta'}" data-hs="${cta.hs || '3'}"><b>${esc(cta.text)}</b>${ico(IG.seta, 'tt-cta-seta')}</span></div>
+      <div class="tt-nav"><span class="tt-nav-item" data-on>${cheio(TT.inicio)}Início</span><span class="tt-nav-item">${traco(TT.amigos)}Amigos</span><span class="tt-criar"><i>${mais12}</i></span><span class="tt-nav-item">${traco(TT.caixa)}Caixa de entrada</span><span class="tt-nav-item">${traco(TT.perfil)}Perfil</span></div></div>`;
+  }
+
+  const ytActions = `<div class="yt-pilulas"><span class="yt-pilula yt-pilula-gostei">${yti(YT.gostei)}<i class="yt-divisor"></i>${yti(YT.naoGostei)}</span><span class="yt-pilula">${yti(YT.compartilhar)}Compartilhar</span><span class="yt-pilula">${yti(YT.remixar)}Remixar</span><span class="yt-pilula">${yti(YT.baixar)}Baixar</span><span class="yt-pilula">${yti(YT.salvar)}Salvar</span></div>`;
+  const ytChannel = (name, initial) => `<div class="yt-canal"><i class="yt-avatar yt-avatar--x">${esc(initial)}</i><b class="yt-canal-nome">${esc(name)}</b><span class="yt-inscrever">Inscrever-se</span></div>`;
+
+  /** YouTube watch screen with an in-stream ad: the ad in the 16:9 player, the companion card of the advertiser,
+      then the video page of the lab (title, channel, action pills, comments and the next video). */
+  function youtubeAd({ key, player, panel, title, meta }) {
+    return `<div class="yt"><div class="yt-player cm-yt-player">${player}</div>
+      <div class="yt-ad-painel">${marca(key, 'circulo', 'yt-ad-av')}<span><b>${esc(panel.title)}</b><small><b>Patrocinado</b> · ${esc(CLIENTES[key].dominio)}</small></span><span class="yt-ad-btn" data-tap="${panel.tap || 'cta'}" data-hs="${panel.hs || '3'}">${esc(panel.button)}</span></div>
+      <div class="yt-info"><p class="yt-titulo">${esc(title)}</p><p class="yt-meta">${meta}</p></div>
+      ${ytChannel('Canal Exemplo', 'C')}${ytActions}
+      <div class="yt-comentarios"><b>Comentários</b><span class="yt-comentar"><i class="yt-comentar-avatar"></i>Adicione um comentário…</span></div>
+      <div class="yt-seguinte"><div class="yt-miniatura">${pic('cenaEsportes', { pos: '50% 64%' })}<span class="yt-duracao">12:08</span></div><div class="yt-seguinte-info"><i class="yt-avatar yt-avatar--x">C</i><span><b>Os gols da rodada em dez minutos</b><small>Canal Exemplo</small></span>${yti(YT.opcoes, 'yt-i yt-i-opcoes')}</div></div>
+      <span class="yt-navegacao"></span></div>`;
+  }
+
+  /** YouTube live of a creator with the paid promotion notice: player, title, channel and the live chat. */
+  function youtubeLive({ player, title, meta, chat }) {
+    return `<div class="yt yt--live"><div class="yt-player cm-yt-player">${player}</div>
+      <div class="yt-info"><p class="yt-titulo">${esc(title)}</p><p class="yt-meta">${meta}</p></div>
+      ${ytChannel('Canal Exemplo', 'C')}${chat}<span class="yt-navegacao"></span></div>`;
+  }
+
+  return { feedAd, storyAd, liveAd, reelsAd, explore, postAberto, tiktokAd, youtubeAd, youtubeLive };
 }

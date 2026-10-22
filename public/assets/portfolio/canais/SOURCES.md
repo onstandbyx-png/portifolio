@@ -45,6 +45,16 @@ Copiados sem alteração da pasta de fotos do estúdio Fatos (repositório priva
 
 A foto da Teclaria (`campanha-nerd.webp`, do estúdio Fatos) já está em `public/assets/portfolio/campanha-nerd.webp` e não foi duplicada.
 
+Cenas do estúdio Fatos, mapeadas no laboratório (`_lab/fatos-estudio`), copiadas sem alteração em 22/10/2026 (mesmo md5). Fotos geradas, sem pessoas e sem marcas.
+
+| Arquivo | O que mostra | Uso nesta seção |
+|---|---|---|
+| `cena-esportes.webp` (720 x 1273) | Bola, cones e apito num gramado de estádio ao pôr do sol | Miniatura do vídeo seguinte no YouTube (Ondara Elétricos) |
+| `cena-nerd.webp` (720 x 1273) | Controle de videogame, console portátil, foguete e dados sobre fundo amarelo | Segundo corte do vídeo da Teclaria no TikTok |
+| `cena-crencas.webp` (720 x 1273) | Bandeirolas, lanternas e velas numa varanda ao entardecer | Roteiro sugerido no site da Bandeirola Viagens |
+
+`cena-negocios.webp` do mesmo estúdio não entra: o caderno mostra um gráfico subindo, que não deve aparecer junto da gestora de patrimônio.
+
 ## Desenho original
 
 | Arquivo | O que mostra | Origem |

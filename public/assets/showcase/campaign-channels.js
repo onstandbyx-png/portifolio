@@ -46,6 +46,10 @@ export const IMG = {
   negocios: { src: A + 'canais/campanha-negocios-sem-grafico.webp', w: 720, h: 913 },
   nerd: { src: A + 'campanha-nerd.webp', w: 720, h: 1273 },
   coast: { src: A + 'smiile-architecture-coast.webp', w: 1400, h: 933 },
+  /* scenes of the Fatos studio, mapped in the lab (_lab/fatos-estudio) */
+  cenaEsportes: { src: A + 'canais/cena-esportes.webp', w: 720, h: 1273 },
+  cenaNerd: { src: A + 'canais/cena-nerd.webp', w: 720, h: 1273 },
+  cenaCrencas: { src: A + 'canais/cena-crencas.webp', w: 720, h: 1273 },
 };
 
 /* Fictitious advertisers, one per client type. Names checked on 21/10/2026
@@ -172,7 +176,7 @@ const TABS = {
 /* Each client's own site, with the steps of its real flow (campaign-sites.js). */
 const SITES = makeSites({ I, pic, marca, esc, CLIENTES });
 /* The platform screens of the lab: the Fatos studio modules measured on the app captures (lab-telas.js). */
-const LAB = makeLabScreens({ marca, esc, CLIENTES });
+const LAB = makeLabScreens({ marca, esc, CLIENTES, pic });
 
 /* Floor plan of the incorporadora (3 or 4 bedrooms), an original line drawing. */
 const planta = cls => `<svg class="cm-planta${cls ? ' ' + cls : ''}" viewBox="0 0 200 150" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="3"><rect x="6" y="6" width="188" height="138" rx="2"/><path d="M6 78h86M92 6v138M92 60h102M150 60v84"/><path class="cm-planta-4" d="M150 6v54M6 112h86"/></g><g fill="currentColor" font-family="Inter,Arial,sans-serif" font-size="10"><text x="22" y="44">Sala</text><text x="104" y="38">Varanda</text><text x="104" y="108">Quarto</text><text x="158" y="108">Suíte</text><text x="22" y="104">Cozinha</text></g></svg>`;
@@ -248,26 +252,19 @@ const mocks = {
     scene('form', 'sheet', 'escuro', SITES.metaForm(), 'cm-scene--part', 'claro')),
 
   /* 2.4 TikTok In-Feed: a tech store, native text, CTA that takes the brand colour, TikTok browser. */
-  ttFeed: () => screen('tt', scene('video', 'base', 'escuro', `<div class="cm-shots">
+  ttFeed: () => screen('tt', scene('video', 'base', 'escuro', LAB.tiktokAd({ key: 'varejo', caption: 'Um notebook para os dois turnos. #setup #edição', sound: 'Música promocional - teclaria', cta: { text: 'Comprar agora' },
+    video: `<div class="cm-shots">
       <figure class="cm-shot" data-shot="1">${pic('nerd', { alt: 'Notebook com a tela acesa numa mesa escura.' })}<p class="cm-tt-text" data-hs="1"><span>Joga à noite</span><span>e edita de dia?</span></p></figure>
-      <figure class="cm-shot cm-shot--zoom" data-shot="2">${pic('nerd', { pos: '50% 34%' })}<p class="cm-tt-text" data-hs="2"><span>De noite, o jogo.</span><span>De dia, a edição.</span></p></figure></div>
-    <span class="cm-shade"></span>
-    <div class="cm-tt-top">${I('tv')}<span><span>Seguindo</span><b>Para você</b></span>${I('search')}</div>
-    <div class="cm-rail cm-rail--tt"><span class="cm-tt-avatar">${marca('varejo')}<i>${I('plus')}</i></span>${I('heart')}${I('comment')}${I('bookmark')}${I('forward')}<span class="cm-disc">${marca('varejo')}</span></div>
-    <div class="cm-vmeta cm-vmeta--tt"><b>teclaria</b><p>Um notebook para os dois turnos.</p><small class="cm-pill">Patrocinado</small><small class="cm-audio">${I('music')}Música promocional</small></div>
-    <div class="cm-vcta cm-vcta--tt" data-tap="cta" data-hs="3"><b>Comprar agora</b>${I('chevron')}</div>
-    <div class="cm-vprogress cm-vprogress--tt"><i data-cx-progress></i></div>${tabbar(TABS.tiktok, 'cm-tabbar--dark')}`) +
+      <figure class="cm-shot" data-shot="2">${pic('cenaNerd', { pos: '40% 70%' })}<p class="cm-tt-text"><span>De noite, o jogo.</span><span>De dia, a edição.</span></p></figure></div>` })) +
     scene('page', 'sheet', 'claro', `${browserBar('teclaria', 'teclaria.exemplo')}${SITES.teclaria()}`)),
 
   /* 2.5 YouTube in-stream: a car dealer before a chosen video, skip after 5 s, panel CTA, test drive page. */
-  ytInstream: () => screen('yt', scene('watch', 'base', 'claro', `<div class="cm-safe"><div class="cm-yt-player">${pic('esportes', { alt: 'SUV elétrico verde carregando no estacionamento de um estádio ao pôr do sol.', pos: '50% 32%' })}<span class="cm-yt-dim"></span>
+  ytInstream: () => screen('yt', scene('watch', 'base', 'escuro', LAB.youtubeAd({ key: 'automotivo', title: 'Melhores momentos da rodada', meta: '<span>há 2 dias</span><b>…mais</b>', panel: { title: 'Test drive do SUV elétrico', button: 'Agendar' },
+    player: `${pic('esportes', { alt: 'SUV elétrico verde carregando no estacionamento de um estádio ao pôr do sol.', pos: '50% 32%' })}<span class="cm-yt-dim"></span>
       <p class="cm-yt-burn" data-hs="1">Saiu do jogo. Quanto de carga sobra?</p>
       <div class="cm-yt-dash" data-hs="2"><small>Carga para a volta</small><span><i></i></span><b>O painel mostra antes de você sair.</b></div>
       <span class="cm-yt-label">Patrocinado · 0:12 ${I('info')}</span><span class="cm-yt-wait">Pular em 4</span><span class="cm-yt-skip">Pular ${I('skip')}</span>
-      <span class="cm-yt-adbar"><i data-cx-progress></i></span></div>
-    <div class="cm-yt-panel">${marca('automotivo')}<span><b>Test drive do SUV elétrico</b><small><b>Patrocinado</b> · ondara.exemplo</small></span><span class="cm-yt-btn" data-tap="cta" data-hs="3">Agendar</span></div>
-    <div class="cm-yt-info"><b>Melhores momentos da rodada</b><span class="cm-yt-channel"><i></i><b>Canal Exemplo</b><span class="cm-yt-sub">Inscrever-se</span></span></div>
-    <div class="cm-yt-recs">${Array.from({ length: 4 }, () => `<span><i></i>${skel(2)}</span>`).join('')}</div></div>`) +
+      <span class="cm-yt-adbar"><i data-cx-progress></i></span>` })) +
     scene('page', 'push', 'claro', `${browserBar('Test drive', 'ondara.exemplo')}${SITES.ondara()}`)),
 
   /* 2.6 YouTube Shorts: the app of a language school, an exercise that holds attention, App Store sheet. */
@@ -284,14 +281,14 @@ const mocks = {
       </div>`, 'cm-scene--part', 'claro')),
 
   /* 2.7 YouTube live: a creator shows the tech store's notebook, paid promotion notice, pinned link. */
-  ytLive: () => screen('ytlive', scene('live', 'base', 'claro', `<div class="cm-safe"><div class="cm-yt-player">${pic('nerd', { alt: 'Setup do criador: notebook com a tela acesa na mesa.', pos: '50% 19%' })}
+  ytLive: () => screen('ytlive', scene('live', 'base', 'escuro', LAB.youtubeLive({ title: 'Montando o setup de edição ao vivo', meta: '<span>Transmitindo agora</span><span>#publi</span><b>…mais</b>',
+    player: `${pic('nerd', { alt: 'Setup do criador: notebook com a tela acesa na mesa.', pos: '50% 19%' })}
       <span class="cm-paid" data-hs="1">${I('tag')}Inclui promoção paga${I('chevron')}</span><span class="cm-onair">Ao vivo</span>
-      <span class="cm-lower" data-hs="2"><small>#publi</small><b>Teclaria</b><span>O notebook deste setup</span></span></div>
-    <div class="cm-yt-info"><b>Montando o setup de edição ao vivo</b><span class="cm-yt-channel"><i>C</i><b>Canal Exemplo</b><span class="cm-yt-sub">Inscrever-se</span></span></div>
-    <div class="cm-chat"><div class="cm-chat-head"><b>Chat ao vivo</b>${I('vdots')}</div>
+      <span class="cm-lower" data-hs="2"><small>#publi</small><b>Teclaria</b><span>O notebook deste setup</span></span>`,
+    chat: `<div class="cm-chat"><div class="cm-chat-head"><b>Chat ao vivo</b>${I('vdots')}</div>
       <div class="cm-chat-pin">${I('pin')}<span><b>Canal Exemplo</b> Lista de espera do Teclaria Pro 15 branco: <u data-tap="link" data-hs="3">teclaria.exemplo/branco</u></span></div>
       <div class="cm-chat-list"><p><i></i><b>bia.rocha</b> boa noite, canal!</p><p><i></i><b>lucas_dev</b> que setup bonito</p><p><i></i><b>marina.t</b> qual programa de edição você usa?</p><p><i></i><b>jogador1</b> qual é esse notebook?</p><p><i></i><b>edita_noite</b> a tela aguenta bem as cores?</p><p class="cm-chat-more"><i></i><b>ana.cortes</b> vai ter branco?</p><p class="cm-chat-more"><i></i><b>pedro_lima</b> curti o teclado</p></div>
-      <span class="cm-chat-input">Diga algo…</span></div></div>`) +
+      <span class="cm-chat-input">Diga algo…</span></div>` })) +
     scene('page', 'push', 'claro', `${browserBar('Teclaria Pro 15 branco', 'teclaria.exemplo')}${SITES.teclaria({ variant: 'espera' })}`)),
 
   /* 2.8 LinkedIn: document ad with a lead form of a wealth manager. */
@@ -844,6 +841,8 @@ const SCREEN = {
   fbvid: { tema: 'escuro', fundo: '#000' },
   fbbreak: { tema: 'escuro', fundo: '#000' },
   ttFeed: { tema: 'escuro', fundo: '#000' },
+  ytInstream: { tema: 'escuro', fundo: '#0f0f0f' },
+  ytLive: { tema: 'escuro', fundo: '#0f0f0f' },
   ytShorts: { tema: 'escuro', fundo: '#000' },
   liFeed: { fundo: '#f4f2ee' },
 };
