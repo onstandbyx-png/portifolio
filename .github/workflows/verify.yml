@@ -16,7 +16,7 @@ jobs:
       fail-fast: false
       max-parallel: 3
       matrix:
-        suite: [visual-correction, positioning, fatos-video, editorial-devices, device-fidelity, hero-fit, section-visibility, narrative, motion-rhythm, static-presentations, badge-loading, gestures, readable-hero, independent-showcases]
+        suite: [visual-correction, positioning, fatos-video, editorial-devices, device-fidelity, hero-fit, section-visibility, narrative, motion-rhythm, static-presentations, badge-loading, gestures, readable-hero, independent-showcases, navigation-menu]
     env:
       QA_PACKAGE: /tmp/portfolio-qa/package.json
     steps:

@@ -15,4 +15,10 @@ assert(h.includes('data-portfolio-badges')&&h.includes('/assets/badge-build/inde
 for(const name of ['fatos-editorial','fatos-esportes','fatos-crencas','fatos-sobrenaturais','fatos-nerd','fatos-negocios','campanha-meta','campanha-google','campanha-tiktok','casa-costa','trilhas'])assert(existsSync(new URL(`../public/assets/portfolio/static-r8/${name}.webp`,import.meta.url)),name);
 for(const target of ['#editorial','#laboratorio','#sistemas','#contato'])assert(h.includes(target),target);
 for(const source of [h,js,showcase])assert(!source.includes('#estudio-interativo'),'Hidden studio has no public navigation');
+assert(existsSync(new URL('../public/assets/planes-navigation.js',import.meta.url)),'Desktop navigation module is tracked');
+assert(existsSync(new URL('../public/assets/planes-hero-navigation.css',import.meta.url)),'Hero and menu stylesheet is tracked');
+assert(h.includes('id="planes-menu"')&&h.includes('data-menu-trigger="work"')&&h.includes('data-menu-content="services"'),'Desktop disclosure navigation is present');
+assert(h.includes('<details>')&&h.includes('aria-label="Navegação móvel"'),'Mobile navigation uses native accordions');
+assert(h.includes('/assets/planes-navigation.js')&&h.includes('/assets/planes-hero-navigation.css'),'Hero and menu assets are loaded');
+for(const id of ['trabalhos','editorial','laboratorio','trilhas','sistemas','categorias','como-trabalho','contato'])assert(h.includes('href="#'+id+'"'),'Navigation target '+id);
 console.log('PASS: static mock artwork, native navigation, badge hero and local contact');
