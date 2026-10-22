@@ -25,8 +25,8 @@ export const portfolioCopy = {
     "ariaLabel": "Navegação principal",
     "items": [
       {
-        "label": "Trabalhos",
-        "href": "#trabalhos"
+        "label": "Campanhas",
+        "href": "#laboratorio"
       },
       {
         "label": "Serviços",
@@ -57,8 +57,8 @@ export const portfolioCopy = {
       "title": "Direção criativa.\nExecução digital.",
       "body": "Crio identidades, conteúdos, anúncios, sites e sistemas para sua empresa comunicar melhor, apresentar suas ofertas e simplificar processos.",
       "primaryCta": {
-        "label": "Explorar trabalhos",
-        "href": "#trabalhos"
+        "label": "Ver campanhas",
+        "href": "#laboratorio"
       },
       "secondaryCta": {
         "label": "Conversar sobre um projeto",
