@@ -1,0 +1,23 @@
+/* Two home demonstrations built from the lab's flows (vitrine-lab.js). The phone and the
+   mocks are styled by channel-mocks.css, campaign-sites.css and lab-telas.css, scoped
+   to :is(#laboratorio, .lab-escopo) so they also apply here. */
+.vitrine{display:grid;justify-items:center;gap:clamp(18px,3vw,30px);margin-top:clamp(26px,4vw,40px)}
+.vitrine-phone{width:min(100%,320px)}
+/* Text takes the colour of its section (light in Sites e lojas, dark in Sistemas e automações). */
+.vitrine-side{display:grid;gap:14px;width:min(100%,520px);color:inherit}
+.vitrine-steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:8px;margin:0;padding:0;list-style:none}
+.vitrine-steps button{display:flex;align-items:center;gap:8px;width:100%;min-height:44px;padding:8px 10px;border:1px solid #bccdb9;border-radius:12px;background:#f9fbf6;color:#234530;font:600 13px/1.25 var(--sans,Inter,Arial,sans-serif);text-align:left;cursor:pointer}
+.vitrine-steps button span{display:inline-grid;flex:none;place-items:center;width:22px;height:22px;border-radius:50%;background:#dfe6d8;font-size:12px}
+.vitrine-steps button[aria-current="step"]{border-color:#1e4530;background:#1e4530;color:#f8fbf7}
+.vitrine-steps button[aria-current="step"] span{background:#f8fbf7;color:#1e4530}
+.vitrine-caption{min-height:3.1em;margin:0;font:400 16px/1.5 var(--sans,Inter,Arial,sans-serif)}
+.vitrine-play{justify-self:start;min-height:44px;padding:0 18px;border:1px solid #bccdb9;border-radius:999px;background:#f9fbf6;color:#234530;font:600 14px/1 var(--sans,Inter,Arial,sans-serif);cursor:pointer}
+.vitrine-nota{margin:0;opacity:.72;font-size:12.5px;line-height:1.4}
+@media (min-width:900px){
+  .vitrine{grid-template-columns:minmax(0,320px) minmax(0,520px);justify-content:center;align-items:center;justify-items:stretch}
+  .vitrine-side{align-content:center}
+}
+@media (prefers-reduced-motion:reduce){.vitrine .cm-screen,.vitrine .cm-scene{transition:none!important}}
+/* Sites e lojas sits on the light page: its header keeps the dark ink of the page. */
+#editorial .systems-intro .eyebrow{color:#4f6357}
+#editorial .systems-intro p{color:#3d4a40}

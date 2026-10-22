@@ -51,6 +51,7 @@
   <link rel="stylesheet" href="/assets/showcase/channel-mocks.css">
   <link rel="stylesheet" href="/assets/showcase/campaign-sites.css">
   <link rel="stylesheet" href="/assets/showcase/lab-telas.css">
+  <link rel="stylesheet" href="/assets/showcase/vitrine-lab.css">
   <link rel="stylesheet" href="/assets/showcase/deck-demos.css">
   <link rel="stylesheet" href="/assets/hero-composition.css?v=integrated-fit">
   <link rel="stylesheet" href="/assets/showcase/device-premium.css?v=iphone-macbook-1">
@@ -138,31 +139,10 @@
       </div>
     </section>
 
-<section class="editorial-section" id="editorial" data-nav-group="trabalhos" data-editorial-story aria-labelledby="editorial-title">
-  <header class="shell es-heading">
-    <span class="eyebrow">DO CONCEITO À ENTREGA</span>
-    <span class="es-heading-progress" data-es-heading-count aria-hidden="true">01 / 03</span>
-    <h2 id="editorial-title">Uma ideia.<br>Três etapas para ganhar vida.</h2><p>Escolha um desafio no celular, acompanhe a direção no tablet e veja a entrega no notebook. Protótipos originais.</p>
-  </header>
-  <div class="shell es-workbench">
-    <div class="es-tabs" role="tablist" aria-label="Etapas da criação do projeto">
-      <button type="button" id="editorial-tab-hook" data-editorial-step="0" role="tab" aria-controls="editorial-story-panel" aria-selected="true"><span>01</span><strong>Desafio</strong></button>
-      <button type="button" id="editorial-tab-context" data-editorial-step="1" role="tab" aria-controls="editorial-story-panel" aria-selected="false" tabindex="-1"><span>02</span><strong>Direção</strong></button>
-      <button type="button" id="editorial-tab-closing" data-editorial-step="2" role="tab" aria-controls="editorial-story-panel" aria-selected="false" tabindex="-1"><span>03</span><strong>Entrega</strong></button>
-    </div>
-    <div class="es-panel" id="editorial-story-panel" role="tabpanel" aria-labelledby="editorial-tab-hook" tabindex="0">
-      <div class="es-stage" data-editorial-stage>
-        <div class="es-phone-placeholder es-placeholder-original" aria-hidden="true"><span>S.</span><p>O que sua empresa precisa criar?</p></div>
-      </div>
-      <article class="es-context" data-editorial-context hidden inert aria-hidden="true">
-        <span data-es-label>01 / Desafio</span>
-        <h3 data-es-title>Toda boa entrega parte de uma necessidade.</h3>
-        <p data-es-body>Escolha um projeto e acompanhe como a demonstração se adapta.</p>
-        <details class="es-transcript"><summary>Entender a escolha</summary><blockquote data-es-quote>O que sua empresa precisa criar?</blockquote><p data-es-copy>Selecione site, campanha ou sistema e acompanhe a direção da solução.</p></details>
-      </article>
-    </div>
-    <p class="es-status" data-es-status role="status" aria-live="polite">Desafio · 1 de 3</p>
-  </div>
+<section class="ads-section shell section-block" id="editorial" data-nav-group="trabalhos" aria-labelledby="editorial-title">
+  <div class="systems-intro"><div><span class="eyebrow">Sites e lojas</span><h2 id="editorial-title">Da vitrine<br>ao pedido pago.</h2></div><div><p>Uma loja de exemplo, do produto ao Pix. Cada toque aparece no mesmo aparelho, como o cliente vê.</p></div></div>
+  <div class="vitrine lab-escopo" data-vitrine="loja"></div>
+  <a class="systems-contact" href="#contato" data-contact-service="Sites e landing pages">Conversar sobre um site ↓</a>
 </section>
 
 <section class="ads-section shell section-block" id="laboratorio" data-nav-group="trabalhos" aria-labelledby="ads-title">
@@ -187,21 +167,8 @@
 
 <section id="sistemas" class="workflow-section" data-nav-group="trabalhos" aria-labelledby="systems-title">
  <div class="shell">
-  <div class="systems-intro"><div><span class="eyebrow">Sistemas e automações</span><h2 id="systems-title">Do pedido à<br>informação organizada.</h2></div><div><p>Interfaces e fluxos que reduzem etapas manuais. Veja uma solicitação ganhar responsável, prioridade e próximo passo.</p></div></div>
-  <div class="workflow" data-workflow>
-   <header class="workflow-head"><span>Fluxo interativo</span><h3>Um pedido. Um próximo passo.</h3></header>
-   <div class="workflow-grid">
-    <form id="workflow-editor" class="workflow-form" aria-label="Experimentar a organização de um pedido" novalidate>
-     <label for="workflow-request">O que precisa ser feito?</label><input id="workflow-request" name="request" type="text" value="Preparar proposta para um novo cliente" minlength="8" maxlength="140" required autocomplete="off" spellcheck="false" aria-describedby="workflow-request-error"><p class="workflow-error" id="workflow-request-error" hidden></p>
-     <div class="workflow-fields"><div><label for="workflow-area">Área responsável</label><select id="workflow-area" name="area"><option value="comercial">Comercial</option><option value="atendimento">Atendimento</option><option value="operacao">Operação</option></select></div><div><label for="workflow-priority">Prioridade</label><select id="workflow-priority" name="priority"><option>Normal</option><option>Urgente</option></select></div></div>
-     <button type="submit" disabled>Organizar pedido</button>
-     <noscript><p>Ative o JavaScript para experimentar o fluxo. O exemplo organiza uma solicitação por área e prioridade e permite acompanhar sua conclusão.</p></noscript>
-    </form>
-    <div class="workflow-output"><article class="workflow-result" data-workflow-result><span class="workflow-state" data-request-state data-tone="ready">Pronto para atender</span><h4 data-request-title>Preparar proposta para um novo cliente</h4><dl><div><dt>Encaminhamento</dt><dd data-request-route>Comercial → Preparar proposta</dd></div><div><dt>Prioridade</dt><dd data-request-priority data-priority="normal">Normal</dd></div></dl><p data-request-next>Assunto, responsável e próximo passo reunidos para a equipe agir.</p><div class="workflow-actions"><button type="button" data-workflow-complete>Marcar como resolvido</button><button type="button" data-workflow-edit aria-controls="workflow-editor">Escrever outro pedido</button></div></article></div>
-   </div>
-   <footer class="workflow-foot"><p>Demonstração própria · dados de exemplo.</p><button class="workflow-reset" type="button" data-workflow-reset>Recomeçar ↺</button></footer>
-   <p class="sr-only" role="status" aria-live="polite" data-workflow-status></p>
-  </div>
+  <div class="systems-intro"><div><span class="eyebrow">Sistemas e automações</span><h2 id="systems-title">Do pedido à<br>informação organizada.</h2></div><div><p>Um pedido chega pelo WhatsApp e a conversa responde sozinha: a pessoa escolhe o item, o período e confirma o resumo. A equipe recebe tudo organizado.</p></div></div>
+  <div class="vitrine lab-escopo" data-vitrine="automacao"></div>
   <a class="systems-contact" href="#contato" data-contact-service="Sistemas e automações">Conversar sobre um sistema ↓</a>
  </div>
 </section>

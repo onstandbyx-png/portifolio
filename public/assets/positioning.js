@@ -1,4 +1,4 @@
-/** Context follows the artwork; the workflow starts from a visible request and an example result. */
+/** Context follows the artwork: the campaign summary changes with the channel and the placement. */
 import { createMotion, clamp } from './sections/motion.js';
 import { channelById, marca, clienteChip } from './showcase/campaign-channels.js';
 import { logoSvg, CHANNEL_LOGO } from './showcase/channel-logos.js';
@@ -56,81 +56,6 @@ function mountCampaignContext() {
   new MutationObserver(sync).observe(card, { attributes: true, attributeFilter: ['data-side'] });
   sync();
 }
-function mountWorkflow() {
-  const demo = document.querySelector('[data-workflow]');
-  const form = demo?.querySelector('form');
-  if (!form) return;
-  const result = demo.querySelector('[data-workflow-result]');
-  const status = demo.querySelector('[data-workflow-status]');
-  const submit = form.querySelector('[type="submit"]');
-  const complete = demo.querySelector('[data-workflow-complete]');
-  const edit = demo.querySelector('[data-workflow-edit]');
-  const request = form.elements.request;
-  const error = form.querySelector('#workflow-request-error');
-  const state = result.querySelector('[data-request-state]');
-  const priority = result.querySelector('[data-request-priority]');
-  const routes = { comercial: 'Comercial → Preparar proposta', atendimento: 'Atendimento → Analisar solicitação', operacao: 'Operação → Planejar tarefa' };
-  submit.disabled = false;
-  // The request is the starting point: the form stays visible before its result (also on mobile).
-  function setState(tone, label) { state.dataset.tone = tone; state.textContent = label; }
-  function setPriority(value) { priority.textContent = value; priority.dataset.priority = value === 'Urgente' ? 'urgent' : 'normal'; }
-  // Inline pt-BR error tied to the field; novalidate keeps native bubbles out.
-  function showError(message) {
-    if (error) { error.textContent = message; error.hidden = !message; }
-    if (message) request.setAttribute('aria-invalid', 'true'); else request.removeAttribute('aria-invalid');
-  }
-  function showExample() {
-    form.reset();
-    showError('');
-    result.querySelector('[data-request-title]').textContent = request.value;
-    result.querySelector('[data-request-route]').textContent = routes.comercial;
-    setPriority('Normal');
-    setState('ready', 'Pronto para atender');
-    result.querySelector('[data-request-next]').textContent = 'Assunto, responsável e próximo passo reunidos para a equipe agir.';
-    complete.disabled = false;
-    complete.textContent = 'Marcar como resolvido';
-    submit.textContent = 'Organizar pedido';
-    demo.dataset.state = 'example';
-  }
-  edit.addEventListener('click', () => { request.focus(); request.select(); });
-  showExample();
-  form.addEventListener('submit', event => {
-    event.preventDefault();
-    if (request.value.trim().length < 8) {
-      const message = 'Descreva o pedido com pelo menos 8 caracteres.';
-      showError(message);
-      // Enter in the field keeps focus where it is, so the live region announces the error.
-      status.textContent = message;
-      request.focus();
-      return;
-    }
-    showError('');
-    result.querySelector('[data-request-title]').textContent = request.value.trim();
-    result.querySelector('[data-request-route]').textContent = routes[form.elements.area.value];
-    setPriority(form.elements.priority.value);
-    setState('ready', 'Pronto para atender');
-    result.querySelector('[data-request-next]').textContent = 'Pedido organizado: assunto, prioridade e próximo passo no mesmo lugar.';
-    complete.disabled = false;
-    complete.textContent = 'Marcar como resolvido';
-    demo.dataset.state = 'created';
-    submit.textContent = 'Atualizar pedido';
-    status.textContent = 'Pedido organizado. Você pode marcar como resolvido ou ajustar as informações.';
-    edit.focus();
-  });
-  request.addEventListener('input', () => { if (request.value.trim().length >= 8 && request.hasAttribute('aria-invalid')) { showError(''); status.textContent = ''; } });
-  complete.addEventListener('click', () => {
-    demo.dataset.state = 'completed';
-    setState('resolved', 'Resolvido');
-    result.querySelector('[data-request-next]').textContent = 'A situação foi atualizada. Em um projeto real, esse fluxo pode se conectar às ferramentas da sua equipe.';
-    complete.disabled = true;
-    complete.textContent = 'Pedido resolvido';
-    status.textContent = 'Pedido marcado como resolvido.';
-  });
-  demo.querySelector('[data-workflow-reset]').addEventListener('click', () => {
-    showExample();
-    status.textContent = 'Exemplo reiniciado. O pedido está pronto para atender.';
-  });
-}
-function mount() { mountCampaignContext(); mountWorkflow(); }
+function mount() { mountCampaignContext(); }
 if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', mount, { once: true });
 else mount();

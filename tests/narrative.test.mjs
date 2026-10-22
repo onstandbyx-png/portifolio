@@ -14,11 +14,11 @@ test('Every gallery reverse explains a decision',()=>{
  for(const card of sectionCopy('trabalhos').cards)assert.ok(card.decision?.length>45,card.id);
  assert.match(read('public/assets/showcase/scroll-gallery.js'),/data-rg-to/);
 });
-test('Editorial transcript is an optional accessible expansion',()=>{
- assert.match(read('index.html'),/<details class="es-transcript">/);
- assert.match(read('index.html'),/Entender a escolha/);
- assert.match(read('index.html'),/Três etapas para ganhar vida/);
- assert.equal(sectionCopy('editorial').steps.length,3);
+test('Sites e lojas and Sistemas e automações mount the lab flows, without the old device transcript',()=>{
+ const html=read('index.html');
+ assert.match(html,/id="editorial"[\s\S]*?data-vitrine="loja"/);
+ assert.match(html,/id="sistemas"[\s\S]*?data-vitrine="automacao"/);
+ assert.doesNotMatch(html,/<details class="es-transcript">/);
  assert.equal(sectionCopy('colecao').cards.length,6);
 });
 test('Campaign context supplements the safe crossfade',()=>{
