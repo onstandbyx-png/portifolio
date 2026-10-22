@@ -13,7 +13,7 @@ export function mountFatosDeck() {
   const existing = anchor.querySelector('#colecao');
   if (existing) return existing;
   const motion = createMotion();
-  const shell = make(`<section id="colecao" class="pf-fatos-deck shell" aria-label="Quatro serviços em cartões interativos" data-active="0">
+  const shell = make(`<section id="colecao" class="pf-fatos-deck shell" aria-label="Quatro serviços em cartões interativos" data-active="0" hidden inert aria-hidden="true">
     <div class="pf-fatos-intro">
       <div class="pf-fatos-context"><span data-fatos-index>01 / ${String(brands.length).padStart(2,'0')}</span><strong data-fatos-name></strong><h4 data-fatos-question></h4><p data-fatos-territory></p></div>
     </div>
