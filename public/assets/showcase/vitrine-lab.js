@@ -22,9 +22,9 @@ const DEMOS = {
       steps: [['Leitura', 0, 2], ['Agenda', 3, 7], ['Confirmação', 8, 10]] },
   ],
   sistemas: [
-    { label: 'WhatsApp · pedido', channel: 'whatsapp', placement: 'catalog', from: 4, to: 13, repete: 'WhatsApp Business · Catálogo',
+    { label: 'Pedido', channel: 'whatsapp', placement: 'catalog', from: 4, to: 13, repete: 'WhatsApp Business · Catálogo',
       steps: [['Pedido no carrinho', 0, 1], ['Atendimento automático', 2, 6], ['Confirmação', 7, 9]] },
-    { label: 'WhatsApp · atendimento', channel: 'whatsapp', placement: 'ctwa', from: 3, to: 13, repete: 'WhatsApp Business · Clique para conversar', inicio: true,
+    { label: 'Atendimento', channel: 'whatsapp', placement: 'ctwa', from: 3, to: 13, repete: 'WhatsApp Business · Clique para conversar', inicio: true,
       steps: [['Conversa pronta', 0, 1], ['Opções', 2, 6], ['Agendamento', 7, 10]] },
     { label: 'E-mail', channel: 'blog', placement: 'article', from: 3, to: 10, repete: 'Publieditorial · Artigo (agenda)', inicio: true,
       steps: [['Agenda', 0, 3], ['Dados', 4, 5], ['Confirmação por e-mail', 6, 7]] },
@@ -53,16 +53,27 @@ function apply(screen, list, index) {
 
 function mountOne(root) {
   const formats = DEMOS[root.dataset.vitrine];
-  root.innerHTML = `<div class="vitrine-formatos" role="group" aria-label="Formato">${formats.map((f, k) => `<button type="button" data-formato="${k}" aria-pressed="${k === 0}">${f.label}</button>`).join('')}</div>
+  // The lab's own controls: segmented formats with a sliding thumb and the three-step journey (experience-demos.css).
+  root.innerHTML = `<div class="cx-placements vitrine-formatos" role="group" aria-label="Formato"><span class="cx-thumb is-instant" aria-hidden="true"></span>${formats.map((f, k) => `<button type="button" class="cx-placement" data-formato="${k}" aria-pressed="${k === 0}">${f.label}</button>`).join('')}</div>
     <div class="vitrine-phone" data-phone></div>
-    <div class="vitrine-side">
-      <ol class="vitrine-steps" data-steps></ol>
+    <div class="vitrine-side cx-steps">
+      <ol class="cx-journey" data-steps aria-label="Jornada em 3 passos"></ol>
     </div>`;
   const $ = selector => root.querySelector(selector);
   const play = document.createElement('button'), caption = {}, nota = {};
   let demo = null, all = [], frames = [], screen = null, index = 0, timer = 0, playing = false, started = false;
   const last = () => frames.length - 1;
 
+  function thumb() {
+    const knob = root.querySelector('.cx-thumb'), on = root.querySelector('[data-formato][aria-pressed="true"]');
+    if (!knob || !on || !on.offsetWidth) return;
+    knob.style.width = on.offsetWidth + 'px';
+    knob.style.transform = `translateX(${on.offsetLeft}px)`;
+    const row = knob.parentElement;
+    if (on.offsetLeft < row.scrollLeft || on.offsetLeft + on.offsetWidth > row.scrollLeft + row.clientWidth) row.scrollLeft = on.offsetLeft - 8;
+    if (knob.classList.contains('is-instant')) requestAnimationFrame(() => requestAnimationFrame(() => knob.classList.remove('is-instant')));
+  }
+  if ('ResizeObserver' in window) new ResizeObserver(() => thumb()).observe(root);
   function stepOf(i) { return demo.steps.findIndex(([, first, end]) => i >= first && i <= end); }
   function label() {
     play.textContent = playing ? 'Pausar' : index >= last() ? 'Rever' : reduce.matches ? 'Próximo quadro' : 'Reproduzir';
@@ -75,8 +86,10 @@ function mountOne(root) {
     caption.textContent = all[demo.from + index].desc;
     const current = stepOf(index);
     root.querySelectorAll('[data-vitrine-step]').forEach(button => {
-      if (Number(button.dataset.vitrineStep) === current) button.setAttribute('aria-current', 'step');
-      else button.removeAttribute('aria-current');
+      const s = Number(button.dataset.vitrineStep), [, first, end] = demo.steps[s];
+      button.parentElement.dataset.state = s < current ? 'done' : s === current ? 'on' : 'next';
+      button.querySelector('[data-rail]').style.setProperty('--p', s < current ? 1 : s > current ? 0 : ((index - first + 1) / (end - first + 1)).toFixed(3));
+      if (s === current) button.setAttribute('aria-current', 'step'); else button.removeAttribute('aria-current');
     });
     label();
   }
@@ -100,8 +113,9 @@ function mountOne(root) {
     frames = all.slice(demo.from, demo.to + 1);
     $('[data-phone]').innerHTML = renderMock(placement);
     screen = $('.cm-screen');
-    $('[data-steps]').innerHTML = demo.steps.map(([text], s) => `<li><button type="button" data-vitrine-step="${s}"><span aria-hidden="true">${s + 1}</span>${text}</button></li>`).join('');
+    $('[data-steps]').innerHTML = demo.steps.map(([text], s) => `<li data-state="next"><button type="button" data-vitrine-step="${s}"><span class="cx-step-n" aria-hidden="true">${s + 1}</span><span class="cx-step-t"><b>${text}</b></span><i class="cx-rail" aria-hidden="true"><i data-rail></i></i></button></li>`).join('');
     root.querySelectorAll('[data-formato]').forEach(button => button.setAttribute('aria-pressed', String(Number(button.dataset.formato) === k)));
+    requestAnimationFrame(thumb);
     const inicio = demo.inicio ? 'Começa no destino do anúncio: o selo Patrocinado aparece na seção de campanhas. ' : '';
     nota.textContent = `Repete a seção de campanhas: ${demo.repete}. ${inicio}Exemplo ilustrativo, marca fictícia. Interface aproximada.`;
     show(0);
