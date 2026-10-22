@@ -559,6 +559,15 @@ Publicação:
 
 - O Vercel (projeto `prj_HZcKpv7XbNdAVfi7AWivHdZrJc9A`, endereço https://portfolio-visual-review.vercel.app) roda `node scripts/build-vercel.mjs` e publica `dist/` (`vercel.json`).
 - O trabalho fica na branch `ccr-982a6ce6-s02tyu`. Faça commit e deploy a cada sessão de mudanças.
+- Deploy pela API do Vercel (ferramenta `create_deployment`), depois do push, sem passar `teamId`:
+
+  ```json
+  { "name": "portfolio-visual-review", "project": "prj_HZcKpv7XbNdAVfi7AWivHdZrJc9A", "target": "production",
+    "gitSource": { "type": "github", "org": "onstandbyx-png", "repo": "portifolio", "ref": "ccr-982a6ce6-s02tyu", "sha": "<commit>" } }
+  ```
+
+  Confira com `get_deployment` até `READY` e veja se o alias `portfolio-visual-review.vercel.app` aponta para o novo deploy.
+- A pasta `docs/` não vai para o `dist/`: uma mudança só de documentação não precisa de deploy.
 
 ## 14. Armadilhas conhecidas
 
