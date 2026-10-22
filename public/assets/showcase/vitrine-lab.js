@@ -12,21 +12,21 @@ import { channelById, renderMock } from './campaign-channels.js';
    [label, first, last] in the cut's own indexes. */
 const DEMOS = {
   sites: [
-    { label: 'Site', channel: 'instagram', placement: 'explorar', from: 4, to: 12, repete: 'Instagram · Explorar',
+    { label: 'Site', channel: 'instagram', placement: 'explorar', from: 4, to: 12, repete: 'Instagram · Explorar', inicio: true,
       steps: [['Serviço', 0, 2], ['Horário', 3, 5], ['Confirmação', 6, 8]] },
-    { label: 'Loja', channel: 'tiktok', placement: 'infeed', from: 3, to: 12, repete: 'TikTok · In-Feed',
+    { label: 'Loja', channel: 'tiktok', placement: 'infeed', from: 3, to: 12, repete: 'TikTok · In-Feed', inicio: true,
       steps: [['Produto', 0, 2], ['Carrinho', 3, 5], ['Pagamento e pedido', 6, 9]] },
-    { label: 'Landing', channel: 'instagram', placement: 'feed', from: 4, to: 13, repete: 'Instagram · Feed',
+    { label: 'Landing', channel: 'instagram', placement: 'feed', from: 4, to: 13, repete: 'Instagram · Feed', inicio: true,
       steps: [['Oferta', 0, 0], ['Teste de nível', 1, 3], ['Horário e confirmação', 4, 9]] },
-    { label: 'Blog', channel: 'blog', placement: 'article', from: 0, to: 10, repete: 'Publieditorial · Artigo',
+    { label: 'Publieditorial', channel: 'blog', placement: 'article', from: 0, to: 10, repete: 'Publieditorial · Artigo',
       steps: [['Leitura', 0, 2], ['Agenda', 3, 7], ['Confirmação', 8, 10]] },
   ],
   sistemas: [
-    { label: 'WhatsApp · pedido', channel: 'whatsapp', placement: 'catalog', from: 4, to: 13, repete: 'WhatsApp · Catálogo',
+    { label: 'WhatsApp · pedido', channel: 'whatsapp', placement: 'catalog', from: 4, to: 13, repete: 'WhatsApp Business · Catálogo',
       steps: [['Pedido no carrinho', 0, 1], ['Atendimento automático', 2, 6], ['Confirmação', 7, 9]] },
-    { label: 'WhatsApp · atendimento', channel: 'whatsapp', placement: 'ctwa', from: 3, to: 13, repete: 'WhatsApp · Clique para conversar',
+    { label: 'WhatsApp · atendimento', channel: 'whatsapp', placement: 'ctwa', from: 3, to: 13, repete: 'WhatsApp Business · Clique para conversar', inicio: true,
       steps: [['Conversa pronta', 0, 1], ['Opções', 2, 6], ['Agendamento', 7, 10]] },
-    { label: 'E-mail', channel: 'blog', placement: 'article', from: 3, to: 10, repete: 'Publieditorial · Artigo (agenda)',
+    { label: 'E-mail', channel: 'blog', placement: 'article', from: 3, to: 10, repete: 'Publieditorial · Artigo (agenda)', inicio: true,
       steps: [['Agenda', 0, 3], ['Dados', 4, 5], ['Confirmação por e-mail', 6, 7]] },
   ],
 };
@@ -59,11 +59,11 @@ function mountOne(root) {
       <ol class="vitrine-steps" data-steps></ol>
       <p class="vitrine-caption" data-caption></p>
       <button type="button" class="vitrine-play" data-play>Reproduzir</button>
-      <p class="vitrine-nota" data-nota></p>
+      <p class="vitrine-nota" data-nota aria-live="polite"></p>
     </div>`;
   const $ = selector => root.querySelector(selector);
   const play = $('[data-play]'), caption = $('[data-caption]'), nota = $('[data-nota]');
-  let demo = null, frames = [], screen = null, index = 0, timer = 0, playing = false, started = false;
+  let demo = null, all = [], frames = [], screen = null, index = 0, timer = 0, playing = false, started = false;
   const last = () => frames.length - 1;
 
   function stepOf(i) { return demo.steps.findIndex(([, first, end]) => i >= first && i <= end); }
@@ -73,9 +73,9 @@ function mountOne(root) {
   function show(i) {
     index = Math.max(0, Math.min(last(), i));
     screen.classList.add('is-instant');
-    apply(screen, frames, index);
+    apply(screen, all, demo.from + index);
     requestAnimationFrame(() => requestAnimationFrame(() => screen.classList.remove('is-instant')));
-    caption.textContent = frames[index].desc;
+    caption.textContent = all[demo.from + index].desc;
     const current = stepOf(index);
     root.querySelectorAll('[data-vitrine-step]').forEach(button => {
       if (Number(button.dataset.vitrineStep) === current) button.setAttribute('aria-current', 'step');
@@ -99,12 +99,14 @@ function mountOne(root) {
     go(false);
     demo = formats[k];
     const placement = channelById(demo.channel).placements.find(item => item.id === demo.placement);
-    frames = placement.quadros.slice(demo.from, demo.to + 1);
+    all = placement.quadros;
+    frames = all.slice(demo.from, demo.to + 1);
     $('[data-phone]').innerHTML = renderMock(placement);
     screen = $('.cm-screen');
     $('[data-steps]').innerHTML = demo.steps.map(([text], s) => `<li><button type="button" data-vitrine-step="${s}"><span aria-hidden="true">${s + 1}</span>${text}</button></li>`).join('');
     root.querySelectorAll('[data-formato]').forEach(button => button.setAttribute('aria-pressed', String(Number(button.dataset.formato) === k)));
-    nota.textContent = `Repete a seção de campanhas: ${demo.repete}. Exemplo ilustrativo, marca fictícia. Interface aproximada.`;
+    const inicio = demo.inicio ? 'Começa no destino do anúncio: o selo Patrocinado aparece na seção de campanhas. ' : '';
+    nota.textContent = `Repete a seção de campanhas: ${demo.repete}. ${inicio}Exemplo ilustrativo, marca fictícia. Interface aproximada.`;
     show(0);
   }
 

@@ -43,7 +43,7 @@ try{
    await page.locator('#laboratorio').evaluate(el=>scrollTo({top:scrollY+el.getBoundingClientRect().top-84,behavior:'instant'}));
    await page.screenshot({path:`${output}/campaign-${width}${reduced?'-reduced':''}.png`,animations:'disabled'});
    check('Automation demo mounts the lab flow in its own phone, with three steps',await page.locator('[data-vitrine="sistemas"] .cm-screen').count()===1&&await page.locator('[data-vitrine="sistemas"] [data-vitrine-step]').count()===3);
-   check('Store demo mounts the lab flow in its own phone, with three steps',await page.locator('[data-vitrine="sites"] .cm-screen').count()===1&&await page.locator('[data-vitrine="sites"] [data-vitrine-step]').count()===3);
+   await page.locator('[data-vitrine="sites"] [data-formato="1"]').click();check('Sites e lojas switches to the loja format, with its own phone, three steps and the repeat note',await page.locator('[data-vitrine="sites"] [data-formato="1"]').getAttribute('aria-pressed')==='true'&&await page.locator('[data-vitrine="sites"] .cm-screen').count()===1&&await page.locator('[data-vitrine="sites"] [data-vitrine-step]').count()===3&&/Repete a seção de campanhas: TikTok/.test(await page.locator('[data-vitrine="sites"] .vitrine-nota').innerText()));
    await page.locator('#sistemas').evaluate(el=>scrollTo({top:scrollY+el.getBoundingClientRect().top-84,behavior:'instant'}));
    await page.screenshot({path:`${output}/systems-${width}${reduced?'-reduced':''}.png`,animations:'disabled'});
    await page.locator('#sistemas .systems-contact').click();check('Systems example leads to the correct service',await page.locator('#service').inputValue()==='Sistemas e automações');

@@ -16,8 +16,9 @@ test('Every gallery reverse explains a decision',()=>{
 });
 test('Sites e lojas and Sistemas e automações mount the lab flows, without the old device transcript',()=>{
  const html=read('index.html');
- assert.match(html,/id="editorial"[\s\S]*?data-vitrine="sites"/);
- assert.match(html,/id="sistemas"[\s\S]*?data-vitrine="sistemas"/);
+ const secao=id=>html.match(new RegExp('<section[^>]*id="'+id+'"[\\s\\S]*?</section>'))?.[0]||'';
+ assert.match(secao('editorial'),/data-vitrine="sites"/);
+ assert.match(secao('sistemas'),/data-vitrine="sistemas"/);
  assert.doesNotMatch(html,/<details class="es-transcript">/);
  assert.equal(sectionCopy('colecao').cards.length,6);
 });

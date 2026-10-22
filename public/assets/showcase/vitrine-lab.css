@@ -26,3 +26,7 @@
 .vitrine-formatos button{min-height:44px;padding:8px 12px;border:1px solid #bccdb9;border-radius:12px;background:#f9fbf6;color:#234530;font:600 14px/1.2 var(--sans,Inter,Arial,sans-serif);cursor:pointer}
 .vitrine-formatos button[aria-pressed="true"]{border-color:#1e4530;background:#1e4530;color:#f8fbf7}
 @media (min-width:900px){.vitrine-formatos{grid-column:1/-1}}
+/* Selected choices keep an edge on the dark section; keyboard focus is visible on both. */
+.vitrine-formatos button[aria-pressed="true"],.vitrine-steps button[aria-current="step"]{box-shadow:inset 0 0 0 1.5px #f8fbf7}
+.vitrine-formatos button:focus-visible,.vitrine-steps button:focus-visible,.vitrine-play:focus-visible{outline:3px solid #e8a33d;outline-offset:3px}
+@media (min-width:900px){.vitrine-formatos{justify-self:center}}

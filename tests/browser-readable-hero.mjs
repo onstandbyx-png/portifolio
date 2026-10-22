@@ -76,7 +76,7 @@ try{
      await page.locator('.hero-proof').innerText().then(t=>t.includes('Repertório editorial')&&t.includes('Criação e desenvolvimento')));
    check('Primary action opens the work and secondary action opens contact',
      await page.locator('.hero-actions a').evaluateAll(a=>a.length===2&&a.every(link=>!!document.querySelector(link.getAttribute('href'))) &&
-       a[0].hash==='#trabalhos'&&a[1].hash==='#contato'));
+       a[0].hash==='#laboratorio'&&a[1].hash==='#contato'));
    check('Fixed navigation never covers the hero eyebrow at rest',
      layoutCheck.eyebrow.top-layoutCheck.hero.top>=layoutCheck.headerHeight+10);
    check('Hero typography, buttons and badge exhibit stay inside viewport',
