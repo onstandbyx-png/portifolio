@@ -22,6 +22,7 @@
  */
 import { logoSvg } from './channel-logos.js';
 import { makeSites } from './campaign-sites.js';
+import { makeLabScreens, IG_FUNDO } from './lab-telas.js';
 
 const A = '/assets/portfolio/';
 export const IMG = {
@@ -167,69 +168,45 @@ const TABS = {
   tiktok: [['home', 'Início', 1], ['people', 'Amigos'], ['create'], ['comment', 'Caixa de entrada'], ['me', 'Perfil']],
   youtube: [['home', 'Início'], ['reels', 'Shorts', 1], ['create'], ['subs', 'Inscrições'], ['me', 'Você']],
 };
-/* Instagram post header and the CTA bar under the media ("Patrocinado" in the second line). */
-const igHead = key => `<header class="cm-ig-head">${marca(key)}<span><b>${CLIENTES[key].arroba}</b><small>Patrocinado</small></span>${I('dots')}</header>`;
-const igBar = `<div class="cm-ig-bar">${I('plus')}<b class="cm-ig-name">Instagram</b>${I('heart')}</div>`;
-const igActions = (middle = '') => `<div class="cm-ig-actions">${I('heart')}${I('comment')}${I('repost')}${I('send')}<span class="cm-ig-mid">${middle}</span>${I('bookmark')}</div>`;
 
 /* Each client's own site, with the steps of its real flow (campaign-sites.js). */
 const SITES = makeSites({ I, pic, marca, esc, CLIENTES });
+/* The platform screens of the lab: the Fatos studio modules measured on the app captures (lab-telas.js). */
+const LAB = makeLabScreens({ marca, esc, CLIENTES });
 
 /* Floor plan of the incorporadora (3 or 4 bedrooms), an original line drawing. */
 const planta = cls => `<svg class="cm-planta${cls ? ' ' + cls : ''}" viewBox="0 0 200 150" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="3"><rect x="6" y="6" width="188" height="138" rx="2"/><path d="M6 78h86M92 6v138M92 60h102M150 60v84"/><path class="cm-planta-4" d="M150 6v54M6 112h86"/></g><g fill="currentColor" font-family="Inter,Arial,sans-serif" font-size="10"><text x="22" y="44">Sala</text><text x="104" y="38">Varanda</text><text x="104" y="108">Quarto</text><text x="158" y="108">Suíte</text><text x="22" y="104">Cozinha</text></g></svg>`;
 
 const mocks = {
   /* 2.1 Instagram feed: carousel of a language school, CTA bar that lights up, Instagram browser. */
-  igFeed: () => screen('ig', scene('ad', 'base', 'claro', `<div class="cm-safe">${igBar}<article class="cm-ig-post">${igHead('educacao')}
-    <div class="cm-ig-media cm-carousel"><div class="cm-track">
+  igFeed: () => screen('ig', scene('ad', 'base', 'escuro', LAB.feedAd({ key: 'educacao', carousel: 3, cta: { text: 'Inscrever-se agora' },
+    media: `<div class="cm-track">
       <figure class="cm-card cm-card--photo">${pic('escola45', { alt: 'Fone de ouvido sobre a mesa, com a pergunta Você entende a série sem legenda?' })}<figcaption><b data-hs="1">Você entende a série sem legenda?</b></figcaption></figure>
       <figure class="cm-card cm-card--coral"><small>Três expressões</small><b>Que a legenda traduz errado</b><ol><li>It's up to you</li><li>I'm looking forward to it</li><li>Break a leg</li></ol></figure>
-      <figure class="cm-card cm-card--cream"><b>I'm looking forward to it.</b>${I('arrow')}<b class="cm-card-pt">Mal posso esperar.</b><small>Aula experimental com horário marcado</small></figure>
-    </div><span class="cm-count"><i>1</i><i>2</i><i>3</i>/3</span></div>
-    <div class="cm-ig-cta" data-tap="cta" data-hs="3"><b>Inscrever-se agora</b>${I('chevron')}</div>
-    ${igActions('<span class="cm-pager" data-hs="2"><i></i><i></i><i></i></span>')}
-    <p class="cm-ig-caption"><b>sotaquelivre</b> Aula experimental com horário marcado. Escolha o nível e o horário no link. <span>mais</span></p></article></div>${tabbar(TABS.instagram)}`) +
+      <figure class="cm-card cm-card--cream"><b>I'm looking forward to it.</b>${I('arrow')}<b class="cm-card-pt">Mal posso esperar.</b><small>Aula experimental com horário marcado</small></figure></div>`,
+    caption: { html: 'Aula experimental com horário marcado. Escolha o nível e o horário no link. <span class="cm-more">… mais</span>' } })) +
     scene('page', 'sheet', 'claro', `${browserBar('Sotaque Livre', 'sotaquelivre.exemplo')}${SITES.sotaque()}`)),
 
   /* 2.3 Instagram Story: a language school, the sticker that holds the tap, then the course page. */
-  igstory: () => screen('igstory', scene('story', 'base', 'escuro', `<div class="cm-st">
-      ${pic('escola916', { alt: 'Fone de ouvido sobre o caderno de anotações, em luz de fim de tarde.' })}
-      <div class="cm-st-bars" aria-hidden="true"><i class="is-on"></i><i></i></div>
-      <div class="cm-st-top">${marca('educacao')}<span><b>sotaquelivre</b><small>Patrocinado</small></span>${I('dots')}${I('close')}</div>
-      <p class="cm-st-text" data-hs="1">Você entende a série sem legenda?</p>
-      <div class="cm-st-cta"><span class="cm-st-sticker" data-tap="cta" data-hs="3">${I('arrow')}<b>Agendar aula</b></span></div>
-    </div>`) + scene('page', 'sheet', 'claro', `${browserBar('Sotaque Livre', 'sotaquelivre.exemplo')}${SITES.sotaque({ variant: 'agenda' })}`)),
+  igstory: () => screen('igstory', scene('story', 'base', 'escuro', LAB.storyAd({ key: 'educacao', cta: { text: 'Agendar aula' },
+    media: `${pic('escola916', { alt: 'Fone de ouvido sobre o caderno de anotações, em luz de fim de tarde.' })}<p class="igs-texto" data-hs="1">Você entende a série sem legenda?</p>` })) + scene('page', 'sheet', 'claro', `${browserBar('Sotaque Livre', 'sotaquelivre.exemplo')}${SITES.sotaque({ variant: 'agenda' })}`)),
 
   /* 2.4 Instagram Live: a restaurant cooking live with the paid label, comments and the menu sheet. */
-  iglive: () => screen('iglive', scene('live', 'base', 'escuro', `<div class="cm-lv">
-      ${pic('panela916', { alt: 'Tacho de feijoada no fogão, com a concha erguendo a linguiça.' })}
-      <span class="cm-lv-badge">Ao vivo</span>
-      <div class="cm-lv-top">${marca('restaurante')}<span><b>tachomiudo</b><small>Patrocinado</small></span>${I('close')}</div>
-      <p class="cm-lv-comment" data-hs="1"><b>cliente_12</b> Qual o horário do almoço?</p>
-      <p class="cm-lv-comment"><b>tachomiudo</b> Sábado, feijoada no tacho a partir das 12h.</p>
-      <div class="cm-lv-cta" data-tap="cta" data-hs="3"><b>Ver cardápio</b>${I('chevron')}</div>
-    </div>`) + scene('page', 'sheet', 'claro', `${browserBar('Tacho Miúdo', 'tachomiudo.exemplo')}${SITES.tacho({ variant: 'retirada' })}`)),
+  iglive: () => screen('iglive', scene('live', 'base', 'escuro', LAB.liveAd({ key: 'restaurante', cta: { text: 'Ver cardápio de sábado' },
+    media: pic('panela916', { alt: 'Tacho de feijoada no fogão, com a concha erguendo a linguiça.' }),
+    comments: [['bia.rocha', 'Que cheiro daqui!', 0], ['cliente_12', 'Qual o horário do almoço?', 0, '1'], ['tachomiudo', 'Sábado, feijoada no tacho a partir das 12h. Dá para retirar no balcão.', 1]] })) + scene('page', 'sheet', 'claro', `${browserBar('Tacho Miúdo', 'tachomiudo.exemplo')}${SITES.tacho({ variant: 'retirada' })}`)),
 
   /* 2.5 Instagram Explorar: a grid of photos with one sponsored post that opens full screen, then the booking page. */
-  igexplore: () => screen('igexplore', scene('grid', 'base', 'claro', `<div class="cm-xp">
-      <div class="cm-xp-bar">${I('search')}<span>Pesquisar</span></div>
-      <div class="cm-xp-grid">
-        ${pic('prato11', { alt: '' })}${pic('pudim11', { alt: '' })}${pic('panela11', { alt: '' })}
+  igexplore: () => screen('igexplore', scene('grid', 'base', 'escuro', LAB.explore({ cells: `${pic('prato11', { alt: '' })}${pic('pudim11', { alt: '' })}${pic('panela11', { alt: '' })}
         ${pic('recepcao45', { alt: '' })}<span class="cm-xp-ad" data-tap="ad" data-hs="1">${pic('consultorio45', { alt: 'Consultório odontológico com cadeira e luz natural, publicação patrocinada.' })}<em>Patrocinado</em></span>${pic('escondidinho11', { alt: '' })}
-        ${pic('salaMar11', { alt: '' })}${pic('fachada45', { alt: '' })}${pic('pudim11', { alt: '' })}
-      </div></div>
-    <div class="cm-tabbar-wrap">${tabbar(TABS.instagram)}</div>`) + scene('post', 'sheet', 'claro', `<article class="cm-post-full">${igHead('clinica')}${pic('consultorio45', { alt: 'Consultório odontológico com cadeira e luz natural.' })}<div class="cm-ig-cta" data-tap="cta" data-hs="3"><b>Agendar avaliação</b>${I('chevron')}</div><p class="cm-ig-caption"><b>seixoodontologia</b> Avaliação com dentista, horário marcado. <span>mais</span></p></article>`) + scene('page', 'sheet', 'claro', `${browserBar('Agendamento online', 'seixo.exemplo')}${SITES.seixo()}`)),
+        ${pic('salaMar11', { alt: '' })}${pic('fachada45', { alt: '' })}${pic('pudim11', { alt: '' })}` })) +
+    scene('post', 'sheet', 'escuro', LAB.postAberto({ key: 'clinica', cta: { text: 'Agendar avaliação' }, media: pic('consultorio45', { alt: 'Consultório odontológico com cadeira e luz natural.' }), caption: 'Avaliação com dentista, horário marcado. <span class="cm-more">mais</span>' })) + scene('page', 'sheet', 'claro', `${browserBar('Agendamento online', 'seixo.exemplo')}${SITES.seixo()}`)),
 
   /* 2.2 Instagram Reels: a restaurant, two cuts, Instagram browser with the menu and the table booking sheet. */
-  igReels: () => screen('reels', scene('video', 'base', 'escuro', `<div class="cm-shots">
+  igReels: () => screen('reels', scene('video', 'base', 'escuro', LAB.reelsAd({ key: 'restaurante', caption: 'Feijoada no tacho aos sábados. Mesa para o almoço.', cta: { text: 'Ver cardápio' },
+    video: `<div class="cm-shots">
       <figure class="cm-shot" data-shot="1">${pic('panela916', { alt: 'Tacho de feijoada com a concha erguendo linguiça.' })}<p class="cm-ontext" data-hs="1">Sábado tem feijoada no tacho.</p></figure>
-      <figure class="cm-shot" data-shot="2">${pic('prato916')}<p class="cm-ontext">Fogo baixo desde cedo.</p></figure></div>
-    <span class="cm-shade"></span>
-    <div class="cm-reels-top">${I('plus')}<span><b>Reels</b><span>Amigos</span></span><i></i></div>
-    <div class="cm-rail">${I('heart')}${I('comment')}${I('repost')}${I('send')}${I('dots')}<span class="cm-cover" style="background-image:url(${IMG.panela11.src})"></span></div>
-    <div class="cm-vmeta"><span class="cm-who">${marca('restaurante')}<b>tachomiudo</b><span class="cm-follow">Seguir</span></span><small>Patrocinado</small><p>Feijoada no tacho aos sábados. Mesa para o almoço. <span>mais</span></p><small class="cm-audio">${I('music')}Áudio original</small></div>
-    <div class="cm-vcta" data-tap="cta" data-hs="3"><b>Ver cardápio</b>${I('chevron')}</div>
-    <div class="cm-vprogress" data-hs="2"><i data-cx-progress></i></div>${tabbar(TABS.reels, 'cm-tabbar--dark')}`) +
+      <figure class="cm-shot" data-shot="2">${pic('prato916')}<p class="cm-ontext">Fogo baixo desde cedo.</p></figure></div>` })) +
     scene('page', 'sheet', 'claro', `${browserBar('Tacho Miúdo', 'tachomiudo.exemplo')}${SITES.tacho()}`)),
 
   /* 2.3 Facebook feed: lead ad carousel of a developer and the Meta instant form. */
@@ -398,11 +375,10 @@ const mocks = {
   },
 
   /* 2.12 WhatsApp click-to-chat: Instagram ad of a dental clinic, app switch, pre-filled message, quick replies. */
-  waAd: () => screen('wa', scene('ad', 'base', 'claro', `<div class="cm-safe">${igBar}<article class="cm-ig-post">${igHead('clinica')}
-    <div class="cm-ig-media cm-wa-art">${pic('consultorio45', { alt: 'Consultório odontológico claro, com a frase Avaliação com hora marcada.' })}<b data-hs="1">Avaliação com hora marcada</b>${marca('clinica', 'circulo', 'cm-wa-art-mark')}</div>
-    <div class="cm-ig-cta cm-ig-cta--wa" data-tap="cta" data-hs="3">${logoSvg('whatsapp', { altura: 17, classe: 'cm-wa-glyph' })}${logoSvg('whatsapp', { altura: 17, mono: 'branco', classe: 'cm-wa-glyph cm-wa-glyph--lit' })}<b>Enviar mensagem pelo WhatsApp</b>${I('chevron')}</div>
-    ${igActions()}
-    <p class="cm-ig-caption cm-ig-caption--open" data-hs="2"><b>seixoodontologia</b> Avaliação com hora marcada. <span class="cm-more">mais</span><span class="cm-rest">Conte o que você sente e escolha o horário pela conversa.</span></p></article></div>${tabbar(TABS.instagram)}`) +
+  waAd: () => screen('wa', scene('ad', 'base', 'escuro', LAB.feedAd({ key: 'clinica', captionOpen: true,
+    media: `<div class="cm-wa-art">${pic('consultorio45', { alt: 'Consultório odontológico claro, com a frase Avaliação com hora marcada.' })}<b data-hs="1">Avaliação com hora marcada</b>${marca('clinica', 'circulo', 'cm-wa-art-mark')}</div>`,
+    cta: { text: 'Enviar mensagem pelo WhatsApp', lead: `${logoSvg('whatsapp', { altura: 16, classe: 'cm-wa-glyph' })}${logoSvg('whatsapp', { altura: 16, mono: 'branco', classe: 'cm-wa-glyph cm-wa-glyph--lit' })}` },
+    caption: { hs: '2', html: 'Avaliação com hora marcada. <span class="cm-more">mais</span><span class="cm-rest">Conte o que você sente e escolha o horário pela conversa.</span>' } })) +
     scene('chat', 'push', 'claro', `<span class="cm-crumb">${I('back')}Instagram</span><div class="cm-wa-head">${I('back')}${marca('clinica')}<span><b>Seixo Odontologia</b><small>Conta comercial</small></span>${I('video')}${I('phone')}</div>
       <div class="cm-wa-body"><span class="cm-wa-sys">As mensagens são protegidas com a criptografia de ponta a ponta.</span><span class="cm-wa-day">Hoje</span>
         <div class="cm-wa-out cm-wa-msg1"><span class="cm-wa-quote">${pic('consultorio45')}<span><b>Seixo Odontologia</b><small>Avaliação com hora marcada</small></span></span>Olá! Quero agendar uma avaliação.<small>10:09 ${I('ticks')}</small></div>
@@ -858,10 +834,12 @@ export const channelById = id => channels.find(channel => channel.id === id) || 
 
 /* App theme behind the status bar and the screen colour while a placement loads. */
 const SCREEN = {
+  igFeed: { tema: 'escuro', fundo: IG_FUNDO },
+  waAd: { tema: 'escuro', fundo: IG_FUNDO },
   igReels: { tema: 'escuro', fundo: '#000' },
   igstory: { tema: 'escuro', fundo: '#000' },
   iglive: { tema: 'escuro', fundo: '#000' },
-  igexplore: { tema: 'claro', fundo: '#fff' },
+  igexplore: { tema: 'escuro', fundo: IG_FUNDO },
   fbpost: { tema: 'claro', fundo: '#fff' },
   fbvid: { tema: 'escuro', fundo: '#000' },
   fbbreak: { tema: 'escuro', fundo: '#000' },
