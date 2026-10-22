@@ -57,6 +57,26 @@ const YT = {
 };
 const yti = (d, cls = 'yt-i') => `<svg class="${cls}" viewBox="0 0 24 24" aria-hidden="true"><path d="${d}" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
 
+/* Facebook in the middle of the feed (fatos-facebook-feed-v1, Facebook.tsx): tabs at the foot, as on iOS. */
+const FB = {
+  inicio: 'M3.2 10.4 12 3l8.8 7.4V20a1 1 0 0 1-1 1H15v-6.2H9V21H4.2a1 1 0 0 1-1-1z',
+  video: 'M3 6.2A2.2 2.2 0 0 1 5.2 4h13.6A2.2 2.2 0 0 1 21 6.2v11.6a2.2 2.2 0 0 1-2.2 2.2H5.2A2.2 2.2 0 0 1 3 17.8zM10 9v6l5-3z',
+  amigos: 'M9 11.2a3.6 3.6 0 1 0 0-7.2 3.6 3.6 0 0 0 0 7.2zM2.5 20c.5-3.6 3.1-5.8 6.5-5.8s6 2.2 6.5 5.8zM16 4.3a3.4 3.4 0 0 1 0 6.6M17.6 14.4c2.2.6 3.6 2.6 3.9 5.6',
+  loja: 'M4 9.5V20h16V9.5M3 5h18l-1.2 4.2a2.6 2.6 0 0 1-5 0 2.6 2.6 0 0 1-5.6 0 2.6 2.6 0 0 1-5 0zM9.5 20v-5h5v5',
+  sino: 'M6 16.5V11a6 6 0 0 1 12 0v5.5l1.6 2H4.4zM10 21h4',
+  menu: 'M4 6.5h16M4 12h16M4 17.5h16',
+  pontos: 'M5 12h.01M12 12h.01M19 12h.01',
+  fechar: 'M6 6l12 12M18 6 6 18',
+  curtir: 'M7.5 10.5V20H4.2a1 1 0 0 1-1-1v-7.5a1 1 0 0 1 1-1zM7.5 10.5l3.6-6.6c.3-.6 1-.9 1.6-.6 1 .4 1.5 1.5 1.2 2.6l-.8 3h5.1a2 2 0 0 1 2 2.4l-1.3 6.8a2.4 2.4 0 0 1-2.4 1.9H7.5',
+  comentar: 'M12 3.5c5 0 9 3.5 9 7.9s-4 7.9-9 7.9c-1.2 0-2.3-.2-3.3-.5L4 20.5l1.2-3.9C3.8 15.2 3 13.4 3 11.4c0-4.4 4-7.9 9-7.9z',
+  compartilhar: 'M13.5 4.5 21 11.6l-7.5 7v-4c-5.2 0-8.3 1.6-10.5 5 .6-5.6 3.6-10 10.5-11z',
+};
+const fbi = (d, { cheio = false, cls = 'fb-i' } = {}) => `<svg class="${cls}" viewBox="0 0 24 24" aria-hidden="true"><path d="${d}" fill="${cheio ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="${cheio ? 0 : 1.9}" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+const globo = '<svg class="fb-globo" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="6.6" fill="none" stroke="currentColor" stroke-width="1.3"/><path d="M1.6 8h12.8M8 1.4c1.8 1.8 2.7 4 2.7 6.6S9.8 12.8 8 14.6M8 1.4C6.2 3.2 5.3 5.4 5.3 8s.9 4.8 2.7 6.6" fill="none" stroke="currentColor" stroke-width="1.1"/></svg>';
+/* Blog in Safari of iOS 26 (fatos-blog-safari-v1, Blog.tsx). */
+const BL = { voltar: 'M14.5 5.5 8 12l6.5 6.5', opcoes: 'M5.5 12h.01M12 12h.01M18.5 12h.01', menu: 'M4 7h16M4 12h16M4 17h16', busca: 'M10.5 17a6.5 6.5 0 1 0 0-13 6.5 6.5 0 0 0 0 13zM15.4 15.4 20 20' };
+const bli = (d, cls = 'blog-i') => `<svg class="${cls}" viewBox="0 0 24 24" aria-hidden="true"><path d="${d}" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+
 export function makeLabScreens({ marca, esc, CLIENTES, pic }) {
   const user = key => CLIENTES[key].arroba;
   /* Post header: avatar, user name and the second line (Posts screen measurements). */
@@ -156,5 +176,26 @@ export function makeLabScreens({ marca, esc, CLIENTES, pic }) {
       ${ytChannel('Canal Exemplo', 'C')}${chat}<span class="yt-navegacao"></span></div>`;
   }
 
-  return { feedAd, storyAd, liveAd, reelsAd, explore, postAberto, tiktokAd, youtubeAd, youtubeLive };
+  /** Facebook feed with an ad: header with Patrocinado and the globe, text, the media (one photo with the link bar
+      or a carousel of cards), Curtir, Comentar and Compartilhar without counts, the next post and the tabs. */
+  function facebookAd({ key, text, media, after = '', next }) {
+    return `<div class="fb"><div class="fb-abas"><span class="fb-aba" data-on>${fbi(FB.inicio, { cheio: true })}</span><span class="fb-aba">${fbi(FB.video)}</span><span class="fb-aba">${fbi(FB.amigos)}</span><span class="fb-aba">${fbi(FB.loja)}</span><span class="fb-aba">${fbi(FB.sino)}</span><span class="fb-aba">${fbi(FB.menu)}</span></div>
+      <article class="fb-post"><div class="fb-cab">${marca(key, 'circulo', 'fb-avatar')}<div class="fb-cab-txt"><b class="fb-nome">${esc(CLIENTES[key].marca)}</b><span class="fb-tempo">Patrocinado ${globo}</span></div><span class="fb-cab-botoes">${fbi(FB.pontos, { cls: 'fb-i fb-i-pontos' })}${fbi(FB.fechar)}</span></div>
+        <p class="fb-texto">${text}</p>${media}${after}
+        <div class="fb-acoes"><span>${fbi(FB.curtir)}Curtir</span><span>${fbi(FB.comentar)}Comentar</span><span>${fbi(FB.compartilhar)}Compartilhar</span></div></article>
+      <article class="fb-post fb-seguinte"><div class="fb-cab"><i class="fb-avatar fb-avatar--x"></i><div class="fb-cab-txt"><b class="fb-nome">${esc(next.name)}</b><span class="fb-tempo">${esc(next.time)} ${globo}</span></div><span class="fb-cab-botoes">${fbi(FB.pontos, { cls: 'fb-i fb-i-pontos' })}${fbi(FB.fechar)}</span></div><p class="fb-texto">${esc(next.text)}</p><div class="fb-midia">${next.media || ''}</div></article></div>`;
+  }
+
+  /** Sponsored article in Safari (iOS 26): the site's dark header, sponsorship label, title, byline, photo, text,
+      the Oferecido por block and the compact Safari bar floating at the foot. */
+  function blogArticle({ key, site, domain, kicker, title, by, photo, body, offer, tail = '' }) {
+    return `<div class="blog"><div class="blog-navegador"><span class="blog-botao">${bli(BL.voltar)}</span><span class="blog-endereco"><span class="blog-url">${esc(domain)}</span></span><span class="blog-botao">${bli(BL.opcoes, 'blog-i blog-i-opcoes')}</span></div>
+      <div class="blog-site">${bli(BL.menu)}<b class="blog-nome">${esc(site)}</b>${bli(BL.busca)}<span class="cm-read"><i></i></span></div>
+      <div class="blog-pagina blog-rolagem"><p class="blog-selo" data-hs="1">Conteúdo patrocinado por <b>${esc(CLIENTES[key].marca)}</b></p><small class="blog-kicker">${esc(kicker)}</small><p class="blog-titulo">${esc(title)}</p>
+        <p class="blog-autor"><span>Por <b>${esc(by)}</b></span><span>21 de outubro de 2026</span></p>
+        <div class="blog-foto">${photo}<span>Imagem ilustrativa</span></div>${body}
+        <div class="blog-oferecido">${marca(key, 'circulo', 'blog-circulo')}<span class="blog-oferecido-txt"><small>Oferecido por</small><b>${esc(CLIENTES[key].marca)}</b></span><p class="blog-oferecido-produto">${esc(offer.text)}</p><span class="blog-oferecido-botao" data-tap="${offer.tap || 'cta'}" data-hs="${offer.hs || '3'}">${esc(offer.button)}</span></div>${tail}</div></div>`;
+  }
+
+  return { feedAd, storyAd, liveAd, reelsAd, explore, postAberto, tiktokAd, youtubeAd, youtubeLive, facebookAd, blogArticle };
 }

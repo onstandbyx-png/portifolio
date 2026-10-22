@@ -215,12 +215,10 @@ const mocks = {
 
   /* 2.3 Facebook feed: lead ad carousel of a developer and the Meta instant form. */
   /* 3.2 Facebook feed post: one photo of a development, the link bar that holds the tap, then the visit page. */
-  fbpost: () => screen('fbpost', scene('post', 'base', 'claro', `<div class="cm-safe"><div class="cm-fb-bar"><b class="cm-fb-name">Facebook</b><span><i>${I('plus')}</i><i>${I('search')}</i><i>${I('comment')}</i></span></div>
-      <article class="cm-fb-post"><header class="cm-fb-head">${marca('incorporadora')}<span><b>Morada Falésia</b><small>Patrocinado · ${I('globe', 'cm-i--inline')}</small></span>${I('dots')}${I('close')}</header>
-      <p class="cm-fb-text">Casas na falésia com a sala voltada para o mar. Agende uma visita ao decorado.</p>
-      <span class="cm-fbpost-img" data-hs="1">${pic('salaMar45', { alt: 'Sala de estar com janela para o mar, em luz de fim de tarde.', pos: '50% 60%' })}</span>
-      <div class="cm-fbpost-cta" data-hs="3"><span><small>MORADAFALESIA.EXEMPLO</small><b>Visita ao decorado</b></span><span class="cm-fbpost-btn" data-tap="cta">Agendar agora</span></div>
-      <div class="cm-fb-actions" data-hs="2"><span>${I('thumb')}Curtir</span><span>${I('comment')}Comentar</span><span>${I('forward')}Compartilhar</span></div></article><div class="cm-fb-post cm-fb-next">${skel(4)}</div></div>${tabbar(TABS.facebook)}`) + scene('page', 'sheet', 'claro', `${browserBar('Morada Falésia', 'moradafalesia.exemplo')}${SITES.falesia()}`)),
+  fbpost: () => screen('fbpost', scene('post', 'base', 'escuro', LAB.facebookAd({ key: 'incorporadora', text: 'Casas na falésia com a sala voltada para o mar. Agende uma visita ao decorado.',
+    media: `<div class="fb-midia" data-hs="1">${pic('salaMar45', { alt: 'Sala de estar com janela para o mar, em luz de fim de tarde.', pos: '50% 50%' })}</div>`,
+    after: `<div class="fb-link" data-hs="3"><span><small>MORADAFALESIA.EXEMPLO</small><b>Visita ao decorado</b></span><span class="fb-link-btn" data-tap="cta">Agendar agora</span></div>`,
+    next: { name: 'Página que você segue', time: '5 h', text: 'Feira de artesanato neste fim de semana na praça.', media: pic('cenaCrencas', { pos: '50% 60%' }) } })) + scene('page', 'sheet', 'claro', `${browserBar('Morada Falésia', 'moradafalesia.exemplo')}${SITES.falesia()}`)),
 
   /* 3.3 Facebook video: a restaurant video in portrait with the reserve button that lights up. */
   fbvid: () => screen('fbvid', scene('video', 'base', 'escuro', `<div class="cm-fbv">
@@ -240,15 +238,13 @@ const mocks = {
       <div class="cm-fbb-cta" data-tap="cta" data-hs="3"><span><b>Sotaque Livre Idiomas</b><small>Aula experimental</small></span>${I('chevron')}</div>
     </div>`) + scene('page', 'sheet', 'claro', `${browserBar('Sotaque Livre', 'sotaquelivre.exemplo')}${SITES.sotaque({ variant: 'agenda', pick: 'modalidade' })}`)),
 
-  fbFeed: () => screen('fb', scene('ad', 'base', 'claro', `<div class="cm-safe"><div class="cm-fb-bar"><b class="cm-fb-name">Facebook</b><span><i>${I('plus')}</i><i>${I('search')}</i><i>${I('comment')}</i></span></div>
-    <article class="cm-fb-post"><header class="cm-fb-head">${marca('incorporadora')}<span><b>Morada Falésia</b><small>Patrocinado · ${I('globe', 'cm-i--inline')}</small></span>${I('dots')}${I('close')}</header>
-    <p class="cm-fb-text">Casas na falésia com a sala voltada para o mar. Agende uma visita ao decorado.</p>
-    <div class="cm-fb-carousel" data-hs="2"><div class="cm-track">
+  fbFeed: () => screen('fb', scene('ad', 'base', 'escuro', LAB.facebookAd({ key: 'incorporadora', text: 'Casas na falésia com a sala voltada para o mar. Agende uma visita ao decorado.',
+    media: `<div class="cm-fb-carousel" data-hs="2"><div class="cm-track">
       <figure class="cm-fb-card"><span class="cm-fb-img" data-hs="1">${pic('coast', { alt: 'Casa de concreto e madeira na falésia, sobre o mar.', pos: '34% 50%' })}</span><figcaption><span><b>Casa na falésia</b><small>Visita ao decorado</small></span><span class="cm-fb-btn">Agendar agora</span></figcaption></figure>
       <figure class="cm-fb-card"><span class="cm-fb-img">${pic('salaMar11')}</span><figcaption><span><b>Sala voltada para o mar</b><small>Visita ao decorado</small></span><span class="cm-fb-btn">Agendar agora</span></figcaption></figure>
       <figure class="cm-fb-card"><span class="cm-fb-img cm-fb-img--plan">${planta()}</span><figcaption><span><b>Plantas de 3 e 4 quartos</b><small>Visita ao decorado</small></span><span class="cm-fb-btn" data-tap="cta" data-hs="3">Agendar agora</span></figcaption></figure>
-    </div></div>
-    <div class="cm-fb-actions"><span>${I('thumb')}Curtir</span><span>${I('comment')}Comentar</span><span>${I('forward')}Compartilhar</span></div></article><div class="cm-fb-post cm-fb-next">${skel(4)}</div></div>${tabbar(TABS.facebook)}`) +
+    </div></div>`,
+    next: { name: 'Página que você segue', time: '5 h', text: 'Feira de artesanato neste fim de semana na praça.', media: pic('cenaCrencas', { pos: '50% 60%' }) } })) +
     scene('form', 'sheet', 'escuro', SITES.metaForm(), 'cm-scene--part', 'claro')),
 
   /* 2.4 TikTok In-Feed: a tech store, native text, CTA that takes the brand colour, TikTok browser. */
@@ -430,13 +426,13 @@ const mocks = {
       <div class="cm-wa-compose"><span class="cm-wa-row">${I('plus')}<span class="cm-wa-field cm-wa-field--empty"></span>${I('camera')}${I('mic')}</span></div>`)),
 
   /* 2.15 Publieditorial: a wealth manager's sponsored article in a fictitious magazine, identified before the title. */
-  blogArticle: () => screen('blog', scene('article', 'base', 'claro', `<div class="cm-web-host cm-web-host--blog"><b>Revista Exemplo</b>${I('menu')}<span class="cm-read"><i></i></span></div>
-    <div class="cm-blog-flow"><p class="cm-blog-paid" data-hs="1">Conteúdo patrocinado por Arrimo Patrimônio</p><small class="cm-web-kicker">Finanças da família</small>
-      <b class="cm-blog-title">Por onde começar a organizar o patrimônio da família</b><small class="cm-blog-by">Por Redação, em parceria com Arrimo Patrimônio</small>
-      <span class="cm-blog-img">${pic('negocios', { alt: 'Mesa escura com caneta e cartão, imagem de abertura do artigo.', pos: '50% 11%' })}</span>
-      <p class="cm-blog-p">Patrimônio da família e da empresa costumam crescer juntos. Separar os dois evita decisões apressadas.</p>
-      <div class="cm-blog-steps" data-hs="2"><b>1. Separe o que é da empresa</b><p class="cm-blog-p">Contas, bens e despesas em nomes diferentes.</p><b>2. Escreva os objetivos</b><p class="cm-blog-p">Proteger, transmitir ou investir pedem caminhos diferentes.</p><b>3. Pergunte antes de assinar</b><p class="cm-blog-p">Cada documento tem consequências para a família.</p></div>
-      <aside class="cm-blog-brand"><small>Oferecido por</small><span class="cm-blog-brand-head">${marca('financas')}<b>Arrimo Patrimônio</b></span><p>Um especialista explica cada decisão antes de você assinar.</p>${btn('Agendar conversa', 'cta', '3')}</aside></div>${safari('revista.exemplo')}`) +
+  blogArticle: () => screen('blog', scene('article', 'base', 'escuro', LAB.blogArticle({ key: 'financas', site: 'Revista Exemplo', domain: 'revista.exemplo', kicker: 'Finanças da família',
+    title: 'Por onde começar a organizar o patrimônio da família', by: 'Redação, em parceria com Arrimo Patrimônio',
+    photo: pic('negocios', { alt: 'Mesa escura com caneta e cartão, imagem de abertura do artigo.', pos: '50% 11%' }),
+    body: `<p class="blog-texto">Patrimônio da família e da empresa costumam crescer juntos. Separar os dois evita decisões apressadas.</p>
+      <div class="cm-blog-steps" data-hs="2"><b>1. Separe o que é da empresa</b><p class="blog-texto">Contas, bens e despesas em nomes diferentes.</p><b>2. Escreva os objetivos</b><p class="blog-texto">Proteger, transmitir ou investir pedem caminhos diferentes.</p><b>3. Pergunte antes de assinar</b><p class="blog-texto">Cada documento tem consequências para a família.</p></div>`,
+    offer: { text: 'Um especialista explica cada decisão antes de você assinar.', button: 'Agendar conversa' },
+    tail: `<p class="blog-texto">Na próxima parte: como falar de sucessão com quem vai assumir a empresa.</p><div class="blog-leia"><b>Leia também</b><span>Testamento, doação ou holding: o que muda para a família</span><span>Cinco documentos para guardar num só lugar</span></div>` }), '', 'claro') +
     scene('page', 'push', 'claro', `${SITES.arrimo()}${safari('arrimo.exemplo')}`, 'cm-scene--web')),
 };
 
@@ -837,12 +833,14 @@ const SCREEN = {
   igstory: { tema: 'escuro', fundo: '#000' },
   iglive: { tema: 'escuro', fundo: '#000' },
   igexplore: { tema: 'escuro', fundo: IG_FUNDO },
-  fbpost: { tema: 'claro', fundo: '#fff' },
   fbvid: { tema: 'escuro', fundo: '#000' },
   fbbreak: { tema: 'escuro', fundo: '#000' },
   ttFeed: { tema: 'escuro', fundo: '#000' },
   ytInstream: { tema: 'escuro', fundo: '#0f0f0f' },
   ytLive: { tema: 'escuro', fundo: '#0f0f0f' },
+  fbFeed: { tema: 'escuro', fundo: '#242526' },
+  fbpost: { tema: 'escuro', fundo: '#242526' },
+  blogArticle: { tema: 'escuro', fundo: '#ffffff' },
   ytShorts: { tema: 'escuro', fundo: '#000' },
   liFeed: { fundo: '#f4f2ee' },
 };
