@@ -1,5 +1,6 @@
-/** R6 editorial motion. Only section headings: scene/card motion has its own owner. */
-const SELECTOR = '#hero-title,#work-title,#editorial-title,#ads-title,#systems-title,#contact-title,#rx-evidence-title,#project-paths-title,#method-title,#systems-title';
+/** R6 editorial motion. Only section headings: scene/card motion has its own owner.
+ * The hero title is not here: the Planes hero (assets/planes/hero.css) reveals its words from blur by itself. */
+const SELECTOR = '#work-title,#editorial-title,#ads-title,#systems-title,#contact-title,#rx-evidence-title,#project-paths-title,#method-title,#systems-title';
 const reduced = matchMedia('(prefers-reduced-motion: reduce)');
 const states = new Map();
 const blocked = () => reduced.matches || document.hidden || document.body.classList.contains('is-paused') || document.querySelector('.motion-toggle')?.getAttribute('aria-pressed') === 'true';
