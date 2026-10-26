@@ -443,6 +443,8 @@ function quadroElemento(e, ctx) {
   const versoes = e.versoes.filter(id => ctx.porId.has(id));
   const notas = ctx.contexto.elementos[e.id] || [];
   const refs = (ctx.contexto.referencias || []).filter(r => (r.elementos || []).includes(e.id));
+  // Pieces that only exist in the phone layout (a bottom sheet, a menu sheet) open on the 390 px screen.
+  const telaInicial = e.largura === 390 ? 390 : TELA;
   const card = html(`<article class="card q-card" id="q-${esc(e.id)}">
     <div class="stage q-stage${versoes.length ? '' : ' q-stage--evidencia'}">${versoes.length ? '<span class="stage-msg">entra ao vivo quando chegar aqui</span>' : evidenciaHtml(e, notas)}</div>
     <div><h3>${esc(e.nome)}</h3><p class="by">${esc(PROJETOS[e.projeto])} · ${esc(e.era || '')}${versoes.length ? ' · ' : ''}<a data-q-abrir target="_blank" rel="noopener"${versoes.length ? '' : ' hidden'}>abrir na versão ↗</a></p></div>
@@ -453,7 +455,7 @@ function quadroElemento(e, ctx) {
       <button type="button" class="btn btn--primary" data-q-tocar${versoes.length ? '' : ' disabled'}>Tocar</button>
       <label><input type="checkbox" data-q-repetir> Repetir</label>
       <label>Velocidade <select data-q-vel>${RATES}</select></label>
-      <div class="seg-group" role="group" aria-label="Tela">${[1280, 390].map(w => `<button type="button" class="seg" data-q-tela="${w}"${w === TELA ? ' aria-pressed="true"' : ''}>${w === 1280 ? 'Computador' : 'Celular'}</button>`).join('')}</div>
+      <div class="seg-group" role="group" aria-label="Tela">${[1280, 390].map(w => `<button type="button" class="seg" data-q-tela="${w}"${w === telaInicial ? ' aria-pressed="true"' : ''}>${w === 1280 ? 'Computador' : 'Celular'}</button>`).join('')}</div>
     </div>
     <div class="controls q-acoes">
       <div class="seg-group" role="group" aria-label="O que a régua controla">${[['tempo', 'Régua: tempo'], ['rolagem', 'Régua: rolagem']].map(([id, t]) => `<button type="button" class="seg" data-q-regua="${id}">${t}</button>`).join('')}</div>
@@ -479,7 +481,7 @@ function quadroElemento(e, ctx) {
     </div></details>
   </article>`);
   const stage = $('.q-stage', card), p = palco(stage, e.nome);
-  const st = {tipo: 'elemento', versao: versoes.at(-1), tela: TELA, regua: '', alvo: null, anims: [], total: 0, isolar: false, pagina: false, hover: false, escolhendo: false, tocando: false, visivel: () => q.visivel};
+  const st = {tipo: 'elemento', versao: versoes.at(-1), tela: telaInicial, regua: '', alvo: null, anims: [], total: 0, isolar: false, pagina: false, hover: false, escolhendo: false, tocando: false, visivel: () => q.visivel};
   const q = {card, visivel: false, vivo: false};
   card.__quadro = q;
   const msg = texto => { $('.stage-msg', stage)?.remove(); if (texto) stage.append(html(`<span class="stage-msg">${esc(texto)}</span>`)); };
@@ -522,6 +524,14 @@ function quadroElemento(e, ctx) {
     await executarReceita(p, e.receitas?.[st.versao]);
     if (!p.doc) return;
     if (!alvo) ({no: alvo, metodo} = localizarDetalhado(p.doc, e, st.versao));
+    // Pages that mount by script (the Drive prototypes render into #root) may not have the piece
+    // yet when the iframe loads: look again after a moment before giving up on the selector.
+    if (!alvo || metodo === 'secao') {
+      await espera(1600);
+      if (!p.doc) return;
+      const outra = localizarDetalhado(p.doc, e, st.versao);
+      if (outra.no && (!alvo || outra.metodo !== 'secao')) ({no: alvo, metodo} = outra);
+    }
     st.alvo = alvo;
     st.metodo = metodo;
     isolar(p.doc, st.alvo, st.isolar);
