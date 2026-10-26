@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-  <meta name="theme-color" content="#080909">
-  <meta name="portfolio-version" content="landing-planes-20261026">
+  <meta name="theme-color" content="#f6f6f2">
+  <meta name="portfolio-version" content="independent-showcases-20261018">
   <meta name="description" content="Diretor criativo e redator. Identidade visual, conteúdo, campanhas, sites e sistemas para apresentar sua oferta, gerar interesse e simplificar processos.">
   <meta property="og:title" content="Smile N · Direção criativa. Execução digital.">
   <meta property="og:description" content="Identidade visual, conteúdo, anúncios, sites e sistemas. Criação e desenvolvimento conectados ao objetivo da sua empresa.">
@@ -17,6 +17,8 @@
   <link rel="canonical" href="https://portifolio-github-production.up.railway.app/">
   <title>Smile N · Direção criativa, anúncios, sites e sistemas</title>
   <link rel="icon" href="/assets/creative/favicon.svg" type="image/svg+xml">
+  <link rel="preload" href="/assets/badges/poster-single-0f.webp?v=editorial-r6" as="image" type="image/webp" media="(max-width: 1179px)" fetchpriority="high">
+  <link rel="preload" href="/assets/badges/poster-pair-ff.webp?v=editorial-r6" as="image" type="image/webp" media="(min-width: 1180px)" fetchpriority="high">
   <link rel="preload" href="/assets/fonts/InterVariable.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="/assets/fonts/Newsreader-Italic-Variable.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="/assets/portfolio.css">
@@ -36,6 +38,7 @@
   <link rel="stylesheet" href="/assets/showcase/fatos-stack-video.css?v=reference-1349">
   <link rel="stylesheet" href="/assets/showcase/visible-card-depth.css?v=20261018-r1">
   <link rel="stylesheet" href="/assets/showcase/fatos-video-surface.css?v=1349-review-1">
+  <link rel="stylesheet" href="/assets/badge-enhancements.css?v=editorial-r6">
   <link rel="stylesheet" href="/assets/portfolio-r6.css">
   <link rel="stylesheet" href="/assets/editorial-motion.css">
   <link rel="stylesheet" href="/assets/showcase/static-presentations.css">
@@ -50,12 +53,14 @@
   <link rel="stylesheet" href="/assets/showcase/lab-telas.css">
   <link rel="stylesheet" href="/assets/showcase/vitrine-lab.css">
   <link rel="stylesheet" href="/assets/showcase/deck-demos.css">
+  <link rel="stylesheet" href="/assets/hero-composition.css?v=integrated-fit">
   <link rel="stylesheet" href="/assets/showcase/device-premium.css?v=iphone-macbook-1">
   <link rel="stylesheet" href="/assets/showcase/editorial-hardware.css?v=persistent-r3">
   <script src="/assets/profile.js" defer></script>
   <script type="module" src="/assets/portfolio.js"></script>
   <script type="module" src="/assets/editorial-motion.js"></script>
   <script type="module" src="/assets/brand-rail.js"></script>
+  <script type="module" src="/assets/badge-build/index.js"></script>
   <script type="module" src="/assets/sections/interactions.js"></script>
   <script src="/assets/direction.js" defer></script>
   <script type="module" src="/assets/project-paths.js"></script>
@@ -65,63 +70,51 @@
   <link rel="stylesheet" href="/assets/showcase/independent-showcases.css?v=independent-20261018-r1">
   <link rel="stylesheet" href="/assets/showcase/editorial-screens.css">
   <link rel="stylesheet" href="/assets/showcase/reference-cards.css">
-  <!-- landing-planes-l3: hero e menu portados da landing smiile (commit cc19ed2), sem React. -->
-  <link rel="stylesheet" href="/assets/planes/hero.css">
-  <link rel="stylesheet" href="/assets/planes/nav.css">
-  <script type="module" src="/assets/planes/hero.js"></script>
-  <script type="module" src="/assets/planes/nav.js"></script>
 </head>
 <body class="direction-v4 portfolio-r6 portfolio-r9 portfolio-r10">
   <a class="skip" href="#laboratorio">Pular para as campanhas</a>
   <div id="reading-progress" aria-hidden="true"></div>
-  <!-- Cabeçalho e hero no modelo Landing Planes (smiile, commit cc19ed2): /assets/planes/nav.* e /assets/planes/hero.*. -->
-  <header class="site-header sn-header sn-dark" id="site-header">
-    <div class="sn-bar header-inner">
-      <a class="sn-brand" href="#inicio" aria-label="Smile N, início"><svg class="mark" viewBox="0 0 64 64" aria-hidden="true" focusable="false"><rect width="64" height="64" rx="18" fill="#203d2e"/><path d="M17 47 47 17M17 17h30v30" fill="none" stroke="#f1f2df" stroke-width="5"/></svg>Smile N</a>
-      <nav class="sn-nav sn-nav-desktop main-nav" aria-label="Navegação principal">
-        <button type="button" data-sn-trigger aria-expanded="false" aria-controls="sn-panel-trabalhos">Trabalhos <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m6 9 6 6 6-6"/></svg></button>
-        <a href="#categorias">Serviços</a>
-        <a href="#contato">Contato</a>
-      </nav>
-      <div class="sn-actions">
-        <button id="motion-toggle" class="sn-pause motion-toggle" type="button" aria-pressed="false" aria-label="Pausar movimento e reprodução" title="Pausar movimento e reprodução"><svg class="motion-icon motion-icon-pause" viewBox="0 0 16 16" width="16" height="16" fill="currentColor" aria-hidden="true" focusable="false"><path d="M4 3h3v10H4zM9 3h3v10H9z"/></svg><svg class="motion-icon motion-icon-play" viewBox="0 0 16 16" width="16" height="16" fill="currentColor" aria-hidden="true" focusable="false"><path d="M5 2.5v11L13.5 8z"/></svg><span>Pausar movimento</span></button>
-        <a class="sn-start" href="#contato" aria-label="Conversar sobre um projeto"><span class="sn-start-label">Conversar<span class="sn-start-more"> sobre um projeto</span></span><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></a>
-      </div>
-      <button class="sn-mobile-toggle" id="menu-toggle" type="button" aria-label="Abrir menu" aria-controls="mobile-nav" aria-expanded="false"><svg class="sn-icon-menu" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M4 6h16"/><path d="M4 12h16"/><path d="M4 18h16"/></svg><svg class="sn-icon-close" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></button>
+  <header class="site-header" id="site-header">
+    <div class="shell header-inner">
+      <a href="#inicio" class="wordmark" aria-label="Smile N, início"><span class="wordmark-name">Smile N</span><span class="wordmark-signature">ideia ↗ execução.</span></a>
+      <nav class="main-nav" aria-label="Navegação principal"><a href="#laboratorio">Campanhas</a><a href="#categorias">Serviços</a><a href="#contato">Contato</a></nav>
+      <a class="header-cta" href="#contato">Conversar sobre um projeto <span aria-hidden="true">↗</span></a>
+      <button id="motion-toggle" class="motion-toggle" type="button" aria-pressed="false" aria-label="Pausar movimento e reprodução" title="Pausar movimento e reprodução"><svg class="motion-icon motion-icon-pause" viewBox="0 0 16 16" width="16" height="16" fill="currentColor" aria-hidden="true" focusable="false"><path d="M4 3h3v10H4zM9 3h3v10H9z"/></svg><svg class="motion-icon motion-icon-play" viewBox="0 0 16 16" width="16" height="16" fill="currentColor" aria-hidden="true" focusable="false"><path d="M5 2.5v11L13.5 8z"/></svg><span>Pausar movimento</span></button>
+      <button class="menu-toggle" id="menu-toggle" type="button" aria-label="Abrir menu" aria-controls="mobile-nav" aria-expanded="false"><span></span><span></span></button>
     </div>
-    <nav class="sn-nav sn-nav-mobile" id="mobile-nav" aria-label="Navegação móvel" hidden>
-      <button type="button" data-sn-trigger aria-expanded="false" aria-controls="sn-panel-trabalhos">Trabalhos <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m6 9 6 6 6-6"/></svg></button>
-      <a href="#categorias">Serviços</a>
-      <a href="#contato">Contato</a>
-      <a class="mobile-nav-cta sn-nav-cta" href="#contato">Conversar sobre um projeto <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></a>
-    </nav>
-    <div class="sn-dropdown" id="sn-panel-trabalhos" hidden>
-      <div class="sn-panel-links" role="group" aria-label="Trabalhos">
-        <a class="sn-link" href="#laboratorio" data-palette="video"><span class="sn-link-icon"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m3 11 18-5v12L3 14v-3z"/><path d="M11.6 16.8a3 3 0 1 1-5.8-1.6"/></svg></span><span><strong>Campanhas e anúncios</strong><small>Uma oferta adaptada a cada canal.</small></span><svg class="sn-link-arrow" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></a>
-        <a class="sn-link" href="#editorial" data-palette="site"><span class="sn-link-icon"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg></span><span><strong>Sites e lojas</strong><small>Do primeiro toque à confirmação.</small></span><svg class="sn-link-arrow" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></a>
-        <a class="sn-link" href="#sistemas" data-palette="research"><span class="sn-link-icon"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect width="8" height="8" x="3" y="3" rx="2"/><path d="M7 11v4a2 2 0 0 0 2 2h4"/><rect width="8" height="8" x="13" y="13" rx="2"/></svg></span><span><strong>Sistemas e automações</strong><small>Do pedido à informação organizada.</small></span><svg class="sn-link-arrow" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></a>
-        <div class="sn-links-footer"><span><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M4.037 4.688a.495.495 0 0 1 .651-.651l16 6.5a.5.5 0 0 1-.063.947l-6.124 1.58a2 2 0 0 0-1.438 1.435l-1.579 6.126a.5.5 0 0 1-.947.063z"/></svg> Explore no seu ritmo.</span><a href="#laboratorio">Ver as campanhas <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a></div>
-      </div>
-      <a class="sn-featured" href="#laboratorio"><canvas class="sn-liquid" aria-hidden="true"></canvas><span class="sn-featured-shade" aria-hidden="true"></span><div class="sn-featured-content"><span class="sn-featured-icon"><svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z"/><path d="M20 3v4"/><path d="M22 5h-4"/><path d="M4 17v2"/><path d="M5 18H3"/></svg></span><strong>Da ideia ao que se vê.</strong><p>Criação e desenvolvimento conectados ao objetivo da sua empresa.</p></div><svg class="sn-featured-arrow" viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 5v14"/><path d="m19 12-7 7-7-7"/></svg></a>
-    </div>
+    <nav class="mobile-nav" id="mobile-nav" aria-label="Navegação móvel" hidden><a href="#laboratorio">Campanhas</a><a href="#categorias">Serviços</a><a href="#contato">Contato</a><p>Smile N · Diretor criativo e redator<br>Criação e desenvolvimento para sua empresa.</p><a class="mobile-nav-cta" href="#contato">Conversar sobre um projeto <span aria-hidden="true">↗</span></a></nav>
   </header>
 
   <main id="inicio">
-    <section class="planes-hero" aria-labelledby="hero-title">
-      <canvas class="ph-silk" aria-hidden="true"></canvas>
-      <div class="ph-glow" aria-hidden="true"></div>
-      <div class="ph-copy">
-        <p class="ph-eyebrow"><svg class="mark" viewBox="0 0 64 64" aria-hidden="true" focusable="false"><rect width="64" height="64" rx="18" fill="#203d2e"/><path d="M17 47 47 17M17 17h30v30" fill="none" stroke="#f1f2df" stroke-width="5"/></svg> SMILE N · DIRETOR CRIATIVO E REDATOR</p>
-        <h1 id="hero-title"><span><span class="ph-word">Direção</span> </span><span><span class="ph-word">criativa.</span> </span><span><br><span class="ph-word">Execução</span> </span><span><span class="ph-word">digital.</span></span></h1>
-        <p class="ph-description">Crio identidades, conteúdos, anúncios, sites e sistemas para sua empresa<br>comunicar melhor, apresentar suas ofertas e simplificar processos.</p>
-        <div class="ph-actions">
-          <a class="ph-primary" href="#laboratorio">Ver campanhas <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a>
-          <a href="#contato">Conversar sobre um projeto <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 5v14"/><path d="m19 12-7 7-7-7"/></svg></a>
-        </div>
-        <div class="ph-footnote">Identidade<span></span>Conteúdo<span></span>Campanhas<span></span>Sites<span></span>Sistemas</div>
+    <section class="hero hero-v2 shell" aria-labelledby="hero-title">
+  <div class="hero-surface">
+  <div class="hero-copy">
+    <div class="eyebrow hero-issue"><span class="issue-dot"></span> SMILE N · DIRETOR CRIATIVO E REDATOR</div>
+    <h1 id="hero-title">Direção criativa.<br><em>Execução digital.</em></h1>
+  </div>
+  <div class="hero-exhibit hero-badge-exhibit" aria-label="Experiência editorial e projetos digitais de Smile N">
+    <div class="hero-exhibit-bg" aria-hidden="true"></div>
+    <div class="hero-badge-stage" data-portfolio-badges data-state="idle" data-selected-card="0">
+      <div class="hero-badge-standin" aria-hidden="true">
+        <picture>
+          <source data-badge-poster-source media="(min-width: 1180px)" srcset="/assets/badges/poster-pair-ff.webp?v=editorial-r6" type="image/webp">
+          <img data-badge-poster src="/assets/badges/poster-single-0f.webp?v=editorial-r6" data-poster-pair-ff="/assets/badges/poster-pair-ff.webp?v=editorial-r6" data-poster-pair-bf="/assets/badges/poster-pair-bf.webp?v=editorial-r6" data-poster-pair-fb="/assets/badges/poster-pair-fb.webp?v=editorial-r6" data-poster-pair-bb="/assets/badges/poster-pair-bb.webp?v=editorial-r6" data-poster-single-0f="/assets/badges/poster-single-0f.webp?v=editorial-r6" data-poster-single-0b="/assets/badges/poster-single-0b.webp?v=editorial-r6" data-poster-single-1f="/assets/badges/poster-single-1f.webp?v=editorial-r6" data-poster-single-1b="/assets/badges/poster-single-1b.webp?v=editorial-r6" width="410" height="500" alt="" fetchpriority="high" decoding="async">
+        </picture>
       </div>
-      <a class="ph-scroll" href="#laboratorio" aria-label="Explorar as campanhas"><span>EXPLORE AS CAMPANHAS</span><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 5v14"/><path d="m19 12-7 7-7-7"/></svg></a>
-    </section>
+      <canvas class="hero-badge-canvas" data-badge-canvas aria-hidden="true"></canvas>
+    </div>
+    <div class="hero-badge-controls" aria-label="Escolha a peça para explorar">
+      <div class="badge-selection" role="group" aria-label="Projeto selecionado">
+        <button type="button" data-badge-select="0" aria-pressed="true">Fatos</button>
+        <button type="button" data-badge-select="1" aria-pressed="false">smiile</button>
+      </div>
+      <button type="button" data-badge-flip aria-pressed="false" aria-label="Ver o verso do crachá Fatos">Ver verso <span aria-hidden="true">↻</span></button>
+    </div>
+    <div class="hero-badge-foot"><span class="badge-selected-label" aria-hidden="true"><i></i><span data-badge-current-label>Fatos · selecionado</span></span><span class="badge-touch-cue" aria-hidden="true">Toque para virar · arraste para mover</span><a class="badge-continue" href="#laboratorio" data-badge-link>Ver o estudo Fatos <span aria-hidden="true">↓</span></a></div>
+    <span class="sr-only" data-badge-status role="status" aria-live="polite" aria-atomic="true"></span>
+  </div>
+  </div>
+</section>
 
     <div class="discipline-rail" data-brand-rail role="img" aria-label="Identidade visual, conteúdo, campanhas, sites e sistemas. Meta, Google Ads e TikTok são canais de campanha.">
       <div class="rail-track" aria-hidden="true"><div class="rail-group">

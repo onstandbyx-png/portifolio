@@ -22,7 +22,7 @@ try{
    const firstArt=await page.locator('.rg-art').first().evaluate(n=>n.getBoundingClientRect().top+scrollY);
    row.firstArt=firstArt;
    if(!reduced&&(width===390||width===1440))check('First gallery artwork is at least as early as the preserved reference',firstArt<=(width===390?1553:1348),firstArt);
-   check('Hero leads to the visual work',await page.locator('.planes-hero .ph-actions a').first().getAttribute('href')==='#laboratorio');
+   check('Hero leads to the visual work',await page.locator('.hero-actions a').first().getAttribute('href')==='#laboratorio');
    if(width<500)check('Campaign artwork precedes its explanation',await page.evaluate(()=>document.querySelector('.sp-peel-card').getBoundingClientRect().top<document.querySelector('.campaign-summary').getBoundingClientRect().top));
    await page.locator('.es-tabs').evaluate(n=>scrollTo({top:n.getBoundingClientRect().top+scrollY-90,behavior:'instant'}));
    await page.evaluate(()=>{window.originalEditorialNodes=[...document.querySelectorAll('.es-object')];window.originalEditorialFrames=[...document.querySelectorAll('.es-hardware')];});

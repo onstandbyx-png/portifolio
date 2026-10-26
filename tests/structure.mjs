@@ -11,9 +11,8 @@ assert(!/<script[^>]+src="[^"]*(?:recovery-init|social-ads|product-demos)\.js/.t
 for(const s of [h,js,showcase,services])assert(!/\b(?:SOTA CI|final_final|LINHA)\b/i.test(s),'Obsolete fictional or technical narrative remains');
 assert(!/mobile-project-cta/.test(read('../public/assets/direction.js')),'Mobile contact overlay must not be created');
 assert(js.includes('navigator.clipboard.writeText')&&js.includes('contact.createContactHref'),'Editable local briefing and real contact destinations retained');
-assert(h.includes('class="planes-hero"')&&h.includes('/assets/planes/hero.js')&&h.includes('/assets/planes/nav.js')&&h.includes('id="sn-panel-trabalhos"'),'Planes hero and shader navigation present');
-assert(!h.includes('data-portfolio-badges')&&!h.includes('/assets/badge-build/index.js')&&!h.includes('hero-v2'),'Badge exhibit retired from the home');
+assert(h.includes('data-portfolio-badges')&&h.includes('/assets/badge-build/index.js'),'Physical badge hero retained');
 for(const name of ['fatos-editorial','fatos-esportes','fatos-crencas','fatos-sobrenaturais','fatos-nerd','fatos-negocios','campanha-meta','campanha-google','campanha-tiktok','casa-costa','trilhas'])assert(existsSync(new URL(`../public/assets/portfolio/static-r8/${name}.webp`,import.meta.url)),name);
 for(const target of ['#editorial','#laboratorio','#sistemas','#contato'])assert(h.includes(target),target);
 for(const source of [h,js,showcase])assert(!source.includes('#estudio-interativo'),'Hidden studio has no public navigation');
-console.log('PASS: static mock artwork, native navigation, Planes hero and local contact');
+console.log('PASS: static mock artwork, native navigation, badge hero and local contact');

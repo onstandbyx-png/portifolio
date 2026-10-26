@@ -21,7 +21,7 @@ try{
   try{
    await page.goto(base,{waitUntil:'domcontentloaded'});await page.evaluate(()=>document.fonts.ready);
    await page.waitForSelector('.campaign-summary');await page.waitForSelector('[data-vitrine="sistemas"] .cm-screen');
-   check('The first screen states role and five concrete services',/DIRETOR CRIATIVO E REDATOR/.test(await page.locator('.planes-hero .ph-eyebrow').innerText())&&/identidades, conteúdos, anúncios, sites e sistemas/.test(await page.locator('.planes-hero .ph-description').innerText()));
+   check('The first screen states role and five concrete services',/DIRETOR CRIATIVO E REDATOR/.test(await page.locator('.hero-issue').innerText())&&/identidades, conteúdos, anúncios, sites e sistemas/.test(await page.locator('.hero-description').innerText()));
    const order=await page.evaluate(()=>['laboratorio','editorial','sistemas','categorias','como-trabalho','contato'].map(id=>({id,top:document.getElementById(id).getBoundingClientRect().top+scrollY})));
    row.sectionOrder=order;
    check('Visual demonstrations precede the detailed service catalogue',order.every((item,i)=>i===0||item.top>order[i-1].top));
