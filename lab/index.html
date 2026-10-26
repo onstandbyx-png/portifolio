@@ -31,6 +31,8 @@
   <div class="wrap tabs-inner" role="tablist">
     <button type="button" role="tab" id="tab-quadros" aria-controls="quadros" aria-selected="true">Quadros <span class="count" data-count="quadros"></span></button>
     <button type="button" role="tab" id="tab-versoes" aria-controls="versoes" aria-selected="false" tabindex="-1">Versões ao vivo <span class="count" data-count="versoes"></span></button>
+    <button type="button" role="tab" id="tab-drive" aria-controls="drive" aria-selected="false" tabindex="-1">Drive <span class="count" data-count="drive"></span></button>
+    <button type="button" role="tab" id="tab-chatgpt" aria-controls="chatgpt" aria-selected="false" tabindex="-1">ChatGPT <span class="count" data-count="chatgpt"></span></button>
     <button type="button" role="tab" id="tab-recriados" aria-controls="recriados" aria-selected="false" tabindex="-1">Recriados <span class="count" data-count="recriados"></span></button>
     <button type="button" role="tab" id="tab-componentes" aria-controls="componentes" aria-selected="false" tabindex="-1">Componentes das páginas</button>
     <button type="button" role="tab" id="tab-cartoes" aria-controls="cartoes" aria-selected="false" tabindex="-1">Cartões e protótipos</button>
@@ -55,6 +57,22 @@
       <p>Cada fase dos seus projetos rodando com o código daquela data. Escolha um elemento (cartões, crachá, aparelhos…) para abrir a versão já nele; use <b>Isolar</b> para ver só o elemento e <b>Comparar versões</b> para ver o mesmo elemento em todas as fases lado a lado.</p>
     </div>
     <div data-versoes><p class="note">Carregando as versões…</p></div>
+  </section>
+
+  <section class="panel" id="drive" role="tabpanel" aria-labelledby="tab-drive" tabindex="-1" hidden>
+    <div class="intro">
+      <h2>O que veio do Drive</h2>
+      <p>Protótipos, documentos e renders recuperados dos arquivos do seu Google Drive, cada um montado como versão ao vivo. <b>Abrir a versão</b> mostra o arquivo rodando; <b>Ver o quadro e os elementos</b> leva às peças dele nos Quadros, com o pacote de reaproveitamento de cada uma.</p>
+    </div>
+    <div data-drive><p class="note">Carregando o Drive…</p></div>
+  </section>
+
+  <section class="panel" id="chatgpt" role="tabpanel" aria-labelledby="tab-chatgpt" tabindex="-1" hidden>
+    <div class="intro">
+      <h2>O que foi feito nas conversas do ChatGPT</h2>
+      <p>Cada conversa com material dos três projetos: as peças desenvolvidas, os designs descritos, o código salvo (com prévia quando é HTML) e os elementos que ela gerou no laboratório. No alto ficam os protótipos feitos com o ChatGPT que ainda estavam no ar, montados como versões ao vivo.</p>
+    </div>
+    <div data-chatgpt><p class="note">Carregando as conversas…</p></div>
   </section>
 
   <section class="panel" id="recriados" role="tabpanel" aria-labelledby="tab-recriados" tabindex="-1" hidden>

@@ -1,4 +1,5 @@
 import {PAIRS} from './recriados.js';
+import {contarOrigens, mountChatgpt, mountDrive} from './origens.js';
 import {mountQuadros} from './quadros.js';
 import {mountVersoes} from './versoes.js';
 import {mountLottie, mountRive, reducedMotion, renderInputs, renderSetup, whenNear} from './runtime.js';
@@ -21,7 +22,19 @@ function montar(id) {
     .catch(error => { $('[data-quadros]').innerHTML = `<p class="note">Os quadros não carregaram: ${esc(error.message)}</p>`; });
   if (id === 'versoes') montados.versoes = mountVersoes($('[data-versoes]')).then(c => { $('[data-count="versoes"]').textContent = c.versoes; return c; })
     .catch(error => { $('[data-versoes]').innerHTML = `<p class="note">As versões não carregaram: ${esc(error.message)}</p>`; });
+  if (id === 'drive') mountDrive($('[data-drive]')).then(c => { $('[data-count="drive"]').textContent = c.versoes; })
+    .catch(error => { $('[data-drive]').innerHTML = `<p class="note">O Drive não carregou: ${esc(error.message)}</p>`; });
+  if (id === 'chatgpt') mountChatgpt($('[data-chatgpt]')).then(c => { $('[data-count="chatgpt"]').textContent = c.conversas || ''; })
+    .catch(error => { $('[data-chatgpt]').innerHTML = `<p class="note">As conversas não carregaram: ${esc(error.message)}</p>`; });
 }
+// "Ver os quadros com origem…" in the Drive and ChatGPT tabs: open Quadros with that origin filter.
+document.addEventListener('click', event => {
+  const b = event.target.closest('[data-og-origem]');
+  if (!b) return;
+  showTab('quadros');
+  scrollTo({top: 0});
+  montados.quadros?.then(c => c?.filtrarOrigem(b.dataset.ogOrigem));
+});
 function showTab(id, {focus = false, push = true} = {}) {
   const foco = /^qv?-/.test(id) ? id : '';
   if (foco) { id = 'quadros'; push = false; }
@@ -64,6 +77,11 @@ document.addEventListener('click', event => {
 });
 addEventListener('hashchange', () => showTab(location.hash.slice(1), {push: false}));
 showTab(location.hash.slice(1) || 'quadros', {push: false});
+// Drive and ChatGPT counts in the tab labels before the tabs are opened (small files only).
+contarOrigens().then(({drive, conversas}) => {
+  if (drive && !$('[data-count="drive"]').textContent) $('[data-count="drive"]').textContent = drive;
+  if (conversas && !$('[data-count="chatgpt"]').textContent) $('[data-count="chatgpt"]').textContent = conversas;
+}).catch(() => {});
 
 /* Frames: width presets and prototype switch */
 document.addEventListener('click', event => {

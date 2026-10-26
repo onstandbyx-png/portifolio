@@ -15,9 +15,11 @@ import {fileURLToPath} from 'node:url';
 const LAB = resolve(fileURLToPath(new URL('..', import.meta.url)));
 const ROOT = resolve(LAB, '..');
 const OUT = resolve(process.argv[2] || join(ROOT, 'dist-lab'));
-// Private builds must never be written inside this public repository.
-if (process.env.LAB_PRIVADAS && (OUT + sep).startsWith(ROOT + sep)) {
-  console.error(`exportar: com LAB_PRIVADAS a saída precisa ficar fora de ${ROOT}`);
+// Private material (builds, Drive context, conversations, reuse packages, videos, the Fatos studio)
+// must never be written inside this public repository.
+const PRIVADOS = ['LAB_PRIVADAS', 'LAB_CONTEXTO', 'LAB_CONVERSAS', 'LAB_REFERENCIAS', 'LAB_REUSO', 'LAB_FATOS_ESTUDIO'].filter(k => process.env[k]);
+if (PRIVADOS.length && (OUT + sep).startsWith(ROOT + sep)) {
+  console.error(`exportar: com ${PRIVADOS.join(', ')} a saída precisa ficar fora de ${ROOT}`);
   process.exit(1);
 }
 const ERAS = join(LAB, '.versoes');
@@ -129,7 +131,8 @@ if (PRIV && existsSync(PRIV)) for (const name of readdirSync(PRIV).filter(n => n
     if (['.html', '.css', '.js', '.mjs'].includes(ext)) data = Buffer.from(rewrite(data.toString('utf8')));
     if (ext === '.html') data = Buffer.from(injetar(data.toString('utf8')));
     // Single-file apps that route by location.pathname (meta "subcaminho") see the path without /v/<id>.
-    if (meta.subcaminho && ['.html', '.js', '.mjs'].includes(ext)) data = Buffer.from(data.toString('utf8').replace(/\blocation\.pathname\b(?!\s*=[^=])/g, `(location.pathname.replace(/^\\/v\\/[\\w-]+/, '') || '/')`));
+    // Only the global location (bare or window./self./globalThis.), never another object's .location.
+    if (meta.subcaminho && ['.html', '.js', '.mjs'].includes(ext)) data = Buffer.from(data.toString('utf8').replace(/(?<![\w$.])(?:(?:window|self|globalThis)\.)?location\.pathname\b(?!\s*=[^=])/g, `(location.pathname.replace(/^\\/v\\/[\\w-]+/, '') || '/')`));
     manifest['/' + relative(dir, file).split('\\').join('/')] = store(data, ext || '.bin');
   }
   manifest['/'] = manifest['*'] = manifest['/index.html']; // '*': SPA fallback, as lab/server.mjs does
@@ -140,6 +143,12 @@ if (PRIV && existsSync(PRIV)) for (const name of readdirSync(PRIV).filter(n => n
 // Private Drive context (LAB_CONTEXTO, outside this repository), shown in the analysis cards.
 if (process.env.LAB_CONTEXTO && existsSync(process.env.LAB_CONTEXTO)) copy(process.env.LAB_CONTEXTO, 'contexto.json');
 else put('contexto.json', '{}');
+// Private ChatGPT conversation mapping (LAB_CONVERSAS, outside this repository), read by the ChatGPT tab;
+// conversas-total.json carries only the counts, so the tab label fills without loading the whole file.
+if (process.env.LAB_CONVERSAS && existsSync(process.env.LAB_CONVERSAS)) {
+  copy(process.env.LAB_CONVERSAS, 'conversas.json');
+  put('conversas-total.json', JSON.stringify(JSON.parse(readFileSync(process.env.LAB_CONVERSAS, 'utf8')).total || {}));
+} else { put('conversas.json', '{}'); put('conversas-total.json', '{}'); }
 // Private reference videos (LAB_REFERENCIAS), linked to elements by contexto.json.
 if (process.env.LAB_REFERENCIAS && existsSync(process.env.LAB_REFERENCIAS)) for (const file of walk(process.env.LAB_REFERENCIAS)) copy(file, join('_lab', 'referencias', relative(process.env.LAB_REFERENCIAS, file)));
 // Private reuse packages per element and version (LAB_REUSO, from lab-build/reuso), read by the cards.

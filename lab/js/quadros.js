@@ -28,7 +28,7 @@ function origens(e, ctx) {
   if (e.__origens) return e.__origens;
   const fonte = `${e.fonte || ''} ${e.sem_versao_viva || ''}`, notas = ctx.contexto.elementos[e.id] || [], vs = e.versoes || [];
   const o = new Set();
-  if (/chatgpt:|conversa/i.test(fonte) || notas.some(n => n.tipo === 'conversa')) o.add('conversas');
+  if (/chatgpt:|conversa/i.test(fonte) || notas.some(n => n.tipo === 'conversa') || vs.some(v => /^[spf]-g-/.test(v))) o.add('conversas');
   if (/drive:|Originais_parte|\.zip\b|libfile_/i.test(fonte) || vs.some(v => /^[spf]-d-|^s-ux2-/.test(v))) o.add('drive');
   if (/@[0-9a-f]{7,}/i.test(fonte) || vs.some(v => /^(e|x)\d|^[sf]-(l|e|v)\d|^[spf]-c-/.test(v))) o.add('git');
   if (/claude artifact|claude\.ai\/artifact/i.test(fonte) || vs.some(v => /^a-/.test(v))) o.add('claude');
@@ -247,14 +247,17 @@ function comLinks(texto) {
 }
 // What the stage shows when no live version holds the element: the reason, the source with its
 // links and what the conversations say. Nothing stays an empty box.
-function evidenciaHtml(e, notas) {
+function evidenciaHtml(e, notas, ctx) {
   const links = linksDe(`${e.sem_versao_viva || ''} ${e.fonte || ''}`);
   const conversas = notas.filter(n => n.tipo === 'conversa').slice(0, 2);
+  // Versions where the piece was looked for and is not there (ausencias), each with a link to open it.
+  const procurada = Object.entries(e.ausencias || {}).filter(([id]) => ctx.porId.has(id));
   return `<div class="q-evidencia" tabindex="0"><p class="q-ev-titulo">Sem versão viva: o que existe desta peça</p>
     ${e.sem_versao_viva ? `<p>${comLinks(e.sem_versao_viva)}</p>` : '<p>Nenhuma versão do laboratório mostra esta peça; a ficha guarda a descrição e a fonte.</p>'}
     ${e.fonte ? `<p><b>Fonte</b> ${comLinks(e.fonte)}</p>` : ''}
     ${links.length ? `<p class="q-ev-links">${links.map(l => `<a href="${esc(urlDe(l))}" target="_blank" rel="noopener">${esc(l.replace(/^https?:\/\//, ''))} ↗</a>`).join(' ')}</p>` : ''}
     ${conversas.length ? `<p><b>Nas conversas</b> ${conversas.map(n => esc(n.texto)).join(' · ')}</p>` : ''}
+    ${procurada.length ? `<p><b>Procurada e não encontrada em</b> ${procurada.map(([id, motivo]) => `<a href="/v/${esc(id)}/" target="_blank" rel="noopener">${esc(ctx.porId.get(id).rotulo)} ↗</a>: ${comLinks(motivo)}`).join('<br>')}</p>` : ''}
   </div>`;
 }
 // Reference videos the element was built from (private deploy only, under /_lab/referencias/).
@@ -446,7 +449,7 @@ function quadroElemento(e, ctx) {
   // Pieces that only exist in the phone layout (a bottom sheet, a menu sheet) open on the 390 px screen.
   const telaInicial = e.largura === 390 ? 390 : TELA;
   const card = html(`<article class="card q-card" id="q-${esc(e.id)}">
-    <div class="stage q-stage${versoes.length ? '' : ' q-stage--evidencia'}">${versoes.length ? '<span class="stage-msg">entra ao vivo quando chegar aqui</span>' : evidenciaHtml(e, notas)}</div>
+    <div class="stage q-stage${versoes.length ? '' : ' q-stage--evidencia'}">${versoes.length ? '<span class="stage-msg">entra ao vivo quando chegar aqui</span>' : evidenciaHtml(e, notas, ctx)}</div>
     <div><h3>${esc(e.nome)}</h3><p class="by">${esc(PROJETOS[e.projeto])} · ${esc(e.era || '')}${versoes.length ? ' · ' : ''}<a data-q-abrir target="_blank" rel="noopener"${versoes.length ? '' : ' hidden'}>abrir na versão ↗</a></p></div>
     <div class="meta"><span class="tag${e.status === 'atual' ? ' tag--ok' : e.status === 'rejeitado' || e.status === 'removido' ? ' tag--warn' : ''}">${esc(STATUS[e.status] || e.status || '')}</span><span class="tag">${esc(FAMILIA[e.familia] || e.familia || '')}</span><span class="tag" data-q-medida>tamanho medido ao vivo</span><span class="tag" data-q-anim hidden></span>${notas.length ? `<span class="tag tag--ok">${notas.length} ${notas.length > 1 ? 'notas' : 'nota'} do Drive</span>` : ''}${refs.length ? `<span class="tag tag--ok">${refs.length > 1 ? `${refs.length} vídeos` : 'vídeo'} de referência</span>` : ''}</div>
     ${versoes.length > 6 ? `<label class="vs-field q-versao-sel">Versão <select data-q-versao-sel>${versoes.map((id, i) => `<option value="${esc(id)}"${i === versoes.length - 1 ? ' selected' : ''}>${esc(`${ctx.porId.get(id).data} · ${ctx.porId.get(id).rotulo}`)}</option>`).join('')}</select></label>`
@@ -838,6 +841,14 @@ export async function mountQuadros(root) {
   filtrar();
   return {
     elementos: elementos.length, versoes: versoes.length,
+    // Show the element cards of one origin (Drive or Conversas), from the Drive and ChatGPT tabs.
+    filtrarOrigem(origem) {
+      f.tipo = 'elementos';
+      $$('[data-q-tipo]', root).forEach(b => b.setAttribute('aria-pressed', String(b.dataset.qTipo === 'elementos')));
+      f.projeto.value = 'todos'; opcoesVersao(); f.familia.value = 'todas'; f.status.value = 'todas'; f.busca.value = '';
+      f.origem.value = origem;
+      filtrar();
+    },
     // Open one card from a link (#q-<element id> or #qv-<version id>), resetting the filters if needed.
     focar(alvo) {
       const versao = alvo.startsWith('qv-'), id = alvo.slice(versao ? 3 : 2);
