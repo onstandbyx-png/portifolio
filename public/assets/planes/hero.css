@@ -47,7 +47,6 @@
  .ph-eyebrow{font-size:8px;letter-spacing:.1em;margin-bottom:28px}
  .planes-hero h1{font-size:clamp(36px,11.2vw,78px);letter-spacing:-.055em;line-height:1.01}
  .ph-description{font-size:14px;line-height:1.75;margin-top:25px;max-width:340px}
- .ph-description br{display:none}
  .ph-actions{flex-direction:column;align-items:stretch;margin:28px auto 0;max-width:280px;gap:10px}
  .ph-actions>a{min-height:47px;font-size:12px}
  .ph-footnote{gap:6px 8px;font-size:9px;margin-top:23px}
