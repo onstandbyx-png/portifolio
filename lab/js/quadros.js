@@ -526,7 +526,7 @@ function quadroElemento(e, ctx) {
     if (!alvo) ({no: alvo, metodo} = localizarDetalhado(p.doc, e, st.versao));
     // Pages that mount by script (the Drive prototypes render into #root) may not have the piece
     // yet when the iframe loads: look again after a moment before giving up on the selector.
-    if (!alvo || metodo === 'secao') {
+    for (let tentativa = 0; tentativa < 3 && (!alvo || metodo === 'secao'); tentativa++) {
       await espera(1600);
       if (!p.doc) return;
       const outra = localizarDetalhado(p.doc, e, st.versao);

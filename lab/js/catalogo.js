@@ -66,7 +66,8 @@ const SECOES = [
   [/her[oó]i|hero|vitrine/i, ['main > section:first-of-type', 'section']]
 ];
 // Page of a version where the element lives (some live on inner pages, per version).
-export const caminhoDe = (el, versao) => el?.caminhos?.[versao] ?? el?.caminho ?? '';
+// "-" is the tools' marker for the index page; it must never reach the URL.
+export const caminhoDe = (el, versao) => { const c = el?.caminhos?.[versao] ?? el?.caminho ?? ''; return c === '-' ? '' : c; };
 // The node an element crops to, and how it was found: "verificado" (per-version selector checked
 // by hand), "seletor" (catalog selector), "frase" (quoted text from its name) or "secao" (only the
 // section it usually lives in — not the element itself).
