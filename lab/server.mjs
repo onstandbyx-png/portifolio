@@ -29,6 +29,9 @@ const PUBLIC = resolve(LAB, '..', 'public');
 const PORT = Number(process.env.PORT) || 4800;
 const USUARIO = process.env.LAB_USUARIO || '';
 const SENHA = process.env.LAB_SENHA || '';
+// LAB_REDIRECIONAR (an origin) sends every request to the current lab, keeping path and query:
+// the Railway service became the old lab once the static export moved to Vercel.
+const REDIRECIONAR = (process.env.LAB_REDIRECIONAR || '').replace(/\/+$/, '');
 
 const TYPES = {
   '.html': 'text/html; charset=utf-8', '.css': 'text/css; charset=utf-8', '.js': 'text/javascript; charset=utf-8',
@@ -288,6 +291,10 @@ createServer(async (req, res) => {
     if (pathname === '/health') {
       res.writeHead(200, {...HEADERS, 'Content-Type': 'text/plain; charset=utf-8', 'Cache-Control': 'no-store'});
       return res.end('ok');
+    }
+    if (REDIRECIONAR) {
+      res.writeHead(302, {...HEADERS, Location: `${REDIRECIONAR}${pathname}${search}`, 'Cache-Control': 'no-store'});
+      return res.end();
     }
     // Fails closed: without both variables nothing is served (private versions live here).
     if (!USUARIO || !SENHA) {

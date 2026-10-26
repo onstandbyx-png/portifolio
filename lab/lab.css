@@ -258,3 +258,11 @@ details .body h4{margin:6px 0 0;font-size:12px;letter-spacing:.06em;text-transfo
 .q-reuso-acoes{display:flex;flex-wrap:wrap;gap:6px}
 .q-reuso-acoes a.btn{text-decoration:none}
 .q-stage .q-irmao{pointer-events:auto;display:flex;flex-wrap:wrap;gap:6px;align-items:center;justify-content:center}
+/* Card without a live version: the stage shows the evidence (reason, source, links, notes) instead of an empty box. */
+.q-stage--evidencia{display:block;aspect-ratio:auto;min-height:150px;max-height:330px;overflow:auto;background:var(--stage-2)}
+.q-evidencia{padding:14px 16px;font-size:13px;line-height:1.5;color:var(--ink-2);text-align:left;overflow-wrap:anywhere}
+.q-evidencia p{margin:0 0 8px}
+.q-evidencia b{color:var(--ink)}
+.q-ev-titulo{font-weight:600;color:var(--ink)}
+.q-ev-links{display:flex;flex-wrap:wrap;gap:6px 12px}
+.q-evidencia a{color:var(--accent)}

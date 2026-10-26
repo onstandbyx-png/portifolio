@@ -231,6 +231,32 @@ function notasHtml(notas, fontes) {
     return lista.length ? `<h4>${titulo}${tipo === 'conversa' ? '' : ' (Drive)'}</h4><ul class="q-notas">${lista.map(n => `<li>${esc(n.texto)}${n.tempos ? ` <code>${esc(n.tempos)}</code>` : ''}${fonte(n)}</li>`).join('')}</ul>` : '';
   }).join('');
 }
+// Links inside catalog text: full URLs and the bare hosts of external prototypes (Floot, Lovable,
+// Netlify, MagicPath, Replit, Canva, Figma, ChatGPT sites), kept clickable without escaping damage.
+const RX_LINK = /https?:\/\/[^\s)\]'"<>,;]+|\b(?:[\w-]+\.)+(?:floot\.app|lovable\.app|netlify\.app|magicpath\.ai|chatgpt\.site|vercel\.app|railway\.app|figma\.com|canva\.com)(?:\/[^\s)\]'"<>,;]*)?|\breplit\.com\/[^\s)\]'"<>,;]*/g;
+const linksDe = texto => [...new Set([...String(texto || '').matchAll(RX_LINK)].map(m => m[0].replace(/[.,)]+$/, '')))];
+const urlDe = link => (/^https?:/.test(link) ? link : `https://${link}`);
+function comLinks(texto) {
+  let out = '', i = 0;
+  for (const m of String(texto || '').matchAll(RX_LINK)) {
+    const link = m[0].replace(/[.,)]+$/, '');
+    out += `${esc(texto.slice(i, m.index))}<a href="${esc(urlDe(link))}" target="_blank" rel="noopener">${esc(link)}</a>${esc(m[0].slice(link.length))}`;
+    i = m.index + m[0].length;
+  }
+  return out + esc(String(texto || '').slice(i));
+}
+// What the stage shows when no live version holds the element: the reason, the source with its
+// links and what the conversations say. Nothing stays an empty box.
+function evidenciaHtml(e, notas) {
+  const links = linksDe(`${e.sem_versao_viva || ''} ${e.fonte || ''}`);
+  const conversas = notas.filter(n => n.tipo === 'conversa').slice(0, 2);
+  return `<div class="q-evidencia" tabindex="0"><p class="q-ev-titulo">Sem versão viva: o que existe desta peça</p>
+    ${e.sem_versao_viva ? `<p>${comLinks(e.sem_versao_viva)}</p>` : '<p>Nenhuma versão do laboratório mostra esta peça; a ficha guarda a descrição e a fonte.</p>'}
+    ${e.fonte ? `<p><b>Fonte</b> ${comLinks(e.fonte)}</p>` : ''}
+    ${links.length ? `<p class="q-ev-links">${links.map(l => `<a href="${esc(urlDe(l))}" target="_blank" rel="noopener">${esc(l.replace(/^https?:\/\//, ''))} ↗</a>`).join(' ')}</p>` : ''}
+    ${conversas.length ? `<p><b>Nas conversas</b> ${conversas.map(n => esc(n.texto)).join(' · ')}</p>` : ''}
+  </div>`;
+}
 // Reference videos the element was built from (private deploy only, under /_lab/referencias/).
 function referenciasHtml(refs) {
   if (!refs.length) return '';
@@ -418,8 +444,8 @@ function quadroElemento(e, ctx) {
   const notas = ctx.contexto.elementos[e.id] || [];
   const refs = (ctx.contexto.referencias || []).filter(r => (r.elementos || []).includes(e.id));
   const card = html(`<article class="card q-card" id="q-${esc(e.id)}">
-    <div class="stage q-stage"><span class="stage-msg">${versoes.length ? 'entra ao vivo quando chegar aqui' : 'sem versão viva deste elemento'}</span></div>
-    <div><h3>${esc(e.nome)}</h3><p class="by">${esc(PROJETOS[e.projeto])} · ${esc(e.era || '')} · <a data-q-abrir target="_blank" rel="noopener">abrir na versão ↗</a></p></div>
+    <div class="stage q-stage${versoes.length ? '' : ' q-stage--evidencia'}">${versoes.length ? '<span class="stage-msg">entra ao vivo quando chegar aqui</span>' : evidenciaHtml(e, notas)}</div>
+    <div><h3>${esc(e.nome)}</h3><p class="by">${esc(PROJETOS[e.projeto])} · ${esc(e.era || '')}${versoes.length ? ' · ' : ''}<a data-q-abrir target="_blank" rel="noopener"${versoes.length ? '' : ' hidden'}>abrir na versão ↗</a></p></div>
     <div class="meta"><span class="tag${e.status === 'atual' ? ' tag--ok' : e.status === 'rejeitado' || e.status === 'removido' ? ' tag--warn' : ''}">${esc(STATUS[e.status] || e.status || '')}</span><span class="tag">${esc(FAMILIA[e.familia] || e.familia || '')}</span><span class="tag" data-q-medida>tamanho medido ao vivo</span><span class="tag" data-q-anim hidden></span>${notas.length ? `<span class="tag tag--ok">${notas.length} ${notas.length > 1 ? 'notas' : 'nota'} do Drive</span>` : ''}${refs.length ? `<span class="tag tag--ok">${refs.length > 1 ? `${refs.length} vídeos` : 'vídeo'} de referência</span>` : ''}</div>
     ${versoes.length > 6 ? `<label class="vs-field q-versao-sel">Versão <select data-q-versao-sel>${versoes.map((id, i) => `<option value="${esc(id)}"${i === versoes.length - 1 ? ' selected' : ''}>${esc(`${ctx.porId.get(id).data} · ${ctx.porId.get(id).rotulo}`)}</option>`).join('')}</select></label>`
       : versoes.length > 1 ? `<div class="seg-group q-versoes" role="group" aria-label="Versão">${versoes.map((id, i) => `<button type="button" class="seg" data-q-versao="${esc(id)}" title="${esc(ctx.porId.get(id).rotulo)}"${i === versoes.length - 1 ? ' aria-pressed="true"' : ''}>${esc(rotuloVersao(ctx.porId.get(id)))}</button>`).join('')}</div>` : ''}
@@ -444,8 +470,8 @@ function quadroElemento(e, ctx) {
     <details data-q-detalhes><summary>O que mostra, tempos e como recriar</summary><div class="body">
       ${e.interacao ? `<h4>O que mostra</h4><p>${esc(e.interacao)}</p>` : ''}
       ${e.aprovacao ? `<h4>Histórico</h4><p>${esc(e.aprovacao)}</p>` : ''}
-      ${e.fonte ? `<h4>Fonte</h4><p>${esc(e.fonte)}</p>` : ''}
-      <h4>Onde está</h4><p>${esc(e.tipo || '')}${e.seletor ? ` · <code>${esc(e.seletor)}</code>` : ''}${e.caminho ? ` · <code>${esc(e.caminho)}</code>` : ''}<br>${versoes.length ? versoes.map(id => esc(`${ctx.porId.get(id).data} · ${ctx.porId.get(id).rotulo}`)).join('<br>') : `sem versão viva${e.sem_versao_viva ? `: ${esc(e.sem_versao_viva)}` : ''}`}</p>
+      ${e.fonte ? `<h4>Fonte</h4><p>${comLinks(e.fonte)}</p>` : ''}
+      <h4>Onde está</h4><p>${esc(e.tipo || '')}${e.seletor ? ` · <code>${esc(e.seletor)}</code>` : ''}${e.caminho ? ` · <code>${esc(e.caminho)}</code>` : ''}<br>${versoes.length ? versoes.map(id => esc(`${ctx.porId.get(id).data} · ${ctx.porId.get(id).rotulo}`)).join('<br>') : `sem versão viva${e.sem_versao_viva ? `: ${comLinks(e.sem_versao_viva)}` : ''}`}</p>
       <h4>Código para reaproveitar</h4><div class="q-reuso" data-q-reuso><p class="hint">carrega quando os detalhes abrem</p></div>
       <h4>Tempos medidos ao vivo</h4><ul class="times" data-q-tempos><li><span>aparecem quando o quadro está ao vivo</span><span></span></li></ul>
       ${referenciasHtml(refs)}
