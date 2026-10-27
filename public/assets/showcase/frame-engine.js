@@ -28,7 +28,7 @@
    - setStatusTime(screen, list, index): the clock shows the last frame[k].hora up to
      index, or the time the phone was drawn with (STATUS_TIME).
    - tempoMinimo(screen, list, index) → ms. max(item.ms, 1400, (scene changed ? 820 : 0)
-     + 260 per new word), capped at 9000 unless item.ms asks for more. New words are the
+     + 260 per new word), capped at 9000 unless item.ms asks for more, and at item.teto when the frame sets it. New words are the
      words visible on the phone's screen now that were not visible on the frame measured
      before (on frame 0, every visible word). Call it after settle(). It also writes --quadro-ms and, for tests,
      data-palavras and data-quadro-ms on the screen.
@@ -137,13 +137,19 @@ function splitWords(root) {
 }
 function stream(screen, instant) {
   const state = new Set(tokens(screen.dataset.state));
+  // Blocks that appear together stream one after the other (--fm-base); --fm-stream-fim is when the last word lands.
+  let base = 0;
   screen.querySelectorAll('[data-stream]').forEach(node => {
     if (!node.dataset.streamReady) splitWords(node);
     const on = revealed(node, screen, state), was = shownBefore.get(node) || false;
-    if (on && !was && !instant && live()) { node.removeAttribute('data-streaming'); void node.offsetWidth; node.setAttribute('data-streaming', ''); }
+    if (on && !was && !instant && live()) {
+      node.style.setProperty('--fm-base', String(base)); base += node.querySelectorAll('.fm-w').length;
+      node.removeAttribute('data-streaming'); void node.offsetWidth; node.setAttribute('data-streaming', '');
+    }
     if (!on) node.removeAttribute('data-streaming');
     shownBefore.set(node, on);
   });
+  screen.style.setProperty('--fm-stream-fim', `calc(${base} * var(--fm-passo, 55ms))`);
 }
 
 export function settle(screen, item, { limit = LIMIT } = {}) {
@@ -199,7 +205,11 @@ function visibleTexts(screen, box) {
   const range = document.createRange();
   for (let node = walker.nextNode(); node; node = walker.nextNode()) {
     if (!node.data.trim() || !node.parentElement) continue;
-    if (getComputedStyle(node.parentElement).visibility !== 'visible' || !opaque(node.parentElement, screen, cache, .5)) continue;
+    // A word still streaming in counts as on screen: the frame lasts for the whole answer, not for the words already in.
+    let el = node.parentElement;
+    const word = el.closest('.fm-w');
+    if (word?.closest('[data-streaming]')) el = word.closest('[data-stream]');
+    if (getComputedStyle(el).visibility !== 'visible' || !opaque(el, screen, cache, .5)) continue;
     range.selectNodeContents(node);
     if ([...range.getClientRects()].some(r => inside(r, box))) out.add(node);
   }
@@ -219,7 +229,9 @@ export function tempoMinimo(screen, list, index) {
     medido.set(screen, now);
   }
   const moved = index === 0 || list[index - 1]?.cena !== item.cena;
-  const ms = Math.round(Math.max(item.ms || 0, Math.min(CAP, Math.max(PISO, (moved ? TROCA : 0) + POR_PALAVRA * words))));
+  let ms = Math.round(Math.max(item.ms || 0, Math.min(CAP, Math.max(PISO, (moved ? TROCA : 0) + POR_PALAVRA * words))));
+  // item.teto: a frame inside a live call cannot stop the clock to read a whole new screen.
+  if (item.teto) ms = Math.min(ms, Math.max(item.teto, item.ms || 0));
   if (screen) {
     screen.style.setProperty('--quadro-ms', ms + 'ms');
     screen.dataset.palavras = String(words);

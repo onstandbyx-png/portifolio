@@ -12,6 +12,8 @@
 :is(#laboratorio,.lab-escopo) .cm-sb .sb-wa-body .sb-wa-typing--late{overflow:hidden;animation:sb-digita-e-some .95s ease both}
 @keyframes sb-digita-e-some{0%{opacity:0;max-height:0;padding-block:0}25%,82%{opacity:1;max-height:calc(var(--u,1px)*40);padding-block:calc(var(--u,1px)*8)}100%{opacity:0;max-height:0;padding-block:0;margin-block:calc(var(--u,1px)*-3)}}
 @keyframes sb-chega{from{translate:0 calc(var(--u,1px)*8);opacity:0}to{translate:0 0;opacity:1}}
+/* The answer's action bar arrives after the last streamed word. */
+:is(#laboratorio,.lab-escopo) .cm-sb .sb-gpt-flow [data-in][data-apos-stream]{animation-delay:var(--fm-stream-fim,0ms)}
 :is(#laboratorio,.lab-escopo) .cm-sb .sb-alvo{position:absolute;inset:0;z-index:1;border-radius:inherit;pointer-events:none}
 :is(#laboratorio,.lab-escopo) .cm-sb[data-state~="m2"] .sb-alvo[data-ate="m2"],:is(#laboratorio,.lab-escopo) .cm-sb[data-state~="m3"] .sb-alvo[data-ate="m3"],:is(#laboratorio,.lab-escopo) .cm-sb[data-state~="m5"] .sb-alvo[data-ate="m5"],:is(#laboratorio,.lab-escopo) .cm-sb[data-state~="k2"] .sb-alvo[data-ate="k2"],:is(#laboratorio,.lab-escopo) .cm-sb[data-state~="k3"] .sb-alvo[data-ate="k3"],:is(#laboratorio,.lab-escopo) .cm-sb[data-state~="k4"] .sb-alvo[data-ate="k4"],:is(#laboratorio,.lab-escopo) .cm-sb[data-state~="on"] .sb-alvo[data-ate="on"]{visibility:hidden}
 :is(#laboratorio,.lab-escopo) .cm-sb .sb-nowrap{white-space:nowrap}

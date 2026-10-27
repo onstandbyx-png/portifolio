@@ -501,7 +501,9 @@ export function makeAutomations(H) {
     { ms: 1700, cena: 'page', estado: 'a1', desc: 'Recebemos. Vamos te ligar em instantes.', log: [ev('10:09:15', 'Sistema', 'Contato na fila de discagem', 'meta: ligar em menos de 1 minuto', 'sistema', { horario: 'dentro do permitido' }), ev('10:09:16', 'Telefonia', 'Confere os limites da Anatel', 'chamadas curtas abaixo de 85%', 'sistema', { regra: 'Despacho 100/2026' })] },
     { ms: 1800, cena: 'ring', hora: '10:10', desc: `O iPhone toca: ${nome('clinica')}, Agendamento. Lembre-me, Mensagem, Recusar e Aceitar.`, log: [ev('10:09:58', 'Telefonia', 'Chamada originada', 'identificação de ligação comercial', 'turno', { departamento: 'Agendamento' })] },
   ];
-  const vozTurnos = segVoz.map((seg, i) => turno(seg, i + 1, { mais: i >= 3 ? 'ilha' : '', q: { cena: i >= 3 ? 'agenda' : 'call', desc: '' } }));
+  // The switch to the Calendar happens mid-call: its frame lasts the turn plus 2.6 s, not the reading time of the
+  // whole calendar (9 s with the island timer stopped).
+  const vozTurnos = segVoz.map((seg, i) => turno(seg, i + 1, { mais: i >= 3 ? 'ilha' : '', q: { cena: i >= 3 ? 'agenda' : 'call', desc: '', ...(i === 3 ? { teto: seg.endMs - seg.startMs + 2600 } : {}) } }));
   const voz = [...vozBase,
     { ms: 900, cena: 'ring', toque: 'accept', desc: 'Toque em Aceitar.' },
     ...vozTurnos,

@@ -254,13 +254,13 @@ export function makeSearch(ctx = {}) {
       <div class="sb-gpt-flow"><p class="sb-gpt-user" data-hs="1" data-hs-at="tl">Quero ver uma festa tradicional no interior em maio. Por onde começo?</p>
         <span class="sb-gpt-think" data-out="s1"><i></i>Procurando festas tradicionais de maio</span>
         <div class="sb-gpt-answer" data-in="s1"><p data-stream>Em maio, as Festas do Divino Espírito Santo tomam várias cidades do interior. Para indicar a que mais combina com você, me diga:</p><ul data-stream><li>quantos <b>dias</b> você tem;</li><li>de qual <b>cidade</b> sai;</li><li><b>quem vai</b> com você;</li><li>se prefere <b>procissão, música ou cavalhadas</b>.</li></ul></div>
-        <span data-in="s1">${acoes()}</span>
+        <span data-in="s1" data-apos-stream>${acoes()}</span>
         <p class="sb-gpt-user" data-in="s3">${esc(pedidoGpt)}</p>
         <span class="sb-gpt-think" data-in="s3" data-out="s4"><i></i>Comparando festas com cavalhadas em maio de 2027</span>
         <div class="sb-gpt-answer" data-in="s4"><p data-stream>Para ver cavalhadas, eu iria para <b>${esc(T.cidade)}</b>. Na Festa do Divino, os mascarados tomam as ruas e as cavalhadas vão de domingo a terça: em 2027, de ${dia(cav1)} a ${dia(cav3)} de maio.</p>
           <ul data-stream><li><b>${esc(cap(diaSemana(s1.ida)))}, ${dia(s1.ida)}:</b> voo até Brasília e 2 horas de carro;</li><li><b>${esc(cap(diaSemana(s2.ida)))}, ${dia(s2.ida)}:</b> centro histórico e mascarados;</li><li><b>${dia(cav1)} a ${dia(cav3)}:</b> as três cavalhadas e a volta.</li></ul>
           <p data-stream>Com a criança de 2 anos: a partir dessa idade ela viaja em assento próprio, com tarifa de criança.</p></div>
-        <span data-in="s4">${acoes(fontes)}</span>
+        <span data-in="s4" data-apos-stream>${acoes(fontes)}</span>
         <hr class="sb-gpt-s2"><div class="sb-gpt-ad sb-gpt-s2" data-tap="cta" data-hs="2" data-hs-at="tl">${pic('pirenopolisRua45', { cls: 'sb-gpt-ad-img', pos: '50% 35%', alt: 'Rua de pedra de Pirenópolis com casario colonial.' })}<span class="sb-gpt-ad-body"><span class="sb-gpt-ad-top">${marca(kt, 'fav')}<span>${esc(nome)}</span><small class="sb-gpt-chip">Patrocinado</small>${I('dots')}</span><b>Festa do Divino em grupo pequeno</b><small>Saídas de ${dia(s1.ida)} e ${dia(s2.ida)} de maio de 2027, com guia da cidade e hotel no centro histórico.</small></span></div></div>
       <div class="sb-gpt-input">${I('plus')}<span class="sb-gpt-ph" data-out="ty">Pergunte qualquer coisa</span><span class="sb-gpt-typed" data-in="ty" data-out="s3"><span data-stream>${esc(pedidoGpt)}</span></span>${I('mic')}<i class="sb-gpt-wave" data-out="ty">${I('wave')}</i><i class="sb-gpt-send" data-in="ty" data-out="s3" data-tap="gsend">${I('up')}</i></div>`) +
       scene('page', 'sheet', 'claro', `${browserBar(nome, C[kt].dominio, 'share')}${site(kt, 'bandeirola', roteiro)}`) +

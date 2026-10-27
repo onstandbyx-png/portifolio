@@ -168,8 +168,8 @@
 /* Calls. Dynamic Island: the call activity grows out of the island (green timer, the wave) and a pill
    closes the call; the island itself is drawn over it (channel-mocks.css), so the camera stays in place. */
 :is(#laboratorio,.lab-escopo) .au-ilha{position:absolute;z-index:58;left:50%;top:calc(var(--ch-u,var(--u))*10.3);display:flex;align-items:center;width:calc(var(--ch-u,var(--u))*118);height:calc(var(--ch-u,var(--u))*35);translate:-50% 0;border-radius:calc(var(--ch-u,var(--u))*17.5);background:#000;color:#fff;overflow:hidden;pointer-events:none;transition:width .55s var(--fm-bouncy)}
-:is(#laboratorio,.lab-escopo) .au-ilha>span{position:absolute;inset:0;display:flex;align-items:center;justify-content:space-between;padding:0 calc(var(--ch-u,var(--u))*9);opacity:0;transition:opacity .2s ease}
-:is(#laboratorio,.lab-escopo) .au[data-state~="ilha"] .au-ilha{width:calc(var(--ch-u,var(--u))*226)}
+:is(#laboratorio,.lab-escopo) .au-ilha>span{position:absolute;inset:0;display:flex;align-items:center;justify-content:space-between;padding:0 calc(var(--ch-u,var(--u))*7);opacity:0;transition:opacity .2s ease}
+:is(#laboratorio,.lab-escopo) .au[data-state~="ilha"] .au-ilha{width:calc(var(--ch-u,var(--u))*218)}
 :is(#laboratorio,.lab-escopo) .au[data-state~="ilha"]:not([data-state~="fim"]) .au-ilha-ativa{opacity:1;transition-delay:.25s}
 :is(#laboratorio,.lab-escopo) .au-ilha-esq{display:flex;align-items:center;gap:calc(var(--ch-u,var(--u))*3);color:#34c759;font-size:calc(var(--ch-u,var(--u))*12.5);font-weight:600}
 :is(#laboratorio,.lab-escopo) .au-ilha-esq .cm-i{width:calc(var(--ch-u,var(--u))*12);height:calc(var(--ch-u,var(--u))*12);fill:currentColor;stroke:none}
