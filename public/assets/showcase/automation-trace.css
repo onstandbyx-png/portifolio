@@ -2,7 +2,7 @@
    iPhone and the log of events beside it, on the dark band of the section. The
    phone and its screens come from channel-mocks.css and automation-mocks.css,
    scoped to .lab-escopo. */
-#sistemas .vitrine.at{display:block;max-width:1120px;margin:20px auto 0}
+#sistemas .vitrine.at{display:block;justify-items:normal;max-width:1120px;margin:20px auto 0}
 #sistemas .at{--at-ink:#eef4ec;--at-mut:#a9bba8;--at-line:#ffffff24;--at-card:#ffffff0d;color:var(--at-ink);font-family:var(--sans,Inter,Arial,sans-serif)}
 
 /* Selector: every automation visible, with what it does in one line. */
