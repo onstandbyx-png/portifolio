@@ -24,6 +24,7 @@ import { logoSvg } from './channel-logos.js';
 import { makeSites } from './campaign-sites.js';
 import { makeLabScreens, IG_FUNDO } from './lab-telas.js';
 import { makeAutomations } from './automation-flows.js';
+import { makeSearch } from './campaign-search.js';
 
 const A = '/assets/portfolio/';
 export const IMG = {
@@ -800,6 +801,18 @@ export const channels = [
         ] },
     ] },
 ];
+/* Search, local and conversation formats (campaign-search.js): each placement it
+   returns replaces the one with the same "channel/placement" key, or joins that
+   channel; its mocks, screens and banners join the shared tables. */
+const SEARCH = makeSearch({ I, pic, marca, esc, scene, screen, logoSvg, LAB, SITES, CLIENTES, P, browserBar, btn, art, skel });
+Object.assign(mocks, SEARCH.mocks);
+for (const [key, placement] of Object.entries(SEARCH.placements)) {
+  const [id, pid] = key.split('/');
+  const list = channels.find(channel => channel.id === id).placements;
+  const at = list.findIndex(item => item.id === pid);
+  if (at >= 0) list[at] = placement; else list.push(placement);
+}
+for (const [id, fields] of Object.entries(SEARCH.channels)) Object.assign(channels.find(channel => channel.id === id), fields);
 /* Deep automation flows (automation-flows.js): new placements in WhatsApp and
    Instagram and five channels (Telegram, RCS, Voz com IA, Pix Automático, E-mail),
    placed before the publieditorial. */
@@ -827,6 +840,7 @@ const AVISOS = {
   'blog/article': { app: 'mail', cliente: 'financas', texto: 'Convite: conversa de 30 minutos, terça às 10h.', desc: 'O convite da conversa chega por e-mail.' },
 };
 Object.assign(AVISOS, AUTO.AVISOS);
+for (const [key, aviso] of Object.entries(SEARCH.AVISOS)) { if (aviso) AVISOS[key] = aviso; else delete AVISOS[key]; }
 channels.forEach(channel => channel.placements.forEach(placement => {
   const aviso = AVISOS[`${channel.id}/${placement.id}`];
   if (!aviso) return;
@@ -860,6 +874,7 @@ const SCREEN = {
   blogArticle: { tema: 'escuro', fundo: '#ffffff' },
   ytShorts: { tema: 'escuro', fundo: '#000' },
   liFeed: { fundo: '#f4f2ee' },
+  ...SEARCH.SCREEN,
   ...AUTO.SCREEN,
 };
 
