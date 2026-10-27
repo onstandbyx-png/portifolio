@@ -623,7 +623,7 @@ export const channels = [
     art: art('educacao', 'escola45', '50% 50%', C.educacao.assinatura, `Peça da ${C.educacao.marca}, escola de idiomas fictícia: fone de ouvido sobre a mesa e a pergunta Você entende a série sem legenda?`, { formato: '4:5', oferta: 'Teste de nível grátis e aula experimental de 30 min', cta: 'Fazer o teste' }),
     placements: [
       { id: 'feed', label: 'Feed', mock: 'igFeed', cliente: 'educacao', selo: 'Anúncio', frase: 'Uma escola de idiomas leva do carrossel ao teste de nível e à aula marcada.',
-        curto: 'Carrossel → teste de nível → aula', objetivo: 'Leads: aula experimental marcada',
+        objetivo: 'Leads: aula experimental marcada',
         passos: passos3(['Pergunta que o aluno reconhece', [0]], ['Deslizar revela a expressão', [1, 2]], ['Teste de nível e aula marcada', [3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]]),
         quadros: [
           { ms: 1400, cena: 'ad', desc: `Anúncio da ${curta('educacao')} no feed do Instagram: Você entende a série sem legenda?` },
@@ -642,7 +642,7 @@ export const channels = [
           { ms: 2000, cena: 'page', estado: 'w7 done', hora: '10:11', desc: `Aula marcada: ${dataLonga(aula.iso)}, ${horaFala(aula.hora)}, on-line, 30 min. O convite chega por e-mail.`, log: metaLead('10:11:02', '10:11:03', '10:11:04', `aula experimental, ${dataCurta(aula.iso)} ${aula.hora}`, 'origem: Instagram, carrossel do teste') },
         ] },
       { id: 'reels', label: 'Reels', mock: 'igReels', cliente: 'restaurante', selo: 'Anúncio', frase: 'Um restaurante leva do Reels à reserva de mesa.',
-        curto: 'Reels → menu → mesa reservada', objetivo: 'Reservas para o almoço de sábado',
+        objetivo: 'Reservas para o almoço de sábado',
         passos: passos3(['O fogo sob o tacho no primeiro segundo', [0]], ['Corte para o prato servido', [1]], ['Menu, horário e reserva', [2, 3, 4, 5, 6, 7, 8, 9]]),
         quadros: [
           { ms: 1500, cena: 'video', video: 1, desc: `Reels da ${C.restaurante.marca} com Anúncio: o fogo aceso sob o tacho e O feijão vai pro tacho às 6h.` },
@@ -657,7 +657,7 @@ export const channels = [
           { ms: 2000, cena: 'page', estado: 'w4 done', hora: '10:10', desc: `Reserva solicitada: ${dataLonga(reserva.iso)}, ${horaFala(reserva.hora)}, ${reserva.pessoas} pessoas. A confirmação chega pelo WhatsApp.`, log: metaLead('10:10:21', '10:10:22', '10:10:23', `mesa para ${reserva.pessoas}, ${dataCurta(reserva.iso)} ${reserva.hora}`, 'origem: Instagram, Reels') },
         ] },
       { id: 'story', label: 'Story', mock: 'igstory', cliente: 'clinica', selo: 'Anúncio', frase: 'Uma clínica pergunta numa enquete e marca a avaliação pela conversa no Direct.',
-        curto: 'Story com enquete → Direct → avaliação', objetivo: 'Conversas que viram agendamento',
+        objetivo: 'Conversas que viram agendamento',
         passos: passos3(['A frase da clínica na foto', [0]], ['Enquete: você tem medo de dentista?', [1, 2, 3]], ['Resposta no Direct e horário marcado', [4, 5, 6, 7, 8, 9, 10]]),
         quadros: [
           { ms: 1500, cena: 'story', video: 1, desc: `Story da ${C.clinica.marca} com Anúncio: ${C.clinica.assinatura}` },
@@ -673,7 +673,7 @@ export const channels = [
           { ms: 2400, cena: 'dm', estado: 'd1 d2 d3 d4 done', hora: '10:10', desc: `Avaliação marcada no Direct: ${dataLonga(avaliacao.iso)}, ${horaFala(avaliacao.hora)}, com o endereço da unidade.`, log: [L('10:10:02', 'Agenda', 'Avaliação marcada', `${dataCurta(avaliacao.iso)} ${avaliacao.hora}`, 'conversao'), L('10:10:03', 'CRM', 'Contato criado', 'origem: Instagram, story com enquete', 'dado'), L('10:10:04', 'Meta CAPI', 'Lead com event_id deduplicado', 'evento de conversa, origem do anúncio', 'sinal')] },
         ] },
       { id: 'live', label: 'Live', mock: 'iglive', cliente: 'restaurante', selo: 'Anúncio', frase: 'Um restaurante cozinha ao vivo e recebe o pedido para retirada.',
-        curto: 'Live → comentário → menu no Direct → pedido', objetivo: 'Encomendas para retirada',
+        objetivo: 'Encomendas para retirada',
         passos: passos3(['Ao vivo: o fogo sob o tacho', [0]], ['Comentário respondido na live', [1, 2]], ['Menu por mensagem e pedido', [3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]]),
         quadros: [
           { ms: 1500, cena: 'live', video: 1, desc: `Live da ${C.restaurante.marca} com Anúncio: o fogo sob o tacho, ao vivo, e os comentários passando.` },
@@ -692,7 +692,7 @@ export const channels = [
           { ms: 2100, cena: 'page', estado: 'w4 done', hora: '10:11', desc: `Pedido ${PEDIDOS['instagram/live']} recebido: retirada ${dataLonga(R.encomenda.iso)}, ao meio-dia, com o acompanhamento.`, log: metaLead('10:11:10', '10:11:11', '10:11:12', `pedido ${PEDIDOS['instagram/live']}, pagamento na retirada`, 'origem: Instagram, live da cozinha') },
         ] },
       { id: 'explorar', label: 'Explorar', mock: 'igexplore', cliente: 'clinica', selo: 'Anúncio', frase: 'Uma clínica aparece entre fotos de interesse e leva ao horário.',
-        curto: 'Bloco no Explorar → Reels → agendamento', objetivo: 'Avaliações agendadas pelo site',
+        objetivo: 'Avaliações agendadas pelo site',
         passos: passos3(['Bloco do anúncio entre as fotos', [0]], ['Tela cheia, no formato do Reels', [1, 2, 3]], ['Serviço, dia, horário e dados', [4, 5, 6, 7, 8, 9, 10, 11]]),
         quadros: [
           { ms: 1500, cena: 'grid', desc: `Explorar: fotos de interesse e, entre elas, a foto do consultório da ${curta('clinica')}, com o selo de Anúncio no canto.` },
@@ -713,7 +713,7 @@ export const channels = [
     art: art('incorporadora', 'coast', '30% 50%', C.incorporadora.assinatura, `Peça da ${C.incorporadora.marca}, incorporadora fictícia: casa de concreto e madeira na falésia, sobre o mar.`, { formato: 'link', oferta: 'Visita ao decorado aos sábados', cta: 'Agendar visita' }),
     placements: [
       { id: 'feed', label: 'Feed', mock: 'fbFeed', cliente: 'incorporadora', selo: 'Anúncio', frase: 'Uma incorporadora recebe o pedido de visita e marca o horário sem sair do Facebook.',
-        curto: 'Carrossel → formulário → visita marcada', objetivo: 'Leads qualificados: visita ao decorado',
+        objetivo: 'Leads qualificados: visita ao decorado',
         passos: passos3(['Vista do mar no primeiro cartão', [0]], ['Sala, e a planta de 3 para 4 quartos', [1, 2]], ['Formulário e horário no calendário', [3, 4, 5, 6, 7, 8, 9, 10, 11]]),
         quadros: [
           { ms: 1500, cena: 'ad', desc: `Anúncio da ${C.incorporadora.marca} no feed do Facebook: casa na falésia e o botão Saiba mais.` },
@@ -730,7 +730,7 @@ export const channels = [
           { ms: 2100, cena: 'form', estado: 'w4 q1 q2 q3 done', hora: '10:10', desc: `Visita marcada para ${dataLonga(INC.visita.iso)}, às ${horaFala(INC.visita.hora)}. O convite chega no e-mail.`, log: [L('10:10:08', 'CRM', 'Etapa: visita agendada', `${dataCurta(INC.visita.iso)} ${INC.visita.hora}`, 'conversao'), L('10:10:09', 'Meta CAPI', 'Lead com event_id deduplicado', 'a etapa do CRM volta para a campanha', 'sinal')] },
         ] },
       { id: 'post', label: 'Post', mock: 'fbpost', cliente: 'restaurante', selo: 'Anúncio', frase: 'Um restaurante anuncia a feijoada de sábado como evento e fecha a reserva.',
-        curto: 'Evento → interesse → reserva', objetivo: 'Mesas para o almoço de sábado',
+        objetivo: 'Mesas para o almoço de sábado',
         passos: passos3(['Evento com a foto da casa', [0]], ['Data e lugar à vista', [1, 2, 3]], ['Detalhes do evento e reserva', [4, 5, 6, 7, 8, 9, 10]]),
         quadros: [
           { ms: 1500, cena: 'post', desc: `Anúncio da ${C.restaurante.marca} no feed: o evento Feijoada de sábado, dia ${Number(reserva.iso.slice(8))}, com Tenho interesse.` },
@@ -746,7 +746,7 @@ export const channels = [
           { ms: 2000, cena: 'page', estado: 'w3 done', hora: '10:10', desc: `Reserva solicitada para ${dataLonga(reserva.iso)}, às ${horaFala(reserva.hora)}, com o evento salvo no Facebook.`, log: metaLead('10:10:11', '10:10:12', '10:10:13', `mesa para ${reserva.pessoas}, ${dataCurta(reserva.iso)} ${reserva.hora}`, 'origem: Facebook, anúncio de evento') },
         ] },
       { id: 'video', label: 'Vídeo', mock: 'fbvid', cliente: 'restaurante', selo: 'Anúncio', frase: 'Um restaurante leva do vídeo à reserva e ao almoço na agenda do iPhone.',
-        curto: 'Reels do Facebook → reserva → agenda', objetivo: 'Reservas com lembrete na agenda',
+        objetivo: 'Reservas com lembrete na agenda',
         passos: passos3(['O prato no primeiro quadro', [0]], ['O vídeo chega ao fim com o convite', [1]], ['Reserva e agenda do iPhone', [2, 3, 4, 5, 6, 7, 8, 9, 10]]),
         quadros: [
           { ms: 1500, cena: 'video', video: 1, desc: `Vídeo da ${C.restaurante.marca} no Reels do Facebook, com Anúncio: do tacho para a mesa.` },
@@ -762,7 +762,7 @@ export const channels = [
           { ms: 2000, cena: 'cal', estado: 'add done', hora: '10:10', desc: 'O almoço entra na agenda do iPhone, com o endereço e um alerta uma hora antes.' },
         ] },
       { id: 'breaks', label: 'Ad breaks', mock: 'fbbreak', cliente: 'automotivo', selo: 'Anúncio', frase: 'Uma concessionária entra no intervalo de um vídeo e leva ao test drive.',
-        curto: 'Intervalo no vídeo → formulário → test drive', objetivo: 'Leads de test drive',
+        objetivo: 'Leads de test drive',
         passos: passos3(['Vídeo de culinária aos 1:05', [0]], ['Intervalo no mesmo player, sem pular', [1, 2]], ['Formulário e volta ao vídeo', [3, 4, 5, 6, 7, 8, 9, 10]]),
         quadros: [
           { ms: 1500, cena: 'video', video: 1, desc: `Vídeo de culinária da página ${TERCEIROS.criadores.facebook} no Facebook, aos 1:05.` },
@@ -782,7 +782,7 @@ export const channels = [
     art: art('varejo', 'mesaNoite45', '50% 40%', C.varejo.assinatura, `Peça da ${C.varejo.marca}, loja de tecnologia fictícia: mesa à noite com luminária e notebook aberto.`, { formato: '9:16', oferta: 'Notebook para editar vídeo, em até 10x', cta: 'Comprar' }),
     placements: [
       { id: 'infeed', label: 'In-Feed', mock: 'ttFeed', cliente: 'varejo', selo: 'Patrocinado', frase: 'Uma loja de tecnologia leva do vídeo ao Pix pago no app do banco.',
-        curto: 'Vídeo → carrinho → Pix pago', objetivo: 'Vendas com Pix conferido',
+        objetivo: 'Vendas com Pix conferido',
         passos: passos3(['Pergunta nativa no primeiro segundo', [0]], ['Corte e o botão com a cor do vídeo', [1, 2]], ['Carrinho, revisão, Pix e banco', [3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18]]),
         quadros: [
           { ms: 1500, cena: 'video', video: 1, desc: `Anúncio da ${curta('varejo')} no Para você do TikTok, com Patrocinado: Edita à noite e o notebook esquenta?` },
@@ -810,7 +810,7 @@ export const channels = [
     art: art('automotivo', 'recarga169', '50% 50%', C.automotivo.assinatura, `Peça da ${C.automotivo.marca}, concessionária fictícia: carro elétrico prata recarregando na rua, à noite.`, { formato: '16:9', oferta: 'Test drive com recarga explicada', cta: 'Agendar' }),
     placements: [
       { id: 'instream', label: 'Anúncio no vídeo', mock: 'ytInstream', cliente: 'automotivo', selo: 'Patrocinado', frase: 'Uma concessionária leva do anúncio antes do vídeo ao test drive.',
-        curto: 'In-stream → página → test drive', objetivo: 'Test drives agendados',
+        curto: 'No vídeo', objetivo: 'Test drives agendados',
         passos: passos3(['Mensagem antes do Pular', [0]], ['Segundo corte: a recarga explicada', [1]], ['Versão, loja e horário', [2, 3, 4, 5, 6, 7, 8, 9, 10]]),
         quadros: [
           { ms: 1600, cena: 'watch', video: 1, desc: `Antes do vídeo, o anúncio da ${curta('automotivo')}: Saiu do jogo. Quanto de carga sobra?` },
@@ -826,7 +826,7 @@ export const channels = [
           { ms: 2100, cena: 'page', estado: 'w4 done', hora: '10:10', desc: `Test drive agendado: ${curta('automotivo')} ${AU.versoes[0].nome}, ${dataLonga(td.iso)}, às ${horaFala(td.hora)}, em ${td.unidade}.`, log: [L('10:10:05', 'Site', 'Test drive agendado', `${dataCurta(td.iso)} ${td.hora}`, 'conversao'), L('10:10:06', 'Conversão', 'Test drive agendado', 'importada no Google Ads pelo gclid', 'sinal')] },
         ] },
       { id: 'shorts', label: 'Shorts', mock: 'ytShorts', cliente: 'educacao', selo: 'Patrocinado', frase: 'Uma escola de idiomas leva do Shorts ao app instalado e ao teste de nível.',
-        curto: 'Shorts → App Store → app aberto', objetivo: 'Instalações com teste concluído',
+        objetivo: 'Instalações com teste concluído',
         passos: passos3(['Frase curta antes da marca', [0]], ['Exercício segura o deslize', [1, 2]], ['App Store, Face ID e o app aberto', [3, 4, 5, 6, 7, 8, 9, 10, 11, 12]]),
         quadros: [
           { ms: 1500, cena: 'video', video: 1, desc: `Shorts da ${curta('educacao')}, com Patrocinado: Pare de traduzir na cabeça.` },
@@ -844,7 +844,7 @@ export const channels = [
           { ms: 2300, cena: 'app', estado: 'a2 done', hora: '10:10', desc: `Resultado: ${E.nivel}. O app sugere ${E.clube.toLowerCase()} e a aula experimental de ${dataLonga(aula.iso)}.`, log: [L('10:10:02', 'App', 'Teste de nível concluído', `resultado ${E.nivel}`, 'dado'), L('10:10:03', 'Google Ads', 'Conversão no app', 'teste concluído, ligado à campanha', 'sinal')] },
         ] },
       { id: 'live', label: 'Live', mock: 'ytLive', cliente: 'varejo', selo: 'Inclui promoção paga', frase: 'Uma loja de tecnologia entra na live de um criador, com a publi identificada.',
-        curto: 'Live com #publi → lista de espera', objetivo: 'Lista de espera do lançamento',
+        objetivo: 'Lista de espera do lançamento',
         passos: passos3(['Aviso de publi nos primeiros segundos', [0]], ['O criador mostra o setup em uso', [1]], ['Mensagem fixada leva à lista', [2, 3, 4, 5]]),
         quadros: [
           { ms: 1700, cena: 'live', estado: 'paid', video: 1, desc: `Live do canal ${TERCEIROS.criadores.youtube} com o aviso Inclui promoção paga nos primeiros segundos.` },
@@ -991,7 +991,7 @@ export const channels = [
     art: art('financas', 'salaJantar45', '50% 55%', C.financas.assinatura, `Peça da ${C.financas.marca}, gestora de patrimônio fictícia: mesa branca com duas cadeiras e uma orquídea.`, { formato: 'link', oferta: 'Sucessão na empresa familiar: por onde começar', cta: 'Ler' }),
     placements: [
       { id: 'article', label: 'Artigo', mock: 'blogArticle', cliente: 'financas', selo: 'Publicidade', frase: 'Uma gestora explica antes de vender, sempre identificada.',
-        curto: 'Artigo patrocinado → agenda', objetivo: 'Conversas agendadas a partir do conteúdo',
+        objetivo: 'Conversas agendadas a partir do conteúdo',
         passos: passos3(['Faixa Publicidade antes do título', [0]], ['Leitura útil, com o checklist', [1, 2]], ['Oferecido por, dia e assunto', [3, 4, 5, 6, 7, 8, 9, 10]]),
         quadros: [
           { ms: 1600, cena: 'article', desc: `Artigo no ${revista.nome} com a faixa Publicidade acima do título e Oferecido por ${C.financas.marca}.` },

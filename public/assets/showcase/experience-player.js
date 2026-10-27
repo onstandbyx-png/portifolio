@@ -21,7 +21,7 @@ import { createMotion, clamp } from '../sections/motion.js';
 import * as canais from './campaign-channels.js';
 import { CLIENTES } from './marcas.js';
 import { logoSvg, CHANNEL_LOGO, LOGOS } from './channel-logos.js';
-import { applyFrame, settle, positionDot, clearDot, showTap, hideTap, tempoMinimo, syncMedia, live as engineLive } from './frame-engine.js';
+import { applyFrame, settle, positionDot, clearDot, showTap, hideTap, tempoMinimo, syncMedia, live as engineLive, seguirFoco } from './frame-engine.js';
 
 const { channels, channelById, renderMock, marca, glifo } = canais;
 const escape = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
@@ -93,6 +93,7 @@ export function mountCampaignExperience(lab, underlay) {
   const reduce = matchMedia('(prefers-reduced-motion:reduce)');
   const wideQuery = matchMedia('(min-width:900px), (min-width:600px) and (max-height:520px) and (orientation:landscape)');
   const compactQuery = matchMedia('(max-width:480px), (max-height:480px)');
+  const shortQuery = matchMedia('(orientation:landscape) and (max-height:520px)');
   let channelId = null, placementIndex = 0, elapsed = 0, frame = -1, step = -1, playing = false, raf = 0, last = 0, visible = false, held = false;
   // resume: the journey was stopped by the page (out of view, hidden tab, global pause), not by the visitor.
   let resume = false;
@@ -175,6 +176,15 @@ export function mountCampaignExperience(lab, underlay) {
       }
       showTap(stage(), screen, item);
       positionDot(stage(), screen, item, step + 1);
+      // Phones: the sticky Agora strip covers the bottom of the phone (a short landscape has no room for the
+      // whole phone); while playing, the page brings the button or the point into view.
+      if (playing && !zoom.open && (!wideQuery.matches || shortQuery.matches)) seguirFoco(stage(), { barra: wideQuery.matches ? null : strip });
+      // Ampliar on a short screen: the dialog scrolls to the button or the point of the frame.
+      if (zoom.open && zoom.scrollHeight > zoom.clientHeight + 8) {
+        const focus = [...zoomStage.querySelectorAll('[data-cx-tap]:not([hidden]), [data-cx-dot]:not([hidden]), [data-cx-ring]:not([hidden])')].map(node => node.getBoundingClientRect()).filter(r => r.height);
+        const r = zoomStage.getBoundingClientRect(), y = focus.length ? (Math.min(...focus.map(f => f.top)) + Math.max(...focus.map(f => f.bottom))) / 2 : r.top + r.height * .62;
+        zoom.scrollTo({ top: Math.max(0, zoom.scrollTop + y - zoom.clientHeight / 2), behavior: live() ? 'smooth' : 'instant' });
+      }
     });
   }
   function journeyState(root) {
@@ -338,7 +348,7 @@ export function mountCampaignExperience(lab, underlay) {
     if (placements.dataset.channel !== ch.id || placements.dataset.curto !== String(curto)) {
       placements.dataset.channel = ch.id; placements.dataset.curto = String(curto);
       placements.innerHTML = many ? '<span class="cx-thumb is-instant" aria-hidden="true"></span>' + ch.placements.map((item, i) => {
-        const short = curto && item.curto && item.curto !== item.label;
+        const short = curto && item.curto && item.curto.length < item.label.length;
         return `<button type="button" class="cx-placement" aria-pressed="${i === placementIndex}" data-cx-placement="${i}"${short ? ` aria-label="${escape(item.label)}"` : ''}>${escape(short ? item.curto : item.label)}</button>`;
       }).join('') : '';
     } else placements.querySelectorAll('[data-cx-placement]').forEach((item, i) => item.setAttribute('aria-pressed', String(i === placementIndex)));

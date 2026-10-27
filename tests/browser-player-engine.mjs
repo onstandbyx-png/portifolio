@@ -183,13 +183,13 @@ try{
     const {context,page}=await open({width,height});
     await peel(page,'instagram');
     const phone=await rect(page,'#laboratorio [data-cx-stage] .ch-iphone');
-    if(width===844)check('844x390: the phone fits the height minus 16px, beside the panel',phone.h<=height-16&&(await rect(page,'#laboratorio .cx-side')).x>=phone.right-1,phone.h);
+    // Short landscape: the phone keeps a legible width (it no longer shrinks to the 390px height) beside the panel.
+    if(width===844)check('844x390: the phone keeps at least 280px of width, beside the panel',phone.w>=280&&(await rect(page,'#laboratorio .cx-side')).x>=phone.right-1,{w:phone.w,h:phone.h});
     else info('320x568: phone height (under 360px the phone takes the width, critic 9)',phone.h);
     const rows=await walkFrames(page,['instagram/feed','whatsapp/ctwa','voz/ligacao']);
     for(const key of ['instagram/feed','whatsapp/ctwa','voz/ligacao']){
       const worst=Math.max(...rows.filter(r=>r.key===key).map(r=>r.total?r.small/r.total:0));
-      if(width===320)check(`320x568 ${key}: at most 25% of the visible text under 9px in every frame`,worst<=.25,Math.round(worst*100)+'%');
-      else info(`844x390 ${key}: worst share of text under 9px (phone fitted to a 390px height)`,Math.round(worst*100)+'%');
+      check(`${width}x${height} ${key}: at most 25% of the visible text under 9px in every frame`,worst<=.25,Math.round(worst*100)+'%');
     }
     await page.screenshot({path:`${output}/${width}x${height}.png`});
     await context.close();
