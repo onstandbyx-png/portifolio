@@ -247,8 +247,8 @@ export function makeAutomations(H) {
       <div class="au-incall-grid">${[['speaker', 'Alto-falante'], ['video', 'FaceTime'], ['mute', 'Mudo'], ['dots', 'Mais'], ['phone', 'Desligar', 1], ['teclado', 'Teclado Numérico']].map(([g, t, fim]) => `<span${fim ? ' class="au-incall-fim"' : ''}><i>${G(g)}</i><small>${t}</small></span>`).join('')}</div></div>`, 'au-grow') +
     scene('agenda', 'push', 'claro', `<div class="au-cal"><div class="au-cal-top"><span>${I('back')}outubro</span><span>${I('search')}${I('plus')}</span></div>
       <div class="au-cal-sem">${semana.map(iso => `<span${iso === av.iso ? ' class="is-on"' : ''}><small>${dataCurta(iso)[0].toUpperCase()}</small><b>${dia(iso)}</b></span>`).join('')}</div>
-      <b class="au-cal-dia" data-hs="3">${esc(dataLonga(av.iso, true))}</b>
-      <div class="au-cal-grade">${['08:00', '09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00'].map(h => `<span class="au-cal-h"><small>${h.slice(0, 2)}h</small></span>`).join('')}
+      <b class="au-cal-dia">${esc(dataLonga(av.iso, true))}</b>
+      <div class="au-cal-grade" data-hs="3" data-hs-at="tr">${['08:00', '09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00'].map(h => `<span class="au-cal-h"><small>${h.slice(0, 2)}h</small></span>`).join('')}
         <span class="au-cal-ev" style="--de:3;--ate:4">Reunião com a contabilidade<small>${esc(TERCEIROS.empresaPersona)}</small></span><span class="au-cal-ev au-cal-ev--2" style="--de:5;--ate:6">Almoço com a ${esc(TERCEIROS.comentaristas[0].split(' ')[0])}</span></div></div>`) +
     scene('wa', 'push', 'claro', `<span class="cm-crumb">${I('back')}Safari</span>${waHead('clinica')}<div class="cm-wa-body">${waMeta}<span class="cm-wa-day">Hoje</span>
       ${inn('', `Oi, ${PESSOA.primeiro}! Aqui é a ${esc(curta('clinica'))}. Tentamos te ligar agora para marcar a sua avaliação. Quer que a gente ligue às 14h ou prefere marcar por aqui?<span class="au-wa-btns" data-out="w1"><span data-tap="ligar" data-hs="2">Ligar às 14h</span><span>Marcar por aqui</span><span>Falar com a recepção</span></span>`, { time: '10:11', typing: false, hs: '2' })}
