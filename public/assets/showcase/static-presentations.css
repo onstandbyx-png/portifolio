@@ -11,7 +11,9 @@
 body.portfolio-r6 #laboratorio { padding-block: 112px; }
 body.portfolio-r6 #laboratorio .ads-heading { padding-top: 0; }
 .sp-campaign { width: min(100%, 680px); margin: 36px auto 0; }
-/* Channel tiles (pattern of the Fatos studio platform selector, lab f-e3): every
+/* The campaign section uses the page grid: the tiles and the card with its panel share one width. */
+#laboratorio .sp-campaign { width: 100%; max-width: var(--page-max, 1200px); }
+/* Channel tiles (pattern of a platform selector mapped in the lab): every
    channel visible at once, the official mark over a short name, a white
    highlight that slides to the chosen tile and the brand colour under it.
    4 columns on a phone, 6 from 600px. The caption names the channel in full. */
@@ -48,7 +50,7 @@ body.portfolio-r6 #laboratorio .ads-heading { padding-top: 0; }
   -webkit-tap-highlight-color: transparent;
   transition: color 180ms ease, background-color 180ms ease;
 }
-.sp-tab-name { max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.sp-tab-name { max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 12.5px; }
 .sp-n-short { display: none; }
 @media (max-width: 359px) { .sp-n-long { display: none; } .sp-n-short { display: inline; } }
 .sp-platforms [role='tab'][aria-selected='true'] { color: #13291d; }
@@ -60,7 +62,7 @@ body.portfolio-r6 #laboratorio .ads-heading { padding-top: 0; }
 .sp-platforms [role='tab']::after { content: ""; position: absolute; left: 50%; bottom: 4px; width: 18px; height: 3px; margin-left: -9px; border-radius: 3px; background: var(--ch, #294c36); transform: scaleX(0); transition: transform .42s cubic-bezier(.16,1,.3,1); }
 .sp-platforms [role='tab'][aria-selected='true']::after { transform: scaleX(1); }
 /* Number of formats, as an app badge on the tile corner. */
-.sp-tab-count { position: absolute; top: 5px; right: max(6px, calc(50% - 30px)); display: grid; place-items: center; min-width: 17px; height: 17px; padding: 0 4px; border-radius: 9px; background: #dfe5d7; color: #3f4d3c; font-size: 10.5px; font-weight: 700; line-height: 1; transition: background .25s, color .25s; }
+.sp-tab-count { position: absolute; top: 4px; right: max(4px, calc(50% - 34px)); display: grid; place-items: center; min-width: 20px; height: 20px; padding: 0 5px; border-radius: 10px; background: #dfe5d7; color: #33412f; font-size: 12px; font-weight: 700; line-height: 1; transition: background .25s, color .25s; }
 .sp-platforms [role='tab'][aria-selected='true'] .sp-tab-count { background: #1b3627; color: #fff; }
 .sp-channel-cap { display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 8px; min-height: 1.45em; margin: 12px 4px 0; color: #5c6a58; font-size: 14px; line-height: 1.45; }
 .sp-channel-cap b { color: #17362a; font-weight: 650; }
@@ -199,8 +201,6 @@ body.portfolio-r6 #sistemas { padding: 104px 0; background: #182d24; color: #edf
 }
 body.portfolio-r6 #trabalhos { padding-bottom: 104px; }
 body.portfolio-r6 #editorial { padding-bottom: 96px; }
-.pf-fatos-deck { margin-top: 72px; padding-top: 64px; gap: 40px 80px; }
-.pf-fatos-context { min-height: 280px; align-content: start; }
 .rf-caption p { min-height: 3em; }
 @media (max-width: 760px) {
   body.portfolio-r6 #laboratorio { padding-block: 88px; }
@@ -215,14 +215,16 @@ body.portfolio-r6 #editorial { padding-bottom: 96px; }
   .sp-products h3 { font-size: clamp(27px, 7.4vw, 36px); }
   body.portfolio-r6 #trabalhos { padding-bottom: 80px; }
   body.portfolio-r6 #editorial { padding-bottom: 80px; }
-  .pf-fatos-deck { margin-top: 56px; padding-top: 48px; gap: 32px; }
 }
-@media (max-width: 360px) { .pf-fatos-context { min-height: 340px; } }
 @media (prefers-reduced-motion: reduce) {
   .sp-platforms [role='tab'], .sp-tab-marker, .sp-platforms .sp-platform-logo, .sp-platforms [role='tab']::after, .sp-tab-count { transition: none; }
 }
 body.is-paused .sp-platforms [role='tab'], body.is-paused .sp-tab-marker { transition: none; }
 /* Sixteen channels (27/10/2026): two rows of eight on wide screens. */
 @media (min-width: 1000px) { .sp-platforms { grid-template-columns: repeat(8, minmax(0, 1fr)); } }
-/* Generic glyphs of the channels without an official logo file: same size as the marks. */
-#laboratorio .sp-platforms svg.sp-platform-logo--doc { width: 22px; height: 22px; flex: none; }
+/* Channels without an official logo file: a filled badge in the colour of their group, white glyph. */
+.sp-selo { display: grid; flex: none; place-items: center; width: 26px; height: 26px; border-radius: 50%; background: var(--g, #2b4a37); transition: transform .35s cubic-bezier(.16,1,.3,1); }
+#laboratorio .sp-platforms .sp-selo svg.sp-platform-logo--doc { width: 16px; height: 16px; flex: none; stroke: #fff; stroke-width: 2; }
+.sp-platforms [role='tab'][aria-selected='true'] .sp-selo { transform: scale(1.1); }
+.sp-platforms [role='tab']:active .sp-selo { transform: scale(.92); }
+@media (prefers-reduced-motion: reduce) { .sp-selo { transition: none; } }

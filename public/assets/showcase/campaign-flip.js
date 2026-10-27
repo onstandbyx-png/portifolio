@@ -1,5 +1,6 @@
-/** A pullable paper corner reveals the actual campaign brief behind each artwork.
- * Native page scrolling remains untouched outside the 64px folded-corner grip.
+/** A pullable paper corner reveals, behind each artwork, the ad in its channel (experience-player.js).
+ * Native page scrolling remains untouched outside the 64px folded-corner grip. Opening moves the
+ * focus to the first format of the player; "Ver a peça" puts the paper back.
  */
 import {bindCardSurface} from './card-surface.js';
 import {mountCampaignExperience} from './experience-player.js';
@@ -8,8 +9,7 @@ export function mountCampaignFlip() {
   const lab=document.querySelector('#laboratorio .sp-campaign');
   const layout=lab?.querySelector('.sp-campaign-layout');
   const art=layout?.querySelector('.sp-campaign-art');
-  const note=layout?.querySelector('[data-campaign-note]');
-  if (!lab||!layout||!art||!note||layout.dataset.flipReady)return;
+  if (!lab||!layout||!art||layout.dataset.flipReady)return;
   layout.dataset.flipReady='true';
   layout.classList.add('sp-campaign-flip-layout','sp-peel-layout');
   const card=document.createElement('div');
@@ -20,9 +20,7 @@ export function mountCampaignFlip() {
   card.innerHTML=[
     '<div class="sp-peel-stack">',
       '<section class="sp-peel-underlay" data-sp-card-back aria-hidden="true" inert>',
-        '<span class="sp-peel-underlay-kicker" aria-hidden="true">O anúncio no canal</span>',
-        '<div class="sp-campaign-note-slot"></div>',
-        '<button type="button" class="sp-peel-return" data-sp-card-turn="back" aria-label="Recolocar a arte na frente"><span aria-hidden="true">↗</span> Recolocar a peça</button>',
+        '<button type="button" class="sp-peel-return" data-sp-card-turn="back"><span aria-hidden="true">↗</span> Ver a peça</button>',
       '</section>',
       '<div class="sp-peel-sheet" data-sp-card-front>',
         '<div class="sp-campaign-image-slot"></div>',
@@ -37,7 +35,7 @@ export function mountCampaignFlip() {
     '</div>',
     '<span class="sr-only" id="sp-peel-instructions">Arraste a ponta para baixo e para a esquerda; toque na imagem para revelar diretamente. Use o botão para recolocar a peça.</span>'
   ].join('');
-  layout.append(card);
+  layout.prepend(card);
   const sheet=card.querySelector('.sp-peel-sheet');
   const underlay=card.querySelector('.sp-peel-underlay');
   const grip=card.querySelector('[data-peel-grip]');
@@ -46,12 +44,13 @@ export function mountCampaignFlip() {
   const flap=card.querySelector('[data-sp-peel-flap]');
   const crease=card.querySelector('[data-sp-peel-crease]');
   card.querySelector('.sp-campaign-image-slot').append(art);
-  card.querySelector('.sp-campaign-note-slot').append(note);
   const campaignExperience=mountCampaignExperience(lab,underlay);
   const BASE=.05,clamp=(n,min=0,max=1)=>Math.min(max,Math.max(min,n));
   const prefersReduced=matchMedia('(prefers-reduced-motion:reduce)');
   let progress=BASE,animation=0,gesture=null,ignoreSyntheticClick=false;
   const paused=()=>prefersReduced.matches||document.body.classList.contains('is-paused');
+  // The first format of the player (in the panel from 900px), else the phone, else "Ver a peça".
+  const firstFocus=()=>lab.querySelector('[data-cx-placements] .cx-placement')||underlay.querySelector('[data-cx-stage]')||backButton;
 
   // A sampled curved crease replaces the oversize triangular reveal.
   // The flap has its own highlight/shadow and stays tied to the pointer.
@@ -95,7 +94,7 @@ export function mountCampaignFlip() {
     // Focus on the face being hidden follows to the other face whatever opened it
     // (keyboard, mouse, tap or a screen-reader double-tap), so inert never drops it to <body>.
     const active=document.activeElement;
-    const handOff=open?(grip.contains(active)||sheet.contains(active))&&backButton:underlay.contains(active)&&grip;
+    const handOff=open?(grip.contains(active)||sheet.contains(active))&&firstFocus():underlay.contains(active)&&grip;
     card.dataset.side=open?'back':'front';
     underlay.inert=!open;
     underlay.setAttribute('aria-hidden',String(!open));
@@ -115,7 +114,7 @@ export function mountCampaignFlip() {
     semantics(goingOpen);
     if(paused()){
       paint(target);
-      if(focus)(goingOpen?backButton:grip).focus({preventScroll:true});
+      if(focus)(goingOpen?firstFocus():grip).focus({preventScroll:true});
       return;
     }
     const start=performance.now(),from=progress;
@@ -130,7 +129,7 @@ export function mountCampaignFlip() {
       else {animation=0;card.dataset.peelState=goingOpen?'open':'closed';}
     }
     animation=requestAnimationFrame(tick);
-    if(focus)(goingOpen?backButton:grip).focus({preventScroll:true});
+    if(focus)(goingOpen?firstFocus():grip).focus({preventScroll:true});
   }
   // The entire artwork can still be tapped, but the distinctive interaction
   // is pulling the folded corner with real-time physical feedback.

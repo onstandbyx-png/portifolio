@@ -14,7 +14,7 @@ function picture(file, alt, className = '') {
   return `<img class="${className}" src="${ART}${file}.webp" alt="${alt}" width="960" height="1200" loading="lazy" decoding="async">`;
 }
 
-/* Channel tiles (pattern of the Fatos studio platform selector, lab f-e3): the
+/* Channel tiles (pattern of a platform selector mapped in the lab): the
    official mark over a short name, every channel visible at once, no scrolling. */
 const SHORT = { google: 'Google Ads', maps: 'Maps', whatsapp: 'WhatsApp', voz: 'Voz IA', pix: 'Pix Auto' };
 const TINY = { blog: 'Publi' }; // under 360px, where the full name does not fit a quarter of the row
@@ -22,9 +22,12 @@ const tileName = channel => { const name = esc(SHORT[channel.id] || channel.name
 const DOC_MARK = '<svg class="sp-platform-logo sp-platform-logo--doc" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 3.5h8l4 4V20.5H6zM14 3.5v4h4M9 12h6M9 15.5h6"/></svg>';
 const groupLabel = id => groups.find(group => group.id === id)?.label || '';
 const formats = n => `${n} ${n > 1 ? 'formatos' : 'formato'}`;
+/* Colour of each group, for the badge of the channels without an official logo. */
+const GROUP_COLOR = { social: '#7a3f86', search: '#2f5fa8', local: '#2b7650', content: '#7a5a24', retencao: '#a3482b' };
+const selo = (channel, svg) => `<span class="sp-selo" style="--g:${GROUP_COLOR[channel.group] || '#2b4a37'}" aria-hidden="true">${svg}</span>`;
 function tabMarkup(channel, index) {
   const id = CHANNEL_LOGO[channel.id], n = channel.placements.length;
-  const mark = id ? logoSvg(id, { altura: 22, classe: 'sp-platform-logo' }) : channel.glifo ? glifo(channel.glifo, 'sp-platform-logo sp-platform-logo--doc') : DOC_MARK;
+  const mark = id ? logoSvg(id, { altura: 22, classe: 'sp-platform-logo' }) : selo(channel, channel.glifo ? glifo(channel.glifo, 'sp-platform-logo sp-platform-logo--doc') : DOC_MARK);
   return `<button type="button" id="tab-${channel.id}" role="tab" data-sp-tab="${channel.id}" aria-controls="panel-${channel.id}" aria-label="${esc(`${channel.name}, ${groupLabel(channel.group)}, ${formats(n)}`)}" aria-selected="${index === 0}" tabindex="${index === 0 ? '0' : '-1'}"${id ? ` style="--ch:${LOGOS[id].cor}"` : ''}>${mark}<span class="sp-tab-name">${tileName(channel)}</span>${n > 1 ? `<small class="sp-tab-count" aria-hidden="true">${n}</small>` : ''}</button>`;
 }
 
@@ -42,7 +45,7 @@ function mountCampaign(motion) {
     <div class="sp-campaign-art">${channels.map(panelMarkup).join('')}</div>`;
   const layout=document.createElement('div');layout.className='sp-campaign-layout';
   const art=lab.querySelector('.sp-campaign-art');art.before(layout);layout.append(art);
-  // One short sentence per placement, the fictitious-brand notice and the contact link (the player keeps them in sync with the format).
+  // One short sentence per placement, the fictitious-brand notice and the contact link; the player turns it into its live side panel.
   const note=document.createElement('aside');note.className='sp-campaign-note';note.id='campaign-note';note.setAttribute('data-campaign-note','');
   note.innerHTML='<p class="sp-note-frase" data-note-title></p><p class="sp-note-fine" data-note-fine>Exemplo ilustrativo, marca fictícia. Interface aproximada.</p><a href="#contato" data-contact-service="Campanhas e anúncios">Conversar sobre uma campanha ↓</a>';
   layout.append(note);
@@ -111,7 +114,8 @@ function mountCampaign(motion) {
     const channel = channels[index];
     lab.dataset.direction = direction > 0 ? 'next' : 'prev';
     lab.dataset.channel = channel.id;
-    note.querySelector('[data-note-title]').textContent = channel.placements[0].frase;
+    const title = note.querySelector('[data-note-title]');
+    if (title) title.textContent = channel.placements[0].frase;
     panels[index].setAttribute('aria-describedby','campaign-note');
     mark(tabs[index], !isChange);
     capName.textContent = channel.name;

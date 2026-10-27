@@ -32,9 +32,8 @@
 #sistemas .vitrine .cx-rail i{background:#f4f7ef}
 #sistemas .vitrine .cx-journey button:hover{background:#ffffff14}
 @media (min-width:900px){.vitrine .cx-placements{grid-column:1/-1;justify-self:center}}
-/* Removed on request (2026-10-22): campaign meta chips, note link, peel return, badge controls and footer. */
-#laboratorio .cx-meta,#laboratorio .sp-campaign-note a,#laboratorio .sp-peel-return,.hero-badge-controls,.hero-badge-foot{display:none!important}
-#laboratorio a[data-contact-service]{display:none!important}
+/* Retired hero badge controls (2026-10-22). The campaign panel, its contact link and the peel return are back as the live panel (27/10). */
+.hero-badge-controls,.hero-badge-foot{display:none!important}
 /* Tighter rhythm between sections after the removals. */
 #laboratorio.ads-section,#editorial,#sistemas.workflow-section{padding-top:clamp(36px,6vw,64px)!important;padding-bottom:clamp(28px,5vw,56px)!important}
 #categorias{padding-top:clamp(32px,5vw,56px)!important}
@@ -48,8 +47,6 @@
 .vitrine > *{grid-area:auto!important}
 .vitrine .cx-steps{width:min(100%,520px)}
 @media (min-width:900px){.vitrine{grid-template-columns:minmax(0,320px) minmax(0,520px)}.vitrine > .cx-placements{grid-column:1/-1!important}}
-/* The duplicate summary under the campaign card (format chips, label, client, return) goes too. */
-#laboratorio .campaign-summary{display:none!important}
 /* Step names stay whole: on phones the number sits above a name that may wrap to two lines;
    from 900px the journey turns into the lab's vertical list beside the phone. */
 :is(#editorial,#sistemas) .vitrine .cx-journey{align-items:stretch}

@@ -1,58 +1,58 @@
-/* Channel placement behind the campaign peel: a compact interface around the
-   iPhone. Header (official platform mark, name, play), format chips with the ad
-   label, the client chip, the phone with one numbered point and the finger on
-   tap frames, and the three-step journey bar synced to the storyboard. */
+/* Channel placement behind the campaign peel (experience-player.js) and the device size
+   shared by every phone demo (#laboratorio, #editorial, #sistemas).
+   Contract for the other demos: --phone-w is the width of the phone (by the height and the
+   width of the screen) and .ch-iphone--compacto is the thin-bezel phone of small screens. */
+:root{--phone-ratio:.487;--phone-max:380px;--phone-w:min(var(--phone-max),calc((100svh - 48px) * var(--phone-ratio)))}
+@media (min-width:900px){:root{--phone-max:420px}}
+/* Phones: the width of the screen minus 24px, short enough for the phone and the "Agora" strip to fit
+   the height together (thin bezel ratio), never under 300px. */
+@media (max-width:480px){:root{--phone-max:calc(100vw - 24px);--phone-ratio:.4686;--phone-w:max(min(var(--phone-max),calc((100svh - 88px) * var(--phone-ratio))),min(var(--phone-max),300px))}}
+/* Under 360px the phone takes the width (the text would be too small capped by the height). */
+@media (max-width:359px){:root{--phone-w:calc(100vw - 16px)}}
+/* Short landscape: the whole phone fits the height, beside the panel. */
+@media (orientation:landscape) and (max-height:520px){:root{--phone-ratio:.46;--phone-w:min(var(--phone-max),calc((100svh - 16px) * var(--phone-ratio)))}}
+/* Thin bezel and no side buttons on small screens: the screen gets the space. */
+:is(#laboratorio,.lab-escopo) .ch-iphone--compacto .ch-iphone-corpo{margin-inline:0;padding:4px;border-width:2px;border-radius:calc(12.7cqi + 6px)}
+:is(#laboratorio,.lab-escopo) .ch-iphone--compacto .ch-iphone-corpo::before{inset:-2px}
+:is(#laboratorio,.lab-escopo) .ch-iphone--compacto .ch-iphone-botao{display:none}
+
 :is(#laboratorio,.lab-escopo) .sp-peel-underlay{background:#ecf0e7;align-items:stretch;justify-content:flex-start}
-:is(#laboratorio,.lab-escopo) .cx-player{position:relative;z-index:2;width:100%;box-sizing:border-box;padding:clamp(14px,3vw,24px) clamp(14px,3vw,24px) 6px;color:#17362a;touch-action:pan-y;cursor:default;overflow-x:clip;container-type:inline-size;container-name:cx}
+:is(#laboratorio,.lab-escopo) .cx-player{position:relative;z-index:2;width:100%;box-sizing:border-box;padding:var(--cx-pad,24px) var(--cx-pad,24px) 10px;color:#17362a;touch-action:pan-y;cursor:default;overflow-x:clip;container-type:inline-size;container-name:cx}
+:is(#laboratorio,.lab-escopo) .cx-top{display:grid;gap:10px;min-width:0;margin-bottom:12px}
 :is(#laboratorio,.lab-escopo) .cx-head{display:flex;align-items:center;justify-content:space-between;gap:10px;min-height:44px}
-:is(#laboratorio,.lab-escopo) .cx-brand{display:flex;align-items:center;gap:10px;min-width:0;margin:0;color:#17362a;font:650 17px/1.2 var(--sans,Inter,Arial,sans-serif);letter-spacing:-.015em}
+:is(#laboratorio,.lab-escopo) .cx-brand{display:flex;flex-wrap:wrap;align-items:center;gap:4px 10px;min-width:0;margin:0;color:#17362a;font:650 17px/1.2 var(--sans,Inter,Arial,sans-serif);letter-spacing:-.015em}
 :is(#laboratorio,.lab-escopo) .cx-brand b{font-weight:650;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+:is(#laboratorio,.lab-escopo) .cx-formato-unico{flex-basis:100%;color:#4f6350;font:500 13px/1.3 var(--sans,Inter,Arial,sans-serif);letter-spacing:0}
 :is(#laboratorio,.lab-escopo) .cx-logo{display:block;flex:none;width:auto;height:22px}
-:is(#laboratorio,.lab-escopo) .cx-play{display:inline-flex;flex:none;align-items:center;gap:7px;min-width:44px;min-height:44px;padding:0 15px 0 12px;border:1px solid #bccdb9;border-radius:999px;background:#f9fbf6;color:#234530;font:600 13px/1 var(--sans,Inter,Arial,sans-serif);cursor:pointer}
+:is(#laboratorio,.lab-escopo) .cx-play{display:inline-flex;flex:none;align-items:center;gap:7px;min-width:44px;min-height:44px;padding:0 15px 0 12px;border:1px solid #bccdb9;border-radius:999px;background:#f9fbf6;color:#234530;font:600 13px/1 var(--sans,Inter,Arial,sans-serif);cursor:pointer;transition:scale .12s ease}
+:is(#laboratorio,.lab-escopo) :is(.cx-play,.cx-ctl-b,.cx-placement,.cx-journey button,.campaign-decision,.cx-ouvir):active{scale:.97}
 :is(#laboratorio,.lab-escopo) .cx-play svg{width:17px;height:17px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 :is(#laboratorio,.lab-escopo) .cx-play[aria-pressed="false"] svg path[d^="M8 5.5v13l"],:is(#laboratorio,.lab-escopo) .cx-play:not([aria-pressed]) svg path[d^="M8 5.5v13l"]{fill:currentColor}
-/* Formats: one segmented control with a sliding thumb (lab: smiile-segmented-control).
-   Labels never wrap; a row that cannot fit scrolls inside itself. */
-:is(#laboratorio,.lab-escopo) .cx-placements{position:relative;display:flex;gap:2px;margin:10px 0 0;padding:3px;overflow-x:auto;overscroll-behavior-x:contain;scrollbar-width:none;border-radius:14px;background:#dfe6d8;box-shadow:inset 0 0 0 1px #cfd9ca}
+/* Formats: one segmented control with a sliding thumb (lab: smiile-segmented-control). From a
+   560px row the labels wrap to a second line and are never cut; below it the row scrolls inside
+   itself with a fade at the edge that still has formats, and short labels under 420px. */
+:is(#laboratorio,.lab-escopo) .cx-formatos{min-width:0;container-type:inline-size;container-name:cxf}
+:is(#laboratorio,.lab-escopo) .cx-placements{position:relative;display:flex;gap:2px;margin:0;padding:3px;overflow-x:auto;overscroll-behavior-x:contain;scrollbar-width:none;border-radius:14px;background:#dfe6d8;box-shadow:inset 0 0 0 1px #cfd9ca;scroll-padding-inline:12px}
 :is(#laboratorio,.lab-escopo) .cx-placements::-webkit-scrollbar{display:none}
-:is(#laboratorio,.lab-escopo) .cx-thumb{position:absolute;top:3px;bottom:3px;left:0;z-index:0;width:0;border-radius:11px;background:#1e4530;box-shadow:0 0 0 1.5px var(--ch,#1e4530),0 4px 12px -6px #0b2015;transition:transform .45s cubic-bezier(.16,1,.3,1),width .4s cubic-bezier(.16,1,.3,1)}
+:is(#laboratorio,.lab-escopo) .cx-placements[data-overflow="true"]:not([data-end="true"]){-webkit-mask-image:linear-gradient(90deg,#000 calc(100% - 36px),transparent);mask-image:linear-gradient(90deg,#000 calc(100% - 36px),transparent)}
+@container cxf (min-width:560px){:is(#laboratorio,.lab-escopo) .cx-placements{flex-wrap:wrap;overflow:visible}}
+:is(#laboratorio,.lab-escopo) .cx-thumb{position:absolute;top:0;left:0;z-index:0;width:0;height:0;border-radius:11px;background:#1e4530;box-shadow:0 0 0 1.5px var(--ch,#1e4530),0 4px 12px -6px #0b2015;transition:transform .45s var(--fm-snappy,cubic-bezier(.16,1,.3,1)),width .4s cubic-bezier(.16,1,.3,1),height .4s cubic-bezier(.16,1,.3,1)}
 :is(#laboratorio,.lab-escopo) .cx-thumb.is-instant{transition:none}
-:is(#laboratorio,.lab-escopo) .cx-placement{position:relative;z-index:1;display:inline-flex;flex:1 1 auto;align-items:center;justify-content:center;min-height:44px;padding:0 12px;white-space:nowrap;border:0;border-radius:11px;background:transparent;color:#3f5c46;font:600 13px/1.2 var(--sans,Inter,Arial,sans-serif);cursor:pointer;-webkit-tap-highlight-color:transparent;transition:color .2s}
-:is(#laboratorio,.lab-escopo) .cx-placement[aria-pressed="true"],:is(#laboratorio,.lab-escopo) .cx-placement--static{color:#f8fbf7}
-:is(#laboratorio,.lab-escopo) .cx-placement:hover:not([aria-pressed="true"]):not(.cx-placement--static){color:#17362a;background:#ffffff73}
-:is(#laboratorio,.lab-escopo) .cx-placement--static{cursor:default}
+:is(#laboratorio,.lab-escopo) .cx-placement{position:relative;z-index:1;display:inline-flex;flex:1 0 auto;align-items:center;justify-content:center;min-height:44px;padding:0 12px;white-space:nowrap;border:0;border-radius:11px;background:transparent;color:#3f5c46;font:600 13px/1.2 var(--sans,Inter,Arial,sans-serif);cursor:pointer;-webkit-tap-highlight-color:transparent;transition:color .2s,scale .12s ease}
+:is(#laboratorio,.lab-escopo) .cx-placement[aria-pressed="true"]{color:#f8fbf7}
+:is(#laboratorio,.lab-escopo) .cx-placement:hover:not([aria-pressed="true"]){color:#17362a;background:#ffffff73}
 :is(#laboratorio,.lab-escopo) .cx-placement:focus-visible{outline-offset:-3px!important}
-/* Client chip and ad label share one line, wrapping when they must. */
-:is(#laboratorio,.lab-escopo) .cx-meta{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin:10px 0 12px}
-:is(#laboratorio,.lab-escopo) .cx-label{display:inline-flex;flex:none;align-items:center;gap:6px;min-height:30px;padding:0 11px;white-space:nowrap;border-radius:999px;background:#fff;color:#2b3e31;font:600 12px/1.2 var(--sans,Inter,Arial,sans-serif);box-shadow:inset 0 0 0 1px #c9d4c4}
-:is(#laboratorio,.lab-escopo) .cx-label::before{content:"";width:7px;height:7px;border-radius:50%;background:#b8660f}
-:is(#laboratorio,.lab-escopo) .cx-label[data-kind="organic"]::before{background:#3f7d4f}
-:is(#laboratorio,.lab-escopo) .cx-client{display:inline-flex;align-items:center;gap:7px;min-width:0;max-width:100%;min-height:30px;white-space:nowrap;padding:3px 11px 3px 4px;border-radius:999px;background:#f4f6ef;color:#3d4639;font:500 12.5px/1.3 var(--sans,Inter,Arial,sans-serif);box-shadow:inset 0 0 0 1px #c9d4c4}
-:is(#laboratorio,.lab-escopo) .cx-client>span{overflow:hidden;text-overflow:ellipsis}
-:is(#laboratorio,.lab-escopo) .cx-client b{font-weight:650;color:#26372b}
-:is(#laboratorio,.lab-escopo) .cx-client .cm-mark{display:grid;flex:none;place-items:center;width:22px;height:22px;overflow:hidden;border-radius:50%;background:var(--c)}
-:is(#laboratorio,.lab-escopo) .cx-client .cm-mark svg{width:72%;height:72%}
-/* Phone first: the journey bar sits over the phone, the note under it. From a
-   560px container the journey and the note move beside the phone. */
-:is(#laboratorio,.lab-escopo) .cx-body{display:grid;grid-template-columns:minmax(0,1fr);grid-template-areas:"steps" "stage" "side";justify-items:center;gap:12px}
-:is(#laboratorio,.lab-escopo) .cx-steps{grid-area:steps;width:100%;max-width:340px;min-width:0}
-:is(#laboratorio,.lab-escopo) .cx-stage-col{grid-area:stage}
-:is(#laboratorio,.lab-escopo) .cx-side{grid-area:side}
-@container cx (min-width:560px){
- :is(#laboratorio,.lab-escopo) .cx-body{grid-template-columns:300px minmax(0,1fr);grid-template-areas:"stage steps" "stage side";grid-template-rows:auto 1fr;justify-items:stretch;align-items:start;gap:0 26px}
- :is(#laboratorio,.lab-escopo) .cx-steps{max-width:none}
-}
-/* The iPhone is sized by its column (never scaled with transform): up to 320px
-   wide alone, 300px beside the journey. Its screen keeps 412 x 895.2 logical px. */
-:is(#laboratorio,.lab-escopo) .cx-stage-col{width:100%;max-width:320px;min-width:0}
-:is(#laboratorio,.lab-escopo) .cx-stage{position:relative;display:block;width:100%;border-radius:16% / 7.7%;touch-action:pan-y;cursor:pointer}
+/* Phone column. The iPhone is sized by its column (never scaled with transform); its screen keeps 412 x 895.2 logical px. */
+:is(#laboratorio,.lab-escopo) .cx-body{display:grid;grid-template-columns:minmax(0,1fr);justify-items:center;gap:10px}
+:is(#laboratorio,.lab-escopo) .cx-steps{width:100%;max-width:var(--phone-w);min-width:0}
+:is(#laboratorio,.lab-escopo) .cx-stage-col{width:100%;max-width:var(--phone-w);min-width:0}
+:is(#laboratorio,.lab-escopo) .cx-stage{position:relative;display:block;width:100%;border-radius:16% / 7.7%;touch-action:pan-y;cursor:pointer;scroll-margin-top:calc(var(--sn-h-visible,0px) + 12px);scroll-margin-bottom:96px}
 :is(#laboratorio,.lab-escopo) .cx-stage>.ch-iphone{max-width:none}
-:is(#laboratorio,.lab-escopo) .cx-side{width:100%;min-width:0}
-/* The numbered point of the active step, on the element it describes. */
-:is(#laboratorio,.lab-escopo) .cx-dot{position:absolute;z-index:6;display:grid;place-items:center;width:26px;height:26px;border-radius:50%;background:#294c36;color:#fff;font:700 13px/1 var(--sans,Inter,Arial,sans-serif);box-shadow:0 0 0 2px #fff,0 4px 10px #0005;transform:translate(-50%,-50%);pointer-events:none;transition:left .35s cubic-bezier(.16,1,.3,1),top .35s cubic-bezier(.16,1,.3,1)}
-:is(#laboratorio,.lab-escopo) .cx-dot::after{content:"";position:absolute;inset:-2px;border-radius:50%;box-shadow:0 0 0 2px #294c36;opacity:0}
-:is(#laboratorio,.lab-escopo) .cx-dot.is-ping::after{animation:cx-ping .9s ease-out 1}
-@keyframes cx-ping{0%{transform:scale(1);opacity:.5}100%{transform:scale(1.6);opacity:0}}
+/* The numbered point of the active step, beside the element it describes, and the ring around that element. */
+:is(#laboratorio,.lab-escopo) .cx-dot{position:absolute;z-index:6;display:grid;place-items:center;width:26px;height:26px;border-radius:50%;background:#294c36;color:#fff;font:700 13px/1 var(--sans,Inter,Arial,sans-serif);box-shadow:0 0 0 2px #fff,0 4px 10px #0005;transform:translate(-50%,-50%);pointer-events:none;transition:left .35s var(--fm-ios,cubic-bezier(.16,1,.3,1)),top .35s var(--fm-ios,cubic-bezier(.16,1,.3,1));animation:cx-dot-in .42s var(--fm-bouncy,ease-out) both}
+@keyframes cx-dot-in{from{scale:.6;opacity:0}to{scale:1;opacity:1}}
+:is(#laboratorio,.lab-escopo) .cx-ring{position:absolute;z-index:5;box-shadow:0 0 0 2px var(--dot,#294c36),0 0 0 4px #ffffffb3;pointer-events:none;transition:left .35s var(--fm-ios,ease),top .35s var(--fm-ios,ease),width .35s var(--fm-ios,ease),height .35s var(--fm-ios,ease);animation:cx-ring-in .35s ease-out both}
+@keyframes cx-ring-in{from{opacity:0}to{opacity:1}}
 /* The finger: appears on the CTA, presses it and leaves a ripple. */
 :is(#laboratorio,.lab-escopo) .cx-tap{position:absolute;z-index:7;width:36px;height:36px;border-radius:50%;background:rgb(255 255 255 / .55);box-shadow:0 0 0 2px #fff,0 4px 14px #0006;transform:translate(-50%,-50%) scale(.5);opacity:0;pointer-events:none}
 :is(#laboratorio,.lab-escopo) .cx-tap::after{content:"";position:absolute;inset:-2px;border-radius:50%;box-shadow:0 0 0 2px #fff;opacity:0}
@@ -61,17 +61,17 @@
 @keyframes cx-tap{0%{opacity:0;transform:translate(-50%,-50%) scale(.5)}32%{opacity:1;transform:translate(-50%,-50%) scale(1)}100%{opacity:.9;transform:translate(-50%,-50%) scale(.92)}}
 @keyframes cx-ripple{0%{transform:scale(1);opacity:.6}100%{transform:scale(1.8);opacity:0}}
 :is(#laboratorio,.lab-escopo) .cx-tap.is-static,:is(#laboratorio,.lab-escopo) .cx-tap.is-static.is-on{animation:none;opacity:1;transform:translate(-50%,-50%);background:rgb(255 255 255 / .35);box-shadow:0 0 0 3px #fff,0 0 0 5px #294c36}
-/* Journey: Atenção, Retenção, Conversão. Under 560px a story-like bar of three
-   segments over the phone (lab: smiile-chips-progresso), the active step's line
-   under it; from 560px a list beside the phone. State never relies on colour alone. */
+/* Journey: Atenção, Retenção, Conversão. Over the phone a story-like bar of three segments
+   (lab: smiile-chips-progresso) with the active step's line; in the panel a list. State never relies on colour alone. */
 :is(#laboratorio,.lab-escopo) .cx-journey{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;margin:0;padding:0;list-style:none}
 :is(#laboratorio,.lab-escopo) .cx-journey li{min-width:0}
-:is(#laboratorio,.lab-escopo) .cx-journey button{position:relative;display:flex;align-items:center;justify-content:center;gap:6px;width:100%;min-height:44px;padding:9px 4px 4px;border:0;border-radius:10px;background:transparent;color:#5f6a5a;text-align:left;font:inherit;cursor:pointer;-webkit-tap-highlight-color:transparent}
+:is(#laboratorio,.lab-escopo) .cx-journey button{position:relative;display:flex;align-items:center;justify-content:center;gap:6px;width:100%;min-height:44px;padding:9px 4px 4px;border:0;border-radius:10px;background:transparent;color:#5f6a5a;text-align:left;font:inherit;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:background-color .2s,scale .12s ease}
 :is(#laboratorio,.lab-escopo) .cx-journey button:hover{background:#e3eadb}
 :is(#laboratorio,.lab-escopo) .cx-step-n{display:grid;flex:none;place-items:center;width:20px;height:20px;border:1.5px solid #8fa886;border-radius:50%;background:transparent;color:#4f6350;font:650 11px/1 var(--sans,Inter,Arial,sans-serif)}
 :is(#laboratorio,.lab-escopo) .cx-step-t{display:grid;gap:1px;min-width:0}
 :is(#laboratorio,.lab-escopo) .cx-step-t b{overflow:hidden;color:#3b4c3e;font:600 13px/1.3 var(--sans,Inter,Arial,sans-serif);text-overflow:ellipsis;white-space:nowrap}
-:is(#laboratorio,.lab-escopo) .cx-step-t small{display:none;color:#5f6a5a;font:400 12.5px/1.35 var(--sans,Inter,Arial,sans-serif)}
+:is(#laboratorio,.lab-escopo) .cx-steps .cx-step-t small{display:none}
+:is(#laboratorio,.lab-escopo) .cx-step-t small{color:#5f6a5a;font:400 13px/1.35 var(--sans,Inter,Arial,sans-serif)}
 :is(#laboratorio,.lab-escopo) .cx-rail{position:absolute;top:0;left:4px;right:4px;height:3px;overflow:hidden;border-radius:3px;background:#d3dccd}
 :is(#laboratorio,.lab-escopo) .cx-rail i{display:block;width:100%;height:100%;background:#294c36;transform:scaleX(var(--p,0));transform-origin:left}
 :is(#laboratorio,.lab-escopo) .cx-journey li[data-state="on"] .cx-step-n{border-color:#294c36;background:#294c36;color:#fff}
@@ -79,41 +79,148 @@
 :is(#laboratorio,.lab-escopo) .cx-journey li[data-state="on"] .cx-step-t small{color:#2e4535}
 :is(#laboratorio,.lab-escopo) .cx-journey li[data-state="done"] .cx-step-n{border-color:#8fa886;background:#8fa886;color:#fff}
 :is(#laboratorio,.lab-escopo) .cx-journey li[data-state="done"] .cx-rail i{background:#8fa886}
-:is(#laboratorio,.lab-escopo) .cx-now{min-height:1.4em;margin:6px 2px 0;overflow:hidden;color:#2e4535;font:500 13px/1.4 var(--sans,Inter,Arial,sans-serif);text-align:center;text-overflow:ellipsis;white-space:nowrap}
-@container cx (min-width:560px){
- :is(#laboratorio,.lab-escopo) .cx-steps{padding-top:6px}
- :is(#laboratorio,.lab-escopo) .cx-journey{grid-template-columns:minmax(0,1fr);gap:8px}
- :is(#laboratorio,.lab-escopo) .cx-journey button{display:grid;grid-template-columns:28px minmax(0,1fr);align-items:start;justify-content:stretch;gap:3px 10px;min-height:72px;padding:14px 12px 12px 16px}
- :is(#laboratorio,.lab-escopo) .cx-journey li[data-state="on"] button{background:#f8faf5}
- :is(#laboratorio,.lab-escopo) .cx-step-n{width:28px;height:28px;font-size:13px}
- :is(#laboratorio,.lab-escopo) .cx-step-t b{font-size:15px;white-space:normal}
- :is(#laboratorio,.lab-escopo) .cx-step-t small{display:block;font-size:14px}
- :is(#laboratorio,.lab-escopo) .cx-rail{top:12px;bottom:12px;left:0;right:auto;width:3px;height:auto}
- :is(#laboratorio,.lab-escopo) .cx-rail i{transform:scaleY(var(--p,0));transform-origin:top}
- :is(#laboratorio,.lab-escopo) .cx-now{display:none}
+:is(#laboratorio,.lab-escopo) .cx-now-row{display:flex;align-items:center;gap:8px;margin-top:4px}
+:is(#laboratorio,.lab-escopo) .cx-now{flex:1;min-width:0;margin:0 2px;overflow:hidden;color:#2e4535;font:500 13px/1.4 var(--sans,Inter,Arial,sans-serif);text-align:left;text-overflow:ellipsis;white-space:nowrap}
+/* Controls: ← ▶ →, frame position and Ampliar tela (44 x 44, press .97). */
+:is(#laboratorio,.lab-escopo) .cx-ctl{display:flex;flex:none;align-items:center;gap:4px}
+:is(#laboratorio,.lab-escopo) .cx-ctl-b{display:inline-grid;flex:none;place-items:center;width:44px;height:44px;padding:0;border:0;border-radius:999px;background:#ffffff26;color:inherit;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:background-color .2s,scale .12s ease}
+:is(#laboratorio,.lab-escopo) .cx-ctl-b svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+:is(#laboratorio,.lab-escopo) .cx-ctl-play{background:#f4f7ef;color:#17362a}
+:is(#laboratorio,.lab-escopo) .cx-ctl-play svg path[d^="M8 5.5v13l"]{fill:currentColor}
+:is(#laboratorio,.lab-escopo) .cx-pos{min-width:3.2em;color:inherit;font:600 12px/1 var(--sans,Inter,Arial,sans-serif);font-variant-numeric:tabular-nums;text-align:center;opacity:.8}
+:is(#laboratorio,.lab-escopo) .cx-ampliar>span{display:none}
+:is(#laboratorio,.lab-escopo) .cx-ampliar--topo{background:#e3eadb;color:#17362a}
+/* "Agora": sticky under the phone on phones, above the page's own bottom bar. */
+:is(#laboratorio,.lab-escopo) .cx-agora{position:sticky;bottom:calc(var(--mobile-cta-h,0px) + env(safe-area-inset-bottom,0px) + 8px);z-index:8;display:flex;align-items:center;gap:8px;width:min(100%,var(--phone-w));margin:10px auto 0;padding:7px 7px 7px 14px;border-radius:18px;background:rgb(21 49 37 / .94);color:#f4f7ef;box-shadow:0 12px 30px -14px #0b2015;-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
+:is(#laboratorio,.lab-escopo) .cx-agora-txt{flex:1;min-width:0}
+:is(#laboratorio,.lab-escopo) .cx-agora-txt p{margin:0;font:500 13px/1.35 var(--sans,Inter,Arial,sans-serif)}
+:is(#laboratorio,.lab-escopo) .cx-agora-desc{display:-webkit-box;overflow:hidden;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+:is(#laboratorio,.lab-escopo) .cx-agora-txt[data-linha="true"] .cx-agora-desc{-webkit-line-clamp:1}
+:is(#laboratorio,.lab-escopo) .cx-agora-desc b{margin-right:3px;color:#b9e07a;font-weight:700}
+:is(#laboratorio,.lab-escopo) .cx-agora-linha{overflow:hidden;color:#d6e6cf;text-overflow:ellipsis;white-space:nowrap}
+:is(#laboratorio,.lab-escopo) .cx-agora-linha:empty{display:none}
+:is(#laboratorio,.lab-escopo) .cx-agora .cx-ampliar,:is(#laboratorio,.lab-escopo) .cx-agora .cx-pos{display:none}
+@media (max-width:359px){
+ :is(#laboratorio,.lab-escopo) .cx-agora{flex-wrap:wrap;padding:8px 8px 6px 12px}
+ :is(#laboratorio,.lab-escopo) .cx-agora-txt{flex-basis:100%}
+ :is(#laboratorio,.lab-escopo) .cx-agora .cx-ctl{width:100%;justify-content:space-between}
+ :is(#laboratorio,.lab-escopo) .cx-agora .cx-pos{display:inline}
 }
-/* The short sentence, the fine print and the contact link sit under the journey. */
-:is(#laboratorio,.lab-escopo) .cx-side .sp-campaign-note-slot{display:block;flex:none!important;min-height:0}
-:is(#laboratorio,.lab-escopo) .cx-side .sp-campaign-note{min-height:0;width:auto;margin:14px 0 0;padding:0 2px}
-:is(#laboratorio,.lab-escopo) .sp-note-frase{margin:0;color:#1f3a2a;font:550 15px/1.45 var(--sans,Inter,Arial,sans-serif);letter-spacing:-.01em}
-:is(#laboratorio,.lab-escopo) .sp-note-fine{margin:6px 0 0;color:#5f6a5a;font:400 12px/1.45 var(--sans,Inter,Arial,sans-serif)}
-:is(#laboratorio,.lab-escopo) .cx-side .sp-campaign-note a{min-height:44px;padding:8px 0;font-size:14px}
+/* Wide screens: the strip sits in the panel with the controls only and a labelled Ampliar. */
+:is(#laboratorio,.lab-escopo) .cx-side .cx-agora{position:static;width:auto;margin:0;padding:6px;border-radius:999px;background:#17362a;box-shadow:none}
+:is(#laboratorio,.lab-escopo) .cx-side .cx-agora .cx-ctl{width:100%}
+:is(#laboratorio,.lab-escopo) .cx-side[data-mode="intro"] .cx-agora{display:none}
+:is(#laboratorio,.lab-escopo) .cx-side .cx-agora .cx-pos{display:inline;margin-right:auto}
+:is(#laboratorio,.lab-escopo) .cx-side .cx-agora .cx-ampliar{display:inline-flex;align-items:center;gap:8px;width:auto;padding:0 16px 0 13px;background:#f4f7ef;color:#17362a;font:650 13px/1 var(--sans,Inter,Arial,sans-serif)}
+:is(#laboratorio,.lab-escopo) .cx-side .cx-agora .cx-ampliar>span{display:inline}
+@media (min-width:900px),(min-width:600px) and (max-height:520px) and (orientation:landscape){
+ :is(#laboratorio,.lab-escopo) .cx-body .cx-steps{display:none}
+ :is(#laboratorio,.lab-escopo) .cx-player{padding-bottom:var(--cx-pad,24px)}
+}
+/* Short landscape: the phone fits the height, Ampliar leads the panel's controls. */
+@media (orientation:landscape) and (max-height:520px){
+ :is(#laboratorio,.lab-escopo) .cx-side .cx-agora .cx-ampliar{order:-1;margin-right:6px;background:#b9e07a}
+}
+/* The side panel: a live journey and backstage beside the card from 900px, under it on phones while open. */
+:is(#laboratorio,.lab-escopo) .cx-side{display:grid;align-content:start;gap:14px;min-width:0;margin:0;padding:0;color:#17362a;container-type:inline-size;container-name:cxs}
+:is(#laboratorio,.lab-escopo) .cx-side>div{display:contents}
+:is(#laboratorio,.lab-escopo) .cx-side .cx-top{margin:0}
+@media (max-width:899px){
+ :is(#laboratorio,.lab-escopo) .sp-peel-layout>.cx-side[data-mode="intro"]{display:none}
+}
+@media (max-width:899px) and (min-height:521px),(max-width:599px){
+ :is(#laboratorio,.lab-escopo) .sp-peel-layout>.cx-side{width:min(100%,640px);justify-self:center}
+}
+:is(#laboratorio,.lab-escopo) .cx-side-meta{display:flex;flex-wrap:wrap;align-items:center;gap:6px}
+:is(#laboratorio,.lab-escopo) .cx-side-cliente{display:inline-flex;align-items:center;gap:8px;min-width:0;max-width:100%;min-height:32px;margin:0;padding:3px 12px 3px 4px;border-radius:999px;background:#f4f6ef;color:#3d4639;font:500 13px/1.3 var(--sans,Inter,Arial,sans-serif);box-shadow:inset 0 0 0 1px #c9d4c4}
+:is(#laboratorio,.lab-escopo) .cx-side-cliente b{color:#26372b;font-weight:650}
+:is(#laboratorio,.lab-escopo) .cx-side-cliente .cm-mark{display:grid;flex:none;place-items:center;width:24px;height:24px;overflow:hidden;border-radius:50%;background:var(--c)}
+:is(#laboratorio,.lab-escopo) .cx-side-cliente .cm-mark svg{width:72%;height:72%}
+:is(#laboratorio,.lab-escopo) .cx-label{display:inline-flex;flex:none;align-items:center;gap:6px;min-height:32px;margin:0;padding:0 12px;white-space:nowrap;border-radius:999px;background:#fff;color:#2b3e31;font:600 12.5px/1.2 var(--sans,Inter,Arial,sans-serif);box-shadow:inset 0 0 0 1px #c9d4c4}
+:is(#laboratorio,.lab-escopo) .cx-label::before{content:"";width:7px;height:7px;border-radius:50%;background:#b8660f}
+:is(#laboratorio,.lab-escopo) .cx-label[data-kind="organic"]::before{background:#3f7d4f}
+:is(#laboratorio,.lab-escopo) .cx-side-frase{max-width:30ch;margin:0;color:#17362a;font:600 clamp(20px,2vw,25px)/1.2 var(--sans,Inter,Arial,sans-serif);letter-spacing:-.025em;text-wrap:balance}
+:is(#laboratorio,.lab-escopo) .cx-side-objetivo,:is(#laboratorio,.lab-escopo) .cx-side-base{margin:0;color:#3d4a40;font:400 14px/1.5 var(--sans,Inter,Arial,sans-serif)}
+:is(#laboratorio,.lab-escopo) .cx-side-objetivo b,:is(#laboratorio,.lab-escopo) .cx-side-base b{display:block;margin-bottom:2px;color:#4f6357;font:700 11.5px/1.4 var(--sans,Inter,Arial,sans-serif);letter-spacing:.08em;text-transform:uppercase}
+:is(#laboratorio,.lab-escopo) .cx-side-base{font-size:13px;color:#536250}
+/* Panel steps: a list with the line of each step; three columns when the panel is wide. */
+:is(#laboratorio,.lab-escopo) .cx-side-steps{grid-template-columns:minmax(0,1fr);gap:6px}
+:is(#laboratorio,.lab-escopo) .cx-side-steps button{display:grid;grid-template-columns:28px minmax(0,1fr);align-items:start;justify-content:stretch;gap:3px 10px;min-height:60px;padding:12px 12px 12px 16px;background:#f3f6ee}
+:is(#laboratorio,.lab-escopo) .cx-side-steps .cx-step-n{width:28px;height:28px;font-size:13px}
+:is(#laboratorio,.lab-escopo) .cx-side-steps .cx-step-t b{font-size:14.5px;white-space:normal}
+:is(#laboratorio,.lab-escopo) .cx-side-steps .cx-rail{top:12px;bottom:12px;left:0;right:auto;width:3px;height:auto}
+:is(#laboratorio,.lab-escopo) .cx-side-steps .cx-rail i{transform:scaleY(var(--p,0));transform-origin:top}
+:is(#laboratorio,.lab-escopo) .cx-side-steps li[data-state="on"] button{background:#fff;box-shadow:0 6px 18px -12px #1b3627}
+@container cxs (min-width:540px){
+ :is(#laboratorio,.lab-escopo) .cx-side-steps{grid-template-columns:repeat(3,minmax(0,1fr))}
+ :is(#laboratorio,.lab-escopo) .cx-side-steps button{grid-template-columns:minmax(0,1fr);align-content:start;height:100%;padding:14px 12px 12px}
+ :is(#laboratorio,.lab-escopo) .cx-side-steps .cx-rail{top:0;bottom:auto;left:12px;right:12px;width:auto;height:3px}
+ :is(#laboratorio,.lab-escopo) .cx-side-steps .cx-rail i{transform:scaleX(var(--p,0));transform-origin:left}
+}
+/* Live boxes: what the screen shows, the call transcript (outside the phone) and the backstage. */
+:is(#laboratorio,.lab-escopo) .cx-box{min-width:0;margin:0;padding:14px 16px;border-radius:14px;background:#f8faf5;box-shadow:inset 0 0 0 1px #d6dfd0}
+:is(#laboratorio,.lab-escopo) .cx-box h4{margin:0 0 6px;color:#4f6357;font:700 11.5px/1.4 var(--sans,Inter,Arial,sans-serif);letter-spacing:.08em;text-transform:uppercase}
+:is(#laboratorio,.lab-escopo) .cx-box>p{margin:0;color:#1f3a2a;font:500 15px/1.5 var(--sans,Inter,Arial,sans-serif)}
+:is(#laboratorio,.lab-escopo) .cx-box>p.cx-box-nota{margin:-2px 0 8px;color:#5f6a5a;font:400 12.5px/1.4 var(--sans,Inter,Arial,sans-serif)}
+:is(#laboratorio,.lab-escopo) .cx-box--log{border:1px dashed #9fb39a;box-shadow:none;background:#f3f6ef}
+:is(#laboratorio,.lab-escopo) .cx-falas,:is(#laboratorio,.lab-escopo) .cx-logs{display:grid;gap:6px;max-height:232px;margin:0;padding:0;overflow:auto;list-style:none;overscroll-behavior:contain;scrollbar-width:thin}
+:is(#laboratorio,.lab-escopo) .cx-falas li{padding:6px 10px;border-left:3px solid #cdd8c7;color:#4a5948;font:400 14px/1.45 var(--sans,Inter,Arial,sans-serif)}
+:is(#laboratorio,.lab-escopo) .cx-falas li b{display:block;color:#33463a;font-weight:650;font-size:12.5px}
+:is(#laboratorio,.lab-escopo) .cx-falas li[data-agora]{border-left-color:#294c36;color:#17362a;background:#fff;animation:fm-chega .32s var(--fm-snappy,ease-out) both}
+:is(#laboratorio,.lab-escopo) .cx-falas li[data-falando]{border-left-color:#b8660f;background:#fff7ec}
+:is(#laboratorio,.lab-escopo) .cx-logs li{display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:start;gap:8px;padding:6px 8px;border-radius:10px;color:#3d4a40;font:400 13px/1.4 var(--sans,Inter,Arial,sans-serif)}
+:is(#laboratorio,.lab-escopo) .cx-logs li[data-agora]{background:#fff;box-shadow:0 4px 14px -10px #1b3627;animation:fm-chega .32s var(--fm-snappy,ease-out) both}
+:is(#laboratorio,.lab-escopo) .cx-ator{padding:3px 8px;border-radius:999px;background:color-mix(in srgb,var(--a) 14%,#fff);color:var(--a);font:650 11.5px/1.3 var(--sans,Inter,Arial,sans-serif);white-space:nowrap;box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--a) 30%,#fff)}
+:is(#laboratorio,.lab-escopo) .cx-evento{display:grid;gap:1px;min-width:0}
+:is(#laboratorio,.lab-escopo) .cx-evento b{color:#1f3a2a;font-weight:600}
+:is(#laboratorio,.lab-escopo) .cx-evento small{color:#5f6a5a;font-size:12.5px;overflow-wrap:anywhere}
+:is(#laboratorio,.lab-escopo) .cx-logs time{color:#5f6a5a;font:500 12px/1.4 var(--sans,Inter,Arial,sans-serif);font-variant-numeric:tabular-nums}
+:is(#laboratorio,.lab-escopo) .cx-vazio{color:#5f6a5a;font:400 13px/1.4 var(--sans,Inter,Arial,sans-serif)}
+:is(#laboratorio,.lab-escopo) .cx-ouvir{display:inline-flex;align-items:center;gap:8px;min-height:44px;margin:0 0 10px;padding:0 16px 0 12px;border:1px solid #9fb39a;border-radius:999px;background:#fff;color:#17362a;font:600 13px/1 var(--sans,Inter,Arial,sans-serif);cursor:pointer}
+:is(#laboratorio,.lab-escopo) .cx-ouvir svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+:is(#laboratorio,.lab-escopo) .cx-ouvir[aria-pressed="true"]{background:#17362a;color:#fff;border-color:#17362a}
+@container cxs (min-width:600px){
+ :is(#laboratorio,.lab-escopo) .cx-side:has(.cx-box--fala):has(.cx-box--log) .cx-box--fala,:is(#laboratorio,.lab-escopo) .cx-side:has(.cx-box--fala):has(.cx-box--log) .cx-box--log{align-self:stretch}
+}
+:is(#laboratorio,.lab-escopo) .cx-side-acoes{display:flex;flex-wrap:wrap;align-items:center;gap:8px 20px}
+:is(#laboratorio,.lab-escopo) .cx-side .campaign-decision{display:inline-flex;align-items:center;gap:10px;min-height:46px;padding:0 18px;border:1px solid #1d402d;border-radius:999px;background:#1d402d;color:#f4f5eb;font:600 14px/1.2 var(--sans,Inter,Arial,sans-serif);cursor:pointer;transition:background-color .2s,scale .12s ease}
+:is(#laboratorio,.lab-escopo) .cx-side .campaign-decision:hover{background:#315c3e}
+:is(#laboratorio,.lab-escopo) .cx-side[data-mode="live"] .campaign-decision{background:transparent;color:#1d402d}
+:is(#laboratorio,.lab-escopo) .cx-side-acoes a{display:inline-flex;align-items:center;gap:6px;min-height:44px;color:#294b34;font:600 14px/1.4 var(--sans,Inter,Arial,sans-serif);text-decoration:underline;text-underline-offset:4px}
+:is(#laboratorio,.lab-escopo) .cx-side .sp-note-fine{margin:0;color:#5f6a5a;font:400 12.5px/1.45 var(--sans,Inter,Arial,sans-serif)}
+/* Ampliar: the phone moves into a full-screen dialog; the height of the screen minus 32px (the width in a short landscape). */
+.cx-zoom{width:100vw;max-width:none;height:100dvh;max-height:none;margin:0;padding:0;border:0;background:#0d1a14;color:#f4f7ef;overscroll-behavior:contain}
+.cx-zoom::backdrop{background:#0d1a14e6}
+.cx-zoom-in{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:16px 28px;min-height:100%;padding:16px}
+:is(#laboratorio,.lab-escopo) .cx-zoom .cx-zoom-stage{width:min(calc(100vw - 16px),calc((100dvh - 32px) * var(--phone-ratio,.487)));max-width:none;flex:none;cursor:pointer}
+.cx-zoom-bar{display:grid;gap:12px;max-width:340px}
+.cx-zoom-desc{margin:0;font:500 16px/1.5 var(--sans,Inter,Arial,sans-serif)}
+.cx-zoom .cx-ctl-b{background:#ffffff26;color:#fff}
+.cx-zoom .cx-ctl-play{background:#f4f7ef;color:#17362a}
+@media (max-width:719px){
+ .cx-zoom-in{padding:16px 8px}
+ .cx-zoom-bar{position:fixed;left:50%;bottom:calc(10px + env(safe-area-inset-bottom,0px));z-index:9;translate:-50% 0;padding:4px;border-radius:999px;background:#0d1a14d9;-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
+ .cx-zoom-desc{display:none}
+}
+@media (orientation:landscape) and (max-height:520px){
+ .cx-zoom-in{align-items:flex-start}
+ :is(#laboratorio,.lab-escopo) :is(#laboratorio,.lab-escopo) .cx-zoom .cx-zoom-stage{width:min(calc(100vw - 32px),440px)}
+}
 /* The outgoing placement: a painted, inert copy that slides away over the new one. */
 :is(#laboratorio,.lab-escopo) .cx-ghost{position:absolute;z-index:5;margin:0;overflow:hidden;background:#ecf0e7;pointer-events:none}
 :is(#laboratorio,.lab-escopo) .sp-peel-underlay-kicker{display:none}
-:is(#laboratorio,.lab-escopo) .cx-player button:focus-visible,:is(#laboratorio,.lab-escopo) .cx-stage:focus-visible{outline:3px solid #406fca;outline-offset:2px}
+:is(#laboratorio,.lab-escopo) :is(.cx-player,.cx-side) button:focus-visible,:is(#laboratorio,.lab-escopo) .cx-stage:focus-visible{outline:3px solid #406fca;outline-offset:2px}
 @media(max-width:440px){
- :is(#laboratorio,.lab-escopo) .cx-player{padding:12px 12px 4px}
- :is(#laboratorio,.lab-escopo) .cx-head{min-height:40px}
+ :is(#laboratorio,.lab-escopo) .cx-head{min-height:44px}
  :is(#laboratorio,.lab-escopo) .cx-brand{font-size:16px}
  :is(#laboratorio,.lab-escopo) .cx-play{padding:0 13px 0 10px}
 }
-@media(prefers-reduced-motion:reduce){:is(#laboratorio,.lab-escopo) .cx-player *,:is(#laboratorio,.lab-escopo) .cx-player *::after{transition:none!important;animation:none!important}}
-body.is-paused :is(#laboratorio,.lab-escopo) .cx-player *,body.is-paused :is(#laboratorio,.lab-escopo) .cx-player *::after{transition:none!important;animation:none!important}
-/* Narrow phones (320px): tighter formats, and the journey keeps the step names whole without the number circles. */
+@media(prefers-reduced-motion:reduce){:is(#laboratorio,.lab-escopo) :is(.cx-player,.cx-side) *,:is(#laboratorio,.lab-escopo) :is(.cx-player,.cx-side) *::after{transition:none!important;animation:none!important}}
+body.is-paused :is(#laboratorio,.lab-escopo) :is(.cx-player,.cx-side) *,body.is-paused :is(#laboratorio,.lab-escopo) :is(.cx-player,.cx-side) *::after{transition:none!important;animation:none!important}
+/* Narrow phones (under 300px of player): tighter formats, and the journey keeps the step names whole without the number circles. */
 @container cx (max-width:300px){
- :is(#laboratorio,.lab-escopo) .cx-placement{padding:0 6px;font-size:12px}
+ :is(#laboratorio,.lab-escopo) .cx-placement{padding:0 8px;font-size:12.5px}
  :is(#laboratorio,.lab-escopo) .cx-journey{gap:4px}
- :is(#laboratorio,.lab-escopo) .cx-step-n{display:none}
+ :is(#laboratorio,.lab-escopo) .cx-steps .cx-step-n{display:none}
  :is(#laboratorio,.lab-escopo) .cx-step-t b{font-size:12.5px}
 }
