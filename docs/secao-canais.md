@@ -467,4 +467,6 @@ Faixa logo depois do hero, no `#mural` de `index.html`. `static-init.js` importa
 - **Links:** campanhas vão para `#laboratorio/<canal>/<formato>`, automações para `#sistemas/<chave>`. Clicar de novo no mesmo cartão reabre pelo evento `cx:abrir` (ou por um `hashchange`, se o laboratório ainda não montou).
 - **Comportamento:** arrastar com o mouse, rolagem nativa com `scroll-snap` no toque, setas e Home/End com foco num cartão (tabindex móvel), botões ← e → e pausa. A rolagem lenta (22 px/s) dá a volta por um segundo conjunto de cartões (`data-mu-clone`, fora do leitor de tela e do Tab) e para em hover, foco, toque, fora da tela, aba oculta, `body.is-paused` e com movimento reduzido (aí nem os clones existem).
 - **Canais:** abaixo da faixa, os 16 canais com o logo oficial ou o glifo, cada um com link para `#laboratorio/<canal>`.
+- **Nota:** "Marcas fictícias. As fotos nas telas têm licença aberta: ver créditos.", com link para `/creditos` (as telas reproduzem fotos CC BY e CC BY-SA).
+- **Peso:** as imagens só pedem a rede quando a faixa chega a 300 px da tela; o `#mural` reserva 600 px antes de montar.
 - **Medidas:** cartões de 148 a 196 px (140 px no celular deitado), toques de 44 px, imagens com `loading="lazy"`.
