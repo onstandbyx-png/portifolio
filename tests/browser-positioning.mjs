@@ -20,8 +20,12 @@ try{
   const check=(name,pass)=>{row.checks.push({name,pass:!!pass});assert(pass,name)};
   try{
    await page.goto(base,{waitUntil:'domcontentloaded'});await page.evaluate(()=>document.fonts.ready);
+   // As seções montam perto da tela (static-init.js): passa por elas e volta ao topo.
+   for(const id of ['laboratorio','sistemas'])await page.evaluate(id=>document.getElementById(id).scrollIntoView({behavior:'instant'}),id);
    await page.waitForSelector('#laboratorio .cx-side',{state:'attached'});await page.waitForSelector('[data-vitrine="sistemas"] .cm-screen',{state:'attached'});
-   check('The first screen states role and five concrete services',/DIRETOR CRIATIVO E REDATOR/.test(await page.locator('.planes-hero .ph-eyebrow').innerText())&&/identidades, conteúdos, anúncios, sites e sistemas/.test(await page.locator('.planes-hero .ph-description').innerText()));
+   await page.evaluate(()=>scrollTo({top:0,behavior:'instant'}));
+   // Hero Do anúncio ao caixa: quem é, o que faz e a oferta inteira na primeira tela.
+   check('The first screen states role and the offer',/direção criativa, campanhas e automação/i.test(await page.locator('.planes-hero .ph-eyebrow').innerText())&&/campanha[\s\S]*atendimento com IA[\s\S]*Pix/.test(await page.locator('.planes-hero .ph-description').innerText()));
    const order=await page.evaluate(()=>['laboratorio','editorial','sistemas','categorias','como-trabalho','contato'].filter(id=>document.getElementById(id)).map(id=>({id,top:document.getElementById(id).getBoundingClientRect().top+scrollY})));
    row.sectionOrder=order;
    check('Visual demonstrations precede the detailed service catalogue',order.every((item,i)=>i===0||item.top>order[i-1].top));
@@ -54,7 +58,7 @@ try{
    await page.screenshot({path:`${output}/method-${width}${reduced?'-reduced':''}.png`,animations:'disabled',timeout:8000}).catch(()=>{});
    await page.locator('#contato').evaluate(el=>scrollTo({top:scrollY+el.getBoundingClientRect().top-84,behavior:'instant'}));
    await page.screenshot({path:`${output}/contact-${width}${reduced?'-reduced':''}.png`,animations:'disabled',timeout:8000}).catch(()=>{});
-   check('Essential internal links have destinations',await page.locator('.main-nav a,.path-proof,.path-contact').evaluateAll(nodes=>nodes.every(n=>!n.hash||document.getElementById(n.hash.slice(1)))));
+   check('Essential internal links have destinations',await page.locator('.main-nav a,.path-proof,.path-contact').evaluateAll(nodes=>nodes.every(n=>!n.hash||document.getElementById(n.hash.slice(1).split('/')[0]))));
    check('No horizontal overflow',await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+2));
    check('No runtime errors or external writes',row.errors.length===0&&row.writes.length===0);
   }catch(error){row.failure=String(error);await page.screenshot({path:`${output}/failure-${width}${reduced?'-reduced':''}.png`}).catch(()=>{});}

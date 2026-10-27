@@ -19,6 +19,8 @@ async function open(viewport,{reduced=true,hash=''}={}){
   const page=await context.newPage();page.setDefaultTimeout(20000);
   page.on('pageerror',error=>report.errors.push(`${viewport.width}x${viewport.height}: ${error}`));
   await page.goto(base+'/'+hash,{waitUntil:'load'});
+  // O laboratório monta perto da tela (static-init.js); o link direto já o carrega.
+  if(!hash)await page.evaluate(()=>document.querySelector('#laboratorio').scrollIntoView({behavior:'instant'}));
   await page.waitForSelector('#laboratorio .cx-player',{state:'attached'});
   await page.evaluate(()=>document.fonts.ready);
   return {context,page};

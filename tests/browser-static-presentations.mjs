@@ -32,6 +32,8 @@ try{
     });
     try{
       await page.goto(base,{waitUntil:'domcontentloaded'});
+      // O laboratório monta perto da tela (static-init.js).
+      await page.evaluate(()=>document.querySelector('#laboratorio').scrollIntoView({behavior:'instant'}));
       await page.waitForSelector('html[data-static-presentations="ready"]',{state:'attached'});
       await page.waitForSelector('#laboratorio .cx-player',{state:'attached'});
       await page.evaluate(()=>document.fonts.ready);
