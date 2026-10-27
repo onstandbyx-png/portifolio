@@ -50,6 +50,8 @@ function mountOne(root) {
   const $ = selector => root.querySelector(selector);
   const stage = $('[data-stage]'), play = $('[data-play]'), caption = $('[data-caption]'), telas = $('[data-telas]'), nota = $('[data-nota]'), pos = $('[data-pos]');
   let demo = null, placement = null, list = [], cut = null, screen = null, index = 0, timer = 0, playing = false, started = false, token = 0, modo = 'celular';
+  // resume: playback was stopped by the page (out of view, hidden tab, global pause), not by the visitor.
+  let resume = false, inView = false;
   const last = () => cut ? cut.to - cut.from : 0;
 
   function thumb() {
@@ -96,7 +98,7 @@ function mountOne(root) {
     clearTimeout(timer);
     if (!playing) return;
     if (index >= last()) { playing = false; syncMedia(screen, false); label(); return; }
-    timer = setTimeout(() => { if (!playing) return; show(index + 1, { instant: false }).then(next => { if (next !== null) tick(next); }); }, ms);
+    timer = setTimeout(() => { if (!playing || !live()) return; show(index + 1, { instant: false }).then(next => { if (next !== null) tick(next); }); }, ms);
   }
   function go(on) {
     playing = on && live();
@@ -149,13 +151,14 @@ function mountOne(root) {
 
   root.addEventListener('click', event => {
     const format = event.target.closest('[data-formato]');
-    if (format) { started = true; load(Number(format.dataset.formato)); return; }
+    if (format) { started = true; resume = false; load(Number(format.dataset.formato)); return; }
     const tela = event.target.closest('[data-tela]');
-    if (tela) { started = true; go(false); show(Number(tela.dataset.tela)); return; }
-    const modoButton = event.target.closest('[data-modo]');
+    if (tela) { started = true; resume = false; go(false); show(Number(tela.dataset.tela)); return; }
+    // Only the switch buttons: the root and the stage also carry data-modo.
+    const modoButton = event.target.closest('.vitrine-modo-b[data-modo]');
     if (modoButton) { setModo(modoButton.dataset.modo); return; }
     if (event.target.closest('[data-play]')) {
-      started = true;
+      started = true; resume = false;
       if (!live()) { show(index >= last() ? 0 : index + 1); return; }
       go(!playing);
     }
@@ -164,14 +167,20 @@ function mountOne(root) {
   compactQuery.addEventListener('change', () => stage.querySelector('.ch-iphone')?.classList.toggle('ch-iphone--compacto', compactQuery.matches));
 
   load(0);
-  // Plays once when the phone comes into view; leaving the view pauses it.
+  // Plays once when the phone comes into view. Leaving the view, hiding the tab or the global pause
+  // (body.is-paused) stops it, and it goes on from the same frame when that ends; a pause by the visitor stays.
+  const halt = () => { if (playing) resume = true; go(false); };
+  const proceed = () => { if (resume && inView && live()) { resume = false; go(true); } else label(); };
   if ('IntersectionObserver' in window) {
     new IntersectionObserver(([entry]) => {
-      if (entry.isIntersecting && !started && live()) { started = true; go(true); }
-      else if (!entry.isIntersecting) go(false);
+      inView = entry.isIntersecting;
+      if (inView && !started && live()) { started = true; go(true); }
+      else if (inView) proceed();
+      else halt();
     }, { threshold: .4 }).observe(root);
   }
-  document.addEventListener('visibilitychange', () => { if (document.hidden) go(false); });
+  document.addEventListener('visibilitychange', () => { if (document.hidden) halt(); else proceed(); });
+  new MutationObserver(() => { if (document.body.classList.contains('is-paused')) halt(); else proceed(); }).observe(document.body, { attributes: true, attributeFilter: ['class'] });
 }
 
 export function mountVitrine() {
