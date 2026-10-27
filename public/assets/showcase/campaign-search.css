@@ -369,6 +369,9 @@
 :is(#laboratorio,.lab-escopo) .cm-sb .sb-gpt-src i{width:calc(var(--u)*16);height:calc(var(--u)*16);margin-right:calc(var(--u)*-11);border:calc(var(--u)*1.5) solid #f4f4f4;border-radius:50%;background:#8aa0b6}
 :is(#laboratorio,.lab-escopo) .cm-sb .sb-gpt-src i:nth-child(2){background:#b5a58a}
 :is(#laboratorio,.lab-escopo) .cm-sb .sb-gpt-src i:nth-child(3){margin-right:calc(var(--u)*1);background:#9bb39a}
+:is(#laboratorio,.lab-escopo) .cm-sb .sb-gpt-s2{opacity:0;translate:0 calc(var(--u)*10);transition:opacity .35s ease,translate .45s var(--fm-ios,ease)}
+:is(#laboratorio,.lab-escopo) .cm-sb[data-state~="s2"] .sb-gpt-s2{opacity:1;translate:0 0}
+:is(#laboratorio,.lab-escopo) .cm-sb[data-state~="s2"] .sb-gpt-ad{transition-delay:.15s}
 :is(#laboratorio,.lab-escopo) .cm-sb .sb-gpt-flow hr{width:100%;margin:calc(var(--u)*4) 0;border:0;border-top:calc(var(--u)*1) solid #e3e3e3}
 :is(#laboratorio,.lab-escopo) .cm-sb .sb-gpt-ad{display:flex;height:calc(var(--u)*138);overflow:hidden;border:calc(var(--u)*1) solid #e5e5e5;border-radius:calc(var(--u)*17);background:#fff}
 :is(#laboratorio,.lab-escopo) .cm-sb .sb-gpt-ad-img{flex:none;width:calc(var(--u)*112);height:100%;object-fit:cover}

@@ -26,9 +26,10 @@ const PRECO = 'R$ ••••';
 
 /* Glyphs this module needs beyond the shared set: generic strokes on the 24 grid. */
 const PATHS = {
-  horse: 'M8.6 21c.2-2.4.9-4.4 2.2-6l-2.5.5c-1.3.3-2.5-.2-3-1.1l-.4-.8 5.2-6.4c.9-1.1 2-1.9 3.2-2.3L14.4 3l1.4 2.1c2.4 1.3 3.9 3.8 3.9 7.1 0 3.6-1.5 6.5-2.2 8.8M12.3 9.3h.01M14.4 3c-.5 1.6-.3 3.1.7 4.4',
+  horse: 'M18.5 21.5c.8-3 1.4-6 1-9.3-.3-2.6-1.4-4.7-3-6.2l-1-3.5-1.7 2.6c-2.5.6-4.4 2.1-5.8 4.1L5 12.6c-.7.9-.5 2.2.4 2.8.7.5 1.6.6 2.4.3l3-1.2c.6 1.2.4 2.6-.4 3.9L8.6 21.5M12.4 8.6h.01M6.4 13.6h.01',
+  mask: 'M2.5 8.5c3.2-1.6 6.4-1.6 9.5.2 3.1-1.8 6.3-1.8 9.5-.2-.1 4.1-1.6 7.2-4.6 7.6-2 .3-3.6-.9-4.9-2.7-1.3 1.8-2.9 3-4.9 2.7-3-.4-4.5-3.5-4.6-7.6zM6.2 11.4c.9-.6 2-.6 2.9 0M14.9 11.4c.9-.6 2-.6 2.9 0',
   keypad: 'M6 5h.01M12 5h.01M18 5h.01M6 11h.01M12 11h.01M18 11h.01M6 17h.01M12 17h.01M18 17h.01M12 22h.01',
-  micoff: 'M9 9V6a3 3 0 0 1 5.8-1.1M15 10.5V12a3 3 0 0 1-4.6 2.5M6 11a6 6 0 0 0 10 4.5M18 11a6 6 0 0 1-.4 2.1M12 17v4M4 4l16 16',
+  micoff: 'M12 14.5a2.8 2.8 0 0 0 2.8-2.8V6.3a2.8 2.8 0 0 0-5.6 0v5.4a2.8 2.8 0 0 0 2.8 2.8zM6.3 11.2a5.7 5.7 0 0 0 11.4 0M12 17v3.8M4.5 4.5l15 15',
   turn: 'M7 21v-8.5A3.5 3.5 0 0 1 10.5 9H19M15 5l4 4-4 4',
   nav: 'M12 2.5 20 21l-8-4.6L4 21z',
   clock: 'M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM12 7v5l3.2 2',
@@ -205,7 +206,7 @@ export function makeSearch(ctx = {}) {
     ];
     return tela('seo', 'seoOrganic', scene('serp', 'base', 'claro', `<div class="cm-safe sb-g"><div class="sb-g-head"><div class="sb-g-box">${logoSvg('google', { altura: 18, classe: 'sb-g-logo' })}<span class="sb-typed is-done"><span>casa na falésia à venda</span></span>${I('close')}${I('mic')}${I('lens')}</div>
       <div class="sb-g-tabs"><span>Modo IA</span><b>Todas</b><span>Imagens</span><span>Mapas</span><span>Notícias</span></div></div>
-      <div class="sb-g-results"><article class="sb-g-org sb-seo-res"><div class="sb-g-site">${marca(ki, 'fav')}<span><b>${esc(nome)}</b><small>${esc(dom)} › plantas</small></span>${I('vdots')}</div>
+      <div class="sb-g-results"><article class="sb-g-org sb-seo-res cm-g-result--organic"><div class="sb-g-site">${marca(ki, 'fav')}<span><b>${esc(nome)}</b><small>${esc(dom)} › plantas</small></span>${I('vdots')}</div>
         <div class="sb-seo-main"><b class="sb-g-otitle" data-hs="1">Casas na falésia com a sala voltada para o mar</b>${pic('salaMar11', { cls: 'sb-seo-thumb', pos: '50% 50%' })}</div>
         <p>Plantas de 3 e 4 quartos, varanda de frente para o mar e visita ao decorado com hora marcada. Veja as plantas e receba o PDF.</p>
         <span class="sb-seo-links"><span data-tap="link">Plantas${I('chevron')}</span><span>Localização${I('chevron')}</span><span>Agendar visita${I('chevron')}</span></span></article>
@@ -241,7 +242,7 @@ export function makeSearch(ctx = {}) {
         <p class="cm-site-note sb-show-q2">${I('people')}${esc(cap(viagem))}. ${esc(T.criancas)}.</p>
         ${lista('As duas saídas incluem', [T.transporte, 'Hotel no centro histórico', 'Guia da cidade nas cavalhadas'])}`)}${foot(cta('Continuar', 'c'))}`,
       `${head(kt)}${body(`<div class="sb-bd-q"><small>Monte seu roteiro, 2 de 2</small><span style="--p:1"><i></i></span></div><b class="cm-bd-title">O que você quer ver?</b>
-        <div class="cm-bd-tiles">${tile('music', 'Mascarados')}${tile('horse', 'Cavalhadas', { q: 'q3', tap: 'd' })}${tile('people', 'Procissão')}${tile('fork', 'Comida típica')}</div>
+        <div class="cm-bd-tiles">${tile('mask', 'Mascarados')}${tile('horse', 'Cavalhadas', { q: 'q3', tap: 'd' })}${tile('people', 'Procissão')}${tile('fork', 'Comida típica')}</div>
         <p class="cm-site-note">${I('info')}${esc(T.destaque)}.</p>
         <div class="sb-bd-why">${pic('estandarte11', { pos: '50% 50%', alt: 'Estandarte vermelho do Divino Espírito Santo, com a pomba bordada.' })}<span><b>Festa do Divino</b><small>Cavalhadas, mascarados, procissão e a comida da festa, nos dias que você escolher.</small></span></div>`)}${foot(cta('Gerar roteiro', 'e'))}`,
       `${head(kt)}${body(`<div class="cm-bd-hero cm-bd-hero--sm">${pic('matrizNoite45', { pos: '50% 86%', alt: 'Igreja matriz de Pirenópolis iluminada à noite.' })}<span>Roteiro sugerido</span></div><b class="cm-bd-title">${s1.noites} noites em ${esc(T.cidade)}</b>
@@ -260,7 +261,7 @@ export function makeSearch(ctx = {}) {
           <ul data-stream><li><b>${esc(cap(diaSemana(s1.ida)))}, ${dia(s1.ida)}:</b> voo até Brasília e 2 horas de carro;</li><li><b>${esc(cap(diaSemana(s2.ida)))}, ${dia(s2.ida)}:</b> centro histórico e mascarados;</li><li><b>${dia(cav1)} a ${dia(cav3)}:</b> as três cavalhadas e a volta.</li></ul>
           <p data-stream>Com a criança de 2 anos: a partir dessa idade ela viaja em assento próprio, com tarifa de criança.</p></div>
         <span data-in="s4">${acoes(fontes)}</span>
-        <hr data-in="s2"><div class="sb-gpt-ad" data-in="s2" data-tap="cta" data-hs="2" data-hs-at="tl">${pic('pirenopolisRua45', { cls: 'sb-gpt-ad-img', pos: '50% 35%', alt: 'Rua de pedra de Pirenópolis com casario colonial.' })}<span class="sb-gpt-ad-body"><span class="sb-gpt-ad-top">${marca(kt, 'fav')}<span>${esc(nome)}</span><small class="sb-gpt-chip">Patrocinado</small>${I('dots')}</span><b>Festa do Divino em grupo pequeno</b><small>Saídas de ${dia(s1.ida)} e ${dia(s2.ida)} de maio de 2027, com guia da cidade e hotel no centro histórico.</small></span></div></div>
+        <hr class="sb-gpt-s2"><div class="sb-gpt-ad sb-gpt-s2" data-tap="cta" data-hs="2" data-hs-at="tl">${pic('pirenopolisRua45', { cls: 'sb-gpt-ad-img', pos: '50% 35%', alt: 'Rua de pedra de Pirenópolis com casario colonial.' })}<span class="sb-gpt-ad-body"><span class="sb-gpt-ad-top">${marca(kt, 'fav')}<span>${esc(nome)}</span><small class="sb-gpt-chip">Patrocinado</small>${I('dots')}</span><b>Festa do Divino em grupo pequeno</b><small>Saídas de ${dia(s1.ida)} e ${dia(s2.ida)} de maio de 2027, com guia da cidade e hotel no centro histórico.</small></span></div></div>
       <div class="sb-gpt-input">${I('plus')}<span class="sb-gpt-ph" data-out="ty">Pergunte qualquer coisa</span><span class="sb-gpt-typed" data-in="ty" data-out="s3"><span data-stream>${esc(pedidoGpt)}</span></span>${I('mic')}<i class="sb-gpt-wave" data-out="ty">${I('wave')}</i><i class="sb-gpt-send" data-in="ty" data-out="s3" data-tap="gsend">${I('up')}</i></div>`) +
       scene('page', 'sheet', 'claro', `${browserBar(nome, C[kt].dominio, 'share')}${site(kt, 'bandeirola', roteiro)}`) +
       scene('wa', 'switch', 'claro', `<span class="sb-crumb">${I('back')}ChatGPT</span>${waHead(kt)}
@@ -396,7 +397,15 @@ export function makeSearch(ctx = {}) {
         { ms: 800, cena: 'call', estado: 'r', toque: 'go', desc: 'Toque em Ligar.' },
         { ms: TOQUE, cena: 'ligacao', estado: 'ring', desc: `Chamando a ${C[kc].marca}.` },
         ...turnos.slice(0, 7).map((x, i) => ({ ms: x.ms, cena: 'ligacao', estado: `on t${i + 1}`, fala: gFala[i],
-          desc: i === 0 ? 'A recepção atende. O tempo da ligação começa a contar.' : i === 4 ? `A recepção oferece ${dataCurta(av.iso)}, às ${horaFala(av.hora)}, ou ${dataCurta(alt.iso)}, às ${horaFala(alt.hora)}.` : i === 6 ? 'A avaliação está marcada e a confirmação vai pelo WhatsApp.' : 'A ligação segue, com o tempo correndo.',
+          desc: [
+            'A recepção atende e o tempo da ligação começa a contar.',
+            'Você conta que viu a clínica no Google e quer marcar uma avaliação.',
+            'A recepção pergunta se é a primeira consulta e pede o nome completo.',
+            'Você confirma que é a primeira consulta e diz o nome.',
+            `A recepção oferece ${dataCurta(av.iso)}, às ${horaFala(av.hora)}, ou ${dataCurta(alt.iso)}, às ${horaFala(alt.hora)}.`,
+            `Você escolhe ${diaSemana(av.iso)} às ${horaFala(av.hora)}.`,
+            'A avaliação fica marcada e a confirmação vai pelo WhatsApp.',
+          ][i],
           ...(i === 0 ? { log: [L('10:09:31', 'Google Ads', 'Chamada atendida', 'origem: anúncio de pesquisa', 'evento')] } : {}),
           ...(i === 6 ? { hora: t('10'), log: [L('10:10:02', 'Agenda da clínica', 'Avaliação marcada', `${dataCurta(av.iso)} · ${av.hora}`, 'dado'), L('10:10:04', 'Google Ads', 'Conversão de chamada', 'a ligação passou da duração mínima', 'conversao')] } : {}) })),
         { ms: turnos[7].ms, cena: 'serp', estado: `r ilha t8 vm`, fala: gFala[7], hora: t('10'), desc: 'A ligação vira a pílula da Dynamic Island, com o tempo e a voz. No Google, os locais e o endereço.',
