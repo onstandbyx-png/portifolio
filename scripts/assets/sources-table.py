@@ -4,6 +4,7 @@ author, licence and crop always matches what convert-photos.py and convert-video
 Run: python3 -I scripts/assets/sources-table.py <download-dir>
 """
 import json, os, re, sys
+sys.dont_write_bytecode = True
 from PIL import Image
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from importlib import import_module

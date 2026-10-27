@@ -6,7 +6,7 @@ Todas as marcas que aparecem com estas fotos são fictícias, e cada exemplo lev
 
 ## Acervo licenciado de 27/10/2026 (StockSnap CC0 e Wikimedia Commons)
 
-Substitui as fotos do estúdio Fatos e preenche as frentes que repetiam foto (Explorar, LinkedIn, publieditorial, e-mail, Voz, Telegram e Pix). Nenhuma imagem foi gerada por IA: todas são fotografias de banco com licença aberta. O Pexels não entrou desta vez porque o site exige verificação contra robôs e a API pede chave; o Unsplash não foi usado.
+Substitui as fotos geradas por IA que vinham de outro projeto (seção "Fotos geradas que ainda estão em uso", abaixo) e preenche as frentes que repetiam foto (Explorar, LinkedIn, publieditorial, e-mail, Voz, Telegram e Pix). Nenhuma imagem foi gerada por IA: todas são fotografias de banco com licença aberta. O Pexels não entrou desta vez porque o site exige verificação contra robôs e a API pede chave; o Unsplash não foi usado.
 
 - **StockSnap** (via a API do Openverse, `api.openverse.org`): licença CC0 1.0, domínio público, sem atribuição obrigatória. O CDN entrega no máximo 960 px de largura (`cdn.stocksnap.io/img-thumbs/960w/<id>.jpg`), por isso as fotos de lá saem no tamanho do recorte, sem ampliar além de 1,4 vez.
 - **Wikimedia Commons**: CC BY 2.0, CC BY 4.0 e CC BY-SA 4.0, com atribuição visível em `/creditos` (página `pages/creditos.html`). Os recortes de arquivos CC BY-SA seguem sob a mesma licença. Baixei as versões em miniatura de 1280 ou 1920 px (`thumb.wikimedia.org`), não o original.
@@ -86,28 +86,20 @@ Download em 21/10/2026, direto do CDN do Pexels (`images.pexels.com/photos/<id>/
 | `incorporadora-sala-mar-1x1.webp` (620 x 620) | Sala aberta da casa na falésia, vidro, sofá, madeira e plantas | `public/assets/portfolio/smiile-architecture-coast.webp` (foto do projeto smiile, já no repositório; ver `static-r8/SOURCES.md`) | Caixa (620, 300, 1240, 920), sem ampliar. É a mesma arquitetura do cartão 1, por isso não veio de banco de imagens |
 | `incorporadora-sala-mar-4x5.webp` (700 x 875) | A mesma casa: varanda, sala e mata | mesma origem | Caixa (560, 58, 1260, 933), sem ampliar |
 
-## Arquivos do estúdio Fatos (estúdio Fatos, foto gerada, marca fictícia)
+## Fotos geradas que ainda estão em uso (saem nesta rodada)
 
-Copiados sem alteração da pasta de fotos do estúdio Fatos (repositório privado) (mesmo md5), com autorização do dono para este repositório. Fotos geradas no Higgsfield para o estúdio do mídia kit Fatos, sem pessoas reais e sem marcas reais (`roblox/CLAUDE.md`). Aqui servem a anunciantes fictícios com nomes novos, porque Arco, Rota Viva e Kairo coincidem com empresas reais do mesmo ramo (`docs/plans/clientes-canais-20261021.md`, seção 2.2).
+Fotos geradas por IA, copiadas de outro projeto do dono com autorização dele, sem pessoas reais e sem marcas. O dono não quer mais imagem gerada por IA nem material daquele projeto em público. O acervo licenciado acima substitui cada uma; os arquivos são apagados assim que os fluxos trocarem as chaves de `IMG` em `campaign-channels.js` (o grep de `campanha-` e `cena-` em `public/` e `src/` precisa voltar vazio).
 
-| Arquivo | O que mostra | Uso nesta seção |
+| Arquivo | O que mostra | Substituta no acervo licenciado |
 |---|---|---|
-| `campanha-crencas.webp` (720 x 1273) | Rua histórica com bandeirolas ao pôr do sol, sem pessoas | Destino Certo Viagens (Google Ads Display e ChatGPT) |
-| `campanha-esportes.webp` (720 x 1273) | SUV elétrico carregando no estacionamento de um estádio, placa em branco, sem logotipo | EcoDrive Elétricos (YouTube, anúncio no vídeo) |
-| `campanha-negocios.webp` (720 x 1273) | Mesa escura com copo, cartão, caneta e notebook; vista da cidade | Valore Patrimônio (LinkedIn e publieditorial). A tela do notebook mostra um gráfico subindo: use o recorte abaixo |
-| `campanha-negocios-sem-grafico.webp` (720 x 913) | A mesma mesa sem a tela do notebook | Recorte (0, 360, 720, 1273) de `campanha-negocios.webp`, para nenhum enquadramento mostrar gráfico de rendimento |
-
-A foto da Ponto Tech (`campanha-nerd.webp`, do estúdio Fatos) já está em `public/assets/portfolio/campanha-nerd.webp` e não foi duplicada.
-
-Cenas do estúdio Fatos, mapeadas no laboratório (`_lab/fatos-estudio`), copiadas sem alteração em 22/10/2026 (mesmo md5). Fotos geradas, sem pessoas e sem marcas.
-
-| Arquivo | O que mostra | Uso nesta seção |
-|---|---|---|
-| `cena-esportes.webp` (720 x 1273) | Bola, cones e apito num gramado de estádio ao pôr do sol | Miniatura do vídeo seguinte no YouTube (EcoDrive Elétricos) |
-| `cena-nerd.webp` (720 x 1273) | Controle de videogame, console portátil, foguete e dados sobre fundo amarelo | Segundo corte do vídeo da Ponto Tech no TikTok |
-| `cena-crencas.webp` (720 x 1273) | Destino Certos, lanternas e velas numa varanda ao entardecer | Roteiro sugerido no site da Destino Certo Viagens |
-
-`cena-negocios.webp` do mesmo estúdio não entra: o caderno mostra um gráfico subindo, que não deve aparecer junto da gestora de patrimônio.
+| `campanha-crencas.webp` (720 x 1273) | Rua histórica com bandeirolas ao pôr do sol | `turismo-pirenopolis-rua-9x16.webp`, `turismo-pirenopolis-rua-4x5.webp`, `turismo-bandeirolas-noite-9x16.webp` e, nas miniaturas, `turismo-estandarte-divino-1x1.webp` |
+| `campanha-esportes.webp` (720 x 1273) | SUV elétrico carregando, placa em branco | `automotivo-recarga-16x9.webp` e `automotivo-recarga-9x16.webp` |
+| `campanha-negocios.webp` e `campanha-negocios-sem-grafico.webp` | Mesa escura com notebook; a tela mostra um gráfico, e o segundo arquivo é o recorte sem a tela | `financas-reuniao-4x5.webp` e `-9x16` (LinkedIn), `financas-sala-jantar-4x5.webp` (publieditorial), `financas-mesa-cafe-4x5.webp` (e-mail) |
+| `../campanha-nerd.webp` (pasta acima, 720 x 1273) | Notebook com a tela acesa numa mesa escura | `varejo-creator15-branco-1x1.webp` e `varejo-creator15-grafite-1x1.webp` (produto), `varejo-mesa-noite-4x5.webp` (cena) e o vídeo `video/varejo-teclado-grafite-9x16` |
+| `cena-esportes.webp` (720 x 1273) | Bola, cones e apito num gramado | `esporte-estadio-16x9.webp` (miniatura do vídeo seguinte) e `automotivo-painel-16x9.webp` |
+| `cena-nerd.webp` (720 x 1273) | Controle de videogame e objetos sobre fundo amarelo | `varejo-mesa-criador-9x16.webp` e `varejo-mesa-criador-4x5.webp` |
+| `cena-crencas.webp` (720 x 1273) | Lanternas e velas numa varanda | `turismo-matriz-noite-4x5.webp` |
+| `../cena-nerd.webp`, `../cena-crencas.webp` e `../cena-negocios.webp` (pasta acima) | Cópias antigas das mesmas cenas, sem uso no site | Apagar junto |
 
 ## Desenho original
 
