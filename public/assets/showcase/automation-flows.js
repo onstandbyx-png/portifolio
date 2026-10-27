@@ -76,7 +76,7 @@ export function makeAutomations(H) {
   const turno = (seg, n, extra = {}) => ({ ms: seg.endMs - seg.startMs + 500, estado: `t${n} fala-${seg.quem}${extra.mais ? ' ' + extra.mais : ''}`, ...(seg.texto ? { fala: [[QUEM[seg.quem], seg.texto]] } : {}), ...extra.q });
   const segmentos = segs => segs.filter(s => s.texto).map(s => ({ quem: QUEM[s.quem], texto: s.texto, startMs: s.startMs, endMs: s.endMs }));
   /* Dynamic Island: the call activity (green timer and the wave) and the pill that closes the call. */
-  const ilha = (segs, n0, fim) => `<div class="au-ilha" aria-hidden="true"><span class="au-ilha-ativa"><span class="au-ilha-esq">${I('phone')}${tempos(segs, false, n0)}</span>${onda('au-onda--ilha')}</span><span class="au-ilha-fim"><b>${esc(fim[0])}</b><small>${esc(fim[1])}</small></span></div>`;
+  const ilha = (segs, n0, fim) => `<div class="au-ilha" aria-hidden="true"><span class="au-ilha-ativa"><span class="au-ilha-esq">${I('phone')}${tempos(segs, false, n0)}</span>${onda('au-onda--ilha')}</span><span class="au-ilha-fim"><b>${I('phone')}${esc(fim[0])}</b><small>${esc(fim[1])}</small></span></div>`;
 
   /* WhatsApp: bubbles, the typing dots before every answer, ticks that turn blue when read. */
   const prox = tok => tok.replace(/\d+$/, d => String(Number(d) + 1));
@@ -192,7 +192,7 @@ export function makeAutomations(H) {
       <span class="au-wacall-st" data-hs="2"><span data-in="c0">Conectando…</span>${tempos(segChamada, false)}<span data-in="fim">Chamada encerrada · ${relogio(duracaoChamada)}</span></span>
       <span class="au-wacall-av">${marca('automotivo', 'circulo')}</span>${onda('au-onda--wa')}<span class="au-wacall-nota" data-in="t6">Transferindo para ${esc(AU.consultor)}…</span>
       <div class="au-wacall-bar"><span>${I('speaker')}</span><span>${I('video')}</span><span>${I('mute')}</span><span class="au-round--end">${I('phone')}</span></div></div>`, 'au-grow') +
-    ilha([], 1, ['Chamada encerrada', relogio(duracaoChamada)]));
+    ilha([], 1, ['Encerrada', relogio(duracaoChamada)]));
 
   /* ---------- 3. Instagram: comment prompt on the Reel, private reply, waiting list, the arrival, a reserved checkout ---------- */
   const branco = V.skus.find(s => s.cor === 'branco'), chega = branco.chegada;
@@ -247,14 +247,14 @@ export function makeAutomations(H) {
       <div class="au-incall-grid">${[['speaker', 'Alto-falante'], ['video', 'FaceTime'], ['mute', 'Mudo'], ['dots', 'Mais'], ['phone', 'Desligar', 1], ['teclado', 'Teclado Numérico']].map(([g, t, fim]) => `<span${fim ? ' class="au-incall-fim"' : ''}><i>${G(g)}</i><small>${t}</small></span>`).join('')}</div></div>`, 'au-grow') +
     scene('agenda', 'push', 'claro', `<div class="au-cal"><div class="au-cal-top"><span>${I('back')}outubro</span><span>${I('search')}${I('plus')}</span></div>
       <div class="au-cal-sem">${semana.map(iso => `<span${iso === av.iso ? ' class="is-on"' : ''}><small>${dataCurta(iso)[0].toUpperCase()}</small><b>${dia(iso)}</b></span>`).join('')}</div>
-      <b class="au-cal-dia">${esc(dataLonga(av.iso, true))}</b>
+      <b class="au-cal-dia" data-hs="3">${esc(dataLonga(av.iso, true))}</b>
       <div class="au-cal-grade">${['08:00', '09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00'].map(h => `<span class="au-cal-h"><small>${h.slice(0, 2)}h</small></span>`).join('')}
-        <span class="au-cal-livre" data-hs="3"></span><span class="au-cal-ev" style="--de:3;--ate:4">Reunião com a contabilidade<small>${esc(TERCEIROS.empresaPersona)}</small></span><span class="au-cal-ev au-cal-ev--2" style="--de:5;--ate:6">Almoço com a ${esc(TERCEIROS.comentaristas[0].split(' ')[0])}</span></div></div>`) +
-    scene('wa', 'push', 'claro', `${waHead('clinica')}<div class="cm-wa-body">${waMeta}<span class="cm-wa-day">Hoje</span>
+        <span class="au-cal-ev" style="--de:3;--ate:4">Reunião com a contabilidade<small>${esc(TERCEIROS.empresaPersona)}</small></span><span class="au-cal-ev au-cal-ev--2" style="--de:5;--ate:6">Almoço com a ${esc(TERCEIROS.comentaristas[0].split(' ')[0])}</span></div></div>`) +
+    scene('wa', 'push', 'claro', `<span class="cm-crumb">${I('back')}Safari</span>${waHead('clinica')}<div class="cm-wa-body">${waMeta}<span class="cm-wa-day">Hoje</span>
       ${inn('', `Oi, ${PESSOA.primeiro}! Aqui é a ${esc(curta('clinica'))}. Tentamos te ligar agora para marcar a sua avaliação. Quer que a gente ligue às 14h ou prefere marcar por aqui?<span class="au-wa-btns" data-out="w1"><span data-tap="ligar" data-hs="2">Ligar às 14h</span><span>Marcar por aqui</span><span>Falar com a recepção</span></span>`, { time: '10:11', typing: false, hs: '2' })}
       ${out('w1', 'Ligar às 14h', '10:12')}
       ${inn('w1', 'Combinado! A gente liga às 14h. Se mudar de ideia, é só responder por aqui.', { time: '10:12', hs: '3' })}</div>${waCompose()}`) +
-    ilha(segVoz.slice(3), 4, ['Ligação encerrada', relogio(duracaoVoz)]));
+    ilha(segVoz.slice(3), 4, ['Encerrada', relogio(duracaoVoz)]));
 
   /* ---------- 5. RCS: from the search to a verified conversation in iOS Messages, Pix by the PSP link ---------- */
   const grafite = V.skus.find(s => s.id === 'creator15-grafite');
@@ -567,25 +567,25 @@ export function makeAutomations(H) {
     { ms: 900, cena: 'bank', estado: 'bk1', toque: 'auth', desc: 'Toque em Pagar e autorizar.' },
     { ms: 1200, cena: 'bank', estado: 'bk1 bk2', desc: 'O Face ID confirma.' },
     { ms: 2200, cena: 'bank', estado: 'bk3', desc: 'Pix enviado e Pix Automático autorizado. Ela gerencia tudo em Pix › Automático.', log: [ev('10:12:31', 'PSP', 'Webhook pix recebido', '1ª mensalidade', 'webhook', { txid: '••••' }), ev('10:12:32', 'PSP', 'Recorrência aprovada', 'autorização única no banco dela', 'assinatura', { status: 'APROVADA', idRec: 'RR••••' })] },
-    { ms: 2300, cena: 'lock', estado: 'a1', desc: `Na véspera, ${dataLonga(somaDias(c1, -1))}, o banco avisa: amanhã tem Pix Automático para a escola.`, log: [ev('10:30:00', 'PSP', 'Cobrança de novembro enviada ao banco', 'agendada com aviso', 'assinatura', { vencimento: ddmm(c1), status: 'ATIVA' }, { dia: somaDias(c1, -4) })] },
-    { ms: 2000, cena: 'lock', estado: 'a2', desc: `${cap(dataLonga(c1))}: Pix Automático pago.`, log: [ev('10:31:00', 'PSP', 'Pix Automático liquidado', 'mensalidade de novembro', 'webhook', { status: 'CONCLUIDA' }, { dia: c1 })] },
-    { ms: 2600, cena: 'lock', estado: 'a3', desc: `${cap(dataLonga(falha.aviso))}: o aviso de amanhã traz a opção de cancelar este pagamento até 23h59.`, log: [ev('10:40:00', 'PSP', 'Cobrança de dezembro agendada', 'aviso na véspera', 'assinatura', { vencimento: ddmm(c2) }, { dia: somaDias(c2, -4) })] },
+    { ms: 2300, cena: 'lock', estado: 'a1', hora: '19:05', desc: `Na véspera, ${dataLonga(somaDias(c1, -1))}, o banco avisa: amanhã tem Pix Automático para a escola.`, log: [ev('10:30:00', 'PSP', 'Cobrança de novembro enviada ao banco', 'agendada com aviso', 'assinatura', { vencimento: ddmm(c1), status: 'ATIVA' }, { dia: somaDias(c1, -4) })] },
+    { ms: 2000, cena: 'lock', estado: 'a2', hora: '08:02', desc: `${cap(dataLonga(c1))}: Pix Automático pago.`, log: [ev('07:41:00', 'PSP', 'Pix Automático liquidado', 'mensalidade de novembro', 'webhook', { status: 'CONCLUIDA' }, { dia: c1 })] },
+    { ms: 2600, cena: 'lock', estado: 'a3', hora: '19:10', desc: `${cap(dataLonga(falha.aviso))}: o aviso de amanhã traz a opção de cancelar este pagamento até 23h59.`, log: [ev('10:40:00', 'PSP', 'Cobrança de dezembro agendada', 'aviso na véspera', 'assinatura', { vencimento: ddmm(c2) }, { dia: somaDias(c2, -4) })] },
   ];
   const pix = [...pixBase,
-    { ms: 2300, cena: 'lock', estado: 'a4', desc: `${cap(dataLonga(falha.iso))}: o débito não passa por saldo e a escola escreve no WhatsApp.`, log: [ev('10:41:00', 'PSP', 'Tentativa não realizada', 'saldo insuficiente', 'webhook', { status: 'NAO_REALIZADA' }, { dia: c2 }), ev('10:41:01', 'PSP', 'Nova tentativa permitida', 'até 3 em 7 dias', 'retentativa', { politicaRetentativa: 'PERMITE_3R_7D' }, { dia: c2 }), ev('10:41:02', 'Sistema', 'Régua de recuperação iniciada', 'WhatsApp primeiro, e-mail depois', 'sistema', null, { dia: c2 })] },
+    { ms: 2300, cena: 'lock', estado: 'a4', hora: '08:04', desc: `${cap(dataLonga(falha.iso))}: o débito não passa por saldo e a escola escreve no WhatsApp.`, log: [ev('07:58:00', 'PSP', 'Tentativa não realizada', 'saldo insuficiente', 'webhook', { status: 'NAO_REALIZADA' }, { dia: c2 }), ev('07:58:01', 'PSP', 'Nova tentativa permitida', 'até 3 em 7 dias', 'retentativa', { politicaRetentativa: 'PERMITE_3R_7D' }, { dia: c2 }), ev('07:58:02', 'Sistema', 'Régua de recuperação iniciada', 'WhatsApp primeiro, e-mail depois', 'sistema', null, { dia: c2 })] },
     { ms: 900, cena: 'lock', estado: 'a4', toque: 'wa', desc: `Toque na mensagem da ${curta('educacao')}.` },
-    { ms: 2000, cena: 'wa', desc: 'A escola oferece tentar de novo amanhã ou pausar um mês sem perder a vaga.', log: [ev('10:41:30', 'WhatsApp', 'Modelo de utilidade enviado', 'três botões de resposta', 'webhook', { template: 'cobranca_nao_realizada' }, { dia: c2 })] },
+    { ms: 2000, cena: 'wa', hora: '08:15', desc: 'A escola oferece tentar de novo amanhã ou pausar um mês sem perder a vaga.', log: [ev('08:15:10', 'WhatsApp', 'Modelo de utilidade enviado', 'três botões de resposta', 'webhook', { template: 'cobranca_nao_realizada' }, { dia: c2 })] },
     { ms: 900, cena: 'wa', toque: 'pause', desc: 'Toque em Pausar 1 mês.' },
-    { ms: 2600, cena: 'wa', estado: 'w1', desc: `Pausado até janeiro: a vaga de quinta continua dela e a cobrança volta em ${dataCurta(M.retomada)}.`, log: [ev('10:41:45', 'PSP', 'Cobrança de dezembro cancelada', 'a autorização continua', 'assinatura', { cobranca: 'CANCELADA', recorrencia: 'APROVADA' }, { dia: c2 }), ev('10:41:46', 'CRM', 'Pausa no lugar do cancelamento', 'vaga mantida na turma', 'crm', null, { dia: c2 }), ev('10:41:47', 'Agenda', 'Próxima cobrança', ddmm(M.retomada) + '/2027', 'agenda', { vencimento: M.retomada }, { dia: c2 })] },
+    { ms: 2600, cena: 'wa', estado: 'w1', hora: '08:16', desc: `Pausado até janeiro: a vaga de quinta continua dela e a cobrança volta em ${dataCurta(M.retomada)}.`, log: [ev('08:16:12', 'PSP', 'Cobrança de dezembro cancelada', 'a autorização continua', 'assinatura', { cobranca: 'CANCELADA', recorrencia: 'APROVADA' }, { dia: c2 }), ev('08:16:13', 'CRM', 'Pausa no lugar do cancelamento', 'vaga mantida na turma', 'crm', null, { dia: c2 }), ev('08:16:14', 'Agenda', 'Próxima cobrança', ddmm(M.retomada) + '/2027', 'agenda', { vencimento: M.retomada }, { dia: c2 })] },
   ];
   const pixFalha = [...pixBase,
     { ms: 900, cena: 'lock', estado: 'a3', toque: 'cancela', desc: 'Ela toca em Cancelar este pagamento, na véspera.' },
-    { ms: 2000, cena: 'cancela', desc: `O ${B.nome} pergunta se cancela só o pagamento de ${ddmm(c2)}; a autorização continua.` },
+    { ms: 2000, cena: 'cancela', hora: '19:12', desc: `O ${B.nome} pergunta se cancela só o pagamento de ${ddmm(c2)}; a autorização continua.` },
     { ms: 900, cena: 'cancela', toque: 'cx', desc: 'Toque em Cancelar pagamento.' },
     { ms: 2000, cena: 'cancela', estado: 'x1', desc: 'Pagamento cancelado. O Pix Automático segue autorizado.', log: [ev('19:12:40', 'PSP', 'Agendamento cancelado pela pagadora', 'a escola recebe o aviso', 'webhook', { status: 'CANCELADA', motivo: 'pagador' }, { dia: falha.aviso })] },
-    { ms: 2200, cena: 'wa', estado: 'x2', desc: 'No dia seguinte, a escola escreve: a vaga continua e ela pode pausar dezembro.', log: [ev('19:30:00', 'Sistema', 'Régua de retenção iniciada', 'sem cobrar de novo', 'sistema', null, { dia: c2 })] },
+    { ms: 2200, cena: 'wa', estado: 'x2', hora: '08:20', desc: 'No dia seguinte, a escola escreve: a vaga continua e ela pode pausar dezembro.', log: [ev('08:20:00', 'Sistema', 'Régua de retenção iniciada', 'sem cobrar de novo', 'sistema', null, { dia: c2 })] },
     { ms: 900, cena: 'wa', estado: 'x2', toque: 'pause2', desc: 'Toque em Pausar 1 mês.' },
-    { ms: 2400, cena: 'wa', estado: 'x2 x3', desc: `Pausado até janeiro. A cobrança volta em ${dataCurta(M.retomada)}.`, log: [ev('19:30:20', 'CRM', 'Pausa registrada', 'vaga mantida, autorização ativa', 'crm', { recorrencia: 'APROVADA' }, { dia: c2 })] },
+    { ms: 2400, cena: 'wa', estado: 'x2 x3', hora: '08:21', desc: `Pausado até janeiro. A cobrança volta em ${dataCurta(M.retomada)}.`, log: [ev('08:21:20', 'CRM', 'Pausa registrada', 'vaga mantida, autorização ativa', 'crm', { recorrencia: 'APROVADA' }, { dia: c2 })] },
   ];
 
   const emailBase = [
@@ -748,7 +748,7 @@ export function makeAutomations(H) {
   const AVISOS = {
     'whatsapp/agente': { app: 'mail', cliente: 'turismo', texto: `Pré-reserva confirmada: Festa do Divino, ${periodo(s1)} de 2027. Roteiro e documentos aqui.`, desc: 'O roteiro chega por e-mail, na notificação do iPhone.', log: [ev('10:13:40', 'E-mail', 'Roteiro enviado', 'remetente autenticado', 'email', { descadastro: 'um clique' })] },
     'voz/ligacao': { app: 'whatsapp', cliente: 'clinica', hora: '10:11', texto: `Avaliação confirmada: ${dataCurta(av.iso)}, às ${horaFala(av.hora)}, unidade ${av.unidade}. Para remarcar, é só responder.`, desc: 'A confirmação e o endereço chegam pelo WhatsApp.', log: [ev('10:11:05', 'WhatsApp', 'Confirmação por modelo de utilidade', 'lembrete na véspera agendado', 'webhook', { template: 'confirmacao_avaliacao' })] },
-    'pix/recorrencia': { app: 'mail', cliente: 'educacao', texto: `Sua assinatura está pausada até janeiro. A vaga de quinta continua sua; a cobrança volta em ${dataCurta(M.retomada)}.`, desc: 'A pausa também chega por e-mail.', log: [ev('10:42:10', 'E-mail', 'Confirmação da pausa', 'a mesma informação, por outro canal', 'email', null, { dia: c2 })] },
+    'pix/recorrencia': { app: 'mail', cliente: 'educacao', hora: '08:17', texto: `Sua assinatura está pausada até janeiro. A vaga de quinta continua sua; a cobrança volta em ${dataCurta(M.retomada)}.`, desc: 'A pausa também chega por e-mail.', log: [ev('08:16:40', 'E-mail', 'Confirmação da pausa', 'a mesma informação, por outro canal', 'email', null, { dia: c2 })] },
   };
 
   return { mocks, SCREEN, extra, novos, AVISOS, hidden };

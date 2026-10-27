@@ -168,15 +168,17 @@
    closes the call; the island itself is drawn over it (channel-mocks.css), so the camera stays in place. */
 :is(#laboratorio,.lab-escopo) .au-ilha{position:absolute;z-index:58;left:50%;top:calc(var(--u)*10.3);display:flex;align-items:center;width:calc(var(--u)*118);height:calc(var(--u)*35);translate:-50% 0;border-radius:calc(var(--u)*17.5);background:#000;color:#fff;overflow:hidden;pointer-events:none;transition:width .55s var(--fm-bouncy)}
 :is(#laboratorio,.lab-escopo) .au-ilha>span{position:absolute;inset:0;display:flex;align-items:center;justify-content:space-between;padding:0 calc(var(--u)*11);opacity:0;transition:opacity .2s ease}
-:is(#laboratorio,.lab-escopo) .au[data-state~="ilha"] .au-ilha{width:calc(var(--u)*250)}
+:is(#laboratorio,.lab-escopo) .au[data-state~="ilha"] .au-ilha{width:calc(var(--u)*236)}
 :is(#laboratorio,.lab-escopo) .au[data-state~="ilha"]:not([data-state~="fim"]) .au-ilha-ativa{opacity:1;transition-delay:.25s}
 :is(#laboratorio,.lab-escopo) .au-ilha-esq{display:flex;align-items:center;gap:calc(var(--u)*4);color:#34c759;font-size:calc(var(--u)*13);font-weight:600}
 :is(#laboratorio,.lab-escopo) .au-ilha-esq .cm-i{width:calc(var(--u)*13);height:calc(var(--u)*13);fill:currentColor;stroke:none}
-:is(#laboratorio,.lab-escopo) .au .au-ilha-fim{justify-content:center;gap:calc(var(--u)*8);font-size:calc(var(--u)*13.5)}
+:is(#laboratorio,.lab-escopo) .au-ilha-fim{font-size:calc(var(--u)*13)}
+:is(#laboratorio,.lab-escopo) .au-ilha-fim b{display:flex;align-items:center;gap:calc(var(--u)*5);font-weight:600}
+:is(#laboratorio,.lab-escopo) .au-ilha-fim .cm-i{width:calc(var(--u)*13);height:calc(var(--u)*13);transform:rotate(135deg);fill:#ff453a;stroke:none}
 :is(#laboratorio,.lab-escopo) .au-ilha-fim small{color:#ff453a;font-variant-numeric:tabular-nums}
 :is(#laboratorio,.lab-escopo) .au[data-state~="fim"]:not([data-scene="call"]) .au-ilha{animation:au-ilha-fim 3s var(--fm-smooth) both}
 :is(#laboratorio,.lab-escopo) .au[data-state~="fim"]:not([data-scene="call"]) .au-ilha-fim{animation:au-ilha-txt 3s ease both}
-@keyframes au-ilha-fim{0%{width:calc(var(--u)*118)}12%,72%{width:calc(var(--u)*250)}100%{width:calc(var(--u)*118)}}
+@keyframes au-ilha-fim{0%{width:calc(var(--u)*118)}12%,72%{width:calc(var(--u)*300)}100%{width:calc(var(--u)*118)}}
 @keyframes au-ilha-txt{0%,10%{opacity:0}18%,66%{opacity:1}76%,100%{opacity:0}}
 /* A call scene grows out of the island and goes back into it. */
 :is(#laboratorio,.lab-escopo) .au .cm-scene.au-grow{clip-path:inset(calc(var(--u)*10.3) calc(50% - calc(var(--u)*59)) calc(100% - calc(var(--u)*45.3)) calc(50% - calc(var(--u)*59)) round calc(var(--u)*17.5));opacity:1;transform:none;transition:clip-path .5s var(--fm-smooth),visibility 0s .5s}
@@ -591,32 +593,32 @@
 #laboratorio .sp-art-ui .cm-mark{display:grid;flex:none;place-items:center;width:34px;height:34px;overflow:hidden;border-radius:50%;background:var(--c)}
 #laboratorio .sp-art-ui .cm-mark svg{width:72%;height:72%}
 #laboratorio .sp-art-ui .cm-i{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
-#laboratorio .au-ui>span{display:grid;flex:1;min-width:0}
-#laboratorio .au-ui b{font-weight:650}
-#laboratorio .au-ui small{color:#555;font-size:12px}
-#laboratorio .au-ui--call{background:rgb(20 26 28 / .9);color:#fff}
-#laboratorio .au-ui--call small{color:#ffffffb3}
-#laboratorio .au-ui-no,#laboratorio .au-ui-yes{display:grid;flex:none;place-items:center;width:38px;height:38px;border-radius:50%;background:#ff3b30;color:#fff}
-#laboratorio .au-ui-yes{background:#34c759}
-#laboratorio .au-ui-no .cm-i,#laboratorio .au-ui-yes .cm-i{fill:#fff;stroke:none}
-#laboratorio .au-ui-no .cm-i{transform:rotate(135deg)}
-#laboratorio .au-ui--pix .au-bk-icone{display:grid;flex:none;place-items:center;width:34px;height:34px;border-radius:9px;background:var(--bk);color:#fff;font-size:12px;font-style:normal;font-weight:800}
-#laboratorio .au-ui--tg{display:grid;gap:4px;padding:0;background:none;box-shadow:none}
-#laboratorio .au-ui-post{display:grid;padding:10px 12px;border-radius:16px 16px 16px 5px;background:#fff}
-#laboratorio .au-ui-kb{display:grid;grid-template-columns:repeat(3,1fr);gap:4px}
-#laboratorio .au-ui-kb i{display:grid;place-items:center;height:32px;border-radius:10px;background:rgb(0 0 0 / .32);color:#fff;font-style:normal;font-weight:600;-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
-#laboratorio .au-ui--rcs{display:grid;justify-items:center;gap:8px}
-#laboratorio .au-ui-rcs-id{display:flex;align-items:center;gap:8px}
-#laboratorio .au-ui-rcs-id b{display:flex;align-items:center;gap:4px}
-#laboratorio .au-ui .au-verified{width:9px;height:9px;padding:2px;border-radius:50%;background:#007aff;color:#fff;stroke-width:3.6}
-#laboratorio .au-ui-chips{display:flex;flex-wrap:wrap;justify-content:center;gap:6px}
-#laboratorio .au-ui-chips i{padding:5px 10px;border:1px solid #c7c7cc;border-radius:99px;color:#007aff;font-style:normal}
-#laboratorio .au-ui--mail{display:grid;gap:0;padding:4px 12px}
-#laboratorio .au-ui--mail>span{display:flex;align-items:center;gap:9px;padding:6px 0;border-bottom:1px solid #e5e5ea}
-#laboratorio .au-ui--mail>span:last-child{border:0}
-#laboratorio .au-ui--mail .cm-mark{width:26px;height:26px}
-#laboratorio .au-ui--mail b{flex:1;overflow:hidden;font-weight:500;text-overflow:ellipsis;white-space:nowrap}
-#laboratorio .au-ui--mail .is-new b{font-weight:700}
+#laboratorio .sp-art-ui .au-ui>span:not(.cm-mark){display:grid;flex:1;min-width:0}
+#laboratorio .sp-art-ui .au-ui b{font-weight:650}
+#laboratorio .sp-art-ui .au-ui small{color:#555;font-size:12px}
+#laboratorio .sp-art-ui .au-ui--call{background:rgb(20 26 28 / .9);color:#fff}
+#laboratorio .sp-art-ui .au-ui--call small{color:#ffffffb3}
+#laboratorio .sp-art-ui .au-ui-no,#laboratorio .sp-art-ui .au-ui-yes{display:grid;flex:none;place-items:center;width:38px;height:38px;border-radius:50%;background:#ff3b30;color:#fff}
+#laboratorio .sp-art-ui .au-ui-yes{background:#34c759}
+#laboratorio .sp-art-ui .au-ui-no .cm-i,#laboratorio .sp-art-ui .au-ui-yes .cm-i{fill:#fff;stroke:none}
+#laboratorio .sp-art-ui .au-ui-no .cm-i{transform:rotate(135deg)}
+#laboratorio .sp-art-ui .au-ui--pix .au-bk-icone{display:grid;flex:none;place-items:center;width:34px;height:34px;border-radius:9px;background:var(--bk);color:#fff;font-size:12px;font-style:normal;font-weight:800}
+#laboratorio .sp-art-ui .au-ui--tg{display:grid;gap:4px;padding:0;background:none;box-shadow:none}
+#laboratorio .sp-art-ui .au-ui-post{display:grid;padding:10px 12px;border-radius:16px 16px 16px 5px;background:#fff}
+#laboratorio .sp-art-ui .au-ui-kb{display:grid;grid-template-columns:repeat(3,1fr);gap:4px}
+#laboratorio .sp-art-ui .au-ui-kb i{display:grid;place-items:center;height:32px;border-radius:10px;background:rgb(0 0 0 / .32);color:#fff;font-style:normal;font-weight:600;-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
+#laboratorio .sp-art-ui .au-ui--rcs{display:grid;justify-items:center;gap:8px}
+#laboratorio .sp-art-ui .au-ui-rcs-id{display:flex;align-items:center;gap:8px}
+#laboratorio .sp-art-ui .au-ui-rcs-id b{display:flex;align-items:center;gap:4px}
+#laboratorio .sp-art-ui .au-ui .au-verified{width:9px;height:9px;padding:2px;border-radius:50%;background:#007aff;color:#fff;stroke-width:3.6}
+#laboratorio .sp-art-ui .au-ui-chips{display:flex;flex-wrap:wrap;justify-content:center;gap:6px}
+#laboratorio .sp-art-ui .au-ui-chips i{padding:5px 10px;border:1px solid #c7c7cc;border-radius:99px;color:#007aff;font-style:normal}
+#laboratorio .sp-art-ui .au-ui--mail{display:grid;gap:0;padding:4px 12px}
+#laboratorio .sp-art-ui .au-ui--mail>span{display:flex;align-items:center;gap:9px;padding:6px 0;border-bottom:1px solid #e5e5ea}
+#laboratorio .sp-art-ui .au-ui--mail>span:last-child{border:0}
+#laboratorio .sp-art-ui .au-ui--mail .cm-mark{width:26px;height:26px}
+#laboratorio .sp-art-ui .au-ui--mail b{flex:1;overflow:hidden;font-weight:500;text-overflow:ellipsis;white-space:nowrap}
+#laboratorio .sp-art-ui .au-ui--mail .is-new b{font-weight:700}
 
 /* Player header: the glyph of a channel without an official logo. */
 :is(#laboratorio,.lab-escopo) .cx-logo--glifo{width:22px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
