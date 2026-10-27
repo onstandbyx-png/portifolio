@@ -4,7 +4,8 @@
    Pix Automático and the Lock Screen; iOS Mail with categories; the Telegram group, the miniapp and Stars.
    Same rules as channel-mocks.css: every length in units of the 412 pt screen, scoped to the section, states
    drawn from the frame tokens. No real bank, carrier or app maker marks.
-   Built from a source where :is(#laboratorio,.lab-escopo) is the scope and U(n) a length of n screen units. */
+   Built from a source where :is(#laboratorio,.lab-escopo) is the scope, U(n) a length of n screen units and C(n) of n units of the
+   phone chrome (the island does not zoom with the app). */
 :is(#laboratorio,.lab-escopo) .au{--au-ink:#111b21;--au-mut:#667781;--au-wa:#008069;--au-blue:#027eb5}
 :is(#laboratorio,.lab-escopo) .au .cm-i--inline{display:inline-block;width:1.05em;height:1.05em;margin-right:.3em;vertical-align:-.16em;stroke-width:2}
 /* A crumb back to the previous app takes the place of the clock, as in iOS. */
@@ -166,22 +167,25 @@
 
 /* Calls. Dynamic Island: the call activity grows out of the island (green timer, the wave) and a pill
    closes the call; the island itself is drawn over it (channel-mocks.css), so the camera stays in place. */
-:is(#laboratorio,.lab-escopo) .au-ilha{position:absolute;z-index:58;left:50%;top:calc(var(--u)*10.3);display:flex;align-items:center;width:calc(var(--u)*118);height:calc(var(--u)*35);translate:-50% 0;border-radius:calc(var(--u)*17.5);background:#000;color:#fff;overflow:hidden;pointer-events:none;transition:width .55s var(--fm-bouncy)}
-:is(#laboratorio,.lab-escopo) .au-ilha>span{position:absolute;inset:0;display:flex;align-items:center;justify-content:space-between;padding:0 calc(var(--u)*11);opacity:0;transition:opacity .2s ease}
-:is(#laboratorio,.lab-escopo) .au[data-state~="ilha"] .au-ilha{width:calc(var(--u)*236)}
+:is(#laboratorio,.lab-escopo) .au-ilha{position:absolute;z-index:58;left:50%;top:calc(var(--ch-u,var(--u))*10.3);display:flex;align-items:center;width:calc(var(--ch-u,var(--u))*118);height:calc(var(--ch-u,var(--u))*35);translate:-50% 0;border-radius:calc(var(--ch-u,var(--u))*17.5);background:#000;color:#fff;overflow:hidden;pointer-events:none;transition:width .55s var(--fm-bouncy)}
+:is(#laboratorio,.lab-escopo) .au-ilha>span{position:absolute;inset:0;display:flex;align-items:center;justify-content:space-between;padding:0 calc(var(--ch-u,var(--u))*9);opacity:0;transition:opacity .2s ease}
+:is(#laboratorio,.lab-escopo) .au[data-state~="ilha"] .au-ilha{width:calc(var(--ch-u,var(--u))*226)}
 :is(#laboratorio,.lab-escopo) .au[data-state~="ilha"]:not([data-state~="fim"]) .au-ilha-ativa{opacity:1;transition-delay:.25s}
-:is(#laboratorio,.lab-escopo) .au-ilha-esq{display:flex;align-items:center;gap:calc(var(--u)*4);color:#34c759;font-size:calc(var(--u)*13);font-weight:600}
-:is(#laboratorio,.lab-escopo) .au-ilha-esq .cm-i{width:calc(var(--u)*13);height:calc(var(--u)*13);fill:currentColor;stroke:none}
-:is(#laboratorio,.lab-escopo) .au-ilha-fim{font-size:calc(var(--u)*13)}
-:is(#laboratorio,.lab-escopo) .au-ilha-fim b{display:flex;align-items:center;gap:calc(var(--u)*5);font-weight:600}
-:is(#laboratorio,.lab-escopo) .au-ilha-fim .cm-i{width:calc(var(--u)*13);height:calc(var(--u)*13);transform:rotate(135deg);fill:#ff453a;stroke:none}
+:is(#laboratorio,.lab-escopo) .au-ilha-esq{display:flex;align-items:center;gap:calc(var(--ch-u,var(--u))*3);color:#34c759;font-size:calc(var(--ch-u,var(--u))*12.5);font-weight:600}
+:is(#laboratorio,.lab-escopo) .au-ilha-esq .cm-i{width:calc(var(--ch-u,var(--u))*12);height:calc(var(--ch-u,var(--u))*12);fill:currentColor;stroke:none}
+:is(#laboratorio,.lab-escopo) .au-ilha-fim{font-size:calc(var(--ch-u,var(--u))*13)}
+:is(#laboratorio,.lab-escopo) .au-ilha-fim b{display:flex;align-items:center;gap:calc(var(--ch-u,var(--u))*5);font-weight:600}
+:is(#laboratorio,.lab-escopo) .au-ilha-fim .cm-i{width:calc(var(--ch-u,var(--u))*13);height:calc(var(--ch-u,var(--u))*13);transform:rotate(135deg);fill:#ff453a;stroke:none}
 :is(#laboratorio,.lab-escopo) .au-ilha-fim small{color:#ff453a;font-variant-numeric:tabular-nums}
 :is(#laboratorio,.lab-escopo) .au[data-state~="fim"]:not([data-scene="call"]) .au-ilha{animation:au-ilha-fim 3s var(--fm-smooth) both}
 :is(#laboratorio,.lab-escopo) .au[data-state~="fim"]:not([data-scene="call"]) .au-ilha-fim{animation:au-ilha-txt 3s ease both}
-@keyframes au-ilha-fim{0%{width:calc(var(--u)*118)}12%,72%{width:calc(var(--u)*300)}100%{width:calc(var(--u)*118)}}
+@keyframes au-ilha-fim{0%{width:calc(var(--ch-u,var(--u))*118)}12%,72%{width:calc(var(--ch-u,var(--u))*300)}100%{width:calc(var(--ch-u,var(--u))*118)}}
 @keyframes au-ilha-txt{0%,10%{opacity:0}18%,66%{opacity:1}76%,100%{opacity:0}}
+/* While the pill is open, the status bar steps aside, as on the iPhone. */
+:is(#laboratorio,.lab-escopo) .ch-iphone-ui:has(.au[data-state~="fim"]:not([data-scene="call"])) .ch-iphone-status{animation:au-status-some 3s ease both}
+@keyframes au-status-some{0%,4%{opacity:1}12%,72%{opacity:0}82%,100%{opacity:1}}
 /* A call scene grows out of the island and goes back into it. */
-:is(#laboratorio,.lab-escopo) .au .cm-scene.au-grow{clip-path:inset(calc(var(--u)*10.3) calc(50% - calc(var(--u)*59)) calc(100% - calc(var(--u)*45.3)) calc(50% - calc(var(--u)*59)) round calc(var(--u)*17.5));opacity:1;transform:none;transition:clip-path .5s var(--fm-smooth),visibility 0s .5s}
+:is(#laboratorio,.lab-escopo) .au .cm-scene.au-grow{clip-path:inset(calc(var(--ch-u,var(--u))*10.3) calc(50% - calc(var(--ch-u,var(--u))*59)) calc(100% - calc(var(--ch-u,var(--u))*45.3)) calc(50% - calc(var(--ch-u,var(--u))*59)) round calc(var(--ch-u,var(--u))*17.5));opacity:1;transform:none;transition:clip-path .5s var(--fm-smooth),visibility 0s .5s}
 :is(#laboratorio,.lab-escopo) .au .cm-scene.au-grow[data-pos="on"]{clip-path:inset(0 round 0);transition:clip-path .55s var(--fm-smooth),visibility 0s}
 :is(#laboratorio,.lab-escopo) .au .cm-scene.au-grow[data-pos="off"]{z-index:3}
 :is(#laboratorio,.lab-escopo) .au:has(.au-grow[data-pos="on"]) .cm-scene[data-pos="under"]::after{opacity:0}
@@ -625,9 +629,9 @@
 
 /* Without motion (reduced motion, the site's pause, a jump between frames): no typing dots, timers at the
    end of the turn, the wave still, the call scenes in place. */
-@media(prefers-reduced-motion:reduce){:is(#laboratorio,.lab-escopo) .au .cm-scene .au-typing[data-in]{display:none}:is(#laboratorio,.lab-escopo) :is(.au-tempo>i,.au-onda i,.au-ilha,.au-ilha-fim,.au-face .au-face-ico,.au-face .au-face-ok,.au-ticks){animation:none!important}:is(#laboratorio,.lab-escopo) .au-face .au-face-ico{opacity:0}:is(#laboratorio,.lab-escopo) .au-face .au-face-ok{opacity:1}:is(#laboratorio,.lab-escopo) .au-ticks{color:#53bdeb}:is(#laboratorio,.lab-escopo) .au .cm-scene.au-grow{transition:none}}
+@media(prefers-reduced-motion:reduce){:is(#laboratorio,.lab-escopo) .au .cm-scene .au-typing[data-in]{display:none}:is(#laboratorio,.lab-escopo) :is(.au-tempo>i,.au-onda i,.au-ilha,.au-ilha-fim,.au-face .au-face-ico,.au-face .au-face-ok,.au-ticks,.ch-iphone-status){animation:none!important}:is(#laboratorio,.lab-escopo) .au-face .au-face-ico{opacity:0}:is(#laboratorio,.lab-escopo) .au-face .au-face-ok{opacity:1}:is(#laboratorio,.lab-escopo) .au-ticks{color:#53bdeb}:is(#laboratorio,.lab-escopo) .au .cm-scene.au-grow{transition:none}}
 body.is-paused :is(#laboratorio,.lab-escopo) .au .cm-scene .au-typing[data-in],:is(#laboratorio,.lab-escopo) .cm-screen.is-instant .au-typing[data-in]{display:none!important}
-body.is-paused :is(#laboratorio,.lab-escopo) :is(.au-tempo>i,.au-onda i,.au-ilha,.au-ilha-fim,.au-ticks),:is(#laboratorio,.lab-escopo) .cm-screen.is-instant :is(.au-tempo>i,.au-ilha,.au-ilha-fim){animation:none!important}
+body.is-paused :is(#laboratorio,.lab-escopo) :is(.au-tempo>i,.au-onda i,.au-ilha,.au-ilha-fim,.au-ticks,.ch-iphone-status),:is(#laboratorio,.lab-escopo) .cm-screen.is-instant :is(.au-tempo>i,.au-ilha,.au-ilha-fim){animation:none!important}
 body.is-paused :is(#laboratorio,.lab-escopo) .au .cm-scene.au-grow{transition:none}
 
 /* Reveal engine, generated from the tokens of the rendered mocks: data-in needs every listed token,
