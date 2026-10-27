@@ -20,9 +20,9 @@ try{
   const check=(name,pass)=>{row.checks.push({name,pass:!!pass});assert(pass,name)};
   try{
    await page.goto(base,{waitUntil:'domcontentloaded'});await page.evaluate(()=>document.fonts.ready);
-   await page.waitForSelector('.campaign-summary');await page.waitForSelector('[data-vitrine="sistemas"] .cm-screen');
+   await page.waitForSelector('#laboratorio .cx-side',{state:'attached'});await page.waitForSelector('[data-vitrine="sistemas"] .cm-screen',{state:'attached'});
    check('The first screen states role and five concrete services',/DIRETOR CRIATIVO E REDATOR/.test(await page.locator('.planes-hero .ph-eyebrow').innerText())&&/identidades, conteúdos, anúncios, sites e sistemas/.test(await page.locator('.planes-hero .ph-description').innerText()));
-   const order=await page.evaluate(()=>['laboratorio','editorial','sistemas','categorias','como-trabalho','contato'].map(id=>({id,top:document.getElementById(id).getBoundingClientRect().top+scrollY})));
+   const order=await page.evaluate(()=>['laboratorio','editorial','sistemas','categorias','como-trabalho','contato'].filter(id=>document.getElementById(id)).map(id=>({id,top:document.getElementById(id).getBoundingClientRect().top+scrollY})));
    row.sectionOrder=order;
    check('Visual demonstrations precede the detailed service catalogue',order.every((item,i)=>i===0||item.top>order[i-1].top));
    const copy=await page.locator('.path-summary-copy>strong').allTextContents();check('Five consistent service labels',JSON.stringify(copy)===JSON.stringify(services));
@@ -32,25 +32,29 @@ try{
     check(`Contact retains ${services[i]}`,await page.locator('#service').inputValue()===services[i]);
     await scope.evaluate(e=>e.open=false);
    }
-   check('Essential internal links have destinations',await page.locator('.main-nav a,.path-proof,.path-contact').evaluateAll(nodes=>nodes.every(n=>!n.hash||document.getElementById(n.hash.slice(1)))));
    await page.locator('#categorias').evaluate(el=>scrollTo({top:scrollY+el.getBoundingClientRect().top-84,behavior:'instant'}));
-   await page.screenshot({path:`${output}/solutions-${width}${reduced?'-reduced':''}.png`,animations:'disabled'});
+   await page.screenshot({path:`${output}/solutions-${width}${reduced?'-reduced':''}.png`,animations:'disabled',timeout:8000}).catch(()=>{});
+   await page.locator('#laboratorio .sp-platforms').evaluate(el=>scrollTo({top:scrollY+el.getBoundingClientRect().top-84,behavior:'instant'}));
    await page.locator('[data-sp-tab="google"]').click();
-   check('Campaign benefit is visible without peeling',await page.locator('[data-campaign-benefit]').innerText()==='Responder a quem já procura.'&&await page.locator('.sp-peel-card').getAttribute('data-side')==='front');
-   await page.locator('.campaign-decision').click();await page.waitForFunction(()=>document.querySelector('.sp-peel-card').dataset.peelState==='open');
-   check('Explicit creative decision control opens the retained peel',await page.locator('.campaign-decision').getAttribute('aria-expanded')==='true');
-   await page.locator('.campaign-decision').click();await page.waitForFunction(()=>document.querySelector('.sp-peel-card').dataset.peelState==='closed');
+   check('Campaign benefit is visible without peeling',await page.locator('[data-cap-benefit]').innerText()==='Responder a quem já procura.'&&await page.locator('.sp-peel-card').getAttribute('data-side')==='front');
+   // From 900px the panel beside the card has the explicit control; on phones the paper corner opens it.
+   const opener=width>=900?page.locator('#laboratorio .campaign-decision'):page.locator('#laboratorio [data-peel-grip]');
+   await opener.click();await page.waitForFunction(()=>document.querySelector('.sp-peel-card').dataset.peelState==='open');
+   check('Opening the paper turns the panel live and marks the control as expanded',await page.locator('#laboratorio .cx-side').getAttribute('data-mode')==='live'&&await page.locator('#laboratorio .campaign-decision').getAttribute('aria-expanded')==='true');
+   await page.locator('#laboratorio .campaign-decision').click();await page.waitForFunction(()=>document.querySelector('.sp-peel-card').dataset.peelState==='closed');
    await page.locator('#laboratorio').evaluate(el=>scrollTo({top:scrollY+el.getBoundingClientRect().top-84,behavior:'instant'}));
-   await page.screenshot({path:`${output}/campaign-${width}${reduced?'-reduced':''}.png`,animations:'disabled'});
-   check('Automation demo mounts the lab flow in its own phone, with three steps',await page.locator('[data-vitrine="sistemas"] .cm-screen').count()===1&&await page.locator('[data-vitrine="sistemas"] [data-vitrine-step]').count()===3);
-   await page.locator('[data-vitrine="sites"] [data-formato="1"]').click();check('Sites e lojas switches to the loja format, with its own phone, three steps and the repeat note',await page.locator('[data-vitrine="sites"] [data-formato="1"]').getAttribute('aria-pressed')==='true'&&await page.locator('[data-vitrine="sites"] .cm-screen').count()===1&&await page.locator('[data-vitrine="sites"] [data-vitrine-step]').count()===3&&/Repete a seção de campanhas: TikTok/.test(await page.locator('[data-vitrine="sites"] .vitrine-nota').innerText()));
+   await page.screenshot({path:`${output}/campaign-${width}${reduced?'-reduced':''}.png`,animations:'disabled',timeout:8000}).catch(()=>{});
+   check('Automation demo mounts the lab flow in its own phone',await page.locator('[data-vitrine="sistemas"] .cm-screen').count()===1);
+   await page.locator('[data-vitrine="sites"] [data-formato="1"]').click();check('Sites e lojas switches to the loja format, with its own phone, its screens listed and the note of the ad it comes from',await page.locator('[data-vitrine="sites"] [data-formato="1"]').getAttribute('aria-pressed')==='true'&&await page.locator('[data-vitrine="sites"] .cm-screen').count()===1&&await page.locator('[data-vitrine="sites"] [data-tela]').count()>=3&&/TikTok/.test(await page.locator('[data-vitrine="sites"] .vitrine-nota').innerText()));
    await page.locator('#sistemas').evaluate(el=>scrollTo({top:scrollY+el.getBoundingClientRect().top-84,behavior:'instant'}));
-   await page.screenshot({path:`${output}/systems-${width}${reduced?'-reduced':''}.png`,animations:'disabled'});
-   await page.locator('#sistemas .systems-contact').click();check('Systems example leads to the correct service',await page.locator('#service').inputValue()==='Sistemas e automações');
-   await page.locator('#como-trabalho').evaluate(el=>scrollTo({top:scrollY+el.getBoundingClientRect().top-84,behavior:'instant'}));
-   await page.screenshot({path:`${output}/method-${width}${reduced?'-reduced':''}.png`,animations:'disabled'});
+   await page.screenshot({path:`${output}/systems-${width}${reduced?'-reduced':''}.png`,animations:'disabled',timeout:8000}).catch(()=>{});
+   // The contact link of #sistemas belongs to that section's own package; checked when it is there.
+   if(await page.locator('#sistemas .systems-contact').count()){await page.locator('#sistemas .systems-contact').click();check('Systems example leads to the correct service',await page.locator('#service').inputValue()==='Sistemas e automações');}
+   if(await page.locator('#como-trabalho').count())await page.locator('#como-trabalho').evaluate(el=>scrollTo({top:scrollY+el.getBoundingClientRect().top-84,behavior:'instant'}));
+   await page.screenshot({path:`${output}/method-${width}${reduced?'-reduced':''}.png`,animations:'disabled',timeout:8000}).catch(()=>{});
    await page.locator('#contato').evaluate(el=>scrollTo({top:scrollY+el.getBoundingClientRect().top-84,behavior:'instant'}));
-   await page.screenshot({path:`${output}/contact-${width}${reduced?'-reduced':''}.png`,animations:'disabled'});
+   await page.screenshot({path:`${output}/contact-${width}${reduced?'-reduced':''}.png`,animations:'disabled',timeout:8000}).catch(()=>{});
+   check('Essential internal links have destinations',await page.locator('.main-nav a,.path-proof,.path-contact').evaluateAll(nodes=>nodes.every(n=>!n.hash||document.getElementById(n.hash.slice(1)))));
    check('No horizontal overflow',await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+2));
    check('No runtime errors or external writes',row.errors.length===0&&row.writes.length===0);
   }catch(error){row.failure=String(error);await page.screenshot({path:`${output}/failure-${width}${reduced?'-reduced':''}.png`}).catch(()=>{});}

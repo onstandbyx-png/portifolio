@@ -21,7 +21,8 @@ try{
     const page=await context.newPage();page.setDefaultTimeout(15000);
     const row={width,height,reduced,checks:[],errors:[],failedRequests:[],mutations:[]};records.push(row);
     const check=(name,pass)=>{row.checks.push({name,pass:Boolean(pass)});assert(pass,name);};
-    const capture=async(name)=>page.screenshot({path:`${output}/${name}-${width}${reduced?'-reduced':''}.png`,animations:'disabled'});
+    // Screenshots are evidence, not checks: a slow software-GL frame must not fail the run.
+    const capture=async(name)=>page.screenshot({path:`${output}/${name}-${width}${reduced?'-reduced':''}.png`,animations:'disabled',timeout:8000}).catch(()=>{});
     page.on('pageerror',error=>row.errors.push(String(error)));
     page.on('response',response=>{if(response.status()>=400)row.failedRequests.push({status:response.status(),url:response.url()});});
     page.on('request',request=>{if(!['GET','HEAD','OPTIONS'].includes(request.method()))row.mutations.push({method:request.method(),url:request.url()});});
