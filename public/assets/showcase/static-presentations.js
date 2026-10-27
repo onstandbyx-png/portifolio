@@ -31,10 +31,27 @@ function tabMarkup(channel, index) {
   return `<button type="button" id="tab-${channel.id}" role="tab" data-sp-tab="${channel.id}" aria-controls="panel-${channel.id}" aria-label="${esc(`${channel.name}, ${groupLabel(channel.group)}, ${formats(n)}`)}" aria-selected="${index === 0}" tabindex="${index === 0 ? '0' : '-1'}"${id ? ` style="--ch:${LOGOS[id].cor}"` : ''}>${mark}<span class="sp-tab-name">${tileName(channel)}</span>${n > 1 ? `<small class="sp-tab-count" aria-hidden="true">${n}</small>` : ''}</button>`;
 }
 
-/* The front of the peel: one photo and the piece's text in HTML (brand, headline, fictitious-brand notice). */
+/* The front of the peel: the piece of a fictitious client in the native frame of its format,
+   drawn in HTML over the photo (art.formato: '4:5' carousel dots and swipe hint; '9:16' side rail
+   and caption; '16:9' Patrocinado strip and duration; 'link' link card). art.oferta is one line,
+   art.cta a chip and art.ui short HTML already escaped by the owner of the data. A format with its
+   own art (placement.art) replaces the front when it is chosen. */
+const ICON = name => glifo(name, 'sp-i');
+function frameMarkup(art, client) {
+  const formato = art.formato || '', oferta = art.oferta ? `<span class="sp-art-oferta">${esc(art.oferta)}</span>` : '', cta = art.cta ? `<span class="sp-art-cta">${esc(art.cta)}</span>` : '';
+  const ui = art.ui ? `<span class="sp-art-ui">${art.ui}</span>` : '';
+  if (formato === '9:16') return `<span class="sp-art-rail" aria-hidden="true">${ICON('heart')}${ICON('comment')}${ICON('send')}${ICON('bookmark')}</span><span class="sp-art-legenda"><b>${esc(client.arroba ? '@' + client.arroba : client.marca)}</b> · Patrocinado${art.oferta ? `<br>${esc(art.oferta)}` : ''}</span>${cta}${ui}`;
+  if (formato === '16:9') return `<span class="sp-art-faixa" aria-hidden="true"><b>Patrocinado</b><i class="sp-art-dur">0:15</i></span>${oferta}${cta}${ui}`;
+  if (formato === 'link') return `<span class="sp-art-link"><small>${esc(client.dominio || '')}</small><b>${esc(art.oferta || art.titulo)}</b>${art.cta ? `<i>${esc(art.cta)}</i>` : ''}</span>${ui}`;
+  if (formato === '4:5') return `<span class="sp-art-conta" aria-hidden="true">1/3</span><span class="sp-art-arraste" aria-hidden="true">${ICON('chevron')}</span><span class="sp-art-pontos" aria-hidden="true"><i></i><i></i><i></i></span>${oferta}${cta}${ui}`;
+  return `${oferta}${cta}${ui}`;
+}
+function figureMarkup(art) {
+  const im = IMG[art.img] || Object.values(IMG)[0], client = CLIENTES[art.cliente];
+  return `<figure class="sp-art" data-formato="${esc(art.formato || '')}"><img class="sp-art-photo" src="${im.src}" alt="${esc(art.alt)}" width="${im.w}" height="${im.h}" loading="lazy" decoding="async" fetchpriority="low" style="object-position:${art.pos}"><figcaption class="sp-art-cap"><span class="sp-art-brand">${marca(art.cliente)}<b>${esc(client.marca)}</b></span><b class="sp-art-title">${esc(art.titulo)}</b>${frameMarkup(art, client)}<small class="sp-art-fine">Exemplo ilustrativo de ${esc(client.tipo)}, marca fictícia.</small></figcaption></figure>`;
+}
 function panelMarkup(channel, index) {
-  const { art } = channel, im = IMG[art.img], client = CLIENTES[art.cliente];
-  return `<div class="sp-campaign-panel" id="panel-${channel.id}" role="tabpanel" aria-labelledby="tab-${channel.id}" tabindex="0"${index ? ' hidden' : ''}><figure class="sp-art"><img class="sp-art-photo" src="${im.src}" alt="${esc(art.alt)}" width="${im.w}" height="${im.h}" loading="lazy" decoding="async" fetchpriority="low" style="object-position:${art.pos}"><figcaption class="sp-art-cap"><span class="sp-art-brand">${marca(art.cliente)}<b>${esc(client.marca)}</b></span><b class="sp-art-title">${esc(art.titulo)}</b><small class="sp-art-fine">Exemplo ilustrativo de ${esc(client.tipo)}, marca fictícia.</small></figcaption></figure></div>`;
+  return `<div class="sp-campaign-panel" id="panel-${channel.id}" role="tabpanel" aria-labelledby="tab-${channel.id}" tabindex="0"${index ? ' hidden' : ''}>${figureMarkup(channel.art)}</div>`;
 }
 
 function mountCampaign(motion) {
@@ -145,6 +162,15 @@ function mountCampaign(motion) {
     if (focus) tabs[index].focus({ preventScroll: true });
   }
   motion.onStop(() => { ++generation; settle(); });
+  // A format with its own piece puts it on the front; back to the channel's piece otherwise.
+  new MutationObserver(() => {
+    const channel = channels[active], placement = channel?.placements[Number(lab.dataset.placement) || 0];
+    const art = placement?.art || channel?.art, panel = panels[active];
+    if (!art || !panel || (panel.dataset.art || '') === (placement?.art ? placement.id : '')) return;
+    panel.dataset.art = placement?.art ? placement.id : '';
+    panel.innerHTML = figureMarkup(art);
+    figures[active] = panel.querySelector('figure');
+  }).observe(lab, { attributes: true, attributeFilter: ['data-placement'] });
   tabs.forEach((tab, index) => {
     tab.addEventListener('click', () => select(index));
     tab.addEventListener('keydown', event => {
