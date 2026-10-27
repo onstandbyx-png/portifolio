@@ -26,14 +26,16 @@
 .mural .mu-tela{display:block;overflow:hidden;border-radius:calc((var(--mu-w) - 18px) * .135);background:#0b0d0c;box-shadow:0 0 0 1px rgba(0,0,0,.06)}
 .mural .mu-tela img{display:block;width:100%;height:auto;aspect-ratio:400/869;object-fit:cover;transition:transform .5s cubic-bezier(.16,1,.3,1)}
 .mural .mu-link:hover .mu-tela img{transform:scale(1.025)}
-.mural .mu-leg{display:grid;grid-template-columns:22px minmax(0,1fr) 14px;align-items:start;gap:8px;padding:10px 2px 0}
+.mural .mu-leg{display:grid;grid-template-columns:22px minmax(0,1fr) 14px;align-items:start;gap:8px;padding:10px 2px 0;container-type:inline-size}
 .mural .mu-marca{display:grid;place-items:center;width:22px;height:22px;border-radius:50%;background:var(--c);overflow:hidden}
 .mural .mu-marca svg{width:16px;height:16px}
 .mural .mu-txt{display:grid;gap:2px;min-width:0}
-.mural .mu-txt b{font-size:13px;font-weight:650;line-height:1.25;letter-spacing:-.01em;overflow-wrap:anywhere}
+.mural .mu-txt b{font-size:13px;font-weight:650;line-height:1.25;letter-spacing:-.01em;overflow-wrap:break-word}
 .mural .mu-txt span{font-size:12px;line-height:1.35;color:var(--mu-muted)}
 .mural .mu-seta{margin-top:3px;color:#8a958e;transition:transform .2s,color .2s}
 .mural .mu-link:hover .mu-seta{color:var(--mu-ink);transform:translate(2px,-2px)}
+/* Legendas estreitas (celular): sem a seta, o nome da marca cabe inteiro, sem quebrar no meio da palavra. */
+@container (max-width:130px){.mural .mu-leg{grid-template-columns:20px minmax(0,1fr);gap:6px}.mural .mu-seta{display:none}.mural .mu-txt b{font-size:12.5px}}
 
 /* Os 16 canais: uma fileira estreita; no celular ela rola de lado, sem estourar a página. */
 .mural .mu-canais{display:flex;align-items:center;gap:6px 12px;margin-top:4px;min-width:0}
