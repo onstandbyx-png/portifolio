@@ -1,7 +1,5 @@
-/* Hero no modelo Landing Planes: faixa escura #080909, campo de seda, título em Inter pesada e botão branco.
-   O cabeçalho fica por cima (position:absolute em nav.css), sem margem negativa. Título e descrição aparecem
-   já na primeira pintura: a entrada só move (transform) por até 600 ms, sem opacidade nem desfoque.
-   A partir de 1100 px, texto em 5/12 e jornada viva em 7/12 (hero-journey.css); abaixo disso, empilhado. */
+/* Hero Landing Planes: faixa #080909, campo de seda, Inter pesada. Cabeçalho por cima, sem margem negativa.
+   Título e descrição visíveis na primeira pintura. Desde 1100 px, texto 5/12 e jornada 7/12; abaixo, empilhado. */
 .planes-hero{position:relative;isolation:isolate;overflow:hidden;display:flex;align-items:center;min-height:min(max(640px,100svh),1000px);padding:calc(var(--sn-h,84px) + 40px) 0 56px;background:#080909;color:#fff;font-weight:420;font-synthesis:none}
 .planes-hero svg{flex-shrink:0}
 .ph-silk{position:absolute;inset:0;width:100%;height:100%;z-index:-3;opacity:.95;mask-image:linear-gradient(180deg,#000 40%,transparent 97%);-webkit-mask-image:linear-gradient(180deg,#000 40%,transparent 97%)}
@@ -35,8 +33,7 @@
 /* Passagem para a seção seguinte, fora da altura do hero: o primeiro quadro termina escuro, sem faixa creme. */
 .ph-fade{height:160px;background:linear-gradient(180deg,#080909,var(--paper,#f3f1e9));pointer-events:none}
 
-/* Entrada: as linhas sobem 0,22 em, a descrição e as ações 12 px; só transform, até 600 ms. hero.js marca
-   data-entered no fim e tira o will-change. */
+/* Entrada só com transform, até 600 ms; hero.js marca data-entered e tira o will-change. */
 @keyframes ph-rise{from{transform:translateY(.22em)}to{transform:none}}
 @keyframes ph-lift{from{transform:translateY(12px)}to{transform:none}}
 .planes-hero .ph-line{animation:ph-rise .6s cubic-bezier(.16,1,.3,1) both;will-change:transform}

@@ -126,6 +126,18 @@ if (header && panel) {
   const menuOpen = () => menuToggle?.getAttribute('aria-expanded') === 'true';
   const firstLink = () => panel.querySelector('.sn-panel-links a, .sn-panel-links button');
   let open = false, openedByHover = false, closeTimer = 0, hoverTimer = 0, hideTimer = 0;
+  // A folha do painel (nav-menu.css) fica fora do <head>: entra na primeira ociosidade ou no primeiro gesto.
+  const menuCss = { done: false, promise: null };
+  function loadMenuCss() {
+    return menuCss.promise ??= new Promise(resolve => {
+      const link = Object.assign(document.createElement('link'), { rel: 'stylesheet', href: '/assets/planes/nav-menu.css' });
+      link.addEventListener('load', resolve, { once: true });
+      link.addEventListener('error', resolve, { once: true });
+      document.body.append(link);
+    }).then(() => { menuCss.done = true; });
+  }
+  if ('requestIdleCallback' in window) requestIdleCallback(() => loadMenuCss(), { timeout: 1500 }); else setTimeout(loadMenuCss, 1500);
+  for (const type of ['pointerenter', 'focusin', 'touchstart']) header.addEventListener(type, loadMenuCss, { once: true, passive: true });
 
   const liquidCanvas = panel.querySelector('.sn-liquid');
   const liquid = liquidCanvas ? createLiquid(liquidCanvas, palettes.sistemas) : null;
@@ -161,6 +173,7 @@ if (header && panel) {
     triggers.forEach(trigger => { trigger.setAttribute('aria-expanded', String(open)); trigger.classList.toggle('is-active', open); });
   }
   function show(hover = false, focusFirst = false) {
+    if (!menuCss.done) { loadMenuCss().then(() => show(hover, focusFirst)); return; }
     clearClose(); clearHover();
     openedByHover = hover;
     feature('agente');

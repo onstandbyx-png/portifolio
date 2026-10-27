@@ -27,20 +27,30 @@
 .path-contact>span{font-size:22px;line-height:1;transition:transform .2s}
 .path-contact:hover>span{transform:translateY(3px)}
 .path-scope>summary:focus-visible,.path-contact:focus-visible{outline:3px solid #d7ebaa;outline-offset:6px}
-.path-process{padding-top:52px;display:grid;grid-template-columns:90px minmax(0,1fr);gap:28px}
-.path-process>.path-scope-label{font-size:11px;padding-top:6px}
-.path-process ol{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:32px;list-style:none;margin:0;padding:0}
-.path-process li{display:flex;gap:14px;min-width:0}
-.path-process li>span{font-family:var(--serif,Georgia,serif);font-size:27px;line-height:1.2;color:#94ae88;flex:none}
-.path-process strong{font-size:17px;font-weight:550;line-height:1.4}
-.path-process p{font-size:15px;line-height:1.65;margin:8px 0 0;color:var(--path-muted);max-width:250px}
-.path-footer{margin:36px 0 0;padding-top:22px;border-top:1px solid var(--path-rule);font-size:13px;line-height:1.7;color:var(--path-muted)}
-@media(max-width:1000px){.path-heading{gap:36px}.path-scope>summary{grid-template-columns:48px minmax(0,1fr) 44px;gap:20px}.path-scope-content{padding-left:68px;padding-right:0;gap:32px}.path-process{grid-template-columns:48px minmax(0,1fr);gap:20px}.path-process ol{gap:18px}.path-process li{gap:10px}}
+
+@media(max-width:1000px){.path-heading{gap:36px}.path-scope>summary{grid-template-columns:48px minmax(0,1fr) 44px;gap:20px}.path-scope-content{padding-left:68px;padding-right:0;gap:32px}}
 @media(max-width:700px){
  .project-paths-section{padding:72px 0 56px}.path-heading{grid-template-columns:minmax(0,1fr);gap:24px;padding-bottom:36px}.path-heading h2{font-size:clamp(38px,9vw,56px);margin-top:20px}.path-heading>p{font-size:16px}.path-kicker{font-size:12px}
  .path-scope>summary{grid-template-columns:28px minmax(0,1fr) 36px;gap:12px;padding:25px 0}.path-number{font-size:12px}.path-summary-copy{gap:10px}.path-summary-copy>strong{font-size:24px;line-height:1.16}.path-summary-copy>span{font-size:14px;line-height:1.5}.path-toggle{width:36px;height:36px;font-size:26px}
- .path-scope-content{grid-template-columns:minmax(0,1fr);padding:0 0 28px 40px;gap:24px}.path-description{font-size:16px}.path-deliverables li{font-size:15px}.path-contact{font-size:14px;gap:12px}.path-scope-label{font-size:12px}.path-process{display:block;padding-top:36px}.path-process>.path-scope-label{margin-bottom:24px}.path-process ol{grid-template-columns:1fr;gap:22px}.path-process li{gap:20px}.path-process p{max-width:none;margin-top:5px;font-size:15px}.path-footer{margin-top:30px}
+ .path-scope-content{grid-template-columns:minmax(0,1fr);padding:0 0 28px 40px;gap:24px}.path-description{font-size:16px}.path-deliverables li{font-size:15px}.path-contact{font-size:14px;gap:12px}.path-scope-label{font-size:12px}
 }
 @media(max-width:360px){.path-scope>summary{grid-template-columns:24px minmax(0,1fr) 32px;gap:8px}.path-summary-copy>strong{font-size:22px}.path-toggle{width:32px;height:32px}.path-scope-content{padding-left:32px}}
 @media(prefers-reduced-motion:reduce){.path-toggle,.path-contact>span{transition:none!important}}
 body.is-paused .path-toggle,body.is-paused .path-contact>span{transition:none!important}
+/* Ajustes de narrative.css para os serviços, que agora só carrega com as seções de exemplos. */
+.path-heading{padding-bottom:36px}
+.path-heading h2{font-size:clamp(38px,4.6vw,64px)}
+.path-scope>summary{padding-block:24px}
+
+@media(max-width:760px){
+ .path-heading{gap:16px;padding-bottom:28px}
+ .path-heading h2{font-size:38px}
+ .path-summary-copy>span{font-size:14px}
+ .path-scope>summary{padding-block:22px}
+ 
+ 
+ 
+ 
+ 
+ 
+}

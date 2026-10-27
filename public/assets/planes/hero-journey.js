@@ -1,6 +1,6 @@
-/* Jornada viva do hero: peça, iPhone, registro e o traço entre eles; 6 batidas de 1,6 s e uma pausa (11,2 s).
-   Textos em hero-journeys.json, nomes e datas em marcas.js. Para fora da tela, com a aba oculta, com ponteiro
-   ou foco dentro e com body.is-paused; com movimento reduzido, quadro final. */
+/* Jornada viva do hero: peça, iPhone, registro e o traço; 6 batidas de 1,6 s e uma pausa (11,2 s). Textos em
+   hero-journeys.json, nomes e datas em marcas.js. Para fora da tela, com a aba oculta, com ponteiro ou foco
+   e com body.is-paused; com movimento reduzido, quadro final. Outras telas: hero-journey-apps.css. */
 import { CLIENTES, MARCAS, PESSOA, OFERTAS, PEDIDOS, TERCEIROS, HOJE, dataLonga } from '/assets/showcase/marcas.js';
 
 const root = document.querySelector('.ph-journey');
@@ -9,7 +9,7 @@ const reduced = matchMedia('(prefers-reduced-motion: reduce)'), stacked = matchM
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => `&#${c.charCodeAt(0)};`);
 const $ = s => root.querySelector(s), $$ = s => root.querySelectorAll(s), chips = document.querySelectorAll('.ph-chip');
 
-/* {CAMINHO|formato} lê marcas.js; $ é o cliente da jornada. "09:00" vira "9h"; datas do Mail como no iOS. */
+/* {CAMINHO|formato} lê marcas.js; $ é o cliente da jornada. */
 const M = { CLIENTES, OFERTAS, PESSOA, PEDIDOS, TERCEIROS, HOJE };
 const dmA = iso => `${iso.slice(8, 10)}/${iso.slice(5, 7)}/${iso.slice(0, 4)}`;
 const F = {
@@ -29,7 +29,7 @@ const marca = k => `<span class="hj-marca" style="--c:${CLIENTES[k].cor}">${MARC
 const ic = n => `<i class="hj-i hj-i--${n}"></i>`, H = esc(HOJE.hora);
 const split = (s, sep, f) => fill(s).split(sep).filter(Boolean).map(f).join('');
 
-/* Peça de origem com a CTA que dispara a jornada. */
+/* Peça de origem e CTA. */
 function card(J) {
   const c = J.card;
   return `<p class="hj-card-label">${esc(c.plataforma)}</p><article class="hj-card-in hj-card--${c.tipo}"><header class="hj-card-head">${marca(J.cliente)}<span><b>${fill(c.nome)}</b><small>${fill(c.selo)}</small></span></header>`
@@ -41,7 +41,7 @@ function card(J) {
     + `</div>${c.opcoes ? '' : `<span class="hj-cta">${fill(c.cta)}</span>`}<span class="hj-volta">${ic('check')}${fill(c.volta)}</span></article>`;
 }
 
-/* Tela do app; cada item leva a batida em que entra. */
+/* Tela do app; b = batida do item. */
 function item(x) {
   const b = `class="hj-it hj-${x.k}" data-b="${x.b}"`, time = `<small>${H}</small>`;
   const btns = x.btns ? `<span class="hj-btns">${split(x.btns, '|', v => `<span>${v}</span>`)}</span>` : '';
@@ -72,7 +72,7 @@ function screen(J) {
   return `<div class="hj-status"><b>${H}</b><i></i></div><div class="hj-app hj-app--${t}" data-fase="0">${head}<div class="hj-body">${t === 'wa' ? '<span class="hj-day">Hoje</span>' : ''}${body}</div>${foot}</div>${notes}`;
 }
 
-/* Traço peça, telefone, registro e volta; em coluna, o retorno sobe pela margem. */
+/* Traço; em coluna, o retorno sobe pela margem. */
 let stops = [0, 0, 0, 0, 0, 1], anims = [];
 function wire() {
   const box = root.getBoundingClientRect(), svg = $('.hj-wire'), live = $('.hj-wire-live');
@@ -206,8 +206,15 @@ function render(k) {
   show(0, running());
   if (running()) loop = setTimeout(tick, BEAT);
 }
-function select(k) {
+let apps = null;
+const sheet = () => apps ??= new Promise(done => {
+  const l = Object.assign(document.createElement('link'), { rel: 'stylesheet', href: '/assets/planes/hero-journey-apps.css' });
+  l.onload = l.onerror = done;
+  document.body.append(l);
+});
+async function select(k) {
   if (!data?.[k] || k === key) return;
+  await sheet();
   chips.forEach(b => b.setAttribute('aria-pressed', String(b.dataset.jornada === k)));
   if (reduced.matches) return render(k);
   root.classList.add('is-swap');
@@ -218,6 +225,7 @@ async function mount() {
   try { data = await (await fetch('/assets/planes/hero-journeys.json')).json(); } catch { return; }
   render(key);
   root.dataset.ready = 'true';
+  sheet();
   chips.forEach(b => b.addEventListener('click', () => select(b.dataset.jornada)));
   new ResizeObserver(() => wire()).observe(root);
   new IntersectionObserver(([e]) => hold('fora', !e.isIntersecting), { threshold: .15 }).observe(root);
@@ -230,7 +238,6 @@ async function mount() {
   root.addEventListener('focusin', () => hold('foco', true));
   root.addEventListener('focusout', () => hold('foco', false));
   reduced.addEventListener('change', () => render(key));
-  // Logos oficiais nos botões.
   import('/assets/showcase/channel-logos.js').then(({ logoSvg }) => document.querySelectorAll('.ph-chip-ico[data-logo]').forEach(s => { s.innerHTML = logoSvg(s.dataset.logo, { altura: 18 }); }), () => {});
 }
 if (root) requestAnimationFrame(() => requestAnimationFrame(() => ('requestIdleCallback' in window ? requestIdleCallback(mount, { timeout: 900 }) : setTimeout(mount, 200))));
