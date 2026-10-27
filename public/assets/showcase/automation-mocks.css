@@ -612,13 +612,13 @@
 #laboratorio .sp-art-ui .au-ui-kb{display:grid;grid-template-columns:repeat(3,1fr);gap:4px}
 #laboratorio .sp-art-ui .au-ui-kb i{display:grid;place-items:center;height:32px;border-radius:10px;background:rgb(0 0 0 / .32);color:#fff;font-style:normal;font-weight:600;-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
 #laboratorio .sp-art-ui .au-ui--rcs{display:grid;justify-items:center;gap:8px}
-#laboratorio .sp-art-ui .au-ui-rcs-id{display:flex;align-items:center;gap:8px}
+#laboratorio .sp-art-ui .au-ui>span.au-ui-rcs-id{display:flex;align-items:center;gap:8px}
 #laboratorio .sp-art-ui .au-ui-rcs-id b{display:flex;align-items:center;gap:4px}
 #laboratorio .sp-art-ui .au-ui .au-verified{width:9px;height:9px;padding:2px;border-radius:50%;background:#007aff;color:#fff;stroke-width:3.6}
-#laboratorio .sp-art-ui .au-ui-chips{display:flex;flex-wrap:wrap;justify-content:center;gap:6px}
+#laboratorio .sp-art-ui .au-ui>span.au-ui-chips{display:flex;flex-wrap:wrap;justify-content:center;gap:6px}
 #laboratorio .sp-art-ui .au-ui-chips i{padding:5px 10px;border:1px solid #c7c7cc;border-radius:99px;color:#007aff;font-style:normal}
 #laboratorio .sp-art-ui .au-ui--mail{display:grid;gap:0;padding:4px 12px}
-#laboratorio .sp-art-ui .au-ui--mail>span{display:flex;align-items:center;gap:9px;padding:6px 0;border-bottom:1px solid #e5e5ea}
+#laboratorio .sp-art-ui .au-ui.au-ui--mail>span{display:flex;align-items:center;gap:9px;padding:6px 0;border-bottom:1px solid #e5e5ea}
 #laboratorio .sp-art-ui .au-ui--mail>span:last-child{border:0}
 #laboratorio .sp-art-ui .au-ui--mail .cm-mark{width:26px;height:26px}
 #laboratorio .sp-art-ui .au-ui--mail b{flex:1;overflow:hidden;font-weight:500;text-overflow:ellipsis;white-space:nowrap}
