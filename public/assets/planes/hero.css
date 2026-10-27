@@ -32,6 +32,8 @@
 .planes-hero :is(a,button):focus-visible{outline:2px solid #9fc3a8;outline-offset:3px}
 /* Passagem para a seção seguinte, fora da altura do hero: o primeiro quadro termina escuro, sem faixa creme. */
 .ph-fade{height:160px;background:linear-gradient(180deg,#080909,var(--paper,#f3f1e9));pointer-events:none}
+/* O mural (mural.css, sob demanda) reserva a altura antes de montar: as seções abaixo dele só carregam quando chegam perto de verdade. */
+#mural:not([data-css-ready]){min-height:600px}
 
 /* Entrada só com transform, até 600 ms; hero.js marca data-entered e tira o will-change. */
 @keyframes ph-rise{from{transform:translateY(.22em)}to{transform:none}}

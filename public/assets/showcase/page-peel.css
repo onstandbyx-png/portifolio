@@ -142,3 +142,5 @@ body.is-paused #laboratorio .sp-peel-grip-symbol{animation:none!important}
 }
 #laboratorio .sp-peel-grip:focus-visible{outline:3px solid #416da2}
 @media(prefers-reduced-motion:reduce){#laboratorio .sp-peel-fold{filter:none!important}}
+/* Cartão estreito (celular deitado): a dica cabe em duas linhas, sem o contador. */
+@media (orientation:landscape) and (max-height:520px){#laboratorio .sp-peel-cue{min-height:44px;padding:8px 10px;font-size:11.5px;gap:7px}#laboratorio .sp-peel-cue span:last-child{display:none}}

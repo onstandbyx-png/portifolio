@@ -1,162 +1,162 @@
+// Mural de jornadas (#mural, public/assets/mural/) e a integração das seções da página.
+// Confere em 390x844 e 1440x900 (com movimento) e em 390x844 com movimento reduzido: 12 a 16 cartões com marca de
+// marcas.js; cada link abre o formato certo no laboratório (aria-pressed e data-frame) ou a automação certa em
+// #sistemas; setas do teclado trocam o cartão; a rolagem lenta anda sozinha, para em hover e no botão de pausa,
+// e não anda com movimento reduzido; menu do celular, briefing preenchido pelo serviço e contato direto.
+// Roda contra BASE_URL ou sobe server.mjs na PORT (padrão 4191). Grava qa/sections/results.json.
 import {createRequire} from 'node:module';
 import {spawn} from 'node:child_process';
-import {mkdir,writeFile,cp} from 'node:fs/promises';
-import {existsSync} from 'node:fs';
+import {mkdir,writeFile} from 'node:fs/promises';
 import assert from 'node:assert/strict';
 const require=createRequire(process.env.QA_PACKAGE||import.meta.url);
-let chromium;try{({chromium}=require('playwright'));}catch{({chromium}=require('/opt/codex/runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright'));}
-const port=process.env.PORT||'4173';
-const base=(process.env.BASE_URL||process.env.QA_URL||`http://127.0.0.1:${port}`).replace(/\/$/,'');
-await mkdir('qa/source',{recursive:true});
-for(const p of ['index.html','src','public','server.mjs','package.json','scripts','tests'])await cp(p,'qa/source/'+p,{recursive:true});
-const server=process.env.BASE_URL||process.env.QA_URL?null:spawn(process.execPath,['server.mjs'],{env:{...process.env,PORT:port},stdio:'inherit'});
-for(let i=0;i<50;i++){try{if((await fetch(base+'/health')).ok)break}catch{}await new Promise(r=>setTimeout(r,200));}
-const executablePath=process.env.CHROMIUM_PATH||(existsSync('/usr/bin/chromium')?'/usr/bin/chromium':undefined);
-const browser=await chromium.launch({headless:true,executablePath,args:['--no-sandbox','--use-gl=angle','--use-angle=swiftshader','--enable-unsafe-swiftshader']});
-const report=[];
-try{
- for(const [width,height] of [[1440,900],[390,844],[320,740]]){
-  const context=await browser.newContext({viewport:{width,height},hasTouch:width<500,isMobile:width<500});
-  const page=await context.newPage();page.setDefaultTimeout(12000);
-  // The portfolio must not rely on the Fatos preview remaining online.
-  await page.route('https://midia-kit-production-c234.up.railway.app/**',route=>route.abort());
-  const errors=[],checks=[],result={width,height,checks,errors};report.push(result);
-  page.on('pageerror',e=>errors.push(String(e)));
-  const check=(label,value)=>{checks.push({label,pass:!!value});assert(value,label)};
-  try{
-   await page.goto(base,{waitUntil:'domcontentloaded'});
-   await page.waitForSelector('html.sm-sections-ready',{state:'attached',timeout:60000});
-   check('All section modules initialized',await page.evaluate(()=>['smWorks','smEditorial','smExperience','smAds','smSystems','smContact','smNavigation'].every(k=>document.documentElement.dataset[k]==='ready')));
-   check('Existing badge hero retained',await page.locator('[data-portfolio-badges]').count()===1);
-   await page.waitForSelector('html[data-rx-showcase="ready"]',{state:'attached',timeout:60000});
-   await page.waitForSelector('#editorial .pf-reference-device .df-camera');
-   check('Reference metallic phone is mounted, aperture contains no chassis',await page.locator('#editorial .df-realistic .df-metal').count()===1&&await page.locator('#editorial .df-camera').count()===1&&await page.locator('#narrativa-visual .rx-iphone').count()===0);
-   check('Interactive narrative and social specimen are mounted',await page.locator('#narrativa-visual .rv-window').count()===1&&await page.locator('#panel-meta .pf-social-device').count()===1);
-   const collection=page.locator('#colecao');
-   if(await collection.count()){
-   check('Optional collection retains all four examples',await collection.locator('.rx-deck-card').count()===4);
-   if(await collection.evaluate(el=>el.tagName==='DETAILS'&&!el.open))await collection.locator(':scope > summary').click();
-   await collection.scrollIntoViewIfNeeded();
-   await page.locator('[data-rx-next]').click();
-   await page.waitForTimeout(1000);
-   check('Fatos baralho advances',await page.locator('.rx-deck-counter').innerText()==='2 de 4');
-   await page.locator('.rx-deck-card[data-pos="0"] [data-rx-flip]').click();
-   check('Baralho reverses with usable content',await page.locator('.rx-deck-card[data-pos="0"]').getAttribute('class')?.then(c=>c.includes('is-flipped')));
-   await page.screenshot({path:'qa/fatos-deck-back-'+width+'.png'});
-   await page.locator('.rx-deck-card[data-pos="0"] [data-rx-return]').click();
-   check('Baralho returns to the front',await page.locator('.rx-deck-card[data-pos="0"] [data-rx-flip]').getAttribute('aria-expanded')==='false');
-   await page.locator('[data-rx-prev]').click();await page.waitForTimeout(850);
-   check('Fatos baralho can return to first',await page.locator('.rx-deck-counter').innerText()==='1 de 4');
-   await page.screenshot({path:'qa/fatos-deck-front-'+width+'.png'});
-   }
-   await page.locator('[data-rx-view="table"]').click();
-   check('Work switches to genuine table view',await page.locator('.rx-table-view').isVisible()&&!(await page.locator('.work-gallery').isVisible()));
-   await page.locator('[data-rx-view="cards"]').click();
-   check('Work switches back to cards',await page.locator('.work-gallery').isVisible());
-   await page.locator('#narrativa-visual').scrollIntoViewIfNeeded();
-   await page.locator('[data-rx-film-to="2"]').click();await page.waitForTimeout(850);
-   check('Scroll reveal selects the narrative chapter',await page.locator('#narrativa-visual').getAttribute('data-format')==='2'&&await page.locator('[data-rx-film-to="2"]').getAttribute('aria-pressed')==='true');
-   const linha=page.locator('#narrativa-visual .linha-flow');
-   check('Narrative bridge contains an interactive product',await linha.count()===1);
-   await linha.locator('[data-linha-reset]').click();
-   await linha.locator('[data-linha-step="1"]').click();
-   await linha.locator('[data-linha-apply]').click();
-   check('Product example applies the requested revision',await linha.getAttribute('data-applied')==='true');
-   await linha.locator('[data-linha-approve]').click();
-   check('Product example advances to an approved state',await linha.getAttribute('data-step')==='2');
-   check('Compact visual window remains inside the section and above its controls',await page.evaluate(()=>{
-     const w=document.querySelector('#narrativa-visual .rv-window').getBoundingClientRect();
-     const f=document.querySelector('#narrativa-visual .rv-footer').getBoundingClientRect();
-     const section=document.querySelector('#narrativa-visual').getBoundingClientRect();
-     return w.bottom<=f.top+2 && w.left>=section.left-2&&w.right<=section.right+2&&w.width>=70;
-   }));
-   await page.screenshot({path:'qa/smiile-scroll-film-'+width+'.png'});
+const {chromium}=require('playwright');
+const port=process.env.PORT||'4191',output='qa/sections';
+const base=(process.env.BASE_URL||`http://127.0.0.1:${port}`).replace(/\/$/,'');
+const server=process.env.BASE_URL?null:spawn(process.execPath,['server.mjs'],{env:{...process.env,PORT:port},stdio:'ignore'});
+await mkdir(output,{recursive:true});
+const report={checks:[],errors:[],missing:[]};let browser;
+const check=(name,pass,detail)=>{report.checks.push({name,pass:Boolean(pass),detail});if(!pass)console.error('FAIL',name,detail!==undefined?JSON.stringify(detail).slice(0,700):'');else console.log('ok  ',name);};
 
-   await page.locator('#trabalhos').scrollIntoViewIfNeeded();
-   await page.locator('.sm-work-peek').first().click();await page.waitForTimeout(750);
-   check('Project reverses to meaningful back',await page.locator('.sm-work-peek').first().getAttribute('aria-expanded')==='true');
-   await page.screenshot({path:`qa/works-back-${width}.png`});
-   await page.locator('.sm-work-peek').first().click();await page.waitForTimeout(750);
-   await page.locator('[data-case="fatos"]').click();await page.waitForTimeout(700);
-   check('Case dialog opens',await page.locator('#case-dialog').evaluate(d=>d.open));
-   const thumbs=page.locator('.sm-case-thumbs button');
-   if(await thumbs.count()){
-     const previousImage=await page.locator('#dialog-image img').getAttribute('src');
-     await thumbs.nth(1).click();
-     await page.waitForFunction(previous=>document.querySelector('#dialog-image img')?.getAttribute('src')!==previous,previousImage);
-     check('Editorial case selection changes to distinct local artwork',await thumbs.nth(1).getAttribute('aria-pressed')==='true'&&(await page.locator('#dialog-image img').getAttribute('src')).startsWith('/assets/'));
-   }
-   if(await page.locator('#dialog-image img').count())await page.locator('#dialog-image img').evaluate(im=>im.decode().catch(()=>{}));
-   else check('Professional trajectory is separated from fictional product work',await page.locator('#dialog-image .dialog-trajectory').isVisible()&&/independente|estudo separado|não é uma campanha da Fatos/i.test(await page.locator('#case-dialog').innerText()));
-   await page.waitForTimeout(750);
-   await page.screenshot({path:`qa/case-${width}.png`});
-   await page.locator('#dialog-close').click();
-   await page.waitForFunction(()=>!document.querySelector('#case-dialog').open,{},{timeout:3000});
-   check('Dialog closes after the transition',!(await page.locator('#case-dialog').evaluate(d=>d.open)));
-   await page.locator('.editorial-step').nth(1).click();await page.waitForTimeout(1000);
-   check('Editorial chapter changes',await page.locator('.sm-story-count').innerText()==='02 / 03');
-   check('Chapter synchronizes inside the metallic frame',await page.locator('[data-pf-count]').innerText()==='02 / 03'&&(await page.locator('.pf-story-image').getAttribute('src')).startsWith('/assets/')&&await page.locator('.pf-story-image').evaluate(async im=>{try{await im.decode();return im.naturalWidth>0}catch{return false}}));
-   await page.locator('.pf-copy-decision').click();
-   check('Copy exploration reveals the creative reasoning',await page.locator('.pf-copy-decision').getAttribute('aria-expanded')==='true'&&await page.locator('.pf-story-explain').isVisible()&&(await page.locator('.pf-story-explain').innerText()).length>25);
-   await page.screenshot({path:`qa/editorial-${width}.png`});
-   await page.locator('[data-device="mobile"]').click();await page.waitForTimeout(700);
-   check('Device changes to mobile',await page.locator('.sm-device').getAttribute('data-mode')==='mobile');
-   await page.locator('[data-demo-page="projeto"]').click();await page.locator('button[data-tone="dark"]').click();await page.waitForTimeout(800);
-   check('Specimen navigation and theme',await page.locator('.sm-device').getAttribute('data-tone')==='dark'&&await page.locator('.sm-experience').getAttribute('data-page')==='projeto');
-   const contrast=await page.locator('.sm-interactive-experience .immersive-content a').evaluate(el=>{
-    const s=getComputedStyle(el),l=c=>{const v=(c.match(/[\d.]+/g)||[]).slice(0,3).map(x=>Number(x)/255).map(x=>x<=.04045?x/12.92:((x+.055)/1.055)**2.4);return v[0]*.2126+v[1]*.7152+v[2]*.0722};
-    const f=l(s.color),b=l(s.backgroundColor);return(Math.max(f,b)+.05)/(Math.min(f,b)+.05);
-   });
-   check('Experience CTA contrast >=4.5',contrast>=4.5);
-   await page.locator('.sm-experience').evaluate(el=>window.scrollTo({top:window.scrollY+el.getBoundingClientRect().top-84,behavior:'instant'}));await page.waitForTimeout(300);
-   await page.screenshot({path:`qa/experience-${width}.png`});
-   await page.locator('[data-ad-tab="meta"]').click();await page.waitForTimeout(700);
-   check('Social uses the smiile metallic device geometry',await page.locator('#panel-meta .pf-social-device .df-metal').count()===1&&await page.locator('#panel-meta .pf-social-device .df-camera').count()===1);
-   check('Concept social preview has sharp local media at its rendered size',await page.locator('#panel-meta .pf-social-device .rx-ig-photo img').count()===1&&await page.locator('#panel-meta .rx-ig-photo img').evaluate(async image=>{try{await image.decode();return image.getAttribute('src').startsWith('/assets/')&&image.naturalWidth>=Math.ceil(image.getBoundingClientRect().width*devicePixelRatio);}catch{return false}}));
-   const firstSocialImage=await page.locator('.rx-ig-photo img').getAttribute('src');
-   const firstSocialHeadline=await page.locator('.rx-ig-overlay h3').innerText();
-   const firstSocialPosition=await page.locator('.rx-ig-photo img').evaluate(img=>getComputedStyle(img).objectPosition);
-   await page.locator('[data-rx-social-next]').click();await page.waitForTimeout(400);
-   check('Social carousel changes frame',await page.locator('.rx-ig-count').innerText()==='2/3');
-   check('Social second frame advances the message and composition',(await page.locator('.rx-ig-overlay h3').innerText())!==firstSocialHeadline&&((await page.locator('.rx-ig-photo img').getAttribute('src'))!==firstSocialImage||(await page.locator('.rx-ig-photo img').evaluate(img=>getComputedStyle(img).objectPosition))!==firstSocialPosition));
-   await page.locator('[data-rx-social="0"]').click();
-   await page.waitForFunction(src=>document.querySelector('.rx-ig-photo img')?.getAttribute('src')===src,firstSocialImage);
-   check('Social carousel returns to first local frame and message',(await page.locator('.rx-ig-photo img').getAttribute('src'))===firstSocialImage&&firstSocialImage.startsWith('/assets/')&&(await page.locator('.rx-ig-overlay h3').innerText())===firstSocialHeadline&&await page.locator('[data-rx-social="0"]').getAttribute('aria-current')==='true');
-   await page.screenshot({path:'qa/fatos-social-'+width+'.png'});
+async function open(viewport,reduced){
+  const context=await browser.newContext({viewport,isMobile:viewport.width<800,hasTouch:viewport.width<800,reducedMotion:reduced?'reduce':'no-preference'});
+  const page=await context.newPage();page.setDefaultTimeout(20000);
+  const tag=`${viewport.width}x${viewport.height}${reduced?' reduzido':''}`;
+  page.on('pageerror',e=>report.errors.push(`${tag}: ${e}`));
+  page.on('console',m=>{if(m.type()==='error')report.errors.push(`${tag}: ${m.text()}`);});
+  page.on('response',r=>{if(r.status()>=400)report.missing.push(`${tag}: ${r.status()} ${r.url().replace(base,'')}`);});
+  await page.goto(base+'/',{waitUntil:'load'});
+  await page.waitForSelector('#mural[data-css-ready="true"] .mu-card',{state:'attached'});
+  await page.evaluate(()=>document.fonts.ready);
+  return {context,page,tag};
+}
+const toMural=page=>page.evaluate(()=>{const s=document.querySelector('#mural .mu-strip');scrollTo({top:scrollY+s.getBoundingClientRect().top-120,behavior:'instant'});});
 
-   for(const channel of ['meta','tiktok']){
-    await page.locator(`[data-ad-tab="${channel}"]`).click();await page.waitForTimeout(700);
-    const image=page.locator(`#panel-${channel} img`).first();
-    const decoded=await image.evaluate(async im=>{im.loading='eager';try{await im.decode();return im.naturalWidth>0}catch{return false}});
-    check(`${channel}: local reference image decoded`,decoded);
-    check(`${channel}: image independent of PDFs and external preview`,(await image.getAttribute('src')).startsWith('/assets/')&&!/\.pdf(?:[?#]|$)/i.test(await image.getAttribute('src')));
-   }
-   await page.locator('[data-frame="2"]').click();await page.waitForTimeout(750);
-   check('Storyboard frame selected',await page.locator('.vertical-video').getAttribute('data-frame')==='2');
-   await page.locator('.vertical-video').evaluate(el=>window.scrollTo({top:window.scrollY+el.getBoundingClientRect().top-85,behavior:'instant'}));await page.waitForTimeout(200);
-   await page.screenshot({path:`qa/ads-${width}.png`});
-   await page.locator('[data-ad-tab="google"]').click();await page.waitForTimeout(700);
-   check('Google channel selected',await page.locator('[data-ad-tab="google"]').getAttribute('aria-selected')==='true');
-   for(const channel of ['meta','tiktok','google','chatgpt']){
-    await page.locator(`[data-ad-tab="${channel}"]`).click();
-    const panel=page.locator(`#panel-${channel}`),entry=panel.locator('.mock-aside [data-linha-open]');
-    await entry.click();
-    check(`${channel}: the campaign CTA opens the promised product demonstration`,await entry.getAttribute('aria-expanded')==='true'&&await panel.locator('.mock-aside .linha-flow').isVisible());
-   }
-   await page.locator('.system-step').nth(3).click();await page.waitForTimeout(700);
-   check('Evidence graph advances',await page.locator('.sm-network').getAttribute('data-step')==='3');
-   await page.screenshot({path:`qa/systems-${width}.png`});
-   await page.locator('#brief').fill('Verificação local do briefing, sem envio.');
-   check('Briefing preview reflects input',await page.locator('.sm-brief-summary p').innerText()==='Verificação local do briefing, sem envio.');
-   check('No page overflow',await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+2));
-   await page.emulateMedia({reducedMotion:'reduce'});await page.waitForTimeout(200);
-   await page.locator('.sm-work-peek').first().click();
-   check('Reduced motion preserves controls',await page.locator('.sm-work-peek').first().getAttribute('aria-expanded')==='true');
-   check('No JavaScript exceptions',errors.length===0);
-  }catch(e){result.failure=String(e);console.error(`[sections ${width}×${height}] ${result.failure}`);await page.screenshot({path:`qa/failure-${width}.png`});await writeFile(`qa/failure-${width}.html`,await page.content());}
-  console.log(`[sections ${width}×${height}] ${checks.filter(item=>item.pass).length} checks passed${result.failure?' · failed':''}`);
+async function mural(viewport,reduced){
+  const {context,page,tag}=await open(viewport,reduced);
+  await toMural(page);
+  const info=await page.evaluate(async()=>{
+    const {CLIENTES}=await import('/assets/showcase/marcas.js');
+    const list=await (await fetch('/assets/portfolio/mural/mural.json')).json();
+    const cards=[...document.querySelectorAll('#mural .mu-card:not([data-mu-clone])')];
+    return {n:cards.length,
+      marcas:cards.every((c,i)=>c.querySelector('.mu-txt b').textContent===CLIENTES[list[i].cliente].marca),
+      hrefs:cards.map(c=>c.querySelector('a').getAttribute('href')),
+      lazy:[...document.querySelectorAll('#mural img')].every(i=>i.loading==='lazy'&&i.decoding==='async'),
+      alts:cards.every(c=>c.querySelector('img').alt.length>20),
+      clones:[...document.querySelectorAll('#mural [data-mu-clone]')].every(c=>c.getAttribute('aria-hidden')==='true'&&c.querySelector('a').tabIndex===-1),
+      logos:document.querySelectorAll('#mural .mu-logo').length,
+      targets:[...document.querySelectorAll('#mural .mu-btn:not([hidden]),#mural .mu-logo')].every(b=>{const r=b.getBoundingClientRect();return r.width>=44&&r.height>=44;}),
+      pausa:!document.querySelector('#mural [data-mu-pausa]').hidden};
+  });
+  check(`${tag}: o mural tem de 12 a 16 cartões`,info.n>=12&&info.n<=16,info.n);
+  check(`${tag}: a marca de cada cartão vem de marcas.js`,info.marcas);
+  check(`${tag}: cada cartão leva a um formato do laboratório ou a uma automação`,info.hrefs.every(h=>/^#(laboratorio\/[a-z]+\/[a-z]+|sistemas\/[a-z]+)$/.test(h)),info.hrefs);
+  check(`${tag}: imagens com loading=lazy e texto alternativo`,info.lazy&&info.alts);
+  check(`${tag}: as cópias do laço ficam fora do leitor de tela e do Tab`,info.clones);
+  check(`${tag}: os 16 canais aparecem e os toques têm 44 px`,info.logos===16&&info.targets);
+  check(`${tag}: o botão de pausa só aparece com movimento`,info.pausa===!reduced);
+
+  // Rolagem lenta: anda sozinha com movimento, para no botão de pausa e em hover; nunca anda com movimento reduzido.
+  const left=()=>page.locator('#mural .mu-strip').evaluate(s=>s.scrollLeft);
+  await page.mouse.move(2,2);
+  const a=await left();await page.waitForTimeout(1600);const b=await left();
+  if(reduced)check(`${tag}: com movimento reduzido a faixa não rola sozinha`,b===a,[a,b]);
+  else{
+    check(`${tag}: a faixa rola devagar sozinha`,b-a>10&&b-a<120,[a,b]);
+    await page.locator('#mural [data-mu-pausa]').click();
+    const c=await left();await page.waitForTimeout(900);
+    check(`${tag}: o botão de pausa para a faixa`,await left()===c&&await page.locator('#mural [data-mu-pausa]').getAttribute('aria-pressed')==='true');
+    await page.locator('#mural [data-mu-pausa]').click();
+    if(viewport.width>=1024){
+      const box=await page.locator('#mural .mu-strip').boundingBox();
+      await page.mouse.move(box.x+box.width/2,box.y+box.height/2);await page.waitForTimeout(300);
+      const d=await left();await page.waitForTimeout(900);
+      check(`${tag}: o ponteiro sobre a faixa para a rolagem`,Math.abs(await left()-d)<1,[d]);
+      await page.mouse.move(2,2);
+    }
+  }
+  // Teclado: com o foco num cartão, → e ← trocam o cartão (tabindex móvel).
+  await page.locator('#mural .mu-card:not([data-mu-clone]) a').first().focus();
+  await page.keyboard.press('ArrowRight');
+  const second=await page.evaluate(()=>{const a=[...document.querySelectorAll('#mural .mu-card:not([data-mu-clone]) a')];return a.indexOf(document.activeElement);});
+  await page.keyboard.press('ArrowLeft');
+  const first=await page.evaluate(()=>{const a=[...document.querySelectorAll('#mural .mu-card:not([data-mu-clone]) a')];return a.indexOf(document.activeElement)===0&&document.activeElement.tabIndex===0;});
+  check(`${tag}: → e ← com o foco no mural trocam o cartão`,second===1&&first,[second,first]);
+  await page.keyboard.press('End');
+  check(`${tag}: End vai ao último cartão`,await page.evaluate(()=>{const a=[...document.querySelectorAll('#mural .mu-card:not([data-mu-clone]) a')];return a.indexOf(document.activeElement)===a.length-1;}));
+  await page.mouse.click(2,viewport.height-2).catch(()=>{});
+
+  // Cada link abre o que promete. O segundo clique no mesmo cartão (mesmo hash) também reabre.
+  const wrong=[];
+  for(let i=0;i<info.hrefs.length;i++){
+    const href=info.hrefs[i];
+    await toMural(page);
+    await page.locator('#mural .mu-card:not([data-mu-clone]) a').nth(i).evaluate(a=>a.click());
+    const m=/^#laboratorio\/([a-z]+)\/([a-z]+)$/.exec(href);
+    try{
+      if(m)await page.waitForFunction(([canal,formato])=>{
+        const p=document.querySelector('#laboratorio .cx-player'),s=p?.querySelector('[data-cx-stage] .cm-screen');
+        const buttons=[...(p?.querySelectorAll('[data-cx-placement]')||[])],pressed=buttons.filter(b=>b.getAttribute('aria-pressed')==='true');
+        return p?.dataset.platform===canal&&p.dataset.placement===formato&&(buttons.length<2||pressed.length===1)&&s?.dataset.frame==='0'&&document.querySelector('#laboratorio .sp-campaign-card')?.dataset.side==='back';
+      },[m[1],m[2]],{timeout:12000});
+      else{
+        const chave=href.split('/')[1];
+        await page.waitForFunction(chave=>{
+          const root=document.querySelector('[data-vitrine="sistemas"]'),k=root&&[...root.querySelectorAll('[data-at-mod]')].findIndex(b=>b.getAttribute('aria-pressed')==='true');
+          const s=root?.querySelector('.at-main .cm-screen');
+          return root?.dataset.modulo===chave&&k>=0&&s&&/^\d+$/.test(s.dataset.frame||'');
+        },chave,{timeout:12000});
+      }
+    }catch{wrong.push(href);}
+  }
+  check(`${tag}: cada cartão abre o formato (aria-pressed, quadro 0) ou a automação certa`,wrong.length===0,wrong);
+  // Mesmo hash de novo: o laboratório reabre pelo evento cx:abrir.
+  const lab=info.hrefs.findIndex(h=>h.startsWith('#laboratorio'));
+  await page.evaluate(h=>{history.replaceState(null,'',h);},info.hrefs[lab]);
+  await page.waitForFunction(()=>document.querySelectorAll('#laboratorio [data-cx-stage]').length===1);
+  await page.locator('#laboratorio [data-cx-stage]').evaluate(s=>{s.focus({preventScroll:true});s.dispatchEvent(new KeyboardEvent('keydown',{key:'ArrowRight',bubbles:true}));});
+  await toMural(page);
+  await page.locator('#mural .mu-card:not([data-mu-clone]) a').nth(lab).evaluate(a=>a.click());
+  const again=await page.waitForFunction(()=>document.querySelector('#laboratorio [data-cx-stage] .cm-screen')?.dataset.frame==='0',null,{timeout:8000}).then(()=>true,()=>false);
+  check(`${tag}: clicar de novo no mesmo cartão reabre o formato do começo`,again);
+  if(!reduced)await toMural(page).then(()=>page.waitForTimeout(300)).then(()=>page.locator('#mural').screenshot({path:`${output}/mural-${viewport.width}.png`,animations:'disabled'})).catch(()=>{});
+  check(`${tag}: sem rolagem lateral na página`,await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1));
   await context.close();
- }
-}finally{await writeFile('qa/results.json',JSON.stringify(report,null,2));await browser.close();server?.kill();}
-console.log(JSON.stringify(report,null,2));
-if(report.some(r=>r.failure))throw new Error('Browser interaction checks failed; inspect qa/results.json');
+}
+
+async function pagina(){
+  const {context,page,tag}=await open({width:390,height:844},false);
+  check(`${tag}: documento em pt-BR com um só h1`,await page.locator('html').getAttribute('lang')==='pt-BR'&&await page.locator('h1').count()===1);
+  await page.locator('#menu-toggle').click();
+  check(`${tag}: o menu do celular abre`,await page.locator('#menu-toggle').getAttribute('aria-expanded')==='true'&&await page.locator('#mobile-nav').isVisible());
+  await page.keyboard.press('Escape');
+  check(`${tag}: Esc fecha o menu e devolve o foco`,await page.locator('#menu-toggle').getAttribute('aria-expanded')==='false'&&await page.locator('#menu-toggle').evaluate(el=>el===document.activeElement));
+  // O serviço escolhido em Serviços preenche o briefing.
+  await page.evaluate(()=>document.querySelector('#categorias').scrollIntoView({behavior:'instant'}));
+  await page.waitForSelector('#categorias[data-css-ready="true"]',{state:'attached'});
+  const scope=page.locator('details[data-service-scope="campaigns"]');
+  await scope.locator('summary').click();
+  await scope.locator('a.path-contact').evaluate(a=>a.click());
+  await page.waitForTimeout(400);
+  check(`${tag}: Começar briefing de campanha escolhe o serviço no formulário`,/Campanhas e anúncios/.test(await page.locator('#service').inputValue()),await page.locator('#service').inputValue());
+  const direct=await page.locator('#contato [data-contact-direct]').evaluateAll(links=>links.map(a=>({href:a.href,text:a.textContent.trim()})));
+  check(`${tag}: contato direto por WhatsApp ou e-mail, com texto que diz o destino`,direct.some(l=>/wa\.me\/\d{10,}|mailto:[^?]+@/.test(l.href))&&direct.every(l=>l.text.length>3),direct);
+  await context.close();
+}
+
+try{
+  let up=false;for(let i=0;i<80;i++){try{up=(await fetch(base+'/health')).ok;if(up)break;}catch{}await new Promise(r=>setTimeout(r,120));}assert(up,'server reachable');
+  browser=await chromium.launch();
+  await mural({width:390,height:844},false);
+  await mural({width:1440,height:900},false);
+  await mural({width:390,height:844},true);
+  await pagina();
+  check('sem erro de JavaScript nem no console',report.errors.length===0,report.errors);
+  check('nenhuma resposta 4xx/5xx',report.missing.length===0,report.missing);
+}finally{
+  await browser?.close();server?.kill();
+  await writeFile(`${output}/results.json`,JSON.stringify(report,null,2));
+}
+const failed=report.checks.filter(c=>!c.pass);
+console.log(`${report.checks.length-failed.length}/${report.checks.length} verificações passaram`);
+if(failed.length)process.exit(1);

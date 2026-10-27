@@ -254,3 +254,26 @@ body.is-paused .sp-platforms [role='tab'], body.is-paused .sp-tab-marker { trans
 .sp-platforms [role='tab'][aria-selected='true'] .sp-selo { transform: scale(1.1); }
 .sp-platforms [role='tab']:active .sp-selo { transform: scale(.92); }
 @media (prefers-reduced-motion: reduce) { .sp-selo { transition: none; } }
+
+/* Peça estreita: no celular deitado o cartão tem a largura do aparelho (uns 190 px). Tipos, selo e contador
+   diminuem com a própria peça, a foto fica mais alta (3:5) para o texto caber, contador, seta e trilho de ícones
+   saem (os pontos embaixo já mostram o carrossel) e a interface desenhada sobre a foto encolhe. */
+#laboratorio .sp-campaign-panel .sp-art { container-type: inline-size; }
+@container (max-width: 260px) {
+  #laboratorio .sp-art > .sp-art-photo { aspect-ratio: 3 / 5; height: auto; }
+  #laboratorio .sp-art-cap { gap: 6px; padding: 12px; }
+  #laboratorio .sp-art-title { font-size: clamp(17px, 11cqi, 26px); }
+  #laboratorio .sp-art-oferta { font-size: 12px; }
+  #laboratorio .sp-art-fine { font-size: 11px; }
+  #laboratorio .sp-art-cta { padding: 7px 11px; font-size: 12px; }
+  #laboratorio .sp-art-brand { top: 10px; left: 10px; max-width: calc(100% - 52px); gap: 6px; padding: 3px 9px 3px 3px; font-size: 11.5px; }
+  #laboratorio .sp-art-brand .cm-mark { width: 22px; height: 22px; }
+  #laboratorio .sp-art-conta { display: none; }
+  #laboratorio .sp-art-arraste { display: none; }
+  #laboratorio .sp-art-rail { display: none; }
+  #laboratorio .sp-art-ui { zoom: .78; }
+  #laboratorio .sp-art-legenda { font-size: 12px; }
+  #laboratorio .sp-art-link { margin: 4px -12px -12px; padding: 10px 12px; }
+  #laboratorio .sp-art-link b { font-size: 13px; }
+  #laboratorio .sp-art-link i { padding: 7px 10px; font-size: 12px; }
+}
