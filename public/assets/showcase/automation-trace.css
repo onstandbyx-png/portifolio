@@ -8,11 +8,12 @@
 #sistemas .at-g{width:20px;height:20px;flex:none;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
 #sistemas .at :is(button,[tabindex]):focus-visible{outline:2px solid var(--at-luz);outline-offset:3px}
 
-/* Selector: all eight visible, two columns on phones and four from 760px; names may take two lines. */
+/* Selector: all eight visible, two columns up to 999px and four from 1000px; names may take two lines. */
 #sistemas .at-mods{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
 #sistemas .at-mod{position:relative;display:grid;grid-template-columns:20px minmax(0,1fr);align-items:center;gap:4px 10px;min-height:48px;padding:9px 12px;border:1px solid var(--at-line);border-radius:14px;background:var(--at-card);color:var(--at-ink);text-align:left;cursor:pointer;transition:background .2s,border-color .2s}
 #sistemas .at-mod:hover{background:#ffffff17}
 #sistemas .at-mod-t{display:grid;gap:1px;min-width:0}
+#sistemas .at-nw{white-space:nowrap}
 #sistemas .at-mod b{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden;font-size:14px;font-weight:650;line-height:1.25}
 #sistemas .at-mod small{overflow:hidden;color:var(--at-mut);font-size:12.5px;line-height:1.3;white-space:nowrap;text-overflow:ellipsis}
 #sistemas .at-mod .at-longa{display:none}
@@ -25,10 +26,17 @@
 #sistemas .at-mod:has(.at-mod-falha){padding-right:26px}
 #sistemas .at-mod[aria-pressed="true"] .at-mod-falha{color:#8a4d12}
 @media (max-width:359px){#sistemas .at-mod{grid-template-columns:minmax(0,1fr);padding:8px 10px}#sistemas .at-mod-g{display:none}#sistemas .at-mod b{font-size:13.5px}}
-@media (min-width:760px){
+@media (min-width:680px){
+  #sistemas .at-mod .at-longa{display:inline}
+  #sistemas .at-mod .at-curta{display:none}
+}
+/* Four columns from 1000px; the long description and the words of the failure mark from 1100px. */
+@media (min-width:1000px){
   #sistemas .at-mods{grid-template-columns:repeat(4,minmax(0,1fr))}
   #sistemas .at-mod{align-items:start;padding:11px 13px}
   #sistemas .at-mod-g{margin-top:1px}
+  #sistemas .at-mod .at-longa{display:none}
+  #sistemas .at-mod .at-curta{display:inline}
 }
 @media (min-width:1100px){
   #sistemas .at-mod .at-longa{display:inline}
@@ -39,7 +47,7 @@
 }
 
 /* Grid of the main area. Phones: one column, the dock sticks to the bottom while the phone is on screen. */
-#sistemas .at-main{position:relative;display:grid;grid-template-columns:minmax(0,1fr);grid-template-areas:"path" "tabs" "view" "dock" "head" "obj" "rest";gap:12px;margin-top:18px}
+#sistemas .at-main{position:relative;scroll-margin-top:16px;display:grid;grid-template-columns:minmax(0,1fr);grid-template-areas:"path" "tabs" "view" "dock" "head" "obj" "rest";gap:12px;margin-top:18px}
 #sistemas .at-head{grid-area:head}
 #sistemas .at-path{grid-area:path}
 #sistemas .at-tabs{grid-area:tabs}
@@ -56,8 +64,8 @@
   #sistemas .at-main[data-aba="tela"] .at-panels{display:none}
   #sistemas .at-panels{height:clamp(360px,calc(100svh - 250px),640px)}
   #sistemas .at-dock{position:sticky;bottom:calc(var(--mobile-cta-h,0px) + env(safe-area-inset-bottom,0px) + 8px);z-index:9}
-  #sistemas .at-agora-ev{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden}
-  #sistemas .at-agora-ev[data-tipo="fala"]{-webkit-line-clamp:3}
+  #sistemas .at-agora-ev{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:1;overflow:hidden}
+  #sistemas .at-agora-ev[data-tipo="fala"]{-webkit-line-clamp:2}
 }
 /* 600 to 899px: phone on the left (sticky), everything else on the right. */
 @media (min-width:600px){
@@ -66,7 +74,9 @@
   #sistemas .at-panels{grid-area:panel;height:clamp(280px,calc(100svh - 360px),420px)}
   #sistemas .at-tab[data-at-aba="tela"]{display:none}
 }
+/* Short landscape: the dock comes first beside the phone, the head after the panel. */
 @media (min-width:600px) and (max-height:520px) and (orientation:landscape){
+  #sistemas .at-main{grid-template-areas:"view dock" "view path" "view tabs" "view panel" "view head" "view obj" "view rest"}
   #sistemas .at-phone{top:8px}
   #sistemas .at-panels{height:clamp(240px,calc(100svh - 40px),360px)}
 }
@@ -129,7 +139,8 @@
 #sistemas .at-play{min-width:124px;padding:0 20px;border-color:var(--at-luz);background:var(--at-luz);color:var(--at-verde)}
 #sistemas .at-pos{margin-left:auto;color:var(--at-mut);font-size:13px;font-variant-numeric:tabular-nums;white-space:nowrap}
 @media (max-width:359px){#sistemas .at-play{min-width:96px;padding:0 14px}#sistemas .at-controls{gap:6px}}
-@media (max-width:599px) and (max-height:640px){#sistemas .at-agora-ev,#sistemas .at-agora-ev[data-tipo="fala"]{-webkit-line-clamp:1}#sistemas .at-caption{font-size:14px}}
+/* Short phones: during a call the line being spoken takes the place of the caption. */
+@media (max-width:599px) and (max-height:640px){#sistemas .at-caption{font-size:14px}#sistemas .at-agora:has([data-tipo="fala"]) .at-caption{display:none}}
 @media (min-width:600px){#sistemas .at-dock{box-shadow:none;background:#ffffff0a}#sistemas .at-caption{font-size:16px}}
 
 /* Panels: log, architecture, call. */

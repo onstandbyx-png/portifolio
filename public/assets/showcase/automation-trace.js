@@ -94,7 +94,7 @@ function mountOne(root) {
   const uid = 'at' + Math.random().toString(36).slice(2, 7);
   MODULOS.forEach(m => { m.falha = placementByKey(m.key + '-falha') ? m.key + '-falha' : ''; });
   root.classList.add('at');
-  root.innerHTML = `<div class="at-mods" role="group" aria-label="Escolha uma automação">${MODULOS.map((m, k) => `<button type="button" class="at-mod" data-at-mod="${k}" aria-pressed="${k === 0}">${glifo(m.glifo, 'at-mod-g')}<span class="at-mod-t"><b>${esc(m.label)}</b><small><span class="at-longa">${esc(m.funcao)}</span><span class="at-curta">${esc(m.curta)}</span></small></span>${m.falha ? `<span class="at-mod-falha" title="Tem caminho de falha">${glifo('ramo')}<span class="at-mod-falha-t">caminho de falha</span><span class="sr-only">, tem caminho de falha</span></span>` : ''}</button>`).join('')}</div>
+  root.innerHTML = `<div class="at-mods" role="group" aria-label="Escolha uma automação">${MODULOS.map((m, k) => `<button type="button" class="at-mod" data-at-mod="${k}" aria-pressed="${k === 0}">${glifo(m.glifo, 'at-mod-g')}<span class="at-mod-t"><b>${esc(m.label).replace('e-mail', '<span class="at-nw">e-mail</span>')}</b><small><span class="at-longa">${esc(m.funcao)}</span><span class="at-curta">${esc(m.curta)}</span></small></span>${m.falha ? `<span class="at-mod-falha" title="Tem caminho de falha">${glifo('ramo')}<span class="at-mod-falha-t" aria-hidden="true">tem caminho de falha</span><span class="sr-only">, tem caminho de falha</span></span>` : ''}</button>`).join('')}</div>
     <div class="at-main" data-at-main data-aba="tela">
       <div class="at-head"><div class="at-cliente" data-at-cliente></div><div class="at-head-t"><b>Registro de eventos</b><small>O que o sistema registra enquanto a cliente vê cada tela.</small></div><span class="at-badge">Demo · dados simulados</span></div>
       <div class="at-path" data-at-path role="group" aria-label="Caminho" hidden><button type="button" data-at-falha="0" aria-pressed="true">Caminho feliz</button><button type="button" data-at-falha="1" aria-pressed="false">Com falhas</button></div>
@@ -183,7 +183,9 @@ function mountOne(root) {
         atual = l.ator;
       });
       const doQuadro = linhas.filter(l => l.k === k);
-      porQuadro.push({ ativo: doQuadro.length ? doQuadro[doQuadro.length - 1].ator : 'Cliente', viva });
+      // Without a log line, the one who acts is the speaker of the call line, else the customer.
+      const fala = (q.fala || []).map(falaDe).pop(), voz = fala && (/IA/.test(fala.quem) ? 'Agente IA' : /consultor/i.test(fala.quem) ? 'Humano' : 'Cliente');
+      porQuadro.push({ ativo: doQuadro.length ? doQuadro[doQuadro.length - 1].ator : voz && nos.includes(voz) ? voz : 'Cliente', viva });
     });
     return { nos, arestas: [...arestas.values()], primeiro, porQuadro };
   }
@@ -560,8 +562,26 @@ function mountOne(root) {
   compacto.addEventListener('change', () => stage.querySelector('.ch-iphone')?.classList.toggle('ch-iphone--compacto', compacto.matches));
   if ('ResizeObserver' in window) new ResizeObserver(() => { if (abaVista() === 'arquitetura') arrumarGrafo(); desenharFio(); }).observe(main);
 
-  if (!lerHash()) { modulo = 0; carregar(); }
-  addEventListener('hashchange', () => { if (lerHash() && live()) { pausado = false; if (visivel) tocar(); } });
+  /* A link shows the phone: after the section loader has brought the section up, the panel comes to the top and
+     stays there for up to 3 s while the sections above it load and grow, until the person scrolls or touches. */
+  let soltar = null;
+  function mostrarPalco() {
+    soltar?.();
+    const page = document.querySelector('main') || document.body, kinds = ['wheel', 'touchstart', 'keydown', 'pointerdown'];
+    let altura = page.offsetHeight;
+    const ro = 'ResizeObserver' in window ? new ResizeObserver(() => { if (page.offsetHeight !== altura) { altura = page.offsetHeight; main.scrollIntoView({ block: 'start' }); } }) : null;
+    const timer = setTimeout(() => soltar?.(), 3000);
+    soltar = () => { ro?.disconnect(); clearTimeout(timer); kinds.forEach(k => removeEventListener(k, soltar)); soltar = null; };
+    kinds.forEach(k => addEventListener(k, soltar, { passive: true }));
+    setTimeout(() => { main.scrollIntoView({ block: 'start' }); ro?.observe(page); }, 60);
+  }
+  if (lerHash()) mostrarPalco(); else { modulo = 0; carregar(); }
+  addEventListener('hashchange', () => {
+    if (!lerHash()) return;
+    mostrarPalco();
+    pausado = false;
+    if (live() && visivel) tocar();
+  });
   if ('IntersectionObserver' in window) {
     // A quarter of .at-main on screen (or 40% of the screen filled by it, when it is taller than 4 screens).
     new IntersectionObserver(([entry]) => {
