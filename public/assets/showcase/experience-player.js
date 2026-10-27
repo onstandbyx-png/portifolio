@@ -94,6 +94,8 @@ export function mountCampaignExperience(lab, underlay) {
   const wideQuery = matchMedia('(min-width:900px), (min-width:600px) and (max-height:520px) and (orientation:landscape)');
   const compactQuery = matchMedia('(max-width:480px), (max-height:480px)');
   let channelId = null, placementIndex = 0, elapsed = 0, frame = -1, step = -1, playing = false, raf = 0, last = 0, visible = false, held = false;
+  // resume: the journey was stopped by the page (out of view, hidden tab, global pause), not by the visitor.
+  let resume = false;
   let ghost = null, animations = [], rising = [], generation = 0, durations = [], measured = [], starts = [], total = 0, screen = null, phone = null, audio = null;
   const channel = () => channelById(channelId);
   const placement = () => channel().placements[placementIndex];
@@ -137,7 +139,8 @@ export function mountCampaignExperience(lab, underlay) {
     playLabel.textContent = text;
     play.querySelector('svg').outerHTML = icon(name);
     play.setAttribute('aria-label', aria);
-    player.querySelectorAll('[data-cx-toggle]').forEach(button => { button.querySelector('svg').outerHTML = icon(name); button.setAttribute('aria-label', aria); });
+    // The strip with the round toggle moves into the side panel on wide screens: both roots.
+    [player, side].forEach(root => root.querySelectorAll('[data-cx-toggle]').forEach(button => { button.querySelector('svg').outerHTML = icon(name); button.setAttribute('aria-label', aria); }));
     const box = mainStage(); if (box) box.dataset.playing = String(playing);
     player.dataset.live = side.dataset.live = String(live());
   }
@@ -264,7 +267,7 @@ export function mountCampaignExperience(lab, underlay) {
   /* Direct navigation: a frame (arrows, halves of the phone, swipe) or a journey step. */
   function move(to) {
     const count = frames().length;
-    held = true; stop();
+    held = true; resume = false; stop();
     const target = Math.max(0, Math.min(count - 1, to));
     elapsed = starts[target];
     paint({ instant: !live(), force: true });
@@ -277,7 +280,7 @@ export function mountCampaignExperience(lab, underlay) {
   }
   function togglePlay() {
     if (!open()) { openPeel(); return; }
-    if (playing) { held = true; stop(); return; }
+    if (playing) { held = true; resume = false; stop(); return; }
     // Without motion, each press shows the next frame instead of playing.
     if (!live()) { move(frame >= frames().length - 1 ? 0 : frame + 1); return; }
     visible = visible || player.getClientRects().length > 0;
@@ -377,7 +380,7 @@ export function mountCampaignExperience(lab, underlay) {
   /* Replaces the placement. With motion and an open peel, a ghost of the old
      placement leaves to the side while the new one springs in from the other. */
   function render({ animate = false, direction = 1 } = {}) {
-    stop(); cancelAnimations(); held = false; generation++;
+    stop(); cancelAnimations(); held = false; resume = false; generation++;
     stopAudio();
     if (zoom.open) { restorePhone(); zoom.close(); }
     const moving = animate && live() && open() && body.childElementCount > 0;
@@ -557,24 +560,27 @@ export function mountCampaignExperience(lab, underlay) {
   window.addEventListener('hashchange', fromHash);
 
   new MutationObserver(syncChannel).observe(lab, { attributes: true, attributeFilter: ['data-channel'] });
-  new MutationObserver(() => { if (document.body.classList.contains('is-paused')) { stop(); paint({ force: true }); } else setPlayLabel(); }).observe(document.body, { attributes: true, attributeFilter: ['class'] });
+  // Out of view, a hidden tab and the global pause stop the journey; it goes on from the same point when that ends.
+  const halt = () => { if (playing) resume = true; stop(); };
+  const proceed = () => { if (resume && visible && !held && open() && live()) { resume = false; start(false); } else setPlayLabel(); };
+  new MutationObserver(() => { if (document.body.classList.contains('is-paused')) { halt(); paint({ force: true }); } else proceed(); }).observe(document.body, { attributes: true, attributeFilter: ['class'] });
   // Opening the peel starts the journey once and turns the panel live; closing stops it and rewinds.
   new MutationObserver(() => {
     side.dataset.mode = open() ? 'live' : 'intro';
-    if (underlay.inert) { stop(); stopAudio(); cancelAnimations(); held = false; elapsed = 0; if (zoom.open) zoom.close(); paintSide(); paint({ instant: true, force: true }); setPlayLabel(); }
+    if (underlay.inert) { stop(); stopAudio(); cancelAnimations(); held = false; resume = false; elapsed = 0; if (zoom.open) zoom.close(); paintSide(); paint({ instant: true, force: true }); setPlayLabel(); }
     else { paintSide(); start(true); }
   }).observe(underlay, { attributes: true, attributeFilter: ['inert'] });
   // A journey that has not started (and was not paused by the visitor) starts when it comes into view.
-  if ('IntersectionObserver' in window) new IntersectionObserver(([entry]) => { visible = entry.isIntersecting; if (!visible) stop(); else if (!playing && !held && elapsed === 0 && open()) start(true); }, { threshold: .02 }).observe(player);
+  if ('IntersectionObserver' in window) new IntersectionObserver(([entry]) => { visible = entry.isIntersecting; if (!visible) halt(); else if (!playing && !held && elapsed === 0 && open()) start(true); else if (!playing) proceed(); }, { threshold: .02 }).observe(player);
   else visible = true;
   if ('ResizeObserver' in window) new ResizeObserver(() => { placements.querySelector('.cx-thumb')?.classList.add('is-instant'); thumb(); if (frame >= 0) land(frame); }).observe(body);
-  document.addEventListener('visibilitychange', () => { if (document.hidden) { stop(); stopAudio(); } });
+  document.addEventListener('visibilitychange', () => { if (document.hidden) { halt(); stopAudio(); } else if (!playing) proceed(); });
   reduce.addEventListener('change', () => { stop(); cancelAnimations(); paint({ instant: true, force: true }); });
   wideQuery.addEventListener('change', arrange);
   narrowQuery.addEventListener('change', () => { if (channelId) header(); });
   if ('ResizeObserver' in window) new ResizeObserver(() => { if (channelId && channel().placements.length > 1 && placements.dataset.curto !== String(usarCurto())) header(); }).observe(formatos);
   compactQuery.addEventListener('change', compact);
-  motion.onStop(() => { stop(); ghost?.remove(); ghost = null; });
+  motion.onStop(() => { halt(); ghost?.remove(); ghost = null; });
   arrange();
   syncChannel();
   if (/^#laboratorio\//.test(location.hash)) requestAnimationFrame(fromHash);
