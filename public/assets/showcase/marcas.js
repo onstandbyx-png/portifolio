@@ -71,7 +71,7 @@ export const MARCAS = congela({
   /* V under an arch: the monogram of Vilela, the arch of the teeth without drawing a tooth */
   clinica: svg(`<path d="M13 54V31a19 19 0 0 1 38 0v23" fill="none" stroke="${W}" stroke-width="6.5"/><path d="M22 28l10 22 10-22" fill="none" stroke="${C('clinica')}" stroke-width="6.5" stroke-linejoin="round"/>`),
   /* a cliff over the sea, cut by the horizon, with the sun on the line */
-  incorporadora: svg(`<path fill-rule="evenodd" d="M5 58V30C13 22 24 17 35 16l3 6-2 6 5 6-1 7 4 6-1 11z M5 37h40v3.6H5z" fill="${W}"/><path d="M44 38.8h15" stroke="${W}" stroke-width="3.6"/><path d="M46.5 37a6.5 6.5 0 0 1 13 0z" fill="${C('incorporadora')}"/>`),
+  incorporadora: svg(`<path fill-rule="evenodd" d="M5 56V25l31-10 2 6-3 6 6 5-2 7 5 6-1 11z M5 35h40v3.6H5z" fill="${W}"/><path d="M44 36.8h15" stroke="${W}" stroke-width="3.6"/><path d="M46.5 35a6.5 6.5 0 0 1 13 0z" fill="${C('incorporadora')}"/>`),
   /* a square-cornered key with a hollow P and its dot: P. */
   varejo: svg(`<path fill-rule="evenodd" d="M9 9h46v46H9z M22 17h12a9 9 0 0 1 0 18h-5v11h-7z M29 23v6h4.5a3 3 0 0 0 0-6z M9 48.4h46v2.2H9z" fill="${W}"/><path d="M39 38.5h7.5V46H39z" fill="${C('varejo')}"/>`),
   /* a D whose bowl is a string of festival bunting */
