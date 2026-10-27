@@ -5,15 +5,21 @@
    (botão #menu-toggle, nav#mobile-nav, foco e bloqueio da página) continua com portfolio.js. */
 const header = document.getElementById('site-header');
 const panel = header?.querySelector('.sn-dropdown');
+/* Paleta da Smile N no shader: claro (acento da frente), médio #2c5a46 e escuro #0f2a20. */
+const rgb = hex => [1, 3, 5].map(i => parseInt(hex.slice(i, i + 2), 16) / 255);
 const palettes = {
-  create: [[0.96, 0.64, 0.43], [0.64, 0.21, 0.37], [0.19, 0.07, 0.21]],
-  discover: [[0.78, 0.61, 0.97], [0.44, 0.23, 0.68], [0.12, 0.07, 0.2]],
-  research: [[0.66, 0.76, 0.66], [0.24, 0.44, 0.37], [0.06, 0.16, 0.15]],
-  site: [[0.83, 0.7, 0.55], [0.48, 0.32, 0.23], [0.13, 0.09, 0.08]],
-  slides: [[0.9, 0.66, 0.42], [0.68, 0.33, 0.3], [0.21, 0.1, 0.15]],
-  image: [[0.86, 0.69, 0.97], [0.67, 0.3, 0.55], [0.21, 0.08, 0.25]],
-  video: [[0.94, 0.62, 0.31], [0.65, 0.2, 0.23], [0.21, 0.05, 0.16]],
-  voice: [[0.89, 0.66, 0.82], [0.62, 0.29, 0.41], [0.22, 0.09, 0.2]],
+  campanhas: [rgb('#c8743e'), rgb('#2c5a46'), rgb('#0f2a20')],
+  sites: [rgb('#d8c9a3'), rgb('#2c5a46'), rgb('#0f2a20')],
+  sistemas: [rgb('#6fbf8f'), rgb('#2c5a46'), rgb('#0f2a20')],
+};
+/* Cartão em destaque de cada item do menu Trabalhos. Os nomes das marcas vêm de marcas.js (carregado na primeira abertura). */
+const FEATURED = {
+  campanhas: { pal: 'campanhas', href: '#laboratorio', t: 'Uma oferta, dezesseis canais.', p: 'Feed, busca, vídeo e conversa: cada peça na linguagem do canal, com marcas fictícias.' },
+  sites: { pal: 'sites', href: '#editorial', t: 'Do primeiro toque à confirmação.', p: 'Site, loja, landing e publieditorial, com o caminho real do cliente.' },
+  agente: { pal: 'sistemas', href: '#sistemas/agente', marca: 'turismo', t: 'do anúncio ao Pix, com uma consultora no meio.', p: 'A IA se apresenta, entende o pedido e passa para uma pessoa com o histórico.' },
+  voz: { pal: 'sistemas', href: '#sistemas/voz', marca: 'clinica', t: 'a ligação que marca a avaliação.', p: 'A assistente avisa que é IA e oferece a recepção a qualquer momento.' },
+  pix: { pal: 'sistemas', href: '#sistemas/pix', marca: 'educacao', t: 'a mensalidade sem perder o aluno.', p: 'Pix Automático com aviso na véspera e pausa no lugar do cancelamento.' },
+  instagram: { pal: 'sistemas', href: '#sistemas/instagram', marca: 'varejo', t: 'do comentário ao aviso de chegada.', p: 'O comentário no Reel vira conversa no Direct; na busca, o RCS abre a conversa.' },
 };
 const vertex = 'attribute vec2 a_position; varying vec2 v_uv; void main(){v_uv=a_position*.5+.5;gl_Position=vec4(a_position,0.,1.);}';
 const fragment = `
@@ -122,11 +128,27 @@ if (header && panel) {
   let open = false, openedByHover = false, closeTimer = 0, hoverTimer = 0, hideTimer = 0;
 
   const liquidCanvas = panel.querySelector('.sn-liquid');
-  const liquid = liquidCanvas ? createLiquid(liquidCanvas, palettes.create) : null;
+  const liquid = liquidCanvas ? createLiquid(liquidCanvas, palettes.sistemas) : null;
   function setPalette(key) {
-    const colors = palettes[key] || palettes.create;
+    const colors = palettes[key] || palettes.sistemas;
     if (featured) ['--sn-light', '--sn-mid', '--sn-dark'].forEach((name, i) => featured.style.setProperty(name, `rgb(${colors[i].map(n => Math.round(n * 255)).join(' ')})`));
     liquid?.setPalette(colors);
+  }
+  let brands = null;
+  const featuredTitle = panel.querySelector('[data-sn-title]'), featuredText = panel.querySelector('[data-sn-text]');
+  function feature(key) {
+    const item = FEATURED[key] || FEATURED.agente;
+    const name = item.marca && brands?.[item.marca]?.marca;
+    if (featuredTitle) featuredTitle.textContent = name ? `${name}: ${item.t}` : item.t[0].toUpperCase() + item.t.slice(1);
+    if (featuredText) featuredText.textContent = item.p;
+    featured?.setAttribute('href', item.href);
+    featured?.setAttribute('data-sn-current', key);
+    setPalette(item.pal);
+  }
+  function loadBrands() {
+    if (brands) return;
+    brands = {};
+    import('/assets/showcase/marcas.js').then(({ CLIENTES }) => { brands = CLIENTES; feature(featured?.dataset.snCurrent || 'agente'); }, () => {});
   }
 
   const clearClose = () => { clearTimeout(closeTimer); closeTimer = 0; };
@@ -141,7 +163,8 @@ if (header && panel) {
   function show(hover = false, focusFirst = false) {
     clearClose(); clearHover();
     openedByHover = hover;
-    setPalette('create');
+    feature('agente');
+    loadBrands();
     if (!open) {
       open = true;
       clearTimeout(hideTimer);
@@ -209,9 +232,9 @@ if (header && panel) {
     if (!menuOpen()) trigger?.focus();
   });
   panel.querySelectorAll('.sn-link').forEach(link => {
-    const key = link.dataset.palette;
-    link.addEventListener('pointerenter', () => setPalette(key));
-    link.addEventListener('focus', () => setPalette(key));
+    const key = link.dataset.snItem;
+    link.addEventListener('pointerenter', () => feature(key));
+    link.addEventListener('focus', () => feature(key));
   });
   panel.addEventListener('click', event => {
     if (!event.target.closest('a')) return;
@@ -246,6 +269,91 @@ if (header && panel) {
   }
 
   place();
-  setPalette('create');
+  feature('agente');
   syncStill();
+}
+
+/* Cabeçalho que acompanha a página. Sobre o hero ele fica no fluxo (absolute); quando o hero sai da tela, vira
+   fixo e compacto, some ao rolar para baixo e volta ao rolar para cima, na variante clara sobre fundo claro.
+   Publica em :root --sn-h (altura com o respiro de cima, para o scroll-padding e o hero), --sn-h-visible
+   (quanto do cabeçalho cobre a tela agora) e --mobile-cta-h (a barra fixa do WhatsApp no celular, que aparece
+   depois do hero e some no contato e nos painéis que têm barra própria: [data-cx-body] e .at-main). */
+const hero = document.querySelector('.planes-hero');
+if (header && hero) {
+  const rootStyle = document.documentElement.style, bar = header.querySelector('.sn-bar');
+  const cta = document.querySelector('.mobile-project-cta'), contact = document.getElementById('contato');
+  const phone = matchMedia('(max-width: 760px)');
+  let fixed = false, hidden = false, lastY = scrollY, pending = false;
+  const busy = () => header.querySelector('[aria-expanded="true"]') || header.contains(document.activeElement);
+  function measure() {
+    if (fixed) return;
+    const top = parseFloat(getComputedStyle(header).marginTop) || 0;
+    rootStyle.setProperty('--sn-h', `${Math.round(bar.offsetHeight + top)}px`);
+  }
+  // Fundo escuro embaixo do cabeçalho: data-tone da seção ou a luminância da primeira cor de fundo opaca.
+  function darkUnder() {
+    const y = header.getBoundingClientRect().bottom + 2;
+    for (let n = document.elementFromPoint(innerWidth / 2, Math.min(innerHeight - 1, y)); n && n !== document.documentElement; n = n.parentElement) {
+      if (n.dataset?.tone) return n.dataset.tone === 'dark';
+      const c = getComputedStyle(n).backgroundColor.match(/[\d.]+/g);
+      if (c && (c[3] === undefined || +c[3] > .5)) return .2126 * c[0] + .7152 * c[1] + .0722 * c[2] < 110;
+    }
+    return false;
+  }
+  const inView = el => { const r = el.getBoundingClientRect(); return r.bottom > 0 && r.top < innerHeight; };
+  function update() {
+    pending = false;
+    const y = scrollY;
+    if (fixed && !busy()) {
+      if (y > lastY + 6 && y > 200) hidden = true;
+      else if (y < lastY - 6) hidden = false;
+    } else hidden = false;
+    lastY = y;
+    header.classList.toggle('is-hidden', hidden);
+    if (fixed) header.classList.toggle('sn-dark', darkUnder());
+    const visible = hidden ? 0 : fixed ? 12 + bar.offsetHeight : Math.max(0, header.getBoundingClientRect().bottom);
+    rootStyle.setProperty('--sn-h-visible', `${Math.round(visible)}px`);
+    if (cta) {
+      const show = phone.matches && fixed && !(contact && inView(contact)) && ![...document.querySelectorAll('[data-cx-body], .at-main')].some(inView);
+      cta.classList.toggle('is-visible', show);
+      rootStyle.setProperty('--mobile-cta-h', show ? `${Math.round(cta.offsetHeight + 12)}px` : '0px');
+    }
+  }
+  const request = () => { if (!pending) { pending = true; requestAnimationFrame(update); } };
+  new IntersectionObserver(([entry]) => {
+    const out = !entry.isIntersecting && entry.boundingClientRect.top < 0;
+    if (out === fixed) return;
+    fixed = out;
+    // Ao virar fixo já entra escondido e sem transição; aparece no primeiro gesto para cima.
+    header.classList.add('is-still');
+    header.classList.toggle('is-fixed', fixed);
+    hidden = fixed;
+    header.classList.toggle('is-hidden', hidden);
+    if (!fixed) header.classList.add('sn-dark');
+    requestAnimationFrame(() => requestAnimationFrame(() => header.classList.remove('is-still')));
+    request();
+  }).observe(hero);
+  new ResizeObserver(() => { measure(); request(); }).observe(bar);
+  addEventListener('scroll', request, { passive: true });
+  addEventListener('resize', request, { passive: true });
+  header.addEventListener('focusin', () => { if (hidden) { hidden = false; request(); } });
+  measure();
+  update();
+}
+
+/* Âncoras param no título da seção, logo abaixo do cabeçalho: scroll-margin negativo igual à distância
+   entre o topo da seção e o seu h2 (as seções têm respiro grande em cima). */
+const main = document.querySelector('main');
+if (main && 'ResizeObserver' in window) {
+  let queued = false;
+  const margins = () => {
+    queued = false;
+    for (const section of main.querySelectorAll(':scope > section[id]')) {
+      const title = section.querySelector('h2');
+      if (!title || title.offsetHeight < 2) continue;
+      const gap = title.getBoundingClientRect().top - section.getBoundingClientRect().top;
+      section.style.scrollMarginTop = gap > 0 ? `${-Math.round(gap)}px` : '';
+    }
+  };
+  new ResizeObserver(() => { if (!queued) { queued = true; requestAnimationFrame(margins); } }).observe(main);
 }
