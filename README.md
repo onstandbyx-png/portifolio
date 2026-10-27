@@ -1,36 +1,33 @@
-# Smile N · ideia ↗ execução.
+# Smile N · do anúncio ao caixa.
 
-Portfólio de redação, conteúdo, direção criativa, campanhas e Ads, sites, apps e vídeo. O visitante entende o trabalho vendo peças, interfaces e interações. Não há obrigação de entender uma arquitetura de software.
+Portfólio de direção criativa, campanhas e automação. O visitante vê o trabalho funcionando: anúncios em 16 canais, a conversa com IA que passa para uma pessoa, o Pix conferido e o resultado de volta no anúncio, tudo dentro de um iPhone desenhado em HTML e CSS, com o registro do sistema ao lado.
 
 ## Conteúdo
 
-- Fatos Desconhecidos: experiência profissional com pesquisa, pauta, roteiro e direção narrativa. Imagens provenientes do repositório canônico, sem atribuir autoria integral de todos os materiais a uma pessoa. A rede não é inventário publicitário oferecido.
-- Campanhas e Ads: posicionamento, conceito, copy, criativos, formatos, estratégia, configuração, veiculação e otimização. As peças desta página são estudos conceituais, não campanhas verificadas.
-- smiile: demonstrações de sites, apps, UX/UI, dispositivos e componentes interativos com prévias navegáveis.
-- Vídeo e movimento: o estúdio cinético preserva material em vídeo, camadas, textura, recorte e manipulação física.
+- **Hero:** a jornada viva de uma campanha (peça, conversa, registro) em sete canais.
+- **Mural:** telas reais dos fluxos, cada uma com link para a jornada inteira.
+- **Campanhas e anúncios:** 16 canais e 30 formatos, cada um a jornada de um anunciante fictício, de um dos 8 tipos de cliente atendidos.
+- **Sites e lojas:** o caminho do primeiro toque à confirmação.
+- **Sistemas e automações:** 8 automações (agente com Pix, ligação com IA, chamada no WhatsApp, Direct, Pix Automático, RCS, régua de e-mail e Telegram), com caminhos de falha.
+- **Serviços e contato.** Páginas paralelas: `/criadores`, `/criadores/ao-vivo`, `/vagas`, `/privacidade` e `/creditos`.
 
-## Fontes atuais
+Todas as marcas dos exemplos são fictícias e vêm de um só arquivo (`public/assets/showcase/marcas.js`). Nenhum número de resultado é apresentado; valores aparecem mascarados. As fotos e vídeos são de banco com licença aberta, com origem e licença em `scripts/assets/acervo.json` e na página `/creditos`.
 
-Imagens de estúdio e marcas: repositório Fatos onstandbyx-png/roblox, commit b9c827082edc6e2076c864687451ae3d1a1dcf76, public/estudio/cena-*.webp.
-Smiile: onstandbyx-png/smiile-, revisão a2e6d42c526aa721d5059a6baad00cc86418ca3d, diretório sites/smiile-landing. Os assets, o percurso e o áudio usados aqui são locais; a demonstração não depende da disponibilidade da prévia externa.
-O dispositivo metálico e crachás da smiile são reaproveitados do código existente, sem recriar visual genérico.
-A página pública protegida do mídia kit Fatos não é dependência para exibir imagens.
-
-O [guia da seção de canais](docs/secao-canais.md) explica o comportamento, os dados, os fluxos e como alterar "Sua oferta. Em cada canal". O [registro de implementação](docs/reference-recovery-20261015.md) relaciona as referências às interações adaptadas. O [manifesto de fontes](docs/portfolio-sources.json) registra revisão, caminho original e SHA-256 dos materiais recuperados. O [plano visual](docs/plans/portfolio-reference-recovery-20261015.md) preserva o diagnóstico anterior à implementação.
+O [guia da seção de canais](docs/secao-canais.md) explica o comportamento, os dados, os fluxos e como alterar cada parte.
 
 ## Executar
 
+```bash
 npm ci
-npm run check
-npm run build
+npm run check          # estrutura
+npm test               # testes unitários (tests/*.test.mjs)
+npm run build          # o que o Railway roda
 npm start
+npm run test:browser   # suítes de navegador, uma por vez (Playwright)
+```
 
-O workflow da branch principal verifica estrutura, unitários, navegação visual em 1440, 390 e 320px, além da suíte de vídeo e WebGL. Inspecionar capturas junto dos testes, porque asserts verdes não comprovam composição visual.
+Inspecione as capturas em `qa/` junto dos testes: asserts verdes não comprovam composição visual.
 
-## Atribuição e limites
+## Limites
 
-Experiência editorial, projetos próprios e estudos autorais aparecem como categorias distintas. Nenhum número comercial é apresentado sem comprovantes; o mock de anúncios não significa publicação. O contato abre WhatsApp ou email para revisão, sem afirmar envio. Não existe barra fixa de contato cobrindo o mobile.
-
-## Legado
-
-Assets conceituais antigos continuam no histórico Git, mas não alimentam as cenas públicas atuais. Não reconstruir a home em torno de um produto fictício único ou de um fluxo de dossiê técnico. Preservar os crachás e o estúdio cinético como ativos visuais.
+O contato abre WhatsApp ou e-mail, sem afirmar envio. Os mocks de anúncio não significam publicação, e a política de segurança só aceita arquivos do próprio site.
