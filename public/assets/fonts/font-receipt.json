@@ -96,5 +96,49 @@
       "modified": false
     }
   ],
-  "usage": "fonts.css usa URLs locais. Para HTML autônomo, substituir src por data:font/woff2;base64 e incluir licenças no pacote."
+  "usage": "fonts.css usa URLs locais. Para HTML autônomo, substituir src por data:font/woff2;base64 e incluir licenças no pacote.",
+  "subsets": {
+    "made_on": "2026-10-27",
+    "tool": "fonttools 4.67.0 (pyftsubset; varLib.instancer for Newsreader)",
+    "note": "Recortes servidos pela home com unicode-range; os arquivos completos seguem para as páginas paralelas. Licenças inalteradas (OFL).",
+    "files": [
+      {
+        "file": "InterVariable-latin.woff2",
+        "bytes": 102296,
+        "sha256": "0fa67bfa21a6e1b47d4062a8e0e9ce266adda739db9289f9f6960c1616183a0c",
+        "source": "InterVariable.woff2",
+        "unicodes": "U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+2000-206F,U+2074,U+20AC,U+2122,U+2161,U+2190-2199,U+2212,U+25B6,U+25C7,U+2661,U+2713",
+        "layout_features": "*"
+      },
+      {
+        "file": "InterVariable-latin-ext.woff2",
+        "bytes": 97160,
+        "sha256": "204e97b6ac76cfd261506ad631df1fdebab07b177eef84ca57ff4e07b5c32043",
+        "source": "InterVariable.woff2",
+        "unicodes": "U+0100-0130,U+0132-0151,U+0154-024F,U+0259,U+1E00-1EFF,U+2020,U+20A0-20AB,U+20AD-20CF,U+2113,U+2C60-2C7F,U+A720-A7FF",
+        "layout_features": "*"
+      },
+      {
+        "file": "Newsreader-Italic-400-latin.woff2",
+        "bytes": 25244,
+        "sha256": "aa55c506ce15f7a20c89e3169c62b3312eb63f7123e3150ba3aa544089cb4bba",
+        "source": "Newsreader-Italic-Variable.woff2",
+        "instance": "opsz 48, wght 400"
+      },
+      {
+        "file": "Newsreader-Italic-300-600-latin.woff2",
+        "bytes": 62164,
+        "sha256": "e37ca1c338fec3e7ad22078840a54bda718dfb9d5657f00072f055b42a86324c",
+        "source": "Newsreader-Italic-Variable.woff2",
+        "instance": "opsz 48, wght 300-600"
+      },
+      {
+        "file": "PortfolioSymbols.woff2",
+        "bytes": 3372,
+        "sha256": "639eebcd3b588d64a304a0a4d4199d9986bf0c5e7f4e9234a40d6d47afdff1aa",
+        "source": "../creative/symbols.ttf (DejaVu Sans, ver SYMBOLS-LICENSE.txt)",
+        "conversion": "woff2, mesmos glifos"
+      }
+    ]
+  }
 }

@@ -72,8 +72,7 @@
 }
 /* Celular deitado e janelas baixas: sem altura mínima, título pela altura. */
 @media(orientation:landscape) and (max-height:520px){
- .planes-hero{min-height:auto;padding:88px 0 40px}
- .planes-hero .ph-grid{padding-inline:24px}
+ .planes-hero{min-height:auto;padding:max(88px,calc(var(--sn-h,84px) + 18px)) 0 40px}
  .planes-hero h1{font-size:clamp(34px,9vh,56px)}
  .ph-eyebrow{margin-bottom:12px}
  .ph-description{margin-top:12px;font-size:14px;line-height:1.5;max-width:60ch}
