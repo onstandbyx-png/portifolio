@@ -19,11 +19,8 @@ const GROUPS = {
   sistemas: { css: [...LAB, S + 'automation-trace.css'], mount: async () => (await import('./automation-trace.js')).mountTrace() },
   categorias: { css: [S + 'vitrine-lab.css', '/assets/positioning.css?v=visual-r3'] },
   contato: { css: [S + 'vitrine-lab.css', '/assets/positioning.css?v=visual-r3'] },
-  mural: { css: ['/assets/mural/mural.css'], mount: async () => { const m = await import('/assets/mural/mural.js'); (m.mountMural || m.default)?.(); } },
+  mural: { css: ['/assets/mural/mural.css'], mount: async () => { const m = await import('/assets/mural/mural.js'); await (m.mountMural || m.default)?.(); } },
 };
-// O mural (WP8) entra quando /assets/mural/mural.js e mural.css existirem; até lá, nenhum pedido sai para eles.
-const MURAL_READY = false;
-if (!MURAL_READY) delete GROUPS.mural;
 const links = new Map();
 function sheet(href) {
   if (links.has(href)) return links.get(href);

@@ -1,0 +1,54 @@
+/* Mural de jornadas (#mural): faixa de telas reais dos fluxos, logo depois do degradê do hero (.ph-fade, 160 px de
+   #080909 ao creme). Cartões no padrão do mural arrastável do smiile: bloco branco, borda fina, legenda com seta. */
+.mural{--mu-w:clamp(148px,41vw,196px);--mu-gap:14px;--mu-ink:#18251f;--mu-muted:#58665d;--mu-line:rgba(24,37,31,.12);padding-block:4px 8px;color:var(--mu-ink)}
+/* Cabeçalho: no celular, os botões dividem a linha do título; do tablet em diante, ficam à direita das duas linhas. */
+.mural .mu-head{display:grid;grid-template-columns:minmax(0,1fr) auto;grid-template-areas:"k c" "s s";align-items:center;gap:4px 16px;margin-bottom:12px}
+.mural .mu-kicker{grid-area:k;font-size:11px;font-weight:720;letter-spacing:.16em;line-height:1.4;text-transform:uppercase;color:#46604f}
+.mural .mu-sub{grid-area:s;font-size:15px;line-height:1.5;color:var(--mu-muted);max-width:46ch}
+.mural .mu-ctl{grid-area:c;display:flex;gap:8px}
+.mural .mu-btn{display:grid;place-items:center;width:44px;height:44px;padding:0;border:1px solid var(--mu-line);border-radius:50%;background:#fff;color:var(--mu-ink);transition:background-color .2s,border-color .2s,transform .2s}
+.mural .mu-btn:hover{border-color:rgba(24,37,31,.32)}
+.mural .mu-btn:active{transform:scale(.94)}
+.mural .mu-btn[aria-pressed="true"]{background:var(--mu-ink);border-color:var(--mu-ink);color:#fff}
+
+/* A faixa sangra até a borda da tela pelo gutter da página; as bordas somem num degradê. */
+.mural .mu-strip{display:flex;gap:var(--mu-gap);margin:0 calc(-1 * var(--gutter,16px));padding:6px var(--gutter,16px) 16px;list-style:none;overflow-x:auto;overscroll-behavior-x:contain;
+  scroll-snap-type:x mandatory;scroll-padding-inline:var(--gutter,16px);scrollbar-width:none;cursor:grab;
+  -webkit-mask-image:linear-gradient(90deg,transparent,#000 var(--gutter,16px),#000 calc(100% - var(--gutter,16px)),transparent);mask-image:linear-gradient(90deg,transparent,#000 var(--gutter,16px),#000 calc(100% - var(--gutter,16px)),transparent)}
+.mural .mu-strip::-webkit-scrollbar{display:none}
+.mural .mu-strip.is-auto,.mural .mu-strip.is-drag{scroll-snap-type:none}
+.mural .mu-strip.is-drag{cursor:grabbing;user-select:none}
+.mural .mu-card{flex:none;width:var(--mu-w);scroll-snap-align:start}
+.mural .mu-link{display:flex;flex-direction:column;height:100%;padding:8px 8px 10px;border:1px solid var(--mu-line);border-radius:20px;background:#fff;color:inherit;
+  box-shadow:0 4px 8px rgba(0,0,0,.02);transition:border-color .2s,box-shadow .25s,transform .25s cubic-bezier(.16,1,.3,1);-webkit-user-drag:none}
+.mural .mu-link:hover{border-color:rgba(24,37,31,.28);box-shadow:0 14px 28px rgba(0,0,0,.07);transform:translateY(-3px)}
+.mural .mu-link:focus-visible{outline:2px solid var(--focus-color,#18251f);outline-offset:3px}
+.mural .mu-tela{display:block;overflow:hidden;border-radius:calc((var(--mu-w) - 18px) * .135);background:#0b0d0c;box-shadow:0 0 0 1px rgba(0,0,0,.06)}
+.mural .mu-tela img{display:block;width:100%;height:auto;aspect-ratio:400/869;object-fit:cover;transition:transform .5s cubic-bezier(.16,1,.3,1)}
+.mural .mu-link:hover .mu-tela img{transform:scale(1.025)}
+.mural .mu-leg{display:grid;grid-template-columns:22px minmax(0,1fr) 14px;align-items:start;gap:8px;padding:10px 2px 0}
+.mural .mu-marca{display:grid;place-items:center;width:22px;height:22px;border-radius:50%;background:var(--c);overflow:hidden}
+.mural .mu-marca svg{width:16px;height:16px}
+.mural .mu-txt{display:grid;gap:2px;min-width:0}
+.mural .mu-txt b{font-size:13px;font-weight:650;line-height:1.25;letter-spacing:-.01em;overflow-wrap:anywhere}
+.mural .mu-txt span{font-size:12px;line-height:1.35;color:var(--mu-muted)}
+.mural .mu-seta{margin-top:3px;color:#8a958e;transition:transform .2s,color .2s}
+.mural .mu-link:hover .mu-seta{color:var(--mu-ink);transform:translate(2px,-2px)}
+
+/* Os 16 canais: uma fileira estreita; no celular ela rola de lado, sem estourar a página. */
+.mural .mu-canais{display:flex;align-items:center;gap:6px 12px;margin-top:4px;min-width:0}
+.mural .mu-canais-tit{flex:none;font-size:12px;font-weight:600;color:var(--mu-muted)}
+.mural .mu-logos{display:flex;gap:2px;min-width:0;margin:0;padding:0;list-style:none;overflow-x:auto;scrollbar-width:none;overscroll-behavior-x:contain}
+.mural .mu-logos::-webkit-scrollbar{display:none}
+.mural .mu-logo{display:grid;place-items:center;width:44px;height:44px;border-radius:12px;transition:background-color .2s}
+.mural .mu-logo:hover{background:rgba(24,37,31,.06)}
+.mural .mu-logo:focus-visible{outline:2px solid var(--focus-color,#18251f);outline-offset:-2px}
+.mural .mu-logo .ch-logo{display:block;max-width:24px;height:20px}
+.mural .mu-glifo{display:grid;place-items:center;width:22px;height:22px;border-radius:50%;background:var(--g);color:#fff}
+
+@media (min-width:600px){.mural .mu-head{grid-template-areas:"k c" "s c";align-items:end;gap:6px 24px}}
+@media (min-width:900px){.mural{--mu-gap:18px}.mural .mu-head{margin-bottom:18px}.mural .mu-logos{flex-wrap:wrap}}
+/* Celular deitado: cartões menores, para o cartão inteiro caber na altura. */
+@media (orientation:landscape) and (max-height:500px){.mural{--mu-w:140px}.mural .mu-sub{font-size:14px}}
+@media (max-width:359px){.mural .mu-sub{font-size:14px}.mural .mu-canais-tit{display:none}}
+@media (prefers-reduced-motion:reduce){.mural .mu-link,.mural .mu-tela img,.mural .mu-seta,.mural .mu-btn{transition:none}.mural .mu-link:hover,.mural .mu-link:hover .mu-tela img{transform:none}}
