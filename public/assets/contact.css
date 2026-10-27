@@ -69,3 +69,12 @@
   .dialog-content h2{font-size:35px;}
 }
 @media(prefers-reduced-motion:reduce){.case-dialog[open]{animation:none;}}
+
+/* Telas estreitas: o formulário e o seletor cabem sem rolagem lateral, e nada é hifenizado. */
+.contact-section{hyphens:manual;-webkit-hyphens:manual;overflow-wrap:break-word}
+.contact-form select{max-width:100%;text-overflow:ellipsis}
+@media(max-width:360px){
+ body.portfolio-r6 .contact-form{padding:20px}
+ body.portfolio-r6 .contact-form select{padding-inline:12px}
+ body.portfolio-r6 .contact-direct a{padding:11px 0}
+}

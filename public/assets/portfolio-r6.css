@@ -3,7 +3,7 @@
 @font-face{font-family:Inter;src:url('/assets/fonts/InterVariable.woff2') format('woff2');font-style:normal;font-weight:100 900;font-display:swap}
 @font-face{font-family:Newsreader;src:url('/assets/fonts/Newsreader-Italic-Variable.woff2') format('woff2');font-style:italic;font-weight:200 800;font-display:swap}
 body.portfolio-r6{--paper:#f3f1e9;--paper-2:#e9ece2;--ink:#18251f;--muted:#536158;--line:#ccd1c4;--forest:#234c3c;--lime:#d9ed93;--sans:'Inter Variable',Inter,system-ui,sans-serif;--serif:Newsreader,Georgia,serif;background:var(--paper);font-family:var(--sans);font-optical-sizing:auto;font-synthesis:none}
-.portfolio-r6 .shell{width:min(100% - 72px,1392px)}
+.portfolio-r6 .shell{width:min(100% - 2 * var(--gutter),var(--page-max))}
 .portfolio-r6 h1,.portfolio-r6 h2,.portfolio-r6 h3{font-family:var(--sans);font-weight:540;letter-spacing:-.05em;text-wrap:balance}
 .portfolio-r6 h1 em,.portfolio-r6 h2 em,.portfolio-r6 .italic{font-family:var(--serif);font-weight:400;letter-spacing:-.035em}
 .portfolio-r6 p{line-height:1.65}
@@ -89,7 +89,6 @@ body.portfolio-r6{--paper:#f3f1e9;--paper-2:#e9ece2;--ink:#18251f;--muted:#53615
 /* Open menu: the panel scrolls by itself (the page is locked) and ends with the contact action. */
 .portfolio-r6 .mobile-nav{max-height:calc(100dvh - 76px);overflow-y:auto;overscroll-behavior:contain}.portfolio-r6 .mobile-nav a[aria-current]::after{content:"";display:inline-block;align-self:center;margin-left:10px;vertical-align:middle;width:8px;height:8px;border-radius:50%;background:#234c3c}.portfolio-r6 .mobile-nav .mobile-nav-cta{display:flex;justify-content:space-between;align-items:center;min-height:52px;margin-top:18px;padding:12px 18px;border:0;border-radius:5px;background:#273c31;color:#fff;font:600 15px/1.2 var(--sans)}
 @media(max-width:760px){
- .portfolio-r6 .shell{width:calc(100% - 36px)}
  .portfolio-r6 .mobile-nav{max-height:calc(100dvh - 64px)}
  .portfolio-r6 .hero{padding-top:98px;padding-bottom:48px;gap:24px}
  .portfolio-r6 .hero h1{font-size:clamp(40px,10.3vw,66px);line-height:1.07;letter-spacing:-.045em;margin:21px 0 21px}
@@ -124,7 +123,7 @@ body.portfolio-r6{--paper:#f3f1e9;--paper-2:#e9ece2;--ink:#18251f;--muted:#53615
  .portfolio-r6 .site-footer>span{font-size:12px}
  .portfolio-r6 .dialog-content{padding:25px 20px}
 }
-@media(max-width:350px){.portfolio-r6 .shell{width:calc(100% - 28px)}.portfolio-r6 .hero h1{font-size:39px}.portfolio-r6 .hero-actions{display:grid;justify-items:stretch;grid-template-columns:1fr}.portfolio-r6 .hero-actions .button-text{justify-content:space-between;padding-inline:14px}.portfolio-r6 .rail-track span{font-size:23px}.portfolio-r6 .rail-track{justify-content:flex-start;gap:6px 18px}}
+@media(max-width:350px){.portfolio-r6 .hero h1{font-size:39px}.portfolio-r6 .hero-actions{display:grid;justify-items:stretch;grid-template-columns:1fr}.portfolio-r6 .hero-actions .button-text{justify-content:space-between;padding-inline:14px}.portfolio-r6 .rail-track span{font-size:23px}.portfolio-r6 .rail-track{justify-content:flex-start;gap:6px 18px}}
 @media(prefers-reduced-motion:reduce){.portfolio-r6 *{scroll-behavior:auto!important}}
 
 /* The hero ends at the artwork; the next band carries the three disciplines. */
