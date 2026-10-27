@@ -1,0 +1,606 @@
+{
+ "nota": "Acervo licenciado de \"Sua oferta. Em cada canal.\" Fontes baixadas fora do repositório; ver canais/SOURCES.md.",
+ "fotos": [
+  {
+   "arquivo": "canais/varejo-creator15-branco-1x1.webp",
+   "fonte": "thumbs/t-laptop/08.jpg",
+   "tamanho": [
+    960,
+    960
+   ],
+   "maxKB": 150,
+   "substitui": "nerd (foto do produto: RCS, site e carrinho)",
+   "mostra": "Notebook prata aberto, tela apagada, ao lado de uma folha num copo de vidro, fundo branco",
+   "foco": [
+    0.55,
+    0.6
+   ],
+   "retoque": [
+    [
+     766,
+     1022,
+     838,
+     1044
+    ]
+   ],
+   "origem": "https://stocksnap.io/photo/laptop-apple-STM79IQZGY",
+   "autor": "Sarah Dorweiler",
+   "licenca": "CC0 1.0",
+   "licenca_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+   "original": "3560 x 5340",
+   "baixado": "cdn.stocksnap.io, 960 px de largura (img-thumbs/960w)"
+  },
+  {
+   "arquivo": "canais/varejo-creator15-grafite-1x1.webp",
+   "fonte": "thumbs/t-laptop-dark/10.jpg",
+   "tamanho": [
+    720,
+    720
+   ],
+   "maxKB": 150,
+   "substitui": "nerd (versão grafite, vendida agora no RCS)",
+   "mostra": "Notebook escuro entreaberto, de perfil, num quarto escuro, reflexo lilás na tela",
+   "foco": [
+    0.62,
+    0.5
+   ],
+   "origem": "https://stocksnap.io/photo/laptop-computer-DMYMPAX1GL",
+   "autor": "Jared Brashier",
+   "licenca": "CC0 1.0",
+   "licenca_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+   "original": "6000 x 4000",
+   "baixado": "cdn.stocksnap.io, 960 px de largura (img-thumbs/960w)"
+  },
+  {
+   "arquivo": "canais/varejo-mesa-noite-4x5.webp",
+   "fonte": "thumbs/ov-laptop-ss/14.jpg",
+   "tamanho": [
+    768,
+    960
+   ],
+   "maxKB": 150,
+   "substitui": "nerd (TikTok, YouTube Live e peça da Ponto Tech)",
+   "mostra": "Mesa à noite: luminária acesa, notebook com um editor de fotos aberto, plantas e estante ao fundo",
+   "foco": [
+    0.55,
+    0.5
+   ],
+   "origem": "https://stocksnap.io/photo/macbook-laptop-VXFA58HGJ1",
+   "autor": "Radek Grzybowski",
+   "licenca": "CC0 1.0",
+   "licenca_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+   "original": "3165 x 2334",
+   "baixado": "cdn.stocksnap.io, 960 px de largura (img-thumbs/960w)",
+   "retoque": [
+    [
+     270,
+     294,
+     332,
+     308
+    ],
+    [
+     527,
+     298,
+     685,
+     310
+    ]
+   ]
+  },
+  {
+   "arquivo": "canais/varejo-mesa-criador-4x5.webp",
+   "fonte": "thumbs/t-laptop/03.jpg",
+   "tamanho": [
+    960,
+    1200
+   ],
+   "maxKB": 150,
+   "substitui": "cenaNerd (segundo corte do TikTok)",
+   "mostra": "Mesa de madeira vista de cima: notebook com uma galeria de fotos na tela, flores e um caderno estampado",
+   "origem": "https://stocksnap.io/photo/laptop-desk-5ZWVFTADET",
+   "autor": "Kelly Ishmael",
+   "licenca": "CC0 1.0",
+   "licenca_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+   "original": "3648 x 4560",
+   "baixado": "cdn.stocksnap.io, 960 px de largura (img-thumbs/960w)"
+  },
+  {
+   "arquivo": "canais/varejo-mesa-criador-9x16.webp",
+   "fonte": "thumbs/t-laptop/03.jpg",
+   "tamanho": [
+    720,
+    1280
+   ],
+   "maxKB": 150,
+   "substitui": "cenaNerd (TikTok em tela cheia)",
+   "mostra": "A mesma mesa, na vertical",
+   "foco": [
+    0.4,
+    0.5
+   ],
+   "origem": "https://stocksnap.io/photo/laptop-desk-5ZWVFTADET",
+   "autor": "Kelly Ishmael",
+   "licenca": "CC0 1.0",
+   "licenca_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+   "original": "3648 x 4560",
+   "baixado": "cdn.stocksnap.io, 960 px de largura (img-thumbs/960w)"
+  },
+  {
+   "arquivo": "canais/turismo-pirenopolis-rua-9x16.webp",
+   "fonte": "full/pireno-centro-05.jpg",
+   "tamanho": [
+    720,
+    1280
+   ],
+   "maxKB": 150,
+   "substitui": "crencas (9:16)",
+   "mostra": "Rua de pedra do centro histórico de Pirenópolis ao amanhecer, casario colonial e buganvília, sem ninguém",
+   "foco": [
+    0.5,
+    0.5
+   ],
+   "origem": "https://commons.wikimedia.org/wiki/File:2024.08.07_Centro_Historico_Pirenopolis_14.jpg",
+   "autor": "Marcosviniciusrs",
+   "licenca": "CC BY-SA 4.0",
+   "licenca_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+   "data": "07/08/2024",
+   "original": "1536 x 2048",
+   "baixado": "thumb.wikimedia.org, versão de 1280 px de largura"
+  },
+  {
+   "arquivo": "canais/turismo-pirenopolis-rua-4x5.webp",
+   "fonte": "full/pireno-centro-10.jpg",
+   "tamanho": [
+    960,
+    1200
+   ],
+   "maxKB": 150,
+   "substitui": "crencas (4:5 e miniaturas)",
+   "mostra": "Outra rua do centro histórico de Pirenópolis: calçamento, floreiras e casas de janelas azuis, sem ninguém",
+   "foco": [
+    0.5,
+    0.5
+   ],
+   "origem": "https://commons.wikimedia.org/wiki/File:2024.08.07_Centro_Historico_Pirenopolis_15.jpg",
+   "autor": "Marcosviniciusrs",
+   "licenca": "CC BY-SA 4.0",
+   "licenca_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+   "data": "07/08/2024",
+   "original": "2048 x 1536",
+   "baixado": "thumb.wikimedia.org, versão de 1920 px de largura"
+  },
+  {
+   "arquivo": "canais/turismo-bandeirolas-noite-9x16.webp",
+   "fonte": "full/pireno-divino-36.jpg",
+   "tamanho": [
+    720,
+    1280
+   ],
+   "maxKB": 150,
+   "substitui": "crencas (abertura de vídeo e story da festa)",
+   "mostra": "Bandeirolas vermelhas e brancas, mastro do Divino e palmeiras à noite em Pirenópolis",
+   "foco": [
+    0.5,
+    0.5
+   ],
+   "origem": "https://commons.wikimedia.org/wiki/File:Mastro_do_Divino_Pirenopolis_2023_(1)_20.jpg",
+   "autor": "Marcosviniciusrs",
+   "licenca": "CC BY-SA 4.0",
+   "licenca_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+   "data": "07/06/2023",
+   "original": "1536 x 2048",
+   "baixado": "thumb.wikimedia.org, versão de 1280 px de largura"
+  },
+  {
+   "arquivo": "canais/turismo-matriz-noite-4x5.webp",
+   "fonte": "full/pireno-divino-39.jpg",
+   "tamanho": [
+    960,
+    1200
+   ],
+   "maxKB": 150,
+   "substitui": "cenaCrencas (roteiro sugerido no site)",
+   "mostra": "Igreja Matriz de Pirenópolis iluminada à noite, com o mastro do Divino e bandeirolas",
+   "foco": [
+    0.5,
+    1.0
+   ],
+   "origem": "https://commons.wikimedia.org/wiki/File:Mastro_do_Divino_Pirenopolis_2023_(1)_02.jpg",
+   "autor": "Marcosviniciusrs",
+   "licenca": "CC BY-SA 4.0",
+   "licenca_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+   "data": "02/06/2023",
+   "original": "1536 x 2048",
+   "baixado": "thumb.wikimedia.org, versão de 1280 px de largura"
+  },
+  {
+   "arquivo": "canais/turismo-estandarte-divino-1x1.webp",
+   "fonte": "full/pireno-divino-19.jpg",
+   "tamanho": [
+    720,
+    720
+   ],
+   "maxKB": 150,
+   "substitui": "crencas (miniaturas de pedido e pagamento)",
+   "mostra": "Estandarte vermelho do Divino com a pomba bordada, flores e franja dourada",
+   "foco": [
+    0.5,
+    0.5
+   ],
+   "origem": "https://commons.wikimedia.org/wiki/File:02.06.2024_descida_do_mastro_do_Divino_em_Pirenopolis_19.jpg",
+   "autor": "Marcosviniciusrs",
+   "licenca": "CC BY 4.0",
+   "licenca_url": "https://creativecommons.org/licenses/by/4.0/",
+   "data": "02/06/2024",
+   "original": "2048 x 1536",
+   "baixado": "thumb.wikimedia.org, versão de 1920 px de largura"
+  },
+  {
+   "arquivo": "canais/automotivo-recarga-16x9.webp",
+   "fonte": "full/cs-ev-19.jpg",
+   "tamanho": [
+    1600,
+    900
+   ],
+   "maxKB": 150,
+   "substitui": "esportes (YouTube, anúncio no vídeo)",
+   "mostra": "Carro elétrico prata recarregando na rua: cabo encaixado na tampa aberta, lanterna vermelha e luzes da cidade desfocadas",
+   "foco": [
+    0.5,
+    0.5
+   ],
+   "origem": "https://commons.wikimedia.org/wiki/File:Close-up_of_an_electric_car_charging._Traffic_lights_in_a_blurry_background.jpg",
+   "autor": "Ivan Radic",
+   "licenca": "CC BY 2.0",
+   "licenca_url": "https://creativecommons.org/licenses/by/2.0/",
+   "data": "14/02/2021",
+   "original": "5887 x 3917",
+   "baixado": "thumb.wikimedia.org, versão de 1920 px de largura"
+  },
+  {
+   "arquivo": "canais/automotivo-recarga-9x16.webp",
+   "fonte": "full/cs-ev-19.jpg",
+   "tamanho": [
+    720,
+    1280
+   ],
+   "maxKB": 150,
+   "substitui": "esportes (site e telas verticais)",
+   "mostra": "O mesmo carro recarregando, recorte vertical no conector",
+   "foco": [
+    0.55,
+    0.5
+   ],
+   "origem": "https://commons.wikimedia.org/wiki/File:Close-up_of_an_electric_car_charging._Traffic_lights_in_a_blurry_background.jpg",
+   "autor": "Ivan Radic",
+   "licenca": "CC BY 2.0",
+   "licenca_url": "https://creativecommons.org/licenses/by/2.0/",
+   "data": "14/02/2021",
+   "original": "5887 x 3917",
+   "baixado": "thumb.wikimedia.org, versão de 1920 px de largura"
+  },
+  {
+   "arquivo": "canais/automotivo-painel-16x9.webp",
+   "fonte": "full/cs-evint-22.jpg",
+   "tamanho": [
+    1600,
+    900
+   ],
+   "maxKB": 150,
+   "substitui": "cenaEsportes (miniatura e cartão de recarga)",
+   "mostra": "Interior de carro elétrico: volante com detalhe azul, seletor de marcha e botão de partida, tela apagada; sem emblema à vista",
+   "foco": [
+    0.5,
+    0.5
+   ],
+   "origem": "https://commons.wikimedia.org/wiki/File:BMW_i3_electric_car_(07).jpg",
+   "autor": "Kārlis Dambrāns",
+   "licenca": "CC BY 2.0",
+   "licenca_url": "https://creativecommons.org/licenses/by/2.0/",
+   "data": "06/03/2014",
+   "original": "4576 x 3056",
+   "baixado": "thumb.wikimedia.org, versão de 1920 px de largura"
+  },
+  {
+   "arquivo": "canais/financas-reuniao-4x5.webp",
+   "fonte": "thumbs/t-meeting/04.jpg",
+   "tamanho": [
+    960,
+    1200
+   ],
+   "maxKB": 150,
+   "substitui": "negocios (LinkedIn)",
+   "mostra": "Mesa de reunião de madeira vista de cima: notebook, tablet e celular apagados, só as mãos de duas pessoas",
+   "foco": [
+    0.5,
+    0.5
+   ],
+   "origem": "https://stocksnap.io/photo/women-meeting-8KB2HJOQAB",
+   "autor": "Kristin Hardwick",
+   "licenca": "CC0 1.0",
+   "licenca_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+   "original": "3840 x 5760",
+   "baixado": "cdn.stocksnap.io, 960 px de largura (img-thumbs/960w)"
+  },
+  {
+   "arquivo": "canais/financas-reuniao-9x16.webp",
+   "fonte": "thumbs/t-meeting/04.jpg",
+   "tamanho": [
+    720,
+    1280
+   ],
+   "maxKB": 150,
+   "substitui": "negocios (formatos verticais)",
+   "mostra": "A mesma mesa de reunião, na vertical",
+   "foco": [
+    0.5,
+    0.5
+   ],
+   "origem": "https://stocksnap.io/photo/women-meeting-8KB2HJOQAB",
+   "autor": "Kristin Hardwick",
+   "licenca": "CC0 1.0",
+   "licenca_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+   "original": "3840 x 5760",
+   "baixado": "cdn.stocksnap.io, 960 px de largura (img-thumbs/960w)"
+  },
+  {
+   "arquivo": "canais/financas-sala-jantar-4x5.webp",
+   "fonte": "thumbs/t-interior/14.jpg",
+   "tamanho": [
+    960,
+    1200
+   ],
+   "maxKB": 150,
+   "substitui": "negocios (publieditorial)",
+   "mostra": "Mesa branca com duas cadeiras e um vaso de orquídea, piso de taco, parede clara",
+   "foco": [
+    0.5,
+    0.5
+   ],
+   "origem": "https://stocksnap.io/photo/dining-table-LTCQNB2L7A",
+   "autor": "Matt Bango",
+   "licenca": "CC0 1.0",
+   "licenca_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+   "original": "2448 x 3264",
+   "baixado": "cdn.stocksnap.io, 960 px de largura (img-thumbs/960w)"
+  },
+  {
+   "arquivo": "canais/financas-mesa-cafe-4x5.webp",
+   "fonte": "thumbs/t-office/16.jpg",
+   "tamanho": [
+    960,
+    1200
+   ],
+   "maxKB": 150,
+   "substitui": "negocios (e-mail)",
+   "mostra": "Mesa de mármore branco vista de cima: xícara de café preto, caderno, caneta e óculos",
+   "foco": [
+    0.5,
+    0.5
+   ],
+   "origem": "https://stocksnap.io/photo/cup-black-V65ELKLEAE",
+   "autor": "Lauren Mancke",
+   "licenca": "CC0 1.0",
+   "licenca_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+   "original": "2660 x 4000",
+   "baixado": "cdn.stocksnap.io, 960 px de largura (img-thumbs/960w)"
+  },
+  {
+   "arquivo": "canais/clinica-sala-atendimento-4x5.webp",
+   "fonte": "full/cs-dental-01.jpg",
+   "tamanho": [
+    960,
+    1200
+   ],
+   "maxKB": 150,
+   "substitui": "frente da Voz IA (clínica)",
+   "mostra": "Sala de atendimento odontológico: cadeira protegida com plástico, armários de madeira, pia e piso claro, sem ninguém",
+   "foco": [
+    0.3,
+    0.5
+   ],
+   "origem": "https://commons.wikimedia.org/wiki/File:A_dental_chair_in_a_dentist_clinic_in_North_Carolina,_United_States.jpg",
+   "autor": "Harrison Keely",
+   "licenca": "CC BY 4.0",
+   "licenca_url": "https://creativecommons.org/licenses/by/4.0/",
+   "data": "29/04/2025",
+   "original": "4032 x 3024",
+   "baixado": "thumb.wikimedia.org, versão de 1920 px de largura"
+  },
+  {
+   "arquivo": "canais/educacao-fones-4x5.webp",
+   "fonte": "thumbs/t-headphones/00.jpg",
+   "tamanho": [
+    960,
+    1200
+   ],
+   "maxKB": 150,
+   "substitui": "frente do Telegram (escola)",
+   "mostra": "Fone de ouvido verde-água sobre fundo metade verde-água, metade rosa, visto de cima",
+   "foco": [
+    0.5,
+    0.5
+   ],
+   "origem": "https://stocksnap.io/photo/headphones-music-1IXTRXOWOE",
+   "autor": "Icons8 team",
+   "licenca": "CC0 1.0",
+   "licenca_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+   "original": "3909 x 5856",
+   "baixado": "cdn.stocksnap.io, 960 px de largura (img-thumbs/960w)"
+  },
+  {
+   "arquivo": "canais/educacao-cadernos-4x5.webp",
+   "fonte": "thumbs/t-office/15.jpg",
+   "tamanho": [
+    960,
+    1200
+   ],
+   "maxKB": 150,
+   "substitui": "frente do Pix Automático (escola)",
+   "mostra": "Cadernos rosa e de mármore com lápis sobre mesa branca",
+   "foco": [
+    0.5,
+    0.5
+   ],
+   "origem": "https://stocksnap.io/photo/pink-whitenotepad-QXXHSJ8KLM",
+   "autor": "Jess Watters",
+   "licenca": "CC0 1.0",
+   "licenca_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+   "original": "3456 x 4608",
+   "baixado": "cdn.stocksnap.io, 960 px de largura (img-thumbs/960w)"
+  },
+  {
+   "arquivo": "canais/explorar-01-cafe-1x1.webp",
+   "fonte": "thumbs/ex-cafe/16.jpg",
+   "tamanho": [
+    600,
+    600
+   ],
+   "maxKB": 60,
+   "substitui": "Explorar, bloco 1 da grade (hoje repete fotos do restaurante)",
+   "mostra": "Cappuccino com desenho de folha na espuma, visto de cima, fundo escuro",
+   "origem": "https://stocksnap.io/photo/coffee-cup-APZT8TTWQJ",
+   "autor": "Spencer Selover",
+   "licenca": "CC0 1.0",
+   "licenca_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+   "original": "5568 x 3717",
+   "baixado": "cdn.stocksnap.io, 960 px de largura (img-thumbs/960w)"
+  },
+  {
+   "arquivo": "canais/explorar-02-tenis-1x1.webp",
+   "fonte": "thumbs/ex-tenis/13.jpg",
+   "tamanho": [
+    600,
+    600
+   ],
+   "maxKB": 60,
+   "substitui": "Explorar, bloco 2 da grade (hoje repete fotos do restaurante)",
+   "mostra": "Par de tênis de lona azul-marinho com cadarço branco sobre fundo verde",
+   "origem": "https://stocksnap.io/photo/shoes-sneakers-3K5S13RPLL",
+   "autor": "Patrycja Tomaszczyk",
+   "licenca": "CC0 1.0",
+   "licenca_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+   "original": "3008 x 2008",
+   "baixado": "cdn.stocksnap.io, 960 px de largura (img-thumbs/960w)"
+  },
+  {
+   "arquivo": "canais/explorar-03-plantas-1x1.webp",
+   "fonte": "thumbs/ex-plantas/07.jpg",
+   "tamanho": [
+    600,
+    600
+   ],
+   "maxKB": 60,
+   "substitui": "Explorar, bloco 3 da grade (hoje repete fotos do restaurante)",
+   "mostra": "Planta num vaso verde-água sobre livros, junto à janela",
+   "origem": "https://stocksnap.io/photo/book-interior-KLXLJSBKJI",
+   "autor": "Candace McDaniel",
+   "licenca": "CC0 1.0",
+   "licenca_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+   "original": "4608 x 3072",
+   "baixado": "cdn.stocksnap.io, 960 px de largura (img-thumbs/960w)"
+  },
+  {
+   "arquivo": "canais/explorar-04-praia-1x1.webp",
+   "fonte": "thumbs/ex-praia/00.jpg",
+   "tamanho": [
+    600,
+    600
+   ],
+   "maxKB": 60,
+   "substitui": "Explorar, bloco 4 da grade (hoje repete fotos do restaurante)",
+   "mostra": "Onda quebrando na areia, mar verde e céu claro",
+   "origem": "https://stocksnap.io/photo/beach-shore-I3QWA2OLLM",
+   "autor": "Ian Schneider",
+   "licenca": "CC0 1.0",
+   "licenca_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+   "original": "5521 x 3686",
+   "baixado": "cdn.stocksnap.io, 960 px de largura (img-thumbs/960w)"
+  },
+  {
+   "arquivo": "canais/explorar-05-livraria-1x1.webp",
+   "fonte": "thumbs/ex-livraria/03.jpg",
+   "tamanho": [
+    600,
+    600
+   ],
+   "maxKB": 60,
+   "substitui": "Explorar, bloco 5 da grade (hoje repete fotos do restaurante)",
+   "mostra": "Livros empilhados de lado, só as bordas das páginas",
+   "origem": "https://stocksnap.io/photo/stacked-books-DGF2LFZ6JJ",
+   "autor": "Matt Bango",
+   "licenca": "CC0 1.0",
+   "licenca_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+   "original": "6000 x 4000",
+   "baixado": "cdn.stocksnap.io, 960 px de largura (img-thumbs/960w)"
+  },
+  {
+   "arquivo": "canais/explorar-06-bicicleta-1x1.webp",
+   "fonte": "thumbs/ex-bicicleta/04.jpg",
+   "tamanho": [
+    600,
+    600
+   ],
+   "maxKB": 60,
+   "substitui": "Explorar, bloco 6 da grade (hoje repete fotos do restaurante)",
+   "mostra": "Bicicleta verde-água encostada num muro de tijolos",
+   "origem": "https://stocksnap.io/photo/bike-bicycle-9WRTTVGZOS",
+   "autor": "Markus Spiske",
+   "licenca": "CC0 1.0",
+   "licenca_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+   "original": "4368 x 2912",
+   "baixado": "cdn.stocksnap.io, 960 px de largura (img-thumbs/960w)"
+  },
+  {
+   "arquivo": "canais/explorar-07-ceramica-1x1.webp",
+   "fonte": "thumbs/ex-ceramica/00.jpg",
+   "tamanho": [
+    600,
+    600
+   ],
+   "maxKB": 60,
+   "substitui": "Explorar, bloco 7 da grade (hoje repete fotos do restaurante)",
+   "mostra": "Prateleiras de ateliê com tigelas e vasos de cerâmica crua e esmaltada",
+   "origem": "https://stocksnap.io/photo/ceramics-pottery-SWDR6XR7YS",
+   "autor": "Barn Images",
+   "licenca": "CC0 1.0",
+   "licenca_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+   "original": "5000 x 3333",
+   "baixado": "cdn.stocksnap.io, 960 px de largura (img-thumbs/960w)"
+  },
+  {
+   "arquivo": "canais/explorar-08-cidade-1x1.webp",
+   "fonte": "thumbs/ex-cidade/01.jpg",
+   "tamanho": [
+    600,
+    600
+   ],
+   "maxKB": 60,
+   "substitui": "Explorar, bloco 8 da grade (hoje repete fotos do restaurante)",
+   "mostra": "Pôr do sol vermelho sobre prédios em silhueta",
+   "origem": "https://stocksnap.io/photo/city-sunset-0VHJUGBJDP",
+   "autor": "Candace McDaniel",
+   "licenca": "CC0 1.0",
+   "licenca_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+   "original": "4667 x 3112",
+   "baixado": "cdn.stocksnap.io, 960 px de largura (img-thumbs/960w)"
+  },
+  {
+   "arquivo": "canais/explorar-09-cachorro-1x1.webp",
+   "fonte": "thumbs/ex-cachorro/15.jpg",
+   "tamanho": [
+    600,
+    600
+   ],
+   "maxKB": 60,
+   "substitui": "Explorar, bloco 9 da grade (hoje repete fotos do restaurante)",
+   "mostra": "Filhote de golden retriever de frente, língua de fora",
+   "origem": "https://stocksnap.io/photo/goldenretreiver-dog-YAG9NYBYZW",
+   "autor": "Michal Kulesza",
+   "licenca": "CC0 1.0",
+   "licenca_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+   "original": "5472 x 3648",
+   "baixado": "cdn.stocksnap.io, 960 px de largura (img-thumbs/960w)"
+  }
+ ],
+ "videos": []
+}
