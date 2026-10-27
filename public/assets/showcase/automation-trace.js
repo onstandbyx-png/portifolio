@@ -100,6 +100,7 @@ function mountOne(root) {
       <div class="at-head"><div class="at-cliente" data-at-cliente></div><div class="at-head-t"><b>Registro de eventos</b><small>O que o sistema registra enquanto a cliente vê cada tela.</small></div><span class="at-badge">Demo · dados simulados</span></div>
       <div class="at-path" data-at-path role="group" aria-label="Caminho" hidden><button type="button" data-at-falha="0" aria-pressed="true">Caminho feliz</button><button type="button" data-at-falha="1" aria-pressed="false">Com falhas</button></div>
       <div class="at-tabs" role="tablist" aria-label="Ver registro completo">${ABAS.map(([id, nome]) => `<button type="button" role="tab" class="at-tab" id="${uid}-t-${id}" data-at-aba="${id}" aria-controls="${uid}-p-${id}" aria-selected="false" tabindex="-1"><span data-at-aba-nome>${nome}</span></button>`).join('')}</div>
+      <div class="at-vista">
       <div class="at-phone" id="${uid}-p-tela" role="tabpanel" aria-labelledby="${uid}-t-tela"><div class="at-stage" data-at-stage tabindex="0" role="group" aria-roledescription="demonstração" aria-describedby="${uid}-cap"></div></div>
       <div class="at-panels">
         <section class="at-panel at-panel--registro" id="${uid}-p-registro" role="tabpanel" aria-labelledby="${uid}-t-registro" data-at-panel="registro"><ol class="at-log" data-at-log aria-label="Eventos da automação"></ol></section>
@@ -110,6 +111,7 @@ function mountOne(root) {
         <div class="at-agora" data-at-agora aria-live="polite" aria-atomic="true"><p class="at-agora-ev" data-at-ev></p><p class="at-caption" id="${uid}-cap" data-at-caption></p></div>
         <span class="at-progresso" aria-hidden="true"><i data-at-barra></i></span>
         <div class="at-controls"><button type="button" class="at-ctl" data-at-prev aria-label="Quadro anterior">←</button><button type="button" class="at-play" data-at-play></button><button type="button" class="at-ctl" data-at-next aria-label="Próximo quadro">→</button><span class="at-pos" data-at-pos></span></div>
+      </div>
       </div>
       <p class="at-objetivo" data-at-objetivo></p>
       <div class="at-rest">

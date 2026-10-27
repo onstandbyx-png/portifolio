@@ -47,14 +47,14 @@
 }
 
 /* Grid of the main area. Phones: one column, the dock sticks to the bottom while the phone is on screen. */
-#sistemas .at-main{position:relative;scroll-margin-top:16px;display:grid;grid-template-columns:minmax(0,1fr);grid-template-areas:"path" "tabs" "view" "dock" "head" "obj" "rest";gap:12px;margin-top:18px}
+#sistemas .at-main{position:relative;scroll-margin-top:16px;display:grid;grid-template-columns:minmax(0,1fr);grid-template-areas:"path" "tabs" "view" "head" "obj" "rest";gap:12px;margin-top:18px}
 #sistemas .at-head{grid-area:head}
 #sistemas .at-path{grid-area:path}
 #sistemas .at-tabs{grid-area:tabs}
-#sistemas .at-phone,#sistemas .at-panels{grid-area:view}
-#sistemas .at-dock{grid-area:dock}
 #sistemas .at-objetivo{grid-area:obj}
 #sistemas .at-rest{grid-area:rest}
+/* Phones: the view (phone or panel) and the dock share a box, so the sticky dock never rises above the phone. */
+#sistemas .at-vista{grid-area:view;display:grid;gap:12px;min-width:0}
 #sistemas .at-phone{display:grid;min-width:0}
 #sistemas .at-stage{position:relative;width:min(100%,var(--phone-w));justify-self:center;border-radius:16% / 7.7%;scroll-margin-top:calc(var(--sn-h-visible,0px) + 12px);scroll-margin-bottom:200px}
 #sistemas .at-stage>.ch-iphone{max-width:none}
@@ -69,6 +69,8 @@
 }
 /* 600 to 899px: phone on the left (sticky), everything else on the right. */
 @media (min-width:600px){
+  #sistemas .at-vista{display:contents}
+  #sistemas .at-dock{grid-area:dock}
   #sistemas .at-main{grid-template-columns:min(300px,var(--phone-w)) minmax(0,1fr);grid-template-rows:repeat(6,auto) 1fr;grid-template-areas:"view head" "view path" "view dock" "view tabs" "view panel" "view obj" "view rest";column-gap:24px;row-gap:12px;align-items:start}
   #sistemas .at-phone{grid-area:view;position:sticky;top:calc(var(--sn-h-visible,0px) + 16px)}
   #sistemas .at-panels{grid-area:panel;height:clamp(280px,calc(100svh - 360px),420px)}
