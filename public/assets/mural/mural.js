@@ -62,7 +62,8 @@ export async function mountMural() {
       <p class="mu-sub">Telas dos exemplos desta página. Toque numa para ver a jornada inteira.</p>
       <div class="mu-ctl"><button type="button" class="mu-btn" data-mu-prev aria-label="Tela anterior">${icone('prev')}</button><button type="button" class="mu-btn" data-mu-pausa aria-pressed="false" aria-label="Pausar a rolagem"${loop ? '' : ' hidden'}>${icone('pausa')}</button><button type="button" class="mu-btn" data-mu-next aria-label="Próxima tela">${icone('next')}</button></div></div>
     <ul class="mu-strip" data-mu-strip aria-label="Telas das jornadas: use as setas para trocar">${lista.map((q, i) => cartao(q, i, false)).join('')}${loop ? lista.map((q, i) => cartao(q, i, true)).join('') : ''}</ul>
-    <nav class="mu-canais" aria-label="Os 16 canais dos exemplos"><p class="mu-canais-tit" aria-hidden="true">16 canais</p><ul class="mu-logos">${logos()}</ul></nav></div>`);
+    <nav class="mu-canais" aria-label="Os 16 canais dos exemplos"><p class="mu-canais-tit" aria-hidden="true">16 canais</p><ul class="mu-logos">${logos()}</ul></nav>
+    <p class="mu-nota">Marcas fictícias. As fotos nas telas têm licença aberta: <a href="/creditos">ver créditos</a>.</p></div>`);
 
   const strip = root.querySelector('[data-mu-strip]'), pausa = root.querySelector('[data-mu-pausa]');
   const cards = [...strip.querySelectorAll('.mu-card:not([data-mu-clone]) .mu-link')];
