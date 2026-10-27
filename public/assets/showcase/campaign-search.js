@@ -221,7 +221,7 @@ export function makeSearch(ctx = {}) {
         <div class="sb-seo-sheet" data-in="mail"><span class="sb-grabber"></span><b>Receber as plantas</b><p>Mandamos o PDF com as plantas de 3 e 4 quartos e a ficha da casa.</p>${field('Seu e-mail', PESSOA.email)}
           <span class="sb-seo-ck" data-tap="ck" data-hs="3"><i>${I('check')}</i><span>Concordo que a ${esc(curta(ki))} use meu e-mail para mandar as plantas e falar sobre a visita, conforme a política de privacidade.</span></span>
           <span class="sb-seo-send" data-tap="send" data-hs="3">Enviar</span></div>
-        <div class="sb-seo-done" data-in="done"><span class="cm-site-ok" data-hs="3">${I('check')}</span><b>Enviamos as plantas para o seu e-mail</b><p>${esc(PESSOA.email)}</p>
+        <div class="sb-seo-done" data-in="done"><span class="cm-site-ok" data-hs="3">${I('check')}</span><b>Enviamos as plantas para o seu <span class="sb-nowrap">e-mail</span></b><p>${esc(PESSOA.email)}</p>
           <div class="sb-seo-file">${I('doc')}<span><b>Plantas de 3 e 4 quartos</b><small>PDF com as duas plantas e a ficha da casa</small></span></div>
           <div class="sb-seo-next">${I('calendar')}<span><b>Quer ver o decorado?</b><small>${esc(INC.horario)}. O e-mail traz os horários livres.</small></span></div>
           <div class="sb-seo-next">${I('location')}<span><b>Central de vendas</b><small>${esc(TERCEIROS.ruas.incorporadora)}</small></span></div>${LEGAL[ki] ? `<small class="cm-legal">${esc(LEGAL[ki])}</small>` : ''}</div></div>${safari(dom)}`, 'cm-scene--web'));
