@@ -111,6 +111,10 @@
 .hj-key--ok::after{content:"Aceitar"}
 .hj-key--end::after{content:"Encerrar"}
 .hj-app--call[data-fase="0"] .hj-call-head{opacity:0}
+.hj-lock{display:none}
+.hj-app--call[data-fase="0"] .hj-lock{position:absolute;inset:calc(var(--u) * 92) 0 auto;display:flex;flex-direction:column;align-items:center;gap:calc(var(--u) * 2);color:#fff;text-align:center}
+.hj-lock small{font-size:calc(var(--u) * 19);font-weight:500;color:#ffffffe6}
+.hj-lock b{font-size:calc(var(--u) * 92);font-weight:600;line-height:1;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
 .hj-app--call[data-fase="1"] :is(.hj-key--no,.hj-key--ok){display:block}
 .hj-app--call[data-fase="2"] .hj-key--end{display:block}
 .hj-app--call:is([data-fase="2"],[data-fase="fim"]) :is(.hj-timer,.hj-wave){visibility:visible}

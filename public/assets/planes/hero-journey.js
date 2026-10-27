@@ -69,7 +69,9 @@ function screen(J) {
     : a.campo ? `<footer class="hj-compose"><span>${fill(a.campo)}</span></footer>`
     : t === 'call' ? '<footer class="hj-keys"><i class="hj-key--no"></i><i class="hj-key--ok"></i><i class="hj-key--end"></i></footer>' : '';
   const body = its.filter(x => x.k !== 'note').map(item).join(''), notes = its.filter(x => x.k === 'note').map(item).join('');
-  return `<div class="hj-status"><b>${H}</b><i></i></div><div class="hj-app hj-app--${t}" data-fase="0">${head}<div class="hj-body">${t === 'wa' ? '<span class="hj-day">Hoje</span>' : ''}${body}</div>${foot}</div>${notes}`;
+  // Before the call rings (beat 0), the lock screen: the time and the date.
+  const lock = t === 'call' ? `<div class="hj-lock"><small>${esc(dataLonga(HOJE.iso))}</small><b>${H}</b></div>` : '';
+  return `<div class="hj-status"><b>${H}</b><i></i></div><div class="hj-app hj-app--${t}" data-fase="0">${lock}${head}<div class="hj-body">${t === 'wa' ? '<span class="hj-day">Hoje</span>' : ''}${body}</div>${foot}</div>${notes}`;
 }
 
 /* Traço; em coluna, o retorno sobe pela margem. */
@@ -166,23 +168,26 @@ function show(i, live) {
   });
   draw(i, live);
 }
+/* The 240 ms fade between loops: the screen goes dark and comes back empty. */
+function resetLoop() {
+  $$('.hj-screen .is-in,.hj-screen .is-pago').forEach(el => el.classList.remove('is-in', 'is-pago'));
+  $('.hj-app').dataset.fase = '0'; fala(null); timer(0, 0, 0);
+  root.classList.remove('is-reset');
+}
 function tick() {
   if (!running()) return;
   const next = beat >= 6 ? 0 : beat + 1;
   if (!next) {
     root.classList.add('is-reset');
-    later(() => {
-      $$('.hj-screen .is-in,.hj-screen .is-pago').forEach(el => el.classList.remove('is-in', 'is-pago'));
-      $('.hj-app').dataset.fase = '0'; fala(null); timer(0, 0, 0);
-      root.classList.remove('is-reset'); show(0, true);
-    }, 240);
+    later(() => { resetLoop(); show(0, true); }, 240);
   } else if (next < 6) show(next, true);
   else beat = 6;
   loop = setTimeout(tick, BEAT);
 }
 function hold(reason, on) {
   on ? holds.add(reason) : holds.delete(reason);
-  if (!running()) { clear(); anims.forEach(a => a.pause()); return; }
+  // A pause during the fade between loops finishes it: the screen never stays dark.
+  if (!running()) { clear(); anims.forEach(a => a.pause()); if (root.classList.contains('is-reset')) { resetLoop(); show(0, false); } return; }
   if (loop) return;
   anims.forEach(a => a.cancel());
   if (beat >= 0 && beat < 6) show(beat, false);
@@ -212,10 +217,19 @@ const sheet = () => apps ??= new Promise(done => {
   l.onload = l.onerror = done;
   document.body.append(l);
 });
+/* Stacked layouts: a chip whose phone is mostly out of view brings the phone to the screen, so the change shows. */
+function reveal() {
+  const ph = $('.hj-corpo').getBoundingClientRect(), vh = innerHeight;
+  if (!ph.height || Math.max(0, Math.min(ph.bottom, vh) - Math.max(ph.top, 0)) >= Math.min(ph.height, vh) * .6) return;
+  const top = 12 + (parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--sn-h-visible')) || 0);
+  const free = vh - top - 8, y = scrollY + ph.top - (ph.height <= free ? top + (free - ph.height) / 2 : top);
+  scrollTo({ top: Math.max(0, y), behavior: reduced.matches ? 'instant' : 'smooth' });
+}
 async function select(k) {
   if (!data?.[k] || k === key) return;
   await sheet();
   chips.forEach(b => b.setAttribute('aria-pressed', String(b.dataset.jornada === k)));
+  if (stacked.matches) reveal();
   if (reduced.matches) return render(k);
   root.classList.add('is-swap');
   setTimeout(() => { render(k); root.classList.remove('is-swap'); }, 240);
@@ -228,7 +242,8 @@ async function mount() {
   sheet();
   chips.forEach(b => b.addEventListener('click', () => select(b.dataset.jornada)));
   new ResizeObserver(() => wire()).observe(root);
-  new IntersectionObserver(([e]) => hold('fora', !e.isIntersecting), { threshold: .15 }).observe(root);
+  // Any visible part counts: on phones the piece of the journey peeks at the bottom of the first screen.
+  new IntersectionObserver(([e]) => hold('fora', !e.isIntersecting), { threshold: 0 }).observe(root);
   document.addEventListener('visibilitychange', () => hold('oculta', document.hidden));
   const sync = () => hold('pausa', document.body.classList.contains('is-paused'));
   new MutationObserver(sync).observe(document.body, { attributes: true, attributeFilter: ['class'] });
