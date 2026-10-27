@@ -4,17 +4,18 @@
    width of the screen) and .ch-iphone--compacto is the thin-bezel phone of small screens. */
 :root{--phone-ratio:.487;--phone-max:380px;--phone-w:min(var(--phone-max),calc((100svh - 48px) * var(--phone-ratio)))}
 @media (min-width:900px){:root{--phone-max:420px}}
-/* Phones: the width of the screen minus 24px, short enough for the phone and the "Agora" strip to fit
-   the height together (thin bezel ratio), never under 300px. */
-@media (max-width:480px){:root{--phone-max:calc(100vw - 24px);--phone-ratio:.4686;--phone-w:max(min(var(--phone-max),calc((100svh - 88px) * var(--phone-ratio))),min(var(--phone-max),300px))}}
-/* Under 360px the phone takes the width (the text would be too small capped by the height). */
-@media (max-width:359px){:root{--phone-w:calc(100vw - 16px)}}
+/* Phones: the phone takes the width of the screen minus 16px (thin bezel), so the text of the apps
+   stays legible; on a tall phone the "Agora" strip still fits under it. */
+@media (max-width:480px){:root{--phone-max:calc(100vw - 16px);--phone-ratio:.4686;--phone-w:calc(100vw - 16px)}}
 /* Short landscape: the whole phone fits the height, beside the panel. */
 @media (orientation:landscape) and (max-height:520px){:root{--phone-ratio:.46;--phone-w:min(var(--phone-max),calc((100svh - 16px) * var(--phone-ratio)))}}
 /* Thin bezel and no side buttons on small screens: the screen gets the space. */
 :is(#laboratorio,.lab-escopo) .ch-iphone--compacto .ch-iphone-corpo{margin-inline:0;padding:4px;border-width:2px;border-radius:calc(12.7cqi + 6px)}
 :is(#laboratorio,.lab-escopo) .ch-iphone--compacto .ch-iphone-corpo::before{inset:-2px}
 :is(#laboratorio,.lab-escopo) .ch-iphone--compacto .ch-iphone-botao{display:none}
+/* Display zoom on a screen under 300px (320px phones): the apps lay out at 412 / 1.3 logical px, so their
+   text grows by 1.3 while the status bar, the island and the home indicator keep the system size. */
+@container (max-width:299px){:is(#laboratorio,.lab-escopo) .ch-iphone-tela>.ch-iphone-ui{--u:calc(var(--ch-u) * 1.3)}}
 
 :is(#laboratorio,.lab-escopo) .sp-peel-underlay{background:#ecf0e7;align-items:stretch;justify-content:flex-start}
 :is(#laboratorio,.lab-escopo) .cx-player{position:relative;z-index:2;width:100%;box-sizing:border-box;padding:var(--cx-pad,24px) var(--cx-pad,24px) 10px;color:#17362a;touch-action:pan-y;cursor:default;overflow-x:clip;container-type:inline-size;container-name:cx}
@@ -91,7 +92,7 @@
 :is(#laboratorio,.lab-escopo) .cx-ampliar>span{display:none}
 :is(#laboratorio,.lab-escopo) .cx-ampliar--topo{background:#e3eadb;color:#17362a}
 /* "Agora": sticky under the phone on phones, above the page's own bottom bar. */
-:is(#laboratorio,.lab-escopo) .cx-agora{position:sticky;bottom:calc(var(--mobile-cta-h,0px) + env(safe-area-inset-bottom,0px) + 8px);z-index:8;display:flex;align-items:center;gap:8px;width:min(100%,var(--phone-w));margin:10px auto 0;padding:7px 7px 7px 14px;border-radius:18px;background:rgb(21 49 37 / .94);color:#f4f7ef;box-shadow:0 12px 30px -14px #0b2015;-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
+:is(#laboratorio,.lab-escopo) .cx-agora{position:sticky;bottom:calc(var(--mobile-cta-h,0px) + env(safe-area-inset-bottom,0px) + 6px);z-index:8;display:flex;align-items:center;gap:8px;width:min(100%,var(--phone-w));margin:8px auto 0;padding:4px 4px 4px 14px;border-radius:18px;background:rgb(21 49 37 / .94);color:#f4f7ef;box-shadow:0 12px 30px -14px #0b2015;-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
 :is(#laboratorio,.lab-escopo) .cx-agora-txt{flex:1;min-width:0}
 :is(#laboratorio,.lab-escopo) .cx-agora-txt p{margin:0;font:500 13px/1.35 var(--sans,Inter,Arial,sans-serif)}
 :is(#laboratorio,.lab-escopo) .cx-agora-desc{display:-webkit-box;overflow:hidden;-webkit-line-clamp:2;-webkit-box-orient:vertical}

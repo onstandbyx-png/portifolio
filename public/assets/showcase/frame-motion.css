@@ -28,7 +28,7 @@
 :is(#laboratorio,.lab-escopo) .cm-scene[data-kind="sheet"]{--fm-d:.45s;--fm-e:cubic-bezier(.32,.72,0,1)}
 :is(#laboratorio,.lab-escopo) .cm-scene[data-kind="fade"]{--fm-d:.24s;--fm-o:.24s}
 :is(#laboratorio,.lab-escopo) .cm-scene[data-kind="switch"]{--fm-d:.42s;--fm-e:var(--fm-smooth);--fm-o:.26s}
-:is(#laboratorio,.lab-escopo) .cm-scene[data-kind="modal"]{--fm-d:.3s;--fm-e:var(--fm-snappy);--fm-o:.2s}
+:is(#laboratorio,.lab-escopo) .cm-scene[data-kind="modal"]{--fm-d:.3s;--fm-e:var(--fm-snappy);--fm-o:.24s}
 :is(#laboratorio,.lab-escopo) .cm-scene[data-kind="switch"]:not([data-pos="on"],[data-pos="under"]){transform:scale(.9);opacity:0;border-radius:calc(var(--u,1px)*56)}
 :is(#laboratorio,.lab-escopo) .cm-scene[data-kind="modal"]:not([data-pos="on"],[data-pos="under"]){transform:scale(.94);opacity:0}
 /* The scene under the new one moves with the entering kind. */

@@ -56,12 +56,11 @@ body.is-paused .path-scope::details-content{transition:none!important}
  .portfolio-r10 #laboratorio .sp-peel-card{width:100%}
 }
 @media (orientation:landscape) and (max-height:520px){.portfolio-r10 #laboratorio .sp-peel-layout{--cx-pad:12px}}
-/* Phones: the card reaches the edges, so the phone is the width of the screen minus 24px. */
+/* Phones: the card reaches the edges, so the phone is the width of the screen minus 16px. */
 @media (max-width:480px){
- .portfolio-r10 #laboratorio .sp-peel-layout{--cx-pad:12px;gap:14px}
+ .portfolio-r10 #laboratorio .sp-peel-layout{--cx-pad:8px;gap:14px}
  .portfolio-r10 #laboratorio .sp-peel-card{width:100vw;max-width:none;margin-inline:calc(50% - 50vw);justify-self:start}
 }
-@media (max-width:359px){.portfolio-r10 #laboratorio .sp-peel-layout{--cx-pad:8px}}
 .workflow input:focus-visible,.workflow select:focus-visible,.workflow button:focus-visible,.cx-side :focus-visible{outline:3px solid #55799e;outline-offset:3px}
 body.portfolio-r10 #sistemas{padding:88px 0;background:#193b2d;color:#f4f5e9}
 .systems-intro{display:grid;grid-template-columns:1.1fr .9fr;gap:60px;align-items:end;margin-bottom:38px}

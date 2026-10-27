@@ -11,7 +11,7 @@ const ART = '/assets/portfolio/static-r8/';
 const esc = value => String(value).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 
 function picture(file, alt, className = '') {
-  return `<img class="${className}" src="${ART}${file}.webp" alt="${alt}" width="960" height="1200" loading="lazy" decoding="async">`;
+  return `<img class="${className}" src="${ART}${file}.webp" alt="${alt}" width="960" height="1200" loading="lazy" decoding="async" fetchpriority="low">`;
 }
 
 /* Channel tiles (pattern of a platform selector mapped in the lab): the
@@ -34,7 +34,7 @@ function tabMarkup(channel, index) {
 /* The front of the peel: one photo and the piece's text in HTML (brand, headline, fictitious-brand notice). */
 function panelMarkup(channel, index) {
   const { art } = channel, im = IMG[art.img], client = CLIENTES[art.cliente];
-  return `<div class="sp-campaign-panel" id="panel-${channel.id}" role="tabpanel" aria-labelledby="tab-${channel.id}" tabindex="0"${index ? ' hidden' : ''}><figure class="sp-art"><img class="sp-art-photo" src="${im.src}" alt="${esc(art.alt)}" width="${im.w}" height="${im.h}" loading="lazy" decoding="async" style="object-position:${art.pos}"><figcaption class="sp-art-cap"><span class="sp-art-brand">${marca(art.cliente)}<b>${esc(client.marca)}</b></span><b class="sp-art-title">${esc(art.titulo)}</b><small class="sp-art-fine">Exemplo ilustrativo de ${esc(client.tipo)}, marca fictícia.</small></figcaption></figure></div>`;
+  return `<div class="sp-campaign-panel" id="panel-${channel.id}" role="tabpanel" aria-labelledby="tab-${channel.id}" tabindex="0"${index ? ' hidden' : ''}><figure class="sp-art"><img class="sp-art-photo" src="${im.src}" alt="${esc(art.alt)}" width="${im.w}" height="${im.h}" loading="lazy" decoding="async" fetchpriority="low" style="object-position:${art.pos}"><figcaption class="sp-art-cap"><span class="sp-art-brand">${marca(art.cliente)}<b>${esc(client.marca)}</b></span><b class="sp-art-title">${esc(art.titulo)}</b><small class="sp-art-fine">Exemplo ilustrativo de ${esc(client.tipo)}, marca fictícia.</small></figcaption></figure></div>`;
 }
 
 function mountCampaign(motion) {
@@ -55,12 +55,7 @@ function mountCampaign(motion) {
   const tabs = Array.from(lab.querySelectorAll('[data-sp-tab]'));
   const panels = Array.from(lab.querySelectorAll('.sp-campaign-panel'));
   const figures = panels.map(panel => panel.querySelector('figure'));
-  // The artworks load as the section approaches the viewport, not at page start.
-  const warm = () => panels.forEach(panel => { panel.querySelector('img').loading = 'eager'; });
-  if ('IntersectionObserver' in window) {
-    const near = new IntersectionObserver(entries => { if (entries.some(entry => entry.isIntersecting)) { near.disconnect(); warm(); } }, { rootMargin: '900px 0px' });
-    near.observe(lab);
-  } else warm();
+  // The artworks stay lazy: each one loads when its channel is shown, never before the section is reached.
   let active = -1;
   let generation = 0;
   let transitions = [];
