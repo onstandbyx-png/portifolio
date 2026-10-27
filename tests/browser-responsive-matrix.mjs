@@ -104,14 +104,14 @@ const pontoSobreTexto=(page,stageSel)=>page.evaluate(stageSel=>{
       if(ox>4&&oy>4){hits.push(n.data.trim().slice(0,30));break;}
     }
   }
-  return hits.length?hits:false;
+  return hits;
 },stageSel);
 
 async function percorreLab(page,tag,linha){
   await page.evaluate(()=>document.querySelector('#laboratorio').scrollIntoView({behavior:'instant'}));
   await page.waitForSelector('#laboratorio .cx-player',{state:'attached'});
   const keys=await page.evaluate(async()=>(await import('/assets/showcase/campaign-channels.js')).channels.flatMap(c=>c.placements.map(p=>c.id+'/'+p.id)));
-  let quadros=0;const tela=[];
+  let quadros=0,comPonto=0;const tela=[];
   for(const key of keys){
     const [canal,formato]=key.split('/');
     await page.evaluate(d=>window.dispatchEvent(new CustomEvent('cx:abrir',{detail:d})),{canal,formato});
@@ -126,16 +126,17 @@ async function percorreLab(page,tag,linha){
       await page.waitForFunction(i=>document.querySelector('#laboratorio [data-cx-stage] .cm-screen')?.dataset.frame===String(i),i);
       await page.waitForTimeout(90);
       const hit=await pontoSobreTexto(page,'#laboratorio [data-cx-stage]');
-      if(hit)linha.ponto.push(`${key}#${i}: ${hit.join(' | ')}`);
+      if(hit?.length)linha.ponto.push(`${key}#${i}: ${hit.join(' | ')}`);
+      if(hit)comPonto++;
       quadros++;
     }
   }
-  linha.lab={formatos:keys.length,quadros,tela};
+  linha.lab={formatos:keys.length,quadros,comPonto,tela};
 }
 async function percorreSistemas(page,linha){
   await page.evaluate(()=>document.querySelector('#sistemas').scrollIntoView({behavior:'instant'}));
   await page.waitForSelector('[data-vitrine="sistemas"] [data-at-mod]');
-  const mods=await page.locator('[data-vitrine="sistemas"] [data-at-mod]').count();let quadros=0;
+  const mods=await page.locator('[data-vitrine="sistemas"] [data-at-mod]').count();let quadros=0,comPonto=0;
   const sel='[data-vitrine="sistemas"] [data-at-stage]';
   for(let k=0;k<mods;k++){
     await page.locator(`[data-vitrine="sistemas"] [data-at-mod="${k}"]`).evaluate(b=>b.click());
@@ -146,12 +147,13 @@ async function percorreSistemas(page,linha){
       if(i){const before=await page.locator(`${sel} .cm-screen`).getAttribute('data-frame');await page.locator('[data-vitrine="sistemas"] [data-at-next]').evaluate(b=>b.click());await page.waitForFunction(([sel,b])=>document.querySelector(sel+' .cm-screen')?.dataset.frame!==b,[sel,before]).catch(()=>{});}
       await page.waitForTimeout(90);
       const hit=await pontoSobreTexto(page,sel);
-      if(hit)linha.ponto.push(`sistemas/${k}#${i}: ${hit.join(' | ')}`);
+      if(hit?.length)linha.ponto.push(`sistemas/${k}#${i}: ${hit.join(' | ')}`);
+      if(hit)comPonto++;
       quadros++;
     }
   }
   const tela=await page.evaluate(sel=>{const st=document.querySelector(sel);st.scrollIntoView({block:'center',behavior:'instant'});const t=st.querySelector('.ch-iphone-tela').getBoundingClientRect(),f=st.querySelector('.ch-iphone').getBoundingClientRect();return {tela:Math.round(t.width),altura:Math.round(f.height),ih:innerHeight};},sel);
-  linha.sistemas={modulos:mods,quadros,tela};
+  linha.sistemas={modulos:mods,quadros,comPonto,tela};
 }
 
 async function viewport(vp){
@@ -190,7 +192,7 @@ async function viewport(vp){
   }catch(error){linha.falha=String(error).slice(0,600);console.error('FAIL',vp.tag,linha.falha);}
   await page.screenshot({path:`${output}/${vp.tag}.png`}).catch(()=>{});
   await ctx.close();
-  console.log(vp.tag,`${linha.checks.filter(c=>c.pass).length}/${linha.checks.length}`,linha.lab?`lab ${linha.lab.quadros} quadros`:'',linha.sistemas?`sistemas ${linha.sistemas.quadros} quadros`:'');
+  console.log(vp.tag,`${linha.checks.filter(c=>c.pass).length}/${linha.checks.length}`,linha.lab?`lab ${linha.lab.quadros} quadros (${linha.lab.comPonto} com ponto)`:'',linha.sistemas?`sistemas ${linha.sistemas.quadros} quadros (${linha.sistemas.comPonto} com ponto)`:'');
   report.viewports.push(linha);
 }
 async function paginas(vp){
