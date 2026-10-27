@@ -577,15 +577,24 @@ function mountOne(root) {
   /* A link shows the phone: after the section loader has brought the section up, the panel comes to the top and
      stays there for up to 3 s while the sections above it load and grow, until the person scrolls or touches. */
   let soltar = null;
+  // The panel's top on screen; when the phone (and on phones the dock under it) would end below the window, a
+  // little further, so it fits whole while its top stays on screen.
+  function alinhar() {
+    const r = stage.getBoundingClientRect(), dock = estreito.matches ? ($('[data-at-dock]')?.offsetHeight || 0) + 8 : 0;
+    const topo = scrollY + r.top, fim = scrollY + r.bottom + dock;
+    let y = scrollY + main.getBoundingClientRect().top - (parseFloat(getComputedStyle(main).scrollMarginTop) || 0);
+    if (fim - y > innerHeight - 12) y = Math.min(fim - innerHeight + 12, topo - 12);
+    scrollTo({ top: Math.max(0, y), behavior: 'instant' });
+  }
   function mostrarPalco() {
     soltar?.();
     const page = document.querySelector('main') || document.body, kinds = ['wheel', 'touchstart', 'keydown', 'pointerdown'];
     let altura = page.offsetHeight;
-    const ro = 'ResizeObserver' in window ? new ResizeObserver(() => { if (page.offsetHeight !== altura) { altura = page.offsetHeight; main.scrollIntoView({ block: 'start' }); } }) : null;
+    const ro = 'ResizeObserver' in window ? new ResizeObserver(() => { if (page.offsetHeight !== altura) { altura = page.offsetHeight; alinhar(); } }) : null;
     const timer = setTimeout(() => soltar?.(), 3000);
     soltar = () => { ro?.disconnect(); clearTimeout(timer); kinds.forEach(k => removeEventListener(k, soltar)); soltar = null; };
     kinds.forEach(k => addEventListener(k, soltar, { passive: true }));
-    setTimeout(() => { main.scrollIntoView({ block: 'start' }); ro?.observe(page); }, 60);
+    setTimeout(() => { alinhar(); ro?.observe(page); }, 60);
   }
   if (lerHash()) mostrarPalco(); else { modulo = 0; carregar(); }
   addEventListener('hashchange', () => {

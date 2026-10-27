@@ -559,7 +559,13 @@ export function mountCampaignExperience(lab, underlay) {
     if (index < 0 && /^\d+$/.test(String(formato ?? ''))) index = Math.min(ch.placements.length - 1, Number(formato));
     if (index >= 0 && index !== placementIndex) choosePlacement(index, { focus: false });
     else if (index >= 0 || formato === undefined) { stop(); elapsed = 0; paint({ instant: true, force: true }); if (open()) start(true); }
-    requestAnimationFrame(() => (mainStage() || player).scrollIntoView({ block: wideQuery.matches ? 'start' : 'nearest', behavior: live() ? 'smooth' : 'instant' }));
+    requestAnimationFrame(() => {
+      // Wide screens: the player's top on screen, or further down when the phone would end below the window.
+      if (wideQuery.matches) {
+        const st = mainStage()?.getBoundingClientRect(), top = player.getBoundingClientRect().top;
+        scrollBy({ top: st ? Math.min(Math.max(top, st.bottom - innerHeight + 12), st.top - 12) : top, behavior: live() ? 'smooth' : 'instant' });
+      } else (mainStage() || player).scrollIntoView({ block: 'nearest', behavior: live() ? 'smooth' : 'instant' });
+    });
     return true;
   }
   function fromHash() {

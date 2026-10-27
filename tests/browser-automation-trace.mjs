@@ -135,15 +135,17 @@ try{
     }
   }
 
-  // Two columns from 600px, with the whole phone in the viewport.
+  // Two columns from 600px, with the whole phone in the viewport; in a short landscape the phone keeps a legible
+  // width (300px, with the display zoom) and scrolls with the page instead of shrinking to the 390px height.
   for(const vp of [{width:768,height:1024},{width:844,height:390}]){
     const {context,page}=await open(vp);
     await scrollTo(page,'#sistemas .at-main',0);await page.waitForTimeout(200);
     await page.evaluate(()=>scrollBy(0,40));await page.waitForTimeout(200);
     const r=await page.evaluate(()=>{const m=document.querySelector('#sistemas .at-main'),ph=document.querySelector('#sistemas .at-stage .ch-iphone').getBoundingClientRect();
-      return {cols:getComputedStyle(m).gridTemplateColumns.split(' ').length,phone:{top:Math.round(ph.top),bottom:Math.round(ph.bottom),h:Math.round(ph.height)},vh:innerHeight};});
+      return {cols:getComputedStyle(m).gridTemplateColumns.split(' ').length,phone:{top:Math.round(ph.top),bottom:Math.round(ph.bottom),h:Math.round(ph.height),w:Math.round(ph.width)},vh:innerHeight};});
     check(`${vp.width}x${vp.height}: .at-main has 2 columns`,r.cols===2,r);
-    check(`${vp.width}x${vp.height}: the phone fits the height of the viewport`,r.phone.h<=r.vh&&r.phone.top>=0&&r.phone.bottom<=r.vh+.5,r);
+    if(vp.height>520)check(`${vp.width}x${vp.height}: the phone fits the height of the viewport`,r.phone.h<=r.vh&&r.phone.top>=0&&r.phone.bottom<=r.vh+.5,r);
+    else check(`${vp.width}x${vp.height}: the phone keeps at least 280px of width`,r.phone.w>=280,r);
     await context.close();
   }
 

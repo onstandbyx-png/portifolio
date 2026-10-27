@@ -59,12 +59,17 @@ function start() {
     if (!match) return;
     load(match[1]).then(() => {
       const section = document.getElementById(match[1]), rect = section.getBoundingClientRect();
-      if (rect.top > innerHeight * .5 || rect.bottom < 0) section.scrollIntoView({ block: 'start', behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth' });
+      // A long way (from the hero) jumps: a smooth scroll would cross sections that are still loading, blank.
+      const far = Math.abs(rect.top) > innerHeight * 2;
+      if (rect.top > innerHeight * .5 || rect.bottom < 0) section.scrollIntoView({ block: 'start', behavior: far || matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth' });
     });
   };
   addEventListener('hashchange', () => { deep(); pin(); });
   deep();
   pin();
+  // O link de uma seção sob demanda começa a carregá-la no hover, no foco ou no toque, antes do clique.
+  const early = event => { const m = /^#(sistemas|laboratorio|editorial)\//.exec(event.target.closest?.('a[href^="#"]')?.getAttribute('href') || ''); if (m) load(m[1]); };
+  ['pointerover', 'pointerdown', 'focusin'].forEach(kind => document.addEventListener(kind, early, { passive: true }));
   // Um clique numa âncora interna também segura o alvo enquanto as seções do caminho carregam.
   document.addEventListener('click', event => {
     const link = event.target.closest?.('a[href^="#"]');
