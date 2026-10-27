@@ -101,7 +101,7 @@ Os canais e formatos ficam em `campaign-channels.js` (redes sociais e publiedito
 |---|---|
 | `id` | Chave do formato. Com o canal forma a chave `'tiktok/infeed'` de `AVISOS`, `PEDIDOS` e dos links. |
 | `label` | Nome no controle de formatos. |
-| `curto` | Rótulo curto, usado abaixo de 420 px e no painel. |
+| `curto` | Rótulo curto, usado abaixo de 420 px de faixa quando é mais curto que `label` (não é o trajeto da jornada). |
 | `mock` | Função de `mocks` que desenha a tela. |
 | `cliente` | Chave de `CLIENTES`. |
 | `selo` | Rótulo de identificação igual ao da plataforma (seção 11). |
@@ -163,7 +163,7 @@ Regras do storyboard:
 
 Tipos de cena (`scene(id, kind, tema, html, cls, gestos)`): `base` (fundo), `push` (entra pela direita), `sheet` (sobe de baixo), `switch` (troca de app), `modal` e `fade`. `cm-scene--part` é uma folha parcial; `cm-scene--web`, uma página no Safari.
 
-Tamanho do aparelho: `--phone-w` vem da altura e da largura da tela (`experience-demos.css`). A partir de 900 px, até 420 px; abaixo, até 380 px; até 480 px de largura, `100vw - 16px` com o aro fino (`.ch-iphone--compacto`); no celular deitado, `(100svh - 16px) x 0,46`. Abaixo de 300 px de tela, o conteúdo do app aumenta 1,3 vez. Escreva tudo dentro do aparelho em `calc(var(--u)*N)` (`--u` é 1/412 da tela), nunca em px.
+Tamanho do aparelho: `--phone-w` vem da altura e da largura da tela (`experience-demos.css`). A partir de 900 px, até 420 px; abaixo, até 380 px; até 480 px de largura, `100vw - 16px` com o aro fino (`.ch-iphone--compacto`); no celular deitado, pelo menos `min(300px, 40vw)`, mesmo que o aparelho fique mais alto que a janela (o player segue o botão ou o ponto do quadro e o Ampliar abre nele). Em #sistemas, até 599 px de largura, o aparelho cabe com o dock a partir de 390 px de altura (`max(300px, min(100vw - 16px, (100svh - 200px) x 0,4686))`). O conteúdo do app tem zoom contínuo: `--u` nunca fica abaixo de 0,86 px, até 1,3 vez nas telas menores; a partir de 355 px de tela vale 1/412 da tela. Escreva tudo dentro do aparelho em `calc(var(--u)*N)`, nunca em px.
 
 Os tokens não são globais: cada mock define os seus. Antes de usar um token, procure `data-state~="token"` no CSS do mock. Nas telas de busca, `[data-in=token]` aparece enquanto o estado tem o token e `[data-out=token]` some a partir dele. Nas automações (classe `au` na tela), as mesmas regras vêm geradas no fim de `automation-mocks.css`.
 
