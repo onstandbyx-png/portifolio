@@ -30,7 +30,7 @@
    - tempoMinimo(screen, list, index) → ms. max(item.ms, 1400, (scene changed ? 820 : 0)
      + 260 per new word), capped at 9000 unless item.ms asks for more. New words are the
      words visible on the phone's screen now that were not visible on the frame measured
-     before. Call it after settle(). It also writes --quadro-ms and, for tests,
+     before (on frame 0, every visible word). Call it after settle(). It also writes --quadro-ms and, for tests,
      data-palavras and data-quadro-ms on the screen.
    - syncMedia(screen, playing): plays or pauses the videos of the screen.
    - live() → boolean: motion is allowed (no reduced motion, no global pause, tab visible).
@@ -174,7 +174,7 @@ function opaque(node, stop, cache, min = .05) {
   }
   return true;
 }
-const telaOf = screen => screen?.closest('.ch-iphone-tela') || screen?.closest('.ch-iphone')?.querySelector('.ch-iphone-tela');
+const telaOf = screen => screen?.closest('.ch-iphone-tela') || screen?.closest('.ch-iphone')?.querySelector('.ch-iphone-tela') || screen?.parentElement;
 const inside = (r, box) => r.width > 0 && r.height > 0 && r.right > box.left && r.left < box.right && r.bottom > box.top && r.top < box.bottom;
 
 /* Text rectangles visible on the screen (one per line box of every text node). */
@@ -211,7 +211,7 @@ export function tempoMinimo(screen, list, index) {
   const tela = telaOf(screen);
   let words = 0;
   if (tela && screen) {
-    const now = visibleTexts(screen, tela.getBoundingClientRect()), before = medido.get(screen);
+    const now = visibleTexts(screen, tela.getBoundingClientRect()), before = index === 0 ? null : medido.get(screen);
     now.forEach(node => { if (!before?.has(node)) words += palavras(node.data); });
     medido.set(screen, now);
   }

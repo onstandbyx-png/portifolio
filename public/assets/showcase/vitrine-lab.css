@@ -1,25 +1,60 @@
-/* Two home demonstrations built from the lab's flows (vitrine-lab.js). The phone and the
-   mocks are styled by channel-mocks.css, campaign-sites.css and lab-telas.css, scoped
-   to :is(#laboratorio, .lab-escopo) so they also apply here. */
-.vitrine{display:grid;justify-items:center;gap:clamp(18px,3vw,30px);margin-top:clamp(26px,4vw,40px)}
-.vitrine-phone{width:min(100%,320px)}
-/* Text takes the colour of its section (light in Sites e lojas, dark in Sistemas e automações). */
-.vitrine-side{display:grid;gap:14px;width:min(100%,520px);color:inherit}
-.vitrine-caption{min-height:3.1em;margin:0;font:400 16px/1.5 var(--sans,Inter,Arial,sans-serif)}
-.vitrine-play{justify-self:start;min-height:44px;padding:0 18px;border:1px solid #bccdb9;border-radius:999px;background:#f9fbf6;color:#234530;font:600 14px/1 var(--sans,Inter,Arial,sans-serif);cursor:pointer}
-.vitrine-nota{margin:0;opacity:.72;font-size:12.5px;line-height:1.4}
+/* "Sites e lojas" (vitrine-lab.js): formats, the phone (or a desktop browser from 1100px) and
+   the panel with the screens of the site synced to it. The phone and the mocks are styled by
+   channel-mocks.css, campaign-sites.css and lab-telas.css, scoped to :is(#laboratorio,
+   .lab-escopo) so they also apply here; the phone size is --phone-w (experience-demos.css). */
+.vitrine{display:grid;grid-template-columns:minmax(0,1fr);justify-items:center;gap:16px;width:min(100%,var(--page-max,1200px));margin:16px auto 0}
+.vitrine>*{grid-area:auto!important;min-width:0}
+.vitrine-top{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:10px 16px;width:100%}
+.vitrine .cx-placements{width:min(100%,520px);margin:0}
+.vitrine-modo{display:none;gap:2px;padding:3px;border-radius:14px;background:#dfe6d8;box-shadow:inset 0 0 0 1px #cfd9ca}
+.vitrine-modo-b{min-height:44px;padding:0 16px;border:0;border-radius:11px;background:transparent;color:#3f5c46;font:600 13px/1 var(--sans,Inter,Arial,sans-serif);cursor:pointer;transition:background-color .2s,color .2s,scale .12s ease}
+.vitrine-modo-b[aria-pressed="true"]{background:#1e4530;color:#f8fbf7}
+.vitrine-modo-b:active{scale:.97}
+.vitrine-phone{width:100%;max-width:var(--phone-w)}
+.vitrine-stage{position:relative;width:100%}
+.vitrine-side{display:grid;align-content:start;gap:12px;width:min(100%,560px);color:inherit}
+.vitrine-ctl{display:flex;align-items:center;gap:12px}
+.vitrine-play{min-height:44px;padding:0 18px;border:1px solid #bccdb9;border-radius:999px;background:#f9fbf6;color:#234530;font:600 14px/1 var(--sans,Inter,Arial,sans-serif);cursor:pointer;transition:scale .12s ease}
+.vitrine-play:active{scale:.97}
+.vitrine-pos{color:#4f6357;font:600 13px/1 var(--sans,Inter,Arial,sans-serif);font-variant-numeric:tabular-nums}
+.vitrine-caption{min-height:3em;margin:0;color:#1f3a2a;font:500 16px/1.5 var(--sans,Inter,Arial,sans-serif)}
+/* Screens of the cut under the steps of the journey, synced with the phone. */
+.vitrine-telas{display:grid;gap:12px;max-height:min(60svh,520px);margin:0;padding:0 4px 0 0;overflow:auto;list-style:none;overscroll-behavior:contain;scrollbar-width:thin}
+.vitrine-passo>b{display:block;color:#4f6357;font:700 11.5px/1.4 var(--sans,Inter,Arial,sans-serif);letter-spacing:.08em;text-transform:uppercase}
+.vitrine-passo>small{display:block;margin:2px 0 8px;color:#3d4a40;font:500 14px/1.4 var(--sans,Inter,Arial,sans-serif);hyphens:manual}
+.vitrine-passo ol{display:grid;gap:4px;margin:0;padding:0;list-style:none}
+.vitrine-passo button{display:grid;grid-template-columns:24px minmax(0,1fr);align-items:start;gap:10px;width:100%;min-height:44px;padding:9px 10px;border:0;border-left:3px solid #cdd8c7;border-radius:0 10px 10px 0;background:transparent;color:#4a5948;text-align:left;font:400 14px/1.45 var(--sans,Inter,Arial,sans-serif);cursor:pointer;transition:background-color .2s,border-color .2s}
+.vitrine-passo button:hover{background:#f3f6ee}
+.vitrine-n{display:grid;place-items:center;width:22px;height:22px;border-radius:50%;background:#e3eadb;color:#2e4535;font:650 11.5px/1 var(--sans,Inter,Arial,sans-serif)}
+.vitrine-passo li[data-state="done"] button{border-left-color:#8fa886;color:#55634f}
+.vitrine-passo li[data-state="on"] button{border-left-color:#294c36;background:#f8faf5;color:#17362a;font-weight:550;box-shadow:0 6px 18px -14px #1b3627}
+.vitrine-passo li[data-state="on"] .vitrine-n{background:#294c36;color:#fff}
+.vitrine-nota{margin:0;color:#4f6357;font:400 12.5px/1.45 var(--sans,Inter,Arial,sans-serif)}
 @media (min-width:900px){
-  .vitrine{grid-template-columns:minmax(0,320px) minmax(0,520px);justify-content:center;align-items:center;justify-items:stretch}
-  .vitrine-side{align-content:center}
+  .vitrine{grid-template-columns:minmax(0,var(--phone-w)) minmax(320px,520px);justify-content:center;align-items:start;justify-items:stretch;gap:20px clamp(28px,4vw,56px)}
+  .vitrine>.vitrine-top{grid-column:1/-1!important}
+  .vitrine-telas{max-height:calc(var(--phone-w) / var(--phone-ratio) - 220px)}
 }
+/* From 1100px: the "Celular | Computador" switch; the computer shows the same site in a desktop browser. */
+@media (min-width:1100px){
+  .vitrine-modo{display:inline-flex}
+  .vitrine[data-modo="computador"]{grid-template-columns:minmax(0,1fr) minmax(300px,400px)}
+  .vitrine[data-modo="computador"] .vitrine-phone{max-width:none}
+}
+.vitrine-desk{overflow:hidden;border-radius:14px;background:#fff;box-shadow:0 0 0 1px #c9d4c4,0 30px 60px -30px #1b3627,0 12px 24px -16px #1b362766}
+.vitrine-desk-bar{display:flex;align-items:center;gap:7px;height:38px;padding:0 14px;background:#eef1ea;border-bottom:1px solid #d6dfd0}
+.vitrine-desk-bar i{width:11px;height:11px;border-radius:50%;background:#cfd6ca}
+.vitrine-desk-bar span{flex:1;max-width:420px;margin:0 auto;padding:5px 12px;border-radius:8px;background:#fff;color:#3d4a40;font:500 12.5px/1.2 var(--sans,Inter,Arial,sans-serif);text-align:center;box-shadow:inset 0 0 0 1px #dfe5d8}
+.vitrine-desk-tela{position:relative;height:min(70svh,620px);overflow:hidden;container-type:inline-size;background:#fff}
+/* The desktop browser: the page is laid out at 900 logical px, without the phone's status bar and Safari bar. */
+:is(#laboratorio,.lab-escopo) .vitrine-desk-ui{--ch-u:calc(100cqi / 760);--ch-topo:0px;--ch-pe:0px}
+:is(#laboratorio,.lab-escopo) .vitrine-desk :is(.cm-safari,.cm-crumb,.cm-browser){display:none}
+:is(#laboratorio,.lab-escopo) .vitrine-desk .cm-scene--web .cm-lp{padding-top:0}
+:is(#laboratorio,.lab-escopo) .vitrine-desk .cm-site-step{padding-inline:max(0px,calc((100% - var(--u) * 640) / 2))}
 @media (prefers-reduced-motion:reduce){.vitrine .cm-screen,.vitrine .cm-scene{transition:none!important}}
 /* Sites e lojas sits on the light page: its header keeps the dark ink of the page. */
 #editorial .systems-intro .eyebrow{color:#4f6357}
 #editorial .systems-intro p{color:#3d4a40}
-/* Formats and steps reuse the lab's segmented control and journey (experience-demos.css). */
-.vitrine .cx-placements{width:min(100%,520px);margin:0}
-.vitrine .cx-steps{max-width:520px}
-.vitrine .cx-journey button{color:inherit}
 #sistemas .vitrine .cx-placements{background:#ffffff1f;box-shadow:inset 0 0 0 1px #ffffff2e}
 #sistemas .vitrine .cx-placement{color:#d7e4d6}
 #sistemas .vitrine .cx-placement[aria-pressed="true"]{color:#173a2a}
@@ -31,34 +66,30 @@
 #sistemas .vitrine .cx-rail{background:#ffffff2e}
 #sistemas .vitrine .cx-rail i{background:#f4f7ef}
 #sistemas .vitrine .cx-journey button:hover{background:#ffffff14}
-@media (min-width:900px){.vitrine .cx-placements{grid-column:1/-1;justify-self:center}}
+/* The journey of "Sistemas e automações" (automation-trace.js): names whole, a vertical list from 900px. */
+#sistemas .vitrine .cx-journey{align-items:stretch}
+#sistemas .vitrine .cx-journey button{flex-direction:column;justify-content:flex-start;height:100%;padding:10px 4px 10px;text-align:center}
+@media (min-width:900px){
+  #sistemas .vitrine .cx-journey{grid-template-columns:minmax(0,1fr);gap:8px}
+  #sistemas .vitrine .cx-journey button{display:grid;grid-template-columns:28px minmax(0,1fr);align-items:center;gap:10px;min-height:60px;padding:12px 14px 12px 18px;text-align:left}
+  #sistemas .vitrine .cx-step-n{width:28px;height:28px;font-size:13px}
+  #sistemas .vitrine .cx-step-t b{font-size:15px}
+  #sistemas .vitrine .cx-rail{top:12px;bottom:12px;left:0;right:auto;width:3px;height:auto}
+  #sistemas .vitrine .cx-rail i{transform:scaleY(var(--p,0));transform-origin:top}
+  #sistemas .vitrine .cx-journey li[data-state="on"] button{background:#ffffff14}
+}
 /* Retired hero badge controls (2026-10-22). The campaign panel, its contact link and the peel return are back as the live panel (27/10). */
 .hero-badge-controls,.hero-badge-foot{display:none!important}
-/* Tighter rhythm between sections after the removals. */
+/* Tighter rhythm between sections. */
 #laboratorio.ads-section,#editorial,#sistemas.workflow-section{padding-top:clamp(36px,6vw,64px)!important;padding-bottom:clamp(28px,5vw,56px)!important}
 #categorias{padding-top:clamp(32px,5vw,56px)!important}
 #contato{padding-top:clamp(32px,5vw,56px)!important}
 #editorial .systems-intro,#sistemas .systems-intro{margin-bottom:8px!important}
 /* Sites e lojas gets its own band so it reads as a new section after the campaigns. */
 #editorial{background:#e7ede1;box-shadow:0 0 0 100vmax #e7ede1;clip-path:inset(0 -100vmax)}
-.vitrine{margin-top:16px;gap:16px}
-/* The lab classes carry grid areas of the player; the vitrine keeps its own one-column flow. */
-.vitrine{grid-template-columns:minmax(0,1fr)}
-.vitrine > *{grid-area:auto!important}
-.vitrine .cx-steps{width:min(100%,520px)}
-@media (min-width:900px){.vitrine{grid-template-columns:minmax(0,320px) minmax(0,520px)}.vitrine > .cx-placements{grid-column:1/-1!important}}
-/* Step names stay whole: on phones the number sits above a name that may wrap to two lines;
-   from 900px the journey turns into the lab's vertical list beside the phone. */
-:is(#editorial,#sistemas) .vitrine .cx-journey{align-items:stretch}
-:is(#editorial,#sistemas) .vitrine .cx-journey button{flex-direction:column;justify-content:flex-start;height:100%;padding:10px 4px 10px;text-align:center}
-:is(#editorial,#sistemas) .vitrine .cx-step-t b{overflow:visible;white-space:normal;text-overflow:clip;text-wrap:balance;hyphens:auto}
-@media (min-width:900px){
-  :is(#editorial,#sistemas) .vitrine .cx-journey{grid-template-columns:minmax(0,1fr);gap:8px}
-  :is(#editorial,#sistemas) .vitrine .cx-journey button{display:grid;grid-template-columns:28px minmax(0,1fr);align-items:center;gap:10px;min-height:60px;padding:12px 14px 12px 18px;text-align:left}
-  :is(#editorial,#sistemas) .vitrine .cx-step-n{width:28px;height:28px;font-size:13px}
-  :is(#editorial,#sistemas) .vitrine .cx-step-t b{font-size:15px}
-  :is(#editorial,#sistemas) .vitrine .cx-rail{top:12px;bottom:12px;left:0;right:auto;width:3px;height:auto}
-  :is(#editorial,#sistemas) .vitrine .cx-rail i{transform:scaleY(var(--p,0));transform-origin:top}
-  #editorial .vitrine .cx-journey li[data-state="on"] button{background:#f8faf5}
-  #sistemas .vitrine .cx-journey li[data-state="on"] button{background:#ffffff14}
+/* Step names keep their words whole (no automatic hyphens); under 360px the steps are a vertical list. */
+:is(#editorial,#sistemas) .cx-step-t b{overflow:visible;white-space:normal;text-overflow:clip;text-wrap:balance;hyphens:manual}
+@media (max-width:359px){
+  :is(#editorial,#sistemas) .cx-journey{grid-template-columns:minmax(0,1fr)}
+  :is(#editorial,#sistemas) .cx-journey button{justify-content:flex-start}
 }
