@@ -1,10 +1,9 @@
 # Static portfolio compositions — R8
 
-Eleven authored 960 × 1200 HTML/CSS artboards, rendered with Chromium.
+Authored 960 × 1200 HTML/CSS artboards, rendered with Chromium.
 Source and reproduction: `scripts/render-static-r8.mjs`.
 
 - Inter and Newsreader: existing bundled fonts, licenses in `public/assets/fonts`.
-- Fatos: existing recovered demonstration photography and official avatars in `recovered-fatos`; provenance there.
 - Casa Costa: existing `smiile-architecture-coast.webp`.
 - Trilhas: original recovered smiile `landscape.webp`; provenance in `recovered-smiile/SOURCES.md`.
 - Meta, Google Ads and TikTok marks: existing official assets, unmodified; provenance in `public/assets/brands/SOURCES.md`.

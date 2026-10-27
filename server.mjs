@@ -13,14 +13,16 @@ const routes = new Map([
   ['/assets/portfolio.css','src/styles.css'],['/assets/portfolio.js','src/portfolio.js'],
   // Parallel pages: static HTML outside public/, same CSP and headers as the home.
   ['/criadores','pages/criadores.html'],['/criadores/ao-vivo','pages/criadores-ao-vivo.html'],
-  ['/vagas','pages/vagas.html'],['/privacidade','pages/privacidade.html'],
+  ['/vagas','pages/vagas.html'],['/privacidade','pages/privacidade.html'],['/creditos','pages/creditos.html'],
 ]);
 // Canonical form without a trailing slash; the query string is preserved.
-const redirects = new Map([['/criadores/','/criadores'],['/criadores/ao-vivo/','/criadores/ao-vivo'],['/vagas/','/vagas'],['/privacidade/','/privacidade']]);
+const redirects = new Map([['/criadores/','/criadores'],['/criadores/ao-vivo/','/criadores/ao-vivo'],['/vagas/','/vagas'],['/privacidade/','/privacidade'],['/creditos/','/creditos'],['/creditos.html','/creditos']]);
+// Retired material that must never be served again, even if a copy is left on disk (build-vercel.mjs skips the same prefixes).
+const RETIRED = ['/assets/fatos-','/assets/portfolio/recovered-fatos/','/assets/portfolio/static-r8/fatos-','/assets/showcase/fatos-'];
 const headers = {
   'X-Content-Type-Options':'nosniff',
   'Referrer-Policy':'strict-origin-when-cross-origin',
-  'Content-Security-Policy':"default-src 'self'; img-src 'self' data: https://smiile-landing-preview.up.railway.app https://midia-kit-production-c234.up.railway.app; script-src 'self'; style-src 'self' 'unsafe-inline'; font-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'",
+  'Content-Security-Policy':"default-src 'self'; img-src 'self' data:; script-src 'self'; style-src 'self' 'unsafe-inline'; font-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'",
 };
 // Text responses are compressed once per file version (path + mtime + size) and kept in memory.
 // Raster images, fonts, video, audio and range requests always stay identity.
@@ -51,7 +53,8 @@ createServer(async (req,res)=>{
   let path; try { path=decodeURIComponent(url.pathname); } catch { res.writeHead(400,headers); res.end('Invalid path'); return; }
   if(path==='/health'){res.writeHead(200,{'Content-Type':'text/plain; charset=utf-8',...headers});res.end('ok');return;}
   if(redirects.has(path)){res.writeHead(308,{Location:redirects.get(path)+url.search,...headers});res.end();return;}
-  const relative=routes.get(path) ?? (path.startsWith('/assets/') ? 'public'+path : null);
+  const retired=RETIRED.some(prefix=>path.toLowerCase().startsWith(prefix));
+  const relative=retired?null:routes.get(path) ?? (path.startsWith('/assets/') ? 'public'+path : null);
   if(!relative || relative.includes('\0')){res.writeHead(404,headers);res.end('Not found');return;}
   const full=resolve(root,relative);
   if(!(full===root || full.startsWith(root+sep))){res.writeHead(403,headers);res.end('Forbidden');return;}

@@ -1,4 +1,4 @@
-/** Shared high-fidelity hardware shells for the Fatos editorial carousel.
+/** Shared high-fidelity hardware shells for the editorial carousel.
  * The iPhone and the existing MacBook keep their original CSS material stack.
  * The iPad is a landscape tablet, not an enlarged phone.
  */

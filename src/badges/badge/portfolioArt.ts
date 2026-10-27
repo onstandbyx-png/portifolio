@@ -58,15 +58,15 @@ function footer(ctx: Ctx, label: string, dark = false) {
   const color = dark ? "#fafaf4" : INK;
   rule(ctx, 1194, dark ? "#ffffff36" : "#d8ded3"); text(ctx, label, 74, 1264, 47, color, 550); arrow(ctx, 912, 1248, color);
 }
-function brand(ctx: Ctx, kind: "fatos" | "smiile", avatar: Picture = null, dark = false) {
+function brand(ctx: Ctx, kind: "editorial" | "smiile", avatar: Picture = null, dark = false) {
   const color = dark ? "#fafaf4" : INK;
-  if (kind === "fatos") {
+  if (kind === "editorial") {
     cover(ctx, avatar, 74, 100, 112, 112, "#e8ece8");
-    text(ctx, "Fatos", 210, 151, 65, color, 650); text(ctx, "Desconhecidos", 212, 204, 40, dark ? "#c2cfc3" : MUTED);
+    text(ctx, "Smile N", 210, 151, 65, color, 650); text(ctx, "Conteúdo", 212, 204, 40, dark ? "#c2cfc3" : MUTED);
   } else {
     text(ctx, "smiile", 74, 175, 94, color, 650); text(ctx, "PROJETO PRÓPRIO", 76, 226, 34, dark ? "#bdcfc0" : MUTED, 550);
   }
-  text(ctx, kind === "fatos" ? "01" : "02", 856, 164, 52, dark ? "#bdcfc0" : MUTED);
+  text(ctx, kind === "editorial" ? "01" : "02", 856, 164, 52, dark ? "#bdcfc0" : MUTED);
 }
 function steps(ctx: Ctx, rows: Array<[string, string]>, dark = false) {
   const fg = dark ? "#f7f7ef" : INK, quiet = dark ? "#bacdbb" : MUTED;
@@ -77,19 +77,16 @@ function steps(ctx: Ctx, rows: Array<[string, string]>, dark = false) {
   });
 }
 
-/** Original Fatos identity and compositions recovered from the user's media kit. */
+/** Editorial card drawn from type only: no third-party identity or photography. */
 export async function editorialCard(_copy: { name: string; label: string; line: string }): Promise<CardArt> {
   await fontsReady();
-  const [avatar, photo] = await Promise.all([
-    picture("/assets/portfolio/recovered-fatos/avatar_desconhecidos.webp"),
-    picture("/assets/portfolio/recovered-fatos/cena-desconhecidos.webp"),
-  ]);
-  const [front, ctx] = surface(); brand(ctx, "fatos", avatar);
+  const avatar: Picture = null, photo: Picture = null;
+  const [front, ctx] = surface(); brand(ctx, "editorial", avatar);
   cover(ctx, photo, 64, 260, 896, 606, "#1552ae", .94);
   text(ctx, "Pesquisa, conteúdo", 74, 982, 84, INK, 450, SERIF);
   text(ctx, "e direção criativa.", 74, 1074, 84, INK, 450, SERIF);
   text(ctx, "EXPERIÊNCIA PROFISSIONAL", 77, 1142, 35, MUTED, 550); footer(ctx, "Conhecer minha atuação");
-  const [back, b] = surface("#edf0e7"); brand(b, "fatos", avatar);
+  const [back, b] = surface("#edf0e7"); brand(b, "editorial", avatar);
   text(b, "O recorte dá forma", 74, 373, 85, INK, 450, SERIF); text(b, "à história.", 74, 470, 98, INK, 450, SERIF);
   steps(b, [["Pesquisa e pauta", "Encontrar a pergunta."], ["Texto e roteiro", "Organizar a narrativa."], ["Direção criativa", "Dar forma à mensagem."]]);
   footer(b, "Ver atuação editorial"); return { front, back };

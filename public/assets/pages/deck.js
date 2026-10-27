@@ -1,5 +1,5 @@
 /* K6 · Generalized card deck (SPEC 2.5, C3 and AV4).
- * Ported from the portfolio's fatos-deck (P8) without #editorial, sectionCopy or
+ * Ported from the portfolio's former card deck (P8) without #editorial, sectionCopy or
  * brands: cards behind sit 24 px higher and scaleX(.95) per level, an exchange
  * takes 400 ms `ease`, a horizontal drag locks its axis (a vertical gesture
  * stays native scroll), release snaps back with the "bouncy" spring (inside the

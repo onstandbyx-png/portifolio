@@ -12,9 +12,9 @@ Criados para a evolução do portfólio Ideia ↗ Execução em 15/10/2026. O es
 | `sistemas.svg` | 1200 × 1500 | Prancha de intenção, lógica e experiência digital. |
 | `og-cover.png` / `og-cover.svg` | 1200 × 630 | Capa social de Smile N, renderizada a partir de composição vetorial original. |
 
-LINHA é um produto conceito, não uma plataforma comercial publicada, cliente ou promessa de funcionalidade já lançada. As interfaces são ilustrativas e não contêm números de desempenho. Preservar a identificação “produto conceito” ou “estudo autoral” quando apresentado ao público. Não atribuir o projeto à Fatos Desconhecidos.
+LINHA é um produto conceito, não uma plataforma comercial publicada, cliente ou promessa de funcionalidade já lançada. As interfaces são ilustrativas e não contêm números de desempenho. Preservar a identificação “produto conceito” ou “estudo autoral” quando apresentado ao público.
 
-As pranchas são composições vetoriais de estudo. Todo este material representa exploração conceitual feita para o portfólio. Não é trabalho publicado para a Fatos Desconhecidos ou outro cliente, nem evidencia resultados comerciais.
+As pranchas são composições vetoriais de estudo. Todo este material representa exploração conceitual feita para o portfólio. Não é trabalho publicado para cliente, nem evidencia resultados comerciais.
 
 Os SVGs têm título, descrição e o rótulo visível “ESTUDO AUTORAL”. Para interfaces, apresentar qualquer texto essencial também em HTML.
 

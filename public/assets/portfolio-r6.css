@@ -134,7 +134,7 @@ body.portfolio-r6{--paper:#f3f1e9;--paper-2:#e9ece2;--ink:#18251f;--muted:#53615
 .portfolio-r6 .discipline-rail .rail-item{display:flex;align-items:center;gap:25px;flex:none;white-space:nowrap}
 .portfolio-r6 .discipline-rail .rail-label{font-size:clamp(28px,2.65vw,40px);font-weight:450;letter-spacing:-.045em;line-height:1.2;color:#234c3c}
 .portfolio-r6 .discipline-rail img{display:block;flex:none;object-fit:contain;width:30px;height:30px;max-width:none}
-.portfolio-r6 .discipline-rail .rail-fatos{width:42px;height:42px;border-radius:50%}
+
 .portfolio-r6 .discipline-rail .rail-meta{width:80px;height:22px}
 .portfolio-r6 .discipline-rail .rail-platforms{display:flex;align-items:center;gap:18px}
 .portfolio-r6 .discipline-rail .rail-smiile{font-family:var(--sans);font-size:34px;line-height:1;font-weight:750;letter-spacing:-.07em;color:#234c3c;text-transform:lowercase}
@@ -146,7 +146,7 @@ body.portfolio-r6{--paper:#f3f1e9;--paper-2:#e9ece2;--ink:#18251f;--muted:#53615
  .portfolio-r6 .discipline-rail .rail-group{padding:23px 25px;gap:45px}
  .portfolio-r6 .discipline-rail .rail-item{gap:20px}
  .portfolio-r6 .discipline-rail .rail-label{font-size:30px}
- .portfolio-r6 .discipline-rail .rail-fatos{width:36px;height:36px}
+ 
  .portfolio-r6 .discipline-rail .rail-platforms{gap:14px}
  .portfolio-r6 .discipline-rail .rail-smiile{font-size:31px}
  .portfolio-r6 .discipline-rail:not([data-rail-motion="animated"]) .rail-group{align-items:flex-start;flex-direction:column;gap:22px}

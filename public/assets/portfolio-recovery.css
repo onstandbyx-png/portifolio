@@ -1,5 +1,5 @@
 /* Visual evidence recovery, 2026-10-15.
-   Sources: recent Fatos canonical media assets and the currently published smiile.
+   Sources: the recovered media assets and the currently published smiile.
    Does not change the 3D badge or kinetic video internals. */
 .mobile-project-cta{display:none!important}
 body{padding-bottom:0!important}
@@ -10,7 +10,6 @@ body{padding-bottom:0!important}
 #trabalhos .work-evidence-gallery .tile-art>img{width:100%;height:100%;object-fit:cover;object-position:center;filter:contrast(1.08) saturate(1.08)}
 #trabalhos .work-evidence-gallery .work-ads .tile-art>img{object-position:50% 36%}
 #trabalhos .work-evidence-gallery .work-video .tile-art>img{object-position:50% 33%}
-#trabalhos .work-evidence-gallery .work-fatos .tile-art>img{object-position:center center}
 #trabalhos .work-evidence-gallery .work-cover-copy{z-index:3;position:absolute;left:25px;right:25px;bottom:26px;pointer-events:none}
 #trabalhos .work-evidence-gallery .work-cover-copy strong{font-size:clamp(32px,3.8vw,54px)!important;line-height:1.02;text-wrap:balance}
 #trabalhos .work-evidence-gallery .tile-caption{display:flex;gap:20px;justify-content:space-between}
@@ -96,7 +95,6 @@ body{padding-bottom:0!important}
 #panel-meta .rx-ig-photo>img{filter:contrast(1.09) saturate(1.12)}
 #panel-meta .rx-ig-photo::after{inset:50% 0 0;background:linear-gradient(transparent,#020707df)}
 #panel-tiktok .vertical-video>img{object-position:center 82%!important;filter:brightness(.67) saturate(1.07)}
-#trabalhos .work-evidence-gallery .work-fatos .tile-art>img{object-position:center 75%}
 #trabalhos .work-evidence-gallery .work-ads .tile-art>img{object-position:center 72%}
 #trabalhos .work-evidence-gallery .work-video .tile-art>img{object-position:center}
 

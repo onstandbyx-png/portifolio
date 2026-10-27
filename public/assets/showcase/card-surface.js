@@ -50,8 +50,4 @@ export function mountCardSurfaces(root = document) {
   root.querySelectorAll('.rg-gallery [data-work-card]').forEach(card => {
     bindCardSurface(card, () => card.querySelector('[data-rg-flip]'));
   });
-  // A deck back holds a demo: only its explicit return button turns the card back.
-  root.querySelectorAll('.pf-fatos-card').forEach(card => {
-    bindCardSurface(card, () => card.classList.contains('is-flipped') ? null : card.querySelector('[data-fatos-flip]'));
-  });
 }

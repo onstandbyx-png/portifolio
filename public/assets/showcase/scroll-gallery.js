@@ -47,7 +47,6 @@ export function mountScrollGallery(){
  if(!gallery||gallery.classList.contains('rg-gallery'))return gallery?.closest('.rg-scroll-shell')||null;
  const copy=sectionCopy('trabalhos'),entries=copy.cards;
  const visual={
-  fatos:{image:'fatos-editorial.webp',alt:'Composição editorial Fatos Desconhecidos, com fotografia e hierarquia tipográfica'},
   ads:{image:'campanha-meta.webp',alt:'Peça estática de campanha smiile com direção de arte para Meta'},
   smiile:{image:'casa-costa.webp',alt:'Estudo conceitual do site Casa Costa, com identidade visual, fotografia e navegação editorial'}
  };
@@ -72,7 +71,7 @@ export function mountScrollGallery(){
  }).join('');
  const cards=[...gallery.querySelectorAll(':scope > .work-tile')];if(!cards.length)return null;
  const shell=document.createElement('div');shell.className='rg-scroll-shell';
- shell.innerHTML='<div class="rg-sticky"><div class="rg-toolbar"><p><span data-rg-count>01 / 03</span> <span data-rg-name>Fatos Desconhecidos</span></p><span class="rg-scroll-cue" aria-hidden="true">Continue rolando ↓</span></div><div class="rg-viewport"></div><div class="rg-navigation"><button type="button" data-rg-prev aria-label="Trabalho anterior">←</button><p data-rg-status role="status" aria-live="polite">Role para explorar os trabalhos</p><button type="button" data-rg-next aria-label="Próximo trabalho">→</button></div></div>';
+ shell.innerHTML='<div class="rg-sticky"><div class="rg-toolbar"><p><span data-rg-count>01 / 03</span> <span data-rg-name></span></p><span class="rg-scroll-cue" aria-hidden="true">Continue rolando ↓</span></div><div class="rg-viewport"></div><div class="rg-navigation"><button type="button" data-rg-prev aria-label="Trabalho anterior">←</button><p data-rg-status role="status" aria-live="polite">Role para explorar os trabalhos</p><button type="button" data-rg-next aria-label="Próximo trabalho">→</button></div></div>';
  gallery.before(shell);shell.querySelector('.rg-viewport').append(gallery);gallery.classList.add('rg-gallery');
  gallery.setAttribute('role','region');gallery.setAttribute('aria-label','Trabalhos em perspectiva');
  shell.style.setProperty('--rg-count',String(cards.length));

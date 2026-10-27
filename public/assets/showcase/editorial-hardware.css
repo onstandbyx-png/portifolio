@@ -1,4 +1,4 @@
-/* Fatos triptych. iPhone / landscape iPad Pro / MacBook Pro are real HTML
+/* Editorial triptych. iPhone / landscape iPad Pro / MacBook Pro are real HTML
    shells. We reuse the existing iPhone (df-*) and MacBook (mbp-*) material
    stack. Their center and side previews are the SAME physical DOM nodes. */
 #editorial[data-editorial-story] .es-stage {
@@ -93,7 +93,7 @@
 #editorial .ipad-pro-power{top:17%;right:-2px;width:3px;height:12%;border-radius:0 3px 3px 0}
 #editorial .ipad-pro-volume{top:0;left:12%;width:16%;height:3px;border-radius:3px 3px 0 0}
 
-/* Fatos adapts the SAME editorial content to an iPad 4:3 screen. */
+/* The carousel adapts the SAME editorial content to an iPad 4:3 screen. */
 #editorial .es-ipad-editorial{
   display:grid;grid-template-columns:52% 48%;background:#0d45a8;
   color:white;font-family:var(--sans,Inter,Arial,sans-serif);

@@ -96,8 +96,6 @@ body.is-paused #trabalhos .rg-static-gallery .tile-open i{transition:none}
 #trabalhos .rg-gallery .tile-art{border-radius:10px;overflow:hidden}
 #trabalhos .rg-gallery .tile-art:after{display:none}
 #trabalhos .rg-gallery .tile-art>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transform:none;border-radius:inherit;box-shadow:none}
-#trabalhos .rg-gallery .work-fatos .tile-art>img{object-position:50% 30%}
-.rg-fatos-copy{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:space-between;padding:22px 25px 91px;color:#fff;background:linear-gradient(180deg,#07112866,transparent 32%,#051125dd);pointer-events:none}.rg-fatos-label{display:flex;align-items:center;gap:10px;font-size:13px;font-weight:600}.rg-fatos-label i{width:33px;height:33px;border-radius:50%;background:url('/assets/portfolio/recovered-fatos/avatar_desconhecidos.webp') center/cover;flex:none}.rg-fatos-copy>div{max-width:21ch}.rg-fatos-copy small{display:block;font-size:11px;line-height:1.5;margin-bottom:12px}.rg-fatos-copy strong{display:block;font-size:clamp(29px,3vw,42px);line-height:1.04;letter-spacing:-.04em;font-weight:600}
 #trabalhos .rg-gallery .sm-work-peek{left:16px;right:auto;bottom:16px;min-height:44px;border-radius:6px;font-size:13px;max-width:calc(100% - 32px);padding:11px 14px;background:#fffef9;color:#233b2a}
 #trabalhos .rg-gallery .sm-work-back{padding:26px 25px 72px;border-radius:10px}
 #trabalhos .rg-gallery .sm-work-back h3{font-family:inherit;font-size:clamp(24px,2.2vw,35px);margin:20px 0 15px;line-height:1.1}

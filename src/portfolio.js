@@ -1,4 +1,3 @@
-import {sectionCopy} from '/assets/content/portfolio-copy.js';
 /* Site interactions: editorial chapters, channel specimens, professional context and contact. */
 (() => {
   'use strict';
@@ -101,7 +100,7 @@ import {sectionCopy} from '/assets/content/portfolio-copy.js';
     $('#service')?.addEventListener('change',()=>{if(contactCase&&$('#service').value!==contactCaseService)setContactCase();});
     brief.dataset.contactReady=String(Boolean(destination));
     if(submit)submit.innerHTML=destination?`Continuar ${destination.channel==='whatsapp'?'no WhatsApp':'por e-mail'} <span aria-hidden="true">↗</span>`:'Copiar meu briefing <span aria-hidden="true">↗</span>';
-    if(status)status.textContent=destination?sectionCopy('contato').submitHint:'O canal de contato está em configuração. Você pode preparar e copiar o briefing por aqui.';
+    if(status)status.textContent=destination?'Você revisa a mensagem e confirma o envio no WhatsApp.':'O canal de contato está em configuração. Você pode preparar e copiar o briefing por aqui.';
     if(destination){
       copyButton=document.createElement('button');copyButton.type='button';copyButton.className='brief-copy';copyButton.textContent='Prefiro copiar o briefing';
       submit?.after(copyButton);
@@ -136,7 +135,7 @@ import {sectionCopy} from '/assets/content/portfolio-copy.js';
   function validateBrief(){
     const invalid=briefFields.filter(field=>{const message=fieldError(field);showFieldError(field,message);return message;});
     const status=$('#form-status');
-    if(invalid.length){invalid[0].focus();if(status)status.textContent=sectionCopy('contato').validation;}
+    if(invalid.length){invalid[0].focus();if(status)status.textContent='Escolha uma frente e conte um pouco sobre o projeto para continuar.';}
     return !invalid.length;
   }
   briefFields.forEach(field=>field.addEventListener(field.tagName==='SELECT'?'change':'input',()=>{
@@ -228,10 +227,6 @@ import {sectionCopy} from '/assets/content/portfolio-copy.js';
   preference.addEventListener?.('change',syncMotionToggle);
   syncMotionToggle();
 
-  // Missing cross-origin previews degrade to intentional graphic fallback, not fake artwork.
-  $$('img[src^="https://smiile-landing-preview.up.railway.app/"]').forEach(img=>{
-    img.addEventListener('error',()=>{img.style.opacity='.2';img.setAttribute('alt','Imagem da demonstração smiile indisponível neste momento')},{once:true});
-  });
   // Ensure no focus remains behind the mobile nav when it is closed.
   addEventListener('resize',()=>{if(!matchMedia('(max-width:900px)').matches)closeMenu(Boolean(mobileNav?.contains(document.activeElement)))});
   requestAnimationFrame(()=>{requestUpdate();updateScroll()});

@@ -24,7 +24,7 @@ let restoringCardState = false;
 let layout: "pair" | "single" = "single";
 const cardFaces: [boolean, boolean] = [false, false];
 const cards = [
-  { name: "Fatos", kicker: "Fatos Desconhecidos · Experiência profissional", front: "Pesquisa, conteúdo e direção criativa.", back: "O recorte dá forma à história.", body: "Experiência em pesquisa, texto e direção criativa para construir narrativas e conteúdos.", href: "#trabalhos", link: "Ver o estudo Fatos" },
+  { name: "Smile N", kicker: "Smile N · Conteúdo e redação", front: "Pesquisa, conteúdo e direção criativa.", back: "O recorte dá forma à história.", body: "Experiência em pesquisa, texto e direção criativa para construir narrativas e conteúdos.", href: "#laboratorio", link: "Ver as campanhas" },
   { name: "smiile", kicker: "smiile · Projeto próprio", front: "Interfaces, produtos e novas possibilidades.", back: "Do visual ao que acontece depois.", body: "Direção visual e desenvolvimento de experiências para sites, aplicativos e sistemas.", href: "#laboratorio", link: "Ver a campanha smiile" },
 ] as const;
 let posterRevision = 0;
@@ -109,7 +109,7 @@ function reflectCard(index: 0 | 1, flipped: boolean) {
   cardFaces[index] = flipped;
   if (stage) {
     stage.dataset.face = cardFaces.every(Boolean) ? "back" : cardFaces.every(face => !face) ? "front" : "mixed";
-    stage.dataset[index === 0 ? "fatosFace" : "smiileFace"] = flipped ? "back" : "front";
+    stage.dataset[index === 0 ? "editorialFace" : "smiileFace"] = flipped ? "back" : "front";
   }
   reflectPoster();
   reflectControls();
@@ -166,7 +166,7 @@ async function load() {
     if (failed) return;
     pending = new BadgeScene(canvas, {
       enter: false,
-      front: { name: "Fatos", label: "DIREÇÃO CRIATIVA", line: "Narrativa e conteúdo para grandes audiências." },
+      front: { name: "Smile N", label: "DIREÇÃO CRIATIVA", line: "Narrativa e conteúdo para grandes audiências." },
       back: { name: "smiile", label: "PROJETO DIGITAL", line: "Da interface à experiência." },
       onTouch() { if (stage) stage.dataset.interacted = "true"; },
       onCardSelect(index) { if (!restoringCardState) { reflectSelection(index); announce(); } },

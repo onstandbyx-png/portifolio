@@ -10,7 +10,6 @@ export const portfolioCopy = {
     "signature": "ideia ↗ execução.",
     "promise": "Direção criativa e desenvolvimento para marcas e empresas: da identidade e do conteúdo aos anúncios, sites e sistemas.",
     "proofRoles": {
-      "fatos": "Experiência profissional em direção criativa e conteúdo; não atribuir autoria individual de todas as artes ou atuação em todas as verticais.",
       "smiile": "Projeto próprio; mostrar contribuição em direção visual, interfaces e desenvolvimento.",
       "concepts": "Estudos conceituais; nunca converter em cliente, campanha veiculada ou resultado comercial."
     }
@@ -69,18 +68,6 @@ export const portfolioCopy = {
       "badgeIntro": "Repertório em criação e desenvolvimento",
       "badges": [
         {
-          "id": "fatos",
-          "selector": "Fatos",
-          "kicker": "Fatos Desconhecidos · Experiência profissional",
-          "frontTitle": "Pesquisa, conteúdo\ne direção criativa.",
-          "backTitle": "O recorte dá forma\nà história.",
-          "body": "Experiência em pesquisa, texto e direção criativa para construir narrativas e conteúdos.",
-          "cta": {
-            "label": "Conhecer a atuação editorial",
-            "href": "#editorial"
-          }
-        },
-        {
           "id": "smiile",
           "selector": "smiile",
           "kicker": "smiile · Projeto próprio",
@@ -123,19 +110,6 @@ export const portfolioCopy = {
       "title": "Da ideia\nao que se vê.",
       "body": "Conteúdo, campanhas e interfaces. Explore as peças e minha contribuição.",
       "cards": [
-        {
-          "id": "fatos",
-          "label": "Conteúdo e redação",
-          "nature": "Fatos · Estudo editorial",
-          "title": "Uma razão\npara continuar.",
-          "body": "Pesquisa, texto e direção criativa para despertar interesse e explicar uma ideia.",
-          "contribution": "Direção criativa e conteúdo",
-          "cta": "Conversar sobre conteúdo",
-          "href": "#contato",
-          "contactService": "Conteúdo e redação",
-          "contactCase": "Fatos Desconhecidos · estudo editorial",
-          "decision": "Minha experiência profissional na Fatos Desconhecidos orienta o raciocínio editorial. A peça apresentada é um estudo: abertura, contexto e fechamento tornam o assunto compreensível."
-        },
         {
           "id": "ads",
           "label": "Campanhas e anúncios",
@@ -779,16 +753,6 @@ export const portfolioCopy = {
       "close": "Voltar aos trabalhos",
       "previous": "Trabalho anterior",
       "next": "Próximo trabalho"
-    },
-    "fatos": {
-      "nature": "Experiência profissional",
-      "title": "Fatos Desconhecidos",
-      "context": "Conteúdo editorial que parte de perguntas e transforma pesquisa em narrativa.",
-      "contribution": "Atuação em direção criativa, texto e desenvolvimento de conteúdo.",
-      "explore": "O recorte de uma história, suas etapas e diferentes universos editoriais.",
-      "credit": "As composições exibidas vêm do mídia kit Ecossistema Fatos. A apresentação identifica o contexto editorial e não atribui todas as artes a uma única pessoa.",
-      "sourceLabel": "Conhecer a Fatos Desconhecidos",
-      "cta": "Conversar sobre conteúdo"
     },
     "ads": {
       "nature": "Estudo conceitual",
