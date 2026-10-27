@@ -140,7 +140,8 @@ if (header && panel) {
   for (const type of ['pointerenter', 'focusin', 'touchstart']) header.addEventListener(type, loadMenuCss, { once: true, passive: true });
 
   const liquidCanvas = panel.querySelector('.sn-liquid');
-  const liquid = liquidCanvas ? createLiquid(liquidCanvas, palettes.sistemas) : null;
+  // O shader só compila na primeira abertura do painel: nada de GPU no carregamento.
+  let liquid = null;
   function setPalette(key) {
     const colors = palettes[key] || palettes.sistemas;
     if (featured) ['--sn-light', '--sn-mid', '--sn-dark'].forEach((name, i) => featured.style.setProperty(name, `rgb(${colors[i].map(n => Math.round(n * 255)).join(' ')})`));
@@ -174,6 +175,7 @@ if (header && panel) {
   }
   function show(hover = false, focusFirst = false) {
     if (!menuCss.done) { loadMenuCss().then(() => show(hover, focusFirst)); return; }
+    if (!liquid && liquidCanvas) { liquid = createLiquid(liquidCanvas, palettes.sistemas); liquid?.setPaused(still()); }
     clearClose(); clearHover();
     openedByHover = hover;
     feature('agente');

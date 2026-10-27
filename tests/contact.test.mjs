@@ -50,3 +50,14 @@ test('Os canais confirmados de Smile N produzem os destinos reais esperados',()=
   assert.equal(decodeURIComponent(email.pathname),'smillepls@gmail.com');
   assert.equal(email.searchParams.get('body'),message);
 });
+
+test('A barra fixa do celular e o contato direto levam ao mesmo WhatsApp do perfil',async()=>{
+  const {readFileSync}=await import('node:fs');
+  const html=readFileSync(new URL('../index.html',import.meta.url),'utf8');
+  const cta=/<a class="mobile-project-cta" href="([^"]+)"/.exec(html)?.[1];
+  const direct=/<a href="(https:\/\/wa\.me\/[^"]+)"[^>]*data-contact-direct="whatsapp"/.exec(html)?.[1];
+  assert.equal(cta,'https://wa.me/5511985568208');
+  assert.equal(direct,cta);
+  assert.equal(new URL(createContactHref(globalThis.PORTFOLIO_PROFILE,'Oi').href).pathname,new URL(cta).pathname);
+  assert.match(html,/<option value="">Escolha uma frente<\/option>/);
+});

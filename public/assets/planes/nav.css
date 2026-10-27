@@ -149,3 +149,11 @@
 @media(prefers-reduced-motion:reduce){
  .site-header.sn-header.is-fixed,.mobile-project-cta{transition:none}
 }
+.sn-mobile-toggle{flex:none}
+@media(max-width:380px){
+ .sn-brand{font-size:21px}
+ .sn-brand .mark{width:23px;height:23px}
+ .sn-start{padding-inline:10px}
+ .sn-header .sn-actions{gap:0}
+ .sn-mobile-toggle{margin-left:0}
+}

@@ -56,8 +56,8 @@
 @media(max-width:760px){
  .planes-hero{padding:calc(var(--sn-h,72px) + 30px) 0 40px}
  .ph-grid{gap:36px}
- .ph-eyebrow{gap:8px;margin-bottom:20px;font-size:12px;letter-spacing:.08em}
- .ph-eyebrow .mark{width:18px;height:18px}
+ .ph-eyebrow{display:block;margin-bottom:20px;font-size:12px;letter-spacing:.08em;text-wrap:balance}
+ .ph-eyebrow .mark{display:inline-block;width:18px;height:18px;margin-right:8px;vertical-align:-4px}
  .planes-hero h1{font-size:clamp(50px,13vw,78px);line-height:1}
  .ph-description{margin-top:20px;font-size:15px;line-height:1.6;max-width:38ch}
  .ph-actions{flex-direction:column;align-items:stretch;gap:10px;margin-top:26px}

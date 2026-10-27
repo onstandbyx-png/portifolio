@@ -65,7 +65,29 @@ function start() {
       if (rect.top > innerHeight * .5 || rect.bottom < 0) section.scrollIntoView({ block: 'start', behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth' });
     });
   };
-  addEventListener('hashchange', deep);
+  addEventListener('hashchange', () => { deep(); pin(); });
   deep();
+  pin();
+  // Um clique numa âncora interna também segura o alvo enquanto as seções do caminho carregam.
+  document.addEventListener('click', event => {
+    const link = event.target.closest?.('a[href^="#"]');
+    if (link && !event.defaultPrevented) setTimeout(() => pin(link.getAttribute('href')), 0);
+  });
+}
+/* As seções sob demanda crescem quando montam. Enquanto isso, o alvo de um link interno (no carregamento,
+ * num hashchange ou num clique) fica no lugar por até 3 s, até a pessoa rolar ou tocar na página. */
+let unpin = null;
+function pin(hash = location.hash) {
+  unpin?.();
+  const id = decodeURIComponent(String(hash).slice(1)), target = id && !id.includes('/') && document.getElementById(id);
+  if (!target || !('ResizeObserver' in window)) return;
+  const main = document.querySelector('main') || document.body;
+  let last = main.offsetHeight;
+  const ro = new ResizeObserver(() => { if (main.offsetHeight !== last) { last = main.offsetHeight; target.scrollIntoView({ block: 'start' }); } });
+  const timer = setTimeout(() => unpin?.(), 3000);
+  const kinds = ['wheel', 'touchstart', 'keydown'];
+  unpin = () => { ro.disconnect(); clearTimeout(timer); kinds.forEach(k => removeEventListener(k, unpin)); unpin = null; };
+  kinds.forEach(k => addEventListener(k, unpin, { passive: true }));
+  ro.observe(main);
 }
 if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start, { once: true }); else start();
