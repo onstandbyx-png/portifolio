@@ -137,7 +137,7 @@ export function makeAutomations(H) {
         ${inn('a8', 'Pagamento confirmado! A pré-reserva está garantida. Mandei o roteiro e os documentos por e-mail.', { who: pessoa(T.consultora, 'turismo'), time: '10:13', hs: '3' })}
         ${inn('x2', 'Pagamento confirmado, com uma cobrança só. A pré-reserva está garantida e o roteiro foi para o seu e-mail.', { who: pessoa(T.consultora, 'turismo'), time: '10:43', hs: '3' })}
       </div>${waCompose({ text: 'Olá! Quero saber da Festa do Divino.', tap: 'send', attrs: ' data-out="a1"', preview: `<span class="cm-wa-preview">${pic('estandarte11')}<span><b>${esc(nome('turismo'))}</b><small>Festa do Divino em grupo pequeno</small></span></span>` })}${waCompose({ attrs: ' data-in="a1"' })}`) +
-    scene('flow', 'sheet', 'claro', `<div class="au-flow"><div class="au-flow-top">${I('close')}<b>Montar orçamento</b>${I('vdots')}</div>
+    scene('flow', 'sheet', 'claro', `<span class="cm-crumb">${I('back')}Instagram</span><div class="au-flow"><div class="au-flow-top">${I('close')}<b>Montar orçamento</b>${I('vdots')}</div>
       <div class="au-flow-step" data-out="f2"><b class="au-flow-h">Escolha a saída</b><small>${esc(T.produto)}</small>
         <span class="au-opt" data-pick="f1" data-tap="fo"><span><b>${esc(cap(dataCurta(s1.ida)))} a ${esc(dataCurta(s1.volta))}</b><small>${s1.noites} noites · ${esc(T.destaque.split(' (')[0].toLowerCase())}</small></span><i></i></span>
         <span class="au-opt"><span><b>${esc(cap(dataCurta(s2.ida)))} a ${esc(dataCurta(s2.volta))}</b><small>${s2.noites} noites · chega na véspera das cavalhadas</small></span><i></i></span>

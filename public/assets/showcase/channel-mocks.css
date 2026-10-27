@@ -84,6 +84,8 @@
 :is(#laboratorio,.lab-escopo) .ch-iphone-ui:has(.cm-g[data-state~="done"]) .ch-iphone-status{color:#fff}
 :is(#laboratorio,.lab-escopo) .ch-iphone-ui:has(.cm-g[data-state~="done"]) .ch-iphone-gestos{background:#fff}
 :is(#laboratorio,.lab-escopo) .ch-iphone-ui:has(.cm-wa [data-scene="chat"][data-pos="on"]) .ch-iphone-hora{opacity:0}
+/* A sheet over a scene with the back crumb: the crumb still shows above the sheet, so the clock stays hidden. */
+:is(#laboratorio,.lab-escopo) .ch-iphone-ui:has(.cm-scene[data-pos="on"]:is([data-kind="sheet"],[data-kind="modal"])):has(.cm-scene[data-pos="under"] :is(.cm-crumb,.sb-crumb)) .ch-iphone-hora{opacity:0}
 :is(#laboratorio,.lab-escopo) .ch-iphone-status,:is(#laboratorio,.lab-escopo) .ch-iphone-gestos,:is(#laboratorio,.lab-escopo) .ch-iphone-hora{transition:color .3s,background-color .3s,opacity .2s}
 
 /* Native placements of the client examples (approximate interfaces, measured in
