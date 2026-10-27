@@ -140,6 +140,7 @@ export function mountCampaignExperience(lab, underlay) {
     play.setAttribute('aria-label', aria);
     player.querySelectorAll('[data-cx-toggle]').forEach(button => { button.querySelector('svg').outerHTML = icon(name); button.setAttribute('aria-label', aria); });
     const box = mainStage(); if (box) box.dataset.playing = String(playing);
+    player.dataset.live = side.dataset.live = String(live());
   }
   function stop() { playing = false; cancelAnimationFrame(raf); raf = 0; if (screen) syncMedia(screen, false); setPlayLabel(); }
 

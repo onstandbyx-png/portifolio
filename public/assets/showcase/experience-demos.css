@@ -90,6 +90,8 @@
 :is(#laboratorio,.lab-escopo) .cx-ctl-play svg path[d^="M8 5.5v13l"]{fill:currentColor}
 :is(#laboratorio,.lab-escopo) .cx-pos{min-width:3.2em;color:inherit;font:600 12px/1 var(--sans,Inter,Arial,sans-serif);font-variant-numeric:tabular-nums;text-align:center;opacity:.8}
 :is(#laboratorio,.lab-escopo) .cx-ampliar>span{display:none}
+/* Without motion the play button only shows the next frame, like →: it steps aside in the strip. */
+:is(#laboratorio,.lab-escopo) [data-live="false"] [data-cx-toggle]{display:none}
 :is(#laboratorio,.lab-escopo) .cx-ampliar--topo{background:#e3eadb;color:#17362a}
 /* "Agora": sticky under the phone on phones, above the page's own bottom bar. */
 :is(#laboratorio,.lab-escopo) .cx-agora{position:sticky;bottom:calc(var(--mobile-cta-h,0px) + env(safe-area-inset-bottom,0px) + 6px);z-index:8;display:flex;align-items:center;gap:8px;width:min(100%,var(--phone-w));margin:8px auto 0;padding:4px 4px 4px 14px;border-radius:18px;background:rgb(21 49 37 / .94);color:#f4f7ef;box-shadow:0 12px 30px -14px #0b2015;-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
@@ -190,7 +192,7 @@
 :is(#laboratorio,.lab-escopo) .cx-side-acoes a{display:inline-flex;align-items:center;gap:6px;min-height:44px;color:#294b34;font:600 14px/1.4 var(--sans,Inter,Arial,sans-serif);text-decoration:underline;text-underline-offset:4px}
 :is(#laboratorio,.lab-escopo) .cx-side .sp-note-fine{margin:0;color:#5f6a5a;font:400 12.5px/1.45 var(--sans,Inter,Arial,sans-serif)}
 /* Ampliar: the phone moves into a full-screen dialog; the height of the screen minus 32px (the width in a short landscape). */
-.cx-zoom{width:100vw;max-width:none;height:100dvh;max-height:none;margin:0;padding:0;border:0;background:#0d1a14;color:#f4f7ef;overscroll-behavior:contain}
+.cx-zoom{width:100vw;max-width:none;height:100dvh;max-height:none;margin:0;padding:0;overflow:auto;border:0;background:#0d1a14;color:#f4f7ef;overscroll-behavior:contain}
 .cx-zoom::backdrop{background:#0d1a14e6}
 .cx-zoom-in{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:16px 28px;min-height:100%;padding:16px}
 :is(#laboratorio,.lab-escopo) .cx-zoom .cx-zoom-stage{width:min(calc(100vw - 16px),calc((100dvh - 32px) * var(--phone-ratio,.487)));max-width:none;flex:none;cursor:pointer}
@@ -205,7 +207,8 @@
 }
 @media (orientation:landscape) and (max-height:520px){
  .cx-zoom-in{align-items:flex-start}
- :is(#laboratorio,.lab-escopo) :is(#laboratorio,.lab-escopo) .cx-zoom .cx-zoom-stage{width:min(calc(100vw - 32px),440px)}
+ .cx-zoom-bar{position:sticky;top:16px}
+ :is(#laboratorio,.lab-escopo) .cx-zoom .cx-zoom-stage{width:min(calc(100vw - 32px),440px)}
 }
 /* The outgoing placement: a painted, inert copy that slides away over the new one. */
 :is(#laboratorio,.lab-escopo) .cx-ghost{position:absolute;z-index:5;margin:0;overflow:hidden;background:#ecf0e7;pointer-events:none}
