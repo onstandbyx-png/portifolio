@@ -82,11 +82,12 @@ const segundos = (dia, t) => Date.parse(`${dia}T${t.length === 5 ? t + ':00' : t
 /* '+2 s', '+1 min 4 s', '+29 min', '+4 h 20 min', '+11 dias' */
 function delta(s) {
   if (!Number.isFinite(s) || s < 0) return '';
-  if (s < 60) return `+${s} s`;
-  if (s < 3600) { const m = Math.floor(s / 60), r = s % 60; return r && m < 10 ? `+${m} min ${r} s` : `+${m} min`; }
-  if (s < 86400) { const h = Math.floor(s / 3600), m = Math.round(s % 3600 / 60); return m ? `+${h} h ${m} min` : `+${h} h`; }
+  const u = (n, unidade) => `${n}\u00a0${unidade}`;
+  if (s < 60) return `+${u(s, 's')}`;
+  if (s < 3600) { const m = Math.floor(s / 60), r = s % 60; return r && m < 10 ? `+${u(m, 'min')} ${u(r, 's')}` : `+${u(m, 'min')}`; }
+  if (s < 86400) { const h = Math.floor(s / 3600), m = Math.round(s % 3600 / 60); return m ? `+${u(h, 'h')} ${u(m, 'min')}` : `+${u(h, 'h')}`; }
   const d = Math.round(s / 86400);
-  return `+${d} ${d === 1 ? 'dia' : 'dias'}`;
+  return `+${u(d, d === 1 ? 'dia' : 'dias')}`;
 }
 const ddmm = iso => `${iso.slice(8, 10)}/${iso.slice(5, 7)}`;
 
@@ -489,6 +490,10 @@ function mountOne(root) {
       tab.setAttribute('aria-selected', String(on)); tab.tabIndex = on ? 0 : -1;
     });
     root.querySelectorAll('[data-at-panel]').forEach(p => { p.hidden = p.dataset.atPanel !== vista; });
+    // The phone is a tab panel only where Tela is a tab (phones).
+    const phone = $('.at-phone');
+    if (estreito.matches) { phone.setAttribute('role', 'tabpanel'); phone.setAttribute('aria-labelledby', `${uid}-t-tela`); }
+    else { phone.removeAttribute('role'); phone.removeAttribute('aria-labelledby'); }
     if (vista === 'arquitetura') requestAnimationFrame(arrumarGrafo);
     lidoEm = -Infinity;
     if (vista === 'registro' && quadro >= 0) pintarLog();

@@ -182,6 +182,13 @@ try{
     await goTo(page,7);
     const fala=await page.evaluate(()=>({lines:document.querySelectorAll('#sistemas [data-at-falas] li[data-texto]').length,now:document.querySelectorAll('#sistemas [data-at-falas] li[data-agora]').length,phone:/Transcrição/.test(document.querySelector('#sistemas .at-stage').textContent)}));
     check('1440x900: the transcript lives outside the phone and marks the line of now',fala.lines>=2&&fala.now===1&&!fala.phone,fala);
+    // placement.audio contract: with a recorded file declared, the optional button shows its length (never plays alone).
+    await page.evaluate(async()=>{const m=await import('/assets/showcase/campaign-channels.js');m.placementByKey('voz/ligacao').audio={src:'/assets/audio/ligacao-teste.mp3',segmentos:[{quem:'Assistente virtual (IA)',texto:'Oi',startMs:1000,endMs:2000}],durationMs:42000};});
+    await choose(page,'agente');await choose(page,'voz');
+    await page.locator('#sistemas [data-at-aba="fala"]').click();
+    const ouvir=await page.evaluate(()=>document.querySelector('#sistemas [data-at-ouvir]')?.textContent.trim()||'');
+    check('1440x900: with placement.audio the call tab offers Ouvir a ligação (42 s), off by default',ouvir==='Ouvir a ligação (42 s)'&&await page.locator('#sistemas [data-at-ouvir]').getAttribute('aria-pressed')==='false',ouvir);
+    await page.evaluate(async()=>{const m=await import('/assets/showcase/campaign-channels.js');delete m.placementByKey('voz/ligacao').audio;});
     await choose(page,'agente');
     await page.locator('#sistemas [data-at-aba="fala"]').click();
     await goTo(page,17);
