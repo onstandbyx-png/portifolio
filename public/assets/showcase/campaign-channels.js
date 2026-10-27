@@ -287,7 +287,7 @@ const mocks = {
       { de: 'eu', in: 'd1', html: `<span class="igd-story">${pic('recepcao45', { pos: '50% 40%' })}<small>Você respondeu ao story</small></span>Um pouco. Como é a avaliação?` },
       { de: 'marca', in: 'd2', cls: 'igd-digita', html: `Oi, ${esc(PESSOA.primeiro)}! Sou a assistente virtual da ${esc(C.clinica.marca)}. A avaliação leva 30 minutos, sem nenhum procedimento: a ${esc(CL.responsavel)} examina e explica o plano por escrito. Quer ver os horários?<span class="igd-rapidas"><span data-tap="h">Ver horários</span><span>Falar com a recepção</span></span>` },
       { de: 'eu', in: 'd3', html: 'Ver horários' },
-      { de: 'marca', in: 'd3', cls: 'igd-digita', html: `Tenho estes na unidade ${esc(avaliacao.unidade)}:<span class="igd-opcoes"><span data-tap="hr" data-pick="d4">${esc(opcaoHorario(avaliacao.iso, avaliacao.hora))}</span><span>${esc(opcaoHorario(CL.alternativa.iso, CL.alternativa.hora))}</span></span>` },
+      { de: 'marca', in: 'd3', cls: 'igd-digita', html: `Tenho estes na unidade ${esc(avaliacao.unidade)}:<span class="igd-opcoes" data-hs="3"><span data-tap="hr" data-pick="d4">${esc(opcaoHorario(avaliacao.iso, avaliacao.hora))}</span><span>${esc(opcaoHorario(CL.alternativa.iso, CL.alternativa.hora))}</span></span>` },
       { de: 'eu', in: 'd4', html: esc(opcaoHorario(avaliacao.iso, avaliacao.hora)) },
       { de: 'marca', in: 'd4', cls: 'igd-digita', hs: '3', html: `<span class="igd-card"><b>${I('check')}Avaliação agendada</b><span>${esc(cap(dataLonga(avaliacao.iso)))}, ${esc(horaFala(avaliacao.hora))}</span><span>Unidade ${esc(avaliacao.unidade)} · ${esc(ruaClinica)}</span><small>Para remarcar, é só responder aqui.</small></span>` },
     ] }))),
@@ -425,7 +425,7 @@ const mocks = {
       <span class="cm-paid" data-hs="1">${I('tag')}Inclui promoção paga${I('chevron')}</span><span class="cm-onair">Ao vivo</span>
       <span class="cm-lower" data-hs="2"><small>#publi</small><b>${esc(curta('varejo'))}</b><span>O notebook deste setup</span></span>`,
     chat: `<div class="cm-chat"><div class="cm-chat-head"><b>Chat ao vivo</b>${I('vdots')}</div>
-      <div class="cm-chat-pin"><span class="cm-chat-pinico" data-hs="3">${I('pin')}</span><span><b>${esc(TERCEIROS.criadores.youtube)}</b> Lista de espera do ${esc(VA.skus[1].nome)} branco, que chega em ${esc(VA.skus[1].chegada.slice(8, 10))}/${esc(VA.skus[1].chegada.slice(5, 7))}: <u data-tap="link">entrar na lista</u></span></div>
+      <div class="cm-chat-pin" data-hs="3" data-hs-at="tr"><span class="cm-chat-pinico">${I('pin')}</span><span><b>${esc(TERCEIROS.criadores.youtube)}</b> Lista de espera do ${esc(VA.skus[1].nome)} branco, que chega em ${esc(VA.skus[1].chegada.slice(8, 10))}/${esc(VA.skus[1].chegada.slice(5, 7))}: <u data-tap="link">entrar na lista</u></span></div>
       <div class="cm-chat-list">${[[TERCEIROS.comentaristas[0], 'boa noite, canal!'], [TERCEIROS.comentaristas[1], 'que setup bonito'], [TERCEIROS.comentaristas[2], 'qual programa de edição você usa?'], [TERCEIROS.comentaristas[3], 'esse notebook aguenta 4K?'], [TERCEIROS.comentaristas[4], 'tem a versão branca?'], ['Tati Rezende', 'curti o teclado'], ['Hugo Sá', 'manda o link do branco'], ['Nina Couto', 'a tela é fosca?'], ['Beto Lago', 'quanto tempo de bateria editando?', 'cm-chat-more'], ['Iara Melo', 'entrei na lista!', 'cm-chat-more']].map(([n, t, cls]) => `<p${cls ? ` class="${cls}"` : ''}>${avatar(n, 'cm-chat-av')}<b>${esc(n)}</b> ${esc(t)}</p>`).join('')}</div>
       <span class="cm-chat-input">Diga algo…</span></div>` })) +
     scene('page', 'push', 'claro', `${browserBar(`${VA.skus[1].nome} branco`, C.varejo.dominio)}${SITES.teclaria({ variant: 'espera' })}`)),
@@ -642,12 +642,13 @@ export const channels = [
         ] },
       { id: 'reels', label: 'Reels', mock: 'igReels', cliente: 'restaurante', selo: 'Anúncio', frase: 'Um restaurante leva do Reels à reserva de mesa.',
         curto: 'Reels → menu → mesa reservada', objetivo: 'Reservas para o almoço de sábado',
-        passos: passos3(['O fogo sob o tacho no primeiro segundo', [0]], ['Corte para o prato servido', [1]], ['Menu, horário e reserva', [2, 3, 4, 5, 6, 7, 8]]),
+        passos: passos3(['O fogo sob o tacho no primeiro segundo', [0]], ['Corte para o prato servido', [1]], ['Menu, horário e reserva', [2, 3, 4, 5, 6, 7, 8, 9]]),
         quadros: [
           { ms: 1500, cena: 'video', video: 1, desc: `Reels da ${C.restaurante.marca} com Anúncio: o fogo aceso sob o tacho e O feijão vai pro tacho às 6h.` },
           { ms: 1900, cena: 'video', estado: 's2 lit', video: 1, desc: 'Corta para o prato: Sábado tem feijoada completa. O botão Ver menu ganha cor.' },
           { ms: 900, cena: 'video', estado: 's2 lit', video: 1, toque: 'cta', desc: 'Toque em Ver menu.' },
-          { ms: 1800, cena: 'page', toque: 'a', desc: `O site abre no navegador do Instagram: ${R.abreHoje.toLowerCase()} e o cardápio de sábado. Toque em Reservar mesa.`, log: metaSite('10:09:28', 'cardápio de sábado, fbclid no link') },
+          { ms: 1700, cena: 'page', desc: `O site abre no navegador do Instagram: ${R.abreHoje.toLowerCase()}, com o cardápio de sábado.`, log: metaSite('10:09:28', 'cardápio de sábado, fbclid no link') },
+          { ms: 800, cena: 'page', toque: 'a', desc: 'Toque em Reservar mesa.' },
           { ms: 1300, cena: 'page', estado: 'w2', toque: 'b', desc: `Sábado, ${Number(reserva.iso.slice(8))}, para ${reserva.pessoas} pessoas, no salão. Toque em ${reserva.hora}.` },
           { ms: 800, cena: 'page', estado: 'w2 q1', toque: 'c', desc: 'Toque em Continuar.' },
           { ms: 1300, cena: 'page', estado: 'w3 q1', toque: 'd', desc: 'Nome e WhatsApp já preenchidos. É uma ocasião especial? Toque em Aniversário.' },
@@ -697,7 +698,8 @@ export const channels = [
           { ms: 900, cena: 'grid', toque: 'ad', desc: 'Toque no bloco do anúncio.' },
           { ms: 1700, cena: 'reel', video: 1, desc: `O anúncio abre em tela cheia, no formato do Reels: ${C.clinica.assinatura}` },
           { ms: 900, cena: 'reel', estado: 'lit', video: 1, toque: 'cta', desc: 'O botão Solicitar horário ganha cor. Toque nele.' },
-          { ms: 1600, cena: 'page', toque: 'a', desc: 'O agendamento on-line abre no navegador do Instagram. Toque em Avaliação odontológica.', log: metaSite('10:09:26', 'agendamento on-line, fbclid no link') },
+          { ms: 1600, cena: 'page', desc: 'O agendamento on-line abre no navegador do Instagram: avaliação, limpeza ou clareamento, em três etapas.', log: metaSite('10:09:26', 'agendamento on-line, fbclid no link') },
+          { ms: 800, cena: 'page', toque: 'a', desc: 'Toque em Avaliação odontológica.' },
           { ms: 800, cena: 'page', estado: 'q1', toque: 'b', desc: 'Toque em Ver horários.' },
           { ms: 1200, cena: 'page', estado: 'w2 q1', toque: 'c', desc: `Calendário de outubro com os dias livres. Toque em ${dataCurta(avaliacao.iso)}.` },
           { ms: 1000, cena: 'page', estado: 'w2 q1 q2', toque: 'd', desc: `Os horários do dia aparecem. Toque em ${avaliacao.hora}.` },
@@ -744,12 +746,13 @@ export const channels = [
         ] },
       { id: 'video', label: 'Vídeo', mock: 'fbvid', cliente: 'restaurante', selo: 'Anúncio', frase: 'Um restaurante leva do vídeo à reserva e ao almoço na agenda do iPhone.',
         curto: 'Reels do Facebook → reserva → agenda', objetivo: 'Reservas com lembrete na agenda',
-        passos: passos3(['O prato no primeiro quadro', [0]], ['O vídeo chega ao fim com o convite', [1]], ['Reserva e agenda do iPhone', [2, 3, 4, 5, 6, 7, 8, 9]]),
+        passos: passos3(['O prato no primeiro quadro', [0]], ['O vídeo chega ao fim com o convite', [1]], ['Reserva e agenda do iPhone', [2, 3, 4, 5, 6, 7, 8, 9, 10]]),
         quadros: [
           { ms: 1500, cena: 'video', video: 1, desc: `Vídeo da ${C.restaurante.marca} no Reels do Facebook, com Anúncio: do tacho para a mesa.` },
           { ms: 2000, cena: 'video', estado: 's2 lit', video: 1, desc: 'Corta para o pudim da casa. A barra do vídeo chega ao fim e Reservar agora ganha cor.' },
-          { ms: 900, cena: 'video', estado: 's2 lit', video: 1, toque: 'cta', desc: 'Toque em Reservar agora.' },
-          { ms: 1500, cena: 'page', toque: 'b', desc: `O site abre direto na reserva: sábado, ${Number(reserva.iso.slice(8))}, ${reserva.pessoas} pessoas, salão. Toque em ${reserva.hora}.`, log: metaSite('10:09:18', 'reserva de mesa, a partir do vídeo') },
+          { ms: 900, cena: 'video', estado: 's2 lit', toque: 'cta', desc: 'Toque em Reservar agora.' },
+          { ms: 1500, cena: 'page', desc: `O site abre direto na reserva: sábado, ${Number(reserva.iso.slice(8))}, ${reserva.pessoas} pessoas, salão.`, log: metaSite('10:09:18', 'reserva de mesa, a partir do vídeo') },
+          { ms: 800, cena: 'page', toque: 'b', desc: `Toque em ${reserva.hora}.` },
           { ms: 800, cena: 'page', estado: 'q1', toque: 'c', desc: 'Toque em Continuar.' },
           { ms: 1200, cena: 'page', estado: 'w2 q1', toque: 'd', desc: 'Nome e WhatsApp preenchidos. Toque em Aniversário.' },
           { ms: 800, cena: 'page', estado: 'w2 q1 q2', toque: 'e', desc: 'Toque em Confirmar reserva.' },
@@ -807,12 +810,13 @@ export const channels = [
     placements: [
       { id: 'instream', label: 'Anúncio no vídeo', mock: 'ytInstream', cliente: 'automotivo', selo: 'Patrocinado', frase: 'Uma concessionária leva do anúncio antes do vídeo ao test drive.',
         curto: 'In-stream → página → test drive', objetivo: 'Test drives agendados',
-        passos: passos3(['Mensagem antes do Pular', [0]], ['Segundo corte: a recarga explicada', [1]], ['Versão, loja e horário', [2, 3, 4, 5, 6, 7, 8, 9]]),
+        passos: passos3(['Mensagem antes do Pular', [0]], ['Segundo corte: a recarga explicada', [1]], ['Versão, loja e horário', [2, 3, 4, 5, 6, 7, 8, 9, 10]]),
         quadros: [
           { ms: 1600, cena: 'watch', video: 1, desc: `Antes do vídeo, o anúncio da ${curta('automotivo')}: Saiu do jogo. Quanto de carga sobra?` },
           { ms: 2000, cena: 'watch', estado: 's2', video: 1, desc: 'Segundo corte: o painel do carro e a recarga explicada no test drive. O botão Pular aparece aos 5 s.' },
           { ms: 900, cena: 'watch', estado: 's2', video: 1, toque: 'cta', desc: 'Toque em Agendar, no cartão abaixo do vídeo.' },
-          { ms: 1700, cena: 'page', toque: 'a', desc: `A página do test drive abre: duas versões, com autonomia, recarga e lugares. Toque em ${curta('automotivo')} ${AU.versoes[0].nome}.`, log: [L('10:09:23', 'Google Ads', 'Clique com gclid', 'no iPhone, com wbraid', 'sinal')] },
+          { ms: 1700, cena: 'page', desc: 'A página do test drive abre: duas versões, com autonomia, recarga e lugares.', log: [L('10:09:23', 'Google Ads', 'Clique com gclid', 'no iPhone, com wbraid', 'sinal')] },
+          { ms: 800, cena: 'page', toque: 'a', desc: `Toque em ${curta('automotivo')} ${AU.versoes[0].nome}.` },
           { ms: 800, cena: 'page', estado: 'q1', toque: 'b', desc: 'Toque em Escolher loja.' },
           { ms: 1300, cena: 'page', estado: 'w2 q1', toque: 'c', desc: `Loja de ${td.unidade}, ${dataLonga(td.iso).split(',')[0]}, ${Number(td.iso.slice(8))}. Toque na loja.` },
           { ms: 900, cena: 'page', estado: 'w2 q1 q2', toque: 'd', desc: `Toque em ${td.hora}.` },
@@ -991,7 +995,7 @@ export const channels = [
         quadros: [
           { ms: 1600, cena: 'article', desc: `Artigo no ${revista.nome} com a faixa Publicidade acima do título e Oferecido por ${C.financas.marca}.` },
           { ms: 2000, cena: 'article', estado: 's2', desc: 'A leitura começa pelo inventário: o que existe, em nome de quem e quem depende de cada coisa.' },
-          { ms: 2000, cena: 'article', estado: 's3', desc: 'No meio do texto, o quadro Checklist: 5 documentos para começar a sucessão.' },
+          { ms: 2000, cena: 'article', estado: 's3', desc: 'No meio do texto, o checklist com 5 documentos para começar a sucessão.' },
           { ms: 1800, cena: 'article', estado: 's4', desc: `No fim, o bloco Oferecido por ${C.financas.marca}: um especialista explica cada decisão antes de você assinar.` },
           { ms: 900, cena: 'article', estado: 's4', toque: 'cta', desc: 'Toque em Agendar conversa.' },
           { ms: 1600, cena: 'page', toque: 'a', desc: `A agenda da ${curta('financas')} abre no Safari: conversa de 30 min por vídeo. Toque em ${dataCurta(conversa.iso)}.`, log: [L('10:09:40', 'Site', 'Visita vinda do artigo', 'utm: conteúdo patrocinado', 'sinal')] },
@@ -1033,6 +1037,10 @@ const AUTO = { mocks: {}, extra: {}, novos: [], SCREEN: {}, AVISOS: {}, hidden: 
 Object.assign(mocks, AUTO.mocks || {});
 for (const [id, list] of Object.entries(AUTO.extra || {})) channels.find(channel => channel.id === id)?.placements.push(...list);
 channels.splice(channels.findIndex(channel => channel.id === 'blog'), 0, ...(AUTO.novos || []));
+/* Front piece of the channels that arrive with the automations: a link card with its button when the package
+   sends none (static-presentations reads art.formato and art.cta). */
+const ART_PADRAO = { telegram: 'Entrar no clube', rcs: 'Abrir conversa', voz: 'Pedir ligação', pix: 'Autorizar Pix', email: 'Ler o guia' };
+for (const channel of AUTO.novos || []) if (channel.art) channel.art = { formato: 'link', cta: ART_PADRAO[channel.id] || 'Saiba mais', ...channel.art };
 
 /* What happens after the conversion, as it happens on the phone: a confirmation that the page promises by
    WhatsApp or by e-mail ends the journey on the iOS notification banner. Formats that end in a Direct
@@ -1060,7 +1068,8 @@ channels.forEach(channel => channel.placements.forEach(placement => {
   const last = placement.quadros[placement.quadros.length - 1];
   placement.aviso = aviso;
   placement.quadros.push({ ms: 2400, cena: last.cena, estado: `${last.estado || ''} aviso`.trim(), desc: aviso.desc, ...(aviso.hora ? { hora: aviso.hora } : {}), ...(aviso.log ? { log: aviso.log } : {}) });
-  placement.passos[placement.passos.length - 1].quadros.push(placement.quadros.length - 1);
+  const fim = placement.passos[placement.passos.length - 1].quadros;
+  if (!fim.includes(placement.quadros.length - 1)) fim.push(placement.quadros.length - 1);
 }));
 export const channelById = id => channels.find(channel => channel.id === id) || channels[0];
 /* A placement by "channel/placement", including the ones played only in "Sistemas e automações". */

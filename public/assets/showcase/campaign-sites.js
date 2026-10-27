@@ -100,7 +100,7 @@ export function makeSites({ I, pic, marca, esc, avatar = () => '', planta = () =
           ${ticket([['Pedido', PEDIDOS['instagram/live']], ['Retirada', `${dataCurta(enc.iso).split(', ')[1]}, ${enc.hora}`], ['Pagamento', enc.pagamento, 1]])}${mapa(CLIENTES[k].marca, rua)}`, 'cm-site-body--end')}`,
       ]);
     }
-    const booking = `${top}${body(`${back('Reservar mesa')}${label('Dia')}${days([['Sex', '23'], ['Sáb', String(dia(sab)), 'on'], ['Dom', '25'], ['Seg', 'Fechado', 'off']])}
+    const booking = `${top}${body(`${back('Reservar mesa')}${label('Dia')}${days([['Sex', '23'], ['Sáb', String(dia(sab)), 'on'], ['Dom', '25'], ['Seg', 'Fechado', 'off']]).replace('<div class="cm-days">', '<div class="cm-days" data-hs="3">')}
       <div class="cm-row-2"><span>${label('Pessoas')}<span class="cm-stepper"><i>−</i><b>${esc(people)}</b><i>+</i></span></span><span>${label('Onde sentar')}<span class="cm-pks">${pk('Salão', { on: area === 'Salão' })}${pk('Varanda', { on: area === 'Varanda' })}</span></span></div>
       ${label('Horário do almoço')}${slots(['12:00', '12:30', '13:00', '13:30', '14:00', '14:30'], slot, 'q1', 'b')}
       <p class="cm-site-note">${I('info')}A mesa fica guardada por 15 minutos. Grupos acima de 8 pessoas reservam pelo WhatsApp.</p>
@@ -115,7 +115,7 @@ export function makeSites({ I, pic, marca, esc, avatar = () => '', planta = () =
     if (variant === 'direto') return site(k, 'tacho', [booking, details, fim]);
     return site(k, 'tacho', [
       `${top}${body(`${hero(CLIENTES[k].assinatura, 'panela11')}
-        <p class="cm-tm-info">${I('fork')}<span><b>Cardápio de sábado</b><small>${esc(R.horario)}</small></span></p>
+        <p class="cm-tm-info" data-hs="3">${I('fork')}<span><b>Cardápio de sábado</b><small>${esc(R.horario)}</small></span></p>
         <ul class="cm-tm-menu">${dish('panela11', 'Feijoada completa', 'Carnes separadas, arroz, couve, farofa e laranja.', 'Serve 2')}${dish('escondidinho11', 'Escondidinho de carne-seca', 'Gratinado na panelinha.', 'Serve 1')}${dish('pudim11', 'Pudim de leite', 'Fatia ou inteiro, feito na casa.', 'Sobremesa')}</ul>`)}${foot(cta('Reservar mesa', 'a'))}`,
       booking, details, fim,
     ]);
@@ -162,7 +162,7 @@ export function makeSites({ I, pic, marca, esc, avatar = () => '', planta = () =
     const top = n => `<header class="cm-site-head cm-sx-head">${marca(k)}<span><b>${esc(CLIENTES[k].marca)}</b><small>Agendamento on-line</small></span></header><ol class="cm-sx-steps">${['Serviço', 'Horário', 'Seus dados'].map((s, i) => `<li${i < n ? ' class="is-done"' : i === n ? ' class="is-on"' : ''}><i>${i < n ? I('check') : i + 1}</i>${s}</li>`).join('')}</ol>`;
     const cal = calendar({ free: [22, 23, 27, 28, 29, 30], pick: dia(av.iso), q: 'q2', tap: 'c' });
     return site(k, 'seixo', [
-      `${top(0)}${body(`${label('O que você precisa?')}<div class="cm-radios">${pk('Avaliação odontológica', { cls: 'cm-radio', sub: '30 minutos, sem procedimento', q: 'q1', tap: 'a' })}${pk('Limpeza e prevenção', { cls: 'cm-radio', sub: '45 minutos' })}${pk('Clareamento', { cls: 'cm-radio', sub: 'Começa com uma avaliação' })}${pk('Dor ou urgência', { cls: 'cm-radio', sub: 'Encaixe conforme a agenda do dia' })}</div>
+      `${top(0)}${body(`${label('O que você precisa?')}<div class="cm-radios" data-hs="3">${pk('Avaliação odontológica', { cls: 'cm-radio', sub: '30 minutos, sem procedimento', q: 'q1', tap: 'a' })}${pk('Limpeza e prevenção', { cls: 'cm-radio', sub: '45 minutos' })}${pk('Clareamento', { cls: 'cm-radio', sub: 'Começa com uma avaliação' })}${pk('Dor ou urgência', { cls: 'cm-radio', sub: 'Encaixe conforme a agenda do dia' })}</div>
         ${label('Atendimento')}<span class="cm-seg2">${pk('Particular', { on: true })}${pk('Convênio')}</span>
         <p class="cm-site-note">${I('info')}${esc(CLIENTES[k].assinatura)}</p>`)}${foot(cta('Ver horários', 'b'))}`,
       `${top(1)}${body(`${cal}${show('q2', `${label(cap(dataLonga(av.iso)))}${slots(['08:30', av.hora, '10:30', '14:00', '16:30'], av.hora, 'q3', 'd')}`)}
@@ -283,12 +283,16 @@ export function makeSites({ I, pic, marca, esc, avatar = () => '', planta = () =
     return site(k, 'arrimo', [
       `${top}${body(`<div class="cm-ar-host"><b>Conversa com um especialista</b><span>${I('calendar')}${esc(cv.duracao)}</span><span>${I('video')}Por ${esc(cv.formato)}</span></div>${calendar({ free: [22, 23, 27, 28, 30], pick: dia(cv.iso), q: 'q1', tap: 'a' })}
         ${show('q1', `${label(cap(dataLonga(cv.iso)))}<div class="cm-ar-times">${['09:00', cv.hora, '15:00', '16:30'].map(t => pk(t, t === cv.hora ? { q: 'q2', tap: 'b' } : {})).join('')}</div>`)}
-        <p class="cm-site-note">${I('info')}Sem custo e sem compromisso. ${esc(F.horario)}.</p>`)}${foot(cta('Próximo', 'c'))}`,
+        <p class="cm-site-note">${I('info')}Sem custo e sem compromisso. ${esc(F.horario)}.</p>
+        ${lista('Como é a conversa', ['Um especialista em sucessão ouve a sua situação', 'Você sai com os próximos passos por escrito', 'Nenhum produto é oferecido na primeira conversa'])}`)}${foot(cta('Próximo', 'c'))}`,
       `${top}${body(`${back('Seus dados')}<div class="cm-ar-sum">${I('calendar')}<span><b>${esc(cap(dataLonga(cv.iso)))}, ${esc(cv.hora)}</b><small>${esc(cv.duracao)}, por ${esc(cv.formato)}</small></span></div>${field('Nome', PESSOA.nome)}${field('E-mail', PESSOA.email)}
         ${label('Sobre o que quer conversar?')}<span class="cm-pks">${pk('Sucessão', { q: 'q3', tap: 'd' })}${pk('Separar patrimônio')}${pk('Investimentos')}</span>
-        ${lista('Para a conversa render', ['Contrato social da empresa', 'Lista dos bens em nome da família', 'Quem deve participar da decisão'], 'doc')}`)}${foot(cta('Agendar', 'e'))}`,
+        ${lista('Para a conversa render', ['Contrato social da empresa', 'Lista dos bens em nome da família', 'Quem deve participar da decisão'], 'doc')}
+        <p class="cm-site-note">${I('lock')}Seus dados servem só para o convite e o lembrete.</p>`)}${foot(cta('Agendar', 'e'))}`,
       `${top}${body(`${ok('Conversa agendada', 'O convite com o link chega por e-mail.')}${ticket([['Dia', dataCurta(cv.iso)], ['Horário', cv.hora], ['Duração', cv.duracao], ['Assunto', 'Sucessão', 1]], 'cm-ticket--ar')}
-        ${trilha([['Convite enviado', PESSOA.email, true], ['Lembrete', 'Uma hora antes, por e-mail'], ['Conversa por vídeo', `${cap(dataCurta(cv.iso))}, ${cv.hora}`]])}${legal(k)}`, 'cm-site-body--end')}`,
+        ${trilha([['Convite enviado', PESSOA.email, true], ['Lembrete', 'Uma hora antes, por e-mail'], ['Conversa por vídeo', `${cap(dataCurta(cv.iso))}, ${cv.hora}`]])}
+        ${actions([['calendar', 'Adicionar à agenda'], ['video', 'Testar câmera'], ['edit', 'Remarcar']])}
+        <p class="cm-site-note">${I('lock')}A sala abre 5 minutos antes. Só você e o especialista entram.</p>${legal(k)}`, 'cm-site-body--end')}`,
     ]);
   }
 
@@ -300,7 +304,7 @@ export function makeSites({ I, pic, marca, esc, avatar = () => '', planta = () =
     const versao = (v, opts) => pk(`${curta} ${v.nome}`, { cls: 'cm-radio cm-od-ver', sub: `Autonomia: ${v.autonomia} · Recarga AC e DC · 5 lugares`, ...opts });
     return site(k, 'ondara', [
       `${top}${body(`<div class="cm-od-hero">${pic('recarga169', { pos: '50% 50%' })}<span>Test drive</span></div><b class="cm-od-title">Qual versão você quer dirigir?</b>
-        <div class="cm-radios">${versao(A.versoes[0], { q: 'q1', tap: 'a' })}${versao(A.versoes[1], {})}</div>
+        <div class="cm-radios" data-hs="3">${versao(A.versoes[0], { q: 'q1', tap: 'a' })}${versao(A.versoes[1], {})}</div>
         ${lista('No test drive', ['A recarga em casa (AC) e na rua (DC)', 'O painel que mostra a carga para a volta', 'Cerca de 40 minutos, com o consultor ao lado'])}`)}${foot(cta('Escolher loja', 'b'))}`,
       `${top}${body(`${back('Loja e horário')}<div class="cm-radios">${pk(`${curta} ${td.unidade}`, { cls: 'cm-radio', icon: 'location', sub: rua, q: 'q2', tap: 'c' })}</div>
         ${label('Dia')}${days([['Sáb', String(dia(td.iso)), 'on'], ['Dom', '25'], ['Seg', '26'], ['Ter', '27']])}${label('Horário')}${slots(['09:00', td.hora, td.alternativa, '14:00'], td.hora, 'q3', 'd')}
@@ -320,7 +324,7 @@ export function makeSites({ I, pic, marca, esc, avatar = () => '', planta = () =
     const topo = (p, close = true) => `<div class="cm-mt-top">${close ? I('close') : I('back')}<span class="cm-site-progress" style="--p:${p}"><i></i></span></div>`;
     const contato = [['Nome completo', PESSOA.nome], ['E-mail', PESSOA.email], ['Número do WhatsApp', PESSOA.telefone]];
     const conclusao = fim === 'agenda'
-      ? `${topo(1, false)}${body(`<b class="cm-mt-h">Pronto! Escolha um horário</b><p class="cm-mt-note">${I('info')}Seus dados já estão no convite.</p>${calendar({ free: [24, 25, 27, 28, 31], on: dia(iso) })}${label(cap(dataLonga(iso)))}${slots(horas, hora, 'q2', 'e')}
+      ? `${topo(1, false)}${body(`<b class="cm-mt-h">Pronto! Escolha um horário</b><p class="cm-mt-note">${I('info')}Seus dados já estão no convite.</p>${calendar({ free: [24, 25, 27, 28, 31], on: dia(iso) }).replace('<div class="cm-cal">', '<div class="cm-cal" data-hs="3">')}${label(cap(dataLonga(iso)))}${slots(horas, hora, 'q2', 'e')}
           ${show('q3', `<p class="cm-mt-booked">${I('check')}Visita marcada para ${esc(dataLonga(iso))}, às ${esc(horaFala(hora))}. O convite chega no seu e-mail.</p>`)}`, 'cm-mt-body')}${foot(`<span class="cm-site-cta" data-tap="f" data-pick="q3" data-hs="3">Marcar horário</span>`)}`
       : `<div class="cm-mt-cover cm-mt-cover--sm">${pic(cover, { pos })}<span class="cm-mt-x">${I('close')}</span></div>${body(`${ok('Obrigado!', obrigado)}${trilha([['Formulário enviado', 'Agora', true], ['Contato pelo WhatsApp', 'Hoje, em horário comercial'], ['Test drive confirmado', `${cap(dataCurta(iso))}, ${hora}`]])}`, 'cm-site-body--end cm-mt-body')}${foot(cta('Voltar ao vídeo', 'f', ''))}`;
     return site(key, 'meta', [

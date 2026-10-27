@@ -147,7 +147,7 @@ export function makeLabScreens({ marca, esc, CLIENTES, pic }) {
     const fixado = cta ? `<span class="igl-fixado" data-tap="${cta.tap || 'cta'}" data-hs="${cta.hs || '3'}">${ico(IG.link, '')}<span><small>Fixado por ${esc(user(key))}</small><b>${esc(cta.text)}</b></span>${ico(IG.seta, 'igl-seta')}</span>` : '';
     const pe = campo ? `<span class="igs-campo igl-campo"><span class="igl-vazio">Comentar…</span><span class="igl-digitado">${esc(campo.text)}</span></span><span class="igl-enviar" data-tap="${campo.tap || 'send'}" data-hs="${campo.hs || '3'}">${ico(IG.enviar, 'igs-pe-ico')}</span>` : `<span class="igs-campo">Comentar…</span>${ico(IG.coracao, 'igs-pe-ico')}${ico(IG.enviar, 'igs-pe-ico')}`;
     return `<div class="igs igl"><div class="igs-cartao"><div class="igs-arte">${media}</div>
-        <div class="igs-cab">${marca(key, 'circulo', 'igs-avatar')}<div class="igs-cab-txt"><span class="igs-nome"><b>${esc(user(key))}</b><em class="igl-ao-vivo">Ao vivo</em></span><span class="igs-parceria">${ROTULO_IG}</span></div>${ico(IG.fechar, 'igs-ico igs-fechar')}</div>
+        <div class="igs-cab">${marca(key, 'circulo', 'igs-avatar')}<div class="igs-cab-txt"><span class="igs-nome"><b>${esc(user(key))}</b><em class="igl-ao-vivo" data-hs="1" data-hs-at="after">Ao vivo</em></span><span class="igs-parceria">${ROTULO_IG}</span></div>${ico(IG.fechar, 'igs-ico igs-fechar')}</div>
         <div class="igl-comentarios">${comments.map(linha).join('')}</div>${fixado}</div>
       <div class="igs-pe">${pe}</div></div>`;
   }
