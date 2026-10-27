@@ -62,8 +62,11 @@ export function makeSearch(ctx = {}) {
   const bolha = (lado, html, hora, at = '', cls = '') => `<div class="sb-wa-${lado}${cls ? ' ' + cls : ''}"${at}>${html}<small>${hora}${lado === 'out' ? ' ' + I('ticks') : ''}</small></div>`;
   const sai = (html, hora, at = '', cls = '') => bolha('out', html, hora, at, cls);
   const entra = (html, hora, at = '', cls = '') => bolha('in', html, hora, at, cls);
+  /* Target of the numbered point that stops counting once the frame state has "ate": an empty layer over its
+     parent, so a message that scrolls away or a button already answered no longer draws the point. */
+  const alvo = (hs, ate = '', at = 'out-left') => `<i class="sb-alvo" data-hs="${hs}"${at ? ` data-hs-at="${at}"` : ''}${ate ? ` data-ate="${ate}"` : ''} aria-hidden="true"></i>`;
   /* Reply buttons fixed under the bubble (at most 3 of 20 characters); "gasto" greys them once answered. */
-  const botoes = (lista, { tap = '', escolha = -1, gasto = '', hs = '3' } = {}) => `<span class="sb-wa-btns"${gasto ? ` data-gasto="${gasto}"` : ''}${hs ? ` data-hs="${hs}" data-hs-at="out-left"` : ''}>${lista.map((t, i) => `<span${i === escolha && tap ? ` data-tap="${tap}"` : ''}>${esc(t)}</span>`).join('')}</span>`;
+  const botoes = (lista, { tap = '', escolha = -1, gasto = '', hs = '3' } = {}) => `<span class="sb-wa-btns"${gasto ? ` data-gasto="${gasto}"` : ''}>${hs ? alvo(hs, gasto) : ''}${lista.map((t, i) => `<span${i === escolha && tap ? ` data-tap="${tap}"` : ''}>${esc(t)}</span>`).join('')}</span>`;
 
   /* ---------- LinkedIn: document ad of the wealth manager, Lead Gen form, the guide unlocked in the feed ---------- */
   const FI = OFERTAS.financas;
@@ -73,8 +76,8 @@ export function makeSearch(ctx = {}) {
     const pagina = (n, titulo, itens, nota, cls = '') => `<figure class="sb-li-page${cls}"><small>${n}</small><b>${esc(titulo)}</b><ul>${itens.map(([t, m]) => caixa(t, m)).join('')}</ul><p>${esc(nota)}</p><em>${esc(nome)} · ${n} de ${total}</em></figure>`;
     const pessoa = TERCEIROS.comentaristas[3];
     return tela('li', 'liFeed', scene('feed', 'base', 'claro', `<div class="cm-safe sb-li"><div class="sb-li-top"><i class="sb-li-me">${esc(PESSOA.iniciais)}</i><span class="sb-li-search">${I('search')}Pesquisar</span>${I('comment')}</div>
-      <article class="sb-li-post"><header class="sb-li-head">${marca(k, 'quadrado')}<span><b>${esc(nome)}</b><small>Promovido</small></span><span class="sb-li-follow">${I('plus')}Seguir</span></header>
-      <p class="sb-li-text" data-hs="1">Empresa e família no mesmo patrimônio? Três sinais de que é hora de separar. <span>…mais</span></p>
+      <article class="sb-li-post"><div class="sb-li-intro">${alvo('1', '', '')}<header class="sb-li-head">${marca(k, 'quadrado')}<span><b>${esc(nome)}</b><small>Promovido</small></span><span class="sb-li-follow">${I('plus')}Seguir</span></header>
+      <p class="sb-li-text">Empresa e família no mesmo patrimônio? Três sinais de que é hora de separar. <span>…mais</span></p></div>
       <div class="sb-li-doc"><div class="sb-li-docbar">${I('doc')}<b>${esc(guia)}</b><span class="sb-li-dl">${I('down')}Baixar</span></div><div class="sb-li-view" data-hs="2"><div class="sb-li-track">
         <figure class="sb-li-page sb-li-page--capa">${pic('reuniao45', { alt: 'Mesa de reunião de madeira vista de cima, capa do guia.', pos: '50% 60%' })}<figcaption><small>${esc(nome)}</small><b>${esc(guia)}</b><span>12 páginas para separar o que é da empresa e o que é da família</span></figcaption></figure>
         ${pagina(2, 'Contas que se misturam', [['Conta PJ pagando despesa da casa', true], ['Pró-labore x distribuição de lucros', false], ['Bens da empresa no CPF do sócio', true]], 'Marque o que já acontece na sua empresa.')}
@@ -134,9 +137,9 @@ export function makeSearch(ctx = {}) {
   const gSearch = () => {
     const nome = C[kc].marca;
     const pack = [[nome, 'Aberto até 19:00', true], ...vizinhos];
-    return tela('g', 'gSearch', scene('serp', 'base', 'claro', `<div class="cm-safe sb-g"><div class="sb-g-head"><div class="sb-g-box" data-hs="1">${logoSvg('google', { altura: 18, classe: 'sb-g-logo' })}<span class="sb-typed"><span>dentista perto de mim</span></span>${I('close')}${I('mic')}${I('lens')}</div>
+    return tela('g', 'gSearch', scene('serp', 'base', 'claro', `<div class="cm-safe sb-g"><div class="sb-g-head"><div class="sb-g-box">${logoSvg('google', { altura: 18, classe: 'sb-g-logo' })}<span class="sb-typed"><span>dentista perto de mim</span></span>${I('close')}${I('mic')}${I('lens')}</div>
       <div class="sb-g-tabs"><span>Modo IA</span><b>Todas</b><span>Mapas</span><span>Imagens</span><span>Notícias</span></div></div>
-      <ul class="sb-g-suggest" data-out="r"><li>${I('search')}dentista perto de mim</li><li>${I('search')}dentista perto de mim aberto agora</li><li>${I('search')}dentista em Pinheiros</li><li>${I('search')}avaliação odontológica primeira consulta</li></ul>
+      <ul class="sb-g-suggest" data-out="r" data-hs="1" data-hs-at="tr"><li>${I('search')}dentista perto de mim</li><li>${I('search')}dentista perto de mim aberto agora</li><li>${I('search')}dentista em Pinheiros</li><li>${I('search')}avaliação odontológica primeira consulta</li></ul>
       <div class="sb-g-results" data-in="r"><p class="sb-g-group">Resultados patrocinados</p>
         <div class="sb-g-ad"><div class="sb-g-site">${marca(kc, 'fav')}<span><b>${esc(nome)}</b><small>https://www.${esc(C[kc].dominio)} › avaliacao</small></span>${I('vdots')}</div>
           <b class="sb-g-title" data-hs="2">Avaliação com hora marcada | ${esc(nome)}</b>
@@ -150,7 +153,7 @@ export function makeSearch(ctx = {}) {
         <article class="sb-g-org"><div class="sb-g-site"><i class="sb-g-fav sb-g-fav--b">G</i><span><b>Guia do Bairro</b><small>guiadobairro.exemplo › pinheiros › saude</small></span></div><b class="sb-g-otitle">Dentistas em Pinheiros: o que perguntar antes de marcar</b><p>Quem é o responsável técnico, se a clínica atende urgência e como fica a remarcação.</p></article></div>
       <div class="sb-ilha" data-in="ilha" aria-hidden="true"><span class="sb-ilha-l">${I('phone')}${tempo('sb-tempo--ilha')}</span>${onda(7)}</div></div>`) +
       scene('call', 'sheet', 'claro', `<div class="sb-ios-sheet"><span class="sb-ios-group"><small>${esc(numero)}</small><span data-tap="go" data-hs="3">${I('phone')}Ligar</span></span><span class="sb-ios-cancel">Cancelar</span></div>`, 'cm-scene--part') +
-      scene('ligacao', 'fade', 'escuro', `<div class="sb-call"><div class="sb-call-top"><b class="sb-call-name">${esc(nome)}</b><small class="sb-call-sub"><span class="sb-call-ring" data-hs="3">chamando…</span><span class="sb-call-on">${tempo()}</span></small><small class="sb-call-num">${esc(numero)}</small></div>
+      scene('ligacao', 'fade', 'escuro', `<div class="sb-call"><div class="sb-call-top">${alvo('3', 'on', '')}<b class="sb-call-name">${esc(nome)}</b><small class="sb-call-sub"><span class="sb-call-ring">chamando…</span><span class="sb-call-on">${tempo()}</span></small><small class="sb-call-num">${esc(numero)}</small></div>
         <div class="sb-call-grid">${[['speaker', 'Alto-falante'], ['video', 'FaceTime'], ['micoff', 'Silenciar'], ['dots', 'Mais'], ['phone', 'Encerrar', 'fim'], ['keypad', 'Teclado']].map(([icon, t, x]) => `<span class="sb-call-btn${x ? ' sb-call-btn--' + x : ''}"><i>${ic(icon)}</i><small>${t}</small></span>`).join('')}</div></div>`));
   };
   const gFala = turnos.map(t => [[t.quem, t.texto]]);
@@ -262,7 +265,7 @@ export function makeSearch(ctx = {}) {
       scene('page', 'sheet', 'claro', `${browserBar(nome, C[kt].dominio, 'share')}${site(kt, 'bandeirola', roteiro)}`) +
       scene('wa', 'switch', 'claro', `<span class="sb-crumb">${I('back')}ChatGPT</span>${waHead(kt)}
         <div class="sb-wa-body">${waIntro(kt, [['location', TERCEIROS.ruas.turismo], ['clock', T.horario]])}
-          ${sai(`<span class="sb-wa-link">${pic('estandarte11', { pos: '50% 50%' })}<span><b>Roteiro: Festa do Divino, ${s1.noites} noites</b><small>${esc(C[kt].dominio)}</small></span></span>${esc(msgWa)}`, '10:11', ' data-in="m1" data-hs="3" data-hs-at="out-left"')}
+          ${sai(`<span class="sb-wa-link">${pic('estandarte11', { pos: '50% 50%' })}<span><b>Roteiro: Festa do Divino, ${s1.noites} noites</b><small>${esc(C[kt].dominio)}</small></span></span>${esc(msgWa)}`, '10:11', ' data-in="m1"').replace('<div class="sb-wa-out" data-in="m1">', `<div class="sb-wa-out" data-in="m1">${alvo('3', 'm2')}`)}
           ${digitando('m1', 'm2')}
           ${entra(`Oi, ${esc(PESSOA.primeiro)}! Aqui é a ${esc(T.consultora)}, da ${esc(curta(kt))}. Recebi seu roteiro. Para ${dia(s1.ida)} a ${dia(s1.volta)} de maio ainda tem vaga no hotel do centro, e a criança de 2 anos entra com tarifa de criança. Posso montar a pré-reserva? O sinal é por Pix, só depois que você aprovar.`, '10:12', ' data-in="m2" data-hs="3" data-hs-at="out-left"')}</div>
         <div class="sb-wa-compose"><span class="sb-wa-preview" data-out="m1">${pic('estandarte11', { pos: '50% 50%' })}<span><b>Roteiro: Festa do Divino, ${s1.noites} noites</b><small>${esc(C[kt].dominio)}</small></span></span>
@@ -272,6 +275,8 @@ export function makeSearch(ctx = {}) {
   /* ---------- Google Maps: square promoted pin, the place sheet, the route drawn and the navigation ---------- */
   const R = OFERTAS.restaurante, kr = 'restaurante';
   const ROTA = 'M108,544 L108,464 L180,464 L180,304 L252,304 L252,224';
+  /* Street of mapa-cidade.svg that the route takes after the first turn (its own label on the drawing). */
+  const MAPA = { avenida: 'Av. Central' };
   const saidaRota = '11:16', chegada = somaMin(saidaRota, 14);
   const mapsLocal = () => {
     const nome = C[kr].marca;
@@ -289,10 +294,10 @@ export function makeSearch(ctx = {}) {
           <span class="sb-place-chips"><span class="is-primary" data-tap="cta" data-hs="3">${I('route')}Rotas</span><span>${I('phone')}Ligar</span><span>${ic('site')}Site</span><span>${I('bookmark')}Salvar</span><span>${I('share')}Compartilhar</span></span>
           <span class="sb-place-photos">${pic('fachada43', { pos: '50% 40%' })}${pic('panela11')}${pic('prato11')}</span>
           <span class="sb-place-row">${I('location')}${esc(TERCEIROS.ruas[kr])}</span></div></div>`) +
-      scene('route', 'fade', 'claro', `${area(`<svg class="sb-route" viewBox="0 0 360 640" preserveAspectRatio="none" aria-hidden="true"><path d="${ROTA}" class="sb-route-casing"/><path d="${ROTA}" class="sb-route-line" pathLength="1"/></svg><span class="sb-route-name sb-route-name--1" style="left:${150 / 3.6}%;top:${464 / 6.4}%">${esc(TERCEIROS.ruas.rota[0])}</span><span class="sb-route-name sb-route-name--2" style="left:${180 / 3.6}%;top:${384 / 6.4}%">${esc(TERCEIROS.ruas.rota[1])}</span><span class="sb-promo sb-promo--fim" style="left:${252 / 3.6}%;top:${224 / 6.4}%">${marca(kr, 'quadrado', 'sb-promo-sq')}</span>${eu}<span class="sb-chev" style="left:${108 / 3.6}%;top:${544 / 6.4}%">${ic('nav')}</span>`, ' sb-map--rota')}
+      scene('route', 'fade', 'claro', `${area(`<svg class="sb-route" viewBox="0 0 360 640" preserveAspectRatio="none" aria-hidden="true"><path d="${ROTA}" class="sb-route-casing"/><path d="${ROTA}" class="sb-route-line" pathLength="1"/></svg><span class="sb-route-name" style="left:${150 / 3.6}%;top:${461 / 6.4}%">${esc(TERCEIROS.ruas.rota[0])}</span><span class="sb-promo sb-promo--fim" style="left:${252 / 3.6}%;top:${224 / 6.4}%">${marca(kr, 'quadrado', 'sb-promo-sq')}</span>${eu}<span class="sb-chev" style="left:${108 / 3.6}%;top:${544 / 6.4}%">${ic('nav')}</span>`, ' sb-map--rota')}
       <div class="sb-route-top"><span class="sb-route-ends"><span><i class="sb-route-a"></i>Seu local</span><span>${I('location')}${esc(nome)}</span></span><span class="sb-route-modes"><b>${I('car')}14 min</b><span>${I('bus')}38 min</span><span>${I('walk')}52 min</span></span></div>
       <div class="cm-route-sheet sb-route-sheet"><span class="sb-grabber"></span><b class="sb-route-h" data-hs="3"><em>14 min</em> (4,2 km)</b><small>Rota mais rápida · trânsito normal para o horário</small><small>Chegada às ${chegada} · ${esc(R.abreHoje)}</small><span class="sb-route-go" data-tap="go">${ic('nav')}Iniciar</span></div>
-      <div class="sb-nav" data-in="done"><div class="sb-nav-card">${ic('turn')}<span><b>200 m</b><small>Vire à direita na ${esc(TERCEIROS.ruas.rota[0])}</small></span></div><span class="sb-nav-then">Depois ${ic('turn', 'sb-i-left')} ${esc(TERCEIROS.ruas.rota[1])}</span>
+      <div class="sb-nav" data-in="done"><div class="sb-nav-card">${ic('turn')}<span><b>200 m</b><small>Vire à direita na ${esc(TERCEIROS.ruas.rota[0])}</small></span></div><span class="sb-nav-then">Depois ${ic('turn', 'sb-i-left')} ${esc(MAPA.avenida)}</span>
         <div class="sb-nav-bar" data-hs="3"><span><b>14 min</b><small>4,2 km · chegada ${chegada}</small></span><span class="sb-nav-exit">Sair</span></div></div>`));
   };
 
@@ -305,13 +310,13 @@ export function makeSearch(ctx = {}) {
     const quote = `<span class="sb-wa-quote">${pic('recepcao45')}<span><b>${esc(nome)}</b><small>Avaliação com hora marcada</small></span></span>`;
     return tela('wa', 'waAd', scene('ad', 'base', 'escuro', LAB.feedAd({ key: kc, captionOpen: true,
       media: `<div class="sb-wa-art">${pic('recepcao45', { alt: 'Recepção da clínica com parede terracota, sofá e plantas.' })}<b data-hs="1">Avaliação com hora marcada</b>${marca(kc, 'circulo', 'sb-wa-art-mark')}</div>`,
-      cta: { text: 'Enviar mensagem pelo WhatsApp', lead: `${logoSvg('whatsapp', { altura: 16, classe: 'cm-wa-glyph' })}${logoSvg('whatsapp', { altura: 16, mono: 'branco', classe: 'cm-wa-glyph cm-wa-glyph--lit' })}` },
-      caption: { hs: '2', html: `Avaliação com hora marcada. <span class="cm-more">mais</span><span class="cm-rest">Conte o que você sente e escolha o horário pela conversa, com a ${esc(CL.responsavel)}.</span>` } })) +
+      cta: { text: 'Enviar mensagem pelo WhatsApp', hs: '2 3', lead: `${logoSvg('whatsapp', { altura: 16, classe: 'cm-wa-glyph' })}${logoSvg('whatsapp', { altura: 16, mono: 'branco', classe: 'cm-wa-glyph cm-wa-glyph--lit' })}` },
+      caption: { html: `Avaliação com hora marcada. <span class="cm-more">mais</span><span class="cm-rest">Conte o que você sente e escolha o horário pela conversa, com a ${esc(CL.responsavel)}.</span>` } })) +
       scene('chat', 'switch', 'claro', `<span class="sb-crumb">${I('back')}Instagram</span>${waHead(kc)}
         <div class="sb-wa-body">${waIntro(kc, [['location', TERCEIROS.ruas.clinica], ['clock', CL.horario]])}
-          ${sai(`${quote}Olá! Quero agendar uma avaliação.`, '10:10', ' data-in="m1" data-hs="3" data-hs-at="out-left"')}
+          ${sai(`${alvo('3', 'm2')}${quote}Olá! Quero agendar uma avaliação.`, '10:10', ' data-in="m1"')}
           ${digitando('m1', 'm2')}
-          ${entra(`Oi, ${esc(PESSOA.primeiro)}! Sou a assistente virtual da ${esc(nome)}. Marco sua avaliação por aqui ou passo para a recepção, se preferir. O que você procura?<span class="sb-wa-listbtn" data-tap="list" data-hs="3">${I('menu')}Ver opções</span>`, '10:10', ' data-in="m2"')}
+          ${entra(`Oi, ${esc(PESSOA.primeiro)}! Sou a assistente virtual da ${esc(nome)}. Marco sua avaliação por aqui ou passo para a recepção, se preferir. O que você procura?<span class="sb-wa-listbtn" data-tap="list">${alvo('3', 'm3', '')}${I('menu')}Ver opções</span>`, '10:10', ' data-in="m2"')}
           ${sai('Avaliação odontológica', '10:10', ' data-in="m3"')}
           ${digitando('m3', 'm4', 'sb-wa-typing--late')}
           ${entra(`A avaliação leva 30 minutos, com a ${esc(CL.responsavel)}, na unidade ${esc(av.unidade)}. Escolha um horário:${botoes([h1, h2, 'Outro dia'], { tap: 'hor', escolha: 0, gasto: 'm5' })}`, '10:10', ' data-in="m3"', 'sb-wa-late')}
@@ -349,7 +354,7 @@ export function makeSearch(ctx = {}) {
           ${sai('Retirar no balcão', '10:10', ' data-in="k2"')}
           ${entra(`Para que horário de ${esc(diaSemana(enc.iso))}?${botoes(['11h30', horaFala(enc.hora), '13h'], { tap: 'r2', escolha: 1, gasto: 'k3' })}`, '10:10', ' data-in="k2"', 'sb-wa-late')}
           ${sai(esc(horaFala(enc.hora)), '10:11', ' data-in="k3"')}
-          ${entra(`<b>Resumo do pedido ${esc(pedido)}</b><span>${esc(enc.item)}</span><span>Retirada no balcão: ${esc(sab)}, às ${esc(horaFala(enc.hora))}</span><span>Pagamento: ${esc(enc.pagamento)}</span><span>Subtotal estimado: ${PRECO}</span><span class="sb-wa-order-btn" data-tap="ok" data-gasto="k4">Confirmar pedido</span>`, '10:11', ' data-in="k3" data-hs="3" data-hs-at="out-left"', 'sb-wa-order sb-wa-late')}
+          ${entra(`<b>Resumo do pedido ${esc(pedido)}</b><span>${esc(enc.item)}</span><span>Retirada no balcão: ${esc(sab)}, às ${esc(horaFala(enc.hora))}</span><span>Pagamento: ${esc(enc.pagamento)}</span><span>Subtotal estimado: ${PRECO}</span><span class="sb-wa-order-btn" data-tap="ok" data-gasto="k4">Confirmar pedido</span>${alvo('3', 'k4')}`, '10:11', ' data-in="k3"', 'sb-wa-order sb-wa-late')}
           ${sai('Confirmar pedido', '10:11', ' data-in="k4"')}
           ${entra(`<b class="sb-wa-ok">${I('check', 'cm-i--inline')}Pedido ${esc(pedido)} confirmado</b><span>${esc(sab)}, às ${esc(horaFala(enc.hora))}, no balcão.</span><span>Pagamento: ${esc(enc.pagamento)}.</span><span>Avisamos aqui quando estiver pronto.</span><span class="sb-wa-status">${I('check', 'cm-i--inline')}Recebido</span>`, '10:11', ' data-in="k4" data-hs="3" data-hs-at="out-left"', 'sb-wa-late')}</div>
         <div class="sb-wa-compose"><span class="sb-wa-row">${I('plus')}<span class="sb-wa-field sb-wa-field--empty"></span>${I('camera')}${I('mic')}</span></div>`));
