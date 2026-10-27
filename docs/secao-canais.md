@@ -1,8 +1,8 @@
 # Seção de canais: guia para entender e alterar
 
-Seção "Sua oferta. Em cada canal." (`#laboratorio` em `index.html`). Atualizado em 22/10/2026, commit 6d37ab6.
+Seções `#mural`, `#laboratorio` ("Sua oferta. Em cada canal."), `#editorial` ("Sites e lojas") e `#sistemas` ("Sistemas e automações") de `index.html`. Atualizado em 27/10/2026, branch `ccr-94475d26-xmd01y`, depois da revisão em nove pacotes (ficha de marcas, motor de quadros, hero, campanhas, busca, automações, painel de Sistemas, acervo licenciado, mural e QA).
 
-Este guia é para quem vai mexer na seção, pessoa ou IA, sem ter acompanhado a construção. Ele explica o que a seção faz, como o código está montado, quais nichos e fluxos existem e como alterar cada parte com segurança. Os nomes de arquivo são relativos à raiz do repositório.
+Este guia é para quem vai mexer nessas seções, pessoa ou IA, sem ter acompanhado a construção. Ele explica o que cada seção faz, como o código está montado, quais clientes e fluxos existem e como alterar cada parte com segurança. Os nomes de arquivo são relativos à raiz do repositório.
 
 ## Sumário
 
@@ -10,48 +10,41 @@ Este guia é para quem vai mexer na seção, pessoa ou IA, sem ter acompanhado a
 2. [O que o visitante vê e faz](#2-o-que-o-visitante-vê-e-faz)
 3. [Mapa dos arquivos](#3-mapa-dos-arquivos)
 4. [Modelo de dados](#4-modelo-de-dados)
-5. [Motor de estados do aparelho](#5-motor-de-estados-do-aparelho)
+5. [Motor de quadros](#5-motor-de-quadros)
 6. [Sites dos anunciantes](#6-sites-dos-anunciantes)
-7. [Telas do laboratório](#7-telas-do-laboratório)
-8. [Nichos e clientes fictícios](#8-nichos-e-clientes-fictícios)
-9. [Os 22 fluxos](#9-os-22-fluxos)
-10. [Automações demonstradas](#10-automações-demonstradas)
+7. [Telas das redes](#7-telas-das-redes)
+8. [Clientes fictícios e dados da história](#8-clientes-fictícios-e-dados-da-história)
+9. [Os 30 formatos](#9-os-30-formatos)
+10. [Automações e caminhos de falha](#10-automações-e-caminhos-de-falha)
 11. [Regras de conteúdo](#11-regras-de-conteúdo)
 12. [Receitas de alteração](#12-receitas-de-alteração)
 13. [Verificar e publicar](#13-verificar-e-publicar)
 14. [Armadilhas conhecidas](#14-armadilhas-conhecidas)
 15. [Pendências](#15-pendências)
+16. [Regras próprias das automações](#16-regras-próprias-das-automações)
+17. [Mural de jornadas](#17-mural-de-jornadas)
 
 ## 1. O que a seção é
 
-O portfólio vende campanhas e anúncios para pequenos e médios negócios. Esta seção mostra, sem nenhum número de resultado, que o autor conhece o caminho real de cada canal: onde o anúncio aparece, o que prende a atenção, onde a pessoa toca e qual tela nativa fecha a conversão.
+O portfólio vende campanhas, conversas e os sistemas por trás delas para pequenos e médios negócios. Estas seções mostram, sem nenhum número de resultado, que o autor conhece o caminho real de cada canal: onde o anúncio aparece, o que prende a atenção, onde a pessoa toca, qual tela nativa fecha a conversão e o que o sistema registra em cada passo.
 
-São 16 canais e 30 formatos (11 canais e 22 formatos até 22/10; os fluxos de automação profunda entraram em 27/10, seção 16). Cada formato é a campanha de um anunciante fictício, de um dos 8 tipos de cliente que o portfólio atende. Tudo roda dentro de um iPhone 17 Pro Max laranja desenhado em HTML e CSS, como um storyboard finito que toca sozinho e para na tela de conversão.
+São 16 canais e 30 formatos, mais 5 caminhos de falha escondidos. Cada formato é a jornada de um anunciante fictício, de um dos 8 tipos de cliente que o portfólio atende, com a mesma cliente (Marina Alves), as mesmas datas e os mesmos números de pedido em todos os fluxos. Tudo roda dentro de um iPhone desenhado em HTML e CSS, como um storyboard finito que toca sozinho e para na tela de conversão.
 
-Nada é enviado a lugar nenhum. Formulários, conversas, carrinhos e notificações são estados de CSS trocados por uma linha do tempo em JavaScript. O único link real da seção é "Conversar sobre uma campanha", que leva ao contato com o serviço "Campanhas e anúncios" preenchido.
+Nada é enviado a lugar nenhum. Formulários, conversas, carrinhos, Pix e notificações são estados de CSS trocados por uma linha do tempo em JavaScript. Os únicos links reais são os de contato.
 
 ## 2. O que o visitante vê e faz
 
-1. **Grade de canais.** Os 11 canais aparecem de uma vez em blocos, sem rolagem lateral, mesmo a 320 px. Cada bloco tem o logo oficial da plataforma, um nome curto e, quando há mais de um formato, um contador. Um marcador branco desliza até o bloco escolhido, e uma legenda mostra o nome e o benefício do canal ("Prender no feed e levar à ação.").
-2. **Frente.** Abaixo da grade fica a peça do cliente do primeiro formato do canal (foto, marca, manchete e "Exemplo ilustrativo de restaurante, marca fictícia."). Ao trocar de canal, a peça antiga sai 30 px para o lado em 300 ms e a nova entra com mola de 42 px em 620 ms.
-3. **Papel que dobra.** A peça é uma folha com a ponta superior direita dobrada. Puxar a ponta, tocar nela ou usar as setas ← e ↓ no botão da ponta dobra a folha e revela o verso. "Recolocar a peça" fecha.
-4. **Verso, o player.** De cima para baixo:
-   - logo e nome do canal, com o botão Reproduzir, Pausar ou Rever (sem movimento, Próximo);
-   - formatos num controle segmentado, com um marcador que desliza;
-   - selo de identificação da plataforma ("Patrocinado", "Promovido", "Anúncio"...) e o chip do cliente ("Restaurante, marca fictícia");
-   - jornada em 3 passos (Atenção, Retenção, Conversão), cada um com um trilho de progresso;
-   - o iPhone com o anúncio;
-   - ao lado, ou abaixo no celular, a frase do formato, o aviso "Exemplo ilustrativo, marca fictícia. Interface aproximada." (mais "Imagens geradas por IA." quando a peça usa foto do estúdio Fatos) e o link de contato.
-5. **Reprodução.** Ao abrir o verso, a jornada toca uma vez até a tela de conversão e para, e o botão vira Rever. Um ponto numerado (1, 2 ou 3) marca o elemento do passo atual. Nos quadros de toque, um círculo branco (o dedo) pousa no botão, e o botão fica pressionado.
-6. **Navegação manual.**
-   - Setas ← e → com o foco no aparelho.
-   - Toque nos 31% da esquerda do aparelho volta um quadro; no resto, avança.
-   - Deslizar na horizontal por mais de 50 px também troca de quadro.
-   - Clicar num passo da jornada pula para ele. O passo 3 vai direto ao quadro do toque no botão de ação.
-   - Com o foco num passo, as setas, Home e End trocam de passo.
-7. **Comparar.** Trocar de canal com o verso aberto mantém o verso aberto. O formato antigo sai como um "fantasma" e o novo entra.
-8. **Sem movimento.** Com movimento reduzido no sistema, a pausa global do site (`body.is-paused`) ou a aba oculta, nada toca sozinho e as transições se desligam. O botão vira Próximo e cada clique mostra o quadro seguinte. O dedo aparece parado, sem animação.
-9. **Quando para.** A jornada para quando o player sai da tela, quando a aba fica oculta ou quando a folha fecha (nesse caso ela também volta ao começo). Uma jornada que ainda não começou toca ao entrar na tela.
+1. **Mural (`#mural`).** Logo depois do hero, uma faixa de 14 telas reais dos fluxos (seção 17). Cada tela leva ao formato no laboratório ou à automação em Sistemas.
+2. **Grade de canais (`#laboratorio`).** Os 16 canais aparecem de uma vez em blocos, sem rolagem lateral, mesmo a 320 px. Cada bloco tem o logo oficial (ou, sem logo oficial, um selo na cor do grupo), o nome curto e um contador de formatos. Um marcador desliza até o bloco escolhido, e uma legenda mostra o nome e o benefício do canal.
+3. **Frente.** A peça do cliente no quadro nativo do formato (`art.formato`: carrossel 4:5, 9:16 com trilho de ícones, 16:9 com faixa de anúncio, ou cartão de link), com a oferta, o botão e "Exemplo ilustrativo de …, marca fictícia." Ao trocar de canal, a peça antiga sai de lado e a nova entra com mola.
+4. **Papel que dobra.** Puxar a ponta, tocar nela ou usar ← e ↓ no botão da ponta dobra a folha e revela o player. "Ver a peça" fecha.
+5. **Player.** O iPhone com o formato e, ao lado (a partir de 900 px) ou abaixo, o painel vivo: cliente, rótulo do anúncio, objetivo, a frase, os 3 passos (Atenção, Retenção, Conversão), "Na tela" (a `desc` do quadro), a transcrição da ligação fora do aparelho, "Nos bastidores" (o registro), "Baseado em" e "Quero algo assim". Abaixo do aparelho, no celular, a faixa fixa "Agora" com a linha atual e ← ▶ →. O botão de ampliar abre a tela num diálogo do tamanho da altura disponível.
+6. **Reprodução.** Ao abrir o verso, a jornada toca uma vez até a tela final e para; o botão vira Rever. Cada quadro fica o tempo de leitura (seção 5). Um ponto numerado (1, 2 ou 3) marca o elemento do passo atual sem cobrir texto, e um círculo branco (o dedo) pousa no botão dos quadros de toque.
+7. **Navegação manual.** ← e → com o foco no aparelho; toque à esquerda ou à direita da tela; deslizar mais de 50 px; clicar num passo. Com o foco num passo, as setas, Home e End trocam de passo.
+8. **Link direto.** `#laboratorio/<canal>/<formato>` (por exemplo `#laboratorio/tiktok/infeed`) abre o canal, dobra a folha e escolhe o formato. O evento `cx:abrir` no `window`, com `{canal, formato}`, faz o mesmo sem mudar o endereço.
+9. **Sem movimento.** Com movimento reduzido, a pausa global (`body.is-paused`) ou a aba oculta, nada toca sozinho e as transições se desligam. O botão vira Próximo.
+10. **Sites e lojas (`#editorial`).** O mesmo motor, cortado por cena, com a lista de telas ao lado e, a partir de 1100 px, "Celular | Computador" para ver o site num navegador de computador.
+11. **Sistemas (`#sistemas`).** Seletor das 8 automações, "Caminho feliz | Com falhas", o aparelho e o inspetor com as abas Registro, Arquitetura e Ligação/Bastidor. No celular, um dock preso ao aparelho mostra o ator, a linha atual e ← Reproduzir →. `#sistemas/<chave>` e `#sistemas/<chave>/falha` abrem a automação.
 
 ## 3. Mapa dos arquivos
 
@@ -59,577 +52,419 @@ Tudo fica em `public/assets/showcase/`, salvo indicação.
 
 | Arquivo | Papel | Mexa aqui para |
 |---|---|---|
-| `index.html` (seção `#laboratorio`) | Casca estática: título, imagem inicial e o crédito com os 8 tipos de cliente. O cartão da galeria (`data-work-card="ads"`) e o serviço "Campanhas e anúncios" também citam "oito tipos" e "onze canais". | Mudar textos fixos ou contagens |
-| `static-init.js` | Monta tudo: `mountStaticPresentations` e depois `mountCampaignFlip`. | Raramente |
-| `static-presentations.js` e `.css` | Grade de canais (blocos, marcador, legenda), frente com a peça e nota lateral. Nomes curtos em `SHORT` e `TINY`. | Grade e frente |
-| `campaign-flip.js` (estilos em `page-peel.css` e `interaction-upgrades.css`) | Folha que dobra, gesto de puxar, foco, `inert`. Monta o player no verso. | Comportamento da dobra |
-| `experience-player.js` e `experience-demos.css` | Player: linha do tempo, aplicação dos quadros, ponto numerado, dedo, jornada, formatos, troca animada, teclado e gestos. | Comportamento do storyboard |
-| `campaign-channels.js` | Dados e telas: `IMG`, `CLIENTES`, `MARCAS`, ícones genéricos `PATHS`, `mocks`, `groups`, `channels`, `AVISOS`, `SCREEN`, `iphone()`, `renderMock()`. | Quase toda alteração de conteúdo |
-| `channel-mocks.css` | Aparelho, cenas e transições, estados dos mocks que não vêm do laboratório (Shorts, LinkedIn, Google, Maps, WhatsApp, ChatGPT...), banner de notificação e conversas. | Visual dos mocks próprios |
-| `campaign-sites.js` e `.css` | Os 8 sites dos anunciantes, o formulário instantâneo da Meta e o formulário do LinkedIn, com o motor de passos no fim do CSS. | Fluxo depois do clique |
-| `lab-telas.js` e `.css` | Telas portadas do laboratório: Instagram, TikTok, YouTube, Facebook e blog no Safari, mais os elementos de chat do smiile. | Telas das redes |
-| `channel-logos.js` | Logos oficiais em SVG, cores e regras de uso; `CHANNEL_LOGO` liga canal e logo. | Só com arquivo oficial |
-| `public/assets/portfolio/canais/` e `SOURCES.md` | Fotos dos anunciantes e a origem e licença de cada uma. | Trocar ou acrescentar foto |
-| `tests/browser-static-presentations.mjs` | Testes de navegador da seção (e de outras apresentações). | Quando muda canal, rótulo ou comportamento |
-| `docs/plans/clientes-canais-20261021.md` | Plano original dos clientes e storyboards. É histórico: o código atual vale mais que ele. | Consulta |
+| `marcas.js` | Ficha única: `CLIENTES` (nome, curta, arroba, domínio `.exemplo`, cores, tom, assinatura, tema), `MARCAS` (símbolos 64 x 64), `HOJE`, `PESSOA`, `PEDIDOS`, `OFERTAS`, `LEGAL`, `TERCEIROS` e os auxiliares de data. Tudo congelado. | Trocar um nome, uma data, um pedido ou uma oferta em todos os fluxos de uma vez |
+| `static-init.js` | Carrega as folhas e monta cada seção quando ela chega a 1200 px da tela, na ordem de `ORDER`; segura o alvo dos links internos; lê `#sistemas/…` e `#laboratorio/…`. | Raramente |
+| `static-presentations.js` e `.css` | Grade de canais, marcador, legenda e a peça da frente (`frameMarkup`). | Grade e frente |
+| `campaign-flip.js`, `page-peel.css`, `interaction-upgrades.css` | Folha que dobra, gesto de puxar, foco e `inert`. Monta o player no verso. | Comportamento da dobra |
+| `frame-engine.js` | Motor único de quadros (seção 5), usado pelo player, por Sites e lojas e por Sistemas. | Regras de cena, ponto, dedo, relógio, tempo de leitura e vídeo |
+| `frame-motion.css` | Transições das cenas (push, sheet, switch, modal, fade), banner, toque, digitando, texto em fluxo, pulso da ligação e chegada das mensagens. Instantâneas sem movimento. | Movimento |
+| `experience-player.js` e `experience-demos.css` | Player do laboratório: painel vivo, faixa Agora, Ampliar, formatos, teclado, gestos, link direto e `cx:abrir`. `--phone-w` e `.ch-iphone--compacto` ficam em `experience-demos.css`. | Comportamento do player e tamanho do aparelho |
+| `campaign-channels.js` | `IMG`, `IMG_META`, `VIDEOS`, `channels`, `AVISOS`, `SCREEN`, os mocks de Meta, TikTok, YouTube e publieditorial, `renderMock()` e a junção com `campaign-search.js` e `automation-flows.js`. | Formatos de redes sociais e dados gerais |
+| `campaign-search.js` e `.css` | `makeSearch(ctx)`: LinkedIn, Google Pesquisa e Display, SEO, ChatGPT, Maps, WhatsApp clique para conversar e catálogo. | Busca, local e conversa |
+| `automation-flows.js`, `automation-mocks.css` | `makeAutomations(H)`: as 8 automações, os 5 caminhos de falha, os canais Telegram, RCS, Voz, Pix e E-mail. O CSS vem de `scratchpad/au.src.css` por um gerador que também escreve as regras de revelação. | Automações |
+| `pix-kit.js`, `uqr.js` | BR Code do Pix (CRC conferido com o exemplo do manual do BCB) e o gerador de QR (MIT, licença no cabeçalho). | QR e copia e cola |
+| `campaign-sites.js` e `.css` | Os 8 sites dos anunciantes, os formulários da Meta e do LinkedIn e o `kit` (passos, calendário, ticket, banco, QR). | Fluxo depois do clique |
+| `lab-telas.js` e `.css` | Telas de Instagram, TikTok, YouTube, Facebook e do artigo no Safari. | Telas das redes |
+| `channel-mocks.css` | Aparelho, cenas e telas próprias (Shorts, Facebook vídeo e intervalos, Maps, WhatsApp, ChatGPT). | Visual dos mocks |
+| `channel-logos.js` | Logos oficiais em SVG, cores, regras de uso e `CHANNEL_LOGO`. | Só com arquivo oficial |
+| `vitrine-lab.js` e `.css` | Sites e lojas. | Seção `#editorial` |
+| `automation-trace.js` e `.css` | Painel de Sistemas (seletor, dock, inspetor, registro, arquitetura, transcrição). | Seção `#sistemas` |
+| `public/assets/mural/mural.js` e `.css` | Mural de jornadas (seção 17). | Faixa depois do hero |
+| `public/assets/portfolio/mural/` | Quadros do mural (`<canal>-<formato>-f<n>.webp`) e `mural.json`, gerados por `scripts/capture-mural.mjs`. | Rodar o script de novo |
+| `public/assets/portfolio/canais/`, `SOURCES.md` e `scripts/assets/acervo.json` | Fotos e vídeos licenciados, com origem, autor, licença e recorte. `pages/creditos.html` (rota `/creditos`) mostra os créditos. | Trocar ou acrescentar foto |
+| `public/assets/planes/hero-journey.js` e `hero-journeys.json` | Jornada viva do hero, com nomes e datas de `marcas.js`. | Hero |
+| `tests/` | Ver seção 13. | Quando muda canal, rótulo ou comportamento |
+| `reports/Fidelidade por rede.md` | Especificação por rede (rótulos, telas, erros comuns), com fontes. Vale mais que a memória de quem desenha. | Antes de mexer numa tela de rede |
+| `docs/plans/clientes-canais-20261021.md` | Plano original. É histórico: o código atual vale mais. | Consulta |
 
-A política de segurança do site (`vercel.json`) só aceita scripts, estilos e fontes do próprio domínio. Não use CDN nem imagem externa: copie o arquivo para `public/assets/`.
+A política de segurança (`vercel.json` e `server.mjs`, que precisam continuar iguais) só aceita scripts, estilos, fontes e mídia do próprio domínio. Não use CDN nem imagem externa, nem script inline: copie o arquivo para `public/assets/`.
 
 ## 4. Modelo de dados
 
-Tudo está em `campaign-channels.js`.
+Os canais e formatos ficam em `campaign-channels.js` (redes sociais e publieditorial), `campaign-search.js` (busca, local e conversa) e `automation-flows.js` (automações). Todos os campos novos são opcionais para quem lê.
 
 ### Canal
 
-```js
-{ id: 'tiktok', name: 'TikTok', group: 'social', benefit: 'Do vídeo ao carrinho em um toque.',
-  art: art('varejo', 'nerd', '50% 28%', 'Joga à noite e edita de dia?', 'Peça da Ponto Tech, ...'),
-  placements: [ ... ] }
-```
-
 | Campo | O que é |
 |---|---|
-| `id` | Chave do canal. Também liga o logo em `CHANNEL_LOGO` e aparece nos testes. |
+| `id` | Chave do canal. Liga o logo em `CHANNEL_LOGO` e aparece nos testes. |
 | `name` | Nome no player e na legenda. |
-| `group` | `social`, `search`, `local` ou `content` (rótulos em `groups`). Entra no `aria-label` do bloco. |
+| `group` | `social`, `search`, `local`, `content` ou `retencao`. |
 | `benefit` | Frase curta da legenda da grade. |
-| `art` | Peça da frente: `cliente` (chave de `CLIENTES`), `img` (chave de `IMG`), `pos` (object-position), `titulo` e `alt`. |
+| `glifo` | Ícone genérico do bloco quando não há logo oficial. |
+| `art` | Peça da frente: `cliente`, `img`, `pos`, `titulo`, `alt` e também `formato` (`'4:5'`, `'9:16'`, `'16:9'` ou `'link'`), `oferta` (uma linha), `cta` (botão) e `ui` (HTML curto já escapado, para uma interface desenhada sobre a foto). Um formato com `art` próprio troca a frente quando é escolhido. |
 | `placements` | Formatos do canal. |
 
 ### Formato (placement)
 
 | Campo | O que é |
 |---|---|
-| `id` | Chave do formato. Junto com o canal forma a chave de `AVISOS` (`'tiktok/infeed'`). |
-| `label` | Nome no controle de formatos ("Feed", "Reels", "Anúncio no vídeo"). |
-| `mock` | Chave da função em `mocks` que desenha a tela. |
-| `cliente` | Chave de `CLIENTES`. Define o chip "marca fictícia". |
-| `selo` | Rótulo de identificação, igual ao que a plataforma usa. Se tiver "Orgânico" ou "não é anúncio", o chip fica verde. |
-| `frase` | Frase da nota lateral. |
-| `passos` | Sempre 3, nesta ordem: `P('Atenção', rótulo, [quadros])`, `P('Retenção', ...)`, `P('Conversão', ...)`. |
+| `id` | Chave do formato. Com o canal forma a chave `'tiktok/infeed'` de `AVISOS`, `PEDIDOS` e dos links. |
+| `label` | Nome no controle de formatos. |
+| `curto` | Rótulo curto, usado abaixo de 420 px e no painel. |
+| `mock` | Função de `mocks` que desenha a tela. |
+| `cliente` | Chave de `CLIENTES`. |
+| `selo` | Rótulo de identificação igual ao da plataforma (seção 11). |
+| `frase` | Frase do painel. |
+| `objetivo` | O que o anunciante quer da jornada, em uma linha ("Vendas com Pix conferido"). |
+| `base` | Documentação pública em que o fluxo se apoia, mostrada em "Baseado em". |
+| `passos` | Sempre 3: `P('Atenção', rótulo, [quadros])`, `P('Retenção', …)`, `P('Conversão', …)`. |
 | `quadros` | O storyboard (abaixo). |
-| `aviso` | Posto automaticamente a partir de `AVISOS`. Não escreva à mão. |
+| `audio` | Opcional: `{src, segmentos: [{quem, texto, startMs, endMs}], duracaoS}` (ou `segments`, `durationMs`). Com `src`, aparece "Ouvir a ligação (N s)" e a reprodução anda com os segmentos. Hoje nenhuma ligação tem áudio (decisão do dono); `google/search` traz os segmentos com `src` vazio. |
+| `aviso` | Posto a partir de `AVISOS`. Não escreva à mão. |
 
 ### Quadro
 
 ```js
-{ ms: 900, cena: 'page', estado: 'w2 q1', toque: 'b', desc: 'Toque em I\'m looking forward to it.' }
+{ ms: 900, cena: 'page', estado: 'w2 q1', toque: 'b', hora: '10:11',
+  desc: 'Toque em Continuar.',
+  fala: [['Assistente virtual (IA)', 'Oi, Marina! …']],
+  log: [['WhatsApp', 'Mensagem recebida', 'origem: anúncio', { t: '10:10:31', tipo: 'webhook', campos: { telefone: '(11) 9 8•••-••21' } }]] }
 ```
 
 | Campo | O que é |
 |---|---|
-| `ms` | Duração do quadro. |
-| `cena` | Qual `.cm-scene` do mock fica na tela (`data-scene`). |
-| `estado` | Tokens separados por espaço que o CSS desenha (seção 5). |
-| `toque` | Chave do elemento `[data-tap="..."]` que o dedo toca neste quadro. |
+| `ms` | Duração mínima do quadro. O motor estende pelo tempo de leitura (seção 5). |
+| `cena` | Qual `.cm-scene` fica na tela. |
+| `estado` | Tokens separados por espaço que o CSS desenha. |
+| `toque` | Chave do `[data-tap]` que o dedo toca neste quadro. |
 | `video` | `1` quando o quadro conta para a barra de progresso do vídeo. |
-| `desc` | O que a tela mostra, em uma frase. O leitor de tela lê esse texto, e o status anuncia o passo. Escreva como legenda, não como instrução técnica. |
+| `hora` | `'HH:MM'` da barra de status a partir deste quadro. O relógio nunca volta. |
+| `desc` | O que a tela mostra, em uma frase de até 140 caracteres, no presente, sem jargão. É texto visível ("Na tela" e a faixa Agora) e o que o leitor de tela ouve. |
+| `fala` | Linhas da ligação deste quadro, `[[quem, texto]]`. Aparecem fora do aparelho, nunca dentro do app. |
+| `log` | Linhas do registro: `[ator, evento, detalhe, {t, tipo, campos?, dia?, bastidor?}]`. `t` é `'HH:MM:SS'`; `tipo` é um de `anuncio, webhook, ia, ferramenta, pessoa, pagamento, crm, sinal, permissao, turno, agenda, retentativa, assinatura, grupo, email, descadastro, sistema`; `campos` são pares já mascarados; `dia` (`'AAAA-MM-DD'`) só em linhas de outro dia; `bastidor` (`{titulo, texto}`) é o que a equipe recebe, mostrado no painel e nunca no chat da cliente. A ordem (dia, hora) nunca volta. |
 
 Regras do storyboard:
 
 - Cada índice de quadro pertence a exatamente um passo, e os passos cobrem os quadros em ordem.
-- O quadro de toque vem depois do quadro em que o botão aparece ou acende. O toque mostra o dedo; a mudança de tela vem no quadro seguinte.
-- O último quadro escrito deve deixar a tela de confirmação à vista, com o token `done` quando o mock tem uma. O teste do TikTok confere `done` no último quadro.
-- Para os formatos listados em `AVISOS`, o laço logo abaixo de `AVISOS` acrescenta um quadro final de 2400 ms, na mesma cena, com o estado anterior mais `aviso`, e o põe no passo 3. Esse quadro mostra o banner de notificação do iOS (e-mail ou WhatsApp) com a confirmação.
+- Cada passo tem pelo menos um quadro em que o ponto aparece.
+- O quadro de toque vem depois do quadro em que o botão aparece. O toque mostra o dedo; a mudança de tela vem no quadro seguinte. Um site que abre ganha um quadro de leitura antes do primeiro toque.
+- O último quadro deixa a confirmação à vista, com `done` quando o mock tem uma. Para os formatos de `AVISOS`, um quadro final com `aviso` é acrescentado sozinho.
 
 ### Outros dados
 
-- `IMG`: chave, `src`, `w`, `h` de cada foto. `pic(key, { alt, cls, pos })` gera o `<img>` com lazy loading.
-- `CLIENTES`: os 8 anunciantes (seção 8). `MARCAS`: o símbolo SVG de cada um. `marca(key, forma, cls)` desenha o símbolo em círculo, quadrado, `app`, `fav` ou alfinete, na cor do cliente.
-- `PATHS` e `I(name)`: ícones genéricos de traço, 24 x 24. Nenhum é logo de plataforma.
-- `SCREEN`: tema e cor de fundo do aparelho por mock, enquanto carrega (`{ tema: 'escuro', fundo: '#0f0f0f' }`). Sem entrada, vale tela clara e branca.
-- `iphone(content, opts)`: corpo, botões, Dynamic Island, barra de status às 10:09 e indicador de início. Sem nome nem logo de fabricante.
-- `renderMock(placement)`: chama o mock, injeta o banner do aviso dentro de `.cm-screen` e embrulha no iPhone.
+- `IMG`: chave, `src`, `w`, `h` de cada foto licenciada. `IMG_META`: `{src, credito, ia: false}` por chave (e `'video:<chave>'`); o crédito de CC BY e CC BY-SA aparece na nota do player. `VIDEOS`: `{webm, mp4, poster, w, h, s, credito}`.
+- `H` (contexto exportado para os outros módulos): `I`, `pic`, `marca`, `esc`, `scene`, `screen`, `logoSvg`, `LAB`, `SITES`, `kit`, os dados de `marcas.js`, `horaFala`, `P`, `passos3`, `browserBar`, `safari`, `btn`, `input`, `done`, `tabbar`, `art`, `skel`, `planta`, `avatar`, `video`, `kb`, `shot` e `L`.
+- `pic(key, {alt, cls, pos})` gera o `<img>` com `loading="lazy" decoding="async" fetchpriority="low"`.
+- `SCREEN`: tema e fundo do aparelho por mock, enquanto carrega.
+- `renderMock(placement)`: chama o mock, injeta o banner do aviso e embrulha no iPhone.
 
-## 5. Motor de estados do aparelho
+## 5. Motor de quadros
 
-Um mock devolve um `.cm-screen` com várias `.cm-scene`:
+`frame-engine.js` é o único motor. O player do laboratório, Sites e lojas e Sistemas chamam as mesmas funções:
 
-```js
-screen('tt',
-  scene('video', 'base', 'escuro', LAB.tiktokAd({...})) +
-  scene('page', 'sheet', 'claro', `${browserBar('Ponto Tech', 'pontotech.exemplo')}${SITES.teclaria()}`))
-```
+- `applyFrame(screen, list, index, {instant, playing})` põe `data-frame`, `data-scene` e `data-state` (os tokens do quadro mais o último estado de cada cena que saiu), marca as cenas com `data-pos` (`on`, `under` ou `off`; `under` para push, sheet, switch e modal), limpa o toque anterior, escreve o relógio e `--quadro-ms`, toca só o vídeo da cena na tela e começa o texto em fluxo (`[data-stream]`).
+- `settle(screen, item)` espera as animações finitas da cena terminarem (até 1200 ms; 20 ms sem movimento).
+- `tempoMinimo(screen, list, index)` decide quanto o quadro fica: o maior entre `item.ms` e 1400 ms, mais 820 ms quando a cena muda e 260 ms por palavra nova visível, até 9000 ms.
+- `positionDot(stage, screen, item, n)` põe o ponto do passo `n` ao lado do primeiro `[data-hs~="n"]` visível e descoberto, no primeiro lugar que não cruza texto, não cruza o dedo e fica dentro da tela. `data-hs-at` (`after`, `out-left`, `tl`, `tr`) escolhe o lugar preferido. Um anel de 2 px contorna o alvo. Ponto e anel somem nos quadros de toque e com `done` ou `aviso`. `.sb-alvo[data-ate=token]` deixa de ser alvo quando o token entra.
+- `showTap` e `hideTap` põem o dedo no último `[data-tap]` visível e o estado pressionado.
+- `syncMedia(screen, playing)`: vídeos mudos, em linha, com pôster e `preload="none"`, tocam só na cena ativa e com movimento.
+- `live()`: há movimento (sem movimento reduzido, sem `body.is-paused`, aba visível).
 
-`scene(id, kind, tema, html, cls, gestos)`:
+Tipos de cena (`scene(id, kind, tema, html, cls, gestos)`): `base` (fundo), `push` (entra pela direita), `sheet` (sobe de baixo), `switch` (troca de app), `modal` e `fade`. `cm-scene--part` é uma folha parcial; `cm-scene--web`, uma página no Safari.
 
-- `kind` diz como a cena entra:
-  - `base` é o fundo;
-  - `push` entra pela direita, e a cena anterior recua 26% e escurece um pouco;
-  - `sheet` sobe de baixo, e a anterior escurece mais;
-  - `fade` aparece no lugar.
-- `tema` (`claro` ou `escuro`) da cena na tela pinta a barra de status e o indicador de início. `gestos` troca só a cor do indicador, para uma folha parcial sobre fundo escuro.
-- Classes úteis:
-  - `cm-scene--part`: fundo transparente, para uma folha parcial por cima da cena anterior;
-  - `cm-scene--web`: página aberta no Safari (deixa espaço para a barra de status e para a barra flutuante do Safari).
+Tamanho do aparelho: `--phone-w` vem da altura e da largura da tela (`experience-demos.css`). A partir de 900 px, até 420 px; abaixo, até 380 px; até 480 px de largura, `100vw - 16px` com o aro fino (`.ch-iphone--compacto`); no celular deitado, `(100svh - 16px) x 0,46`. Abaixo de 300 px de tela, o conteúdo do app aumenta 1,3 vez. Escreva tudo dentro do aparelho em `calc(var(--u)*N)` (`--u` é 1/412 da tela), nunca em px.
 
-A cada quadro, `applyFrame` em `experience-player.js` faz o seguinte:
-
-1. **`data-scene` e `data-pos`.** Põe `data-scene` no `.cm-screen` e marca cada cena com `data-pos="on"`, `"under"` ou `"off"`. A cena anterior fica `under` (visível por baixo) só quando a nova é `push` ou `sheet`.
-2. **`data-state`.** Escreve no `.cm-screen` os tokens do quadro mais o último estado de cada cena que já saiu. Assim, o vídeo debaixo de uma folha continua no último corte.
-3. **`data-tap`.** Remove o `data-tap` do quadro anterior. Depois que a cena assenta, põe o do quadro atual, para o CSS desenhar o botão pressionado.
-4. **Espera e posicionamento.** Espera a cena assentar (820 ms quando a cena muda, para a página "carregar"; 440 ms quando não muda; 20 ms sem movimento) e então posiciona:
-   - o ponto numerado no último elemento visível com `data-hs~="n"`, em que `n` é o número do passo (1, 2 ou 3). Um elemento pode ter `data-hs="2 3"`. `data-hs-at="tl"` põe o ponto no canto superior esquerdo, longe de um rótulo de anúncio no canto direito;
-   - o dedo no último elemento visível com `data-tap` igual ao `toque` do quadro.
-
-   "Visível" quer dizer com tamanho, `visibility: visible` e nenhum ancestral com opacidade 0 dentro da cena. Por isso o dedo não pousa num botão que o quadro ainda não revelou.
-5. **Vídeo.** Atualiza a barra `[data-cx-progress]`, somando só os quadros com `video: 1`.
-
-Nem o ponto nem o dedo ficam sobre a barra de status ou a Dynamic Island, nem fora da tela.
-
-### Vocabulário de tokens
-
-Os tokens não são globais: cada mock define os seus no CSS, e o mesmo nome pode ter sentidos diferentes em mocks diferentes. Antes de usar um token, procure `data-state~="token"` no CSS do mock.
-
-| Token | Onde | O que faz |
-|---|---|---|
-| `lit` | Quase todos os anúncios | A barra ou botão de ação acende (`.ig-cta`, `.igr-cta`, `.igs-link--ad`, `.igl-fixado`, `.tt-cta`, `.fb-link-btn`, `.cm-fbv-cta`, `.cm-fbb-cta`, `.cm-vcta--yt`, `.cm-xp-ad`) |
-| `done` | Todos | Tela final: a folha `.cm-done` dos mocks próprios; nos sites, o passo final já tem a confirmação |
-| `aviso` | Formatos de `AVISOS` | Banner de notificação do iOS desce do alto |
-| `c2`, `c3` | `igFeed`, `fbFeed` | Carrossel no cartão 2 ou 3, com contador e pontos |
-| `s2` | `igReels`, `ttFeed` | Segundo corte do vídeo (`.cm-shot[data-shot="2"]`) |
-| `s2` | `ytInstream` | Painel do carro e botão Pular |
-| `s2` | `gDisplay` | Título alternado do anúncio |
-| `s2`, `s3` | `blogArticle` | Rolagem do artigo (os três passos, depois o bloco Oferecido por) |
-| `s2` | `mapsLocal` | Ficha patrocinada aberta |
-| `paid`, `s2`, `s3` | `ytLive` | Aviso de promoção paga, cartela #publi, mensagem fixada |
-| `s1`, `ty`, `s3`, `s4`, `s2` | `gptAnswer` | 1ª resposta; campo digitando; 2ª pergunta e "pensando"; 2ª resposta e sugestões; divisor, frase e cartão do anúncio |
-| `typing`, `r` | `gSearch` | Busca digitando; resultados |
-| `typing` | `mapsLocal` | Busca digitando |
-| `p2` a `p4` | `liFeed` | Páginas do documento |
-| `p4`, `mail` | `seoOrganic` | Planta de 4 quartos; folha do e-mail |
-| `q`, `ok` | `ytShorts` (cena video) | Exercício na tela; resposta certa |
-| `load` | `ytShorts` (cena store) | Instalando |
-| `skip` | `fbbreak` | "Pular em 5" vira "Pular" |
-| `open` | `waAd` | Legenda aberta |
-| `m2` a `m5`, `ls`, `lp` | `waAd` (cena chat) | Mensagens da conversa; lista de opções aberta; opção escolhida |
-| `ct` | `waCatalog` (cena item) | Barra "Ver carrinho" |
-| `k1` a `k4` | `waCatalog` (cena chat) | Etapas da conversa do pedido |
-| `w2` a `w6` | Sites (seção 6) | Passo ativo do site |
-| `q1` a `q6` | Sites | Escolha acesa e o que ela revela |
+Os tokens não são globais: cada mock define os seus. Antes de usar um token, procure `data-state~="token"` no CSS do mock. Nas telas de busca, `[data-in=token]` aparece enquanto o estado tem o token e `[data-out=token]` some a partir dele. Nas automações (classe `au` na tela), as mesmas regras vêm geradas no fim de `automation-mocks.css`.
 
 ## 6. Sites dos anunciantes
 
-`campaign-sites.js` exporta `makeSites({ I, pic, marca, esc, CLIENTES })`, que devolve uma função por site. Cada site tem visual próprio e os passos do fluxo real daquele tipo de negócio.
+`campaign-sites.js` exporta `makeSites({I, pic, marca, esc, avatar, planta})`, com uma função por site e o `kit` de peças: `step`, `site`, `body`, `foot`, `cta`, `pk`, `label`, `field`, `tick`, `show`, `ok`, `actions`, `back`, `days`, `slots`, `ticket`, `calendar`, `mapa`, `trilha`, `lista`, `legal`, `horario`, `banco`, `qr`, `BR_CODE`, `PRECO`, `horaFala`.
 
-### Peças
+O motor de passos fica no fim de `campaign-sites.css` ("Step engine (generated)"): `wN` mostra o passo N (até `w8`), `qN` acende `[data-pick~="qN"]` e revela `[data-show~="qN"]` (até `q8`), e as teclas `a` a `k` ganham o estado pressionado. Para ir além, copie a última regra de cada grupo.
 
-| Função | Gera |
-|---|---|
-| `site(key, cls, steps, brand)` | `.cm-site.cm-site--<cls>` com `--brand` (cor do cliente, ou `brand` quando o formulário é da plataforma). Cada item de `steps` vira `section.cm-site-step[data-step=n]`. |
-| `body(html, cls)`, `foot(html)` | Corpo rolável e rodapé fixo do passo |
-| `cta(text, tap, hs = '3')` | Botão principal com `data-tap` |
-| `pk(text, { q, on, tap, cls, sub, off, icon })` | Opção (chip, rádio, dia, horário). `q` liga a opção a um token `qN`; `on` já vem marcada; `off` indisponível |
-| `days([[dia, número, flag]], q, tap)` | Fila de dias; flag `'on'`, `'off'` ou `'q'` (a escolhida pelo toque) |
-| `slots(lista, escolhido, q, tap, cls)` | Lista de horários |
-| `calendar({ free, pick, q, tap })` | Outubro de 2026 (começa na quinta, hoje é dia 21); `free` com ponto, `pick` é o dia tocado |
-| `show(q, html)` | Bloco que aparece quando `qN` entra |
-| `field`, `label`, `tick`, `back`, `actions` | Campo preenchido, rótulo, item marcado, cabeçalho com voltar, ações finais |
-| `ok(title, text)` | Selo de confirmação, que pula quando o passo entra |
-| `ticket([[rótulo, valor, largura]])` | Resumo final; largura `1` ocupa a linha toda, `2` ocupa duas colunas |
-| `mapa(lugar, endereço)` | Mapa com alfinete |
+Cada site usa o tema da marca (`CLIENTES[k].tema`: fonte, estilo, peso, raio e onde vai o acento) e a assinatura na peça e no anúncio. Os quadros e o site precisam combinar: o `q` de uma escolha fica no estado de todos os quadros seguintes do mesmo passo.
 
-### Motor de passos
-
-As regras ficam no fim de `campaign-sites.css` ("Step engine (generated)"). Elas foram geradas uma vez e coladas; não há script gerador no repositório.
-
-- O passo 1 aparece por padrão. `wN` mostra o passo N e empurra os anteriores para a esquerda (-28%, apagados).
-- `qN` acende `[data-pick~="qN"]` (variável registrada `--pk-on`) e revela `[data-show~="qN"]`.
-- `data-tap` de `a` a `h` ganha o estado pressionado quando o quadro toca nele.
-- `.cm-site-ok` do passo ativo pula ao aparecer.
-- Os limites são `w6`, `q6` e as teclas `a` a `h`. Para ir além, copie a última regra de cada grupo e troque o número ou a letra.
-
-Os quadros e o site precisam combinar. No feed do Instagram (`sotaque()`, variante `teste`):
-
-| Quadro | Estado e toque | No site |
+| Site | Cliente | Caminho |
 |---|---|---|
-| 4 | `toque: 'a'` | "Fazer o teste de nível", passo 1 |
-| 5 | `w2` | Pergunta 3 de 3 |
-| 6 | `w2 q1`, `toque: 'b'` | A opção certa acende (`data-pick="q1"`) e o retorno aparece (`show('q1', ...)`) |
-| 7 | `w2 q1`, `toque: 'c'` | "Ver meu resultado" |
-| 8 | `w3` | Nível B1 e horários |
-| 9 | `w3 q2`, `toque: 'd'` | 19:00 |
-| 10 | `w3 q2`, `toque: 'e'` | Continuar |
-| 11 | `w4`, `toque: 'f'` | Dados e "Confirmar aula" |
-| 12 | `w5 done` | Aula marcada (ticket) |
+| `tacho` | Restaurante | Cardápio de sábado, reserva (dia, pessoas, horário), dados e ocasião; ou retirada com sacola e Pix na retirada |
+| `sotaque` | Escola | Teste de nível em 3 perguntas, nível B1, horário, dados, aula marcada |
+| `seixo` | Clínica | Serviço, calendário e horário, dados, avaliação agendada com mapa |
+| `falesia` | Incorporadora | Galeria do decorado, tipo de visita e horário, contato, visita agendada |
+| `teclaria` | Loja | Produto, carrinho, entrega, Pix com QR e copia e cola, banco com Face ID, pedido pago com rastreio; ou lista de espera |
+| `bandeirola` | Agência | Montador de roteiro (noites, quem vai, o que ver) ou saída com pré-reserva |
+| `arrimo` | Gestora | Calendário e horário, dados e assunto, conversa agendada |
+| `ondara` | Concessionária | Versão, loja e dia, dados com carteira de motorista, test drive agendado |
+| `metaForm`, `linkedinForm` | Plataformas | Formulário instantâneo da Meta e Lead Gen do LinkedIn, com dados do perfil, uma pergunta e revisão |
 
-### Sites e variantes
+## 7. Telas das redes
 
-| Site | Visual | Variantes e passos |
-|---|---|---|
-| `tacho` (restaurante) | Papel quente, títulos serifados, cardápio primeiro | `reserva` (padrão): cardápio, dia, pessoas e horário, dados e ocasião, reserva solicitada. `direto` (`{ slot, people, area }`): começa na reserva. `retirada`: cardápio com adicionar e sacola, janela de retirada, pagamento na retirada, pedido 0427 com acompanhamento |
-| `sotaque` (escola) | Coral, formas redondas | `teste` (padrão): apresentação, pergunta, nível e horário, dados, aula marcada. `agenda` com `pick: 'nivel'` ou `'modalidade'`: horário, dados, aula marcada (online ou na unidade) |
-| `seixo` (clínica) | Branco e verde-água, barra de 3 etapas | Serviço, calendário e horário, dados do paciente, avaliação agendada com mapa |
-| `falesia` (incorporadora) | Areia e azul-petróleo, serifa | Galeria do decorado, tipo de visita e horário, contato, visita agendada com mapa |
-| `teclaria` (loja) | Branco e violeta, produto primeiro | `compra` (padrão): produto com memória e cor, botão que vira "No carrinho" e contador, carrinho, pagamento com Pix, pedido 10482 com Pix copia e cola. `espera`: lista de espera do branco |
-| `bandeirola` (agência) | Ocre, festivo | `roteiro` (padrão): dias e com quem, o que ver, roteiro gerado e consultor no WhatsApp. `saida`: saída e viajantes, pré-reserva sem pagamento, próximos passos |
-| `arrimo` (gestora) | Azul-marinho e papel, serifa | Calendário e horário, dados e assunto, conversa agendada |
-| `ondara` (concessionária) | Verde-escuro e branco | Versão, loja e período, dados com carteira de motorista, pedido enviado |
-| `metaForm` | Formulário instantâneo da Meta (`#0866ff`) | Capa, pergunta e dados do perfil, revisão, obrigado |
-| `linkedinForm` | Lead Gen do LinkedIn (`#0a66c2`) | Dados do perfil, revisão, guia liberado em PDF |
+`lab-telas.js` exporta `makeLabScreens({marca, esc, CLIENTES, pic})` com `feedAd`, `storyAd`, `liveAd`, `reelsAd`, `explore`, `postAberto`, `direct`, `tiktokAd`, `youtubeAd`, `youtubeLive`, `facebookAd`, `facebookReel`, `facebookWatch`, `fbStrip`, `blogArticle` e `avatar`. As telas seguem as medidas dos apps em modo escuro (classes `ig-`, `igs-`, `igr-`, `tt-`, `yt-`, `fb-`, `blog-`) e a especificação de `reports/Fidelidade por rede.md`:
 
-Os temas ficam em `campaign-sites.css`, por `.cm-site--<cls>`, com `--site-bg`, `--site-ink`, `--site-line`, `--site-soft`, `--site-muted` e `--site-r`.
+- Instagram e Facebook: "Anúncio" no lugar do antigo "Patrocinado", CTA oficial e nenhuma contagem de curtidas.
+- O anúncio no meio do vídeo do Facebook não tem "Pular".
+- YouTube: posição do anúncio e "Pular" depois de 5 s; App Store com Obter e depois Abrir.
 
-## 7. Telas do laboratório
+Sem tela própria nas redes, Shorts, Facebook vídeo e intervalos, Maps, WhatsApp e ChatGPT usam telas de `channel-mocks.css` e `campaign-search.css`.
 
-`lab-telas.js` exporta `makeLabScreens({ marca, esc, CLIENTES, pic })` e `IG_FUNDO` (`#0c1014`). As telas foram portadas do estúdio do mídia kit Fatos (repositório privado `onstandbyx-png/roblox`, `src/components/islands/estudio/*.tsx` e `src/styles/estudio-*.css`). Mantêm os mesmos nomes de classe (`ig-`, `igs-`, `igr-`, `tt-`, `yt-`, `fb-`, `blog-`) e as mesmas medidas, em modo escuro, como nas capturas do app.
+## 8. Clientes fictícios e dados da história
 
-Adaptações para anúncio:
+Os 8 tipos vêm dos serviços que o portfólio mostra. Os nomes ficam só em `marcas.js`: nenhum outro arquivo escreve um nome de marca, e o teste `tests/sections.test.mjs` confere isso no mural.
 
-- a segunda linha do cabeçalho diz "Patrocinado";
-- há uma barra de ação sob a mídia que acende com `lit`;
-- não há contagem de curtidas, comentários ou visualizações.
+| Chave | Marca (curta) | Arroba e domínio | Cor | Assinatura | Aviso do setor (`LEGAL`) |
+|---|---|---|---|---|---|
+| `restaurante` | Casa Amaro | casaamaro, casaamaro.exemplo | `#a4462a` | Feijoada no tacho, todo sábado. | Nenhum |
+| `clinica` | Vilela Odontologia (Vilela) | vilelaodontologia, vilela.exemplo | `#2f6f73` | Avaliação sem pressa, plano por escrito. | Responsável técnica e CRO, registro fictício |
+| `incorporadora` | Atlântica Incorporadora (Atlântica) | atlanticaincorporadora, atlantica.exemplo | `#1f4e5f` | Casas na falésia, sala voltada para o mar. | Imagens ilustrativas, CRECI e registro de incorporação, dados fictícios |
+| `varejo` | Ponto Tech | pontotech, pontotech.exemplo | `#5b3df5` | O notebook certo para quem cria. | Nenhum |
+| `turismo` | Destino Certo Viagens (Destino Certo) | destinocerto, destinocerto.exemplo | `#d9822b` | Festas do interior, em grupo pequeno. | Nenhum |
+| `educacao` | Speak Up Idiomas (Speak Up) | speakupidiomas, speakup.exemplo | `#e5533d` | Conversação para quem trava na hora de falar. | Nenhum |
+| `financas` | Valore Patrimônio (Valore) | valorepatrimonio, valore.exemplo | `#0f1a2c` | Patrimônio da família, com plano de sucessão. | "Investimentos envolvem riscos." |
+| `automotivo` | EcoDrive Elétricos (EcoDrive) | ecodrive, ecodrive.exemplo | `#0f6b5c` | Test drive com a recarga explicada. | `null` até conferir o texto do CONTRAN |
 
-| Função | Elemento do laboratório | Usada em | Parâmetros |
+**Como os nomes foram escolhidos.** O dono escolheu os 8 nomes em 27/10/2026 para soar como negócios brasileiros e decidiu que não haveria pesquisa de nome nem de arroba (nem registro.br, nem INPI, nem busca na web). A auditoria do mesmo dia achou domínios `.com.br` ativos com cinco desses nomes (speakupidiomas, vilelaodontologia, pontotech, destinocerto e ecodrive); o dono manteve os nomes. Por isso cada exemplo diz "marca fictícia" fora do aparelho, todo domínio termina em `.exemplo` e uma troca futura muda só `marcas.js` (e pede rodar `scripts/capture-mural.mjs` de novo, porque os quadros do mural mostram os nomes).
+
+**Terceiros** (`TERCEIROS`), todos inventados sem pesquisa: Banco Pitanga, Jatobá Pagamentos, a revista Caderno Empresa & Família, o portal Estrada Afora, os criadores Mesa de Edição, Panela de Domingo e Ju Tavares, a empresa Alves & Rocha Contabilidade, comentaristas só com nome de exibição e ruas com nomes de árvores.
+
+**A história de todos os fluxos:**
+
+- **Pessoa:** Marina Alves, sócia, Pinheiros, São Paulo; telefone, e-mail e CPF sempre mascarados (`PESSOA`).
+- **Hoje:** quarta-feira, 21/10/2026, 10:09 (`HOJE`). O relógio de cada fluxo anda a partir daí e nunca volta.
+- **Pedidos:** 10482 (TikTok), 10517 (RCS), 0427 (live do restaurante), 0428 (catálogo).
+- **Agenda:** reserva no sábado, 24/10, às 13h; test drive no sábado, 24/10, às 10h; visita ao decorado no sábado, 24/10, às 11h30; conversa com a gestora na terça, 27/10, às 10h; avaliação na quinta, 29/10, às 9h (alternativa sexta, 30/10, às 14h); aula experimental na quinta, 29/10, às 19h; encomenda para sábado, 31/10, ao meio-dia.
+- **Viagem:** Festa do Divino em Pirenópolis, maio de 2027, cavalhadas de 16 a 18/05; saídas de 14 a 18 e de 15 a 18 de maio; família de 4 (filhos de 8 e 2 anos). Criança de 2 anos completos ocupa assento; no colo, só até 1 ano e 11 meses.
+- **Pix Automático:** cobranças em 5/11, 5/12 e 5/1; a de 5/12 falha, o aviso chega na sexta, 4/12, com "Cancelar este pagamento (até 23h59 de hoje)", e a cobrança volta em 5/1/2027.
+
+## 9. Os 30 formatos
+
+| Canal e formato | Cliente | Selo | Jornada |
 |---|---|---|---|
-| `feedAd` | fatos-ig-feed-carrossel-v1 | `igFeed`, `waAd` | `{ key, media, carousel, cta: { text, tap, hs, lead, cls }, caption: { html, hs }, captionOpen }` |
-| `storyAd` | fatos-ig-story-reels-v1 | `igstory` | `{ key, media, cta, bars }` |
-| `liveAd` | Moldura do story, adaptada para live | `iglive` | `{ key, media, comments: [[quem, texto, daMarca, hs]], cta }` |
-| `reelsAd` | fatos-ig-story-reels-v1 | `igReels` | `{ key, video, caption, cta, audio }` |
-| `explore`, `postAberto` | fatos-ig-feed-carrossel-v1 | `igexplore` | `{ cells }`; `{ key, media, cta, caption }` |
-| `tiktokAd` | fatos-tiktok-para-voce-v1 | `ttFeed` | `{ key, video, caption, cta, sound }` |
-| `youtubeAd` | fatos-youtube-player-v1 | `ytInstream` | `{ key, player, panel: { title, button, tap, hs }, title, meta }` |
-| `youtubeLive` | fatos-youtube-player-v1 | `ytLive` | `{ player, title, meta, chat }` |
-| `facebookAd` | fatos-facebook-feed-v1 | `fbFeed`, `fbpost` | `{ key, text, media, after, next: { name, time, text, media } }` |
-| `blogArticle` | fatos-blog-safari-v1 | `blogArticle` | `{ key, site, domain, kicker, title, by, photo, body, offer: { text, button }, tail }` |
-| `.sf-activity`, `.sf-suggestions` (CSS) | smiile-chat-fiel-atividade-v1, smiile-chatfiel-pedidos-sugeridos-v1 | `gptAnswer` | Classes no HTML do mock |
-
-Outros elementos do laboratório que entraram:
-
-- o seletor de plataforma do estúdio Fatos virou a grade de canais;
-- o controle segmentado do smiile virou os formatos;
-- formulário em etapas (K18), micro carrinho com progresso e chips sugeridos estão nos sites;
-- a barra de notificação do mídia kit virou o banner do iOS;
-- as cenas `cena-esportes`, `cena-nerd` e `cena-crencas` do estúdio Fatos são imagens.
-
-Sem módulo no laboratório, estes formatos usam telas próprias em `channel-mocks.css`: Shorts, Facebook vídeo e intervalos, LinkedIn, Google Pesquisa, Display e SEO, Maps, as telas do WhatsApp e a moldura do ChatGPT.
-
-Medidas: `--u` é 1/412 da largura da tela (o aparelho tem tela lógica de 412 x 895,2). `--topo` e `--pe` são as áreas seguras do iOS. Escreva tudo em `calc(var(--u)*N)`, nunca em px, para a tela escalar em qualquer largura.
-
-## 8. Nichos e clientes fictícios
-
-Os 8 tipos vêm dos serviços que o portfólio já mostra. A clínica entra como inferência (é o cliente típico de agendamento por busca e WhatsApp), e a concessionária, pelo alcance.
-
-| Tipo (`CLIENTES`) | Marca | Arroba e domínio | Cor | Símbolo | Formatos | Site | Aviso do setor |
-|---|---|---|---|---|---|---|---|
-| `restaurante` | Casa Amaro | casaamaro, casaamaro.exemplo | `#a4462a` | "tm" | Instagram Reels e Live, Facebook Vídeo, Maps, WhatsApp Catálogo (e o vídeo antes do intervalo do Facebook) | `tacho` | Nenhum |
-| `clinica` | Vilela Odontologia | vilelaodontologia, vilela.exemplo | `#2f6f73` | Vilela (elipse) | Instagram Explorar, Google Pesquisa, WhatsApp clique para conversar | `seixo` | "[RT e CRO]" no anúncio e "Responsável técnico e CRO aparecem aqui." no site |
-| `incorporadora` | Atlântica Incorporadora | atlanticaincorporadora, atlantica.exemplo | `#1f4e5f` | Falésia e ondas | Facebook Feed e Post, SEO | `falesia`, `metaForm` | "Imagens ilustrativas. CRECI e registro de incorporação aparecem aqui." |
-| `varejo` | Ponto Tech (loja de tecnologia) | teclaria, pontotech.exemplo | `#5b3df5` | Tecla | TikTok, YouTube Live | `teclaria` | Nenhum |
-| `turismo` | Destino Certo Viagens | bandeirola, destinocerto.exemplo | `#d9822b` | Destino Certos | Google Display, ChatGPT | `bandeirola` | Nenhum |
-| `educacao` | Speak Up Idiomas (curta: Speak Up) | speakupidiomas, speakup.exemplo | `#e5533d` | Balão de fala | Instagram Feed e Story, Facebook intervalos, YouTube Shorts | `sotaque` | Nenhum |
-| `financas` | Valore Patrimônio | arrimo, valore.exemplo | `#0f1a2c` | Glifo dourado (logo fictício do estúdio Fatos) | LinkedIn, Publieditorial | `arrimo`, `linkedinForm` | "Investimentos envolvem riscos." e nenhuma imagem de gráfico de rendimento |
-| `automotivo` | EcoDrive Elétricos | ondara, ecodrive.exemplo | `#0f6b5c` | Onda | YouTube anúncio no vídeo | `ondara` | Mensagem educativa de trânsito (CTB, art. 77-B), texto oficial a definir |
-
-Dados de exemplo usados nos fluxos:
-
-- **Pessoa:** Marina Alves, (11) 90000-0000, marina@exemplo.com.
-- **Endereços:** "Rua Exemplo", "Av. Exemplo", em bairros de São Paulo.
-- **Datas:** hoje é quarta, 21/10/2026, e o relógio marca 10:09. Os agendamentos caem em sábado, 24; terça, 27; quinta, 29; e sexta, 30 de outubro. As viagens são em junho.
-
-Nomes atuais (27/10/2026): escolhidos a pedido do dono para soar como negócios brasileiros reais, sem pesquisa de nome. Os nomes anteriores (Tacho Miúdo, Seixo Odontologia, Morada Falésia, Teclaria, Bandeirola Viagens, Sotaque Livre Idiomas, Arrimo Patrimônio, Ondara Elétricos) saíram por soarem estranhos. Os produtos da loja não levam o nome dela: Notebook Creator 15 e Notebook Slim 14.
-
-## 9. Os 22 fluxos
-
-Cada linha resume: onde está o anúncio, o que prende a atenção, o que retém, o caminho da conversão e como termina. "Aviso" é a notificação do iOS acrescentada no fim.
-
-| Canal e formato | Cliente | Selo | Atenção | Retenção | Conversão | Fim | Aviso |
-|---|---|---|---|---|---|---|---|
-| Instagram, Feed | Speak Up | Patrocinado | Pergunta no 1º cartão do carrossel | Desliza: três expressões e a resposta | Teste de nível com uma pergunta, nível B1, horário, dados | Aula marcada (ticket e lista do que preparar) | E-mail |
-| Instagram, Reels | Casa Amaro | Patrocinado | Tacho fervendo | Corte para o prato | Cardápio, reserva (dia, pessoas, horário), dados e ocasião | Reserva solicitada | WhatsApp |
-| Instagram, Story | Speak Up | Patrocinado | Pergunta sobre a foto | Adesivo de link acende | Nível, horário, dados | Aula marcada | E-mail |
-| Instagram, Live | Casa Amaro | Patrocinado | Selo Ao vivo e a feijoada | A marca responde um comentário | Retirada: adicionar, sacola, janela, pagamento na retirada | Pedido 0427 com acompanhamento | WhatsApp |
-| Instagram, Explorar | Vilela | Patrocinado | Post patrocinado na grade | Abre em tela cheia | Serviço, calendário, horário, dados | Avaliação agendada com mapa | WhatsApp |
-| Facebook, Feed | Atlântica Incorporadora | Patrocinado | Vista do mar no 1º cartão | Sala e planta nos outros cartões | Formulário instantâneo: pergunta, dados do perfil, revisão | Obrigado | WhatsApp do corretor |
-| Facebook, Post | Atlântica Incorporadora | Patrocinado | Sala com vista | Barra do link acende | Galeria, tipo de visita, horário, contato | Visita agendada com mapa | E-mail |
-| Facebook, Vídeo | Casa Amaro | Patrocinado | Prato no 1º quadro | Botão acende no fim do vídeo | Reserva direta (12:30, 4 pessoas, varanda), dados | Reserva solicitada | WhatsApp |
-| Facebook, Ad breaks | Speak Up | Patrocinado | Vídeo começa e a pausa chega | "Pular em 5" vira "Pular" | Aula na unidade, horário, dados | Aula marcada na unidade | E-mail |
-| TikTok, In-Feed | Ponto Tech | Patrocinado | Pergunta em texto nativo | 2º corte mostra os dois usos | Produto (32 GB), carrinho, pagamento com Pix | Pedido 10482 com Pix copia e cola | E-mail |
-| YouTube, Anúncio no vídeo | EcoDrive | Patrocinado | Mensagem antes do Pular | Painel mostra a carga | Versão, loja e dia, dados com carteira de motorista | Pedido de test drive | WhatsApp |
-| YouTube, Shorts | Speak Up | Patrocinado | Frase curta | Exercício com lacuna e resposta | Instalar, folha da loja de apps, Obter | App instalado (Abrir) | Nenhum |
-| YouTube, Live | Ponto Tech com um criador | Inclui promoção paga | Aviso de promoção paga | Cartela #publi e chat | Link fixado, lista de espera | Na lista | Nenhum |
-| LinkedIn, Documento | Valore | Promovido | Problema do sócio na 1ª frase | Páginas de amostra | Desbloquear, formulário com dados do perfil, revisão | Guia em PDF liberado | Nenhum |
-| Google Ads, Pesquisa | Vilela | Resultado patrocinado | "dentista perto de mim" digitando | Título responde à busca | Ligar, folha do iPhone | Chamando | Nenhum |
-| Google Ads, Display | Destino Certo | Anúncio | Banner na matéria sobre festas | Título muda (combinação de recursos) | Saída de junho, pré-reserva sem pagamento | Pré-reserva recebida | WhatsApp |
-| SEO, Orgânico | Atlântica Incorporadora | Orgânico, sem anúncio | Resultado com o termo buscado | Plantas de 3 e 4 quartos | PDF em troca do e-mail | E-mail enviado | E-mail |
-| ChatGPT, Resposta | Destino Certo | Anúncio | Conversa em dois turnos | Cartão do anúncio abaixo da resposta, separado dela | Monte seu roteiro (dias, o que ver), roteiro gerado, consultor | Consultor vai chamar | Nenhum |
-| Google Maps, Local | Casa Amaro | Patrocinado | Alfinete quadrado no caminho | Ficha com prato e horário | Rotas, Iniciar | Navegação iniciada | Nenhum |
-| WhatsApp, Clique para conversar | Vilela | Patrocinado | Hora marcada na própria arte | Legenda convida a contar mais | Conversa com mensagem pronta, automação, lista, período, horário | Avaliação agendada e localização | Nenhum |
-| WhatsApp, Catálogo | Casa Amaro | Catálogo, não é anúncio | Vitrine no perfil | Coleções por ocasião | Item, carrinho, pedido, atendimento automático | Pedido confirmado e lembrete | Nenhum |
-| Publieditorial, Artigo | Valore | Conteúdo patrocinado | Aviso de patrocínio antes do título | Leitura útil, marca no fim | Agenda: dia, hora, assunto | Conversa agendada | E-mail |
+| Instagram, Feed | Speak Up | Anúncio | Carrossel, teste de nível em 3 perguntas, aula marcada; convite por e-mail |
+| Instagram, Reels | Casa Amaro | Anúncio | Vídeo do fogo e do prato, menu, mesa reservada; confirmação no WhatsApp |
+| Instagram, Story | Vilela | Anúncio | Enquete, resposta ao story, Direct com a assistente virtual, avaliação marcada |
+| Instagram, Live | Casa Amaro | Anúncio | Live, comentário, menu no Direct, pedido 0427 para retirada |
+| Instagram, Explorar | Vilela | Anúncio | Bloco no Explorar, Reels, site, avaliação agendada |
+| Instagram, Comentário e Direct | Ponto Tech | Anúncio | Automação (seção 10) |
+| Facebook, Feed | Atlântica | Anúncio | Carrossel, formulário instantâneo, visita ao decorado |
+| Facebook, Post | Casa Amaro | Anúncio | Evento, interesse, reserva |
+| Facebook, Vídeo | Casa Amaro | Anúncio | Reels do Facebook, reserva, evento na agenda do iPhone |
+| Facebook, Ad breaks | EcoDrive | Anúncio | Intervalo no vídeo, sem Pular, formulário, test drive |
+| TikTok, In-Feed | Ponto Tech | Patrocinado | Vídeo, produto, carrinho, revisão, Pix com QR, banco com Face ID, pedido 10482 pago |
+| YouTube, Anúncio no vídeo | EcoDrive | Patrocinado | Anúncio antes do vídeo, Pular aos 5 s, página do test drive, agendado |
+| YouTube, Shorts | Speak Up | Patrocinado | Exercício, App Store, Obter, app aberto |
+| YouTube, Live | Ponto Tech com um criador | Inclui promoção paga | #publi, chat, link fixado, lista de espera |
+| LinkedIn, Documento | Valore | Promovido | Guia em páginas, Desbloquear, Lead Gen com uma pergunta, guia liberado no feed |
+| Google, Pesquisa | Vilela | Resultado patrocinado | Busca, anúncio com Ligar e locais no mapa, folha do iPhone, ligação com tempo correndo, ilha dinâmica, confirmação no WhatsApp |
+| Google, Display | Destino Certo | Anúncio | Matéria do portal, anúncio que troca o título, saídas de maio, pré-reserva com sinal por Pix ou só reserva |
+| SEO, Orgânico | Atlântica | Orgânico, sem anúncio | Resultado orgânico, "Pessoas também perguntam", plantas de 3 e 4 quartos, e-mail com consentimento |
+| ChatGPT, Resposta | Destino Certo | Patrocinado | Conversa em dois turnos, resposta com fontes, cartão patrocinado depois da linha cinza, montador de roteiro, WhatsApp com o roteiro anexado |
+| Google Maps, Local | Casa Amaro | Patrocinado | Busca "almoço perto de mim", alfinete quadrado, ficha, Rotas (14 min, 4,2 km), navegação até a porta |
+| WhatsApp, Clique para conversar | Vilela | Anúncio | Cartão da empresa, assistente virtual, lista, botões de resposta, avaliação marcada |
+| WhatsApp, Catálogo | Casa Amaro | Catálogo, não é anúncio | Vitrine, carrinho, resumo do pedido 0428, Pix na retirada, recebido |
+| WhatsApp, Agente e Pix | Destino Certo | Anúncio | Automação (seção 10) |
+| WhatsApp, Chamada | EcoDrive | Conversa, não é anúncio | Automação |
+| Telegram, Grupo | Speak Up | Grupo, não é anúncio | Automação |
+| RCS, Conversa | Ponto Tech | Patrocinado | Automação |
+| Voz com IA, Ligação | Vilela | Ligação pedida, não é anúncio | Automação |
+| Pix Automático, Recorrência | Speak Up | Cobrança recorrente, não é anúncio | Automação |
+| E-mail, Régua | Valore | E-mail com inscrição, não é anúncio | Automação |
+| Publieditorial, Artigo | Valore | Publicidade | Artigo identificado antes do título, "Oferecido por", conversa agendada |
 
 Os formatos sem aviso já terminam numa conversa, numa ligação, numa rota ou num app aberto, que é a confirmação nativa.
 
-## 10. Automações demonstradas
+## 10. Automações e caminhos de falha
 
-Todas são simuladas por estados de CSS. Servem para mostrar ao cliente o que pode ser configurado, não para afirmar que uma integração existe.
+Base: a pesquisa de 27/10/2026 (`reports/Automações complexas por canal.md`). Os fluxos vão além da resposta pronta: agente de IA que se identifica, passagem para uma pessoa com o histórico, pagamento conferido no PSP e conversão devolvida ao anúncio. Todos aparecem no laboratório e em Sistemas.
 
-- **WhatsApp, clique para conversar** (`waAd`):
-  - o anúncio abre a conversa com a mensagem pronta e a prévia do anúncio citada;
-  - a resposta automática ("Mensagem automática") chega com "Ver opções", que abre uma lista de atendimentos;
-  - respostas rápidas pedem o período e depois o horário;
-  - a confirmação chega com a localização da clínica.
+| Automação (`#sistemas/<chave>`) | Cliente | O que mostra |
+|---|---|---|
+| `agente`: WhatsApp, Agente e Pix | Destino Certo | Anúncio de clique para o WhatsApp, assistente virtual que se apresenta, formulário (Flow) com as saídas de maio, dúvida de tarifa que chama a consultora Júlia, pré-reserva, lista de bancos, revisão, Banco Pitanga com Face ID, comprovante, confirmação e roteiro por e-mail |
+| `chamada`: Chamada no WhatsApp | EcoDrive | Pedido de permissão (7 dias), chamada atendida pela IA que avisa a gravação, cronômetro por turno, onda pela voz, transferência para o consultor Rafael com o resumo, registro da chamada na conversa |
+| `instagram`: Comentário e Direct | Ponto Tech | Reel com palavra-chave, resposta privada no Direct, lista de espera do branco e aviso de chegada |
+| `pix`: Pix Automático | Speak Up | Jornada 3 do BCB: QR composto e copia e cola, pedido de autorização (CNPJ, valor máximo, novas tentativas), Face ID, comprovante, telas bloqueadas da véspera, do pagamento, do aviso com cancelar e da falha, pausa de um mês |
+| `rcs`: RCS | Ponto Tech | Busca com Conversar, Mensagens do iPhone com remetente verificado, cartões, pedido 10517, página do PSP no Safari, banco, notificação e pedido pago |
+| `email`: Régua de e-mail | Valore | Três e-mails com o logo da marca, faixa de cancelar inscrição, agenda com três horários e saída da régua quando ela agenda |
+| `telegram`: Telegram | Speak Up | Grupo da comunidade, mensagem que só ela vê, resposta editada, mini app da aula de quinta, compra em Estrelas, assinatura e entrada no grupo da turma |
+| `voz`: Ligação com IA | Vilela | Pedido de ligação com aceite, chamada da IA que se identifica, agenda consultada com a ligação na ilha dinâmica, confirmação no WhatsApp |
 
-  Cada resposta é antecedida pelos três pontos de "digitando".
-- **WhatsApp, catálogo** (`waCatalog`): o carrinho vira uma mensagem de pedido na conversa. A automação pergunta como receber e o horário, manda o resumo com "Confirmar pedido" e confirma com lembrete.
-- **Formulário instantâneo da Meta e Lead Gen do LinkedIn:** campos preenchidos a partir do perfil, uma pergunta do anunciante, revisão e obrigado, com o texto de privacidade de cada plataforma.
-- **Confirmação depois da conversão** (`AVISOS`): e-mail ou WhatsApp do anunciante na notificação do iPhone.
-- **Pedido e pagamento:** acompanhamento de pedido (recebido, em preparo, pronto), Pix copia e cola com prazo e lista de espera com um único aviso.
-- **Agenda:** calendário com dias livres, horários do dia escolhido, lembrete pelo WhatsApp marcado no formulário e "Adicionar à agenda".
-- **ChatGPT:** linhas de atividade enquanto o assistente pensa e pedidos sugeridos depois da resposta (elementos do chat do smiile). O anúncio vem depois de um divisor, apresentado por uma frase cinza.
+Caminhos de falha (`#sistemas/<chave>/falha` e `placementByKey('<canal>/<formato>-falha')`):
+
+| Caminho | O que acontece |
+|---|---|
+| `whatsapp/agente-falha` | Marina fecha a revisão sem pagar; o código expira em 30 minutos; a assistente manda um novo para a mesma pré-reserva, e o CPF não é pedido de novo |
+| `voz/ligacao-falha` | Ela não atende; a clínica escreve no WhatsApp e combina ligar às 14h, dentro do horário |
+| `rcs/conversa-falha` | O aparelho deixa de aceitar RCS comercial; a confirmação chega por SMS, só com texto e o link do pedido |
+| `pix/recorrencia-falha` | Ela cancela só o pagamento de 05/12 na véspera; a autorização continua e a escola oferece pausar dezembro |
+| `email/regua-falha` | Ela cancela a inscrição em um clique, e nenhum outro e-mail da régua sai |
 
 ## 11. Regras de conteúdo
 
-1. **Marcas fictícias.** Todo anunciante é fictício e é identificado fora do aparelho ("Exemplo ilustrativo, marca fictícia."). Nenhuma empresa, pessoa ou celebridade real.
-2. **Sem números inventados.** Nada de métrica, resultado, alcance, avaliação, número de avaliações, depoimento ou preço. Nenhuma contagem de engajamento nas telas: ações só com ícones.
-3. **Identificação de publicidade.** Cada anúncio usa o rótulo da plataforma em pt-BR:
-   - Instagram, Facebook, TikTok, YouTube e Maps: "Patrocinado";
+1. **Marcas fictícias.** Todo anunciante é fictício e é identificado fora do aparelho ("Exemplo ilustrativo, marca fictícia."). Nenhuma empresa, pessoa ou celebridade real. Domínios terminam em `.exemplo`; comentaristas têm nome de exibição, sem arroba.
+2. **Sem números inventados.** Nada de métrica, resultado, alcance, avaliação, depoimento ou preço. Valores sempre como `R$ ••••`. O registro e os contadores de Sistemas são dados de demonstração rotulados como simulados.
+3. **Identificação de publicidade**, como a plataforma faz em pt-BR:
+   - Instagram e Facebook: "Anúncio";
+   - TikTok, YouTube, Maps e ChatGPT: "Patrocinado";
    - LinkedIn: "Promovido";
    - Google Pesquisa: "Resultado patrocinado";
-   - Display e ChatGPT: "Anúncio";
+   - Display: "Anúncio";
    - live de criador: "Inclui promoção paga" e #publi;
-   - publieditorial: "Conteúdo patrocinado por <marca>" antes do título (guia do CONAR).
+   - publieditorial: "Publicidade" antes do título e "Oferecido por".
 
-   Resultado orgânico e catálogo nunca levam rótulo de anúncio (o teste confere o orgânico).
-4. **Logos de plataforma.** Só os arquivos oficiais de `channel-logos.js`, sem mudar forma nem cor, e só onde a própria interface mostra a marca. Os outros glifos são genéricos (`PATHS`, ícones portados do laboratório). O publieditorial não tem logo: usa um glifo de documento.
-5. **Fotos.**
-   - Nenhuma pessoa identificável, logotipo, texto legível ou preço.
-   - Origem e licença registradas em `public/assets/portfolio/canais/SOURCES.md`.
-   - Fotos geradas por IA (estúdio Fatos) disparam "Imagens geradas por IA." na nota (`AI_IMAGES` em `experience-player.js`).
-6. **Avisos de setor** como marcador, sem número inventado (tabela da seção 8).
-7. **Texto.**
-   - pt-BR, frases em caixa normal, voz ativa.
-   - `desc` descreve o que a tela mostra.
-   - Datas e horários no formato do app ("Qui, 29 out", "19:00").
+   Resultado orgânico, catálogo, grupo, ligação pedida, cobrança e e-mail com inscrição nunca levam rótulo de anúncio.
+4. **Logos de plataforma.** Só os arquivos oficiais de `channel-logos.js`, sem mudar forma nem cor, e só onde a própria interface mostra a marca. RCS, Voz, Pix Automático, E-mail e Publieditorial usam um glifo genérico.
+5. **Fotos e vídeos.**
+   - Só acervo licenciado: StockSnap CC0 pela API do Openverse e Wikimedia Commons (CC BY e CC BY-SA). Nenhuma imagem gerada por IA, nenhuma do Unsplash, e Pexels só se abrir sem verificação contra robôs.
+   - Nenhuma pessoa identificável, logotipo, placa, texto legível ou preço.
+   - Cada arquivo tem fonte, autor, licença e recorte em `scripts/assets/acervo.json`, e aparece em `SOURCES.md` e em `/creditos`. Créditos de CC BY e CC BY-SA aparecem na nota do player (`IMG_META.credito`).
+   - Vídeos mudos, em linha, em laço, com pôster `.webp` e `preload="none"`, tocando só na cena ativa.
+6. **Avisos de setor** a partir de `LEGAL`, sem número de verdade.
+7. **Texto.** pt-BR, concreto, no presente, voz ativa, sem espaço reservado ("Exemplo", "aqui", "0000-0000") e sem jargão interno no que aparece. Datas e horários no formato do app ("qui, 29 out", "19:00"), sempre calculados por `dataCurta`, `dataLonga` e `diaSemana`.
+8. **IA sempre se identifica** como assistente virtual e oferece uma pessoa (seção 16).
 
 ## 12. Receitas de alteração
 
 ### 12.1 Mudar texto, tempo ou ordem de um quadro
 
-Edite o objeto em `channels` (`campaign-channels.js`). Se o texto aparece dentro do aparelho, mude também o HTML do mock ou do site, e mantenha `desc` igual ao que a tela mostra.
+Edite o quadro no arquivo do formato (`campaign-channels.js`, `campaign-search.js` ou `automation-flows.js`). Se o texto aparece dentro do aparelho, mude também o HTML do mock ou do site, e mantenha a `desc` igual ao que a tela mostra.
 
 ### 12.2 Acrescentar um toque num fluxo
 
-Exemplo: pedir a quantidade de pessoas antes do horário na reserva do Reels.
-
-1. No site (`tacho`), dê ao elemento uma escolha e uma tecla livres no passo: `pk('4', { q: 'q3', tap: 'g' })`.
-2. Nos quadros, insira `{ ms: 900, cena: 'page', estado: 'w2 q3', toque: 'g', desc: 'Toque em 4 pessoas.' }` e mantenha `q3` nos quadros seguintes do mesmo passo.
-3. Ajuste os índices de `passos` (o passo 3 recebe o novo índice, e os seguintes andam uma casa).
-4. Se o `q` ou a tecla passarem do limite (`q6`, `h`), estenda o motor de passos (seção 6).
+1. No site, dê ao elemento uma escolha e uma tecla livres: `pk('4', { q: 'q3', tap: 'g' })`.
+2. Nos quadros, insira `{ ms: 900, cena: 'page', estado: 'w2 q3', toque: 'g', desc: 'Toque em 4 pessoas.' }` e mantenha `q3` nos quadros seguintes do passo.
+3. Ajuste os índices de `passos`.
+4. Se o `q` ou a tecla passarem de `q8` ou `k`, estenda o motor de passos (seção 6).
 
 ### 12.3 Trocar o cliente de um formato
 
-1. `placement.cliente` e o texto da `frase`.
-2. O mock: `key` passado às telas do laboratório, fotos, textos e o site aberto depois do clique (`SITES.<site>()`).
-3. `AVISOS['canal/formato'].cliente` e o texto.
-4. Se for o 1º formato do canal, `channel.art` (peça da frente).
-5. Os textos fixos de `index.html`, se a lista de tipos mudar.
+1. `placement.cliente`, `frase`, `objetivo`.
+2. No mock, o `key` passado às telas, as fotos, os textos e o site aberto depois do clique.
+3. `AVISOS['canal/formato']`.
+4. Se for o primeiro formato do canal, `channel.art`.
+
+Nunca escreva o nome da marca: use `CLIENTES[k].marca` ou `.curta`.
 
 ### 12.4 Acrescentar um formato a um canal
 
-Exemplo: um anúncio de carrossel em Reels para a Ponto Tech, no Instagram.
+Copie um formato parecido no arquivo do canal, com `id`, `label`, `curto`, `mock`, `cliente`, `selo`, `frase`, `objetivo`, `base`, os 3 `passos` e os `quadros` (com `hora` e `log` onde fizer sentido). Acrescente o mock, a entrada em `SCREEN` e, se houver confirmação por notificação, a de `AVISOS`. Depois:
 
-```js
-// 1. campaign-channels.js, dentro de mocks:
-igReelsTec: () => screen('reels', scene('video', 'base', 'escuro', LAB.reelsAd({ key: 'varejo',
-    caption: 'Um notebook para os dois turnos.', cta: { text: 'Comprar agora' },
-    video: `<div class="cm-shots">
-      <figure class="cm-shot" data-shot="1">${pic('nerd', { alt: 'Notebook com a tela acesa.' })}<p class="cm-ontext" data-hs="1">Joga à noite?</p></figure>
-      <figure class="cm-shot" data-shot="2">${pic('cenaNerd')}<p class="cm-ontext">E edita de dia.</p></figure></div>` })) +
-  scene('page', 'sheet', 'claro', `${browserBar('Ponto Tech', 'pontotech.exemplo')}${SITES.teclaria()}`)),
-
-// 2. No canal instagram, em placements:
-{ id: 'reels-loja', label: 'Reels de loja', mock: 'igReelsTec', cliente: 'varejo', selo: 'Patrocinado',
-  frase: 'Uma loja de tecnologia leva do Reels ao carrinho.',
-  passos: [P('Atenção', 'Pergunta no primeiro segundo', [0]), P('Retenção', 'Corte mostra o uso', [1]), P('Conversão', 'Produto, carrinho e Pix', [2, 3, 4, 5])],
-  quadros: [
-    { ms: 1400, cena: 'video', video: 1, desc: 'Reels patrocinado da Ponto Tech: Joga à noite?' },
-    { ms: 1800, cena: 'video', estado: 's2 lit', video: 1, desc: 'Corte para a mesa: E edita de dia. O botão Comprar agora ganha cor.' },
-    { ms: 900, cena: 'video', estado: 's2 lit', video: 1, toque: 'cta', desc: 'Toque em Comprar agora.' },
-    { ms: 1500, cena: 'page', desc: 'O navegador do Instagram abre a página do Notebook Creator 15.' },
-    { ms: 900, cena: 'page', estado: 'q1', toque: 'a', desc: 'Toque em 32 GB.' },
-    { ms: 2000, cena: 'page', estado: 'w4 q2 done', desc: 'Pedido feito, com o Pix copia e cola.' },
-  ] },
-
-// 3. SCREEN: igReelsTec: { tema: 'escuro', fundo: '#000' },
-// 4. Opcional: AVISOS['instagram/reels-loja'] = { app: 'mail', cliente: 'varejo', texto: '...', desc: '...' };
-```
-
-Depois:
-
-- confira se o controle de formatos cabe a 320 px (os rótulos não quebram; se não couberem, a fila rola por dentro);
-- confira se os textos de `index.html` com contagens continuam certos.
+- confira se o controle de formatos cabe a 320 px;
+- rode `tests/browser-campaign-flows.mjs` (ou o teste do arquivo) e a matriz em 390x844 e 1440x900.
 
 ### 12.5 Acrescentar um canal
 
-1. Acrescente o objeto em `channels`, na posição desejada, com `group` existente.
-2. Logo: só se houver arquivo oficial. Inclua em `LOGOS` e em `CHANNEL_LOGO` de `channel-logos.js`, com a data da consulta e a regra de uso. Sem logo, use `null`: o bloco recebe o glifo de documento.
-3. Nome curto do bloco em `SHORT` (e `TINY` abaixo de 360 px), em `static-presentations.js`.
+1. O objeto do canal, com `group` existente e `art` com `formato`, `oferta` e `cta`.
+2. Logo: só com arquivo oficial, em `LOGOS` e `CHANNEL_LOGO` de `channel-logos.js`, com a data da consulta e a regra de uso. Sem logo, `glifo`.
+3. Nome curto do bloco em `static-presentations.js`.
 4. Mock, quadros, `SCREEN` e, se fizer sentido, `AVISOS`.
-5. Atualize `channelIds` em `tests/browser-static-presentations.mjs` e os textos com "onze canais" em `index.html`.
-6. Teste a grade a 320, 390 e 1440 px: todos os blocos visíveis, sem nome cortado.
+5. Atualize `channelIds` em `tests/browser-static-presentations.mjs`, a lista de `CANAIS` em `public/assets/mural/mural.js` e as contagens de `index.html` ("16 canais").
 
 ### 12.6 Acrescentar um nicho (cliente)
 
-1. **Nome.** Pesquise antes. Não pode coincidir com empresa do mesmo ramo no Brasil (registre a busca nos documentos).
-2. **`CLIENTES.<chave>`:** `{ tipo, marca, curta?, arroba, dominio: '<nome>.exemplo', cor }`.
-3. **`MARCAS.<chave>`:** símbolo simples em SVG 100 x 100, branco sobre a cor do cliente. Não copie logo existente.
-4. **Site.** Uma função em `makeSites` com os passos reais do negócio, mais um tema `.cm-site--<cls>` em `campaign-sites.css`.
-5. **Fotos.** Em `public/assets/portfolio/canais/`, em WebP de até 1200 px e 150 KB, sem metadados. Registre a origem e a licença em `SOURCES.md` e a entrada em `IMG`.
-6. **Aviso do setor**, se houver (seção 8).
-7. **Textos de `index.html`** que listam os tipos.
+1. **`marcas.js`:** `CLIENTES.<chave>` com todos os campos, `MARCAS.<chave>` (símbolo 64 x 64, branco e `cor2`, sem copiar logo existente), as ofertas e, se houver, o `LEGAL`.
+2. **Site** em `makeSites`, com os passos reais do negócio, e o tema em `campaign-sites.css`.
+3. **Fotos** licenciadas (seção 11) em `public/assets/portfolio/canais/`, WebP sem metadados, registradas em `acervo.json`; depois rode `scripts/assets/sources-table.py` e `scripts/assets/creditos-page.py`.
+4. **Textos de `index.html`** que listam os tipos.
 
 ### 12.7 Mudar um site
 
-- Um passo é uma string no array de `site(...)`. Acrescentar um passo exige `wN` nos quadros e, depois de 6 passos, estender o motor.
-- Use os auxiliares (`pk`, `days`, `slots`, `calendar`, `ticket`...) para manter o visual.
-- Para o leiaute do tema, edite `.cm-site--<cls>` em `campaign-sites.css`.
+- Um passo é uma string no array de `site(...)`. Depois de 8 passos, estenda o motor.
+- Use as peças do `kit` para manter o visual.
+- O leiaute do tema fica em `.cm-site--<cls>`.
 
-### 12.8 Usar uma tela do laboratório num mock próprio
+### 12.8 Pôr áudio numa ligação
 
-Troque o HTML da cena base por `LAB.<função>({...})` e confira três coisas:
-
-- o `data-tap` e o `data-hs` que a função já coloca (`cta.tap` padrão `'cta'`, `cta.hs` padrão `'3'`);
-- a entrada em `SCREEN`, com o fundo do app em modo escuro;
-- se o CSS antigo do mock ainda é usado (remova regras órfãs de `channel-mocks.css`).
+1. Copie o arquivo (MP3 ou M4A, mesma origem) para `public/assets/`.
+2. Em `automation-flows.js`, preencha `AUDIO['voz/ligacao']` ou `AUDIO['whatsapp/chamada']`; em `campaign-search.js`, o `src` de `google/search`.
+3. Confira os `startMs` e `endMs` de cada segmento contra o arquivo. O player e Sistemas mostram "Ouvir a ligação (N s)" e andam pelos segmentos. O áudio nunca toca sozinho.
 
 ## 13. Verificar e publicar
 
 ```bash
-node scripts/build-vercel.mjs              # gera dist/
-cd dist && python3 -m http.server 4600     # serve em http://localhost:4600/#laboratorio
-npm run -s check                           # estrutura e sintaxe
+npm run -s check         # estrutura, hero, seções, nada do material antigo em public/
+npm test                 # todos os tests/*.test.mjs (marcas, fidelidade, páginas, narrativa…)
+npm run build            # o mesmo que o Railway roda: badges + scripts/install-sections.mjs
+PORT=4199 npm run test:browser   # cada suíte de navegador, uma por vez, contra um só server.mjs
 ```
 
-Testes de navegador da seção (sobem o `server.mjs` sozinhos; Playwright pré-instalado em `/opt/node-tools`):
+Os testes de navegador sobem o `server.mjs` sozinhos na `PORT`, ou usam `BASE_URL`. Playwright fica em `/opt/node-tools` (`QA_PACKAGE=/opt/node-tools/package.json`). Os resultados vão para `qa/<suíte>/results.json` (pasta fora do Git).
 
-```bash
-QA_PACKAGE=/opt/node-tools/package.json QA_WIDTHS=390,1440 PORT=4195 node tests/browser-static-presentations.mjs
-```
+| Suíte | O que confere |
+|---|---|
+| `browser-campaign-flows.mjs` | Os 14 formatos de Meta, TikTok, YouTube e publieditorial, quadro a quadro |
+| `browser-search-flows.mjs` | Os 8 formatos de busca, local e conversa |
+| `browser-automation-flows.mjs` | As 8 automações e os 5 caminhos de falha, com registro, falas e movimento das ligações |
+| `browser-automation-trace.mjs` | O painel de Sistemas em quatro telas |
+| `browser-player-engine.mjs` | O motor de quadros e o aparelho responsivo |
+| `browser-static-presentations.mjs` | Grade, frente, dobra e rótulos dos canais |
+| `browser-sections.mjs` | O mural (cartões, links, setas, pausa, rolagem lenta) e o básico da página |
+| `browser-section-visibility.mjs` | Cada seção sob demanda monta e aparece com conteúdo |
+| `browser-hero-*.mjs`, `browser-readable-hero.mjs`, `browser-positioning.mjs` | Hero, jornada viva e posições |
+| `browser-pages.mjs` | Páginas paralelas (`/criadores`, `/vagas`, `/privacidade`…) |
+| `browser-responsive-matrix.mjs` | 13 viewports (320x568 a 1920x1080 e 844x390) e as páginas paralelas: rolagem lateral, console, 4xx, texto cortado, toques de 44 px, ponto sobre texto em todos os quadros, tamanho do aparelho e o orçamento da primeira tela a 390 (até 600 KB, sem vídeo nem áudio) |
 
-O teste para no primeiro erro, e 4 verificações do deck Fatos já falham no commit atual. Para ver todas as verificações da seção mesmo assim, rode uma cópia que não interrompe:
+`MATRIX_ONLY=390x844,1440x900` limita a matriz; `MATRIX_WALK=0` pula o percurso dos quadros (a matriz completa leva uns 10 minutos com 4 viewports em paralelo).
 
-```bash
-sed 's/assert(pass,name);//' tests/browser-static-presentations.mjs > tests/.tmp-static.mjs
-QA_PACKAGE=/opt/node-tools/package.json QA_WIDTHS=390,1440 PORT=4195 node tests/.tmp-static.mjs
-node -e "const r=require('./qa/static-presentations/results.json');for(const row of r)for(const c of row.checks)if(!c.pass)console.log(row.width,c.name)"
-rm tests/.tmp-static.mjs
-```
-
-Captura quadro a quadro, para conferir um fluxo (salve como `frames.cjs` fora do repositório, com o `dist` servido na porta 4600):
+Para conferir um quadro por imagem, use o link direto e as setas, como o visitante:
 
 ```js
-// node frames.cjs <saida> <canal> <indiceDoFormato> <quadro:esperaMs,...>
-const { chromium } = require('/opt/node-tools/node_modules/playwright');
+// node quadro.cjs <canal> <formato> <quadro> <saida.png>
+const { chromium } = require('playwright');
 (async () => {
-  const [out, ch, pl, spec] = process.argv.slice(2);
+  const [canal, formato, n, out] = process.argv.slice(2);
   const b = await chromium.launch();
-  const p = await b.newPage({ viewport: { width: 390, height: 844 }, deviceScaleFactor: 2, isMobile: true, hasTouch: true });
-  await p.goto('http://localhost:4600/#laboratorio', { waitUntil: 'networkidle' });
-  await p.click(`[data-sp-tab="${ch}"]`); await p.waitForTimeout(400);
-  await p.locator('[data-peel-grip]').first().click(); await p.waitForTimeout(900);
-  if (+pl) await p.click(`[data-cx-placement="${pl}"]`);
+  const p = await b.newPage({ viewport: { width: 390, height: 844 }, deviceScaleFactor: 2, isMobile: true, hasTouch: true, reducedMotion: 'reduce' });
+  await p.goto('http://localhost:4199/', { waitUntil: 'load' });
+  await p.evaluate(() => document.querySelector('#laboratorio').scrollIntoView());
+  await p.waitForSelector('#laboratorio .cx-player', { state: 'attached' });
+  await p.evaluate(d => window.dispatchEvent(new CustomEvent('cx:abrir', { detail: d })), { canal, formato });
   await p.waitForTimeout(800);
-  const stage = p.locator('[data-cx-body] .cx-stage'); await stage.scrollIntoViewIfNeeded();
-  for (const item of spec.split(',')) {
-    const [f, wait] = item.split(':').map(Number);
-    await p.evaluate(f => {   // pausa e anda até o quadro com as setas, como o visitante
-      const play = document.querySelector('[data-cx-play]');
-      if (play.getAttribute('aria-pressed') === 'true') play.click();
-      const st = document.querySelector('[data-cx-body] .cx-stage'); st.focus();
-      const cur = +document.querySelector('[data-cx-body] .cm-screen').dataset.frame;
-      for (let i = 0; i < Math.abs(f - cur); i++) st.dispatchEvent(new KeyboardEvent('keydown', { key: f > cur ? 'ArrowRight' : 'ArrowLeft', bubbles: true }));
-    }, f);
-    await p.waitForTimeout(wait);
-    await stage.screenshot({ path: `${out}-${f}.png` });
-  }
+  for (let i = 0; i < +n; i++) await p.evaluate(() => { const s = document.querySelector('#laboratorio [data-cx-stage]'); s.focus(); s.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true })); });
+  await p.waitForTimeout(700);
+  await p.locator('#laboratorio [data-cx-stage] .ch-iphone-tela').screenshot({ path: out });
   await b.close();
 })();
 ```
 
-Exemplo: `node frames.cjs /tmp/tt tiktok 0 0:900,5:1200,12:1500`. Use uma espera de 900 a 1500 ms depois de mudar de cena, para a página "carregar".
+`scripts/capture-mural.mjs` usa a mesma receita para os quadros do mural.
 
 Publicação:
 
-- O Vercel (projeto `prj_HZcKpv7XbNdAVfi7AWivHdZrJc9A`, endereço https://portfolio-visual-review.vercel.app) roda `node scripts/build-vercel.mjs` e publica `dist/` (`vercel.json`).
-- O trabalho fica na branch `ccr-982a6ce6-s02tyu`. Faça commit e deploy a cada sessão de mudanças.
-- Deploy pela API do Vercel (ferramenta `create_deployment`), depois do push, sem passar `teamId`:
-
-  ```json
-  { "name": "portfolio-visual-review", "project": "prj_HZcKpv7XbNdAVfi7AWivHdZrJc9A", "target": "production",
-    "gitSource": { "type": "github", "org": "onstandbyx-png", "repo": "portifolio", "ref": "ccr-982a6ce6-s02tyu", "sha": "<commit>" } }
-  ```
-
-  Confira com `get_deployment` até `READY` e veja se o alias `portfolio-visual-review.vercel.app` aponta para o novo deploy.
-- A pasta `docs/` não vai para o `dist/`: uma mudança só de documentação não precisa de deploy.
+- O Railway roda `npm run build` (falha se um teste de `install-sections.mjs` falhar) e `npm start`.
+- O Vercel roda `node scripts/build-vercel.mjs` e publica `dist/`. As duas políticas de segurança (`server.mjs` e `vercel.json`) precisam continuar iguais.
+- A pasta `docs/` não vai para o site: uma mudança só de documentação não precisa de deploy.
 
 ## 14. Armadilhas conhecidas
 
-- **Tokens herdados.** O estado de uma cena que saiu continua em `data-state` (seção 5). Uma regra como `[data-state~="lit"] .botao` sem a classe do componente pode acender coisas em outra cena. Sempre escope pelo componente.
-- **O dedo some.** O player só mira elementos visíveis. Se o botão está dentro de um bloco com opacidade 0 (por exemplo, um `show` cujo `q` não está no estado), o dedo não aparece. Ponha o `q` no estado do quadro do toque.
-- **Especificidade.** Regras genéricas como `.cm-screen ol` venceram regras de componente mais de uma vez (barra de etapas da clínica). Se um estilo não pega, suba a especificidade com a classe do mock.
-- **Flex esticando.** Elementos em linha dentro de `display: flex` esticaram (botão de adicionar do restaurante, avatar do YouTube). Use `:not(...)` na regra do flex ou troque `span` por `i` com `font-style: normal`.
-- **Cor do formulário.** `site()` usa a cor do cliente. Formulários da plataforma passam a cor da plataforma no 4º parâmetro (`'#0866ff'`, `'#0a66c2'`).
-- **Cabeçalho coberto.** No blog, o cabeçalho do site precisa de `z-index: 2` sobre o conteúdo que rola.
-- **Duas chaves iguais em `SCREEN`.** O JavaScript fica com a última. Confira antes de acrescentar.
+- **Tokens herdados.** O estado de uma cena que saiu continua em `data-state`. Escope cada regra pelo componente.
+- **O dedo ou o ponto somem.** O motor só mira elementos visíveis e descobertos. Se o botão está num bloco com opacidade 0 (um `show` cujo `q` não está no estado) ou sob uma folha, nada aparece. Ponha o `q` no estado do quadro.
+- **Especificidade.** Regras genéricas como `.cm-screen ol` já venceram regras de componente. Suba a especificidade com a classe do mock.
+- **Texto em caixa alta.** `innerText` devolve o texto com `text-transform` aplicado; nos testes, compare sem diferenciar maiúsculas.
+- **Cabeçalho que some.** O cabeçalho do site se esconde ao rolar para baixo. Testes que apertam a pausa global usam o botão pelo DOM.
+- **Seções sob demanda.** Cada seção abaixo do hero só monta perto da tela. Testes precisam rolar até ela ou usar o link direto antes de esperar o player. O `#mural` reserva 600 px antes de montar (em `planes/hero.css`); sem isso, o laboratório carregaria na primeira tela do celular.
+- **Duas chaves iguais em `SCREEN`.** O JavaScript fica com a última.
 - **Quadro de aviso duplicado.** Não escreva o quadro final de aviso: o laço de `AVISOS` acrescenta.
-- **Testes com texto fixo.**
-  - A ordem e os ids dos canais estão em `channelIds`.
-  - Os rótulos esperados por canal estão em `labels` (TikTok Patrocinado, LinkedIn Promovido, ChatGPT Anúncio, Maps Patrocinado, blog "Conteúdo patrocinado por Valore Patrimônio", SEO com `atlantica.exemplo`).
-  - O TikTok precisa terminar com `done`.
-- **Textos com contagem.** "oito tipos de cliente" e "onze canais" aparecem em `index.html` (cartão da galeria, crédito da seção e serviço de campanhas).
-- **Comentário do cabeçalho de `campaign-channels.js`.** Mantenha a contagem atualizada (11 canais, 22 formatos).
+- **Peça estreita.** Abaixo de 260 px de largura (celular deitado), a frente usa `@container` em `static-presentations.css`: tipos menores, foto 3:5 e sem contador, seta e trilho de ícones. Interfaces desenhadas sobre a foto (`art.ui`) encolhem 22%.
+- **Mural e nomes.** Os quadros do mural são imagens: depois de mudar um nome, uma data ou um desses fluxos, rode `npm run mural`.
 
 ## 15. Pendências
 
-1. Conferir nos apps os rótulos e estados citados no plano:
-   - barra de ação que acende no Instagram e no TikTok;
-   - "Pular" no YouTube e "Desbloquear" no LinkedIn;
-   - "Ocultar resultados patrocinados" e "Acessar site" no Maps;
-   - "Conversar com a empresa" no catálogo;
-   - a citação do anúncio na conversa do WhatsApp;
-   - "Anúncio" no ChatGPT.
-2. Disponibilidade e rótulo dos anúncios do ChatGPT no Brasil.
-3. Busca no INPI para os 8 nomes.
-4. Aprovação de uso dos ícones do Google Ads e do Maps, e o glifo do Shorts.
-5. Texto oficial da mensagem educativa de trânsito da concessionária.
-6. Capturas de Shorts, Facebook vídeo e intervalos, LinkedIn, Google, Maps e WhatsApp para levar esses formatos ao mesmo nível de medida das telas do laboratório.
+1. **Áudio das ligações.** Nenhuma ligação tem áudio (decisão do dono: o plano gratuito do serviço de voz foi recusado). O contrato `placement.audio` está pronto (receita 12.8).
+2. **Vídeos que faltam.** Reels do restaurante (feijoada) em 9:16, recarga do carro, Shorts da escola e Story da clínica seguem com foto parada e movimento de câmera: o Commons não tinha clipe sem logo ou marca d'água.
+3. **Mensagem educativa de trânsito** (CTB, art. 77-B) da concessionária: `LEGAL.automotivo` fica `null` até o texto oficial ser conferido.
+4. **Avisos de setor** da clínica e da incorporadora usam registros fictícios marcados como tal.
+5. **Nomes das marcas.** Cinco coincidem com domínios `.com.br` ativos (seção 8). O dono manteve; a troca, se vier, é em `marcas.js` e no mural.
+6. **Sala com vista do mar** (incorporadora) usa recortes de uma foto do projeto smiile, sem foto licenciada equivalente.
+7. **Logos sem regra confirmada:** Pix e o logotipo escrito do Instagram não entraram; o Instagram mostra só os ícones.
+8. **Conferências nos apps:** rótulo exato de "Abrir no navegador externo" no Instagram, a unidade de anúncio da live, o Stars sem número (os valores ficam mascarados pela regra do projeto) e a disponibilidade de anúncios do ChatGPT no Brasil.
+9. **Módulos antigos** ainda publicados sem uso na página (`editorial-story.js`, `independent-device-content.js`, `editorial-swipe.js`, `scroll-film.js`, `social-ads.js`, `recovery-init.js` e folhas antigas) e o código dos crachás do hero (`src/badges/`, ainda empacotado pelo build). Podem sair numa limpeza própria.
 
-## 16. Automações profundas (27/10/2026)
+## 16. Regras próprias das automações
 
-Base: a pesquisa de 27/10/2026 (`reports/Automações complexas por canal.md` e `research_notes/Automações complexas por canal/`). Os fluxos vão além da resposta automática: agente de IA que se identifica, passagem para uma pessoa com o histórico, pagamento conferido no PSP e conversão devolvida ao anúncio.
-
-### Arquivos
-
-| Arquivo | Papel |
-|---|---|
-| `automation-flows.js` | `makeAutomations(...)`: os mocks novos, os formatos acrescentados a WhatsApp e Instagram, os cinco canais novos, os avisos e o caminho de falha do agente. Cada quadro pode ter `log: [[ator, evento, detalhe]]`. |
-| `automation-mocks.css` | Telas novas (agente e Pix no WhatsApp, Flow, banco fictício, chamada do WhatsApp, ligação do iOS com legendas, Direct, RCS, tela bloqueada, Mail, Telegram e mini app) e o motor de revelação. |
-| `automation-trace.js` e `.css` | Seção "Sistemas e automações": seletor de automações, iPhone e registro de eventos sincronizado, caminho feliz e com falhas. |
-
-`campaign-channels.js` chama `makeAutomations` depois de montar `channels`, junta os mocks, põe os formatos novos e insere os canais novos antes do publieditorial. `placementByKey('canal/formato')` também acha o formato escondido `whatsapp/agente-falha`.
-
-### Motor de revelação
-
-Nos mocks com a classe `au` na tela, `data-in="a3"` só aparece quando o estado do quadro tem `a3`, e `data-out="a5"` some quando `a5` chega. `data-pick="f1"` acende a opção (variável `--pk`). Os tokens válidos estão no fim de `automation-mocks.css` (gerados): `a1` a `a8`, `x1`, `x2`, `f1`, `f2`, `b1`, `ok`, `s1`, `c1` a `c4`. Para um token novo, acrescente-o às três regras.
-
-### Fluxos
-
-| Canal e formato | Cliente | O que mostra |
-|---|---|---|
-| WhatsApp, Agente e Pix | Destino Certo Viagens | Anúncio de clique para o WhatsApp, IA que se identifica, ferramenta, Flow, passagem para a consultora com resumo (bastidor), `order_details` com Pix por redirecionamento ao banco, confirmação e e-mail |
-| WhatsApp, Chamada | EcoDrive Elétricos | Pedido de permissão de chamada, chamada de voz atendida por IA com legendas, transferência ao vendedor, registro da chamada |
-| Instagram, Comentário | Ponto Tech | Reel com pedido de comentário, palavra-chave, resposta privada no Direct, lista de espera e aviso de chegada |
-| Telegram, Comunidade | Speak Up | Post com botões, mensagem que só a pessoa vê, mini app, assinatura em Stars |
-| RCS, Mensagem de chat | Ponto Tech | Botão Conversar na busca (piloto no Brasil), empresa verificada, cartões, Pix e entrega; aviso do SMS sem RCS |
-| Voz com IA, Ligação | Vilela Odontologia | Pedido de ligação com consentimento, ligação da IA que se identifica, agenda por ferramenta, confirmação no WhatsApp |
-| Pix Automático, Recorrência | Speak Up | Autorização única no banco fictício, aviso na véspera, falha por saldo, pausa no lugar do cancelamento |
-| E-mail, Régua | Valore Patrimônio | Três e-mails com remetente verificado, descadastro em um clique, agenda e saída da régua |
-
-### Regras próprias
-
-- A IA sempre diz que é assistente virtual e oferece uma pessoa.
+- A IA sempre diz que é assistente virtual (ou inteligência artificial), avisa quando a ligação é gravada e oferece uma pessoa.
 - Valores aparecem mascarados (`R$ ••••`); nenhum preço, métrica ou resultado.
-- O que acontece fora da tela da cliente (o resumo que a consultora recebe) aparece como bastidor, com borda tracejada, nunca como interface do app.
-- O banco é fictício ("Banco Exemplo", sem cores ou marcas de banco real). RCS, voz, Pix Automático, Telegram e e-mail não têm arquivo oficial de logo no repositório: o bloco usa um glifo genérico (`glifo` no canal).
-- Cada formato novo tem `base` (a documentação em que se apoia), mostrada em "Sistemas e automações".
+- O que acontece fora da tela da cliente (o resumo que a consultora recebe, a chamada de ferramenta) aparece no painel como bastidor (`log[3].bastidor`), nunca como interface do app.
+- Ligações: a tela nativa do app, cronômetro vivo por turno, onda guiada por quem fala, a ilha dinâmica quando ela sai do app e a transcrição sempre fora do aparelho.
+- RCS no iPhone é o app Mensagens: remetente verificado no centro, balões verdes de RCS e "Mensagem de Texto • RCS" no campo.
+- O banco é fictício (Banco Pitanga, sem cores ou marcas de banco real) e o PSP também (Jatobá Pagamentos).
+- Cada formato tem `base` (a documentação em que se apoia), mostrada em "Baseado em".
+
+## 17. Mural de jornadas
+
+Faixa logo depois do hero, no `#mural` de `index.html`. `static-init.js` importa `/assets/mural/mural.js` e `mural.css` quando a seção chega perto da tela.
+
+- **Dados:** `public/assets/portfolio/mural/mural.json`, uma lista de `{src, w, h, cliente, canal, formato, quadro, rotulo, etapa, href}`. O JSON não traz nomes de marca: a legenda é `CLIENTES[cliente].marca · rotulo · etapa`, lida de `marcas.js`.
+- **Quadros:** `scripts/capture-mural.mjs` (`npm run mural`) abre cada formato com `cx:abrir`, anda até o quadro com →, esconde ponto, dedo, faixa Agora e cabeçalho, fotografa só `.ch-iphone-tela` a 390x844 com DPR 2 e grava WebP de até 40 KB pelo próprio Chromium. A lista e a ordem dos 14 quadros ficam em `QUADROS`, no começo do script: Reels do restaurante, Agente com o Pix no banco, TikTok com Pix aprovado, Voz com a agenda aberta na ligação, LinkedIn com o guia liberado, Pix Automático autorizando, Google com os locais no mapa, Chamada no WhatsApp, teste de nível do Feed, RCS no iPhone, Maps navegando, YouTube antes do vídeo, ChatGPT entregando ao WhatsApp e Story da clínica.
+- **Links:** campanhas vão para `#laboratorio/<canal>/<formato>`, automações para `#sistemas/<chave>`. Clicar de novo no mesmo cartão reabre pelo evento `cx:abrir` (ou por um `hashchange`, se o laboratório ainda não montou).
+- **Comportamento:** arrastar com o mouse, rolagem nativa com `scroll-snap` no toque, setas e Home/End com foco num cartão (tabindex móvel), botões ← e → e pausa. A rolagem lenta (22 px/s) dá a volta por um segundo conjunto de cartões (`data-mu-clone`, fora do leitor de tela e do Tab) e para em hover, foco, toque, fora da tela, aba oculta, `body.is-paused` e com movimento reduzido (aí nem os clones existem).
+- **Canais:** abaixo da faixa, os 16 canais com o logo oficial ou o glifo, cada um com link para `#laboratorio/<canal>`.
+- **Medidas:** cartões de 148 a 196 px (140 px no celular deitado), toques de 44 px, imagens com `loading="lazy"`.

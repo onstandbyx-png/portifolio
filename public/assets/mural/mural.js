@@ -38,7 +38,7 @@ function cartao(q, i, clone) {
   const alt = `Tela de ${q.rotulo} da ${c.marca}, fictícia: ${q.etapa.toLowerCase()}.`;
   const attrs = clone ? ' aria-hidden="true" data-mu-clone' : '';
   return `<li class="mu-card"${attrs}><a class="mu-link" href="${esc(q.href)}" data-canal="${esc(q.canal)}" data-formato="${esc(q.formato)}" draggable="false" tabindex="${!clone && i === 0 ? 0 : -1}">
-    <span class="mu-tela"><img src="${esc(q.src)}" width="${q.w}" height="${q.h}" alt="${clone ? '' : esc(alt)}" loading="lazy" decoding="async" fetchpriority="low" draggable="false"></span>
+    <span class="mu-tela"><img data-src="${esc(q.src)}" width="${q.w}" height="${q.h}" alt="${clone ? '' : esc(alt)}" loading="lazy" decoding="async" fetchpriority="low" draggable="false"></span>
     <span class="mu-leg"><span class="mu-marca" style="--c:${esc(c.cor)}" aria-hidden="true">${MARCAS[q.cliente]}</span><span class="mu-txt"><b>${esc(c.marca)}</b><span>${esc(q.rotulo)} · ${esc(q.etapa)}</span></span>${SETA}</span></a></li>`;
 }
 function logos() {
@@ -166,7 +166,12 @@ export async function mountMural() {
   new MutationObserver(anda).observe(document.body, { attributes: true, attributeFilter: ['class'] });
   document.addEventListener('visibilitychange', anda);
   reduced.addEventListener('change', anda);
-  if ('IntersectionObserver' in window) new IntersectionObserver(([e]) => { visivel = e.isIntersecting; anda(); }, { threshold: .15 }).observe(strip);
-  else { visivel = true; anda(); }
+  // As imagens só pedem a rede quando a faixa chega a 300 px da tela (a primeira tela do celular fica mais leve).
+  const imagens = () => strip.querySelectorAll('img[data-src]').forEach(img => { img.src = img.dataset.src; img.removeAttribute('data-src'); });
+  if ('IntersectionObserver' in window) {
+    const perto = new IntersectionObserver(([e]) => { if (e.isIntersecting) { imagens(); perto.disconnect(); } }, { rootMargin: '300px 0px' });
+    perto.observe(strip);
+    new IntersectionObserver(([e]) => { visivel = e.isIntersecting; anda(); }, { threshold: .15 }).observe(strip);
+  } else { imagens(); visivel = true; anda(); }
 }
 export default mountMural;

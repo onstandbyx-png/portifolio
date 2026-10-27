@@ -107,6 +107,15 @@ const pontoSobreTexto=(page,stageSel)=>page.evaluate(stageSel=>{
   return hits;
 },stageSel);
 
+/* Tamanho do aparelho: a tela, a largura lógica do app (412 x --u; abaixo de 300 px o app usa o zoom de 1,3,
+   então o texto fica do tamanho de uma tela maior) e a altura do aparelho inteiro. */
+const MEDE=sel=>{
+  const st=document.querySelector(sel),t=st.querySelector('.ch-iphone-tela'),f=st.querySelector('.ch-iphone').getBoundingClientRect();
+  const ui=t.querySelector('.ch-iphone-ui')||t,probe=document.createElement('i');
+  probe.style.cssText='position:absolute;visibility:hidden;height:1px;width:calc(var(--u) * 412)';ui.appendChild(probe);
+  const app=probe.getBoundingClientRect().width;probe.remove();
+  return {tela:Math.round(t.getBoundingClientRect().width),efetiva:Math.round(app),altura:Math.round(f.height),ih:innerHeight};
+};
 async function percorreLab(page,tag,linha){
   await page.evaluate(()=>document.querySelector('#laboratorio').scrollIntoView({behavior:'instant'}));
   await page.waitForSelector('#laboratorio .cx-player',{state:'attached'});
@@ -118,7 +127,7 @@ async function percorreLab(page,tag,linha){
     await page.waitForFunction(({canal,formato})=>{const p=document.querySelector('#laboratorio .cx-player');return document.querySelectorAll('#laboratorio [data-cx-stage]').length===1&&p?.dataset.platform===canal&&p.dataset.placement===formato&&p.querySelector('.cm-screen')?.dataset.frame==='0';},{canal,formato});
     if(tela.length<3){
       await page.locator('#laboratorio [data-cx-stage]').evaluate(el=>el.scrollIntoView({block:'center',behavior:'instant'}));
-      tela.push(await page.evaluate(()=>{const t=document.querySelector('#laboratorio [data-cx-stage] .ch-iphone-tela').getBoundingClientRect(),f=document.querySelector('#laboratorio [data-cx-stage] .ch-iphone').getBoundingClientRect();return {tela:Math.round(t.width),altura:Math.round(f.height),ih:innerHeight};}));
+      tela.push(await page.evaluate(MEDE,'#laboratorio [data-cx-stage]'));
     }
     const n=Number(await page.locator('#laboratorio [data-cx-stage]').getAttribute('data-frames'));
     for(let i=0;i<n;i++){
@@ -152,7 +161,8 @@ async function percorreSistemas(page,linha){
       quadros++;
     }
   }
-  const tela=await page.evaluate(sel=>{const st=document.querySelector(sel);st.scrollIntoView({block:'center',behavior:'instant'});const t=st.querySelector('.ch-iphone-tela').getBoundingClientRect(),f=st.querySelector('.ch-iphone').getBoundingClientRect();return {tela:Math.round(t.width),altura:Math.round(f.height),ih:innerHeight};},sel);
+  await page.evaluate(sel=>document.querySelector(sel).scrollIntoView({block:'center',behavior:'instant'}),sel);
+  const tela=await page.evaluate(MEDE,sel);
   linha.sistemas={modulos:mods,quadros,comPonto,tela};
 }
 
@@ -183,7 +193,8 @@ async function viewport(vp){
       ok('o ponto nunca fica sobre texto, em todos os formatos e automações',linha.ponto.length===0,linha.ponto);
       const telas=[...linha.lab.tela,linha.sistemas.tela];
       const retrato=vp.width>=390&&vp.height>=844;
-      if(retrato)ok('tela do aparelho com 340 px ou mais',telas.every(t=>t.tela>=340),telas);
+      // Abaixo de 300 px o app usa o zoom de 1,3: vale a tela efetiva (texto do tamanho de uma tela de 340 px ou mais).
+      if(retrato)ok('tela do aparelho com 340 px ou mais (efetiva)',telas.every(t=>t.efetiva>=340),telas);
       if(vp.width>=390&&vp.height>vp.width)ok('o aparelho inteiro cabe na altura do viewport',telas.every(t=>t.altura<=t.ih),telas);
       linha.info={telas};
     }
