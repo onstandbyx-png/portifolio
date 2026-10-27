@@ -52,7 +52,7 @@
 .hj-tela{--u:calc(100cqi / 412);position:relative;aspect-ratio:1320/2868;border-radius:12.7cqi;overflow:hidden;background:#000;container-type:inline-size;isolation:isolate}
 .hj-ilha{position:absolute;z-index:8;left:50%;top:calc(var(--u) * 10.3);width:calc(var(--u) * 118);height:calc(var(--u) * 35);translate:-50% 0;border-radius:99px;background:#000}
 .hj-gestos{position:absolute;z-index:8;left:50%;bottom:calc(var(--u) * 7.5);width:calc(var(--u) * 125.5);height:calc(var(--u) * 4.7);translate:-50% 0;border-radius:99px;background:#000}
-.hj-screen{position:absolute;inset:0;overflow:hidden;background:#fff;color:#111b21;font:calc(var(--u) * 16)/1.32 -apple-system,BlinkMacSystemFont,"SF Pro Text","Inter Variable",Inter,system-ui,sans-serif;letter-spacing:-.01em}
+.hj-screen{--u:clamp(calc(100cqi / 412),.86px,calc(100cqi / 317));position:absolute;inset:0;overflow:hidden;background:#fff;color:#111b21;font:calc(var(--u) * 16)/1.32 -apple-system,BlinkMacSystemFont,"SF Pro Text","Inter Variable",Inter,system-ui,sans-serif;letter-spacing:-.01em}
 .hj-screen:empty{background:#0b0d0c}
 .hj-status{position:absolute;z-index:7;inset:0 0 auto;height:calc(var(--u) * 58);color:#000;pointer-events:none}
 .hj-status b{position:absolute;left:calc(var(--u) * 74);top:calc(var(--u) * 29);translate:-50% -50%;font-size:calc(var(--u) * 16.5);font-weight:600;font-variant-numeric:tabular-nums}
