@@ -222,3 +222,7 @@ body.portfolio-r6 #editorial { padding-bottom: 96px; }
   .sp-platforms [role='tab'], .sp-tab-marker, .sp-platforms .sp-platform-logo, .sp-platforms [role='tab']::after, .sp-tab-count { transition: none; }
 }
 body.is-paused .sp-platforms [role='tab'], body.is-paused .sp-tab-marker { transition: none; }
+/* Sixteen channels (27/10/2026): two rows of eight on wide screens. */
+@media (min-width: 1000px) { .sp-platforms { grid-template-columns: repeat(8, minmax(0, 1fr)); } }
+/* Generic glyphs of the channels without an official logo file: same size as the marks. */
+#laboratorio .sp-platforms svg.sp-platform-logo--doc { width: 22px; height: 22px; flex: none; }

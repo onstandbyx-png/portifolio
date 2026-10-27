@@ -5,7 +5,7 @@
    of the portfolio. Each front is the piece of a fictitious client. */
 import { createMotion, clamp } from '../sections/motion.js';
 import { mountArtworkDialog } from './artwork-dialog.js';
-import { channels, groups, IMG, CLIENTES, marca } from './campaign-channels.js';
+import { channels, groups, IMG, CLIENTES, marca, glifo } from './campaign-channels.js';
 import { logoSvg, CHANNEL_LOGO, LOGOS } from './channel-logos.js';
 const ART = '/assets/portfolio/static-r8/';
 const esc = value => String(value).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
@@ -16,7 +16,7 @@ function picture(file, alt, className = '') {
 
 /* Channel tiles (pattern of the Fatos studio platform selector, lab f-e3): the
    official mark over a short name, every channel visible at once, no scrolling. */
-const SHORT = { google: 'Google Ads', maps: 'Maps', whatsapp: 'WhatsApp' };
+const SHORT = { google: 'Google Ads', maps: 'Maps', whatsapp: 'WhatsApp', voz: 'Voz IA', pix: 'Pix Auto' };
 const TINY = { blog: 'Publi' }; // under 360px, where the full name does not fit a quarter of the row
 const tileName = channel => { const name = esc(SHORT[channel.id] || channel.name); return TINY[channel.id] ? `<span class="sp-n-long">${name}</span><span class="sp-n-short">${esc(TINY[channel.id])}</span>` : name; };
 const DOC_MARK = '<svg class="sp-platform-logo sp-platform-logo--doc" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 3.5h8l4 4V20.5H6zM14 3.5v4h4M9 12h6M9 15.5h6"/></svg>';
@@ -24,7 +24,7 @@ const groupLabel = id => groups.find(group => group.id === id)?.label || '';
 const formats = n => `${n} ${n > 1 ? 'formatos' : 'formato'}`;
 function tabMarkup(channel, index) {
   const id = CHANNEL_LOGO[channel.id], n = channel.placements.length;
-  const mark = id ? logoSvg(id, { altura: 22, classe: 'sp-platform-logo' }) : DOC_MARK;
+  const mark = id ? logoSvg(id, { altura: 22, classe: 'sp-platform-logo' }) : channel.glifo ? glifo(channel.glifo, 'sp-platform-logo sp-platform-logo--doc') : DOC_MARK;
   return `<button type="button" id="tab-${channel.id}" role="tab" data-sp-tab="${channel.id}" aria-controls="panel-${channel.id}" aria-label="${esc(`${channel.name}, ${groupLabel(channel.group)}, ${formats(n)}`)}" aria-selected="${index === 0}" tabindex="${index === 0 ? '0' : '-1'}"${id ? ` style="--ch:${LOGOS[id].cor}"` : ''}>${mark}<span class="sp-tab-name">${tileName(channel)}</span>${n > 1 ? `<small class="sp-tab-count" aria-hidden="true">${n}</small>` : ''}</button>`;
 }
 

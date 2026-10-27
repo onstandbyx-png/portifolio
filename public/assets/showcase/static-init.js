@@ -7,8 +7,9 @@ import {mountScrollFilm} from './scroll-film.js';
 import {mountCardSurfaces} from './card-surface.js';
 import {mountCampaignFlip,mountGalleryFlipHints} from './campaign-flip.js';
 import {mountVitrine} from './vitrine-lab.js';
+import {mountTrace} from './automation-trace.js';
 function mount(){
-  for(const [name,initialize] of Object.entries({gallery:mountScrollGallery,fatos:mountFatosDeck,deckDemos:mountDeckDemos,artwork:mountStaticPresentations,film:mountScrollFilm,cardSurfaces:mountCardSurfaces,campaignFlip:mountCampaignFlip,galleryHints:mountGalleryFlipHints,vitrine:mountVitrine})){
+  for(const [name,initialize] of Object.entries({gallery:mountScrollGallery,fatos:mountFatosDeck,deckDemos:mountDeckDemos,artwork:mountStaticPresentations,film:mountScrollFilm,cardSurfaces:mountCardSurfaces,campaignFlip:mountCampaignFlip,galleryHints:mountGalleryFlipHints,vitrine:mountVitrine,trace:mountTrace})){
     try { initialize(); }
     catch(error){ console.error(`Portfolio ${name}:`,error); }
   }

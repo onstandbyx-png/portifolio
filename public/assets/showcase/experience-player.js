@@ -14,7 +14,7 @@
  * selectable, and the header button shows the next frame.
  */
 import { createMotion, clamp } from '../sections/motion.js';
-import { channels, channelById, renderMock, marca, CLIENTES } from './campaign-channels.js';
+import { channels, channelById, renderMock, marca, CLIENTES, glifo } from './campaign-channels.js';
 import { logoSvg, CHANNEL_LOGO, LOGOS } from './channel-logos.js';
 
 const escape = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
@@ -260,7 +260,7 @@ export function mountCampaignExperience(lab, underlay) {
   }
   function header() {
     const ch = channel(), pl = placement(), id = CHANNEL_LOGO[ch.id];
-    brand.innerHTML = (id ? logoSvg(id, { altura: 22, classe: 'cx-logo' }) : '') + `<b>${escape(ch.name)}</b>`;
+    brand.innerHTML = (id ? logoSvg(id, { altura: 22, classe: 'cx-logo' }) : ch.glifo ? glifo(ch.glifo, 'cx-logo cx-logo--glifo') : '') + `<b>${escape(ch.name)}</b>`;
     /* Formats as one segmented control (lab: smiile-segmented-control): equal row,
        a thumb that slides to the chosen format; rebuilt only when the channel changes. */
     if (placements.dataset.channel !== ch.id) {

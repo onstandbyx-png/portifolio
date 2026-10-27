@@ -1,4 +1,4 @@
-/** "Sua oferta. Em cada canal.": eleven channels, twenty-two placements, each one
+/** "Sua oferta. Em cada canal.": sixteen channels, thirty placements, each one
  * advertising a fictitious CLIENT brand of one of the main client types the
  * portfolio serves (restaurant, dental clinic, developer, tech store, travel
  * agency, language school, wealth manager, car dealer). Every placement is a
@@ -23,6 +23,7 @@
 import { logoSvg } from './channel-logos.js';
 import { makeSites } from './campaign-sites.js';
 import { makeLabScreens, IG_FUNDO } from './lab-telas.js';
+import { makeAutomations } from './automation-flows.js';
 
 const A = '/assets/portfolio/';
 export const IMG = {
@@ -148,6 +149,8 @@ const PATHS = {
 };
 const I = (name, cls = '') => `<svg class="cm-i cm-i--${name}${cls ? ' ' + cls : ''}" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="${PATHS[name]}"/></svg>`;
 /* Every picture is lazy and sized; alt text only on the first view of a scene (the stage carries the description). */
+/* Glyph of a channel without an official logo file (static-presentations.js, experience-player.js). */
+export const glifo = (name, cls = '') => I(name, cls);
 const pic = (key, { alt = '', cls = '', pos = '' } = {}) => {
   const im = IMG[key];
   return `<img class="${cls}" src="${im.src}" alt="${esc(alt)}" width="${im.w}" height="${im.h}" loading="lazy" decoding="async"${pos ? ` style="object-position:${pos}"` : ''}>`;
@@ -445,6 +448,7 @@ export const groups = [
   { id: 'search', label: 'Busca e IA' },
   { id: 'local', label: 'Local e conversa' },
   { id: 'content', label: 'Conteúdo' },
+  { id: 'retencao', label: 'Pagamento e retenção' },
 ];
 
 const P = (fase, rotulo, quadros) => ({ fase, rotulo, quadros });
@@ -797,6 +801,13 @@ export const channels = [
         ] },
     ] },
 ];
+/* Deep automation flows (automation-flows.js): new placements in WhatsApp and
+   Instagram and five channels (Telegram, RCS, Voz com IA, Pix Automático, E-mail),
+   placed before the publieditorial. */
+const AUTO = makeAutomations({ I, pic, marca, esc, scene, screen, logoSvg, LAB, SITES, CLIENTES, P, browserBar, btn, art, skel });
+Object.assign(mocks, AUTO.mocks);
+for (const [id, list] of Object.entries(AUTO.extra)) channels.find(channel => channel.id === id).placements.push(...list);
+channels.splice(channels.findIndex(channel => channel.id === 'blog'), 0, ...AUTO.novos);
 /* What happens after the conversion, as it happens on the phone: a confirmation
    that the page promises by WhatsApp or by e-mail ends the journey on the iOS
    notification banner (lab: fatos-mk-barra-celular-toast, redrawn as iOS). */
@@ -816,15 +827,21 @@ const AVISOS = {
   'facebook/feed': { app: 'whatsapp', cliente: 'incorporadora', texto: 'Olá, Marina! Sou corretor da Morada Falésia. Podemos combinar a visita de sábado?', desc: 'Um corretor da incorporadora chama pelo WhatsApp.' },
   'blog/article': { app: 'mail', cliente: 'financas', texto: 'Convite: conversa de 30 minutos, terça às 10h.', desc: 'O convite da conversa chega por e-mail.' },
 };
+Object.assign(AVISOS, AUTO.AVISOS);
 channels.forEach(channel => channel.placements.forEach(placement => {
   const aviso = AVISOS[`${channel.id}/${placement.id}`];
   if (!aviso) return;
   const last = placement.quadros[placement.quadros.length - 1];
   placement.aviso = aviso;
-  placement.quadros.push({ ms: 2400, cena: last.cena, estado: `${last.estado || ''} aviso`.trim(), desc: aviso.desc });
+  placement.quadros.push({ ms: 2400, cena: last.cena, estado: `${last.estado || ''} aviso`.trim(), desc: aviso.desc, ...(aviso.log ? { log: aviso.log } : {}) });
   placement.passos[placement.passos.length - 1].quadros.push(placement.quadros.length - 1);
 }));
 export const channelById = id => channels.find(channel => channel.id === id) || channels[0];
+/* A placement by "channel/placement", including the ones played only in "Sistemas e automações". */
+export const placementByKey = key => {
+  const [channel, id] = key.split('/');
+  return channels.find(item => item.id === channel)?.placements.find(item => item.id === id) || AUTO.hidden[key] || null;
+};
 
 /* App theme behind the status bar and the screen colour while a placement loads. */
 const SCREEN = {
@@ -844,6 +861,7 @@ const SCREEN = {
   blogArticle: { tema: 'escuro', fundo: '#ffffff' },
   ytShorts: { tema: 'escuro', fundo: '#000' },
   liFeed: { fundo: '#f4f2ee' },
+  ...AUTO.SCREEN,
 };
 
 /* iPhone 17 Pro Max in cosmic orange, ported from the Fatos studio phone

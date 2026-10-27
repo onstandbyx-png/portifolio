@@ -1,4 +1,4 @@
-/* Two demonstrations of the home, "Sites e lojas" and "Sistemas e automações". Each one
+/* The demonstration of "Sites e lojas" ("Sistemas e automações" moved to automation-trace.js). It
    has a selector of formats, like "Sua oferta. Em cada canal.", and each format is a cut
    of a storyboard that already exists in the lab (campaign-channels.js), on the same
    iPhone. Every format says which screen of the campaign section it repeats. The phone
@@ -20,14 +20,6 @@ const DEMOS = {
       steps: [['Oferta', 0, 0], ['Teste de nível', 1, 3], ['Horário e confirmação', 4, 9]] },
     { label: 'Publieditorial', channel: 'blog', placement: 'article', from: 0, to: 10, repete: 'Publieditorial · Artigo',
       steps: [['Leitura', 0, 2], ['Agenda', 3, 7], ['Confirmação', 8, 10]] },
-  ],
-  sistemas: [
-    { label: 'Pedido', channel: 'whatsapp', placement: 'catalog', from: 4, to: 13, repete: 'WhatsApp Business · Catálogo',
-      steps: [['Pedido no carrinho', 0, 1], ['Atendimento automático', 2, 6], ['Confirmação', 7, 9]] },
-    { label: 'Atendimento', channel: 'whatsapp', placement: 'ctwa', from: 3, to: 13, repete: 'WhatsApp Business · Clique para conversar', inicio: true,
-      steps: [['Conversa pronta', 0, 1], ['Opções', 2, 6], ['Agendamento', 7, 10]] },
-    { label: 'E-mail', channel: 'blog', placement: 'article', from: 3, to: 10, repete: 'Publieditorial · Artigo (agenda)', inicio: true,
-      steps: [['Agenda', 0, 3], ['Dados', 4, 5], ['Confirmação por e-mail', 6, 7]] },
   ],
 };
 const reduce = matchMedia('(prefers-reduced-motion: reduce)');
@@ -144,7 +136,9 @@ function mountOne(root) {
 }
 
 export function mountVitrine() {
+  // "Sistemas e automações" has its own component (automation-trace.js).
   document.querySelectorAll('[data-vitrine]:not([data-vitrine-ready])').forEach(root => {
+    if (!DEMOS[root.dataset.vitrine]) return;
     root.dataset.vitrineReady = 'true';
     mountOne(root);
   });

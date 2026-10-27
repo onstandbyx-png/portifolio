@@ -1,0 +1,382 @@
+/* Deep automation flows (automation-flows.js, 27/10/2026): the screens that the
+   campaign mocks did not have (WhatsApp agent and payment, WhatsApp call, Instagram
+   Direct, iOS call with live captions, RCS chat, bank app, lock screen, Mail,
+   Telegram and its mini app). Same rules as channel-mocks.css: every length in
+   calc(var(--u)*N), scoped to :is(#laboratorio,.lab-escopo), states drawn from
+   the frame tokens. No real bank, carrier or app maker marks. */
+:is(#laboratorio,.lab-escopo) .au{--au-ink:#111b21;--au-mut:#667781;--au-wa:#008069;--au-blue:#027eb5}
+:is(#laboratorio,.lab-escopo) .au .cm-wa-typing{display:grid}
+:is(#laboratorio,.lab-escopo) .au .cm-i--inline{display:inline-block;width:1.05em;height:1.05em;margin-right:.3em;vertical-align:-.16em;stroke-width:2}
+
+/* Who speaks: the AI labels itself, a person signs with her name. */
+:is(#laboratorio,.lab-escopo) .au-who{display:flex;align-items:center;gap:calc(var(--u)*4);margin-bottom:calc(var(--u)*3);color:#1f7a5c;font-size:calc(var(--u)*12);font-style:normal;font-weight:600}
+:is(#laboratorio,.lab-escopo) .au-who--ia{color:#6b4fd8}
+:is(#laboratorio,.lab-escopo) .au-who--dark{color:#a8b3ff}
+:is(#laboratorio,.lab-escopo) .au-sys{align-self:center;display:flex;align-items:center;max-width:90%;padding:calc(var(--u)*5) calc(var(--u)*10);border-radius:calc(var(--u)*8);background:#fff8c5;color:#54656f;font-size:calc(var(--u)*12);text-align:center;box-shadow:0 calc(var(--u)*1) calc(var(--u)*1) #0000000d}
+/* A tool call while the agent works: a spinner, then a check. */
+:is(#laboratorio,.lab-escopo) .au-tool{align-self:flex-start;display:flex;align-items:center;gap:calc(var(--u)*7);padding:calc(var(--u)*6) calc(var(--u)*10);border:calc(var(--u)*1) dashed #b9a8f5;border-radius:calc(var(--u)*20);background:#f4f0ff;color:#4b3aa8;font-size:calc(var(--u)*12)}
+:is(#laboratorio,.lab-escopo) .au-spin{width:calc(var(--u)*12);height:calc(var(--u)*12);border:calc(var(--u)*2) solid #c9bdf7;border-top-color:#6b4fd8;border-radius:50%;animation:au-spin .8s linear infinite,au-gone .2s ease 1.3s forwards}
+:is(#laboratorio,.lab-escopo) .au-tool-ok{flex:none;width:0;height:calc(var(--u)*13);opacity:0;color:#1f9d55;stroke-width:2.6;animation:au-show .2s ease 1.35s forwards}
+@keyframes au-spin{to{transform:rotate(1turn)}}
+@keyframes au-gone{to{width:0;margin-right:calc(var(--u)*-7);border-width:0;opacity:0}}
+@keyframes au-show{to{width:calc(var(--u)*13);opacity:1}}
+:is(#laboratorio,.lab-escopo) .au-wa-btn{display:flex;align-items:center;justify-content:center;gap:calc(var(--u)*6);margin:calc(var(--u)*8) calc(var(--u)*-9) calc(var(--u)*-14);padding:calc(var(--u)*9) 0 calc(var(--u)*4);border-top:calc(var(--u)*.8) solid #e9edef;color:var(--au-blue);font-size:calc(var(--u)*14.5);font-weight:500}
+:is(#laboratorio,.lab-escopo) .au-wa-btn .cm-i{width:calc(var(--u)*17);height:calc(var(--u)*17)}
+:is(#laboratorio,.lab-escopo) .au .cm-wa-in:has(.au-wa-btn)>small,:is(#laboratorio,.lab-escopo) .au .cm-wa-in:has(.au-wa-btns)>small{position:static;display:block;margin-top:calc(var(--u)*16);text-align:right}
+:is(#laboratorio,.lab-escopo) .au-wa-btns{display:grid;margin:calc(var(--u)*8) calc(var(--u)*-9) calc(var(--u)*-14)}
+:is(#laboratorio,.lab-escopo) .au-wa-btns span{padding:calc(var(--u)*9) 0;border-top:calc(var(--u)*.8) solid #e9edef;color:var(--au-blue);font-size:calc(var(--u)*14.5);font-weight:500;text-align:center}
+:is(#laboratorio,.lab-escopo) .au [data-tap]{transition:filter .12s,transform .12s}
+:is(#laboratorio,.lab-escopo) .au-art>b{font-size:calc(var(--u)*25)!important}
+:is(#laboratorio,.lab-escopo) .au-flowreply{display:grid;gap:calc(var(--u)*2);margin-bottom:calc(var(--u)*2);padding:calc(var(--u)*7) calc(var(--u)*9);border-left:calc(var(--u)*3) solid #06cf9c;border-radius:calc(var(--u)*6);background:#0000000a;font-size:calc(var(--u)*13)}
+:is(#laboratorio,.lab-escopo) .au-flowreply b{font-size:calc(var(--u)*13.5)}
+/* Backstage note: what happens outside the customer's screen, drawn as an annotation, not as app UI. */
+:is(#laboratorio,.lab-escopo) .au-summary{align-self:stretch;display:grid;gap:calc(var(--u)*3);margin:calc(var(--u)*2) calc(var(--u)*4);padding:calc(var(--u)*10) calc(var(--u)*12);border:calc(var(--u)*1.2) dashed #6b4fd8;border-radius:calc(var(--u)*12);background:#1d1838eb;color:#e9e5ff;font-size:calc(var(--u)*12.5);line-height:1.35;box-shadow:0 calc(var(--u)*8) calc(var(--u)*20) calc(var(--u)*-8) #0006}
+:is(#laboratorio,.lab-escopo) .au-summary small{display:flex;align-items:center;color:#b9a8ff;font-size:calc(var(--u)*11);font-weight:700;text-transform:uppercase;letter-spacing:.05em}
+:is(#laboratorio,.lab-escopo) .au-summary b{font-size:calc(var(--u)*13)}
+/* order_details: the pre-booking with the masked amount and its payment state. */
+:is(#laboratorio,.lab-escopo) .au-order{display:grid;gap:calc(var(--u)*7);width:84%;padding:calc(var(--u)*4) calc(var(--u)*4) calc(var(--u)*20)!important}
+:is(#laboratorio,.lab-escopo) .au-order-top{display:flex;align-items:center;gap:calc(var(--u)*9);padding:calc(var(--u)*4);border-radius:calc(var(--u)*6);background:#f0f2f5}
+:is(#laboratorio,.lab-escopo) .au-order-top img{width:calc(var(--u)*52);height:calc(var(--u)*52);border-radius:calc(var(--u)*6);object-fit:cover}
+:is(#laboratorio,.lab-escopo) .au-order-top span{display:grid;line-height:1.3}
+:is(#laboratorio,.lab-escopo) .au-order-top b{font-size:calc(var(--u)*14)}
+:is(#laboratorio,.lab-escopo) .au-order-top small{color:var(--au-mut);font-size:calc(var(--u)*12)}
+:is(#laboratorio,.lab-escopo) .au-order-total{display:flex;justify-content:space-between;align-items:baseline;padding:0 calc(var(--u)*6);font-size:calc(var(--u)*13)}
+:is(#laboratorio,.lab-escopo) .au-order-total small{color:var(--au-mut)}
+:is(#laboratorio,.lab-escopo) .au-mask{font-weight:600;letter-spacing:.06em}
+:is(#laboratorio,.lab-escopo) .au-order-state{margin:0 calc(var(--u)*6);padding:calc(var(--u)*5) calc(var(--u)*8);border-radius:calc(var(--u)*6);background:#fdecec;color:#b42318;font-size:calc(var(--u)*12.5);font-weight:600}
+:is(#laboratorio,.lab-escopo) .au-order-state--ok{background:#e7f6ec;color:#127a3a}
+:is(#laboratorio,.lab-escopo) .au-order .au-wa-btn{margin:0 calc(var(--u)*-4) calc(var(--u)*-16);padding-bottom:calc(var(--u)*8)}
+
+/* WhatsApp Flow: full sheet with its own header and the green footer button. */
+:is(#laboratorio,.lab-escopo) .au-flow{position:absolute;inset:calc(var(--topo) + var(--u)*8) 0 0;display:flex;flex-direction:column;border-radius:calc(var(--u)*14) calc(var(--u)*14) 0 0;background:#fff;color:var(--au-ink);overflow:hidden}
+:is(#laboratorio,.lab-escopo) .au-flow-top{display:flex;align-items:center;justify-content:space-between;padding:calc(var(--u)*14) calc(var(--u)*16);border-bottom:calc(var(--u)*.8) solid #e9edef}
+:is(#laboratorio,.lab-escopo) .au-flow-top b{font-size:calc(var(--u)*16)}
+:is(#laboratorio,.lab-escopo) .au-flow-top .cm-i{width:calc(var(--u)*22);height:calc(var(--u)*22);color:#54656f}
+:is(#laboratorio,.lab-escopo) .au-flow-step{display:grid;flex:1;align-content:start;gap:calc(var(--u)*10);padding:calc(var(--u)*18) calc(var(--u)*18);animation:cm-page-in .4s cubic-bezier(.2,.8,.2,1) both}
+:is(#laboratorio,.lab-escopo) .au-flow-h{font-size:calc(var(--u)*20);letter-spacing:-.01em}
+:is(#laboratorio,.lab-escopo) .au-flow-h--sm{margin-top:calc(var(--u)*8);font-size:calc(var(--u)*15)}
+:is(#laboratorio,.lab-escopo) .au-flow-step>small{margin-top:calc(var(--u)*-6);color:var(--au-mut);font-size:calc(var(--u)*13)}
+:is(#laboratorio,.lab-escopo) .au-opt{--on:var(--pk,0);display:flex;align-items:center;justify-content:space-between;padding:calc(var(--u)*13) calc(var(--u)*14);border:calc(var(--u)*1.2) solid color-mix(in srgb,#d1d7db,#00a884 calc(var(--on)*100%));border-radius:calc(var(--u)*10);background:color-mix(in srgb,#fff,#e7fce3 calc(var(--on)*100%));transition:background .2s,border-color .2s}
+:is(#laboratorio,.lab-escopo) .au-opt span{display:grid;line-height:1.3}
+:is(#laboratorio,.lab-escopo) .au-opt b{font-size:calc(var(--u)*15)}
+:is(#laboratorio,.lab-escopo) .au-opt small{color:var(--au-mut);font-size:calc(var(--u)*12.5)}
+:is(#laboratorio,.lab-escopo) .au-opt>i,:is(#laboratorio,.lab-escopo) .au-radio{flex:none;width:calc(var(--u)*20);height:calc(var(--u)*20);border:calc(var(--u)*2) solid #8696a0;border-radius:50%;box-shadow:inset 0 0 0 calc(var(--u)*3.5) #fff,inset 0 0 0 calc(var(--u)*12*var(--pk,0)) #00a884;transition:box-shadow .2s}
+:is(#laboratorio,.lab-escopo) .au-opt>i{border-color:color-mix(in srgb,#8696a0,#00a884 calc(var(--pk,0)*100%))}
+:is(#laboratorio,.lab-escopo) .au-chips{display:flex;flex-wrap:wrap;gap:calc(var(--u)*8)}
+:is(#laboratorio,.lab-escopo) .au-chips span{padding:calc(var(--u)*7) calc(var(--u)*12);border:calc(var(--u)*1) solid #d1d7db;border-radius:calc(var(--u)*18);font-size:calc(var(--u)*13.5)}
+:is(#laboratorio,.lab-escopo) .au-chips .is-on{border-color:#00a884;background:#e7fce3;color:#005c4b}
+:is(#laboratorio,.lab-escopo) .au-field{display:grid;gap:calc(var(--u)*2);padding:calc(var(--u)*9) calc(var(--u)*12);border:calc(var(--u)*1) solid #d1d7db;border-radius:calc(var(--u)*8)}
+:is(#laboratorio,.lab-escopo) .au-field small{color:var(--au-mut);font-size:calc(var(--u)*11.5)}
+:is(#laboratorio,.lab-escopo) .au-field b{font-size:calc(var(--u)*15);font-weight:500}
+:is(#laboratorio,.lab-escopo) .au-field--area{min-height:calc(var(--u)*78);align-content:start}
+:is(#laboratorio,.lab-escopo) .au-flow-foot{display:grid;gap:calc(var(--u)*10);padding:calc(var(--u)*12) calc(var(--u)*18) calc(var(--pe) + var(--u)*6);border-top:calc(var(--u)*.8) solid #e9edef}
+:is(#laboratorio,.lab-escopo) .au-flow-go{display:grid;place-items:center;height:calc(var(--u)*46);border-radius:calc(var(--u)*24);background:#00a884;color:#fff;font-size:calc(var(--u)*15.5);font-weight:600}
+:is(#laboratorio,.lab-escopo) .au-flow-foot>small{display:flex;align-items:center;justify-content:center;gap:calc(var(--u)*3);color:var(--au-mut);font-size:calc(var(--u)*11.5)}
+
+/* Payment review with the bank chooser (Pix by app switch). */
+:is(#laboratorio,.lab-escopo) .au-pay{display:grid;gap:calc(var(--u)*10);color:var(--au-ink)}
+:is(#laboratorio,.lab-escopo) .au-pay-line{display:flex;align-items:center;gap:calc(var(--u)*10)}
+:is(#laboratorio,.lab-escopo) .au-pay-line img{width:calc(var(--u)*48);height:calc(var(--u)*48);border-radius:calc(var(--u)*8);object-fit:cover}
+:is(#laboratorio,.lab-escopo) .au-pay-line span{display:grid;line-height:1.3}
+:is(#laboratorio,.lab-escopo) .au-pay-line b{font-size:calc(var(--u)*14.5)}
+:is(#laboratorio,.lab-escopo) .au-pay-line small{color:var(--au-mut);font-size:calc(var(--u)*12)}
+:is(#laboratorio,.lab-escopo) .au-row{display:flex;justify-content:space-between;align-items:baseline;gap:calc(var(--u)*10);padding:calc(var(--u)*9) 0;border-bottom:calc(var(--u)*.8) solid #e9edef;font-size:calc(var(--u)*14)}
+:is(#laboratorio,.lab-escopo) .au-row small{color:var(--au-mut);font-size:calc(var(--u)*13)}
+:is(#laboratorio,.lab-escopo) .au-row b{font-weight:600;text-align:right}
+:is(#laboratorio,.lab-escopo) .au-row--total{border-top:calc(var(--u)*.8) solid #e9edef}
+:is(#laboratorio,.lab-escopo) .au-pay-label{margin-top:calc(var(--u)*4);color:var(--au-mut);font-size:calc(var(--u)*12.5);font-weight:600;text-transform:uppercase;letter-spacing:.04em}
+:is(#laboratorio,.lab-escopo) .au-bankpick{display:flex;align-items:center;gap:calc(var(--u)*11);padding:calc(var(--u)*11) calc(var(--u)*12);border:calc(var(--u)*1.2) solid color-mix(in srgb,#e9edef,#00a884 calc(var(--pk,0)*100%));border-radius:calc(var(--u)*10);background:color-mix(in srgb,#fff,#f0fdf4 calc(var(--pk,0)*100%));font-size:calc(var(--u)*14.5);transition:background .2s,border-color .2s}
+:is(#laboratorio,.lab-escopo) .au-bankpick b{flex:1;font-weight:500}
+:is(#laboratorio,.lab-escopo) .au-bank-mark{display:inline-grid;flex:none;place-items:center;width:calc(var(--u)*34);height:calc(var(--u)*34);border-radius:calc(var(--u)*9);background:#1f3b4d;color:#e8f1f5;font-size:calc(var(--u)*12);font-style:normal;font-weight:700;letter-spacing:-.02em}
+:is(#laboratorio,.lab-escopo) .au-bank-mark--2{background:#5c4d3c;color:#f6efe6}
+:is(#laboratorio,.lab-escopo) .au-bank-mark--3{background:#eef1f3;color:#54656f}
+:is(#laboratorio,.lab-escopo) .au-bank-mark--3 .cm-i{width:calc(var(--u)*17);height:calc(var(--u)*17)}
+:is(#laboratorio,.lab-escopo) .au-pay-go{margin-top:calc(var(--u)*4)}
+
+/* Fictitious bank app. */
+:is(#laboratorio,.lab-escopo) .au-bank{position:absolute;inset:0;display:flex;flex-direction:column;padding-top:var(--topo);background:#f3f5f7;color:#16202a}
+:is(#laboratorio,.lab-escopo) .au-bank-top{display:flex;align-items:center;justify-content:space-between;padding:calc(var(--u)*10) calc(var(--u)*16)}
+:is(#laboratorio,.lab-escopo) .au-bank-top b{display:flex;align-items:center;gap:calc(var(--u)*8);font-size:calc(var(--u)*15)}
+:is(#laboratorio,.lab-escopo) .au-bank-top .au-bank-mark{width:calc(var(--u)*26);height:calc(var(--u)*26);border-radius:calc(var(--u)*7);font-size:calc(var(--u)*10)}
+:is(#laboratorio,.lab-escopo) .au-bank-top .cm-i{width:calc(var(--u)*22);height:calc(var(--u)*22)}
+:is(#laboratorio,.lab-escopo) .au-bank-body{display:grid;gap:0;margin:calc(var(--u)*10) calc(var(--u)*14);padding:calc(var(--u)*18);border-radius:calc(var(--u)*18);background:#fff;box-shadow:0 calc(var(--u)*6) calc(var(--u)*20) calc(var(--u)*-10) #0002;animation:cm-page-in .45s cubic-bezier(.2,.8,.2,1) .25s both}
+:is(#laboratorio,.lab-escopo) .au-bank-body>small:first-child{color:#5b6b78;font-size:calc(var(--u)*13);font-weight:600;text-transform:uppercase;letter-spacing:.05em}
+:is(#laboratorio,.lab-escopo) .au-bank-h{margin:calc(var(--u)*4) 0 calc(var(--u)*10);font-size:calc(var(--u)*22);line-height:1.15;letter-spacing:-.01em}
+:is(#laboratorio,.lab-escopo) .au-bank-go{display:flex;align-items:center;justify-content:center;gap:calc(var(--u)*6);height:calc(var(--u)*50);margin-top:calc(var(--u)*18);border-radius:calc(var(--u)*14);background:#1f3b4d;color:#fff;font-size:calc(var(--u)*15.5);font-weight:600}
+:is(#laboratorio,.lab-escopo) .au-bank-fine{margin-top:calc(var(--u)*10);color:#5b6b78;font-size:calc(var(--u)*12);text-align:center}
+:is(#laboratorio,.lab-escopo) .au-bank-done{display:grid;justify-items:center;gap:calc(var(--u)*8);margin:calc(var(--u)*80) calc(var(--u)*24) 0;text-align:center;animation:cm-page-in .45s cubic-bezier(.2,.8,.2,1) both}
+:is(#laboratorio,.lab-escopo) .au-bank-done b{font-size:calc(var(--u)*22)}
+:is(#laboratorio,.lab-escopo) .au-bank-done small{color:#5b6b78;font-size:calc(var(--u)*14)}
+:is(#laboratorio,.lab-escopo) .au-bank-done .cm-done-check{background:#1f9d55}
+:is(#laboratorio,.lab-escopo) .au-bank-back{margin-top:calc(var(--u)*20);color:#1f3b4d;font-size:calc(var(--u)*14.5);font-weight:600}
+
+/* WhatsApp call permission and the call record. */
+:is(#laboratorio,.lab-escopo) .au-perm{display:grid;justify-items:center;gap:calc(var(--u)*5);width:84%;padding:calc(var(--u)*14) calc(var(--u)*12) calc(var(--u)*10)!important;text-align:center}
+:is(#laboratorio,.lab-escopo) .au-perm-ico{display:grid;place-items:center;width:calc(var(--u)*40);height:calc(var(--u)*40);border-radius:50%;background:#e7fce3;color:var(--au-wa)}
+:is(#laboratorio,.lab-escopo) .au-perm-ico .cm-i{width:calc(var(--u)*20);height:calc(var(--u)*20)}
+:is(#laboratorio,.lab-escopo) .au-perm b{font-size:calc(var(--u)*14.5)}
+:is(#laboratorio,.lab-escopo) .au-perm small{position:static!important;display:block!important;color:var(--au-mut)!important;font-size:calc(var(--u)*12)!important;line-height:1.35}
+:is(#laboratorio,.lab-escopo) .au-perm-btn{display:grid;place-items:center;width:100%;height:calc(var(--u)*38);margin-top:calc(var(--u)*4);border-radius:calc(var(--u)*20);background:#00a884;color:#fff;font-size:calc(var(--u)*14);font-weight:600}
+:is(#laboratorio,.lab-escopo) .au-perm-btn--no{margin-top:0;background:none;color:var(--au-wa)}
+:is(#laboratorio,.lab-escopo) .au-perm-ok{display:flex;align-items:center;color:#127a3a;font-size:calc(var(--u)*13.5);font-weight:600}
+:is(#laboratorio,.lab-escopo) .au-calllog{display:flex!important;align-items:center;gap:calc(var(--u)*10)}
+:is(#laboratorio,.lab-escopo) .au-calllog-ico{display:grid;place-items:center;width:calc(var(--u)*34);height:calc(var(--u)*34);border-radius:50%;background:#e7fce3;color:var(--au-wa)}
+:is(#laboratorio,.lab-escopo) .au-calllog-ico .cm-i{width:calc(var(--u)*17);height:calc(var(--u)*17)}
+:is(#laboratorio,.lab-escopo) .au-calllog span:not(.au-calllog-ico){display:grid;line-height:1.3;margin-right:calc(var(--u)*30)}
+:is(#laboratorio,.lab-escopo) .au-calllog small:not(:last-child){color:var(--au-mut);font-size:calc(var(--u)*12)}
+
+/* WhatsApp voice call screen and live captions (shared with the iOS call). */
+:is(#laboratorio,.lab-escopo) .au-wacall{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;padding:calc(var(--topo) + var(--u)*14) calc(var(--u)*18) calc(var(--pe) + var(--u)*14);background:radial-gradient(120% 70% at 50% 0%,#1f4b44,#0b141a 70%);color:#e9edef;text-align:center}
+:is(#laboratorio,.lab-escopo) .au-wacall-e2e{display:flex;align-items:center;color:#8696a0;font-size:calc(var(--u)*12)}
+:is(#laboratorio,.lab-escopo) .au-wacall-av{width:calc(var(--u)*92)!important;height:calc(var(--u)*92)!important;margin:calc(var(--u)*26) 0 calc(var(--u)*12)}
+:is(#laboratorio,.lab-escopo) .au-wacall>b{font-size:calc(var(--u)*26);font-weight:500}
+:is(#laboratorio,.lab-escopo) .au-wacall-st{margin-top:calc(var(--u)*4);color:#aebac1;font-size:calc(var(--u)*14)}
+:is(#laboratorio,.lab-escopo) .au-wacall-in{display:flex;justify-content:space-between;width:80%;margin-top:auto}
+:is(#laboratorio,.lab-escopo) .au-round{display:grid;place-items:center;width:calc(var(--u)*66);height:calc(var(--u)*66);border-radius:50%;color:#fff}
+:is(#laboratorio,.lab-escopo) .au-round .cm-i{width:calc(var(--u)*28);height:calc(var(--u)*28);fill:currentColor;stroke:none}
+:is(#laboratorio,.lab-escopo) .au-round--yes{background:#25d366}
+:is(#laboratorio,.lab-escopo) .au-round--no{background:#ff3b30}
+:is(#laboratorio,.lab-escopo) .au-round--no .cm-i{transform:rotate(135deg)}
+:is(#laboratorio,.lab-escopo) .au-wacall-bar{display:flex;justify-content:space-around;width:100%;margin-top:auto;padding:calc(var(--u)*12);border-radius:calc(var(--u)*30);background:#ffffff14}
+:is(#laboratorio,.lab-escopo) .au-wacall-bar span{display:grid;place-items:center;width:calc(var(--u)*50);height:calc(var(--u)*50);border-radius:50%;background:#ffffff1f}
+:is(#laboratorio,.lab-escopo) .au-wacall-bar .cm-i{width:calc(var(--u)*22);height:calc(var(--u)*22)}
+:is(#laboratorio,.lab-escopo) .au-wacall-bar .au-round--end{background:#ff3b30}
+:is(#laboratorio,.lab-escopo) .au-wacall-bar .au-round--end .cm-i{transform:rotate(135deg);fill:#fff;stroke:none}
+:is(#laboratorio,.lab-escopo) .au-caps{display:flex;flex-direction:column;justify-content:flex-end;gap:calc(var(--u)*7);width:100%;max-height:calc(var(--u)*330);margin-top:calc(var(--u)*18);overflow:hidden;text-align:left}
+:is(#laboratorio,.lab-escopo) .au-caps>small{display:flex;align-items:center;margin-bottom:calc(var(--u)*2);color:#aebac1;font-size:calc(var(--u)*11.5);font-weight:600;text-transform:uppercase;letter-spacing:.06em}
+:is(#laboratorio,.lab-escopo) .au-cap{flex:none;margin:0;padding:calc(var(--u)*8) calc(var(--u)*11);border-radius:calc(var(--u)*12);background:#ffffff17;color:#f2f5f7;font-size:calc(var(--u)*14);line-height:1.35}
+:is(#laboratorio,.lab-escopo) .au-cap b{display:block;margin-bottom:calc(var(--u)*1);color:#9fe7c3;font-size:calc(var(--u)*11.5)}
+:is(#laboratorio,.lab-escopo) .au-cap--me{align-self:flex-end;max-width:84%;background:#ffffff2b}
+:is(#laboratorio,.lab-escopo) .au-cap--me b{color:#d0d7dc}
+:is(#laboratorio,.lab-escopo) .au-cap--sys,:is(#laboratorio,.lab-escopo) .au-cap--tool{align-self:center;padding:calc(var(--u)*5) calc(var(--u)*10);background:none;border:calc(var(--u)*1) dashed #ffffff40;color:#cfd8dc;font-size:calc(var(--u)*12)}
+:is(#laboratorio,.lab-escopo) .au-caps .cm-arrive{animation:cm-arrive .4s cubic-bezier(.2,.8,.2,1) .25s both}
+
+/* iOS: incoming call and in-call screens. */
+:is(#laboratorio,.lab-escopo) .au-ios-call{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;padding:calc(var(--topo) + var(--u)*40) calc(var(--u)*20) calc(var(--pe) + var(--u)*24);background:linear-gradient(180deg,#3d5a5b 0%,#1c2a2b 55%,#101616 100%);color:#fff;text-align:center}
+:is(#laboratorio,.lab-escopo) .au-ios-call>small{color:#ffffffb3;font-size:calc(var(--u)*16)}
+:is(#laboratorio,.lab-escopo) .au-ios-call>b{margin-top:calc(var(--u)*4);font-size:calc(var(--u)*32);font-weight:400;letter-spacing:-.01em}
+:is(#laboratorio,.lab-escopo) .au-ios-call-sub{margin-top:calc(var(--u)*6);color:#ffffffa6;font-size:calc(var(--u)*13.5)}
+:is(#laboratorio,.lab-escopo) .au-ios-call-btns{display:flex;justify-content:space-between;width:84%;margin-top:auto}
+:is(#laboratorio,.lab-escopo) .au-ios-call-btns>span{display:grid;justify-items:center;gap:calc(var(--u)*8);font-size:calc(var(--u)*14)}
+:is(#laboratorio,.lab-escopo) .au-ios-call--on{padding-top:calc(var(--topo) + var(--u)*22)}
+:is(#laboratorio,.lab-escopo) .au-ios-call--on>b{margin-top:0;font-size:calc(var(--u)*26)}
+:is(#laboratorio,.lab-escopo) .au-ios-timer{margin-top:calc(var(--u)*4);color:#ffffffb3;font-size:calc(var(--u)*15)}
+:is(#laboratorio,.lab-escopo) .au-ios-call .au-caps{margin-top:calc(var(--u)*14);max-height:calc(var(--u)*360)}
+:is(#laboratorio,.lab-escopo) .au-ios-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:calc(var(--u)*14) calc(var(--u)*18);width:86%;margin-top:auto}
+:is(#laboratorio,.lab-escopo) .au-ios-grid span{display:grid;justify-items:center;gap:calc(var(--u)*5)}
+:is(#laboratorio,.lab-escopo) .au-ios-grid .cm-i{box-sizing:content-box;width:calc(var(--u)*24);height:calc(var(--u)*24);padding:calc(var(--u)*17);border-radius:50%;background:#ffffff26}
+:is(#laboratorio,.lab-escopo) .au-ios-grid small{color:#ffffffd9;font-size:calc(var(--u)*11.5)}
+:is(#laboratorio,.lab-escopo) .au-ios-end{margin-top:calc(var(--u)*18)}
+
+/* Instagram Reel comment prompt, comments sheet and Direct. */
+:is(#laboratorio,.lab-escopo) .au-prompt{position:absolute;left:calc(var(--u)*24);bottom:calc(var(--u)*210);display:flex;align-items:center;gap:calc(var(--u)*4);padding:calc(var(--u)*9) calc(var(--u)*14);border-radius:calc(var(--u)*22);background:#fff;color:#000;font-size:calc(var(--u)*14);box-shadow:0 calc(var(--u)*6) calc(var(--u)*18) #0006;transition:transform .3s cubic-bezier(.34,1.56,.64,1)}
+:is(#laboratorio,.lab-escopo) .au[data-state~="lit"] .au-prompt{transform:scale(1.06)}
+:is(#laboratorio,.lab-escopo) .au-cmts{display:grid;align-content:start;gap:calc(var(--u)*14);min-height:58%;background:#262626!important;color:#f5f5f5}
+:is(#laboratorio,.lab-escopo) .au-cmts-h{text-align:center;font-size:calc(var(--u)*15)}
+:is(#laboratorio,.lab-escopo) .au-cmt{display:flex;align-items:flex-start;gap:calc(var(--u)*10);margin:0;font-size:calc(var(--u)*14)}
+:is(#laboratorio,.lab-escopo) .au-cmt>i{flex:none;width:calc(var(--u)*32);height:calc(var(--u)*32);border-radius:50%;background:linear-gradient(135deg,#6c6c6c,#3b3b3b)}
+:is(#laboratorio,.lab-escopo) .au-cmt span{display:grid;line-height:1.35}
+:is(#laboratorio,.lab-escopo) .au-cmt b{font-size:calc(var(--u)*12.5);font-weight:600}
+:is(#laboratorio,.lab-escopo) .au-cmt--me>i{background:linear-gradient(135deg,#c8a27a,#7b5b3f)}
+:is(#laboratorio,.lab-escopo) .au-cmt--reply{margin-left:calc(var(--u)*42)}
+:is(#laboratorio,.lab-escopo) .au-cmt--reply .cm-mark{width:calc(var(--u)*24);height:calc(var(--u)*24)}
+:is(#laboratorio,.lab-escopo) .au-cmts-in{display:flex;align-items:center;gap:calc(var(--u)*10);margin-top:calc(var(--u)*6);padding:calc(var(--u)*10) calc(var(--u)*14);border-radius:calc(var(--u)*22);background:#363636;font-size:calc(var(--u)*14.5)}
+:is(#laboratorio,.lab-escopo) .au-cmts-send{color:#4a8dff;font-weight:600}
+:is(#laboratorio,.lab-escopo) .au-dm{position:absolute;inset:0;display:flex;flex-direction:column;padding-top:var(--topo);background:#000;color:#f5f5f5}
+:is(#laboratorio,.lab-escopo) .au-dm-head{display:flex;align-items:center;gap:calc(var(--u)*10);padding:calc(var(--u)*8) calc(var(--u)*14);border-bottom:calc(var(--u)*.6) solid #262626}
+:is(#laboratorio,.lab-escopo) .au-dm-head>span:not(.cm-mark){display:grid;flex:1;line-height:1.25}
+:is(#laboratorio,.lab-escopo) .au-dm-head b{font-size:calc(var(--u)*15)}
+:is(#laboratorio,.lab-escopo) .au-dm-head small{color:#a8a8a8;font-size:calc(var(--u)*12)}
+:is(#laboratorio,.lab-escopo) .au-dm-head .cm-mark{width:calc(var(--u)*32);height:calc(var(--u)*32)}
+:is(#laboratorio,.lab-escopo) .au-dm-head .cm-i{width:calc(var(--u)*24);height:calc(var(--u)*24)}
+:is(#laboratorio,.lab-escopo) .au-dm-body{display:flex;flex:1;flex-direction:column;justify-content:flex-end;gap:calc(var(--u)*8);padding:calc(var(--u)*12) calc(var(--u)*14);overflow:hidden}
+:is(#laboratorio,.lab-escopo) .au-dm-body>*{flex-shrink:0}
+:is(#laboratorio,.lab-escopo) .au-dm-ctx,:is(#laboratorio,.lab-escopo) .au-dm-day{align-self:center;color:#a8a8a8;font-size:calc(var(--u)*12)}
+:is(#laboratorio,.lab-escopo) .au-dm-in,:is(#laboratorio,.lab-escopo) .au-dm-out{max-width:80%;margin:0;padding:calc(var(--u)*10) calc(var(--u)*13);border-radius:calc(var(--u)*20);font-size:calc(var(--u)*14.5);line-height:1.35}
+:is(#laboratorio,.lab-escopo) .au-dm-in{align-self:flex-start;background:#262626}
+:is(#laboratorio,.lab-escopo) .au-dm-out{align-self:flex-end;background:#3797f0;color:#fff}
+:is(#laboratorio,.lab-escopo) .au-dm-btns{display:grid;gap:calc(var(--u)*6);margin-top:calc(var(--u)*10)}
+:is(#laboratorio,.lab-escopo) .au-dm-btns span{display:grid;place-items:center;height:calc(var(--u)*36);border-radius:calc(var(--u)*10);background:#363636;font-size:calc(var(--u)*14);font-weight:600}
+:is(#laboratorio,.lab-escopo) .au-dm-btns .is-primary{background:#4a5df9;color:#fff}
+:is(#laboratorio,.lab-escopo) .au-dm-in-bar{display:flex;align-items:center;gap:calc(var(--u)*10);margin:calc(var(--u)*6) calc(var(--u)*12) calc(var(--pe) + var(--u)*4);padding:calc(var(--u)*6) calc(var(--u)*14) calc(var(--u)*6) calc(var(--u)*6);border-radius:calc(var(--u)*24);background:#262626;color:#a8a8a8;font-size:calc(var(--u)*14.5)}
+:is(#laboratorio,.lab-escopo) .au-dm-in-bar span{flex:1}
+:is(#laboratorio,.lab-escopo) .au-dm-cam{display:grid;place-items:center;width:calc(var(--u)*34);height:calc(var(--u)*34);border-radius:50%;background:#3797f0;color:#fff}
+:is(#laboratorio,.lab-escopo) .au-dm-cam .cm-i,:is(#laboratorio,.lab-escopo) .au-dm-in-bar>.cm-i{width:calc(var(--u)*20);height:calc(var(--u)*20)}
+:is(#laboratorio,.lab-escopo) .au-dm .cm-arrive{animation:cm-arrive .4s cubic-bezier(.2,.8,.2,1) .45s both}
+
+/* Lead page and plan page (clinic and school). */
+:is(#laboratorio,.lab-escopo) .au-lead,:is(#laboratorio,.lab-escopo) .au-plan{display:grid;align-content:start;gap:calc(var(--u)*12);height:100%;padding:calc(var(--u)*18) calc(var(--u)*20);background:#fff;color:#14232a}
+:is(#laboratorio,.lab-escopo) .au-lead>div{display:grid;gap:calc(var(--u)*12)}
+:is(#laboratorio,.lab-escopo) .au-lead-brand{display:flex;align-items:center;gap:calc(var(--u)*10);font-size:calc(var(--u)*16)}
+:is(#laboratorio,.lab-escopo) .au-lead-brand .cm-mark{width:calc(var(--u)*34);height:calc(var(--u)*34)}
+:is(#laboratorio,.lab-escopo) .au-lead-h{margin-top:calc(var(--u)*8);font-size:calc(var(--u)*25);line-height:1.12;letter-spacing:-.015em}
+:is(#laboratorio,.lab-escopo) .au-check{display:flex;align-items:flex-start;gap:calc(var(--u)*10);font-size:calc(var(--u)*13);line-height:1.35}
+:is(#laboratorio,.lab-escopo) .au-check i{display:grid;flex:none;place-items:center;width:calc(var(--u)*22);height:calc(var(--u)*22);border-radius:calc(var(--u)*6);background:var(--brand);color:#fff}
+:is(#laboratorio,.lab-escopo) .au-check .cm-i{width:calc(var(--u)*15);height:calc(var(--u)*15);stroke-width:2.6}
+:is(#laboratorio,.lab-escopo) .au-lead-go{background:var(--brand)!important}
+:is(#laboratorio,.lab-escopo) .au-lead-ok{display:grid!important;justify-items:center;gap:calc(var(--u)*8);margin-top:calc(var(--u)*90);text-align:center;animation:cm-page-in .45s cubic-bezier(.2,.8,.2,1) both}
+:is(#laboratorio,.lab-escopo) .au-lead-ok .cm-done-check{background:var(--brand)}
+:is(#laboratorio,.lab-escopo) .au-lead-ok b{font-size:calc(var(--u)*20)}
+:is(#laboratorio,.lab-escopo) .au-lead-ok small{color:#5b6b78;font-size:calc(var(--u)*14)}
+:is(#laboratorio,.lab-escopo) .au-plan-k{color:var(--brand);font-size:calc(var(--u)*13);font-weight:700;text-transform:uppercase;letter-spacing:.06em}
+:is(#laboratorio,.lab-escopo) .au-plan-h{font-size:calc(var(--u)*25);line-height:1.12;letter-spacing:-.015em}
+:is(#laboratorio,.lab-escopo) .au-plan-li{display:flex;align-items:center;font-size:calc(var(--u)*14.5)}
+:is(#laboratorio,.lab-escopo) .au-plan-li .cm-i{color:var(--brand)}
+:is(#laboratorio,.lab-escopo) .au-plan-pay{display:grid;gap:calc(var(--u)*4);margin-top:calc(var(--u)*6);padding:calc(var(--u)*14);border-radius:calc(var(--u)*14);background:color-mix(in srgb,var(--brand) 9%,#fff)}
+:is(#laboratorio,.lab-escopo) .au-plan-pay b{font-size:calc(var(--u)*15)}
+:is(#laboratorio,.lab-escopo) .au-plan-pay small{color:#4b5a63;font-size:calc(var(--u)*13);line-height:1.4}
+
+/* RCS chat in the phone's messages app (generic, no carrier or app maker marks). */
+:is(#laboratorio,.lab-escopo) .au-g-chat{display:inline-flex;align-items:center;gap:calc(var(--u)*6);margin-top:calc(var(--u)*10);padding:calc(var(--u)*9) calc(var(--u)*16);border-radius:calc(var(--u)*20);background:#0b57d0;color:#fff;font-size:calc(var(--u)*14);font-weight:500}
+:is(#laboratorio,.lab-escopo) .au-g-chat .cm-i{width:calc(var(--u)*17);height:calc(var(--u)*17)}
+:is(#laboratorio,.lab-escopo) .au-rcs{position:absolute;inset:0;display:flex;flex-direction:column;padding-top:var(--topo);background:#f8fafd;color:#1f1f1f}
+:is(#laboratorio,.lab-escopo) .au-rcs-head{display:flex;align-items:center;gap:calc(var(--u)*10);padding:calc(var(--u)*8) calc(var(--u)*14);background:#f8fafd}
+:is(#laboratorio,.lab-escopo) .au-rcs-head>span:not(.cm-mark){display:grid;flex:1;line-height:1.25}
+:is(#laboratorio,.lab-escopo) .au-rcs-head b{display:flex;align-items:center;gap:calc(var(--u)*4);font-size:calc(var(--u)*16);font-weight:500}
+:is(#laboratorio,.lab-escopo) .au-rcs-head small{color:#444746;font-size:calc(var(--u)*12)}
+:is(#laboratorio,.lab-escopo) .au-rcs-head .cm-mark{width:calc(var(--u)*36);height:calc(var(--u)*36)}
+:is(#laboratorio,.lab-escopo) .au-rcs-head>.cm-i{width:calc(var(--u)*22);height:calc(var(--u)*22);color:#444746}
+:is(#laboratorio,.lab-escopo) .au-verified{display:inline-block;box-sizing:content-box;width:calc(var(--u)*10);height:calc(var(--u)*10);padding:calc(var(--u)*2);border-radius:50%;background:#0b57d0;color:#fff;stroke-width:3.4;vertical-align:middle}
+:is(#laboratorio,.lab-escopo) .au-rcs-body{display:flex;flex:1;flex-direction:column;justify-content:flex-end;gap:calc(var(--u)*8);padding:calc(var(--u)*10) calc(var(--u)*12);overflow:hidden}
+:is(#laboratorio,.lab-escopo) .au-rcs-body>*{flex-shrink:0}
+:is(#laboratorio,.lab-escopo) .au-rcs-day{align-self:center;color:#444746;font-size:calc(var(--u)*11.5)}
+:is(#laboratorio,.lab-escopo) .au-rcs-card{display:grid;width:80%;overflow:hidden;border:calc(var(--u)*1) solid #e3e3e3;border-radius:calc(var(--u)*20);background:#fff}
+:is(#laboratorio,.lab-escopo) .au-rcs-card img{width:100%;height:calc(var(--u)*120);object-fit:cover}
+:is(#laboratorio,.lab-escopo) .au-rcs-card>span{display:grid;gap:calc(var(--u)*3);padding:calc(var(--u)*10) calc(var(--u)*14)}
+:is(#laboratorio,.lab-escopo) .au-rcs-card b{font-size:calc(var(--u)*15);font-weight:500}
+:is(#laboratorio,.lab-escopo) .au-rcs-card small{color:#444746;font-size:calc(var(--u)*13);line-height:1.35}
+:is(#laboratorio,.lab-escopo) .au-rcs-row{display:flex;gap:calc(var(--u)*8);margin-right:calc(var(--u)*-60)}
+:is(#laboratorio,.lab-escopo) .au-rcs-card--sm{flex:none;width:calc(var(--u)*196)}
+:is(#laboratorio,.lab-escopo) .au-rcs-card--sm img{height:calc(var(--u)*92)}
+:is(#laboratorio,.lab-escopo) .au-rcs-act{display:grid;place-items:center;height:calc(var(--u)*38);border-top:calc(var(--u)*1) solid #e3e3e3;color:#0b57d0;font-size:calc(var(--u)*14);font-weight:500}
+:is(#laboratorio,.lab-escopo) .au-rcs-act--fill{margin-top:calc(var(--u)*6);border:0;border-radius:calc(var(--u)*20);background:#0b57d0;color:#fff}
+:is(#laboratorio,.lab-escopo) .au-rcs-chips{display:flex;flex-wrap:wrap;justify-content:flex-end;gap:calc(var(--u)*6)}
+:is(#laboratorio,.lab-escopo) .au-rcs-chips span{padding:calc(var(--u)*8) calc(var(--u)*13);border:calc(var(--u)*1) solid #c4c7c5;border-radius:calc(var(--u)*18);background:#fff;color:#0b57d0;font-size:calc(var(--u)*13.5);font-weight:500}
+:is(#laboratorio,.lab-escopo) .au-rcs-out{align-self:flex-end;max-width:76%;margin:0;padding:calc(var(--u)*10) calc(var(--u)*14);border-radius:calc(var(--u)*20) calc(var(--u)*20) calc(var(--u)*6) calc(var(--u)*20);background:#d3e3fd;font-size:calc(var(--u)*14.5)}
+:is(#laboratorio,.lab-escopo) .au-rcs-pay{display:grid;gap:calc(var(--u)*4);width:80%;padding:calc(var(--u)*14);border:calc(var(--u)*1) solid #e3e3e3;border-radius:calc(var(--u)*20);background:#fff;font-size:calc(var(--u)*13.5)}
+:is(#laboratorio,.lab-escopo) .au-rcs-pay>b{font-size:calc(var(--u)*15);font-weight:600}
+:is(#laboratorio,.lab-escopo) .au-rcs-pay--ok>b{display:flex;align-items:center;color:#146c2e}
+:is(#laboratorio,.lab-escopo) .au-rcs-pay .au-rcs-act:not(.au-rcs-act--fill){margin:calc(var(--u)*6) calc(var(--u)*-14) calc(var(--u)*-14)}
+:is(#laboratorio,.lab-escopo) .au-steps{display:grid;grid-template-columns:repeat(4,1fr);gap:calc(var(--u)*4);margin:calc(var(--u)*6) 0}
+:is(#laboratorio,.lab-escopo) .au-steps i{height:calc(var(--u)*4);border-radius:calc(var(--u)*2);background:#e3e3e3}
+:is(#laboratorio,.lab-escopo) .au-steps .is-on{background:#146c2e}
+:is(#laboratorio,.lab-escopo) .au-rcs-fallback{align-self:center;color:#747775;font-size:calc(var(--u)*11.5)}
+:is(#laboratorio,.lab-escopo) .au-rcs-in{display:flex;align-items:center;gap:calc(var(--u)*12);margin:calc(var(--u)*6) calc(var(--u)*12) calc(var(--pe) + var(--u)*4);padding:calc(var(--u)*11) calc(var(--u)*16);border-radius:calc(var(--u)*26);background:#e9eef6;color:#444746;font-size:calc(var(--u)*14.5)}
+:is(#laboratorio,.lab-escopo) .au-rcs-in span{flex:1}
+:is(#laboratorio,.lab-escopo) .au-rcs-in .cm-i{width:calc(var(--u)*22);height:calc(var(--u)*22)}
+:is(#laboratorio,.lab-escopo) .au-rcs .cm-arrive{animation:cm-arrive .4s cubic-bezier(.2,.8,.2,1) .35s both}
+
+/* Lock screen with notifications. */
+:is(#laboratorio,.lab-escopo) .au-lock{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;gap:calc(var(--u)*8);padding:calc(var(--topo) + var(--u)*24) calc(var(--u)*10) 0;background:radial-gradient(120% 80% at 30% 10%,#e98e5a,#7a3c54 45%,#1d1a3a 85%);color:#fff}
+:is(#laboratorio,.lab-escopo) .au-lock>small{font-size:calc(var(--u)*17);font-weight:500;opacity:.9}
+:is(#laboratorio,.lab-escopo) .au-lock-time{margin:calc(var(--u)*-6) 0 calc(var(--u)*40);font-size:calc(var(--u)*92);font-weight:600;line-height:1;letter-spacing:-.02em}
+:is(#laboratorio,.lab-escopo) .au-note{display:flex;align-items:center;gap:calc(var(--u)*11);width:100%;padding:calc(var(--u)*12) calc(var(--u)*14);border-radius:calc(var(--u)*24);background:rgb(246 246 248 / .78);-webkit-backdrop-filter:blur(calc(var(--u)*16));backdrop-filter:blur(calc(var(--u)*16));color:#000}
+:is(#laboratorio,.lab-escopo) .au-note>span:nth-child(2){display:grid;flex:1;min-width:0;line-height:1.3}
+:is(#laboratorio,.lab-escopo) .au-note b{font-size:calc(var(--u)*14.5);font-weight:600}
+:is(#laboratorio,.lab-escopo) .au-note span small{font-size:calc(var(--u)*14)}
+:is(#laboratorio,.lab-escopo) .au-note>small{align-self:flex-start;color:#3c3c4399;font-size:calc(var(--u)*12.5)}
+:is(#laboratorio,.lab-escopo) .au-note-ico{display:grid;flex:none;place-items:center;width:calc(var(--u)*38);height:calc(var(--u)*38);border-radius:calc(var(--u)*9);overflow:hidden}
+:is(#laboratorio,.lab-escopo) .au-note-ico .au-bank-mark{width:100%;height:100%;border-radius:0}
+:is(#laboratorio,.lab-escopo) .au-note-ico--wa{background:#25d366}
+:is(#laboratorio,.lab-escopo) .au-lock .cm-arrive{animation:au-drop .5s cubic-bezier(.34,1.3,.64,1) .3s both}
+@keyframes au-drop{0%{opacity:0;transform:translateY(calc(var(--u)*-24)) scale(.96)}100%{opacity:1;transform:none}}
+
+/* Mail. */
+:is(#laboratorio,.lab-escopo) .au-mail{background:#fff;color:#000}
+:is(#laboratorio,.lab-escopo) .au-mail-top{display:flex;align-items:center;gap:calc(var(--u)*4);padding:calc(var(--u)*8) calc(var(--u)*14);color:#007aff;font-size:calc(var(--u)*16)}
+:is(#laboratorio,.lab-escopo) .au-mail-top span{flex:1}
+:is(#laboratorio,.lab-escopo) .au-mail-top b{font-weight:400}
+:is(#laboratorio,.lab-escopo) .au-mail-top .cm-i{width:calc(var(--u)*22);height:calc(var(--u)*22)}
+:is(#laboratorio,.lab-escopo) .au-mail-h{display:block;padding:calc(var(--u)*2) calc(var(--u)*16) calc(var(--u)*10);font-size:calc(var(--u)*32);letter-spacing:-.01em}
+:is(#laboratorio,.lab-escopo) .au-mail-row{display:flex;align-items:flex-start;gap:calc(var(--u)*11);padding:calc(var(--u)*11) calc(var(--u)*16);border-bottom:calc(var(--u)*.6) solid #e5e5ea}
+:is(#laboratorio,.lab-escopo) .au-mail-row .cm-mark{width:calc(var(--u)*40);height:calc(var(--u)*40);margin-top:calc(var(--u)*2)}
+:is(#laboratorio,.lab-escopo) .au-mail-row>span:nth-child(2){display:grid;flex:1;min-width:0;gap:calc(var(--u)*1);line-height:1.3}
+:is(#laboratorio,.lab-escopo) .au-mail-row b{display:flex;align-items:center;gap:calc(var(--u)*4);font-size:calc(var(--u)*15.5);font-weight:600}
+:is(#laboratorio,.lab-escopo) .au-mail-row strong{overflow:hidden;font-size:calc(var(--u)*14.5);font-weight:400;text-overflow:ellipsis;white-space:nowrap}
+:is(#laboratorio,.lab-escopo) .au-mail-row span small{overflow:hidden;color:#8a8a8e;font-size:calc(var(--u)*14);text-overflow:ellipsis;white-space:nowrap}
+:is(#laboratorio,.lab-escopo) .au-mail-row>small{color:#8a8a8e;font-size:calc(var(--u)*13.5)}
+:is(#laboratorio,.lab-escopo) .au-mail-row--new{position:relative;background:#f2f7ff}
+:is(#laboratorio,.lab-escopo) .au-mail-row--new::before{content:"";position:absolute;left:calc(var(--u)*5);top:calc(var(--u)*24);width:calc(var(--u)*9);height:calc(var(--u)*9);border-radius:50%;background:#007aff}
+:is(#laboratorio,.lab-escopo) .au-mail-row--new strong{font-weight:600}
+:is(#laboratorio,.lab-escopo) .au-mail-row--skel{opacity:.55}
+:is(#laboratorio,.lab-escopo) .au-mail .cm-arrive{animation:cm-arrive .45s cubic-bezier(.2,.8,.2,1) .2s both}
+:is(#laboratorio,.lab-escopo) .au-mail-open{display:flex;flex-direction:column;gap:calc(var(--u)*12)}
+:is(#laboratorio,.lab-escopo) .au-mail-open>*:not(.au-mail-top){margin:0 calc(var(--u)*18)}
+:is(#laboratorio,.lab-escopo) .au-mail-subj{font-size:calc(var(--u)*22);line-height:1.2;letter-spacing:-.01em}
+:is(#laboratorio,.lab-escopo) .au-mail-from{display:flex;align-items:center;gap:calc(var(--u)*10)}
+:is(#laboratorio,.lab-escopo) .au-mail-from .cm-mark{width:calc(var(--u)*38);height:calc(var(--u)*38)}
+:is(#laboratorio,.lab-escopo) .au-mail-from>span:last-child{display:grid;line-height:1.3}
+:is(#laboratorio,.lab-escopo) .au-mail-from b{display:flex;align-items:center;gap:calc(var(--u)*4);font-size:calc(var(--u)*15)}
+:is(#laboratorio,.lab-escopo) .au-mail-from small{color:#8a8a8e;font-size:calc(var(--u)*13)}
+:is(#laboratorio,.lab-escopo) .au-mail-open p{font-size:calc(var(--u)*15.5);line-height:1.45}
+:is(#laboratorio,.lab-escopo) .au-mail-cta{justify-self:start;align-self:flex-start}
+:is(#laboratorio,.lab-escopo) .au-mail-foot{margin-top:calc(var(--u)*12)!important;padding-top:calc(var(--u)*12);border-top:calc(var(--u)*.6) solid #e5e5ea;color:#8a8a8e;font-size:calc(var(--u)*12);line-height:1.5}
+
+/* Telegram (generic light theme) and its mini app with Stars. */
+:is(#laboratorio,.lab-escopo) .au-tg{position:absolute;inset:0;display:flex;flex-direction:column;padding-top:var(--topo);background:#cfe0c3 linear-gradient(160deg,#d8e7c9,#b9d3a8);color:#000}
+:is(#laboratorio,.lab-escopo) .au-tg-head{display:flex;align-items:center;gap:calc(var(--u)*10);padding:calc(var(--u)*8) calc(var(--u)*12);background:#fffffff2}
+:is(#laboratorio,.lab-escopo) .au-tg-head>span:not(.cm-mark){display:grid;flex:1;line-height:1.25}
+:is(#laboratorio,.lab-escopo) .au-tg-head b{font-size:calc(var(--u)*15.5)}
+:is(#laboratorio,.lab-escopo) .au-tg-head small{color:#8d8e90;font-size:calc(var(--u)*12.5)}
+:is(#laboratorio,.lab-escopo) .au-tg-head .cm-mark{width:calc(var(--u)*36);height:calc(var(--u)*36)}
+:is(#laboratorio,.lab-escopo) .au-tg-head>.cm-i{width:calc(var(--u)*22);height:calc(var(--u)*22);color:#3390ec}
+:is(#laboratorio,.lab-escopo) .au-tg-body{display:flex;flex:1;flex-direction:column;justify-content:flex-end;gap:calc(var(--u)*8);padding:calc(var(--u)*10) calc(var(--u)*10);overflow:hidden}
+:is(#laboratorio,.lab-escopo) .au-tg-body>*{flex-shrink:0}
+:is(#laboratorio,.lab-escopo) .au-tg-post,:is(#laboratorio,.lab-escopo) .au-tg-eph{position:relative;display:grid;gap:calc(var(--u)*6);width:88%;padding:calc(var(--u)*4) calc(var(--u)*4) calc(var(--u)*8);border-radius:calc(var(--u)*14);background:#fff;font-size:calc(var(--u)*14.5);line-height:1.35}
+:is(#laboratorio,.lab-escopo) .au-tg-post img{width:100%;height:calc(var(--u)*140);border-radius:calc(var(--u)*11);object-fit:cover}
+:is(#laboratorio,.lab-escopo) .au-tg-post p,:is(#laboratorio,.lab-escopo) .au-tg-eph p{margin:0 calc(var(--u)*8)}
+:is(#laboratorio,.lab-escopo) .au-tg-name{margin:calc(var(--u)*4) calc(var(--u)*8) 0;color:#e5533d;font-size:calc(var(--u)*13.5)}
+:is(#laboratorio,.lab-escopo) .au-tg-post>small{justify-self:end;margin-right:calc(var(--u)*8);color:#8d8e90;font-size:calc(var(--u)*11.5)}
+:is(#laboratorio,.lab-escopo) .au-tg-kb{display:grid;grid-auto-flow:column;gap:calc(var(--u)*4);margin:0 calc(var(--u)*-4) calc(var(--u)*-8);padding:calc(var(--u)*4)}
+:is(#laboratorio,.lab-escopo) .au-tg-kb span{--on:var(--pk,0);display:grid;place-items:center;height:calc(var(--u)*38);border-radius:calc(var(--u)*10);background:color-mix(in srgb,#e8f2fd,#3390ec calc(var(--on)*100%));color:color-mix(in srgb,#2481cc,#fff calc(var(--on)*100%));font-size:calc(var(--u)*14);font-weight:600;transition:background .2s,color .2s}
+:is(#laboratorio,.lab-escopo) .au-tg-kb .is-primary{background:#3390ec;color:#fff}
+:is(#laboratorio,.lab-escopo) .au-tg-eph{padding-top:calc(var(--u)*8);border:calc(var(--u)*1) dashed #9cc3ec}
+:is(#laboratorio,.lab-escopo) .au-tg-eph>small{display:flex;align-items:center;margin:0 calc(var(--u)*8);color:#2481cc;font-size:calc(var(--u)*11.5);font-weight:600}
+:is(#laboratorio,.lab-escopo) .au-tg-eph>b{margin:0 calc(var(--u)*8)}
+:is(#laboratorio,.lab-escopo) .au-tg-eph--ok>b{display:flex;align-items:center;color:#127a3a}
+:is(#laboratorio,.lab-escopo) .au-tg-res{animation:cm-page-in .35s cubic-bezier(.2,.8,.2,1) .2s both}
+:is(#laboratorio,.lab-escopo) .au-tg-in{display:flex;align-items:center;gap:calc(var(--u)*12);padding:calc(var(--u)*8) calc(var(--u)*14) calc(var(--pe) + var(--u)*2);background:#fffffff2;color:#8d8e90;font-size:calc(var(--u)*15)}
+:is(#laboratorio,.lab-escopo) .au-tg-in span{flex:1}
+:is(#laboratorio,.lab-escopo) .au-tg-in .cm-i{width:calc(var(--u)*24);height:calc(var(--u)*24)}
+:is(#laboratorio,.lab-escopo) .au-tg .cm-arrive{animation:cm-arrive .4s cubic-bezier(.2,.8,.2,1) .3s both}
+:is(#laboratorio,.lab-escopo) .au-mini{position:absolute;inset:calc(var(--topo) + var(--u)*30) 0 0;display:flex;flex-direction:column;border-radius:calc(var(--u)*14) calc(var(--u)*14) 0 0;background:#fff;color:#14232a;overflow:hidden}
+:is(#laboratorio,.lab-escopo) .au-mini-top{display:flex;align-items:center;justify-content:space-between;padding:calc(var(--u)*12) calc(var(--u)*16);border-bottom:calc(var(--u)*.6) solid #e5e5ea}
+:is(#laboratorio,.lab-escopo) .au-mini-top b{display:flex;align-items:center;color:#3390ec;font-size:calc(var(--u)*15);font-weight:500}
+:is(#laboratorio,.lab-escopo) .au-mini-top span{display:grid;text-align:center;font-size:calc(var(--u)*15);font-weight:600;line-height:1.2}
+:is(#laboratorio,.lab-escopo) .au-mini-top small{color:#8d8e90;font-size:calc(var(--u)*11.5);font-weight:400}
+:is(#laboratorio,.lab-escopo) .au-mini-top>.cm-i{width:calc(var(--u)*22);height:calc(var(--u)*22);color:#3390ec}
+:is(#laboratorio,.lab-escopo) .au-mini-body{display:grid;align-content:start;gap:calc(var(--u)*10);padding:calc(var(--u)*22) calc(var(--u)*22)}
+:is(#laboratorio,.lab-escopo) .au-mini-body .cm-mark{width:calc(var(--u)*58);height:calc(var(--u)*58)}
+:is(#laboratorio,.lab-escopo) .au-mini-body>small{color:#5b6b78;font-size:calc(var(--u)*14)}
+:is(#laboratorio,.lab-escopo) .au-mini-go{display:flex;align-items:center;justify-content:center;gap:calc(var(--u)*6);height:calc(var(--u)*50);margin-top:calc(var(--u)*10);border-radius:calc(var(--u)*14);background:#3390ec;color:#fff;font-size:calc(var(--u)*15.5);font-weight:600}
+:is(#laboratorio,.lab-escopo) .au-star{color:#ffc93c;font-style:normal}
+:is(#laboratorio,.lab-escopo) .au-stars{position:absolute;left:0;right:0;bottom:0;display:grid;gap:calc(var(--u)*10);padding:calc(var(--u)*10) calc(var(--u)*20) calc(var(--pe) + var(--u)*10);border-radius:calc(var(--u)*18) calc(var(--u)*18) 0 0;background:#fff;box-shadow:0 calc(var(--u)*-10) calc(var(--u)*40) #0003}
+:is(#laboratorio,.lab-escopo) .au-stars>b{font-size:calc(var(--u)*19);text-align:center}
+:is(#laboratorio,.lab-escopo) .au-stars>small{color:#5b6b78;font-size:calc(var(--u)*13.5);text-align:center}
+:is(#laboratorio,.lab-escopo) .au-stars .cm-arrive,:is(#laboratorio,.lab-escopo) .au-stars.cm-arrive{animation:au-up .45s cubic-bezier(.2,.8,.2,1) both}
+@keyframes au-up{0%{transform:translateY(100%)}100%{transform:none}}
+:is(#laboratorio,.lab-escopo) .au-stars-ok{display:flex;align-items:center;justify-content:center;height:calc(var(--u)*50);color:#127a3a;font-size:calc(var(--u)*16)}
+
+/* Without motion: no spinners, everything in place. */
+@media(prefers-reduced-motion:reduce){:is(#laboratorio,.lab-escopo) .au-spin{display:none}:is(#laboratorio,.lab-escopo) .au-tool-ok{width:calc(var(--u)*13);opacity:1}}
+body.is-paused :is(#laboratorio,.lab-escopo) .au-spin{display:none}
+body.is-paused :is(#laboratorio,.lab-escopo) .au-tool-ok{width:calc(var(--u)*13);opacity:1;animation:none}
+
+/* Reveal engine (generated for the tokens used in automation-flows.js). */
+:is(#laboratorio,.lab-escopo) .au:not([data-state~="a1"]) [data-in="a1"],:is(#laboratorio,.lab-escopo) .au:not([data-state~="a2"]) [data-in="a2"],:is(#laboratorio,.lab-escopo) .au:not([data-state~="a3"]) [data-in="a3"],:is(#laboratorio,.lab-escopo) .au:not([data-state~="a4"]) [data-in="a4"],:is(#laboratorio,.lab-escopo) .au:not([data-state~="a5"]) [data-in="a5"],:is(#laboratorio,.lab-escopo) .au:not([data-state~="a6"]) [data-in="a6"],:is(#laboratorio,.lab-escopo) .au:not([data-state~="a7"]) [data-in="a7"],:is(#laboratorio,.lab-escopo) .au:not([data-state~="a8"]) [data-in="a8"],:is(#laboratorio,.lab-escopo) .au:not([data-state~="x1"]) [data-in="x1"],:is(#laboratorio,.lab-escopo) .au:not([data-state~="x2"]) [data-in="x2"],:is(#laboratorio,.lab-escopo) .au:not([data-state~="f1"]) [data-in="f1"],:is(#laboratorio,.lab-escopo) .au:not([data-state~="f2"]) [data-in="f2"],:is(#laboratorio,.lab-escopo) .au:not([data-state~="b1"]) [data-in="b1"],:is(#laboratorio,.lab-escopo) .au:not([data-state~="ok"]) [data-in="ok"],:is(#laboratorio,.lab-escopo) .au:not([data-state~="s1"]) [data-in="s1"],:is(#laboratorio,.lab-escopo) .au:not([data-state~="c1"]) [data-in="c1"],:is(#laboratorio,.lab-escopo) .au:not([data-state~="c2"]) [data-in="c2"],:is(#laboratorio,.lab-escopo) .au:not([data-state~="c3"]) [data-in="c3"],:is(#laboratorio,.lab-escopo) .au:not([data-state~="c4"]) [data-in="c4"]{display:none!important}
+:is(#laboratorio,.lab-escopo) .au[data-state~="a1"] [data-out~="a1"],:is(#laboratorio,.lab-escopo) .au[data-state~="a2"] [data-out~="a2"],:is(#laboratorio,.lab-escopo) .au[data-state~="a3"] [data-out~="a3"],:is(#laboratorio,.lab-escopo) .au[data-state~="a4"] [data-out~="a4"],:is(#laboratorio,.lab-escopo) .au[data-state~="a5"] [data-out~="a5"],:is(#laboratorio,.lab-escopo) .au[data-state~="a6"] [data-out~="a6"],:is(#laboratorio,.lab-escopo) .au[data-state~="a7"] [data-out~="a7"],:is(#laboratorio,.lab-escopo) .au[data-state~="a8"] [data-out~="a8"],:is(#laboratorio,.lab-escopo) .au[data-state~="x1"] [data-out~="x1"],:is(#laboratorio,.lab-escopo) .au[data-state~="x2"] [data-out~="x2"],:is(#laboratorio,.lab-escopo) .au[data-state~="f1"] [data-out~="f1"],:is(#laboratorio,.lab-escopo) .au[data-state~="f2"] [data-out~="f2"],:is(#laboratorio,.lab-escopo) .au[data-state~="b1"] [data-out~="b1"],:is(#laboratorio,.lab-escopo) .au[data-state~="ok"] [data-out~="ok"],:is(#laboratorio,.lab-escopo) .au[data-state~="s1"] [data-out~="s1"],:is(#laboratorio,.lab-escopo) .au[data-state~="c1"] [data-out~="c1"],:is(#laboratorio,.lab-escopo) .au[data-state~="c2"] [data-out~="c2"],:is(#laboratorio,.lab-escopo) .au[data-state~="c3"] [data-out~="c3"],:is(#laboratorio,.lab-escopo) .au[data-state~="c4"] [data-out~="c4"]{display:none!important}
+:is(#laboratorio,.lab-escopo) .au[data-state~="a1"] [data-pick~="a1"],:is(#laboratorio,.lab-escopo) .au[data-state~="a2"] [data-pick~="a2"],:is(#laboratorio,.lab-escopo) .au[data-state~="a3"] [data-pick~="a3"],:is(#laboratorio,.lab-escopo) .au[data-state~="a4"] [data-pick~="a4"],:is(#laboratorio,.lab-escopo) .au[data-state~="a5"] [data-pick~="a5"],:is(#laboratorio,.lab-escopo) .au[data-state~="a6"] [data-pick~="a6"],:is(#laboratorio,.lab-escopo) .au[data-state~="a7"] [data-pick~="a7"],:is(#laboratorio,.lab-escopo) .au[data-state~="a8"] [data-pick~="a8"],:is(#laboratorio,.lab-escopo) .au[data-state~="x1"] [data-pick~="x1"],:is(#laboratorio,.lab-escopo) .au[data-state~="x2"] [data-pick~="x2"],:is(#laboratorio,.lab-escopo) .au[data-state~="f1"] [data-pick~="f1"],:is(#laboratorio,.lab-escopo) .au[data-state~="f2"] [data-pick~="f2"],:is(#laboratorio,.lab-escopo) .au[data-state~="b1"] [data-pick~="b1"],:is(#laboratorio,.lab-escopo) .au[data-state~="ok"] [data-pick~="ok"],:is(#laboratorio,.lab-escopo) .au[data-state~="s1"] [data-pick~="s1"],:is(#laboratorio,.lab-escopo) .au[data-state~="c1"] [data-pick~="c1"],:is(#laboratorio,.lab-escopo) .au[data-state~="c2"] [data-pick~="c2"],:is(#laboratorio,.lab-escopo) .au[data-state~="c3"] [data-pick~="c3"],:is(#laboratorio,.lab-escopo) .au[data-state~="c4"] [data-pick~="c4"]{--pk:1}
+/* Player header: the glyph of a channel without an official logo. */
+:is(#laboratorio,.lab-escopo) .cx-logo--glifo{width:22px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+/* WhatsApp chats of the new flows: header, messages that stack from the bottom, composer. */
+:is(#laboratorio,.lab-escopo) .au .cm-scene:has(>.cm-wa-body){display:flex;flex-direction:column;background:#efeae2}
+:is(#laboratorio,.lab-escopo) .ch-iphone-ui:has(.cm-waag [data-scene="chat"][data-pos="on"]) .ch-iphone-hora{opacity:0}
+:is(#laboratorio,.lab-escopo) .au .cm-wa-compose{flex:none}
+:is(#laboratorio,.lab-escopo) .cm-waag [data-scene="chat"]:not([data-pos="on"]) .cm-crumb{opacity:0}
+:is(#laboratorio,.lab-escopo) .au-lead-hero{display:block;height:calc(var(--u)*150);margin:calc(var(--u)*-18) calc(var(--u)*-20) calc(var(--u)*2);overflow:hidden}
+:is(#laboratorio,.lab-escopo) .au-lead-hero img{width:100%;height:100%;object-fit:cover}
+:is(#laboratorio,.lab-escopo) .au-lead,:is(#laboratorio,.lab-escopo) .au-plan{gap:calc(var(--u)*10)}
+/* The lock screen shows its own big clock: the status bar hides its time. */
+:is(#laboratorio,.lab-escopo) .ch-iphone-ui:has(.cm-pixa [data-scene="lock"][data-pos="on"]) .ch-iphone-hora{opacity:0}
+:is(#laboratorio,.lab-escopo) .au-mail-av{display:grid;flex:none;place-items:center;width:calc(var(--u)*40);height:calc(var(--u)*40);margin-top:calc(var(--u)*2);border-radius:50%;background:#d1d1d6;color:#fff;font-size:calc(var(--u)*17);font-style:normal;font-weight:600}
+:is(#laboratorio,.lab-escopo) .au-mail-row--old b{font-weight:500}

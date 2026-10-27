@@ -141,7 +141,7 @@ export const portfolioCopy = {
           "label": "Campanhas e anúncios",
           "nature": "Exemplos com marcas fictícias",
           "title": "Do anúncio\nao contato.",
-          "body": "Exemplos para oito tipos de cliente em onze canais, da atenção à conversão.",
+          "body": "Exemplos para oito tipos de cliente em dezesseis canais, da atenção ao pagamento e à retenção.",
           "contribution": "Conceito, copy e direção de arte",
           "cta": "Ver os exemplos",
           "href": "#laboratorio",
@@ -678,7 +678,7 @@ export const portfolioCopy = {
           ],
           "cta": "Começar briefing de campanha",
           "proofHref": "#laboratorio",
-          "proofLabel": "Ver anúncios de clientes em onze canais"
+          "proofLabel": "Ver anúncios de clientes em dezesseis canais"
         },
         {
           "id": "web",

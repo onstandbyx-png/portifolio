@@ -26,7 +26,7 @@ Este guia é para quem vai mexer na seção, pessoa ou IA, sem ter acompanhado a
 
 O portfólio vende campanhas e anúncios para pequenos e médios negócios. Esta seção mostra, sem nenhum número de resultado, que o autor conhece o caminho real de cada canal: onde o anúncio aparece, o que prende a atenção, onde a pessoa toca e qual tela nativa fecha a conversão.
 
-São 11 canais e 22 formatos. Cada formato é a campanha de um anunciante fictício, de um dos 8 tipos de cliente que o portfólio atende. Tudo roda dentro de um iPhone 17 Pro Max laranja desenhado em HTML e CSS, como um storyboard finito que toca sozinho e para na tela de conversão.
+São 16 canais e 30 formatos (11 canais e 22 formatos até 22/10; os fluxos de automação profunda entraram em 27/10, seção 16). Cada formato é a campanha de um anunciante fictício, de um dos 8 tipos de cliente que o portfólio atende. Tudo roda dentro de um iPhone 17 Pro Max laranja desenhado em HTML e CSS, como um storyboard finito que toca sozinho e para na tela de conversão.
 
 Nada é enviado a lugar nenhum. Formulários, conversas, carrinhos e notificações são estados de CSS trocados por uma linha do tempo em JavaScript. O único link real da seção é "Conversar sobre uma campanha", que leva ao contato com o serviço "Campanhas e anúncios" preenchido.
 
@@ -600,3 +600,42 @@ Publicação:
 4. Aprovação de uso dos ícones do Google Ads e do Maps, e o glifo do Shorts.
 5. Texto oficial da mensagem educativa de trânsito da concessionária.
 6. Capturas de Shorts, Facebook vídeo e intervalos, LinkedIn, Google, Maps e WhatsApp para levar esses formatos ao mesmo nível de medida das telas do laboratório.
+
+## 16. Automações profundas (27/10/2026)
+
+Base: a pesquisa de 27/10/2026 (`reports/Automações complexas por canal.md` e `research_notes/Automações complexas por canal/`). Os fluxos vão além da resposta automática: agente de IA que se identifica, passagem para uma pessoa com o histórico, pagamento conferido no PSP e conversão devolvida ao anúncio.
+
+### Arquivos
+
+| Arquivo | Papel |
+|---|---|
+| `automation-flows.js` | `makeAutomations(...)`: os mocks novos, os formatos acrescentados a WhatsApp e Instagram, os cinco canais novos, os avisos e o caminho de falha do agente. Cada quadro pode ter `log: [[ator, evento, detalhe]]`. |
+| `automation-mocks.css` | Telas novas (agente e Pix no WhatsApp, Flow, banco fictício, chamada do WhatsApp, ligação do iOS com legendas, Direct, RCS, tela bloqueada, Mail, Telegram e mini app) e o motor de revelação. |
+| `automation-trace.js` e `.css` | Seção "Sistemas e automações": seletor de automações, iPhone e registro de eventos sincronizado, caminho feliz e com falhas. |
+
+`campaign-channels.js` chama `makeAutomations` depois de montar `channels`, junta os mocks, põe os formatos novos e insere os canais novos antes do publieditorial. `placementByKey('canal/formato')` também acha o formato escondido `whatsapp/agente-falha`.
+
+### Motor de revelação
+
+Nos mocks com a classe `au` na tela, `data-in="a3"` só aparece quando o estado do quadro tem `a3`, e `data-out="a5"` some quando `a5` chega. `data-pick="f1"` acende a opção (variável `--pk`). Os tokens válidos estão no fim de `automation-mocks.css` (gerados): `a1` a `a8`, `x1`, `x2`, `f1`, `f2`, `b1`, `ok`, `s1`, `c1` a `c4`. Para um token novo, acrescente-o às três regras.
+
+### Fluxos
+
+| Canal e formato | Cliente | O que mostra |
+|---|---|---|
+| WhatsApp, Agente e Pix | Bandeirola Viagens | Anúncio de clique para o WhatsApp, IA que se identifica, ferramenta, Flow, passagem para a consultora com resumo (bastidor), `order_details` com Pix por redirecionamento ao banco, confirmação e e-mail |
+| WhatsApp, Chamada | Ondara Elétricos | Pedido de permissão de chamada, chamada de voz atendida por IA com legendas, transferência ao vendedor, registro da chamada |
+| Instagram, Comentário | Teclaria | Reel com pedido de comentário, palavra-chave, resposta privada no Direct, lista de espera e aviso de chegada |
+| Telegram, Comunidade | Sotaque Livre | Post com botões, mensagem que só a pessoa vê, mini app, assinatura em Stars |
+| RCS, Mensagem de chat | Teclaria | Botão Conversar na busca (piloto no Brasil), empresa verificada, cartões, Pix e entrega; aviso do SMS sem RCS |
+| Voz com IA, Ligação | Seixo Odontologia | Pedido de ligação com consentimento, ligação da IA que se identifica, agenda por ferramenta, confirmação no WhatsApp |
+| Pix Automático, Recorrência | Sotaque Livre | Autorização única no banco fictício, aviso na véspera, falha por saldo, pausa no lugar do cancelamento |
+| E-mail, Régua | Arrimo Patrimônio | Três e-mails com remetente verificado, descadastro em um clique, agenda e saída da régua |
+
+### Regras próprias
+
+- A IA sempre diz que é assistente virtual e oferece uma pessoa.
+- Valores aparecem mascarados (`R$ ••••`); nenhum preço, métrica ou resultado.
+- O que acontece fora da tela da cliente (o resumo que a consultora recebe) aparece como bastidor, com borda tracejada, nunca como interface do app.
+- O banco é fictício ("Banco Exemplo", sem cores ou marcas de banco real). RCS, voz, Pix Automático, Telegram e e-mail não têm arquivo oficial de logo no repositório: o bloco usa um glifo genérico (`glifo` no canal).
+- Cada formato novo tem `base` (a documentação em que se apoia), mostrada em "Sistemas e automações".
