@@ -17,6 +17,7 @@
 const S=(viewBox,body)=>'<svg xmlns="http://www.w3.org/2000/svg" viewBox="'+viewBox+'" aria-hidden="true" focusable="false">'+body+'</svg>';
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 export const LOGOS_CONSULTA='2026-10-21';
+let gradiente=0;
 
 export const LOGOS={
  instagram:{
@@ -105,6 +106,14 @@ export const LOGOS={
   regra:'O pino vermelho do Google Maps é marca registrada: só a versão aprovada, sem alteração. O furo central é vazado e mostra o fundo. Ao simular o mapa, não usar blocos do Google sem atribuição (a seção usa mapa ilustrativo próprio).',
   restricao:'Mesma regra dos ícones de produto do Google: terceiros precisam de aprovação pelo Partner Marketing Hub. Sem aprovação, o nome em texto.'
  },
+ telegram:{
+  nome:'Telegram',cor:'#229ED9',cores:['#2AABEE','#229ED9','#FFFFFF'],proporcao:1,
+  // The official circle has a vertical gradient: each copy gets its own gradient id, so the mark can repeat on the page.
+  get svg(){const id='ch-tg-'+(++gradiente);return S('0 0 1000 1000','<defs><linearGradient id="'+id+'" x1="50%" y1="0%" x2="50%" y2="99.26%"><stop stop-color="#2AABEE" offset="0"/><stop stop-color="#229ED9" offset="1"/></linearGradient></defs><circle fill="url(#'+id+')" cx="500" cy="500" r="500"/><path fill="#FFFFFF" d="M226.33,494.72 C372.09,431.22 469.28,389.35 517.92,369.12 C656.77,311.37 685.63,301.33 704.43,301 C708.57,300.93 717.82,301.96 723.81,306.82 C728.86,310.92 730.26,316.47 730.92,320.36 C731.59,324.25 732.42,333.11 731.76,340.04 C724.23,419.1 691.68,610.96 675.11,699.52 C668.1,736.98 654.3,749.55 640.94,750.78 C611.9,753.45 589.86,731.59 561.73,713.15 C517.73,684.31 492.87,666.35 450.15,638.2 C400.78,605.67 432.79,587.79 460.92,558.57 C468.28,550.92 596.22,434.56 598.69,424 C599,422.68 599.29,417.76 596.36,415.16 C593.44,412.56 589.13,413.45 586.01,414.16 C581.6,415.16 511.3,461.63 375.11,553.56 C355.15,567.26 337.08,573.93 320.89,573.59 C303.03,573.2 268.69,563.49 243.16,555.19 C211.85,545.01 186.96,539.63 189.13,522.35 C190.26,513.34 202.66,504.13 226.33,494.72 Z"/>');},
+  get svgEscuro(){return this.svg;},
+  fonte:'Telegram, Logos and App Screenshots (telegram.org/tour/screenshots), pacote "Download Telegram Logos" (bI7AJLo7oX4.287931.zip): Logo.svg sem alteração de forma e cor, só com as coordenadas arredondadas a 2 casas e o id do degradê trocado por um id próprio a cada cópia. Consulta em 27/10/2026.',
+  regra:'A página permite usar os logos do Telegram em ilustrações de artigos, gráficos e botões de encaminhar, desde que fique claro que não se representa o Telegram oficialmente. Aqui só identifica o canal, ao lado do aviso de exemplo ilustrativo com marca fictícia.'
+ },
  whatsapp:{
   nome:'WhatsApp',cor:'#25D366',cores:['#25D366','#FFFFFF'],proporcao:1,
   svg:S('0 0 720 720','<path fill="#25D366" d="M360,0C161.18,0,0,161.18,0,360c0,65.41,17.45,126.75,47.94,179.61L0,720l187.02-44.21c51.34,28.18,110.28,44.21,172.98,44.21,198.82,0,360-161.18,360-360S558.82,0,360,0ZM360,655.52c-60.17,0-116.13-17.98-162.82-48.87l-110.49,28.14,30.99-105.61c-33.53-47.93-53.2-106.26-53.2-169.19,0-163.21,132.31-295.52,295.52-295.52s295.52,132.31,295.52,295.52-132.31,295.52-295.52,295.52Z"/><path fill="#25D366" d="M444.35,407.52l87.1,41.06c4,1.88,6.56,5.94,6.2,10.34-.94,11.46-5.54,34.43-26.13,55.02-58.12,58.12-162.49-7.64-166.74-10.18-25.67-13.79-50.06-32.24-73.19-55.36-23.12-23.12-41.58-47.52-55.37-73.19-2.55-4.24-68.31-108.61-10.18-166.74,20.59-20.59,43.56-25.19,55.02-26.13,4.41-.36,8.46,2.2,10.34,6.2l41.07,87.1c1.94,4.12,1.09,9.02-2.13,12.24l-30.61,30.61c-6.62,6.62-8.56,16.93-4,25.11,11.17,20.03,26.19,39.32,43.59,57.07,17.75,17.4,37.04,32.43,57.07,43.59,8.18,4.56,18.48,2.62,25.11-4l30.61-30.61c3.22-3.22,8.12-4.08,12.24-2.13Z"/>'),
@@ -117,8 +126,11 @@ export const LOGOS={
 
 /* Channel id (campaign-channels.js) to mark. YouTube keeps its icon in every
    format (in-stream, Shorts, live); the Shorts glyph is only for inside the
-   Shorts screen. The publieditorial runs on a fictitious blog: no platform mark. */
-export const CHANNEL_LOGO={instagram:'instagram',facebook:'facebook',tiktok:'tiktok',youtube:'youtube',linkedin:'linkedin',google:'googleAds',seo:'google',chatgpt:'chatgpt',maps:'googleMaps',whatsapp:'whatsapp',blog:null};
+   Shorts screen. The publieditorial runs on a fictitious blog: no platform mark.
+   Not added (27/10/2026): the Pix symbol (the brand manual of the Banco Central could not be
+   reached to confirm that a portfolio may show it) and the Instagram wordmark (its rule of use
+   was not confirmed); RCS, voice and e-mail have no mark of their own. */
+export const CHANNEL_LOGO={instagram:'instagram',facebook:'facebook',tiktok:'tiktok',youtube:'youtube',linkedin:'linkedin',google:'googleAds',seo:'google',chatgpt:'chatgpt',maps:'googleMaps',whatsapp:'whatsapp',telegram:'telegram',blog:null};
 export const logoFor=channelId=>CHANNEL_LOGO[channelId]?LOGOS[CHANNEL_LOGO[channelId]]:null;
 
 /** Sized inline SVG. altura in CSS px (width follows the mark's proportion).

@@ -39,7 +39,7 @@ try{
 
       const tabs=page.locator('#laboratorio [data-sp-tab]');
       const channelIds=['instagram','facebook','tiktok','youtube','linkedin','google','seo','chatgpt','maps','whatsapp','telegram','rcs','voz','pix','email','blog'];
-      const glyphIds=['telegram','rcs','voz','pix','email','blog'];
+      const glyphIds=['rcs','voz','pix','email','blog'];
       check('The sixteen campaign channels are selectable tiles named with their group and number of formats',JSON.stringify(await tabs.evaluateAll(items=>items.map(tab=>tab.dataset.spTab)))===JSON.stringify(channelIds)&&await tabs.evaluateAll(items=>items.every(tab=>{const r=tab.getBoundingClientRect();return tab.getAttribute('role')==='tab'&&r.width>=44&&r.height>=44&&/, (Redes sociais|Busca e IA|Local e conversa|Conteúdo|Pagamento e retenção), \d+ formatos?$/.test(tab.getAttribute('aria-label')||'');})));
       check('Channels with an official file show its mark; the others a filled badge in the colour of their group',await tabs.evaluateAll((items,glyphIds)=>items.every(tab=>glyphIds.includes(tab.dataset.spTab)?!tab.querySelector('svg.ch-logo,img')&&Boolean(tab.querySelector('.sp-selo svg.sp-platform-logo--doc'))&&getComputedStyle(tab.querySelector('.sp-selo')).backgroundColor!=='rgba(0, 0, 0, 0)':Boolean(tab.querySelector('svg.ch-logo'))&&!tab.querySelector('img')),glyphIds));
       check('Format counters are at least 12px and the names 12.5px',await page.locator('#laboratorio .sp-platforms').evaluate(list=>[...list.querySelectorAll('.sp-tab-count')].every(c=>parseFloat(getComputedStyle(c).fontSize)>=12&&c.getBoundingClientRect().width>=20)&&[...list.querySelectorAll('.sp-tab-name')].every(n=>parseFloat(getComputedStyle(n).fontSize)>=12.5)));

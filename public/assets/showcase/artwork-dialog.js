@@ -8,7 +8,7 @@ export function mountArtworkDialog() {
   const dialog=document.createElement('dialog');
   dialog.id='artwork-dialog';dialog.className='artwork-dialog';
   dialog.setAttribute('aria-labelledby','artwork-title');
-  dialog.innerHTML='<div class="artwork-inner"><header><h2 id="artwork-title"></h2><button type="button" data-art-close aria-label="Fechar imagem ampliada">Fechar ×</button></header><figure><img width="960" height="1200" alt=""><figcaption></figcaption></figure></div>';
+  dialog.innerHTML='<div class="artwork-inner"><header><h2 id="artwork-title"></h2><button type="button" data-art-close aria-label="Fechar imagem ampliada">Fechar ×</button></header><figure><img width="960" height="1200" alt="" loading="lazy" decoding="async" fetchpriority="low"><figcaption></figcaption></figure></div>';
   document.body.append(dialog);
   let opener=null;
   // Keep keyboard navigation within the image viewer, including its single-

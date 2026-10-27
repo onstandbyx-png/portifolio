@@ -81,7 +81,7 @@ export function mountCampaignExperience(lab, underlay) {
   // The side panel: the note the presentation created, now the live journey panel beside the card.
   let side = lab.querySelector('[data-campaign-note]');
   if (!side) { side = document.createElement('aside'); side.id = 'campaign-note'; side.dataset.campaignNote = ''; }
-  side.className = 'sp-campaign-note campaign-summary cx-side';
+  side.className = 'campaign-summary cx-side'; // not .sp-campaign-note: older sheets style that note
   side.dataset.cxSide = ''; side.dataset.mode = 'intro';
   side.setAttribute('aria-label', 'Jornada e bastidores do exemplo');
   side.innerHTML = '<div class="cx-side-slot" data-cx-slot></div><div class="cx-side-body" data-cx-side-body></div>';
