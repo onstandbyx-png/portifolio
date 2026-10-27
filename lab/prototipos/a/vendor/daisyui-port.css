@@ -1,0 +1,134 @@
+/*! daisyUI 5.7.47 - MIT License - Copyright (c) 2020 Pouya Saadeghi
+ * https://github.com/saadeghi/daisyui  (full text: vendor/LICENSE-daisyui.txt)
+ *
+ * Trimmed port for prototype A. Base rules copied from the compiled package files
+ * daisyui@5.7.47/components/{card,badge,button,carousel}.css. Kept: .card, .card-body,
+ * .card-title, .card-actions, .card-border, .card figure, .badge, .badge-outline, .btn,
+ * .btn-block, .btn-circle, .btn-outline, .carousel, .carousel-item, .carousel-start.
+ * Removed: responsive sm:/md:/lg:/xl: duplicates, size/colour variants not used,
+ * the checkbox/radio card variants and the noise texture. Changes are marked "port:".
+ * The theme variables they read (--color-base-*, --radius-*, --border ...) are set in style.css.
+ */
+@layer daisyui {
+  /* ---- card (components/card.css) ---- */
+  .card {
+    border-radius: var(--radius-box);
+    outline-offset: 2px;
+    outline: 2px solid #0000;
+    flex-direction: column;
+    transition: outline .2s ease-in-out;
+    display: flex;
+    position: relative;
+  }
+  .card:focus-visible { outline-color: currentColor; }
+  .card-title {
+    font-size: var(--cardtitle-fs, 1.125rem);
+    align-items: center;
+    gap: .5rem;
+    font-weight: 600;
+    display: flex;
+  }
+  .card-body {
+    padding: var(--card-p, 1.5rem);
+    font-size: var(--card-fs, .875rem);
+    flex-direction: column;
+    flex: auto;
+    gap: .5rem;
+    display: flex;
+  }
+  .card-actions { flex-wrap: wrap; align-items: flex-start; gap: .5rem; display: flex; }
+  .card figure { justify-content: center; align-items: center; display: flex; }
+  .card-border { border: var(--border) solid var(--color-base-200); }
+
+  /* ---- badge (components/badge.css) ---- */
+  .badge {
+    border-radius: var(--radius-selector);
+    vertical-align: middle;
+    color: var(--badge-fg);
+    border: var(--border) solid var(--badge-color, var(--color-base-200));
+    background-color: var(--badge-bg);
+    --badge-bg: var(--badge-color, var(--color-base-100));
+    --badge-fg: var(--color-base-content);
+    --size: calc(var(--size-selector, .25rem) * 6);
+    width: fit-content;
+    height: var(--size);
+    padding-inline: calc(var(--size) / 2 - var(--border));
+    flex-shrink: 0;
+    justify-content: center;
+    align-items: center;
+    gap: .5rem;
+    font-size: .875rem;
+    display: inline-flex;
+  }
+  .badge-outline { color: var(--badge-color); --badge-bg: #0000; border-color: currentColor; }
+
+  /* ---- button (components/button.css) ---- */
+  :where(.btn) { width: unset; }
+  .btn {
+    --size: calc(var(--size-field, .25rem) * 10);
+    --btn-p: 1rem;
+    --btn-fg: var(--color-base-content);
+    --btn-bg: var(--btn-color, var(--color-base-200));
+    --btn-border: color-mix(in oklab, var(--btn-color, var(--color-base-200)), #000 calc(var(--depth) * 5%));
+    --btn-shadow: 0 3px 2px -2px color-mix(in oklab, var(--btn-bg) calc(var(--depth) * 30%), #0000), 0 4px 3px -2px color-mix(in oklab, var(--btn-bg) calc(var(--depth) * 30%), #0000);
+    --btn-inset: 0 .5px 0 .5px oklch(100% 0 0 / calc(var(--depth) * 6%));
+    cursor: pointer;
+    text-align: center;
+    vertical-align: middle;
+    outline-offset: 2px;
+    -webkit-user-select: none;
+    user-select: none;
+    border-width: var(--border);
+    touch-action: manipulation;
+    height: var(--size);
+    padding-inline: var(--btn-p);
+    font-weight: 600;
+    font-size: var(--fontsize, .875rem);
+    background-color: var(--btn-bg);
+    color: var(--btn-fg);
+    border-color: var(--btn-border);
+    border-style: var(--btn-border-style, solid);
+    outline-color: var(--btn-color, var(--color-base-content));
+    box-shadow: var(--btn-inset) inset, var(--btn-shadow);
+    border-radius: var(--radius-field);
+    flex-wrap: nowrap;
+    flex-shrink: 0;
+    justify-content: center;
+    align-items: center;
+    gap: .375rem;
+    /* port: "transform" removed from the transition list (no movement on press) */
+    transition-property: color, background-color, border-color, box-shadow;
+    transition-duration: .2s;
+    transition-timing-function: cubic-bezier(0, 0, .2, 1);
+    display: inline-flex;
+    text-decoration: none;
+  }
+  @media (hover: hover) {
+    .btn:hover { --btn-bg: color-mix(in oklab, var(--btn-color, var(--color-base-200)), #000 7%); color: var(--btn-fg); }
+  }
+  .btn:focus-visible { isolation: isolate; outline-width: 2px; outline-style: solid; }
+  .btn:is(:disabled, [disabled], [aria-disabled=true]) {
+    pointer-events: none;
+    color: color-mix(in oklch, var(--color-base-content) 20%, #0000);
+    --btn-bg: #0000;
+    --btn-border: #0000;
+    --btn-inset: 0 0 0 0 oklch(0% 0 0/0);
+    --btn-shadow: 0 0 0 0 oklch(0% 0 0/0);
+  }
+  .btn-outline {
+    --btn-bg: #0000;
+    color: var(--btn-color, var(--color-base-content));
+    --btn-border: var(--btn-color, var(--color-base-content));
+    --btn-inset: 0 0 0 0 oklch(0% 0 0/0);
+    --btn-shadow: 0 0 0 0 oklch(0% 0 0/0);
+  }
+  .btn-block { width: 100%; }
+  .btn-circle { width: var(--size); height: var(--size); border-radius: 3.40282e38px; padding-inline: 0; }
+
+  /* ---- carousel (components/carousel.css) ---- */
+  .carousel { scroll-snap-type: x mandatory; scrollbar-width: none; display: inline-flex; overflow-x: scroll; }
+  @media (prefers-reduced-motion: no-preference) { .carousel { scroll-behavior: smooth; } }
+  .carousel::-webkit-scrollbar { display: none; }
+  .carousel-item { box-sizing: content-box; scroll-snap-align: start; flex: none; display: flex; }
+  .carousel-start .carousel-item { scroll-snap-align: start; }
+}

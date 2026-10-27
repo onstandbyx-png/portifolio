@@ -1,0 +1,21 @@
+/* K7/K8 · Sizing for the reused frames on the parallel pages (see devices.js).
+   Phone: --df-pt scales the 435 pt device; set --pg-phone-width on the frame
+   or a parent (max 300 px at 390, SPEC C4). Notebook: --mbp-max-width.
+   Tablet: shell ported from editorial-hardware.css, which only styles it inside
+   #editorial on the home. */
+.pg-phone{--pg-phone-width:300px;--df-pt:calc(var(--pg-phone-width) / 435);max-width:100%;margin-inline:auto}
+.pg-notebook{display:flex;justify-content:center;width:100%;--mbp-max-width:880px}
+.pg-notebook .mbp-screen{color:var(--tinta,#18251F)}
+
+.pg-tablet{position:relative;width:100%;max-width:720px;margin-inline:auto}
+.pg-tablet .ipad-pro-body{position:relative;box-sizing:border-box;width:100%;aspect-ratio:4/3;padding:clamp(6px,1.6%,14px);border-radius:clamp(14px,2.4vw,30px);background:linear-gradient(140deg,#e7ebe8,#8f9a95 12%,#dfe3e0 38%,#6d7a74 82%,#eef0ec);box-shadow:inset 0 1px 1px #ffffffd0,0 10px 22px #1a282b30}
+.pg-tablet .ipad-pro-metal{position:absolute;inset:0;border-radius:inherit;pointer-events:none}
+.pg-tablet .ipad-pro-glass{position:relative;box-sizing:border-box;width:100%;height:100%;padding:clamp(3px,1.2%,8px);background:#080b10;border-radius:clamp(8px,1.5vw,18px);box-shadow:0 0 0 1px #454c4b,inset 0 1px 1px #000}
+.pg-tablet .ipad-pro-screen{position:relative;box-sizing:border-box;width:100%;height:100%;min-width:0;min-height:0;overflow:hidden;border-radius:clamp(5px,1vw,12px);background:var(--floresta,#0F2E24)}
+.pg-tablet .ipad-pro-camera{position:absolute;z-index:8;top:clamp(2px,.55%,6px);left:50%;transform:translateX(-50%);display:grid;place-items:center;width:clamp(5px,1.8%,10px);aspect-ratio:1;border-radius:50%;background:#10151b;pointer-events:none;box-shadow:0 0 0 1px #aab1aa}
+.pg-tablet .ipad-pro-camera i{width:62%;height:62%;border-radius:50%;background:radial-gradient(circle at 42% 39%,#2b5271 0 14%,#080e17 51%,#020304 86%)}
+.pg-tablet .ipad-pro-home{position:absolute;z-index:8;bottom:clamp(3px,.8%,6px);left:50%;transform:translateX(-50%);width:14%;height:clamp(2px,.4vw,4px);background:#e6e9e8c5;border-radius:999px;pointer-events:none}
+.pg-tablet .ipad-pro-power,.pg-tablet .ipad-pro-volume{position:absolute;pointer-events:none;background:#99a4a0;border:1px solid #75827d;box-shadow:inset 0 1px #edf1eac0}
+.pg-tablet .ipad-pro-power{top:17%;right:-2px;width:3px;height:12%;border-radius:0 3px 3px 0}
+.pg-tablet .ipad-pro-volume{top:0;left:12%;width:16%;height:3px;border-radius:3px 3px 0 0}
+@media (max-width:420px){.pg-phone{--pg-phone-width:min(300px,calc(100vw - 64px))}}

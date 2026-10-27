@@ -16,7 +16,7 @@ Smiile: onstandbyx-png/smiile-, revisão a2e6d42c526aa721d5059a6baad00cc86418ca3
 O dispositivo metálico e crachás da smiile são reaproveitados do código existente, sem recriar visual genérico.
 A página pública protegida do mídia kit Fatos não é dependência para exibir imagens.
 
-O [registro de implementação](docs/reference-recovery-20261015.md) relaciona as referências às interações adaptadas. O [manifesto de fontes](docs/portfolio-sources.json) registra revisão, caminho original e SHA-256 dos materiais recuperados. O [plano visual](docs/plans/portfolio-reference-recovery-20261015.md) preserva o diagnóstico anterior à implementação.
+O [guia da seção de canais](docs/secao-canais.md) explica o comportamento, os dados, os fluxos e como alterar "Sua oferta. Em cada canal". O [registro de implementação](docs/reference-recovery-20261015.md) relaciona as referências às interações adaptadas. O [manifesto de fontes](docs/portfolio-sources.json) registra revisão, caminho original e SHA-256 dos materiais recuperados. O [plano visual](docs/plans/portfolio-reference-recovery-20261015.md) preserva o diagnóstico anterior à implementação.
 
 ## Executar
 

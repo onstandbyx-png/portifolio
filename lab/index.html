@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>Laboratório de elementos</title>
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/lab.css">
+<script src="/vendor/rive.js" defer></script>
+<script src="/vendor/lottie.js" defer></script>
+<script type="module" src="/js/app.js"></script>
+</head>
+<body>
+<header class="top">
+  <div class="wrap top-inner">
+    <div class="top-title">
+      <p class="eyebrow">Smile N · só para análise</p>
+      <h1>Laboratório de <em>elementos</em></h1>
+      <p class="lede">O que foi recriado em código a partir das referências que você enviou, lado a lado com o original rodando ao vivo. Nada daqui está no site: é uma bancada para comparar, tocar e decidir.</p>
+    </div>
+    <dl class="top-facts">
+      <div><dt>Originais</dt><dd>carregados direto do Rive e do LottieFiles, sem cópia</dd></div>
+      <div><dt>Recriações</dt><dd>HTML, SVG, CSS e JS próprios</dd></div>
+      <div><dt>Endereço</dt><dd>fora do ar para buscadores (noindex)</dd></div>
+    </dl>
+  </div>
+</header>
+
+<nav class="tabs" aria-label="Seções do laboratório">
+  <div class="wrap tabs-inner" role="tablist">
+    <button type="button" role="tab" id="tab-quadros" aria-controls="quadros" aria-selected="true">Quadros <span class="count" data-count="quadros"></span></button>
+    <button type="button" role="tab" id="tab-versoes" aria-controls="versoes" aria-selected="false" tabindex="-1">Versões ao vivo <span class="count" data-count="versoes"></span></button>
+    <button type="button" role="tab" id="tab-drive" aria-controls="drive" aria-selected="false" tabindex="-1">Drive <span class="count" data-count="drive"></span></button>
+    <button type="button" role="tab" id="tab-chatgpt" aria-controls="chatgpt" aria-selected="false" tabindex="-1">ChatGPT <span class="count" data-count="chatgpt"></span></button>
+    <button type="button" role="tab" id="tab-recriados" aria-controls="recriados" aria-selected="false" tabindex="-1">Recriados <span class="count" data-count="recriados"></span></button>
+    <button type="button" role="tab" id="tab-componentes" aria-controls="componentes" aria-selected="false" tabindex="-1">Componentes das páginas</button>
+    <button type="button" role="tab" id="tab-cartoes" aria-controls="cartoes" aria-selected="false" tabindex="-1">Cartões e protótipos</button>
+    <button type="button" role="tab" id="tab-rive" aria-controls="rive" aria-selected="false" tabindex="-1">Originais Rive <span class="count" data-count="rive"></span></button>
+    <button type="button" role="tab" id="tab-lottie" aria-controls="lottie" aria-selected="false" tabindex="-1">Originais Lottie <span class="count" data-count="lottie"></span></button>
+    <button type="button" role="tab" id="tab-referencias" aria-controls="referencias" aria-selected="false" tabindex="-1">Sites e vídeos <span class="count" data-count="refs"></span></button>
+  </div>
+</nav>
+
+<main class="wrap">
+  <section class="panel" id="quadros" role="tabpanel" aria-labelledby="tab-quadros" tabindex="-1">
+    <div class="intro">
+      <h2>Quadros de análise</h2>
+      <p>Um quadro para cada elemento e para cada versão, com a peça rodando ao vivo no código daquela data. <b>Tocar</b> pausa e retoma tudo o que se mexe, inclusive o que é feito por script; a <b>régua</b> anda pelo tempo das animações ou pela rolagem da página, quadro a quadro. <b>Passar o mouse</b> e <b>Clicar</b> funcionam também no celular. Quando o quadro não acha o elemento sozinho, use <b>Escolher no quadro</b>: a escolha fica guardada neste aparelho.</p>
+    </div>
+    <div data-quadros><p class="note">Carregando os quadros…</p></div>
+  </section>
+
+  <section class="panel" id="versoes" role="tabpanel" aria-labelledby="tab-versoes" tabindex="-1" hidden>
+    <div class="intro">
+      <h2>Versões ao vivo</h2>
+      <p>Cada fase dos seus projetos rodando com o código daquela data. Escolha um elemento (cartões, crachá, aparelhos…) para abrir a versão já nele; use <b>Isolar</b> para ver só o elemento e <b>Comparar versões</b> para ver o mesmo elemento em todas as fases lado a lado.</p>
+    </div>
+    <div data-versoes><p class="note">Carregando as versões…</p></div>
+  </section>
+
+  <section class="panel" id="drive" role="tabpanel" aria-labelledby="tab-drive" tabindex="-1" hidden>
+    <div class="intro">
+      <h2>O que veio do Drive</h2>
+      <p>Protótipos, documentos e renders recuperados dos arquivos do seu Google Drive, cada um montado como versão ao vivo. <b>Abrir a versão</b> mostra o arquivo rodando; <b>Ver o quadro e os elementos</b> leva às peças dele nos Quadros, com o pacote de reaproveitamento de cada uma.</p>
+    </div>
+    <div data-drive><p class="note">Carregando o Drive…</p></div>
+  </section>
+
+  <section class="panel" id="chatgpt" role="tabpanel" aria-labelledby="tab-chatgpt" tabindex="-1" hidden>
+    <div class="intro">
+      <h2>O que foi feito nas conversas do ChatGPT</h2>
+      <p>Cada conversa com material dos três projetos: as peças desenvolvidas, os designs descritos, o código salvo (com prévia quando é HTML) e os elementos que ela gerou no laboratório. No alto ficam os protótipos feitos com o ChatGPT que ainda estavam no ar, montados como versões ao vivo.</p>
+    </div>
+    <div data-chatgpt><p class="note">Carregando as conversas…</p></div>
+  </section>
+
+  <section class="panel" id="recriados" role="tabpanel" aria-labelledby="tab-recriados" tabindex="-1" hidden>
+    <div class="intro">
+      <h2>Original × recriação</h2>
+      <p>Cada par mostra o arquivo original, carregado ao vivo da fonte, e a recriação em código próprio. Toque em cada lado, ou use <b>Tocar os dois</b> para ver a mesma ação ao mesmo tempo. O tempo da recriação é medido no seu navegador; o do original vem da medição quadro a quadro.</p>
+    </div>
+    <div class="pairs" data-pairs></div>
+  </section>
+
+  <section class="panel" id="componentes" role="tabpanel" aria-labelledby="tab-componentes" tabindex="-1" hidden>
+    <div class="intro">
+      <h2>Componentes das páginas novas</h2>
+      <p>Peças recuperadas do portfólio e da landing do smiile, reescritas para /criadores, /criadores/ao-vivo e /vagas. Rodam aqui isoladas, com o mesmo código da prévia. Estas estão em uso.</p>
+      <ul class="links" data-live-links></ul>
+    </div>
+    <div class="frame-tools" role="group" aria-label="Largura da área de teste">
+      <span>Largura</span>
+      <button type="button" class="seg" data-frame-width="390" data-frame="componentes-frame">390</button>
+      <button type="button" class="seg" data-frame-width="768" data-frame="componentes-frame">768</button>
+      <button type="button" class="seg" data-frame-width="" data-frame="componentes-frame" aria-pressed="true">Cheia</button>
+      <a class="open" href="/componentes.html" target="_blank" rel="noopener">Abrir em tela cheia ↗</a>
+    </div>
+    <div class="frame-shell"><iframe id="componentes-frame" title="Componentes das páginas" data-src="/componentes.html" loading="lazy"></iframe></div>
+  </section>
+
+  <section class="panel" id="cartoes" role="tabpanel" aria-labelledby="tab-cartoes" tabindex="-1" hidden>
+    <div class="intro">
+      <h2>Cartões de serviço</h2>
+      <p>As versões dos cartões feitas até aqui. As três primeiras usam bibliotecas prontas (daisyUI, Flowbite com molduras de aparelho e Magic UI) com as suas cores e o cliente fictício Ateliê Exemplo. Todas foram recusadas por você e ficam aqui só para comparação.</p>
+    </div>
+    <div class="proto-tools">
+      <div class="seg-group" role="group" aria-label="Protótipo">
+        <button type="button" class="seg" data-proto="a" aria-pressed="true">A · daisyUI</button>
+        <button type="button" class="seg" data-proto="b">B · Flowbite + molduras</button>
+        <button type="button" class="seg" data-proto="c">C · Magic UI</button>
+      </div>
+      <div class="seg-group" role="group" aria-label="Largura">
+        <button type="button" class="seg" data-frame-width="390" data-frame="proto-frame" aria-pressed="true">390</button>
+        <button type="button" class="seg" data-frame-width="768" data-frame="proto-frame">768</button>
+        <button type="button" class="seg" data-frame-width="" data-frame="proto-frame">Cheia</button>
+      </div>
+      <a class="open" data-proto-open href="/prototipos/a/" target="_blank" rel="noopener">Abrir em tela cheia ↗</a>
+    </div>
+    <div class="frame-shell frame-shell--tall"><iframe id="proto-frame" title="Protótipo de cartões" data-src="/prototipos/a/" loading="lazy" style="width:390px"></iframe></div>
+    <p class="note" data-proto-note></p>
+    <article class="aside-card">
+      <h3>Baralho com recortes das suas imagens (20/10)</h3>
+      <p>Quatro cartões (Campanhas, Conteúdo, E-commerce e Marca) com cenas das imagens 02, 05, 08 e 09, e check, play e carrinho recriados do Rive. Recusado: imagens cortadas e composição confusa. As três microinterações dele estão isoladas na aba <a href="#recriados" data-tab-link>Recriados</a>.</p>
+      <p><a href="https://portfolio-visual-review-production.up.railway.app/#colecao" target="_blank" rel="noopener">Ver no contexto, na prévia ↗</a></p>
+    </article>
+  </section>
+
+  <section class="panel" id="rive" role="tabpanel" aria-labelledby="tab-rive" tabindex="-1" hidden>
+    <div class="intro">
+      <h2>Arquivos Rive originais</h2>
+      <p>Os arquivos do Rive Marketplace que foram baixados e medidos, rodando com o runtime oficial. Passe o mouse ou clique na animação como no site do Rive; os botões abaixo de cada uma acionam as entradas da máquina de estados. Licença CC BY 4.0, com crédito ao autor.</p>
+    </div>
+    <div class="filters" role="group" aria-label="Filtrar" data-filters="rive">
+      <button type="button" class="seg" data-filter="todos" aria-pressed="true">Todos</button>
+      <button type="button" class="seg" data-filter="enviado">Enviados por você</button>
+      <button type="button" class="seg" data-filter="recriado">Com recriação</button>
+    </div>
+    <div class="grid" data-grid="rive"></div>
+  </section>
+
+  <section class="panel" id="lottie" role="tabpanel" aria-labelledby="tab-lottie" tabindex="-1" hidden>
+    <div class="intro">
+      <h2>Animações Lottie originais</h2>
+      <p>As animações do LottieFiles escolhidas para check, envio, carregamento, sucesso, carrinho, cópia e selo. Rodam com o lottie-web; use a régua para ver quadro a quadro. Licença Lottie Simple License.</p>
+    </div>
+    <div class="grid" data-grid="lottie"></div>
+  </section>
+
+  <section class="panel" id="referencias" role="tabpanel" aria-labelledby="tab-referencias" tabindex="-1" hidden>
+    <div class="intro">
+      <h2>Sites, spells e fontes</h2>
+      <p>Os sites do handoff (Heron, Nightshift, Antimatter, DIVISION, Cards Deck Carousel, How It Works Steps) e a landing do smiile rodam ao vivo aqui dentro, direto da fonte. Os spells tocam o vídeo do próprio Design Spells, que é a gravação do app original. Nada disso é copiado para o repositório.</p>
+    </div>
+    <div data-refs></div>
+  </section>
+</main>
+
+<footer class="foot">
+  <div class="wrap">
+    <p>Laboratório interno do portfólio Smile N. Créditos e licenças de cada original ficam no próprio cartão. Runtimes: Rive 2.45 e lottie-web 5.13, ambos MIT.</p>
+  </div>
+</footer>
+</body>
+</html>

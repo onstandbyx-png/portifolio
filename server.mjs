@@ -1,7 +1,9 @@
 import { createServer } from 'node:http';
-import { readFile } from 'node:fs/promises';
+import { readFile, stat } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 import { extname, resolve, sep } from 'node:path';
+import { promisify } from 'node:util';
+import { brotliCompress, gzip, constants } from 'node:zlib';
 
 const root = resolve(fileURLToPath(new URL('.', import.meta.url)));
 const port = Number(process.env.PORT || 3000);
@@ -9,23 +11,55 @@ const mime = {'.html':'text/html; charset=utf-8','.css':'text/css; charset=utf-8
 const routes = new Map([
   ['/','index.html'],['/index.html','index.html'],
   ['/assets/portfolio.css','src/styles.css'],['/assets/portfolio.js','src/portfolio.js'],
+  // Parallel pages: static HTML outside public/, same CSP and headers as the home.
+  ['/criadores','pages/criadores.html'],['/criadores/ao-vivo','pages/criadores-ao-vivo.html'],
+  ['/vagas','pages/vagas.html'],['/privacidade','pages/privacidade.html'],
 ]);
+// Canonical form without a trailing slash; the query string is preserved.
+const redirects = new Map([['/criadores/','/criadores'],['/criadores/ao-vivo/','/criadores/ao-vivo'],['/vagas/','/vagas'],['/privacidade/','/privacidade']]);
 const headers = {
   'X-Content-Type-Options':'nosniff',
   'Referrer-Policy':'strict-origin-when-cross-origin',
   'Content-Security-Policy':"default-src 'self'; img-src 'self' data: https://smiile-landing-preview.up.railway.app https://midia-kit-production-c234.up.railway.app; script-src 'self'; style-src 'self' 'unsafe-inline'; font-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'",
 };
+// Text responses are compressed once per file version (path + mtime + size) and kept in memory.
+// Raster images, fonts, video, audio and range requests always stay identity.
+const compressible=/^(?:text\/|application\/json|image\/svg\+xml)/;
+const compressors={br:promisify(brotliCompress),gzip:promisify(gzip)};
+const compressed=new Map();
+const accepts=(header,coding)=>{let own,any;for(const part of String(header||'').toLowerCase().split(',')){const [name,...params]=part.split(';').map(item=>item.trim());const q=params.find(item=>item.startsWith('q='));const weight=q?Number(q.slice(2)):1;if(name===coding)own=weight;else if(name==='*')any=weight;}return (own??any??0)>0;};
+const negotiate=header=>['br','gzip'].find(coding=>accepts(header,coding))??null;
+const brotli=(body,quality)=>compressors.br(body,{params:{[constants.BROTLI_PARAM_QUALITY]:quality,[constants.BROTLI_PARAM_SIZE_HINT]:body.length}});
+// Brotli 11 takes ~1.3 s on the 626 KB badge chunk: large files answer from a fast pass (~25 ms)
+// while the dense pass runs in the background and replaces it for later requests.
+const denseLimit=128*1024;
+function encode(full,info,coding){
+  let entry=compressed.get(full);
+  if(entry?.mtimeMs!==info.mtimeMs||entry.size!==info.size)compressed.set(full,entry={mtimeMs:info.mtimeMs,size:info.size});
+  return entry[coding]??=readFile(full)
+    .then(body=>{
+      if(body.length!==info.size)return null;
+      if(coding==='gzip')return compressors.gzip(body,{level:9});
+      if(body.length<=denseLimit)return brotli(body,11);
+      brotli(body,11).then(out=>{if(compressed.get(full)===entry&&out.length<info.size)entry.br=Promise.resolve(out);},()=>{});
+      return brotli(body,5);
+    })
+    .then(out=>out&&out.length<info.size?out:null,()=>{delete entry[coding];return null;});
+}
 createServer(async (req,res)=>{
   const url = new URL(req.url || '/', 'http://localhost');
   let path; try { path=decodeURIComponent(url.pathname); } catch { res.writeHead(400,headers); res.end('Invalid path'); return; }
   if(path==='/health'){res.writeHead(200,{'Content-Type':'text/plain; charset=utf-8',...headers});res.end('ok');return;}
+  if(redirects.has(path)){res.writeHead(308,{Location:redirects.get(path)+url.search,...headers});res.end();return;}
   const relative=routes.get(path) ?? (path.startsWith('/assets/') ? 'public'+path : null);
   if(!relative || relative.includes('\0')){res.writeHead(404,headers);res.end('Not found');return;}
   const full=resolve(root,relative);
   if(!(full===root || full.startsWith(root+sep))){res.writeHead(403,headers);res.end('Forbidden');return;}
   try{
-    const body=await readFile(full);
     const type=mime[extname(full)]??'application/octet-stream';
+    const coding=compressible.test(type)&&!req.headers.range?negotiate(req.headers['accept-encoding']):null;
+    const encoded=coding?await encode(full,await stat(full),coding):null;
+    const body=encoded??await readFile(full);
     if(type.startsWith('video/')||type.startsWith('audio/')){
       const range=req.headers.range;
       const mediaHeaders={'Content-Type':type,'Accept-Ranges':'bytes','Cache-Control':'public, max-age=86400',...headers};
@@ -42,6 +76,6 @@ createServer(async (req,res)=>{
       }
       res.writeHead(200,{'Content-Length':body.length,...mediaHeaders});res.end(body);return;
     }
-    res.writeHead(200,{'Content-Type':type,'Cache-Control':type.startsWith('image/')?'public, max-age=86400':'no-cache',...headers});res.end(body);
+    res.writeHead(200,{'Content-Type':type,'Cache-Control':type.startsWith('image/')?'public, max-age=86400':'no-cache',...(compressible.test(type)?{'Vary':'Accept-Encoding'}:{}),...(encoded?{'Content-Encoding':coding,'Content-Length':encoded.length}:{}),...headers});res.end(body);
   }catch {res.writeHead(404,headers);res.end('Not found')}
 }).listen(port,'0.0.0.0',()=>console.log(`Portfolio ${process.env.PORT||3000} ready`));

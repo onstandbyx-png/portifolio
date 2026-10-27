@@ -20,7 +20,7 @@ export function mountCampaignFlip() {
   card.innerHTML=[
     '<div class="sp-peel-stack">',
       '<section class="sp-peel-underlay" data-sp-card-back aria-hidden="true" inert>',
-        '<span class="sp-peel-underlay-kicker" aria-hidden="true">O QUE ESTÁ POR TRÁS DA PEÇA</span>',
+        '<span class="sp-peel-underlay-kicker" aria-hidden="true">O anúncio no canal</span>',
         '<div class="sp-campaign-note-slot"></div>',
         '<button type="button" class="sp-peel-return" data-sp-card-turn="back" aria-label="Recolocar a arte na frente"><span aria-hidden="true">↗</span> Recolocar a peça</button>',
       '</section>',
@@ -76,6 +76,9 @@ export function mountCampaignFlip() {
     sheet.style.clipPath='polygon('+poly.map(px).join(',')+')';
     sheet.style.webkitClipPath=sheet.style.clipPath;
     fold.setAttribute('viewBox','0 0 '+w+' '+h);
+    // The open back grows to its content (no nested scroll); the fold keeps the sheet's size.
+    fold.style.height=h+'px';
+    card.style.setProperty('--peel-sheet-h',h+'px');
     const band=Math.min(31,Math.max(12,w*.045))*(1-.30*progress);
     const outside=edge.map(v=>({x:clamp(v.x-nx*band,0,w),y:clamp(v.y-ny*band,0,h)}));
     const path=points=>points.map((p,i)=>(i?'L':'M')+p.x.toFixed(2)+' '+p.y.toFixed(2)).join(' ');
@@ -89,12 +92,19 @@ export function mountCampaignFlip() {
   }
   function stopAnimation(){if(animation){cancelAnimationFrame(animation);animation=0;}}
   function semantics(open) {
+    // Focus on the face being hidden follows to the other face whatever opened it
+    // (keyboard, mouse, tap or a screen-reader double-tap), so inert never drops it to <body>.
+    const active=document.activeElement;
+    const handOff=open?(grip.contains(active)||sheet.contains(active))&&backButton:underlay.contains(active)&&grip;
     card.dataset.side=open?'back':'front';
     underlay.inert=!open;
     underlay.setAttribute('aria-hidden',String(!open));
     sheet.inert=open;
     sheet.setAttribute('aria-hidden',String(open));
     grip.setAttribute('aria-expanded',String(open));
+    // An open corner is invisible: it must not keep a focus stop or a hit area.
+    grip.inert=open;
+    if(handOff)handOff.focus({preventScroll:true});
     card.dataset.peelState=open?'open':'closed';
     if(!open)campaignExperience?.stop();
   }
@@ -121,11 +131,6 @@ export function mountCampaignFlip() {
     }
     animation=requestAnimationFrame(tick);
     if(focus)(goingOpen?backButton:grip).focus({preventScroll:true});
-  }
-  function reset(){
-    stopAnimation();
-    semantics(false);
-    paint(BASE);
   }
   // The entire artwork can still be tapped, but the distinctive interaction
   // is pulling the folded corner with real-time physical feedback.
@@ -183,13 +188,13 @@ export function mountCampaignFlip() {
   const observer=new ResizeObserver(()=>paint(progress));
   observer.observe(sheet);
   paint(BASE);
-  // Channel switching replaces the content behind the same paper sheet,
-  // and restores the corner without jarring rotation or stale CTA focus.
+  // Channel switching replaces what is behind the same paper sheet: a closed
+  // sheet keeps its corner ready for the new channel, and an open one stays
+  // open while the player swaps the placement, so channels can be compared.
+  // If focus was inside the replaced placement, it returns to the open back.
   new MutationObserver(()=>{
-    if(card.dataset.side==='back'&&underlay.contains(document.activeElement))
-      grip.focus({preventScroll:true});
-    campaignExperience?.reset();
-    reset();
+    if(card.dataset.side==='back'&&!underlay.contains(document.activeElement)&&card.contains(document.activeElement))backButton.focus({preventScroll:true});
+    if(card.dataset.side==='front')paint(progress);
   }).observe(lab,{attributes:true,attributeFilter:['data-channel']});
   const motionSwitch=document.querySelector('#motion-toggle');
   if(motionSwitch)new MutationObserver(()=>{

@@ -84,42 +84,6 @@ export async function verifyGallery({page,width,reduced,check,capture}){
  await capture('work-motion');
 }
 
-export async function verifyEditorial({page,width,check,capture}){
- const story=page.locator('#editorial[data-editorial-ready="true"]');await story.waitFor();
- const tabs=story.locator('[data-editorial-step]');
- // Adjacent reading blocks were explicitly hidden; artwork controls remain.
- check('Editorial text and deck introduction stay outside the visible layout',!await story.locator('.es-context').isVisible()&&!await story.locator('.pf-fatos-intro').isVisible());
- check('The editorial story mounts three distinct shells with one centered at a time',await tabs.count()===3&&await story.locator('.es-device').count()===1&&await story.locator('[data-es-piece]:not([hidden])').count()===1&&await story.locator('.es-hardware').count()===3);
- await tabs.first().focus();await page.keyboard.press('ArrowRight');
- check('Keyboard navigation selects Direção in a real landscape iPad',await story.getAttribute('data-editorial-active')==='context'&&await story.getAttribute('data-editorial-device')==='ipad'&&await tabs.nth(1).getAttribute('aria-selected')==='true'&&await tabs.nth(1).evaluate(el=>el===document.activeElement)&&(await story.locator('[data-es-copy]').textContent()).includes('protótipo'));
- await page.keyboard.press('End');
- check('Editorial navigation reaches Entrega in the actual MacBook shell',await story.getAttribute('data-editorial-active')==='closing'&&await story.getAttribute('data-editorial-device')==='macbook'&&await story.locator('.es-device .mbp-base').count()===1&&await story.locator('[data-es-piece]:not([hidden])').count()===1);
- await page.keyboard.press('Home');
- check('Editorial navigation reverses to the opening',await story.getAttribute('data-editorial-active')==='hook'&&await story.locator('#editorial-story-panel').getAttribute('aria-labelledby')===await tabs.first().getAttribute('id'));
- const deck=page.locator('#colecao[data-ready="true"]');await deck.waitFor();
- check('Six independent CSS cards preserve the original physical deck without removed reading blocks',await deck.locator('[data-fatos-card]').count()===6&&await page.locator('.pf-fatos-kicker,.pf-fatos-intro>h3,.pf-fatos-intro>p,.pf-fatos-pips,.pf-fatos-source,.editorial-bottom').count()===0);
- check('Previous and next are accessible alternatives to dragging',await deck.locator('[data-fatos-prev],[data-fatos-next]').evaluateAll(buttons=>buttons.length===2&&buttons.every(button=>{const r=button.getBoundingClientRect();return r.width>=44&&r.height>=44&&button.getAttribute('aria-label');})));
- await deck.locator('[data-fatos-next]').click();
- check('Next selects the second original card',await deck.getAttribute('data-active')==='1');
- await deck.locator('[data-fatos-prev]').click();
- check('Previous restores the first original card',await deck.getAttribute('data-active')==='0');
- const stage=deck.locator('.pf-fatos-stage');await stage.focus();await page.keyboard.press('End');
- check('Keyboard reaches the sixth original CSS card',await deck.getAttribute('data-active')==='5');
- await page.keyboard.press('Home');await align(page,'.pf-fatos-display');
- const first=deck.locator('.pf-fatos-card.is-active');await first.locator('[data-fatos-flip]').click();
- check('Card flip exposes its prototype and focuses the return action',await first.locator('[data-fatos-back]').getAttribute('aria-hidden')==='false'&&await first.locator('[data-fatos-return]').evaluate(el=>el===document.activeElement));
- await page.keyboard.press('Escape');
- check('Escape restores the active card front and focus',await first.locator('[data-fatos-front]').getAttribute('aria-hidden')==='false'&&await first.locator('[data-fatos-flip]').evaluate(el=>el===document.activeElement));
- const box=await first.boundingBox(),start={x:box.x+box.width*.8,y:box.y+box.height*.4},end={x:box.x+box.width*.2,y:start.y+2};
- if(width<500)await touch(page,start,end);else{await page.mouse.move(start.x,start.y);await page.mouse.down();await page.mouse.move(end.x,end.y,{steps:12});await page.mouse.up();}
- await page.waitForFunction(()=>document.querySelector('#colecao').dataset.active==='1');
- check('A real horizontal gesture advances one CSS card',await deck.getAttribute('data-active')==='1');
- check('All six original visual fronts are image-free CSS compositions',await deck.locator('.pf-case-art').count()===6&&await deck.locator('img').count()===0);
- await align(page,'.pf-fatos-display');const selected=await deck.getAttribute('data-active');
- check('Vertical native scrolling remains available over the interactive cards',await nativeScroll(page,width<500)&&await deck.getAttribute('data-active')===selected);
- await capture('editorial-deck');
-}
-
 export async function verifyFilm({page,width,reduced,check,capture}){
  const film=page.locator('#narrativa-visual[data-ready="true"]');await film.waitFor();
  check('The scroll composition restores three outer planes',await film.locator('[data-rf-plane]').count()===3&&await film.locator('[data-rx-film-to]').count()===3);

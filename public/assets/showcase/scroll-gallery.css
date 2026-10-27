@@ -90,7 +90,7 @@ body.is-paused #trabalhos .rg-static-gallery .tile-open i{transition:none}
 #trabalhos .rg-gallery .tile-caption p{font-size:16px;line-height:1.55;max-width:31ch;margin:19px 0 0;color:#566453}
 #trabalhos .rg-gallery .tile-caption small{display:none}
 #trabalhos .rg-gallery .tile-open{width:auto;max-width:100%;height:auto;min-height:46px;margin:0;display:inline-flex;align-items:center;justify-content:space-between;gap:18px;padding:10px 15px;border-radius:6px;border:1px solid #bcc8b7;font-family:inherit;font-size:14px;font-weight:550;line-height:1.4;text-align:left;color:#233f2c;background:transparent}
-#trabalhos .rg-gallery .tile-open i{font-style:normal;font-size:21px;transition:transform .18s}#trabalhos .rg-gallery .tile-open:hover i{transform:translate(2px,-2px)}
+#trabalhos .rg-gallery .tile-open i{font-style:normal;font-size:21px;transition:transform .18s}#trabalhos .rg-gallery .tile-open:hover i{transform:translateY(2px)}
 #trabalhos .rg-gallery .tile-open:hover{transform:none;background:#e8eee2;color:#233f2c}
 #trabalhos .rg-gallery .work-cover-copy{display:none}
 #trabalhos .rg-gallery .tile-art{border-radius:10px;overflow:hidden}
@@ -177,10 +177,13 @@ body.is-paused #trabalhos .rg-static-gallery .tile-open i{transition:none}
 #trabalhos .rg-gallery .rg-card-back p{font-size:15px;line-height:1.5;margin:0;color:#56694e}
 #trabalhos .rg-gallery .rg-card-back a{display:inline-flex;align-items:center;gap:20px;min-height:44px;margin-top:28px;font-size:14px;font-weight:550;text-decoration:underline;text-underline-offset:5px;color:inherit}
 #trabalhos .rg-gallery .rg-card-back i{font-style:normal;font-size:23px}
-#trabalhos .rg-gallery .rg-flip{position:absolute;top:12px;right:12px;z-index:4;display:grid;place-items:center;width:44px;height:44px;min-width:44px;padding:10px;border:1px solid #c3cdb8;border-radius:50%;background:#fffef9ed;color:#263d2d;box-shadow:0 2px 10px #243a2524;cursor:pointer;transition:background .2s}
-#trabalhos .rg-gallery .rg-flip svg{display:block;width:24px;height:24px}
-#trabalhos .rg-gallery .rg-flip:hover{background:#fffef9}
-#trabalhos .rg-gallery .rg-flip:focus-visible,#trabalhos .rg-gallery a:focus-visible{outline:3px solid #4d7096;outline-offset:4px}
+#trabalhos .rg-gallery .rg-flip{position:absolute;right:12px;bottom:12px;z-index:4;display:inline-flex;align-items:center;gap:8px;min-width:44px;min-height:44px;padding:0 13px 0 16px;border:1px solid #9fb09a;border-radius:99px;background:#fffef9;color:#1d3427;font:600 14px/1 var(--sans,Inter,Arial,sans-serif);white-space:nowrap;box-shadow:0 4px 14px #243a2533;cursor:pointer;transition:background .2s}
+#trabalhos .rg-gallery .rg-flip svg{display:block;flex:none;width:18px;height:18px}
+#trabalhos .rg-gallery .rg-card-stage .rg-card-back{padding-bottom:72px}
+#trabalhos .rg-gallery .rg-flip:hover{background:#eef3e8}
+#trabalhos .rg-gallery a:focus-visible{outline:3px solid #4d7096;outline-offset:4px}
+/* The pill sits on photos: the dark focus token between two light halos keeps >=3:1 on any artwork. */
+#trabalhos .rg-gallery .rg-flip:focus-visible{outline:var(--focus-width) solid var(--focus-color);outline-offset:2px;box-shadow:0 0 0 6px #fffef9}
 #trabalhos .rg-gallery .work-context{width:calc(50% - 55px);left:32px}
 #trabalhos .rg-gallery .tile-open{font-family:inherit;font-weight:550;text-decoration:none}
 .rg-scroll-shell[data-paused=true] .rg-plane,.rg-scroll-shell[data-paused=true] .rg-card-rotor{will-change:auto}
@@ -194,6 +197,12 @@ body.is-paused #trabalhos .rg-static-gallery .tile-open i{transition:none}
  #trabalhos .rg-gallery .work-context{position:static;grid-column:1;grid-row:1;order:0;display:grid;align-content:start;gap:3px;width:auto;padding:0;font-size:12px;line-height:1.4}
  #trabalhos .rg-gallery .work-context>span:last-child{font-size:11px;max-width:none;text-align:left}
  #trabalhos .rg-gallery .rg-card-stage{grid-column:1;grid-row:2;justify-self:center;aspect-ratio:4/5;max-width:100%;height:100%;width:auto;border-radius:7px}
+ /* The stage fills its row; the rotor keeps the artwork at exactly 4:5 at its top, so
+    height:100% plus max-width can no longer squeeze the art into grey bands. */
+ #trabalhos .rg-scroll-shell:not(.rg-natural) .rg-card-stage{width:100%;aspect-ratio:auto;container-type:size;display:grid;place-items:start center}
+ #trabalhos .rg-scroll-shell:not(.rg-natural) .rg-card-rotor{width:min(100cqw,80cqh);height:auto;aspect-ratio:4/5}
+ #trabalhos .rg-scroll-shell:not(.rg-natural) .rg-flip{right:calc((100cqw - min(100cqw,80cqh))/2 + 10px);bottom:calc(100cqh - min(100cqh,125cqw) + 10px)}
+ #trabalhos .rg-scroll-shell:not(.rg-natural) .rg-card-interaction-hint{right:calc((100cqw - min(100cqw,80cqh))/2 + 11px)}
  #trabalhos .rg-gallery .rg-card-front,#trabalhos .rg-gallery .rg-card-back{border-radius:7px}
  #trabalhos .rg-gallery .tile-caption{grid-column:1;grid-row:3;padding:1px 2px 0;gap:9px;min-width:0}
  #trabalhos .rg-gallery .tile-caption h3{font-size:clamp(24px,6.5vw,30px);line-height:1.05;max-width:none}
@@ -238,6 +247,13 @@ body.is-paused #trabalhos .rg-static-gallery .tile-open i{transition:none}
  box-shadow:inset 0 -2px 0 #9baea1;color:#58725e;
 }
 .rg-scroll-shell[data-read-state="reading"] .rg-plane.rg-active{filter:none;opacity:1}
+/* Opaque stack: planes never cross-fade; the content of a card leaving the reading
+   pose fades out, so neighbours read as blank cards and text never overlaps. */
+.rg-scroll-shell:not(.rg-natural) .rg-plane .work-tile>*{opacity:var(--rg-content,1)}
+.rg-scroll-shell:not(.rg-natural) .rg-plane .work-tile{transition:background-color .25s ease}
+.rg-scroll-shell:not(.rg-natural) .rg-plane:not(.rg-active) .work-tile{background:#f4f3ec}
+.rg-scroll-shell[data-paused=true] .rg-plane .work-tile{transition:none}
+@media(prefers-reduced-motion:reduce){.rg-scroll-shell .rg-plane .work-tile{transition:none}}
 @media(max-width:760px){
  .rg-scroll-shell:not(.rg-natural) .rg-plane{
    transform:translate(calc(-50% + var(--rg-x,0%)),calc(-50% + var(--rg-y,0%)))

@@ -25,8 +25,8 @@ export const portfolioCopy = {
     "ariaLabel": "Navegação principal",
     "items": [
       {
-        "label": "Trabalhos",
-        "href": "#trabalhos"
+        "label": "Campanhas",
+        "href": "#laboratorio"
       },
       {
         "label": "Serviços",
@@ -57,8 +57,8 @@ export const portfolioCopy = {
       "title": "Direção criativa.\nExecução digital.",
       "body": "Crio identidades, conteúdos, anúncios, sites e sistemas para sua empresa comunicar melhor, apresentar suas ofertas e simplificar processos.",
       "primaryCta": {
-        "label": "Explorar trabalhos",
-        "href": "#trabalhos"
+        "label": "Ver campanhas",
+        "href": "#laboratorio"
       },
       "secondaryCta": {
         "label": "Conversar sobre um projeto",
@@ -130,18 +130,20 @@ export const portfolioCopy = {
           "title": "Uma razão\npara continuar.",
           "body": "Pesquisa, texto e direção criativa para despertar interesse e explicar uma ideia.",
           "contribution": "Direção criativa e conteúdo",
-          "cta": "Ver conteúdo",
-          "href": "#editorial",
+          "cta": "Conversar sobre conteúdo",
+          "href": "#contato",
+          "contactService": "Conteúdo e redação",
+          "contactCase": "Fatos Desconhecidos · estudo editorial",
           "decision": "Minha experiência profissional na Fatos Desconhecidos orienta o raciocínio editorial. A peça apresentada é um estudo: abertura, contexto e fechamento tornam o assunto compreensível."
         },
         {
           "id": "ads",
           "label": "Campanhas e anúncios",
-          "nature": "smiile · Estudo de campanha",
-          "title": "Uma oferta.\nTrês abordagens.",
-          "body": "Conceito, copy e direção de arte adaptados ao feed, à busca e ao vídeo vertical.",
+          "nature": "Exemplos com marcas fictícias",
+          "title": "Do anúncio\nao contato.",
+          "body": "Exemplos para oito tipos de cliente em onze canais, da atenção à conversão.",
           "contribution": "Conceito, copy e direção de arte",
-          "cta": "Ver campanha",
+          "cta": "Ver os exemplos",
           "href": "#laboratorio",
           "decision": "No feed, a peça desperta interesse. Na busca, responde a uma intenção. No vídeo vertical, o ritmo conduz a mensagem."
         },
@@ -237,7 +239,13 @@ export const portfolioCopy = {
         {
           "id": "sites",
           "name": "Sites e apps",
-          "question": "Uma experiência feita para funcionar.",
+          "question": "Do primeiro toque à próxima ação.",
+          "support": "Estrutura, interface e código para orientar cada clique.",
+          "steps": [
+            "Estrutura",
+            "Interface",
+            "Código"
+          ],
           "context": "Explore uma interface e alterne a apresentação entre site e aplicativo.",
           "formats": [
             "Protótipo responsivo",
@@ -248,7 +256,13 @@ export const portfolioCopy = {
         {
           "id": "conteudo",
           "name": "Conteúdo e copy",
-          "question": "A mensagem muda a forma de ver.",
+          "question": "Uma ideia, uma mensagem por canal.",
+          "support": "Um texto central, adaptado a cada formato e leitor.",
+          "steps": [
+            "Ideia",
+            "Produção",
+            "Distribuição"
+          ],
           "context": "Explore um carrossel tipográfico com abertura, desenvolvimento e convite.",
           "formats": [
             "Copy e narrativa",
@@ -259,18 +273,30 @@ export const portfolioCopy = {
         {
           "id": "campanhas",
           "name": "Campanhas e Ads",
-          "question": "Uma oferta. Diferentes formatos.",
+          "question": "Uma oferta, no formato de cada canal.",
+          "support": "Feed, stories, pesquisa e vídeo falando a mesma língua.",
+          "steps": [
+            "Público",
+            "Criativo",
+            "Formato"
+          ],
           "context": "Compare composições para feed, vídeo vertical e pesquisa.",
           "formats": [
-            "Meta e TikTok",
-            "Busca e campanhas",
+            "Feed e stories",
+            "Pesquisa e vídeo",
             "Variações por canal"
           ]
         },
         {
           "id": "video",
           "name": "Vídeo e movimento",
-          "question": "O ritmo transforma a narrativa.",
+          "question": "Do roteiro ao corte, quadro a quadro.",
+          "support": "Roteiro, ritmo e edição pensados para cada tela.",
+          "steps": [
+            "Roteiro",
+            "Cena",
+            "Corte"
+          ],
           "context": "Controle uma timeline de três cenas com reprodução, pausa e retomada.",
           "formats": [
             "Storyboard",
@@ -281,7 +307,13 @@ export const portfolioCopy = {
         {
           "id": "lojas",
           "name": "Lojas e produtos",
-          "question": "Da escolha ao próximo passo.",
+          "question": "Do produto ao carrinho, sem atrito.",
+          "support": "Página de produto, carrinho e recompra conectados.",
+          "steps": [
+            "Produto",
+            "Checkout",
+            "Recompra"
+          ],
           "context": "Configure um produto demonstrativo e simule uma adição ao carrinho.",
           "formats": [
             "Variações de produto",
@@ -292,7 +324,13 @@ export const portfolioCopy = {
         {
           "id": "sistemas",
           "name": "Sistemas e IA",
-          "question": "Uma solicitação vira uma ação.",
+          "question": "Uma solicitação vira uma próxima ação.",
+          "support": "Pedidos organizados e encaminhados a quem resolve.",
+          "steps": [
+            "Pedido",
+            "Triagem",
+            "Responsável"
+          ],
           "context": "Experimente uma triagem de atendimento e seu encaminhamento para tarefas.",
           "formats": [
             "Entrada de pedido",
@@ -316,7 +354,7 @@ export const portfolioCopy = {
       "purpose": "Vender criação e gestão de campanhas com uma demonstração criativa coerente entre canais.",
       "eyebrow": "Campanhas e anúncios",
       "title": "Sua oferta.\nEm cada canal.",
-      "body": "Conceito, copy e direção de arte. Compare a mesma oferta no feed, na busca e na tela vertical.",
+      "body": "Conceito, copy e direção de arte. Compare a mesma oferta em redes sociais, busca, IA, mapas, conversa e blog.",
       "nature": "Estudo de campanha · smiile",
       "campaignName": "Sua ideia ganha vida.",
       "campaignIntent": "Apresentar possibilidades de sites e aplicativos e levar o público a explorar os projetos.",
@@ -604,7 +642,7 @@ export const portfolioCopy = {
             "Aplicações e materiais de comunicação",
             "Orientações de uso e consistência"
           ],
-          "cta": "Conversar sobre minha marca",
+          "cta": "Começar briefing de identidade",
           "proofHref": "#narrativa-visual",
           "proofLabel": "Ver a identidade em diferentes formatos"
         },
@@ -621,9 +659,9 @@ export const portfolioCopy = {
             "Posts, carrosséis e direção visual",
             "Adaptação da linguagem ao público"
           ],
-          "cta": "Conversar sobre conteúdo",
-          "proofHref": "#editorial",
-          "proofLabel": "Explorar o raciocínio editorial"
+          "cta": "Começar briefing de conteúdo",
+          "proofHref": "#trabalhos",
+          "proofLabel": "Ver o estudo editorial"
         },
         {
           "id": "campaigns",
@@ -638,9 +676,9 @@ export const portfolioCopy = {
             "Configuração e publicação, conforme escopo",
             "Acompanhamento e otimização de mídia"
           ],
-          "cta": "Conversar sobre uma campanha",
+          "cta": "Começar briefing de campanha",
           "proofHref": "#laboratorio",
-          "proofLabel": "Comparar a abordagem em três canais"
+          "proofLabel": "Ver anúncios de clientes em onze canais"
         },
         {
           "id": "web",
@@ -655,9 +693,9 @@ export const portfolioCopy = {
             "Interface responsiva e desenvolvimento",
             "Publicação e integrações do projeto"
           ],
-          "cta": "Conversar sobre meu site",
-          "proofHref": "#narrativa-visual",
-          "proofLabel": "Ver direção visual aplicada ao site"
+          "cta": "Começar briefing de site",
+          "proofHref": "#editorial",
+          "proofLabel": "Ver um site em três etapas"
         },
         {
           "id": "systems",
@@ -672,9 +710,9 @@ export const portfolioCopy = {
             "Integrações e automações",
             "Validação e evolução da solução"
           ],
-          "cta": "Conversar sobre um sistema",
+          "cta": "Começar briefing de sistema",
           "proofHref": "#sistemas",
-          "proofLabel": "Experimentar a organização de um pedido"
+          "proofLabel": "Organizar um pedido de exemplo"
         }
       ],
       "process": [

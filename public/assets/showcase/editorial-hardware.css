@@ -5,6 +5,8 @@
   box-sizing:border-box;position:relative;isolation:isolate;
   perspective:1500px;perspective-origin:50% 48%;
   display:block;width:min(100%,960px);min-height:0;padding:0;overflow:visible;
+  /* Mobile height glides in editorial-story (frame-driven, timer-guaranteed);
+     no CSS height transition, so layout reads are never left mid-way. */
   transition:none;
 }
 #editorial .es-stage>.es-object {
@@ -114,7 +116,6 @@
 #editorial .es-ipad-visual{position:relative;min-height:0;overflow:hidden;background:#4b758d}
 #editorial .es-ipad-visual img{width:100%;height:100%;object-fit:cover;object-position:center}
 #editorial .es-ipad-visual:after{content:'';position:absolute;inset:30% 0 0;background:linear-gradient(transparent,#0b2e51a8);pointer-events:none}
-#editorial .es-ipad-visual span{position:absolute;z-index:1;bottom:7%;left:8%;right:8%;font-size:calc(1.6 * var(--es-device-unit));letter-spacing:.075em;font-weight:600;color:white}
 
 /* MacBook Pro uses the SAME mbp-* lid/hinge/base classes as Casa Costa.
    Only the editorial screen changes. The notebook shell does not. */
@@ -125,7 +126,14 @@
   filter:drop-shadow(0 10px 19px #22382b36);
 }
 #editorial .es-hardware--macbook .mbp-device{width:100%;max-width:none}
-#editorial .es-hardware--macbook .mbp-lid{aspect-ratio:1.59}
+#editorial .es-hardware--macbook .mbp-lid{aspect-ratio:1.59;transform-origin:50% 100%;transform:rotateX(0deg);transition:none}
+/* Hinge: the waiting notebook rests half-closed; editorial-story animates the
+   lid open from its painted angle when Entrega becomes active (WAAPI only:
+   no CSS transition, so reduced motion and the pause switch the pose
+   instantly). Scoped to the editorial hardware root so the Casa Costa
+   notebook never changes. */
+#editorial .es-hardware--macbook .mbp-device{perspective:calc(var(--es-device-unit,7px) * 260);perspective-origin:50% 100%}
+#editorial .es-hardware--macbook[data-position=side] .mbp-lid{transform:rotateX(-52deg)}
 #editorial .es-hardware--macbook .mbp-screen{position:relative;display:block}
 #editorial .es-screen--macbook{position:absolute;inset:0;background:#f4f3ef}
 #editorial .es-macbook-editorial{display:flex;flex-direction:column;background:#f1f4ef;color:#163426}

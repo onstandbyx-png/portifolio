@@ -11,59 +11,97 @@
 body.portfolio-r6 #laboratorio { padding-block: 112px; }
 body.portfolio-r6 #laboratorio .ads-heading { padding-top: 0; }
 .sp-campaign { width: min(100%, 680px); margin: 36px auto 0; }
+/* Channel tiles (pattern of the Fatos studio platform selector, lab f-e3): every
+   channel visible at once, the official mark over a short name, a white
+   highlight that slides to the chosen tile and the brand colour under it.
+   4 columns on a phone, 6 from 600px. The caption names the channel in full. */
+.sp-platforms-wrap { position: relative; margin-bottom: 22px; }
 .sp-platforms {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 8px;
-  margin-bottom: 28px;
-  border-bottom: 1px solid #d0d6c9;
-}
-.sp-platforms > button {
   position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  gap: 10px;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 2px;
+  padding: 4px;
+  border: 1px solid #d6dccf;
+  border-radius: 20px;
+  background: #e8ece1;
+}
+.sp-platforms [role='tab'] {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  justify-items: center;
+  align-content: center;
+  gap: 6px;
   min-width: 0;
-  min-height: 94px;
-  padding: 16px 12px 20px;
+  min-height: 66px;
+  padding: 8px 2px 7px;
   border: 0;
-  border-radius: 3px 3px 0 0;
+  border-radius: 16px;
   background: transparent;
-  color: #6b7667;
+  color: #59664f;
   font-family: inherit;
-  font-size: 14px;
-  font-weight: 550;
-  line-height: 1.3;
+  font-size: 11.5px;
+  font-weight: 600;
+  line-height: 1.1;
   cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
   transition: color 180ms ease, background-color 180ms ease;
 }
-.sp-platforms > button::after {
-  content: '';
-  position: absolute;
-  right: 0;
-  bottom: -1px;
-  left: 0;
-  height: 3px;
-  background: transparent;
-  transition: background-color 220ms ease;
+.sp-tab-name { max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.sp-n-short { display: none; }
+@media (max-width: 359px) { .sp-n-long { display: none; } .sp-n-short { display: inline; } }
+.sp-platforms [role='tab'][aria-selected='true'] { color: #13291d; }
+.sp-platforms [role='tab']:hover:not([aria-selected='true']) { color: #193827; background: #f1f4ec80; }
+.sp-platforms .sp-platform-logo { display: block; flex: none; width: auto; height: 22px; transition: transform .35s cubic-bezier(.16,1,.3,1); }
+.sp-platforms .sp-platform-logo--doc { width: 22px; fill: none; stroke: #2b4a37; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.sp-platforms [role='tab']:active .sp-platform-logo { transform: scale(.92); }
+.sp-platforms [role='tab'][aria-selected='true'] .sp-platform-logo { transform: scale(1.1); }
+.sp-platforms [role='tab']::after { content: ""; position: absolute; left: 50%; bottom: 4px; width: 18px; height: 3px; margin-left: -9px; border-radius: 3px; background: var(--ch, #294c36); transform: scaleX(0); transition: transform .42s cubic-bezier(.16,1,.3,1); }
+.sp-platforms [role='tab'][aria-selected='true']::after { transform: scaleX(1); }
+/* Number of formats, as an app badge on the tile corner. */
+.sp-tab-count { position: absolute; top: 5px; right: max(6px, calc(50% - 30px)); display: grid; place-items: center; min-width: 17px; height: 17px; padding: 0 4px; border-radius: 9px; background: #dfe5d7; color: #3f4d3c; font-size: 10.5px; font-weight: 700; line-height: 1; transition: background .25s, color .25s; }
+.sp-platforms [role='tab'][aria-selected='true'] .sp-tab-count { background: #1b3627; color: #fff; }
+.sp-channel-cap { display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 8px; min-height: 1.45em; margin: 12px 4px 0; color: #5c6a58; font-size: 14px; line-height: 1.45; }
+.sp-channel-cap b { color: #17362a; font-weight: 650; }
+@media (min-width: 600px) {
+  .sp-platforms { grid-template-columns: repeat(6, minmax(0, 1fr)); }
+  .sp-platforms [role='tab'] { min-height: 72px; font-size: 12.5px; }
 }
-.sp-platforms > button[aria-selected='true'] { background: #e9ede1; color: #1b3627; }
-.sp-platforms > button[aria-selected='true']::after { background: #294c36; }
-.sp-platforms > button:hover { color: #193827; background: #e9ede180; }
-.sp-platforms .sp-platform-logo { width: 30px; height: 30px; object-fit: contain; flex: none; }
-.sp-platforms .sp-platform-logo--meta { width: 88px; }
+/* Front of the peel: the piece of a fictitious client. One photo (4:5, cover) and its text in HTML. */
+#laboratorio .sp-campaign-panel .sp-art { position: relative; margin: 0; overflow: hidden; background: #1b211d; }
+#laboratorio .sp-campaign-panel .sp-art-photo { object-fit: cover; }
+#laboratorio .sp-art-cap { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: flex-end; gap: 10px; padding: clamp(18px, 4.5vw, 34px); background: linear-gradient(180deg, #0000 38%, #000000d6 92%); color: #fff; pointer-events: none; }
+#laboratorio .sp-art-brand { position: absolute; top: clamp(16px, 4vw, 28px); left: clamp(16px, 4vw, 28px); display: inline-flex; align-items: center; gap: 9px; padding: 5px 13px 5px 5px; border-radius: 999px; background: #0000005c; font: 600 14px/1.2 var(--sans, Inter, Arial, sans-serif); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); }
+#laboratorio .sp-art-brand .cm-mark { display: grid; flex: none; place-items: center; width: 30px; height: 30px; overflow: hidden; border-radius: 50%; background: var(--c); box-shadow: 0 0 0 1.5px #fff; }
+#laboratorio .sp-art-brand .cm-mark svg { width: 72%; height: 72%; }
+#laboratorio .sp-art-title { max-width: 15ch; font: 700 clamp(30px, 6.4vw, 48px)/1.04 var(--sans, Inter, Arial, sans-serif); letter-spacing: -.035em; text-wrap: balance; }
+#laboratorio .sp-art-fine { color: #ffffffd6; font: 500 12.5px/1.4 var(--sans, Inter, Arial, sans-serif); }
+.sp-tab-marker {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 0;
+  width: 0;
+  height: 0;
+  border-radius: 16px;
+  background: #fff;
+  box-shadow: 0 6px 18px -10px #1b36277a, 0 0 0 1px #d6dccf;
+  pointer-events: none;
+  transition: transform .48s cubic-bezier(.16,1,.3,1), width .4s cubic-bezier(.16,1,.3,1), height .4s cubic-bezier(.16,1,.3,1);
+}
+.sp-tab-marker.is-instant { transition: none; }
 .sp-campaign-art { display: grid; align-items: start; overflow: clip; isolation: isolate; }
 .sp-campaign-panel { grid-area: 1 / 1; position: relative; min-width: 0; }
 .sp-campaign-panel[hidden] { display: none !important; }
 /* Exit-only painting never restores focus or screen-reader ownership. */
 .sp-campaign-panel[hidden][data-leaving='true'] { display: block !important; pointer-events: none; }
 .sp-campaign-panel > figure { margin: 0; }
-.sp-platforms > button:focus-visible, .sp-campaign-panel:focus-visible {
+.sp-campaign-panel:focus-visible {
   outline: 3px solid #406fca;
   outline-offset: 4px;
 }
+.sp-platforms [role='tab']:focus-visible { outline: 3px solid #406fca; outline-offset: -2px; }
 body.portfolio-r6 .sa-campaign-services {
   display: grid;
   grid-template-columns: 1.1fr .9fr;
@@ -167,9 +205,7 @@ body.portfolio-r6 #editorial { padding-bottom: 96px; }
 @media (max-width: 760px) {
   body.portfolio-r6 #laboratorio { padding-block: 88px; }
   .sp-campaign { margin-top: 32px; }
-  .sp-platforms { gap: 4px; margin-bottom: 24px; }
-  .sp-platforms > button { min-height: 88px; padding: 12px 8px 16px; font-size: 13px; }
-  .sp-platforms .sp-platform-logo--meta { width: 76px; }
+  .sp-platforms-wrap { margin-bottom: 18px; }
   body.portfolio-r6 .sa-campaign-services { grid-template-columns: minmax(0, 1fr); gap: 24px; margin-top: 40px; padding-top: 32px; }
   body.portfolio-r6 .sa-campaign-services h3 { font-size: 29px; }
   body.portfolio-r6 .sa-campaign-services p { font-size: 16px; }
@@ -183,6 +219,6 @@ body.portfolio-r6 #editorial { padding-bottom: 96px; }
 }
 @media (max-width: 360px) { .pf-fatos-context { min-height: 340px; } }
 @media (prefers-reduced-motion: reduce) {
-  .sp-platforms > button, .sp-platforms > button::after { transition: none; }
+  .sp-platforms [role='tab'], .sp-tab-marker, .sp-platforms .sp-platform-logo, .sp-platforms [role='tab']::after, .sp-tab-count { transition: none; }
 }
-body.is-paused .sp-platforms > button, body.is-paused .sp-platforms > button::after { transition: none; }
+body.is-paused .sp-platforms [role='tab'], body.is-paused .sp-tab-marker { transition: none; }

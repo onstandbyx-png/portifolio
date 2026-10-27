@@ -1,0 +1,120 @@
+/* K17 · Overlay scenes of the fictional Ateliê Exemplo, drawn in HTML/CSS
+   inside the notebook frame (K8). Used by the static hero scene and by the
+   overlay demo (scenes stacked with the K6 deck, see overlay.js).
+   Each scene is a size container: text scales with the screen and never drops
+   below 14 px; the portrait (9:16) composition is a container query, so the
+   same markup recomposes for the phone. Text sits on solid fills (contrast is
+   measured against them); decoration is aria-hidden and has no text.
+   No platform logo, color or interface is imitated. */
+
+/* ---------- the scene ---------- */
+.av-scene{--sc-bg:#0F2E24;--sc-cam:#21473A;--sc-ink:#F3F1E9;--sc-soft:#A4B9A3;--sc-clay:#B8754F;--sc-clay-dark:#8E5537;--sc-skin:#D9A27E;
+  container:scene/size;position:relative;display:block;width:100%;height:100%;min-height:0;overflow:hidden;border-radius:6px;background:var(--sc-bg);color:var(--sc-ink);font-family:var(--sans);line-height:1.2;text-align:left;isolation:isolate}
+.av-scene p{margin:0}
+.av-scene-brand{display:inline-flex;align-items:center;gap:.5em;font-size:max(14px,2.3cqw);font-weight:600;letter-spacing:.01em}
+.av-scene-brand::before{content:'';width:1.1em;height:1.1em;border-radius:50%;background:var(--sc-clay);box-shadow:inset 0 0 0 .22em var(--sc-bg),0 0 0 2px var(--sc-clay)}
+.av-scene-big{font-size:max(22px,7cqw);font-weight:650;letter-spacing:-.02em;line-height:1.02;text-wrap:balance}
+.av-scene-big em{font-family:var(--serif);font-style:italic;font-weight:400}
+.av-scene-sub{font-size:max(14px,2.6cqw);color:var(--sc-soft);font-weight:500}
+
+/* Start / break / end: a centered title card with wheel rings behind. */
+.av-scene--card{display:flex;flex-direction:column;justify-content:center;gap:max(8px,2cqh);padding:max(14px,6cqw)}
+.av-scene-rings{position:absolute;z-index:-1;right:-14cqw;bottom:-30cqh;width:62cqw;aspect-ratio:1;border-radius:50%;border:max(2px,.5cqw) solid rgba(156,203,176,.28);box-shadow:0 0 0 max(10px,3.4cqw) rgba(156,203,176,.08),0 0 0 max(20px,7cqw) rgba(156,203,176,.06),inset 0 0 0 max(10px,3.4cqw) rgba(156,203,176,.08)}
+.av-scene--break{--sc-bg:#16362B}
+.av-scene-lump{position:absolute;z-index:-1;right:9cqw;bottom:14cqh;width:22cqw;height:15cqw;border-radius:46% 54% 40% 44% / 58% 52% 40% 36%;background:var(--sc-clay);box-shadow:inset -1.6cqw -1.2cqw 0 var(--sc-clay-dark)}
+.av-scene--end .av-scene-brand{margin-top:max(6px,1.5cqh)}
+
+/* Live: camera, badges, title, side column with chat lines and the empty
+   partner space, and the bottom bar. */
+.av-scene-cam{position:absolute;inset:0;z-index:-1;background:var(--sc-cam);overflow:hidden}
+.av-scene-cam::before{content:'';position:absolute;left:8%;top:-30%;width:58%;aspect-ratio:1;border-radius:50%;background:radial-gradient(circle,rgba(217,237,147,.18),rgba(217,237,147,0) 68%)}
+.av-cam-table{position:absolute;left:0;right:0;bottom:0;height:30%;background:#183A2F}
+.av-cam-wheel{position:absolute;left:21%;bottom:17%;width:40%;height:11%;border-radius:50%;background:#0B2119;box-shadow:0 .8cqh 0 #07170F}
+.av-cam-vase{position:absolute;left:32%;bottom:22%;width:18%;height:36%;border-radius:42% 42% 30% 30% / 34% 34% 24% 24%;background:var(--sc-clay);box-shadow:inset -1.6cqw 0 0 var(--sc-clay-dark)}
+.av-cam-vase::before{content:'';position:absolute;left:24%;right:24%;top:-12%;height:18%;border-radius:40% 40% 10% 10%;background:var(--sc-clay);box-shadow:inset -1cqw 0 0 var(--sc-clay-dark)}
+.av-cam-shelf{position:absolute;left:6%;top:30%;width:22%;height:2.2%;border-radius:2px;background:#163A2E}
+.av-cam-pot{position:absolute;bottom:70%;border-radius:40% 40% 24% 24% / 46% 46% 20% 20%;background:#7F9C8A}
+.av-cam-pot--a{left:9%;width:5.5%;height:9%}
+.av-cam-pot--b{left:17%;width:7%;height:6.5%;background:#C59A7B}
+
+.av-scene-tags{position:absolute;top:max(8px,3.4cqh);left:max(8px,2.6cqw);right:30cqw;display:flex;flex-wrap:wrap;align-items:center;gap:max(6px,1cqw)}
+.av-scene-badge{display:inline-flex;align-items:center;gap:.45em;padding:.3em .7em;border-radius:999px;background:var(--lima,#D9ED93);color:var(--floresta,#0F2E24);font-size:max(14px,2.1cqw);font-weight:750;letter-spacing:.06em}
+.av-scene-badge::before{content:'';width:.55em;height:.55em;border-radius:50%;background:currentColor}
+.av-scene-publi{display:inline-flex;align-items:center;padding:.3em .7em;border-radius:6px;background:var(--papel,#F3F1E9);color:var(--floresta,#0F2E24);font-size:max(14px,2.1cqw);font-weight:700}
+.av-scene-title{position:absolute;left:max(8px,2.6cqw);bottom:calc(max(30px,11cqh) + max(8px,3cqh));max-width:62cqw;padding:.35em .65em;border-left:max(3px,.6cqw) solid var(--lima,#D9ED93);border-radius:0 6px 6px 0;background:#0F2E24;color:var(--sc-ink);font-size:max(15px,3.4cqw);font-weight:650;letter-spacing:-.01em}
+.av-scene-side{position:absolute;top:max(8px,3.4cqh);right:max(8px,2.6cqw);bottom:calc(max(30px,11cqh) + max(8px,3cqh));width:27cqw;display:flex;flex-direction:column;gap:max(6px,2cqh)}
+.av-scene-chat{flex:1 1 auto;min-height:0;display:flex;flex-direction:column;justify-content:flex-end;gap:max(4px,1.6cqh);padding:max(6px,1.4cqw);border-radius:6px;background:#16362B;overflow:hidden}
+.av-scene-chat i{display:block;flex:none;height:max(5px,1.5cqh);border-radius:99px;background:rgba(243,241,233,.24)}
+.av-scene-chat i:nth-child(2n){width:72%}
+.av-scene-chat i:nth-child(3n){width:54%;background:rgba(156,203,176,.34)}
+.av-scene-sponsor{flex:none;display:grid;place-items:center;min-height:max(52px,22cqh);padding:.5em;border:2px dashed rgba(243,241,233,.55);border-radius:6px;background:#0F2E24;color:var(--sc-ink);font-size:max(14px,1.9cqw);font-weight:600;line-height:1.25;text-align:center}
+.av-scene-bar{position:absolute;left:0;right:0;bottom:0;display:flex;align-items:center;gap:.6em;min-height:max(30px,11cqh);padding:0 max(8px,2.6cqw);background:#0B2119;color:var(--sc-ink);font-size:max(14px,2.1cqw);font-weight:600}
+.av-scene-bar::before{content:'';width:1em;height:1em;border-radius:50%;background:var(--sc-clay);box-shadow:inset 0 0 0 .2em #0B2119,0 0 0 2px var(--sc-clay)}
+
+/* Portrait (9:16): the same scene recomposed for the phone. */
+@container scene (orientation: portrait){
+  .av-scene--card{padding:max(14px,8cqw);justify-content:flex-end;padding-bottom:max(22px,14cqh)}
+  .av-scene-big{font-size:max(22px,12cqw)}
+  .av-scene-sub,.av-scene-brand{font-size:max(14px,5cqw)}
+  .av-scene-rings{right:-30cqw;top:6cqh;bottom:auto;width:110cqw}
+  .av-scene-lump{right:auto;left:12cqw;top:16cqh;bottom:auto;width:44cqw;height:30cqw}
+  .av-cam-wheel{left:18%;bottom:44%;width:64%;height:6%}
+  .av-cam-vase{left:34%;bottom:48%;width:32%;height:22%}
+  .av-cam-shelf,.av-cam-pot{display:none}
+  .av-cam-table{height:52%}
+  .av-scene-tags{right:max(8px,4cqw);left:max(8px,4cqw)}
+  .av-scene-badge,.av-scene-publi,.av-scene-bar{font-size:max(14px,5cqw)}
+  .av-scene-title{left:max(8px,4cqw);right:max(8px,4cqw);max-width:none;bottom:calc(max(30px,9cqh) + max(64px,18cqh) + max(14px,3cqh));font-size:max(15px,6.4cqw)}
+  .av-scene-side{left:max(8px,4cqw);right:max(8px,4cqw);top:auto;width:auto;bottom:calc(max(30px,9cqh) + max(8px,2cqh))}
+  .av-scene-chat{display:none}
+  .av-scene-sponsor{min-height:max(56px,16cqh);font-size:max(14px,4.6cqw)}
+  .av-scene-bar{min-height:max(30px,9cqh);padding:0 max(8px,4cqw)}
+}
+
+/* ---------- the overlay demo: notebook frame with a morphing screen ---------- */
+.av-ov-stage{container-type:inline-size;min-width:0}
+/* --ov-pad: lid + bezel padding of device-premium.css on both sides, so the
+   screen itself is exactly 16:9 or 9:16. --ov-w leaves room for the base, which
+   is 107% of the device, so it never overflows the column. */
+.av-ov-device{--ov-w:calc(100cqw / 1.07);--ov-pad:calc(2 * (clamp(5px,.85vw,10px) + clamp(4px,.7vw,8px)));--ov-lid:calc((var(--ov-w) - var(--ov-pad)) * 9 / 16 + var(--ov-pad));width:var(--ov-w);max-width:100%;margin-inline:auto;--mbp-max-width:100%;transition:width var(--pg-dur-morph,350ms) var(--pg-ease-morph,cubic-bezier(.2,.9,.25,1.02))}
+.av-ov-device[data-ratio="9:16"]{--ov-w:min(220px,100cqw);--ov-lid:calc((var(--ov-w) - var(--ov-pad)) * 16 / 9 + var(--ov-pad))}
+.av-ov-device .mbp-device{width:100%}
+.av-ov-device .mbp-lid{aspect-ratio:auto;height:var(--ov-lid);transition:height var(--pg-dur-morph,350ms) var(--pg-ease-morph,cubic-bezier(.2,.9,.25,1.02)),border-radius var(--pg-dur-morph,350ms) var(--pg-ease-morph,cubic-bezier(.2,.9,.25,1.02))}
+.av-ov-device .mbp-display{transition:border-radius var(--pg-dur-morph,350ms) ease}
+.av-ov-device .mbp-hinge,.av-ov-device .mbp-base,.av-ov-device .mbp-ground-shadow{transition:opacity var(--pg-dur-morph,350ms) ease}
+.av-ov-device[data-ratio="9:16"] .mbp-lid{border-radius:30px}
+.av-ov-device[data-ratio="9:16"] .mbp-display{border-radius:24px}
+.av-ov-device[data-ratio="9:16"] .mbp-screen{border-radius:18px}
+.av-ov-device[data-ratio="9:16"] :is(.mbp-hinge,.mbp-base,.mbp-ground-shadow){opacity:0}
+.av-ov-device .mbp-screen{background:#081A14}
+
+/* The deck inside the screen: one scene in front, the next ones 24 px higher
+   (K6 geometry), cut by the screen edge. */
+.av-ov-device .pg-deck,.av-ov-device .pg-deck-stage{height:100%}
+.av-ov-device .pg-deck-stage{grid-auto-rows:100%;outline-offset:-4px;--foco:var(--lima,#D9ED93)}
+.av-ov-device .pg-deck-card{min-height:0;height:100%}
+.av-ov-device .pg-deck[data-deck-mode=stack] .pg-deck-stage{padding:24px 8px 8px}
+.av-ov-device .pg-deck[data-deck-mode=stack] .pg-deck-card:not(.is-active){box-shadow:0 -1px 0 rgba(243,241,233,.18)}
+/* Scenes behind show only their edge: their content fades with the 400 ms exchange. */
+.av-ov-device .pg-deck[data-deck-mode=stack] .pg-deck-card>*{transition:opacity var(--pg-dur-deck,400ms) ease}
+.av-ov-device .pg-deck[data-deck-mode=stack] .pg-deck-card:not(.is-active)>*{opacity:0}
+.av-ov-device .pg-deck[data-deck-mode=stack] .pg-deck-card.is-active{box-shadow:0 10px 24px rgba(0,0,0,.35)}
+/* Reduced motion / pause: list mode shows only the active scene (instant swap). */
+.av-ov-device .pg-deck[data-deck-mode=list] .pg-deck-stage{padding:0}
+.av-ov-device .pg-deck[data-deck-mode=list] .pg-deck-card:not(.is-active){display:none}
+.av-overlay.is-mounting .pg-deck-card{transition:none!important}
+
+/* Without JavaScript: the four scenes are listed, the frame grows to hold them. */
+@media (scripting: none){
+  .av-ov-device .mbp-lid{height:auto}
+  .av-ov-device .mbp-display{height:auto}
+  .av-ov-device .mbp-screen{height:auto}
+  .av-ov-device .pg-deck,.av-ov-device .pg-deck-stage{height:auto}
+  .av-ov-device .pg-deck-stage{grid-auto-rows:auto;gap:8px;padding:8px}
+  .av-ov-device .pg-deck-card{height:auto;aspect-ratio:16/9}
+}
+
+@media (prefers-reduced-motion: reduce){
+  .av-ov-device,.av-ov-device *{transition:none!important}
+}
+body.is-paused .av-ov-device,body.is-paused .av-ov-device *{transition:none!important}

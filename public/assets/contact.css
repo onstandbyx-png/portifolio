@@ -47,7 +47,10 @@
 .prepared-brief{font-size:12px!important;line-height:1.6;}
 .case-contact:hover,.contact-form .form-submit:hover{background:#365843;}
 .case-explore:hover,.brief-email:hover{background:#eaf0e4;}
-.case-dialog button:focus-visible,.case-dialog a:focus-visible,.case-credits summary:focus-visible,.brief-copy:focus-visible,.brief-email:focus-visible,.brief-direct:focus-visible{outline:3px solid #8ea56c;outline-offset:3px;}
+.case-dialog button:focus-visible,.case-dialog a:focus-visible,.case-credits summary:focus-visible,.brief-copy:focus-visible,.brief-email:focus-visible,.brief-direct:focus-visible,#brief-title:focus-visible{outline:var(--focus-width) solid var(--focus-color);outline-offset:var(--focus-offset);}
+#brief-title:focus:not(:focus-visible){outline:none;}
+.contact-form .field-error{margin:-6px 0 0;color:#a1301d;font-size:13px;font-weight:600;line-height:1.5;}
+.contact-form [aria-invalid="true"]{border-color:#a1301d;}
 @media(max-width:760px){
   .case-dialog,.sm-sections-ready .case-dialog{width:calc(100vw - 20px);max-height:93dvh;overflow:auto;}
   .dialog-layout{max-height:none;display:block;}

@@ -1,0 +1,67 @@
+/* Two home demonstrations built from the lab's flows (vitrine-lab.js). The phone and the
+   mocks are styled by channel-mocks.css, campaign-sites.css and lab-telas.css, scoped
+   to :is(#laboratorio, .lab-escopo) so they also apply here. */
+.vitrine{display:grid;justify-items:center;gap:clamp(18px,3vw,30px);margin-top:clamp(26px,4vw,40px)}
+.vitrine-phone{width:min(100%,320px)}
+/* Text takes the colour of its section (light in Sites e lojas, dark in Sistemas e automações). */
+.vitrine-side{display:grid;gap:14px;width:min(100%,520px);color:inherit}
+.vitrine-caption{min-height:3.1em;margin:0;font:400 16px/1.5 var(--sans,Inter,Arial,sans-serif)}
+.vitrine-play{justify-self:start;min-height:44px;padding:0 18px;border:1px solid #bccdb9;border-radius:999px;background:#f9fbf6;color:#234530;font:600 14px/1 var(--sans,Inter,Arial,sans-serif);cursor:pointer}
+.vitrine-nota{margin:0;opacity:.72;font-size:12.5px;line-height:1.4}
+@media (min-width:900px){
+  .vitrine{grid-template-columns:minmax(0,320px) minmax(0,520px);justify-content:center;align-items:center;justify-items:stretch}
+  .vitrine-side{align-content:center}
+}
+@media (prefers-reduced-motion:reduce){.vitrine .cm-screen,.vitrine .cm-scene{transition:none!important}}
+/* Sites e lojas sits on the light page: its header keeps the dark ink of the page. */
+#editorial .systems-intro .eyebrow{color:#4f6357}
+#editorial .systems-intro p{color:#3d4a40}
+/* Formats and steps reuse the lab's segmented control and journey (experience-demos.css). */
+.vitrine .cx-placements{width:min(100%,520px);margin:0}
+.vitrine .cx-steps{max-width:520px}
+.vitrine .cx-journey button{color:inherit}
+#sistemas .vitrine .cx-placements{background:#ffffff1f;box-shadow:inset 0 0 0 1px #ffffff2e}
+#sistemas .vitrine .cx-placement{color:#d7e4d6}
+#sistemas .vitrine .cx-placement[aria-pressed="true"]{color:#173a2a}
+#sistemas .vitrine .cx-thumb{background:#f4f7ef;box-shadow:0 4px 12px -6px #000}
+#sistemas .vitrine .cx-step-t b{color:#d7e4d6}
+#sistemas .vitrine .cx-journey li[data-state="on"] .cx-step-t b{color:#fff}
+#sistemas .vitrine .cx-step-n{border-color:#9fb89a;color:#d7e4d6}
+#sistemas .vitrine .cx-journey li[data-state="on"] .cx-step-n{border-color:#f4f7ef;background:#f4f7ef;color:#173a2a}
+#sistemas .vitrine .cx-rail{background:#ffffff2e}
+#sistemas .vitrine .cx-rail i{background:#f4f7ef}
+#sistemas .vitrine .cx-journey button:hover{background:#ffffff14}
+@media (min-width:900px){.vitrine .cx-placements{grid-column:1/-1;justify-self:center}}
+/* Removed on request (2026-10-22): campaign meta chips, note link, peel return, badge controls and footer. */
+#laboratorio .cx-meta,#laboratorio .sp-campaign-note a,#laboratorio .sp-peel-return,.hero-badge-controls,.hero-badge-foot{display:none!important}
+#laboratorio a[data-contact-service]{display:none!important}
+/* Tighter rhythm between sections after the removals. */
+#laboratorio.ads-section,#editorial,#sistemas.workflow-section{padding-top:clamp(36px,6vw,64px)!important;padding-bottom:clamp(28px,5vw,56px)!important}
+#categorias{padding-top:clamp(32px,5vw,56px)!important}
+#contato{padding-top:clamp(32px,5vw,56px)!important}
+#editorial .systems-intro,#sistemas .systems-intro{margin-bottom:8px!important}
+/* Sites e lojas gets its own band so it reads as a new section after the campaigns. */
+#editorial{background:#e7ede1;box-shadow:0 0 0 100vmax #e7ede1;clip-path:inset(0 -100vmax)}
+.vitrine{margin-top:16px;gap:16px}
+/* The lab classes carry grid areas of the player; the vitrine keeps its own one-column flow. */
+.vitrine{grid-template-columns:minmax(0,1fr)}
+.vitrine > *{grid-area:auto!important}
+.vitrine .cx-steps{width:min(100%,520px)}
+@media (min-width:900px){.vitrine{grid-template-columns:minmax(0,320px) minmax(0,520px)}.vitrine > .cx-placements{grid-column:1/-1!important}}
+/* The duplicate summary under the campaign card (format chips, label, client, return) goes too. */
+#laboratorio .campaign-summary{display:none!important}
+/* Step names stay whole: on phones the number sits above a name that may wrap to two lines;
+   from 900px the journey turns into the lab's vertical list beside the phone. */
+:is(#editorial,#sistemas) .vitrine .cx-journey{align-items:stretch}
+:is(#editorial,#sistemas) .vitrine .cx-journey button{flex-direction:column;justify-content:flex-start;height:100%;padding:10px 4px 10px;text-align:center}
+:is(#editorial,#sistemas) .vitrine .cx-step-t b{overflow:visible;white-space:normal;text-overflow:clip;text-wrap:balance;hyphens:auto}
+@media (min-width:900px){
+  :is(#editorial,#sistemas) .vitrine .cx-journey{grid-template-columns:minmax(0,1fr);gap:8px}
+  :is(#editorial,#sistemas) .vitrine .cx-journey button{display:grid;grid-template-columns:28px minmax(0,1fr);align-items:center;gap:10px;min-height:60px;padding:12px 14px 12px 18px;text-align:left}
+  :is(#editorial,#sistemas) .vitrine .cx-step-n{width:28px;height:28px;font-size:13px}
+  :is(#editorial,#sistemas) .vitrine .cx-step-t b{font-size:15px}
+  :is(#editorial,#sistemas) .vitrine .cx-rail{top:12px;bottom:12px;left:0;right:auto;width:3px;height:auto}
+  :is(#editorial,#sistemas) .vitrine .cx-rail i{transform:scaleY(var(--p,0));transform-origin:top}
+  #editorial .vitrine .cx-journey li[data-state="on"] button{background:#f8faf5}
+  #sistemas .vitrine .cx-journey li[data-state="on"] button{background:#ffffff14}
+}

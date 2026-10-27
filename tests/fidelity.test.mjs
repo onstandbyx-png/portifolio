@@ -13,7 +13,7 @@ test('Static presentation assets are local WebP files, including every campaign 
 });
 test('Outer presentations remain interactive while product mock content stays static',()=>{
  const entry=read('public/assets/showcase/static-init.js'),show=read('public/assets/showcase/static-presentations.js'),interaction=read('public/assets/sections/interactions.js');
- for(const mount of ['mountStaticPresentations','mountScrollGallery','mountEditorialStory','mountFatosDeck','mountScrollFilm'])assert(entry.includes(mount),mount);
+ for(const mount of ['mountStaticPresentations','mountScrollGallery','mountVitrine','mountFatosDeck','mountScrollFilm'])assert(entry.includes(mount),mount);
  for(const source of [entry,show,interaction])assert(!/(?:showModal|data-product-tab|data-app-action|data-call-play)/.test(source));
  assert(show.includes('data-sp-tab')&&show.includes('role="tabpanel"'),'Campaign navigation remains accessible');
 });

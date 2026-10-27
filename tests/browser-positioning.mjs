@@ -20,9 +20,9 @@ try{
   const check=(name,pass)=>{row.checks.push({name,pass:!!pass});assert(pass,name)};
   try{
    await page.goto(base,{waitUntil:'domcontentloaded'});await page.evaluate(()=>document.fonts.ready);
-   await page.waitForSelector('.campaign-summary');await page.waitForSelector('[data-workflow][data-state="example"]');
-   check('The first screen states role and five concrete services',/DIRETOR CRIATIVO E REDATOR/.test(await page.locator('.hero-issue').innerText())&&/identidades, conteúdos, anúncios, sites e sistemas/.test(await page.locator('.hero-description').innerText()));
-   const order=await page.evaluate(()=>['trabalhos','editorial','laboratorio','narrativa-visual','sistemas','categorias','como-trabalho','contato'].map(id=>({id,top:document.getElementById(id).getBoundingClientRect().top+scrollY})));
+   await page.waitForSelector('.campaign-summary');await page.waitForSelector('[data-vitrine="sistemas"] .cm-screen');
+   check('The first screen states role and five concrete services',/DIRETOR CRIATIVO E REDATOR/.test(await page.locator('.planes-hero .ph-eyebrow').innerText())&&/identidades, conteúdos, anúncios, sites e sistemas/.test(await page.locator('.planes-hero .ph-description').innerText()));
+   const order=await page.evaluate(()=>['laboratorio','editorial','sistemas','categorias','como-trabalho','contato'].map(id=>({id,top:document.getElementById(id).getBoundingClientRect().top+scrollY})));
    row.sectionOrder=order;
    check('Visual demonstrations precede the detailed service catalogue',order.every((item,i)=>i===0||item.top>order[i-1].top));
    const copy=await page.locator('.path-summary-copy>strong').allTextContents();check('Five consistent service labels',JSON.stringify(copy)===JSON.stringify(services));
@@ -42,17 +42,11 @@ try{
    await page.locator('.campaign-decision').click();await page.waitForFunction(()=>document.querySelector('.sp-peel-card').dataset.peelState==='closed');
    await page.locator('#laboratorio').evaluate(el=>scrollTo({top:scrollY+el.getBoundingClientRect().top-84,behavior:'instant'}));
    await page.screenshot({path:`${output}/campaign-${width}${reduced?'-reduced':''}.png`,animations:'disabled'});
-   check('A useful workflow result is visible before input',await page.locator('[data-workflow-result]').isVisible()&&!await page.locator('.workflow-form').isVisible());
-   await page.locator('[data-workflow-edit]').click();
-   const sample='Revisar pedido <b>sem perder contexto</b>';
-   await page.locator('#workflow-request').fill(sample);await page.locator('#workflow-area').selectOption('atendimento');await page.locator('#workflow-priority').selectOption('Urgente');
-   await page.locator('.workflow-form [type="submit"]').click();
-   check('Workflow creates a safely rendered record with chosen route and priority',await page.locator('[data-request-title]').innerText()===sample&&await page.locator('[data-request-title] b').count()===0&&/Atendimento/.test(await page.locator('[data-request-route]').innerText())&&await page.locator('[data-request-priority]').innerText()==='Urgente');
-   await page.locator('[data-workflow-complete]').click();check('Workflow changes state',await page.locator('[data-workflow]').getAttribute('data-state')==='completed'&&await page.locator('[data-request-state]').innerText()==='Resolvido');
+   check('Automation demo mounts the lab flow in its own phone, with three steps',await page.locator('[data-vitrine="sistemas"] .cm-screen').count()===1&&await page.locator('[data-vitrine="sistemas"] [data-vitrine-step]').count()===3);
+   await page.locator('[data-vitrine="sites"] [data-formato="1"]').click();check('Sites e lojas switches to the loja format, with its own phone, three steps and the repeat note',await page.locator('[data-vitrine="sites"] [data-formato="1"]').getAttribute('aria-pressed')==='true'&&await page.locator('[data-vitrine="sites"] .cm-screen').count()===1&&await page.locator('[data-vitrine="sites"] [data-vitrine-step]').count()===3&&/Repete a seção de campanhas: TikTok/.test(await page.locator('[data-vitrine="sites"] .vitrine-nota').innerText()));
    await page.locator('#sistemas').evaluate(el=>scrollTo({top:scrollY+el.getBoundingClientRect().top-84,behavior:'instant'}));
    await page.screenshot({path:`${output}/systems-${width}${reduced?'-reduced':''}.png`,animations:'disabled'});
-   await page.locator('[data-workflow-reset]').click();check('Workflow can restart',await page.locator('[data-workflow]').getAttribute('data-state')==='example'&&await page.locator('[data-workflow-result]').isVisible());
-   await page.locator('.systems-contact').click();check('Systems example leads to the correct service',await page.locator('#service').inputValue()==='Sistemas e automações');
+   await page.locator('#sistemas .systems-contact').click();check('Systems example leads to the correct service',await page.locator('#service').inputValue()==='Sistemas e automações');
    await page.locator('#como-trabalho').evaluate(el=>scrollTo({top:scrollY+el.getBoundingClientRect().top-84,behavior:'instant'}));
    await page.screenshot({path:`${output}/method-${width}${reduced?'-reduced':''}.png`,animations:'disabled'});
    await page.locator('#contato').evaluate(el=>scrollTo({top:scrollY+el.getBoundingClientRect().top-84,behavior:'instant'}));
@@ -65,4 +59,4 @@ try{
  const nojs=await browser.newPage({javaScriptEnabled:false,viewport:{width:390,height:844}});await nojs.goto(base);
  assert.equal(await nojs.locator('.path-scope').count(),5);await nojs.locator('.path-scope summary').first().click();assert(await nojs.locator('.path-description').first().isVisible());assert(await nojs.locator('#sistemas').isVisible());await nojs.close();
 }finally{await browser?.close();server?.kill();await writeFile(`${output}/results.json`,JSON.stringify(report,null,2));}
-assert(report.length===5&&report.every(row=>!row.failure),'Positioning and workflow regression failed');
+assert(report.length===5&&report.every(row=>!row.failure),'Positioning and demonstration regression failed');

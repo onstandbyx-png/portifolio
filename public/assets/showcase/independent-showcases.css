@@ -15,6 +15,7 @@
 #editorial .es-demo-choice-group button>span{font-size:calc(26 * var(--df-pt));color:#d7e5d6}
 #editorial .es-demo-choice-group button[aria-pressed=true]{background:#e7efe5;color:#183f31;border-color:#e7efe5}
 #editorial .es-demo-choice-group button[aria-pressed=true]>span{color:#2b6345}
+#editorial .es-demo-choice-group button[aria-pressed=true]>span::before{content:"✓"}
 #editorial .es-demo-choice-group button:active{transform:scale(.987)}
 #editorial .es-demo-choice-group button:focus-visible,#editorial .es-demo-mac-copy a:focus-visible{outline:3px solid #9dd4ff;outline-offset:3px}
 #editorial .es-demo-phone-bottom{position:absolute;left:8%;right:8%;bottom:3.5%;display:flex;justify-content:space-between;align-items:center;font-size:calc(12 * var(--df-pt));letter-spacing:.1em;color:#c7d8cc}
@@ -140,7 +141,7 @@
 #colecao .pf-case-task>span{display:grid;gap:3px;font-size:11px;font-weight:650;flex:1}
 #colecao .pf-case-task small{font-size:9px;color:#729380;font-weight:450}#colecao .pf-case-task>b{color:#99b3a1;font-size:10px}
 #colecao .pf-case-ops>small{font-size:8px;color:#648f76;margin-top:auto}
-#colecao .pf-fatos-back{overflow-y:auto;overscroll-behavior:contain;scrollbar-width:thin;padding-bottom:93px;background:radial-gradient(ellipse at 110% -10%,color-mix(in srgb,var(--fatos-accent) 25%,#111e27),#111e27 65%)}
+#colecao .pf-fatos-back{overflow-y:auto;scroll-padding-bottom:72px;scrollbar-width:thin;padding-bottom:93px;background:radial-gradient(ellipse at 110% -10%,color-mix(in srgb,var(--fatos-accent) 25%,#111e27),#111e27 65%)}
 #colecao .pf-fatos-back .pf-fatos-back-heading{align-items:center}
 #colecao .pf-fatos-back .pf-case-mark{width:31px;height:31px;font-size:12px}
 #colecao .pf-fatos-flip{z-index:7;min-height:45px}
@@ -242,3 +243,5 @@ body.is-paused #editorial .es-stage,body.is-paused #colecao .fd-motion-orbit{tra
 #colecao .pf-fatos-card.is-flipped .pf-fatos-front{pointer-events:none!important}
 #colecao .pf-fatos-card:not(.is-flipped) .pf-fatos-back{pointer-events:none!important}
 #colecao .pf-fatos-card.is-flipped .pf-fatos-back{pointer-events:auto}
+#colecao .pf-fatos-card.is-flipped .pf-fatos-back{cursor:default}
+#colecao .pf-fatos-card.is-flipped .pf-fatos-back :is(a,button){cursor:pointer}

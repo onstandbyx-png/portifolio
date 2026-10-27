@@ -11,7 +11,7 @@
 .editorial-motion-ready .hero-actions .button,.editorial-motion-ready .header-cta{transform:none}
 .editorial-motion-ready .hero-actions .button>span,.editorial-motion-ready .contact-direct>a>span[aria-hidden]{display:inline-block;transition:transform var(--ed-feedback) var(--ed-ease)}
 .editorial-motion-ready .hero-actions .button:focus-visible>span,.editorial-motion-ready .contact-direct>a:focus-visible>span[aria-hidden]{transform:translate(2px,-2px)}
-.editorial-motion-ready :is(.hero-actions a,.header-cta,.contact-direct>a,.main-nav a):focus-visible{outline:2px solid currentColor;outline-offset:5px}
+.editorial-motion-ready :is(.hero-actions a,.header-cta,.contact-direct>a,.main-nav a):focus-visible{outline:var(--focus-width) solid var(--focus-color);outline-offset:var(--focus-offset)}
 .editorial-motion-ready .main-nav a::after{transition:transform 220ms var(--ed-ease)}
 .editorial-motion-ready .main-nav a:focus-visible::after{transform:scaleX(1)}
 @media(hover:hover) and (pointer:fine){

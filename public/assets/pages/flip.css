@@ -1,0 +1,25 @@
+/* K5 · Flip card. Both faces share one grid cell, so the card is as tall as its
+   tallest face. Without JS (no [data-flip-ready]) and in "stack" mode with reduced
+   motion or pause, the faces are stacked and fully readable. */
+.pg-flip{position:relative;min-width:0}
+.pg-flip-stage{position:relative;perspective:1200px;height:100%}
+.pg-flip-rotor{display:grid;height:100%;transform-style:preserve-3d;transform:rotateX(0deg) rotateY(0deg)}
+.pg-flip-face{grid-area:1/1;min-width:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:var(--raio-l,24px)}
+.pg-flip-back{transform:rotateY(180deg)}
+[data-flip-ready] .pg-flip-front{z-index:1}
+.pg-flip [data-flip-open],.pg-flip [data-flip-close]{cursor:pointer}
+
+/* No JS: two readable faces, no useless toggle buttons. */
+.pg-flip:not([data-flip-ready]) .pg-flip-rotor{gap:12px;transform:none}
+.pg-flip:not([data-flip-ready]) .pg-flip-face{grid-area:auto;transform:none;backface-visibility:visible;-webkit-backface-visibility:visible}
+.pg-flip:not([data-flip-ready]) :is([data-flip-open],[data-flip-close]){display:none}
+
+/* Reduced motion and pause: "stack" cards list both faces, no turning. */
+@media (prefers-reduced-motion: reduce){
+  .pg-flip[data-flip-reduced=stack] .pg-flip-rotor{gap:12px;transform:none!important}
+  .pg-flip[data-flip-reduced=stack] .pg-flip-face{grid-area:auto;transform:none!important;backface-visibility:visible;-webkit-backface-visibility:visible}
+  .pg-flip[data-flip-reduced=stack] :is([data-flip-open],[data-flip-close]){display:none}
+}
+body.is-paused .pg-flip[data-flip-reduced=stack] .pg-flip-rotor{gap:12px;transform:none!important}
+body.is-paused .pg-flip[data-flip-reduced=stack] .pg-flip-face{grid-area:auto;transform:none!important;backface-visibility:visible;-webkit-backface-visibility:visible}
+body.is-paused .pg-flip[data-flip-reduced=stack] :is([data-flip-open],[data-flip-close]){display:none}

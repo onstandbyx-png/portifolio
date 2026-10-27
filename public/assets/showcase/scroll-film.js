@@ -12,7 +12,7 @@ const motion=createMotion();
 export function mountScrollFilm(){
  const anchor=$('#sites')||$('#experiencias');if(!anchor||$('#narrativa-visual'))return null;
  const copy=sectionCopy('narrativa-visual');
- const film=make(`<section class="rf-film rf-r6" id="narrativa-visual" data-phase="0" aria-labelledby="rx-evidence-title">
+ const film=make(`<section class="rf-film rf-r6" id="narrativa-visual" data-phase="0" aria-labelledby="rx-evidence-title" hidden inert aria-hidden="true">
   <div class="rf-heading shell"><div><small>${escape(copy.eyebrow)}</small><h2 id="rx-evidence-title">${lines(copy.title)}</h2></div><p>${escape(copy.body)}</p></div>
   <div class="rf-stage"><div class="rf-camera"><div class="rf-world">
    <article class="rf-plane rf-cover" data-rf-plane="0" aria-label="Casa Costa: composição editorial"><img src="/assets/portfolio/smiile-architecture-coast.webp" alt="Casa entre a paisagem costeira e a vegetação" loading="lazy" decoding="async"><div class="rf-cover-top"><span>FORMA</span><span>CASA COSTA / 01</span></div><div class="rf-cover-copy"><small>ARQUITETURA PARA HABITAR</small><strong>O essencial<br>tem espaço.</strong><p>Luz natural, matéria e paisagem.</p></div></article>

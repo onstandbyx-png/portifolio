@@ -1,0 +1,178 @@
+/* /criadores/ao-vivo · page layout (SPEC 3.B). Mobile first (390 px), then
+   1440 px. Rhythm: hero (floresta) → antes/durante/depois (papel) → serviços
+   (floresta) → veja funcionando (papel) → como funciona (papel) → o que não faço
+   + patrocínio (floresta) → diagnóstico (floresta) → FAQ (papel) → faixa final
+   (floresta). Text pairs follow the SPEC 2.3 table; menta and salvia are never
+   text on papel. Demos live in demos/overlay.css, demos/live-cut.css and
+   compare.css. */
+
+/* ---------- hero (AV1) ---------- */
+.av-track{margin-bottom:clamp(28px,4vw,48px)}
+.av-hero-grid{display:grid;gap:40px;align-items:center}
+.av-hero-copy{min-width:0}
+.av-hero-cta{display:flex;flex-direction:column;align-items:flex-start;gap:10px;margin:28px 0 24px}
+.av-hero-primary{min-height:48px}
+.av-hero-micro{margin:0;color:var(--texto-2)}
+.av-hero-secondary{color:var(--papel)}
+.av-platforms{margin:0;max-width:54ch;color:var(--texto-2);font-size:.9375rem}
+.av-hero-figure{margin:0;min-width:0}
+/* The notebook base is 107% of the device (device-premium.css): the device stays
+   100%/1.07 of its column so the base never pokes past the gutter. */
+.av-hero-notebook{--mbp-max-width:min(760px,100% / 1.07)}
+.av-figure-label{margin-top:16px;text-align:center;font-size:.875rem;color:var(--salvia)}
+@media (max-width:599px){.av-hero-primary{width:100%}}
+@media (min-width:1024px){
+  .av-hero-grid{grid-template-columns:minmax(0,5fr) minmax(0,6fr);gap:56px}
+}
+
+/* ---------- antes, durante e depois (AV2) ---------- */
+.av-cycle-grid{display:grid;gap:12px}
+.av-cycle-item{padding:20px 0 4px;border-top:2px solid var(--floresta)}
+.av-cycle-label{display:flex;align-items:center;gap:10px;margin:0 0 10px;font-size:.75rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--floresta)}
+.av-cycle-dot{width:10px;height:10px;border-radius:50%;background:var(--floresta)}
+.av-cycle-item p{margin:0;max-width:34ch;font-size:clamp(1.125rem,1.05rem + .35vw,1.3125rem);line-height:1.45}
+@media (min-width:760px){.av-cycle-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:32px}}
+
+/* ---------- serviços: cartões que viram (AV3, K5) ---------- */
+.av-flip-grid{display:grid;gap:16px}
+.av-flip .pg-flip-face{display:flex;flex-direction:column;gap:12px;padding:28px 24px 24px}
+.av-flip-front{background:var(--painel);color:var(--papel);box-shadow:inset 0 0 0 1px var(--linha-floresta);--foco:var(--lima)}
+.av-flip-back{background:var(--papel);color:var(--tinta);--foco:var(--floresta)}
+.av-flip-top{display:flex;align-items:flex-start;justify-content:space-between;gap:16px}
+.av-flip-index{margin:0;font-family:var(--serif);font-style:italic;font-size:2.25rem;line-height:1;color:var(--lima)}
+.av-flip-icon{flex:none;width:44px;height:44px;fill:none;stroke:var(--menta);stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.av-flip h3{font-size:1.5rem;line-height:1.2}
+.av-flip-line{margin:0;font-size:1.125rem;line-height:1.45;color:var(--salvia)}
+.av-flip-back-title{margin:0;font-size:1.125rem;font-weight:600}
+.av-flip-back-title:focus{outline:none}
+.av-flip-back-title:focus-visible{outline:3px solid var(--foco);outline-offset:4px;border-radius:4px}
+.av-flip-list{margin:0;padding:0;list-style:none;display:grid;gap:10px}
+.av-flip-list li{position:relative;padding-left:26px;line-height:1.45}
+.av-flip-list li::before{content:'';position:absolute;left:2px;top:.45em;width:12px;height:7px;border-left:2.5px solid var(--floresta);border-bottom:2.5px solid var(--floresta);transform:rotate(-45deg)}
+.av-flip-button{align-self:flex-start;margin-top:auto}
+.av-flip .pg-flip-front .av-flip-button{border-color:var(--papel)}
+@media (min-width:960px){.av-flip-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}.av-flip .pg-flip-face{min-height:340px;padding:32px 28px 28px}}
+
+/* ---------- veja funcionando (AV4): shared demo layout ---------- */
+.av-demo{display:grid;gap:18px;padding-block:44px;border-top:1px solid var(--linha-papel)}
+.av-demo:first-of-type{padding-top:8px;border-top:0}
+.av-demo:last-of-type{padding-bottom:0}
+.av-demo-text h3{font-size:clamp(1.375rem,1.2rem + .8vw,1.75rem);line-height:1.15}
+.av-demo-text p{margin:10px 0 0;max-width:46ch;color:var(--texto-2)}
+.av-demo-controls,.av-demo-player{display:flex;flex-wrap:wrap;align-items:center;gap:10px 14px;min-width:0}
+.av-demo-stage{min-width:0}
+.av-demo-notes{display:grid;gap:10px;align-content:start}
+.av-demo-notes p{margin:0}
+.av-demo-status{min-height:1.55em;font-weight:600}
+.av-demo-caption{max-width:52ch;color:var(--texto-2)}
+.av-demo-label{justify-self:start;display:inline-flex;align-items:center;min-height:32px;padding:4px 12px;border-radius:12px;background:var(--menta);color:var(--tinta);font-size:.875rem;font-weight:600;line-height:1.3}
+@media (min-width:1024px){
+  .av-demo{grid-template-columns:minmax(0,5fr) minmax(0,7fr);column-gap:56px;row-gap:20px;align-items:start;
+    grid-template-areas:"text stage" "controls stage" "player stage" "notes stage";grid-template-rows:auto auto auto 1fr;padding-block:64px}
+  .av-demo-text{grid-area:text}.av-demo-controls{grid-area:controls}.av-demo-player{grid-area:player}.av-demo-stage{grid-area:stage}.av-demo-notes{grid-area:notes}
+  .av-thumb{grid-template-areas:"text stage" "notes stage";grid-template-rows:auto 1fr}
+}
+
+/* Segmented controls (Cena, 16:9 | 9:16): pressed = ✓ + fill + border. */
+.av-seg{display:inline-flex;flex-wrap:wrap;gap:4px;padding:4px;border:1px solid var(--linha-papel);border-radius:16px;background:#fff8}
+.av-seg button{display:inline-flex;align-items:center;justify-content:center;gap:6px;min-width:44px;min-height:44px;padding:8px 14px;border:1.5px solid transparent;border-radius:12px;background:transparent;color:var(--tinta);font-size:.9375rem;font-weight:500;font-variant-numeric:tabular-nums}
+.av-seg button:hover{border-color:var(--linha-papel)}
+.av-seg button[aria-pressed=true]{background:var(--floresta);border-color:var(--floresta);color:var(--papel);font-weight:600}
+.av-seg button[aria-pressed=true]::before{content:'✓';font-weight:700}
+.av-seg--wrap{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}
+@media (min-width:600px){.av-seg--wrap{display:inline-flex}}
+.av-examples .pg-chip{background:transparent}
+
+/* "Da live ao corte" timeline column. */
+.av-cut-timeline{display:grid;width:100%}
+.av-cut-static{margin:0;padding-left:1.1em;display:grid;gap:8px}
+.av-cut-static b{display:block}
+
+/* Thumbnails (K16): drawn as inline SVG, labelled by role="img". */
+.av-thumb-art{position:absolute;inset:0;overflow:hidden;background:#56665D}
+.av-thumb-art svg{display:block;width:100%;height:100%}
+.pg-compare-tag{position:absolute;z-index:2;top:12px;margin:0;padding:4px 12px;border-radius:999px;background:var(--papel);color:var(--floresta);font-size:.875rem;font-weight:700;line-height:1.4}
+.pg-compare-tag--after{left:12px}
+.pg-compare-tag--before{right:12px}
+@media (scripting: none){
+  .av-thumb-art{position:absolute}
+  .pg-compare-tag--before{right:auto;left:12px}
+}
+
+/* ---------- como funciona (AV5) ---------- */
+.av-steps-section{border-top:1px solid var(--linha-papel)}
+.av-steps{display:grid;gap:12px;margin:0;padding:0;list-style:none}
+.av-step{display:grid;grid-template-columns:44px minmax(0,1fr);gap:16px;align-items:start;padding:18px 0;border-bottom:1px solid var(--linha-papel)}
+.av-step-n{display:grid;place-items:center;width:44px;height:44px;border-radius:50%;background:var(--floresta);color:var(--papel);font-weight:650;font-variant-numeric:tabular-nums}
+.av-step h3{margin:6px 0 6px;font-family:var(--serif);font-style:italic;font-weight:400;font-size:1.5rem;line-height:1.2}
+.av-step p{margin:0;color:var(--texto-2)}
+@media (min-width:960px){.av-steps{grid-template-columns:repeat(4,minmax(0,1fr));gap:28px}.av-step{grid-template-columns:1fr;border-bottom:0;border-top:1px solid var(--linha-papel);padding-top:24px}}
+
+/* ---------- o que eu não faço + patrocínio (AV6) ---------- */
+.av-limits-grid{display:grid;gap:40px}
+.av-donts{display:grid;gap:4px;margin:28px 0 0;padding:0;list-style:none}
+.av-donts li{display:grid;grid-template-columns:28px minmax(0,1fr);gap:14px;align-items:start;padding:14px 0;border-bottom:1px solid var(--linha-floresta);font-size:1.0625rem;line-height:1.45}
+.av-x{width:24px;height:24px;margin-top:1px;fill:none;stroke:var(--lima);stroke-width:2.6;stroke-linecap:round}
+.av-sponsor{align-self:start;display:grid;gap:4px}
+.av-sponsor h3{font-size:1.375rem;line-height:1.2;margin-bottom:10px}
+.av-sponsor p{margin:0 0 10px}
+.av-transparency{margin:0;padding:20px 24px;border:1px solid var(--linha-floresta);border-radius:var(--raio-m);color:var(--salvia);max-width:none}
+.av-link{display:inline-flex;align-items:center;gap:.3em;min-height:44px;text-decoration:underline;text-underline-offset:.22em}
+@media (min-width:960px){.av-limits-grid{grid-template-columns:minmax(0,7fr) minmax(0,5fr);column-gap:64px}.av-transparency{grid-column:1/-1}}
+
+/* ---------- diagnóstico (AV7, SPEC 4.B) ---------- */
+.av-diag{border-top:1px solid var(--linha-floresta)}
+.av-form{display:grid;gap:8px}
+.av-form-errors{grid-column:1/-1}
+.av-form-errors a{color:var(--papel)}
+.av-form-fields{min-width:0}
+.av-hint{margin:-4px 0 12px}
+.av-other{margin-top:-12px}
+.av-chip-cards{display:grid;grid-template-columns:minmax(0,1fr);gap:8px}
+.av-chip-card{position:relative;display:flex;flex-direction:column;align-items:flex-start;gap:2px;width:100%;padding:10px 40px 10px 16px;border-radius:14px}
+.av-chip-card[aria-pressed=true]::before{position:absolute;top:10px;right:14px}
+.av-chip-main{font-weight:600}
+.av-chip-sub{font-size:.875rem;font-weight:400;line-height:1.35}
+.av-check{margin:4px 0 8px}
+.av-form-side{display:grid;gap:16px;align-content:start;min-width:0}
+.av-summary{background:var(--painel);border-color:var(--linha-floresta)}
+.av-summary h3{font-size:1.125rem}
+.av-summary ul{margin:10px 0;padding-left:1.1em}
+.av-summary li+li{margin-top:4px}
+.av-summary-empty{margin:8px 0 0;color:var(--salvia)}
+.av-summary-note{margin:8px 0 0;color:var(--salvia)}
+.av-submit{min-height:52px}
+/* Without JS the submit stays disabled (SPEC 4.0): a flat, fully opaque state, never a faded one. */
+.av-submit:disabled{opacity:1;background:var(--painel);border-color:var(--linha-floresta);color:var(--salvia)}
+.av-form-notice{margin:0;color:var(--salvia)}
+.av-form-notice a{color:var(--papel)}
+.av-nojs{display:grid;gap:12px;padding:16px 20px;border:1px dashed var(--linha-floresta);border-radius:var(--raio-m)}
+.av-nojs p{margin:0}
+.av-nojs .pg-btn{justify-self:start}
+.av-review{margin-top:4px;background:var(--painel)}
+.av-review h3{font-size:1.375rem;line-height:1.2;margin-bottom:8px}
+.av-review>p{margin:0 0 8px}
+.av-desktop-note{margin:8px 0 0;color:var(--salvia)}
+.av-after-title{margin:22px 0 6px;font-size:1rem;font-weight:600}
+.av-after-text{margin:0;color:var(--salvia)}
+@media (max-width:959px){.av-desktop-note{display:none}}
+@media (min-width:600px){.av-chip-cards{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (min-width:1024px){.av-form{grid-template-columns:minmax(0,7fr) minmax(320px,5fr);column-gap:56px;align-items:start}}
+
+/* ---------- FAQ (AV8) ---------- */
+.av-official-links{margin:0 0 1em;padding:0;list-style:none}
+.av-official-links a{display:inline-flex;align-items:center;gap:.3em;min-height:44px;text-decoration:underline}
+
+/* ---------- faixa final (AV9) ---------- */
+.av-final h2{max-width:22ch}
+.av-final-actions{margin:28px 0 12px}
+.av-final-line{margin:0;color:var(--papel)}
+
+/* ---------- without JavaScript: JS-only controls are hidden ---------- */
+@media (scripting: none){[data-js-only]{display:none!important}}
+
+/* ---------- reduced motion and the pause button: nothing moves ---------- */
+@media (prefers-reduced-motion: reduce){
+  .av-page main *,.av-page main *::before,.av-page main *::after{transition:none!important;animation:none!important}
+}
+body.is-paused main *,body.is-paused main *::before,body.is-paused main *::after{transition:none!important;animation:none!important}

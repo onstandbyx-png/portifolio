@@ -1,0 +1,230 @@
+/* Service cards rebuilt from the owner's reference compositions (02, 05, 08, 09). Sizes scale with the card
+ * (container query units, 1cqw = 1% of the card width; the references are 941 px wide) and never drop below
+ * 12 px of text. Loaded after every older deck stylesheet. */
+/* Card widths carried over from the retired deck-covers.css. */
+@media (min-width:701px){#colecao .pf-fatos-card{width:min(85%,356px)}}
+@media (max-width:700px){#colecao .pf-fatos-card{width:min(82vw,336px)}}
+@media (max-width:360px){#colecao .pf-fatos-card{width:82vw}}
+#colecao .pf-fatos-display .pf-fatos-navigation::after{font-size:12px;color:#56685A}
+#colecao .pf-fatos-card[data-ref-card]{container-type:inline-size;--rc-pad:clamp(15px,5.4cqw,24px);--rc-mint:#8FCB9F;--rc-text:#F5F3EC;--rc-muted:#B4BDB7;--rc-bg:linear-gradient(180deg,#0A2A21 0%,#0C2B21 52%,#05201A 100%);border-radius:clamp(18px,6.4cqw,28px)}
+#colecao .pf-fatos-card[data-ref-card][data-tone="night"]{--rc-mint:#7FE9BC;--rc-bg:radial-gradient(120% 60% at 0% 0%,#0E3A33 0%,#06291F 46%,#041A1C 100%)}
+#colecao .pf-fatos-card[data-ref-card][data-tone="leaf"]{--rc-mint:#A2D1AD;--rc-bg:linear-gradient(180deg,#0F3024 0%,#0D2D22 55%,#0A271E 100%)}
+#colecao .pf-fatos-card[data-ref-card][data-tone="brand"]{--rc-mint:#8FB8A0;--rc-bg:linear-gradient(180deg,#183026 0%,#152B22 60%,#12261E 100%)}
+#colecao .pf-fatos-card[data-ref-card] .pf-fatos-face.rc-face{display:flex;flex-direction:column;padding:var(--rc-pad);border:1px solid #ffffff1f;border-radius:inherit;background:var(--rc-bg);color:var(--rc-text);font-family:Inter,"Segoe UI",Arial,system-ui,sans-serif;text-align:left;box-shadow:0 26px 44px -24px #04140fa6,inset 0 1px 0 #ffffff14;overflow:hidden}
+#colecao .pf-fatos-card[data-ref-card] .rc-face *{box-sizing:border-box}
+#colecao .pf-fatos-card[data-ref-card] .rc-ico{width:100%;height:100%;display:block}
+#colecao .pf-fatos-card[data-ref-card] :is(.rc-step-ico,.rc-funnel-ico,.rc-repeat-ico) .rc-ico{width:48%;height:48%}
+#colecao .pf-fatos-card[data-ref-card] :is(.rc-tile-ico,.rc-pillar-ico) .rc-ico{width:56%;height:56%}
+#colecao .pf-fatos-card[data-ref-card] .rc-paper .rc-tile-ico .rc-ico{width:100%;height:100%}
+
+/* Header: numbered badge, service, subtitle, "Verso do cartão" */
+#colecao .pf-fatos-card[data-ref-card] .rc-head{display:flex;align-items:center;gap:clamp(10px,3.2cqw,14px);min-height:clamp(30px,9cqw,40px)}
+#colecao .pf-fatos-card[data-ref-card] .rc-badge{flex:none;display:grid;place-items:center;width:clamp(30px,9cqw,40px);aspect-ratio:1;border:1.5px solid #ffffff5c;border-radius:26%;background:#ffffff08;font-size:clamp(13px,3.6cqw,16px);font-weight:650;letter-spacing:-.01em;color:var(--rc-text)}
+#colecao .pf-fatos-card[data-ref-card] .rc-id{display:grid;gap:1px;min-width:0;flex:1}
+#colecao .pf-fatos-card[data-ref-card] .rc-name{margin:0;font-size:clamp(16px,4.6cqw,20px);line-height:1.15;font-weight:650;letter-spacing:-.015em;color:var(--rc-text)}
+#colecao .pf-fatos-card[data-ref-card] .rc-name:focus{outline:none}
+#colecao .pf-fatos-card[data-ref-card] .rc-name:focus-visible{outline:2px solid var(--rc-mint);outline-offset:3px;border-radius:4px}
+#colecao .pf-fatos-card[data-ref-card] .rc-sub{font-size:clamp(12px,3.3cqw,14px);line-height:1.3;color:var(--rc-muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#colecao .pf-fatos-card[data-ref-card] .rc-verso{flex:none;align-self:flex-start;padding:4px 10px;border:1px solid #ffffff40;border-radius:999px;font-size:12px;line-height:1.2;color:#C9D1CB;white-space:nowrap}
+#colecao .pf-fatos-card[data-ref-card] .rc-rule{flex:none;display:block;width:clamp(28px,8.5cqw,40px);height:3px;margin:clamp(11px,3.6cqw,18px) 0 clamp(10px,3.2cqw,15px);border-radius:3px;background:var(--rc-mint)}
+
+/* Front: headline, lead, scene, CTA */
+#colecao .pf-fatos-card[data-ref-card] .rc-title{margin:0;font-size:clamp(21px,6.7cqw,30px);line-height:1.07;font-weight:700;letter-spacing:-.03em;color:var(--rc-text);text-wrap:balance}
+#colecao .pf-fatos-card[data-ref-card] .rc-dot{color:var(--rc-mint)}
+#colecao .pf-fatos-card[data-ref-card] .rc-lead{margin:clamp(6px,2cqw,10px) 0 0;font-size:clamp(13px,3.7cqw,16px);line-height:1.38;color:var(--rc-muted);text-wrap:pretty}
+#colecao .pf-fatos-card[data-ref-card] .rc-scene{position:relative;flex:1 1 auto;min-height:0;margin:clamp(6px,2.4cqw,12px) calc(var(--rc-pad) * -1) clamp(8px,2.6cqw,12px);-webkit-mask-image:linear-gradient(180deg,transparent 0,#000 9%,#000 90%,transparent 100%);mask-image:linear-gradient(180deg,transparent 0,#000 9%,#000 90%,transparent 100%)}
+#colecao .pf-fatos-card[data-ref-card] .rc-scene img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 50%;user-select:none;-webkit-user-drag:none;pointer-events:none}
+#colecao .pf-fatos-card[data-ref-card] .rc-scene--conteudo img{object-position:46% 50%}
+#colecao .pf-fatos-card[data-ref-card] .rc-scene--marca img{object-position:58% 62%}
+#colecao .pf-fatos-card[data-ref-card] .rc-scene--campanhas img{object-position:52% 78%}
+#colecao .pf-fatos-card[data-ref-card] .rc-scene--marca{-webkit-mask-image:linear-gradient(180deg,transparent 0,#000 10%,#000 100%);mask-image:linear-gradient(180deg,transparent 0,#000 10%,#000 100%);margin-bottom:0}
+
+/* Campaign architecture row (front of 02) */
+#colecao .pf-fatos-card[data-ref-card] .rc-arch{flex:none;margin-top:clamp(9px,3cqw,14px);padding:clamp(8px,2.6cqw,12px);border:1px solid #ffffff1f;border-radius:14px;background:#ffffff08}
+#colecao .pf-fatos-card[data-ref-card] .rc-arch-head{display:flex;justify-content:space-between;align-items:baseline;gap:8px;margin-bottom:8px}
+#colecao .pf-fatos-card[data-ref-card] .rc-arch-head b{font-size:clamp(12.5px,3.7cqw,15px);font-weight:650;color:var(--rc-text)}
+#colecao .pf-fatos-card[data-ref-card] .rc-arch-head small{display:none;font-size:12px;color:var(--rc-muted)}
+#colecao .pf-fatos-card[data-ref-card] .rc-arch ul{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;margin:0;padding:0;list-style:none}
+#colecao .pf-fatos-card[data-ref-card] .rc-arch li{display:flex;flex-direction:column;align-items:flex-start;gap:5px;padding:7px 6px;border:1px solid #ffffff14;border-radius:10px;background:#ffffff0a;font-size:12px;line-height:1.15;font-weight:600;color:var(--rc-text)}
+#colecao .pf-fatos-card[data-ref-card] .rc-logo{display:block;height:15px;width:auto;object-fit:contain}
+#colecao .pf-fatos-card[data-ref-card] .rc-logo--sq{width:15px;border-radius:4px;background:#fff}
+@container (min-width:340px){#colecao .pf-fatos-card[data-ref-card] .rc-arch-head small{display:inline}}
+
+/* CTA pills (reference: wide, rounded, arrow at the end) */
+#colecao .pf-fatos-card[data-ref-card] .rc-cta{flex:none;position:relative;inset:auto;display:flex;align-items:center;justify-content:space-between;gap:12px;width:100%;min-height:clamp(46px,14cqw,56px);margin:0;padding:0 clamp(14px,4.4cqw,20px) 0 clamp(18px,5.4cqw,24px);border:1.5px solid #ffffffbf;border-radius:999px;background:#04161A;color:#fff;font:inherit;font-size:clamp(14px,4.3cqw,17px);font-weight:560;letter-spacing:-.005em;text-decoration:none;cursor:pointer;transition:transform 117ms ease-out,background-color 160ms ease}
+#colecao .pf-fatos-card[data-ref-card] .rc-cta--front{margin-top:auto}
+#colecao .pf-fatos-card[data-ref-card] .rc-cta>span{font-size:inherit;line-height:1.2;color:inherit}
+#colecao .pf-fatos-card[data-ref-card] .rc-cta-arrow{flex:none;width:clamp(20px,6cqw,24px);height:clamp(20px,6cqw,24px)}
+#colecao .pf-fatos-card[data-ref-card] .rc-cta:active{transform:scale(.985)}
+#colecao .pf-fatos-card[data-ref-card] .rc-cta:focus-visible,#colecao .pf-fatos-card[data-ref-card] .rc-return:focus-visible{outline:3px solid var(--rc-mint);outline-offset:3px}
+#colecao .pf-fatos-card[data-ref-card][data-tone="leaf"] .rc-cta{border:0;background:#F3EFE6;color:#10251C}
+#colecao .pf-fatos-card[data-ref-card][data-tone="brand"] .rc-cta{border:0;background:#133B2E;color:#fff}
+#colecao .pf-fatos-card[data-ref-card][data-tone="night"] .rc-cta{border-color:#7FE9BC8c;background:#031019}
+#colecao .pf-fatos-card[data-ref-card][data-tone="night"] .rc-cta-arrow{box-sizing:content-box;padding:5px;border:1.5px solid #ffffffd9;border-radius:50%}
+@media (hover:hover){#colecao .pf-fatos-card[data-ref-card] .rc-cta:hover{background:#0B2328}#colecao .pf-fatos-card[data-ref-card][data-tone="leaf"] .rc-cta:hover{background:#fff}#colecao .pf-fatos-card[data-ref-card][data-tone="brand"] .rc-cta:hover{background:#184A3A}}
+/* The brand reference ends on warm paper; the front keeps that band under the scene. */
+#colecao .pf-fatos-card[data-ref-card] .rc-foot{flex:1 0 auto;display:flex;flex-direction:column;justify-content:flex-end;gap:clamp(10px,3cqw,14px);margin:0 calc(var(--rc-pad) * -1) calc(var(--rc-pad) * -1);padding:clamp(8px,2.6cqw,12px) var(--rc-pad) var(--rc-pad);background:#EDE9E0;color:#13241D}
+#colecao .pf-fatos-card[data-ref-card] .rc-foot .rc-cta--front{margin-top:0}
+
+/* Back */
+#colecao .pf-fatos-card[data-ref-card] .pf-fatos-back.rc-back{transform:rotateY(180deg)}
+#colecao .pf-fatos-card[data-ref-card] .rc-back-body{flex:1 1 auto;min-height:0;display:flex;flex-direction:column;gap:clamp(8px,2.8cqw,12px);overflow:auto;overscroll-behavior:contain;scrollbar-width:none;touch-action:pan-y}
+#colecao .pf-fatos-card[data-ref-card] .rc-back-body::-webkit-scrollbar{display:none}
+#colecao .pf-fatos-card[data-ref-card] .rc-actions{flex:none;display:flex;align-items:center;gap:8px;margin-top:clamp(8px,2.8cqw,12px)}
+#colecao .pf-fatos-card[data-ref-card] .rc-actions .rc-cta{flex:1;min-width:0;font-size:clamp(13.5px,4cqw,16px)}
+#colecao .pf-fatos-card[data-ref-card] .rc-return{flex:none;display:grid;place-items:center;width:clamp(46px,14cqw,56px);height:clamp(46px,14cqw,56px);min-height:0;margin:0;padding:12px;border:1.5px solid #ffffff59;border-radius:50%;background:#ffffff0d;color:var(--rc-mint);cursor:pointer}
+#colecao .pf-fatos-card[data-ref-card][data-tone="brand"] .rc-return{border-color:#13241D40;background:#fff;color:#133B2E}
+
+/* Steps in circles with arrows (05) or boxed with chevrons (08) */
+#colecao .pf-fatos-card[data-ref-card] .rc-steps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(6px,2.2cqw,10px);margin:0;padding:0;list-style:none}
+#colecao .pf-fatos-card[data-ref-card] .rc-steps li{position:relative;display:grid;gap:6px;align-content:start;min-width:0}
+#colecao .pf-fatos-card[data-ref-card] .rc-step-ico{display:grid;place-items:center;width:clamp(34px,10.4cqw,44px);aspect-ratio:1;padding:0;border:1.5px solid #9CCBB066;border-radius:50%;background:#0F3127;color:#E9EFE9}
+#colecao .pf-fatos-card[data-ref-card] .rc-step-copy{display:grid;gap:2px;min-width:0}
+#colecao .pf-fatos-card[data-ref-card] .rc-step-copy b{font-size:clamp(12.5px,3.7cqw,15px);line-height:1.2;font-weight:650;color:var(--rc-text)}
+#colecao .pf-fatos-card[data-ref-card] .rc-step-copy small{font-size:12px;line-height:1.3;color:var(--rc-muted)}
+#colecao .pf-fatos-card[data-ref-card] .rc-step-sep{position:absolute;top:calc(clamp(34px,10.4cqw,44px) / 2 - 7px);right:calc(clamp(6px,2.2cqw,10px) * -.5 - 7px);width:14px;height:14px;color:#9FB2A6}
+#colecao .pf-fatos-card[data-ref-card] .rc-step-ico + .rc-step-copy{padding-right:4px}
+#colecao .pf-fatos-card[data-ref-card] .rc-steps li:not(:last-child) .rc-step-ico{margin-right:12px}
+#colecao .pf-fatos-card[data-ref-card] .rc-steps--boxed{padding:clamp(8px,2.6cqw,12px);border:1px solid #ffffff1f;border-radius:16px;background:#133427}
+
+/* Light panel */
+#colecao .pf-fatos-card[data-ref-card] .rc-panel{flex:none;padding:clamp(10px,3.2cqw,14px);border-radius:16px;background:#EFEDE5;color:#13241D;box-shadow:0 10px 24px -16px #000a}
+#colecao .pf-fatos-card[data-ref-card] .rc-panel-title{display:block;margin-bottom:8px;font-size:clamp(14px,4.2cqw,17px);font-weight:650;letter-spacing:-.01em}
+#colecao .pf-fatos-card[data-ref-card] .rc-hooks-row{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);align-items:center;gap:6px}
+#colecao .pf-fatos-card[data-ref-card] .rc-vs{display:grid;place-items:center;width:28px;height:28px;border-radius:50%;background:#E0DED5;font-size:12px;font-weight:650;color:#3A4740}
+#colecao .pf-fatos-card[data-ref-card] .rc-hook{position:relative;display:grid;gap:6px;align-content:start;min-width:0;margin:0;padding:6px;border:1.5px solid transparent;border-radius:12px;background:#FBFAF6;color:#13241D;font:inherit;text-align:left;cursor:pointer;transition:border-color 160ms ease}
+#colecao .pf-fatos-card[data-ref-card] .rc-hook[aria-pressed="true"]{border-color:#2F7A57}
+#colecao .pf-fatos-card[data-ref-card] .rc-hook:focus-visible{outline:2px solid #1F6A4E;outline-offset:2px}
+#colecao .pf-fatos-card[data-ref-card] .rc-hook-thumb{position:relative;display:block;aspect-ratio:200/150;border-radius:8px;overflow:hidden;background:#cfd3cc}
+#colecao .pf-fatos-card[data-ref-card] .rc-hook-thumb img{width:100%;height:100%;object-fit:cover;display:block}
+#colecao .pf-fatos-card[data-ref-card] .rc-play{position:absolute;left:50%;top:50%;display:grid;place-items:center;width:30px;height:24px;margin:-12px 0 0 -15px;border-radius:7px;background:linear-gradient(180deg,#3a3d3c,#1a1c1b);box-shadow:0 6px 14px #0006,inset 0 1px 0 #ffffff26}
+#colecao .pf-fatos-card[data-ref-card] .rc-play svg{width:14px;height:14px;fill:#d8dad8}
+#colecao .pf-fatos-card[data-ref-card] .rc-hook-copy{font-size:12px;line-height:1.3;font-weight:560}
+#colecao .pf-fatos-card[data-ref-card] .rc-hooks-out{margin:8px 0 0;font-size:12px;line-height:1.35;color:#4A5952}
+
+/* Check (Rive #475 choreography; drawn in the site palette) */
+#colecao .pf-fatos-card[data-ref-card] .rc-check{position:absolute;top:2px;right:2px;width:24px;height:24px;pointer-events:none}
+#colecao .pf-fatos-card[data-ref-card] .rc-check svg{width:100%;height:100%;overflow:visible}
+#colecao .pf-fatos-card[data-ref-card] .rc-check-ring{fill:none;stroke:#C9D3CC;stroke-width:3;opacity:0}
+#colecao .pf-fatos-card[data-ref-card] .rc-check-fill{fill:#2F7A57;transform-box:fill-box;transform-origin:center;transform:scale(0)}
+#colecao .pf-fatos-card[data-ref-card] .rc-check-dots{fill:#2F7A57;transform-box:view-box;transform-origin:20px 20px;opacity:0}
+#colecao .pf-fatos-card[data-ref-card] .rc-check-path{fill:none;stroke:#fff;stroke-width:3;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:1;stroke-dashoffset:1}
+#colecao .pf-fatos-card[data-ref-card] [aria-pressed="true"] .rc-check-fill{transform:scale(1)}
+#colecao .pf-fatos-card[data-ref-card] [aria-pressed="true"] .rc-check-path{stroke-dashoffset:0}
+#colecao .pf-fatos-card[data-ref-card] .rc-hook .rc-check{top:10px;right:10px}
+
+/* Three tiles */
+#colecao .pf-fatos-card[data-ref-card] .rc-tiles{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(6px,2cqw,9px);margin:0;padding:0;list-style:none}
+#colecao .pf-fatos-card[data-ref-card] .rc-tiles li{display:grid;gap:5px;align-content:start;min-width:0;padding:clamp(8px,2.6cqw,12px);border:1px solid #ffffff14;border-radius:14px;background:#12302A}
+#colecao .pf-fatos-card[data-ref-card] .rc-tile-ico{display:grid;place-items:center;width:clamp(26px,8cqw,34px);aspect-ratio:1;padding:0;border-radius:9px;background:#1C4234;color:var(--rc-mint)}
+#colecao .pf-fatos-card[data-ref-card] .rc-tiles b{hyphens:auto;font-size:clamp(12.5px,3.8cqw,15px);line-height:1.2;font-weight:650;color:var(--rc-text)}
+#colecao .pf-fatos-card[data-ref-card] .rc-tiles small{font-size:12px;line-height:1.3;color:var(--rc-muted)}
+
+/* 08: repeat purchase panel with the add-to-cart choreography (Rive #11874) */
+#colecao .pf-fatos-card[data-ref-card] .rc-repeat{display:flex;align-items:center;gap:10px;background:#EEE5D7}
+#colecao .pf-fatos-card[data-ref-card] .rc-repeat-ico{flex:none;display:grid;place-items:center;width:38px;height:38px;padding:0;border-radius:50%;background:#E0D6C5;color:#1D3A2D}
+#colecao .pf-fatos-card[data-ref-card] .rc-repeat-copy{display:grid;gap:1px;min-width:0;flex:1}
+#colecao .pf-fatos-card[data-ref-card] .rc-repeat-copy b{font-size:clamp(13.5px,4cqw,16px);font-weight:650;line-height:1.2}
+#colecao .pf-fatos-card[data-ref-card] .rc-repeat-copy small{font-size:12px;line-height:1.3;color:#4A5952}
+#colecao .pf-fatos-card[data-ref-card] .rc-cart{position:relative;flex:none;display:inline-flex;align-items:center;gap:6px;height:40px;margin:0;padding:0 12px 0 14px;border:0;border-radius:999px;background:#10382B;color:#F3EFE6;font:inherit;font-size:12.5px;font-weight:600;cursor:pointer;overflow:hidden;transition:padding 267ms ease,width 267ms ease}
+#colecao .pf-fatos-card[data-ref-card] .rc-cart:focus-visible{outline:2px solid #1F6A4E;outline-offset:2px}
+#colecao .pf-fatos-card[data-ref-card] .rc-cart-ico{display:block;width:18px;height:18px}
+#colecao .pf-fatos-card[data-ref-card] .rc-cart-trail{position:absolute;left:10px;top:50%;width:16px;height:8px;margin-top:-4px;border-top:1.5px solid #9CCBB0;border-bottom:1.5px solid #9CCBB0;opacity:0;transform-origin:right center}
+#colecao .pf-fatos-card[data-ref-card] :is(.rc-cart-label,.rc-cart-done){display:inline-block;overflow:hidden;white-space:nowrap;max-width:110px}
+#colecao .pf-fatos-card[data-ref-card] .rc-cart-done{max-width:0;opacity:0}
+#colecao .pf-fatos-card[data-ref-card] .rc-cart.is-added{padding:0 14px 0 12px}
+#colecao .pf-fatos-card[data-ref-card] .rc-cart.is-added .rc-cart-label{max-width:0;opacity:0}
+#colecao .pf-fatos-card[data-ref-card] .rc-cart.is-added .rc-cart-done{max-width:110px;opacity:1}
+#colecao .pf-fatos-card[data-ref-card] .rc-cart{justify-content:center}
+#colecao .pf-fatos-card[data-ref-card] .rc-cart-status{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+/* 02: creative test matrix, funnel, deliverables */
+#colecao .pf-fatos-card[data-ref-card] .rc-block{flex:none;padding:clamp(9px,2.8cqw,12px);border:1px solid #ffffff1c;border-radius:14px;background:#ffffff07}
+#colecao .pf-fatos-card[data-ref-card] .rc-block-head{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:8px;margin-bottom:8px}
+#colecao .pf-fatos-card[data-ref-card] .rc-block b{font-size:clamp(13px,3.9cqw,15.5px);font-weight:650;color:var(--rc-text)}
+#colecao .pf-fatos-card[data-ref-card] .rc-block-head small{font-size:12px;color:var(--rc-muted);text-align:right}
+#colecao .pf-fatos-card[data-ref-card] .rc-matrix-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:5px}
+#colecao .pf-fatos-card[data-ref-card] .rc-matrix-col{display:grid;gap:4px;align-content:start;min-width:0}
+#colecao .pf-fatos-card[data-ref-card] .rc-matrix-th{padding:5px 7px;border-radius:7px;background:#ffffff12;font-size:12px;font-weight:650;color:var(--rc-text)}
+#colecao .pf-fatos-card[data-ref-card] .rc-matrix-cell{position:relative;display:flex;align-items:center;gap:5px;min-height:32px;margin:0;padding:3px 6px;border:1px solid #ffffff17;border-radius:8px;background:#ffffff06;color:#E4E9E5;font:inherit;font-size:12px;line-height:1.15;text-align:left;cursor:pointer;transition:border-color 160ms ease,background-color 160ms ease}
+#colecao .pf-fatos-card[data-ref-card] .rc-matrix-cell>.rc-ico{flex:none;width:15px;height:15px;color:#A9C7B4}
+#colecao .pf-fatos-card[data-ref-card] .rc-matrix-cell>span:not(.rc-check){min-width:0;hyphens:auto;-webkit-hyphens:auto}
+#colecao .pf-fatos-card[data-ref-card] .rc-matrix-cell[aria-pressed="true"]>.rc-ico{visibility:hidden}
+#colecao .pf-fatos-card[data-ref-card] .rc-matrix-cell[aria-pressed="true"]{border-color:#7FE9BC99;background:#7FE9BC1a}
+#colecao .pf-fatos-card[data-ref-card] .rc-matrix-cell:focus-visible{outline:2px solid #7FE9BC;outline-offset:1px}
+#colecao .pf-fatos-card[data-ref-card] .rc-matrix-cell .rc-check{top:50%;left:4px;right:auto;width:18px;height:18px;margin-top:-9px}
+#colecao .pf-fatos-card[data-ref-card] .rc-matrix .rc-check-fill,#colecao .pf-fatos-card[data-ref-card] .rc-matrix .rc-check-dots{fill:#3FBF86}
+#colecao .pf-fatos-card[data-ref-card] .rc-matrix-out{margin:7px 0 0;font-size:12px;line-height:1.35;color:var(--rc-muted)}
+#colecao .pf-fatos-card[data-ref-card] .rc-funnel ol{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));margin:8px 0 0;padding:0;list-style:none}
+#colecao .pf-fatos-card[data-ref-card] .rc-funnel li{position:relative;display:grid;justify-items:center;gap:5px;font-size:12px;font-weight:600;color:var(--rc-text)}
+#colecao .pf-fatos-card[data-ref-card] .rc-funnel-ico{display:grid;place-items:center;width:clamp(32px,9.6cqw,40px);aspect-ratio:1;padding:0;border-radius:50%;background:#1A3D35;color:#E9EFE9}
+#colecao .pf-fatos-card[data-ref-card] .rc-funnel i{position:absolute;right:-7px;top:calc(clamp(32px,9.6cqw,40px) / 2 - 7px);width:14px;height:14px;color:#9FB2A6}
+#colecao .pf-fatos-card[data-ref-card] .rc-deliver-mark{flex:none;width:18px;height:18px;color:var(--rc-mint)}
+#colecao .pf-fatos-card[data-ref-card] .rc-deliver .rc-block-head{justify-content:flex-start;align-items:center}
+#colecao .pf-fatos-card[data-ref-card] .rc-deliver ul{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px 10px;margin:0;padding:0;list-style:none}
+#colecao .pf-fatos-card[data-ref-card] .rc-deliver li{display:flex;gap:7px;min-width:0}
+#colecao .pf-fatos-card[data-ref-card] .rc-deliver li>.rc-ico{flex:none;width:17px;height:17px;margin-top:1px;color:var(--rc-mint)}
+#colecao .pf-fatos-card[data-ref-card] .rc-deliver li span{display:grid;gap:2px;min-width:0}
+#colecao .pf-fatos-card[data-ref-card] .rc-deliver li b{font-size:12.5px;line-height:1.2}
+#colecao .pf-fatos-card[data-ref-card] .rc-deliver li small{display:none;font-size:12px;line-height:1.3;color:var(--rc-muted)}
+@container (min-width:420px){#colecao .pf-fatos-card[data-ref-card] .rc-deliver li small{display:block}}
+
+/* 09: warm paper half with pillars, palette/type specimen and light tiles */
+#colecao .pf-fatos-card[data-ref-card][data-tone="brand"] .rc-back{--rc-band:calc(var(--rc-pad) + clamp(30px,9cqw,40px) + clamp(24px,7.4cqw,36px));background:linear-gradient(180deg,#183026 0,#183026 var(--rc-band),#EDE9E0 var(--rc-band))}
+#colecao .pf-fatos-card[data-ref-card] .rc-paper{display:flex;flex-direction:column;gap:clamp(9px,3cqw,13px);color:#13241D}
+#colecao .pf-fatos-card[data-ref-card] .rc-pillars{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));margin:0;padding:8px 6px;border-radius:999px;background:#F6F3EE;box-shadow:0 8px 20px -14px #0005;list-style:none}
+#colecao .pf-fatos-card[data-ref-card] .rc-pillars li{display:flex;align-items:center;justify-content:center;gap:6px;min-width:0;font-size:12.5px;font-weight:600;line-height:1.15}
+#colecao .pf-fatos-card[data-ref-card] .rc-pillars li+li{border-left:1px solid #13241D1f}
+#colecao .pf-fatos-card[data-ref-card] .rc-pillar-ico{flex:none;display:grid;place-items:center;width:28px;height:28px;padding:0;border-radius:50%;background:#D9E1D3;color:#1F3E30}
+#colecao .pf-fatos-card[data-ref-card] .rc-specimen{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:4px 6px}
+#colecao .pf-fatos-card[data-ref-card] .rc-swatches{display:flex;gap:6px}
+#colecao .pf-fatos-card[data-ref-card] .rc-swatches i{display:block;width:clamp(24px,7.6cqw,32px);aspect-ratio:1;border-radius:50%;background:var(--c);box-shadow:inset 0 0 0 1px #0000000f}
+#colecao .pf-fatos-card[data-ref-card] .rc-type{display:flex;align-items:center;gap:8px;padding-left:12px;border-left:1px solid #13241D33}
+#colecao .pf-fatos-card[data-ref-card] .rc-type b{font-size:clamp(26px,8.4cqw,36px);font-weight:500;line-height:1;letter-spacing:-.02em}
+#colecao .pf-fatos-card[data-ref-card] .rc-type small{font-size:12px;line-height:1.3;letter-spacing:.14em;color:#13241D}
+#colecao .pf-fatos-card[data-ref-card] .rc-paper .rc-tiles li{border-color:#13241D14;background:#F4F1EA;box-shadow:0 8px 18px -14px #0004}
+#colecao .pf-fatos-card[data-ref-card] .rc-paper .rc-tile-ico{width:clamp(26px,8cqw,32px);padding:0;background:none;color:#13241D}
+#colecao .pf-fatos-card[data-ref-card] .rc-paper .rc-tiles b{color:#13241D}
+
+/* Back of 09: a detail of the applications between the band and the paper half */
+#colecao .pf-fatos-card[data-ref-card] .rc-scene--detail{flex:1 1 auto;min-height:90px;margin:0 calc(var(--rc-pad) * -1) 0;-webkit-mask-image:linear-gradient(180deg,#000 0,#000 85%,transparent);mask-image:linear-gradient(180deg,#000 0,#000 85%,transparent)}
+#colecao .pf-fatos-card[data-ref-card] .rc-scene--detail img{object-position:100% 50%}
+#colecao .pf-fatos-card[data-ref-card] .rc-steps{flex:none;margin-bottom:clamp(8px,2.6cqw,12px)}
+#colecao .pf-fatos-card[data-ref-card] .rc-scene{flex:0 1 auto;height:calc(100cqw * var(--rc-ratio,.54))}
+#colecao .pf-fatos-card[data-ref-card] .rc-scene--detail{height:auto}
+#colecao .pf-fatos-card[data-ref-card] .rc-scene--conteudo{--rc-ratio:.537}
+#colecao .pf-fatos-card[data-ref-card] .rc-scene--ecommerce{--rc-ratio:.62}
+#colecao .pf-fatos-card[data-ref-card] .rc-scene--marca{--rc-ratio:.654}
+#colecao .pf-fatos-card[data-ref-card] .rc-scene--campanhas{--rc-ratio:.5}
+/* Flip timings from the Abode reference: open ~600 ms (95% near 316 ms), close 350 ms. */
+#colecao .pf-fatos-card[data-ref-card] .pf-fatos-rotor{transition:transform 600ms cubic-bezier(.2,.9,.25,1)}
+#colecao .pf-fatos-card[data-ref-card]:not(.is-flipped) .pf-fatos-rotor{transition-duration:350ms;transition-timing-function:cubic-bezier(.3,.7,.2,1)}
+@media (prefers-reduced-motion:reduce){#colecao .pf-fatos-card[data-ref-card] .pf-fatos-rotor,#colecao .pf-fatos-card[data-ref-card] .rc-cta,#colecao .pf-fatos-card[data-ref-card] .rc-cart{transition:none!important}}
+body.is-paused #colecao .pf-fatos-card[data-ref-card] .pf-fatos-rotor{transition:none!important}
+
+/* Small cards (320 px screens): keep everything readable by letting the back scroll inside the card. */
+@container (max-width:300px){
+  #colecao .pf-fatos-card[data-ref-card] .rc-lead{display:none}
+  #colecao .pf-fatos-card[data-ref-card] .rc-tiles small{display:none}
+}
+
+/* Back headline (copy from the owner's cards handoff) */
+#colecao .pf-fatos-card[data-ref-card] .rc-back-title{flex:none;margin:0 0 clamp(8px,2.8cqw,12px);font-size:clamp(18px,5.6cqw,25px);line-height:1.1;font-weight:700;letter-spacing:-.025em;color:var(--rc-text);text-wrap:balance}
+#colecao .pf-fatos-card[data-ref-card][data-tone="brand"] .rc-back-title{display:none}
+#colecao .pf-fatos-card[data-ref-card] .rc-hook-thumb{aspect-ratio:4/3}
+#colecao .pf-fatos-card[data-ref-card] .rc-tiles small{hyphens:auto;-webkit-hyphens:auto;overflow-wrap:break-word}
+@container (max-width:380px){#colecao .pf-fatos-card[data-ref-card] .rc-matrix-cell>.rc-ico{display:none}#colecao .pf-fatos-card[data-ref-card] .rc-matrix-cell{padding-left:6px}#colecao .pf-fatos-card[data-ref-card] .rc-matrix-cell[aria-pressed="true"]{padding-left:26px}}
+#colecao .pf-fatos-card[data-ref-card] .rc-funnel-ico{width:clamp(30px,9cqw,38px)}
+#colecao .pf-fatos-card[data-ref-card] .rc-recover{display:grid;gap:8px}
+#colecao .pf-fatos-card[data-ref-card] .rc-recover-note{display:flex;align-items:center;gap:10px;padding:8px;border-radius:12px;background:#F6F2EA;color:#13241D}
+#colecao .pf-fatos-card[data-ref-card] .rc-recover-note img{flex:none;width:44px;height:44px;border-radius:9px;object-fit:cover}
+#colecao .pf-fatos-card[data-ref-card] .rc-recover-note span{display:grid;gap:2px;min-width:0}
+#colecao .pf-fatos-card[data-ref-card] .rc-recover-note b{font-size:13px;line-height:1.25;color:#13241D}
+#colecao .pf-fatos-card[data-ref-card] .rc-recover-note small{font-size:12px;line-height:1.3;color:#4A5952}
+#colecao .pf-fatos-card[data-ref-card] .rc-channels{display:flex;gap:6px;margin:0;padding:0;list-style:none}
+#colecao .pf-fatos-card[data-ref-card] .rc-channels li{padding:5px 10px;border:1px solid #ffffff26;border-radius:999px;font-size:12px;font-weight:600;color:var(--rc-text)}
+#colecao .pf-fatos-card[data-ref-card] .rc-scene--detail{flex:1 1 0;min-height:120px}
+#colecao .pf-fatos-card[data-ref-card] .rc-paper{flex:none}
+#colecao .pf-fatos-card[data-ref-card] .rc-front .rc-funnel{margin-bottom:clamp(8px,2.6cqw,12px)}
+@container (max-width:340px){#colecao .pf-fatos-card[data-ref-card] .rc-recover-note small{display:none}}
+#colecao .pf-fatos-card[data-ref-card] .rc-scene--marca::after{content:"";position:absolute;left:0;right:0;bottom:0;height:22%;background:linear-gradient(180deg,#EDE9E000,#EDE9E0)}

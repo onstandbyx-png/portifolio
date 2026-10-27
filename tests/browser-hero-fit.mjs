@@ -2,6 +2,8 @@ import {createRequire} from 'node:module';
 import {spawn} from 'node:child_process';
 import {mkdir,writeFile} from 'node:fs/promises';
 import assert from 'node:assert/strict';
+// First-screen fit of the Planes hero (smiile cc19ed2 port): the headline, the two actions and the
+// header pill stay inside the viewport on phones, tablets requesting the desktop site and desktops.
 const require=createRequire(process.env.QA_PACKAGE||import.meta.url);
 const {chromium}=require('playwright');
 const output='qa/hero-fit';await mkdir(output,{recursive:true});
@@ -11,27 +13,33 @@ let browser;const report=[];
 try{
  let up=false;for(let i=0;i<60;i++){try{up=(await fetch(base+'/health')).ok;if(up)break;}catch{}await new Promise(r=>setTimeout(r,100));}assert(up,'app is reachable');
  browser=await chromium.launch({headless:true,executablePath:process.env.CHROMIUM_PATH,args:['--no-sandbox','--disable-dev-shm-usage','--use-gl=angle','--use-angle=swiftshader','--enable-unsafe-swiftshader']});
- for(const [width,height,touch] of [[320,740,true],[390,844,true],[980,1100,true],[1440,900,false]]){
+ for(const [width,height,touch] of [[320,740,true],[360,800,true],[390,844,true],[412,915,true],[430,932,true],[980,1100,true],[1440,900,false]]){
   const page=await browser.newPage({viewport:{width,height},hasTouch:touch,isMobile:touch,deviceScaleFactor:1});
   const row={width,height,touch,checks:[],errors:[]};report.push(row);page.on('pageerror',e=>row.errors.push(String(e)));
   await page.goto(base,{waitUntil:'domcontentloaded'});await page.evaluate(()=>document.fonts.ready);
-  await page.waitForFunction(()=>['ready','fallback'].includes(document.querySelector('[data-portfolio-badges]')?.dataset.state),null,{timeout:18000}).catch(()=>{});
+  await page.waitForFunction(()=>document.querySelector('.planes-hero')?.dataset.entered==='true',null,{timeout:6000}).catch(()=>{});
   await page.evaluate(()=>scrollTo({top:0,behavior:'instant'}));
   const metrics=await page.evaluate(()=>{
-    const hero=document.querySelector('.hero-v2'),surface=hero.querySelector('.hero-surface'),copy=hero.querySelector('.hero-copy'),exhibit=hero.querySelector('.hero-badge-exhibit'),stage=hero.querySelector('.hero-badge-stage'),controls=hero.querySelector('.hero-badge-controls');
-    const box=el=>{if(!el)return null;const r=el.getBoundingClientRect();return {top:r.top+scrollY,bottom:r.bottom+scrollY,left:r.left,right:r.right,width:r.width,height:r.height};};
-    return {surface:box(surface),hero:box(hero),copy:box(copy),exhibit:box(exhibit),stage:box(stage),controls:box(controls),title:box(hero.querySelector('h1')),sameSurface:!!surface&&surface.contains(copy)&&surface.contains(exhibit),scrollWidth:document.documentElement.scrollWidth,viewport:innerWidth,header:box(document.querySelector('.site-header')),exhibitBackground:getComputedStyle(exhibit).backgroundColor,exhibitShadow:getComputedStyle(exhibit).boxShadow};
+    const hero=document.querySelector('.planes-hero'),box=el=>{if(!el)return null;const r=el.getBoundingClientRect();return {top:r.top,bottom:r.bottom,left:r.left,right:r.right,width:r.width,height:r.height};};
+    return {hero:box(hero),copy:box(hero.querySelector('.ph-copy')),eyebrow:box(hero.querySelector('.ph-eyebrow')),title:box(hero.querySelector('#hero-title')),description:box(hero.querySelector('.ph-description')),actions:[...hero.querySelectorAll('.ph-actions a')].map(box),footnote:box(hero.querySelector('.ph-footnote')),scroll:box(hero.querySelector('.ph-scroll')),
+      bar:box(document.querySelector('#site-header .sn-bar')),lines:Math.round(hero.querySelector('#hero-title').getBoundingClientRect().height/parseFloat(getComputedStyle(hero.querySelector('#hero-title')).lineHeight)),
+      scrollWidth:document.documentElement.scrollWidth,viewport:innerWidth,viewportHeight:innerHeight,background:getComputedStyle(hero).backgroundColor};
   });row.metrics=metrics;
   const check=(name,pass)=>row.checks.push({name,pass:!!pass});
-  check('copy and badge belong to one shared hero surface',metrics.sameSurface);
-  check('no nested pale showcase panel competes with the shared surface',metrics.exhibitBackground==='rgba(0, 0, 0, 0)'&&metrics.exhibitShadow==='none');
-  check('controls sit below the actual artwork instead of delaying its entrance',metrics.controls.top>=metrics.stage.bottom-2);
-  if(width>=960){check('desktop and desktop-request touch keep badge beside copy',metrics.copy.right<=metrics.exhibit.left+2);check('badge and copy occupy the same vertical composition',Math.min(metrics.copy.bottom,metrics.exhibit.bottom)-Math.max(metrics.copy.top,metrics.exhibit.top)>=metrics.copy.height*.8);}
-  else{check('mobile title stays compact and the live object arrives early',metrics.title.height<=160&&metrics.stage.top<=580);}
+  const inside=b=>b&&b.left>=-1&&b.right<=metrics.viewport+1;
+  // The hero starts a few pixels above the viewport, under the floating header (margin-top -92px in the original).
+  check('the hero is the black full-bleed first screen',metrics.background==='rgb(8, 9, 9)'&&metrics.hero.left<=1&&metrics.hero.right>=metrics.viewport-1&&metrics.hero.top<=0&&metrics.hero.height>=metrics.viewportHeight-1);
+  check('the header pill sits inside the viewport over the hero',inside(metrics.bar)&&metrics.bar.top>=0&&metrics.bar.bottom<metrics.title.top);
+  check('the headline keeps two lines inside the viewport width',metrics.lines===2&&inside(metrics.title));
+  check('the header never covers the eyebrow',metrics.eyebrow.top>=metrics.bar.bottom+8);
+  check('eyebrow, description, actions and footnote stay inside the viewport width',[metrics.eyebrow,metrics.description,metrics.footnote,...metrics.actions].every(inside));
+  check('both actions are 44px targets',metrics.actions.length===2&&metrics.actions.every(a=>a.height>=44));
+  if(height>=800||width>=960)check('on common screens the actions share the first screen with the headline',metrics.actions.every(a=>a.bottom<=metrics.viewportHeight+1));
+  check('the scroll cue stays at the bottom of the first screen',metrics.scroll.bottom<=metrics.hero.bottom&&metrics.scroll.top>metrics.footnote.bottom);
   check('no horizontal document overflow',metrics.scrollWidth<=width+2);check('no runtime errors',row.errors.length===0);
   await page.screenshot({path:`${output}/first-screen-${width}.png`,animations:'disabled'});
-  await page.locator('.hero-v2').screenshot({path:`${output}/hero-${width}.png`,animations:'disabled'});
+  await page.locator('.planes-hero').screenshot({path:`${output}/hero-${width}.png`,animations:'disabled'});
   console.log(JSON.stringify(row));await page.close();
  }
 }finally{await browser?.close();server?.kill();await writeFile(`${output}/results.json`,JSON.stringify(report,null,2));}
-assert(report.length===4&&report.every(r=>r.checks.every(c=>c.pass)),'Hero integration and mobile presence contracts failed');
+assert(report.length===7&&report.every(r=>r.checks.every(c=>c.pass)),'Hero first-screen fit contracts failed');

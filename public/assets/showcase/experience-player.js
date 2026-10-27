@@ -1,144 +1,412 @@
-/** Branded, operable creative storyboard inside the campaign page-peel.
- * Platform, placement and narrative frame are separate dimensions.
- * New sequences are labeled "Estudo conceitual", never client results.
+/** Channel placement behind the campaign page-peel.
+ * For the selected channel it shows, inside the orange iPhone, a fictitious
+ * client's ad in its native placement and plays the journey as a finite
+ * storyboard: hook, retention beat, the tap on the CTA and the native
+ * conversion screen, stopping on that screen with a replay control. Around the
+ * phone only a compact interface: official platform mark and name, the formats
+ * as one segmented control, the client chip ("marca fictícia") with the ad
+ * label, a three-step journey bar over the phone (beside it on wide screens)
+ * synced to the storyboard and one numbered point on the mock.
+ * Switching channels while the peel is open keeps it open: the old placement
+ * leaves to the side (30px, 300ms), the new one enters with a spring (42px,
+ * 620ms) and the journey rises in sequence. Without motion (reduced motion,
+ * global pause, hidden tab) nothing plays by itself: the steps are static and
+ * selectable, and the header button shows the next frame.
  */
-const photo='/assets/portfolio/smiile-architecture-coast.webp';
-const trail='/assets/portfolio/recovered-smiile/landscape.webp';
-const escape=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const defs={
- meta:{
-  name:'Meta',placements:['Stories','Feed','Reels'],defaultPlacement:'Stories',
-  frames:[
-   {kicker:'01 · GANCHO',title:'Uma ideia merece sair do papel.',body:'O primeiro olhar transforma curiosidade em atenção.',image:photo},
-   {kicker:'02 · DEMONSTRAÇÃO',title:'Do conceito à experiência.',body:'Uma interface, uma imagem e uma escolha concreta.',image:trail},
-   {kicker:'03 · CONVITE',title:'Sua ideia ganha forma.',body:'Conheça as possibilidades do projeto.',image:photo}
-  ]
- },
- google:{
-  name:'Google Ads',placements:['Pesquisa','Display','YouTube'],defaultPlacement:'Pesquisa',
-  frames:[
-   {kicker:'01 · BUSCA',title:'Criação de site e aplicativo',body:'Uma intenção real é o ponto de entrada.',image:photo},
-   {kicker:'02 · ANÚNCIO',title:'Dê vida ao próximo projeto',body:'Estudo de anúncio de pesquisa: solução, benefício e destino.',image:trail},
-   {kicker:'03 · DESTINO',title:'A próxima etapa é uma experiência.',body:'A página de destino precisa cumprir a promessa.',image:photo}
-  ]
- },
- tiktok:{
-  name:'TikTok',placements:['In-Feed'],defaultPlacement:'In-Feed',
-  frames:[
-   {kicker:'01 · ABERTURA',title:'Uma ideia pode mudar tudo.',body:'Mensagem curta nos primeiros segundos.',image:trail},
-   {kicker:'02 · EM USO',title:'Veja o que ela pode se tornar.',body:'A experiência aparece no próprio formato vertical.',image:photo},
-   {kicker:'03 · PRÓXIMO PASSO',title:'Crie o próximo capítulo.',body:'Um convite único e claro.',image:trail}
-  ]
- }
+import { createMotion, clamp } from '../sections/motion.js';
+import { channels, channelById, renderMock, marca, CLIENTES } from './campaign-channels.js';
+import { logoSvg, CHANNEL_LOGO, LOGOS } from './channel-logos.js';
+
+const escape = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const ICONS = {
+  play: 'M8 5.5v13l10.5-6.5z',
+  pause: 'M8 5.5v13M16 5.5v13',
+  replay: 'M4.5 12a7.5 7.5 0 1 0 2.2-5.3M4.5 4.5v4.5H9',
+  next: 'M5 12h13M13 6.5 18.5 12 13 17.5',
 };
-const pill=(label,active)=>'<button type="button" class="cx-placement" aria-pressed="'+String(active)+'" data-cx-placement="'+escape(label)+'">'+escape(label)+'</button>';
-export function mountCampaignExperience(lab,underlay){
- if(!lab||!underlay||underlay.querySelector('.cx-player'))return null;
- const player=document.createElement('section');
- player.className='cx-player';player.dataset.noCardFlip='';
- player.setAttribute('aria-label','Demonstração conceitual da campanha');
- player.innerHTML=[
- '<header class="cx-header"><div><small>DEMONSTRAÇÃO INTERATIVA · ESTUDO CONCEITUAL</small><h3 data-cx-platform>Meta · Stories</h3></div>',
- '<button type="button" class="cx-playing" data-cx-play aria-label="Reproduzir sequência" aria-pressed="false">Reproduzir</button></header>',
- '<div class="cx-placements" role="group" aria-label="Formato do anúncio"></div>',
- '<div class="cx-stage" data-cx-stage tabindex="0" role="group" aria-label="Cena da campanha">',
- '<div class="cx-frame" data-cx-frame><div class="cx-progress" aria-hidden="true"><i data-cx-progress></i></div>',
- '<div class="cx-social-chrome" data-cx-chrome><b>smiile.</b><span>Estudo conceitual</span></div>',
- '<div class="cx-art"><img data-cx-image src="'+photo+'" alt="Estudo visual smiile" loading="lazy" decoding="async"></div>',
- '<div class="cx-overlay"><small data-cx-kicker></small><h4 data-cx-title></h4><p data-cx-body></p></div>',
- '<div class="cx-search" hidden data-cx-search><div class="cx-query"><span aria-hidden="true">⌕</span> criar site e aplicativo</div><small>Patrocinado · Estudo conceitual</small><h4 data-cx-search-title></h4><p data-cx-search-copy></p><span>Conhecer a solução ↗</span></div>',
- '<div class="cx-end-mark" aria-hidden="true">smiile.</div>',
- '</div><div class="cx-tap-regions" aria-hidden="true"><span>Anterior</span><span>Próximo</span></div></div>',
- '<div class="cx-transport"><button data-cx-prev type="button" aria-label="Voltar uma etapa">←</button>',
- '<span role="status" aria-live="polite" data-cx-status>01 / 03 · Gancho</span>',
- '<button data-cx-next type="button" aria-label="Avançar uma etapa">→</button>',
- '<button data-cx-replay type="button" aria-label="Reiniciar sequência">↻</button></div>',
- '<p class="cx-contribution">A plataforma altera o enquadramento, a hierarquia e a sequência, não apenas o logotipo.</p>'
- ].join('');
- underlay.insertBefore(player,underlay.querySelector('.sp-campaign-note-slot'));
- const $=s=>player.querySelector(s);
- const placements=$('.cx-placements'),stage=$('[data-cx-stage]'),frame=$('[data-cx-frame]');
- const play=$('[data-cx-play]'),status=$('[data-cx-status]');
- const reduce=matchMedia('(prefers-reduced-motion:reduce)');
- let platform='meta',placement='Stories',step=0,playing=false,raf=0,last=0,elapsed=0,visible=false;
- const duration=5000;
- const canPlay=()=>!reduce.matches&&!document.body.classList.contains('is-paused')&&!document.hidden&&visible&&lab.dataset.channel===platform;
- function stop(){
-  playing=false;cancelAnimationFrame(raf);raf=0;
-  play.setAttribute('aria-pressed','false');play.textContent='Reproduzir';play.setAttribute('aria-label','Reproduzir sequência');
- }
- function render(){
-  const config=defs[platform],scene=config.frames[step];
-  player.dataset.platform=platform;player.dataset.placement=placement.toLowerCase().replace(/[^a-z]/g,'-');
-  player.dataset.frame=String(step);frame.dataset.placement=player.dataset.placement;
-  $('[data-cx-platform]').textContent=config.name+' · '+placement;
-  placements.innerHTML=config.placements.map(name=>pill(name,placement===name)).join('');
-  $('[data-cx-kicker]').textContent=scene.kicker;
-  $('[data-cx-title]').textContent=scene.title;
-  $('[data-cx-body]').textContent=scene.body;
-  $('[data-cx-image]').src=scene.image;
-  $('[data-cx-search-title]').textContent=scene.title;
-  $('[data-cx-search-copy]').textContent=scene.body;
-  $('[data-cx-search]').hidden=!(platform==='google'&&placement==='Pesquisa');
-  $('.cx-social-chrome').hidden=platform==='google'&&placement==='Pesquisa';
-  $('[data-cx-prev]').disabled=step===0;
-  $('[data-cx-next]').disabled=step===2;
-  status.textContent=String(step+1).padStart(2,'0')+' / 03 · '+scene.kicker.slice(5);
-  $('[data-cx-progress]').style.transform='scaleX('+Math.min(1,elapsed/duration)+')';
- }
- function move(to){stop();step=Math.max(0,Math.min(2,to));elapsed=0;render();}
- function tick(now){
-  if(!playing)return;
-  if(!canPlay()){stop();return;}
-  elapsed=Math.min(duration,elapsed+Math.min(80,now-last));last=now;
-  $('[data-cx-progress]').style.transform='scaleX('+(elapsed/duration)+')';
-  if(elapsed===duration){if(step===2){stop();return;}step++;elapsed=0;render();}
-  raf=requestAnimationFrame(tick);
- }
- play.addEventListener('click',()=>{
-  if(playing){stop();return;}
-  if(step===2&&elapsed>=duration){step=0;elapsed=0;render();}
-  if(reduce.matches||document.body.classList.contains('is-paused')){move(step===2?0:step+1);return;}
-  visible=visible||player.getClientRects().length>0;
-  playing=true;play.textContent='Pausar';play.setAttribute('aria-pressed','true');play.setAttribute('aria-label','Pausar sequência');
-  last=performance.now();raf=requestAnimationFrame(tick);
- });
- $('[data-cx-prev]').addEventListener('click',()=>move(step-1));
- $('[data-cx-next]').addEventListener('click',()=>move(step+1));
- $('[data-cx-replay]').addEventListener('click',()=>move(0));
- placements.addEventListener('click',event=>{
-  const button=event.target.closest('[data-cx-placement]');if(!button)return;
-  stop();placement=button.dataset.cxPlacement;elapsed=0;render();
- });
- stage.addEventListener('click',event=>{
-  if(event.target.closest('a,button'))return;
-  const box=stage.getBoundingClientRect();
-  move(step+(event.clientX<box.left+box.width*.31?-1:1));
- });
- stage.addEventListener('keydown',event=>{
-  if(event.key!=='ArrowRight'&&event.key!=='ArrowLeft')return;
-  event.preventDefault();move(step+(event.key==='ArrowRight'?1:-1));
- });
- // Direct interaction with the player owns its gestures; card and document
- // keep vertical native scrolling. Dragging inside never flips the outer paper.
- let pointer=null;
- stage.addEventListener('pointerdown',event=>{pointer={x:event.clientX,y:event.clientY};},{passive:true});
- stage.addEventListener('pointerup',event=>{
-  if(!pointer)return;
-  const dx=event.clientX-pointer.x,dy=event.clientY-pointer.y;pointer=null;
-  if(Math.abs(dx)>50&&Math.abs(dx)>Math.abs(dy)*1.5){event.stopPropagation();move(step+(dx<0?1:-1));}
- },{passive:true});
- stage.addEventListener('pointercancel',()=>{pointer=null;},{passive:true});
- function syncChannel(){
-  const name=lab.dataset.channel||'meta';
-  if(!defs[name])return;
-  if(platform!==name){stop();platform=name;placement=defs[name].defaultPlacement;elapsed=0;render();}
- }
- new MutationObserver(syncChannel).observe(lab,{attributes:true,attributeFilter:['data-channel']});
- new MutationObserver(()=>{if(document.body.classList.contains('is-paused'))stop();}).observe(document.body,{attributes:true,attributeFilter:['class']});
- new MutationObserver(()=>{if(underlay.inert)stop();}).observe(underlay,{attributes:true,attributeFilter:['inert','aria-hidden']});
- new IntersectionObserver(([e])=>{visible=e.isIntersecting;if(!visible)stop();},{threshold:.02}).observe(player);
- document.addEventListener('visibilitychange',()=>{if(document.hidden)stop();});
- reduce.addEventListener('change',()=>{if(reduce.matches)stop();});
- syncChannel();render();return {root:player,stop,reset:()=>move(0)};
+const icon = name => `<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="${ICONS[name]}"/></svg>`;
+/* Fatos studio photos (campaign pieces and scenes) are AI-generated: the fine print says so where they appear. */
+const AI_IMAGES = /(campanha|cena)-(crencas|esportes|negocios|nerd)/;
+const FINE = 'Exemplo ilustrativo, marca fictícia. Interface aproximada.';
+
+export function mountCampaignExperience(lab, underlay) {
+  if (!lab || !underlay || underlay.querySelector('.cx-player')) return null;
+  const motion = createMotion();
+  const player = document.createElement('section');
+  player.className = 'cx-player'; player.dataset.noCardFlip = '';
+  player.setAttribute('aria-label', 'Como o anúncio aparece no canal');
+  player.innerHTML = [
+    '<header class="cx-head"><p class="cx-brand" data-cx-brand></p>',
+    `<button type="button" class="cx-play" data-cx-play>${icon('play')}<span data-cx-play-label>Reproduzir</span></button></header>`,
+    '<div class="cx-placements" data-cx-placements></div>',
+    '<p class="cx-meta"><span class="cx-label" data-cx-label></span><span class="cx-client" data-cx-client></span></p>',
+    '<div class="cx-body" data-cx-body></div>',
+    '<p class="sr-only" role="status" aria-live="polite" data-cx-status></p>',
+  ].join('');
+  underlay.insertBefore(player, underlay.querySelector('.sp-campaign-note-slot'));
+  const noteSlot = underlay.querySelector('.sp-campaign-note-slot');
+  const $ = s => player.querySelector(s);
+  const brand = $('[data-cx-brand]'), placements = $('[data-cx-placements]'), label = $('[data-cx-label]'), client = $('[data-cx-client]');
+  const body = $('[data-cx-body]'), play = $('[data-cx-play]'), playLabel = $('[data-cx-play-label]'), status = $('[data-cx-status]');
+  const reduce = matchMedia('(prefers-reduced-motion:reduce)');
+  let channelId = null, placementIndex = 0, elapsed = 0, frame = -1, step = -1, playing = false, raf = 0, last = 0, visible = false, held = false;
+  let ghost = null, animations = [], settleTimer = 0, starts = [], total = 0;
+  const channel = () => channelById(channelId);
+  const placement = () => channel().placements[placementIndex];
+  const frames = () => placement().quadros;
+  const open = () => !underlay.inert;
+  const live = () => motion.available() && !reduce.matches;
+  const canPlay = () => live() && visible && open() && lab.dataset.channel === channelId;
+  const screenEl = () => body.querySelector('.cm-screen');
+  const stage = () => body.querySelector('[data-cx-stage]');
+  const stepOf = index => Math.max(0, placement().passos.findIndex(item => item.quadros.includes(index)));
+  const ended = () => elapsed >= total;
+
+  function timeline() {
+    let at = 0;
+    starts = frames().map(item => { const start = at; at += item.ms; return start; });
+    total = at;
+  }
+  function frameAt(time) {
+    let index = 0;
+    for (let i = 0; i < starts.length; i++) if (time >= starts[i]) index = i;
+    return index;
+  }
+  function cancelAnimations() {
+    animations.splice(0).forEach(animation => { try { animation.cancel(); } catch {} });
+    ghost?.remove(); ghost = null;
+  }
+  function setPlayLabel() {
+    const fin = ended() || (!live() && frame >= frames().length - 1);
+    let text, name, aria;
+    if (live()) {
+      text = playing ? 'Pausar' : fin ? 'Rever' : 'Reproduzir';
+      name = playing ? 'pause' : fin ? 'replay' : 'play';
+      aria = playing ? 'Pausar a jornada' : fin ? 'Rever a jornada do início' : 'Reproduzir a jornada';
+      play.setAttribute('aria-pressed', String(playing));
+    } else {
+      text = fin ? 'Rever' : 'Próximo';
+      name = fin ? 'replay' : 'next';
+      aria = fin ? 'Voltar ao primeiro quadro' : 'Próximo quadro';
+      play.removeAttribute('aria-pressed');
+    }
+    playLabel.textContent = text;
+    play.querySelector('svg').outerHTML = icon(name);
+    play.setAttribute('aria-label', aria);
+    const box = stage(); if (box) box.dataset.playing = String(playing);
+  }
+  function stop() { playing = false; cancelAnimationFrame(raf); raf = 0; setPlayLabel(); }
+
+  /* Rails of the journey and the video progress follow the elapsed time every tick. */
+  function paintProgress() {
+    const list = placement().passos;
+    body.querySelectorAll('[data-cx-rail]').forEach((rail, k) => {
+      const ids = list[k].quadros, from = starts[ids[0]], to = starts[ids[ids.length - 1]] + frames()[ids[ids.length - 1]].ms;
+      let p = clamp((elapsed - from) / Math.max(1, to - from));
+      if (!live() && k === step) p = 1;
+      if (k < step) p = 1;
+      rail.style.setProperty('--p', p.toFixed(3));
+    });
+    const bar = screenEl()?.querySelector('[data-cx-progress]');
+    if (bar) {
+      let done = 0, sum = 0;
+      frames().forEach((item, i) => { if (!item.video) return; sum += item.ms; done += clamp(elapsed - starts[i], 0, item.ms); });
+      if (sum) bar.style.transform = 'scaleX(' + (done / sum).toFixed(3) + ')';
+    }
+  }
+  /* The numbered point of the active step and, on a tap frame, the finger. Both
+     are measured once the scene has settled (after its 420ms transition). */
+  function activeScene() { return screenEl()?.querySelector('.cm-scene[data-pos="on"]'); }
+  function place(node, rect, x, y) {
+    const box = stage().getBoundingClientRect(), tela = stage().querySelector('.ch-iphone-tela').getBoundingClientRect();
+    // Never over the status bar and the Dynamic Island (62 of the 412 logical px), never off the screen.
+    const px = clamp(x, tela.left + 14, tela.right - 14) - box.left, py = clamp(y, tela.top + tela.width * 62 / 412, tela.bottom - 14) - box.top;
+    node.style.left = (px / box.width * 100).toFixed(2) + '%';
+    node.style.top = (py / box.height * 100).toFixed(2) + '%';
+  }
+  function target(selector) {
+    const scene = activeScene();
+    if (!scene) return null;
+    // Skip what the frame has not shown yet (a pin before the search ends, an answer still behind the typing dots).
+    const shown = node => { for (let el = node; el && el !== scene; el = el.parentElement) if (getComputedStyle(el).opacity === '0') return false; return true; };
+    const found = [...scene.querySelectorAll(selector)].filter(node => {
+      const r = node.getBoundingClientRect();
+      return r.width > 0 && r.height > 0 && getComputedStyle(node).visibility === 'visible' && shown(node);
+    });
+    return found[found.length - 1] || null;
+  }
+  function positionDot(animate) {
+    const dot = body.querySelector('[data-cx-dot]');
+    if (!dot) return;
+    const n = step + 1, node = target(`[data-hs~="${n}"]`);
+    if (!node) { dot.hidden = true; return; }
+    const r = node.getBoundingClientRect();
+    const was = dot.hidden || dot.textContent !== String(n);
+    dot.textContent = String(n);
+    // On a picture or a card the point sits inside its corner; on a line of text or a button, just above its right end.
+    // data-hs-at="tl" keeps the point inside the top-left corner (away from an ad label in the top right).
+    const big = r.height > 64, left = node.dataset.hsAt === 'tl';
+    place(dot, r, left ? r.left + 20 : big ? r.right - 20 : r.right - 4, big || left ? r.top + 20 : r.top - 12);
+    dot.hidden = false;
+    if (animate && was && live()) {
+      const spring = motion.spring(dot, p => ({ transform: `translate(-50%,-50%) scale(${.6 + .4 * p})`, opacity: clamp(p * 1.6) }), { duration: 420 });
+      if (spring) animations.push(spring);
+      dot.classList.remove('is-ping'); void dot.offsetWidth; dot.classList.add('is-ping');
+    }
+  }
+  function showTap() {
+    const tap = body.querySelector('[data-cx-tap]'), key = frames()[frame]?.toque, screen = screenEl();
+    if (!tap || !screen) return;
+    if (!key) { tap.hidden = true; delete screen.dataset.tap; return; }
+    const node = target(`[data-tap="${key}"]`);
+    if (!node) { tap.hidden = true; return; }
+    const r = node.getBoundingClientRect();
+    place(tap, r, r.left + r.width / 2, r.top + r.height / 2);
+    tap.hidden = false;
+    tap.classList.toggle('is-static', !live());
+    tap.classList.remove('is-on'); void tap.offsetWidth; tap.classList.add('is-on');
+    screen.dataset.tap = key;
+  }
+  function settle(animate, moved) {
+    clearTimeout(settleTimer);
+    const dot = body.querySelector('[data-cx-dot]'), tap = body.querySelector('[data-cx-tap]');
+    if (tap) { tap.hidden = true; tap.classList.remove('is-on'); }
+    // A new page waits for its content to load before the finger or the point lands on it.
+    const wait = live() ? (moved ? 820 : 440) : 20;
+    // The point stays put inside a scene; it only hides while a new scene slides in.
+    if (dot && live() && moved) dot.hidden = true;
+    settleTimer = setTimeout(() => { positionDot(animate); showTap(); }, wait);
+  }
+  /* Applies one storyboard frame: scene on screen, the scene under it (a sheet or
+     a pushed page keeps the previous screen visible), state tokens, journey. */
+  function applyFrame(instant) {
+    const list = frames(), item = list[frame], screen = screenEl();
+    if (!item || !screen) return;
+    if (instant) screen.classList.add('is-instant');
+    const moved = screen.dataset.scene !== item.cena;
+    screen.dataset.frame = String(frame);
+    screen.dataset.scene = item.cena;
+    // A scene left behind keeps the state it last showed (the video under a sheet stays on its last cut).
+    const kept = {};
+    for (let k = 0; k < frame; k++) if (list[k].cena !== item.cena) kept[list[k].cena] = list[k].estado || '';
+    screen.dataset.state = [...Object.values(kept), item.estado || ''].join(' ').replace(/\s+/g, ' ').trim();
+    delete screen.dataset.tap;
+    const scenes = [...screen.querySelectorAll('.cm-scene')];
+    const current = scenes.find(node => node.dataset.scene === item.cena) || scenes[0];
+    let previous = null;
+    for (let k = frame - 1; k >= 0; k--) if (list[k].cena !== item.cena) { previous = list[k].cena; break; }
+    const kind = current.dataset.kind;
+    screen.dataset.enter = kind;
+    scenes.forEach(node => { node.dataset.pos = node === current ? 'on' : (kind === 'push' || kind === 'sheet') && node.dataset.scene === previous ? 'under' : 'off'; });
+    if (instant) requestAnimationFrame(() => requestAnimationFrame(() => screen.classList.remove('is-instant')));
+    const nextStep = stepOf(frame), stepChanged = nextStep !== step;
+    step = nextStep;
+    const fin = frame === list.length - 1 && (ended() || !live());
+    body.querySelectorAll('.cx-journey li').forEach((li, k) => {
+      const state = k < step || (fin && k === step) ? 'done' : k === step ? 'on' : 'next';
+      li.dataset.state = state;
+      const button = li.querySelector('button');
+      if (k === step) button.setAttribute('aria-current', 'step'); else button.removeAttribute('aria-current');
+      button.tabIndex = k === step ? 0 : -1;
+      button.setAttribute('aria-label', `Passo ${k + 1}, ${placement().passos[k].fase.toLowerCase()}: ${placement().passos[k].rotulo}${state === 'done' ? ', concluído' : ''}`);
+    });
+    const now = body.querySelector('[data-cx-now]');
+    if (now && stepChanged) now.textContent = placement().passos[step].rotulo;
+    const desc = body.querySelector('[data-cx-desc]');
+    if (desc) desc.textContent = item.desc;
+    if (stepChanged || fin) status.textContent = `Passo ${step + 1} de 3, ${placement().passos[step].fase.toLowerCase()}. ${item.desc}`;
+    settle(!instant, moved || stepChanged);
+  }
+  function paint({ instant = false, force = false } = {}) {
+    if (!frames().length) return;
+    const next = frameAt(Math.min(elapsed, Math.max(0, total - 1)));
+    if (next !== frame || force) { frame = next; applyFrame(instant); }
+    paintProgress();
+  }
+  function tick(now) {
+    if (!playing) return;
+    if (!canPlay()) { stop(); return; }
+    elapsed = Math.min(total, elapsed + Math.min(80, Math.max(0, now - last))); last = now;
+    paint();
+    if (ended()) { stop(); paint({ force: true }); return; }
+    raf = requestAnimationFrame(tick);
+  }
+  function start(fromStart = false) {
+    if (fromStart || ended()) { elapsed = 0; paint({ instant: true, force: true }); }
+    if (!canPlay()) { setPlayLabel(); return; }
+    playing = true; last = performance.now();
+    setPlayLabel(); raf = requestAnimationFrame(tick);
+  }
+  /* Direct navigation: a frame (arrows, halves of the phone, swipe) or a journey step. */
+  function move(to) {
+    const count = frames().length;
+    held = true; stop();
+    const target = Math.max(0, Math.min(count - 1, to));
+    elapsed = starts[target];
+    paint({ instant: !live(), force: true });
+    setPlayLabel();
+  }
+  function goToStep(k) {
+    const ids = placement().passos[k].quadros;
+    const tapFrame = k === 2 ? ids.find(i => frames()[i].toque) : undefined;
+    move(tapFrame ?? ids[0]);
+  }
+  function stageMarkup() {
+    const ch = channel(), pl = placement();
+    const aria = `${ch.name}, ${pl.label}. Exemplo de ${CLIENTES[pl.cliente].tipo}, marca fictícia.`;
+    const steps = pl.passos.map((item, k) => `<li data-state="${k ? 'next' : 'on'}"><button type="button" data-cx-step="${k}"><span class="cx-step-n" aria-hidden="true">${k + 1}</span><span class="cx-step-t"><b>${escape(item.fase)}</b><small>${escape(item.rotulo)}</small></span><i class="cx-rail" aria-hidden="true"><i data-cx-rail></i></i></button></li>`).join('');
+    return `<div class="cx-steps"><ol class="cx-journey" aria-label="Jornada do anúncio em 3 passos">${steps}</ol><p class="cx-now" aria-hidden="true" data-cx-now></p></div><div class="cx-stage-col"><div class="cx-stage" data-cx-stage data-frames="${pl.quadros.length}" role="group" tabindex="0" aria-label="${escape(aria)}" aria-describedby="cx-desc cx-keys">${renderMock(pl)}<span class="cx-dot" data-cx-dot aria-hidden="true" hidden>1</span><span class="cx-tap" data-cx-tap aria-hidden="true" hidden></span></div><p class="sr-only" id="cx-desc" data-cx-desc></p><span class="sr-only" id="cx-keys">Use as setas para trocar de quadro.</span></div>
+      <div class="cx-side"></div>`;
+  }
+  function header() {
+    const ch = channel(), pl = placement(), id = CHANNEL_LOGO[ch.id];
+    brand.innerHTML = (id ? logoSvg(id, { altura: 22, classe: 'cx-logo' }) : '') + `<b>${escape(ch.name)}</b>`;
+    /* Formats as one segmented control (lab: smiile-segmented-control): equal row,
+       a thumb that slides to the chosen format; rebuilt only when the channel changes. */
+    if (placements.dataset.channel !== ch.id) {
+      placements.dataset.channel = ch.id;
+      placements.innerHTML = '<span class="cx-thumb is-instant" aria-hidden="true"></span>' + (ch.placements.length > 1
+        ? ch.placements.map((item, i) => `<button type="button" class="cx-placement" aria-pressed="${i === placementIndex}" data-cx-placement="${i}">${escape(item.label)}</button>`).join('')
+        : `<span class="cx-placement cx-placement--static" aria-current="true"><span class="sr-only">Formato: </span>${escape(pl.label)}</span>`);
+    } else placements.querySelectorAll('[data-cx-placement]').forEach((item, i) => item.setAttribute('aria-pressed', String(i === placementIndex)));
+    placements.setAttribute('role', ch.placements.length > 1 ? 'group' : 'presentation');
+    if (ch.placements.length > 1) placements.setAttribute('aria-label', 'Formato do anúncio'); else placements.removeAttribute('aria-label');
+    requestAnimationFrame(thumb);
+    label.textContent = pl.selo;
+    label.dataset.kind = /Orgânico|não é anúncio/.test(pl.selo) ? 'organic' : 'ad';
+    // Short on a phone: the type of client and "marca fictícia" (the note under the phone says it is an illustrative example).
+    const tipo = CLIENTES[pl.cliente].tipo;
+    client.innerHTML = `${marca(pl.cliente, 'circulo', 'cx-client-mark')}<span>${escape(tipo.charAt(0).toUpperCase() + tipo.slice(1))}, <b>marca fictícia</b></span>`;
+    const note = noteSlot?.querySelector('[data-note-title]');
+    if (note) note.textContent = pl.frase;
+    const fine = noteSlot?.querySelector('[data-note-fine]');
+    if (fine) fine.textContent = FINE + (AI_IMAGES.test(renderMock(pl)) ? ' Imagens geradas por IA.' : '');
+    player.dataset.platform = ch.id; player.dataset.placement = pl.id;
+    player.style.setProperty('--ch', id ? LOGOS[id].cor : '#1e4530');
+    lab.dataset.placement = String(placementIndex);
+  }
+  function thumb() {
+    const knob = placements.querySelector('.cx-thumb'), on = placements.querySelector('[aria-pressed="true"], [aria-current]');
+    if (!knob || !on || !on.offsetWidth) return;
+    knob.style.width = on.offsetWidth + 'px';
+    knob.style.transform = `translateX(${on.offsetLeft}px)`;
+    // Narrow screens: a format that does not fit stays reachable inside the row.
+    if (on.offsetLeft < placements.scrollLeft || on.offsetLeft + on.offsetWidth > placements.scrollLeft + placements.clientWidth) placements.scrollLeft = on.offsetLeft - 8;
+    if (knob.classList.contains('is-instant')) requestAnimationFrame(() => requestAnimationFrame(() => knob.classList.remove('is-instant')));
+  }
+  /* Replaces the placement. With motion and an open peel, a ghost of the old
+     placement leaves to the side while the new one springs in from the other. */
+  function render({ animate = false, direction = 1 } = {}) {
+    stop(); cancelAnimations(); held = false; clearTimeout(settleTimer);
+    const moving = animate && live() && open() && body.childElementCount > 0;
+    if (moving) {
+      ghost = body.cloneNode(true);
+      ghost.removeAttribute('data-cx-body');
+      ghost.querySelectorAll('[id]').forEach(node => node.removeAttribute('id'));
+      ghost.querySelectorAll('[data-campaign-note],[aria-live],[data-note-title],[data-note-fine]').forEach(node => { node.removeAttribute('data-campaign-note'); node.removeAttribute('aria-live'); node.removeAttribute('data-note-title'); node.removeAttribute('data-note-fine'); });
+      ghost.setAttribute('aria-hidden', 'true'); ghost.inert = true;
+      ghost.classList.add('cx-ghost');
+      ghost.style.top = body.offsetTop + 'px'; ghost.style.left = body.offsetLeft + 'px';
+      ghost.style.width = body.offsetWidth + 'px'; ghost.style.height = body.offsetHeight + 'px';
+      player.append(ghost);
+    }
+    noteSlot?.remove();
+    header();
+    body.innerHTML = stageMarkup();
+    if (noteSlot) body.querySelector('.cx-side').append(noteSlot);
+    timeline();
+    elapsed = 0; frame = -1; step = -1;
+    paint({ instant: true, force: true }); setPlayLabel();
+    if (moving) {
+      const old = ghost;
+      const out = motion.animate(old, [{ opacity: 1, transform: 'translateX(0)' }, { opacity: 0, transform: `translateX(${-30 * direction}px) scale(.97)` }], { duration: 300 });
+      if (out) { animations.push(out); out.finished.catch(() => {}).finally(() => { old.remove(); if (ghost === old) ghost = null; }); } else { old.remove(); ghost = null; }
+      const entry = motion.spring(body.querySelector('.cx-stage'), p => ({ opacity: clamp(p * 1.8), transform: `translateX(${42 * direction * (1 - p)}px) scale(${.96 + .04 * p})` }), { duration: 620 });
+      if (entry) animations.push(entry);
+      [...body.querySelectorAll('.cx-journey > li, .cx-now, .cx-side .sp-campaign-note > *')].forEach((node, j) => {
+        const rise = motion.spring(node, p => ({ opacity: clamp(p), transform: `translateY(${16 * (1 - p)}px)` }), { delay: 80 + j * 45 });
+        if (rise) animations.push(rise);
+      });
+      // The entrance moves the stage: measure the point again once it has landed.
+      clearTimeout(settleTimer); settleTimer = setTimeout(() => { positionDot(true); showTap(); }, 680);
+    }
+    if (open()) start(true);
+  }
+  function syncChannel() {
+    const id = lab.dataset.channel || channels[0].id;
+    if (id === channelId) return;
+    const before = channels.findIndex(item => item.id === channelId);
+    const after = channels.findIndex(item => item.id === id);
+    const direction = lab.dataset.direction === 'prev' || (before > after && before !== -1) ? -1 : 1;
+    const first = channelId === null;
+    channelId = id; placementIndex = 0;
+    render({ animate: !first, direction });
+  }
+  function choosePlacement(index) {
+    if (index === placementIndex) return;
+    const direction = index > placementIndex ? 1 : -1;
+    placementIndex = index;
+    render({ animate: true, direction });
+    placements.querySelector('[data-cx-placement="' + index + '"]')?.focus({ preventScroll: true });
+  }
+  player.addEventListener('click', event => {
+    const button = event.target.closest('button');
+    if (button) {
+      if (button.matches('[data-cx-placement]')) choosePlacement(Number(button.dataset.cxPlacement));
+      else if (button.matches('[data-cx-step]')) goToStep(Number(button.dataset.cxStep));
+      return;
+    }
+    // Tapping the left or right part of the phone moves between frames.
+    const box = event.target.closest('[data-cx-stage]');
+    if (box) {
+      const r = box.getBoundingClientRect();
+      move(frame + (event.clientX < r.left + r.width * .31 ? -1 : 1));
+    }
+  });
+  play.addEventListener('click', () => {
+    if (playing) { held = true; stop(); return; }
+    // Without motion, each press shows the next frame instead of playing.
+    if (!live()) { move(frame >= frames().length - 1 ? 0 : frame + 1); return; }
+    visible = visible || player.getClientRects().length > 0;
+    held = false;
+    start(ended());
+  });
+  player.addEventListener('keydown', event => {
+    if (event.target.matches('[data-cx-stage]') && (event.key === 'ArrowRight' || event.key === 'ArrowLeft')) {
+      event.preventDefault(); move(frame + (event.key === 'ArrowRight' ? 1 : -1)); return;
+    }
+    const stepButton = event.target.closest('[data-cx-step]');
+    if (stepButton && ['ArrowRight', 'ArrowLeft', 'ArrowDown', 'ArrowUp', 'Home', 'End'].includes(event.key)) {
+      event.preventDefault();
+      const k = Number(stepButton.dataset.cxStep);
+      const next = event.key === 'Home' ? 0 : event.key === 'End' ? 2 : (k + (event.key === 'ArrowRight' || event.key === 'ArrowDown' ? 1 : 2)) % 3;
+      goToStep(next);
+      body.querySelector(`[data-cx-step="${next}"]`)?.focus({ preventScroll: true });
+    }
+  });
+  // Direct interaction with the phone owns horizontal swipes; vertical scrolling stays native.
+  let pointer = null;
+  player.addEventListener('pointerdown', event => { pointer = event.target.closest('[data-cx-stage]') ? { x: event.clientX, y: event.clientY } : null; }, { passive: true });
+  player.addEventListener('pointerup', event => {
+    if (!pointer) return;
+    const dx = event.clientX - pointer.x, dy = event.clientY - pointer.y; pointer = null;
+    if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy) * 1.5) { event.stopPropagation(); move(frame + (dx < 0 ? 1 : -1)); }
+  }, { passive: true });
+  player.addEventListener('pointercancel', () => { pointer = null; }, { passive: true });
+  new MutationObserver(syncChannel).observe(lab, { attributes: true, attributeFilter: ['data-channel'] });
+  new MutationObserver(() => { if (document.body.classList.contains('is-paused')) { stop(); paint({ force: true }); } else setPlayLabel(); }).observe(document.body, { attributes: true, attributeFilter: ['class'] });
+  // Opening the peel starts the journey once; closing stops it and rewinds.
+  new MutationObserver(() => {
+    if (underlay.inert) { stop(); cancelAnimations(); held = false; elapsed = 0; paint({ instant: true, force: true }); setPlayLabel(); }
+    else start(true);
+  }).observe(underlay, { attributes: true, attributeFilter: ['inert'] });
+  // A journey that has not started (and was not paused by the visitor) starts when it comes into view.
+  if ('IntersectionObserver' in window) new IntersectionObserver(([entry]) => { visible = entry.isIntersecting; if (!visible) stop(); else if (!playing && !held && elapsed === 0 && open()) start(true); }, { threshold: .02 }).observe(player);
+  else visible = true;
+  if ('ResizeObserver' in window) new ResizeObserver(() => { const knob = placements.querySelector('.cx-thumb'); knob?.classList.add('is-instant'); thumb(); if (frame >= 0) { positionDot(false); if (frames()[frame]?.toque && !body.querySelector('[data-cx-tap]')?.hidden) showTap(); } }).observe(body);
+  document.addEventListener('visibilitychange', () => { if (document.hidden) stop(); });
+  reduce.addEventListener('change', () => { stop(); cancelAnimations(); paint({ instant: true, force: true }); });
+  motion.onStop(() => { stop(); ghost?.remove(); ghost = null; });
+  syncChannel();
+  return { root: player, stop, reset: () => { stop(); elapsed = 0; paint({ instant: true, force: true }); setPlayLabel(); } };
 }

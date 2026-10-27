@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self'; font-src 'self'; base-uri 'none'; form-action 'none'">
+<title>Serviços · Protótipo C</title>
+<meta name="description" content="Protótipo C dos cards de serviço: BentoCard da Magic UI adaptado e molduras vetoriais da Magic UI, sem animação customizada.">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="preload" href="assets/fonts/InterVariable.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="style.css">
+<script type="module" src="carousel.js"></script>
+</head>
+<body>
+<main>
+<section class="svc" aria-labelledby="svc-title">
+  <header class="svc-head">
+    <h2 class="svc-title" id="svc-title">Serviços</h2>
+    <div class="svc-nav">
+      <p class="svc-count" aria-live="polite" aria-atomic="true"><span class="sr-only">Mostrando serviço </span><span data-count>1 de 5</span></p>
+      <button type="button" class="nav-btn" data-prev aria-controls="svc-rail" aria-label="Serviço anterior">
+        <svg aria-hidden="true" viewBox="0 0 15 15" width="20" height="20"><path fill="currentColor" fill-rule="evenodd" clip-rule="evenodd" d="M6.85355 3.14645C7.04882 3.34171 7.04882 3.65829 6.85355 3.85355L3.70711 7H12.5C12.7761 7 13 7.22386 13 7.5C13 7.77614 12.7761 8 12.5 8H3.70711L6.85355 11.1464C7.04882 11.3417 7.04882 11.6583 6.85355 11.8536C6.65829 12.0488 6.34171 12.0488 6.14645 11.8536L2.14645 7.85355C1.95118 7.65829 1.95118 7.34171 2.14645 7.14645L6.14645 3.14645C6.34171 2.95118 6.65829 2.95118 6.85355 3.14645Z"/></svg>
+      </button>
+      <button type="button" class="nav-btn" data-next aria-controls="svc-rail" aria-label="Próximo serviço">
+        <svg aria-hidden="true" viewBox="0 0 15 15" width="20" height="20"><path fill="currentColor" fill-rule="evenodd" clip-rule="evenodd" d="M8.14645 3.14645C8.34171 2.95118 8.65829 2.95118 8.85355 3.14645L12.8536 7.14645C13.0488 7.34171 13.0488 7.65829 12.8536 7.85355L8.85355 11.8536C8.65829 12.0488 8.34171 12.0488 8.14645 11.8536C7.95118 11.6583 7.95118 11.3417 8.14645 11.1464L11.2929 8H2.5C2.22386 8 2 7.77614 2 7.5C2 7.22386 2.22386 7 2.5 7H11.2929L8.14645 3.85355C7.95118 3.65829 7.95118 3.34171 8.14645 3.14645Z"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <ul class="rail" id="svc-rail" tabindex="0" aria-label="Serviços. Role para o lado ou use os botões anterior e próximo.">
+
+    <!-- 01 · Sites e apps · celular com tela de agendamento -->
+    <li class="rail-item">
+      <article class="mu-card" aria-labelledby="c01">
+        <div class="mu-card-head">
+          <span class="mu-badge" aria-hidden="true">01</span>
+          <div>
+            <h3 class="mu-card-name" id="c01"><span class="sr-only">01. </span>Sites e apps</h3>
+            <p class="mu-card-sub">Sites / Apps / Landing pages</p>
+          </div>
+        </div>
+        <span class="mu-rule" aria-hidden="true"></span>
+        <p class="mu-card-title">Do primeiro toque à próxima ação<span class="dot">.</span></p>
+        <p class="mu-card-desc">Interfaces claras que guiam cada visita até agendar, comprar ou falar com você.</p>
+        <div class="mu-stage" role="img" aria-label="Celular com a tela de agendamento de uma loja fictícia, Ateliê Exemplo.">
+          <div class="mu-iphone" aria-hidden="true">
+            <div class="mu-screen"><div class="scr scr-agenda">
+              <p class="scr-brand">Ateliê Exemplo</p>
+              <p class="scr-h">Agende sua visita</p>
+              <img class="scr-img" src="assets/img/ceramics-shelf.webp" width="1200" height="671" alt="">
+              <p class="scr-label">Terça, 13 de outubro</p>
+              <div class="slots"><span>10:00</span><span class="on">11:30</span><span>14:00</span><span>16:30</span></div>
+              <span class="scr-btn">Confirmar visita</span>
+            </div></div>
+            <img class="mu-frame" src="assets/frames/mu-iphone.svg" width="433" height="882" alt="">
+          </div>
+        </div>
+        <a class="mu-cta" href="#contato">Conversar sobre sites e apps<svg aria-hidden="true" viewBox="0 0 15 15" width="20" height="20"><path fill="currentColor" fill-rule="evenodd" clip-rule="evenodd" d="M8.14645 3.14645C8.34171 2.95118 8.65829 2.95118 8.85355 3.14645L12.8536 7.14645C13.0488 7.34171 13.0488 7.65829 12.8536 7.85355L8.85355 11.8536C8.65829 12.0488 8.34171 12.0488 8.14645 11.8536C7.95118 11.6583 7.95118 11.3417 8.14645 11.1464L11.2929 8H2.5C2.22386 8 2 7.77614 2 7.5C2 7.22386 2.22386 7 2.5 7H11.2929L8.14645 3.85355C7.95118 3.65829 7.95118 3.34171 8.14645 3.14645Z"/></svg></a>
+      </article>
+    </li>
+
+    <!-- 02 · Campanhas · celular com um anúncio vertical -->
+    <li class="rail-item">
+      <article class="mu-card" aria-labelledby="c02">
+        <div class="mu-card-head">
+          <span class="mu-badge" aria-hidden="true">02</span>
+          <div>
+            <h3 class="mu-card-name" id="c02"><span class="sr-only">02. </span>Campanhas</h3>
+            <p class="mu-card-sub">Meta / Google / TikTok / YouTube</p>
+          </div>
+        </div>
+        <span class="mu-rule" aria-hidden="true"></span>
+        <p class="mu-card-title">A mensagem certa, no formato certo<span class="dot">.</span></p>
+        <p class="mu-card-desc">Planejamento, criativos e mídia ajustados a cada canal e a cada público.</p>
+        <div class="mu-stage" role="img" aria-label="Celular com um anúncio vertical de um vaso, da loja fictícia Ateliê Exemplo.">
+          <div class="mu-iphone" aria-hidden="true">
+            <div class="mu-screen"><div class="scr scr-ad">
+              <div class="ad-top"><span class="ad-mark">A</span><span class="ad-name">Ateliê Exemplo<small>Patrocinado</small></span></div>
+              <img class="scr-img" src="assets/img/vase-sage.webp" width="720" height="900" alt="">
+              <p class="scr-h">Peças únicas, feitas à mão.</p>
+              <span class="scr-btn">Ver coleção</span>
+            </div></div>
+            <img class="mu-frame" src="assets/frames/mu-iphone.svg" width="433" height="882" alt="">
+          </div>
+        </div>
+        <a class="mu-cta" href="#contato">Conversar sobre campanhas<svg aria-hidden="true" viewBox="0 0 15 15" width="20" height="20"><path fill="currentColor" fill-rule="evenodd" clip-rule="evenodd" d="M8.14645 3.14645C8.34171 2.95118 8.65829 2.95118 8.85355 3.14645L12.8536 7.14645C13.0488 7.34171 13.0488 7.65829 12.8536 7.85355L8.85355 11.8536C8.65829 12.0488 8.34171 12.0488 8.14645 11.8536C7.95118 11.6583 7.95118 11.3417 8.14645 11.1464L11.2929 8H2.5C2.22386 8 2 7.77614 2 7.5C2 7.22386 2.22386 7 2.5 7H11.2929L8.14645 3.85355C7.95118 3.65829 7.95118 3.34171 8.14645 3.14645Z"/></svg></a>
+      </article>
+    </li>
+
+    <!-- 05 · Conteúdo · janela de navegador com player de vídeo -->
+    <li class="rail-item">
+      <article class="mu-card" aria-labelledby="c05">
+        <div class="mu-card-head">
+          <span class="mu-badge" aria-hidden="true">05</span>
+          <div>
+            <h3 class="mu-card-name" id="c05"><span class="sr-only">05. </span>Conteúdo</h3>
+            <p class="mu-card-sub">Vídeo / Social / Blog</p>
+          </div>
+        </div>
+        <span class="mu-rule" aria-hidden="true"></span>
+        <p class="mu-card-title">Uma ideia. Conteúdo para cada canal<span class="dot">.</span></p>
+        <p class="mu-card-desc">Do roteiro à publicação: um tema vira vídeo, post e artigo.</p>
+        <div class="mu-stage" role="img" aria-label="Janela de navegador com um player de vídeo e a mesma ideia em três formatos: vídeo curto, post social e artigo.">
+          <div class="mu-browser" aria-hidden="true">
+            <div class="mu-screen"><div class="scr scr-video">
+              <div class="v-main">
+                <div class="v-frame"><img class="scr-img" src="assets/img/mountains-16x9.webp" width="1200" height="671" alt=""><span class="v-play"></span></div>
+                <div class="v-bar"><i></i></div>
+                <p class="v-title">Do barro à peça</p>
+                <p class="v-meta">Ateliê Exemplo · 1:24</p>
+              </div>
+              <div class="v-side">
+                <p class="v-label">A mesma ideia em</p>
+                <span class="v-chip on">Vídeo curto</span>
+                <span class="v-chip">Post social</span>
+                <span class="v-chip">Artigo</span>
+              </div>
+            </div></div>
+            <img class="mu-frame" src="assets/frames/mu-browser.svg" width="1203" height="753" alt="">
+          </div>
+        </div>
+        <a class="mu-cta" href="#contato">Conversar sobre conteúdo<svg aria-hidden="true" viewBox="0 0 15 15" width="20" height="20"><path fill="currentColor" fill-rule="evenodd" clip-rule="evenodd" d="M8.14645 3.14645C8.34171 2.95118 8.65829 2.95118 8.85355 3.14645L12.8536 7.14645C13.0488 7.34171 13.0488 7.65829 12.8536 7.85355L8.85355 11.8536C8.65829 12.0488 8.34171 12.0488 8.14645 11.8536C7.95118 11.6583 7.95118 11.3417 8.14645 11.1464L11.2929 8H2.5C2.22386 8 2 7.77614 2 7.5C2 7.22386 2.22386 7 2.5 7H11.2929L8.14645 3.85355C7.95118 3.65829 7.95118 3.34171 8.14645 3.14645Z"/></svg></a>
+      </article>
+    </li>
+
+    <!-- 08 · E-commerce · janela de navegador com página de produto -->
+    <li class="rail-item">
+      <article class="mu-card" aria-labelledby="c08">
+        <div class="mu-card-head">
+          <span class="mu-badge" aria-hidden="true">08</span>
+          <div>
+            <h3 class="mu-card-name" id="c08"><span class="sr-only">08. </span>E-commerce</h3>
+            <p class="mu-card-sub">Loja / Conversão / CRM</p>
+          </div>
+        </div>
+        <span class="mu-rule" aria-hidden="true"></span>
+        <p class="mu-card-title">Escolher e comprar, sem complicação<span class="dot">.</span></p>
+        <p class="mu-card-desc">Página de produto clara e checkout simples, do clique à confirmação.</p>
+        <div class="mu-stage" role="img" aria-label="Janela de navegador com a página de produto de um pote de cerâmica âmbar, na loja fictícia Ateliê Exemplo.">
+          <div class="mu-browser" aria-hidden="true">
+            <div class="mu-screen"><div class="scr scr-shop">
+              <div class="shop-nav"><span class="scr-brand">Ateliê Exemplo</span><span class="shop-links">Peças<span>Sacola</span></span></div>
+              <div class="shop-body">
+                <img class="scr-img" src="assets/img/jar-amber.webp" width="720" height="900" alt="">
+                <div class="shop-info">
+                  <p class="shop-name">Pote âmbar</p>
+                  <p class="shop-desc">Feito à mão, 500 ml</p>
+                  <p class="shop-price">R$ 89</p>
+                  <span class="scr-btn">Adicionar à sacola</span>
+                </div>
+              </div>
+            </div></div>
+            <img class="mu-frame" src="assets/frames/mu-browser.svg" width="1203" height="753" alt="">
+          </div>
+        </div>
+        <a class="mu-cta" href="#contato">Conversar sobre e-commerce<svg aria-hidden="true" viewBox="0 0 15 15" width="20" height="20"><path fill="currentColor" fill-rule="evenodd" clip-rule="evenodd" d="M8.14645 3.14645C8.34171 2.95118 8.65829 2.95118 8.85355 3.14645L12.8536 7.14645C13.0488 7.34171 13.0488 7.65829 12.8536 7.85355L8.85355 11.8536C8.65829 12.0488 8.34171 12.0488 8.14645 11.8536C7.95118 11.6583 7.95118 11.3417 8.14645 11.1464L11.2929 8H2.5C2.22386 8 2 7.77614 2 7.5C2 7.22386 2.22386 7 2.5 7H11.2929L8.14645 3.85355C7.95118 3.65829 7.95118 3.34171 8.14645 3.14645Z"/></svg></a>
+      </article>
+    </li>
+
+    <!-- 09 · Marca · janela de navegador com quadro de marca -->
+    <li class="rail-item">
+      <article class="mu-card" aria-labelledby="c09">
+        <div class="mu-card-head">
+          <span class="mu-badge" aria-hidden="true">09</span>
+          <div>
+            <h3 class="mu-card-name" id="c09"><span class="sr-only">09. </span>Marca</h3>
+            <p class="mu-card-sub">Identidade / Posicionamento</p>
+          </div>
+        </div>
+        <span class="mu-rule" aria-hidden="true"></span>
+        <p class="mu-card-title">Sua identidade, em cada detalhe<span class="dot">.</span></p>
+        <p class="mu-card-desc">Logo, cores, tipografia e tom de voz num sistema fácil de aplicar.</p>
+        <div class="mu-stage" role="img" aria-label="Janela de navegador com o quadro de marca da loja fictícia Ateliê Exemplo: logotipo, quatro cores, tipografia e uma foto de produto.">
+          <div class="mu-browser" aria-hidden="true">
+            <div class="mu-screen"><div class="scr scr-board">
+              <div class="b-col">
+                <div class="b-logo"><span class="b-word">Ateliê Exemplo</span><span class="b-tag">Cerâmica autoral</span></div>
+                <div class="b-sw"><i class="c1"></i><i class="c2"></i><i class="c3"></i><i class="c4"></i></div>
+                <div class="b-type"><span class="b-aa">Aa</span><span class="b-names">Newsreader<br>Inter</span></div>
+              </div>
+              <img class="scr-img" src="assets/img/jar-sage.webp" width="720" height="900" alt="">
+            </div></div>
+            <img class="mu-frame" src="assets/frames/mu-browser.svg" width="1203" height="753" alt="">
+          </div>
+        </div>
+        <a class="mu-cta" href="#contato">Conversar sobre marca<svg aria-hidden="true" viewBox="0 0 15 15" width="20" height="20"><path fill="currentColor" fill-rule="evenodd" clip-rule="evenodd" d="M8.14645 3.14645C8.34171 2.95118 8.65829 2.95118 8.85355 3.14645L12.8536 7.14645C13.0488 7.34171 13.0488 7.65829 12.8536 7.85355L8.85355 11.8536C8.65829 12.0488 8.34171 12.0488 8.14645 11.8536C7.95118 11.6583 7.95118 11.3417 8.14645 11.1464L11.2929 8H2.5C2.22386 8 2 7.77614 2 7.5C2 7.22386 2.22386 7 2.5 7H11.2929L8.14645 3.85355C7.95118 3.65829 7.95118 3.34171 8.14645 3.14645Z"/></svg></a>
+      </article>
+    </li>
+
+  </ul>
+</section>
+
+<section class="contact" id="contato" aria-labelledby="contato-title">
+  <h2 id="contato-title">Contato</h2>
+  <p>Âncora de destino dos botões “Conversar sobre…”. No site, aqui fica o formulário de contato.</p>
+</section>
+</main>
+</body>
+</html>

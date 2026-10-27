@@ -106,7 +106,7 @@ try{
    check('Swiping never selects the phone copy',await swipeStage.evaluate(el=>getComputedStyle(el).userSelect==='none'&&window.getSelection().isCollapsed));
    
    const notes=[];
-   for(const id of ['meta','google','tiktok']){await page.locator('#tab-'+id).click();notes.push(await page.locator('[data-campaign-note]').innerText());}
+   for(const id of ['instagram','google','tiktok']){await page.locator('#tab-'+id).click();notes.push(await page.locator('[data-campaign-note]').innerText());}
    row.campaignNotes=notes;
    // Wait for the pre-existing 600ms channel crossfade to settle before tapping artwork.
    await page.waitForFunction(()=>!document.querySelector('#laboratorio .sp-campaign').dataset.transitioning);
@@ -118,9 +118,9 @@ try{
    await campaignFace.locator('[data-sp-card-turn="back"]').click();
    await page.waitForFunction(()=>document.querySelector('#laboratorio .sp-campaign-card')?.dataset.peelState==='closed');
    check('Campaign paper returns without losing its original image',await campaignFace.getAttribute('data-side')==='front'&&Number(await campaignFace.getAttribute('data-peel-progress'))<.06&&await campaignFace.locator('.sp-campaign-panel:not([hidden]) img').count()===1);
-   check('Each channel explains a distinct and actionable creative decision',new Set(notes).size===3&&/Mostrar a ideia/i.test(notes[0])&&/intenção de busca/i.test(notes[1])&&/tela vertical/i.test(notes[2])&&notes.every(s=>/Conversar sobre uma campanha/i.test(s)));
-   await page.evaluate(()=>['meta','google','tiktok'].forEach(id=>document.querySelector('#tab-'+id).click()));await page.waitForTimeout(800);
-   check('Fast changes keep artwork and explanation in sync',await page.locator('.sp-campaign').getAttribute('data-channel')==='tiktok'&&/vertical/.test(await page.locator('[data-note-title]').innerText())&&await page.locator('.sp-campaign-panel:not([hidden])').count()===1);
+   check('Each channel shows a distinct fictitious client example with the contact action',new Set(notes).size===3&&/escola de idiomas/i.test(notes[0])&&/clínica/i.test(notes[1])&&/loja de tecnologia/i.test(notes[2])&&notes.every(s=>/marca fictícia/i.test(s)&&/Conversar sobre uma campanha/i.test(s)));
+   await page.evaluate(()=>['instagram','google','tiktok'].forEach(id=>document.querySelector('#tab-'+id).click()));await page.waitForTimeout(800);
+   check('Fast changes keep artwork and explanation in sync',await page.locator('.sp-campaign').getAttribute('data-channel')==='tiktok'&&/loja de tecnologia/.test(await page.locator('[data-note-title]').innerText())&&await page.locator('.sp-campaign-panel:not([hidden])').count()===1);
    await page.locator('.sp-campaign').evaluate(el=>scrollTo({top:scrollY+el.getBoundingClientRect().top-84,behavior:'instant'}));
    await page.screenshot({path:`${output}/campaign-${width}${reduced?'-reduced':''}.png`,animations:'disabled'});
    check('Standalone Trilhas is hidden and Digital retains a destination',await page.locator('#trilhas[hidden]').count()===1&&!await page.locator('#trilhas').isVisible()&&await page.locator('#sites.digital-anchor').count()===1);

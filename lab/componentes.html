@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>Componentes das páginas</title>
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/assets/pages/base.css">
+<link rel="stylesheet" href="/assets/pages/flip.css">
+<link rel="stylesheet" href="/assets/pages/deck.css">
+<link rel="stylesheet" href="/assets/pages/accordion.css">
+<link rel="stylesheet" href="/assets/pages/check.css">
+<link rel="stylesheet" href="/assets/pages/compare.css">
+<link rel="stylesheet" href="/assets/showcase/device-frame.css">
+<link rel="stylesheet" href="/assets/showcase/device-premium.css">
+<link rel="stylesheet" href="/assets/pages/devices.css">
+<link rel="stylesheet" href="/componentes.css">
+<script type="module" src="/js/componentes.js"></script>
+</head>
+<body>
+<main class="lab-k">
+  <section class="pg-section pg-section--floresta lab-k-block" aria-labelledby="k5">
+    <div class="pg-container">
+      <header class="lab-k-head"><span class="lab-k-code">K5</span><h2 id="k5">Cartão que vira</h2><p>Gira pelo lado de onde o ponteiro entrou. Abre em 600 ms e fecha em 350 ms, com mola suave; Esc fecha e o foco acompanha a face. Portado da galeria e do card-surface do portfólio. Usado em /criadores.</p></header>
+      <div class="lab-k-row">
+        <article class="pg-flip" id="k-flip" data-flip data-flip-surface>
+          <div class="pg-flip-stage"><div class="pg-flip-rotor">
+            <div class="pg-flip-face pg-flip-front pg-panel" data-flip-front><p class="pg-eyebrow">Para criadores</p><h3>Mídia kit</h3><p>Uma página com quem você é, o seu público e como trabalhar com você.</p><button class="pg-btn pg-btn--secondary" type="button" data-flip-open aria-pressed="false">Ver o verso</button></div>
+            <div class="pg-flip-face pg-flip-back pg-panel" data-flip-back><h3 tabindex="-1" data-flip-focus>O que entra no kit</h3><ul><li>Apresentação e nicho</li><li>Formatos que você faz</li><li>Contato para marcas</li></ul><button class="pg-btn pg-btn--secondary" type="button" data-flip-close>Voltar para a capa</button></div>
+          </div></div>
+        </article>
+        <article class="pg-flip" id="k-flip-stack" data-flip data-flip-reduced="stack" data-flip-surface>
+          <div class="pg-flip-stage"><div class="pg-flip-rotor">
+            <div class="pg-flip-face pg-flip-front pg-panel" data-flip-front><p class="pg-eyebrow">Variante “stack”</p><h3>Proposta para marcas</h3><p>Com movimento reduzido, as duas faces aparecem empilhadas.</p><button class="pg-btn pg-btn--secondary" type="button" data-flip-open aria-pressed="false">Ver o verso</button></div>
+            <div class="pg-flip-face pg-flip-back pg-panel" data-flip-back><h3 tabindex="-1" data-flip-focus>Verso</h3><p>Escopo, entregas e prazo, em uma tela.</p><button class="pg-btn pg-btn--secondary" type="button" data-flip-close>Voltar para a capa</button></div>
+          </div></div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="pg-section lab-k-block" aria-labelledby="k6">
+    <div class="pg-container">
+      <header class="lab-k-head"><span class="lab-k-code">K6</span><h2 id="k6">Baralho</h2><p>Os cartões de trás ficam 24 px acima e com 95% da largura por nível; a troca leva 400 ms. Arrastar na horizontal troca; na vertical a página rola. Setas, Home e End navegam. Portado do baralho Fatos do portfólio.</p></header>
+      <div class="pg-deck" data-deck id="k-deck">
+        <div class="pg-deck-stage" data-deck-stage role="region" aria-roledescription="baralho" aria-label="Cartões de exemplo" tabindex="0">
+          <article class="pg-deck-card pg-panel" data-deck-card aria-label="1 de 3: Kit"><p class="pg-eyebrow">1 · Kit</p><h3>Mídia kit e proposta</h3><p>O que a marca precisa ver antes de responder.</p></article>
+          <article class="pg-deck-card pg-panel" data-deck-card aria-label="2 de 3: Conteúdo"><p class="pg-eyebrow">2 · Conteúdo</p><h3>Roteiro e edição</h3><p>Do gancho ao corte final, no formato de cada rede.</p></article>
+          <article class="pg-deck-card pg-panel" data-deck-card aria-label="3 de 3: Presença"><p class="pg-eyebrow">3 · Presença</p><h3>Página de links</h3><p>Um endereço só para tudo o que você faz.</p></article>
+        </div>
+        <div class="pg-deck-nav" role="group" aria-label="Navegar pelos cartões"><button type="button" data-deck-prev aria-label="Cartão anterior">←</button><p class="pg-deck-counter" role="status" data-deck-counter>1 de 3</p><button type="button" data-deck-next aria-label="Próximo cartão">→</button></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="pg-section pg-section--floresta lab-k-block" aria-labelledby="k9">
+    <div class="pg-container">
+      <header class="lab-k-head"><span class="lab-k-code">K9 · K19</span><h2 id="k9">Escolhas em chips, check e resumo</h2><p>Chips de escolha única e múltipla (com opção exclusiva), check desenhado e resumo que se monta conforme a pessoa escolhe. Nada é enviado: aqui o formulário não tem destino.</p></header>
+      <form id="k-form" class="lab-k-form" novalidate>
+        <fieldset class="pg-fieldset" data-chips="single" data-name="plataforma"><legend>Plataforma principal</legend><div class="pg-chip-row"><button class="pg-chip" type="button" aria-pressed="false" data-value="TikTok">TikTok</button><button class="pg-chip" type="button" aria-pressed="false" data-value="Instagram">Instagram</button><button class="pg-chip" type="button" aria-pressed="false" data-value="YouTube">YouTube</button></div></fieldset>
+        <fieldset class="pg-fieldset" data-chips="multi" data-name="preciso"><legend>Preciso de</legend><div class="pg-chip-row"><button class="pg-chip" type="button" aria-pressed="false" data-value="Mídia kit">Mídia kit</button><button class="pg-chip" type="button" aria-pressed="false" data-value="Proposta para marcas">Proposta para marcas</button><button class="pg-chip" type="button" aria-pressed="false" data-value="Edição">Edição</button><button class="pg-chip" type="button" aria-pressed="false" data-value="Ainda não sei" data-exclusive>Ainda não sei</button></div></fieldset>
+        <label class="pg-check"><input type="checkbox" name="maior"><span class="pg-check-box" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span><span class="pg-check-text">Tenho 18 anos ou mais.</span></label>
+        <div class="pg-summary" id="k-resumo"><h3>Seu resumo <span data-summary-count>0 escolhas</span></h3><p data-summary-empty>Seu resumo aparece aqui conforme você escolhe.</p><ul data-summary-list></ul></div>
+      </form>
+    </div>
+  </section>
+
+  <section class="pg-section lab-k-block" aria-labelledby="k16">
+    <div class="pg-container">
+      <header class="lab-k-head"><span class="lab-k-code">K16</span><h2 id="k16">Antes e depois</h2><p>Duas camadas, a nova revelada com clip-path, divisória arrastável e um range nativo como controle real (teclado e leitor de tela). Padrão da comparação de imagens da landing do smiile, reescrito sem React. Usado em /criadores/ao-vivo.</p></header>
+      <div class="pg-compare" data-compare id="k-compare">
+        <div class="pg-compare-stage" data-compare-stage>
+          <figure class="pg-compare-layer pg-compare-before lab-k-layer lab-k-layer--antes"><figcaption>Antes</figcaption><p>Live sem cena: câmera fixa, sem sobreposições, chat solto.</p></figure>
+          <figure class="pg-compare-layer pg-compare-after lab-k-layer lab-k-layer--depois"><figcaption>Depois</figcaption><p>Cena montada: moldura, nome, chamada para seguir e chat no canto.</p></figure>
+          <span class="pg-compare-divider" data-compare-handle aria-hidden="true"></span>
+        </div>
+        <div class="pg-compare-control"><label for="k-compare-range">Comparar antes e depois</label><input id="k-compare-range" type="range" min="0" max="100" step="1" value="50" data-compare-range></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="pg-section pg-section--floresta lab-k-block" aria-labelledby="k11">
+    <div class="pg-container">
+      <header class="lab-k-head"><span class="lab-k-code">K11</span><h2 id="k11">Perguntas em sanfona</h2><p>details/summary nativos com o mesmo name: abrir uma fecha a outra. Sem JavaScript.</p></header>
+      <div class="pg-accordion-list">
+        <details class="pg-accordion" name="k-faq"><summary><span>Quanto tempo leva um mídia kit?</span><span class="pg-accordion-icon" aria-hidden="true">+</span></summary><div class="pg-accordion-body"><p>Depende do que já existe. A conversa inicial define o prazo.</p></div></details>
+        <details class="pg-accordion" name="k-faq"><summary><span>Atende menores de 18 anos?</span><span class="pg-accordion-icon" aria-hidden="true">+</span></summary><div class="pg-accordion-body"><p>Por enquanto, só maiores de 18 anos.</p></div></details>
+      </div>
+    </div>
+  </section>
+
+  <section class="pg-section lab-k-block" aria-labelledby="k7">
+    <div class="pg-container">
+      <header class="lab-k-head"><span class="lab-k-code">K7 · K8</span><h2 id="k7">Molduras de aparelho</h2><p>Celular, notebook e tablet do próprio portfólio, em HTML e CSS, com tela viva. O texto visível diz “celular”, “notebook” e “tablet”, nunca o nome do produto.</p></header>
+      <div class="lab-k-devices" id="k-devices"></div>
+    </div>
+  </section>
+</main>
+</body>
+</html>
