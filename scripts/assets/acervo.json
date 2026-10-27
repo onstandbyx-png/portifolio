@@ -683,6 +683,26 @@
    ],
    "substitui": "YouTube Live da Ponto Tech (player 16:9)",
    "mostra": "As mesmas mãos digitando no notebook grafite, quadro horizontal"
+  },
+  {
+   "arquivo": "canais/video/restaurante-fogo-lenha-4x5",
+   "fonte": "video/kulish.webm",
+   "inicio": 1,
+   "duracao": 4,
+   "recorte": "384:480:112:600",
+   "tamanho": [
+    576,
+    720
+   ],
+   "substitui": "vídeo do restaurante no Facebook e abertura da live da cozinha (4:5); hoje é foto parada",
+   "mostra": "Fogo a lenha aceso sob um tacho de ferro, ao ar livre; o recorte mostra só o fundo do tacho e as chamas",
+   "origem": "https://commons.wikimedia.org/wiki/File:%D0%9F%D1%80%D0%B8%D0%B3%D0%BE%D1%82%D1%83%D0%B2%D0%B0%D0%BD%D0%BD%D1%8F_%D0%BA%D1%83%D0%BB%D1%96%D1%88%D1%83_%D0%B0%D0%B1%D0%BE_%D0%BF%D0%BE%D0%BB%D1%8C%D0%BE%D0%B2%D0%BE%D1%97_%D0%BA%D0%B0%D1%88%D1%96_%D1%83_%D0%BA%D0%B0%D0%B7%D0%B0%D0%BD%D1%96.webm",
+   "autor": "Berser25",
+   "licenca": "CC BY-SA 4.0",
+   "licenca_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+   "original": "1080 x 1920, 11 s",
+   "baixado": "versão transcodificada de 1080p (VP9) do Commons, 608 x 1080",
+   "crf_webm": 40
   }
  ]
 }
