@@ -17,7 +17,7 @@ function picture(file, alt, className = '') {
 /* Channel tiles (pattern of a platform selector mapped in the lab): the
    official mark over a short name, every channel visible at once, no scrolling. */
 const SHORT = { google: 'Google Ads', maps: 'Maps', whatsapp: 'WhatsApp', voz: 'Voz IA', pix: 'Pix Auto' };
-const TINY = { blog: 'Publi' }; // under 360px, where the full name does not fit a quarter of the row
+const TINY = { blog: 'Publi', google: 'Google' }; // under 400px, where the full name does not fit a quarter of the row
 const tileName = channel => { const name = esc(SHORT[channel.id] || channel.name); return TINY[channel.id] ? `<span class="sp-n-long">${name}</span><span class="sp-n-short">${esc(TINY[channel.id])}</span>` : name; };
 const DOC_MARK = '<svg class="sp-platform-logo sp-platform-logo--doc" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 3.5h8l4 4V20.5H6zM14 3.5v4h4M9 12h6M9 15.5h6"/></svg>';
 const groupLabel = id => groups.find(group => group.id === id)?.label || '';
