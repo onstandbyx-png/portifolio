@@ -56,6 +56,7 @@
 :is(#laboratorio,.lab-escopo) .cm-site-tick{display:flex;align-items:center;gap:calc(var(--u)*9);font-size:calc(var(--u)*14)}
 :is(#laboratorio,.lab-escopo) .cm-site-tick i{display:grid;flex:none;place-items:center;width:calc(var(--u)*20);height:calc(var(--u)*20);border:calc(var(--u)*1.6) solid #b9bdc3;border-radius:calc(var(--u)*6);color:#fff}
 :is(#laboratorio,.lab-escopo) .cm-site-tick.is-on i{border-color:var(--brand);background:var(--brand)}
+:is(#laboratorio,.lab-escopo) .cm-screen[data-state~="q2"] .cm-site-tick[data-pick~="q2"] i{border-color:var(--brand);background:var(--brand)}
 :is(#laboratorio,.lab-escopo) .cm-site-tick .cm-i{width:calc(var(--u)*13);height:calc(var(--u)*13);stroke-width:3}
 :is(#laboratorio,.lab-escopo) .cm-site-note{display:flex;align-items:flex-start;gap:calc(var(--u)*7);color:var(--site-muted);font-size:calc(var(--u)*12.5);line-height:1.4}
 :is(#laboratorio,.lab-escopo) .cm-site-note .cm-i{width:calc(var(--u)*15);height:calc(var(--u)*15);margin-top:calc(var(--u)*1)}

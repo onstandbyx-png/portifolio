@@ -207,7 +207,7 @@ export function makeSites({ I, pic, marca, esc, avatar = () => '', planta = () =
         ${label('Cor')}<span class="cm-tc-colors">${pk('Grafite', { cls: 'cm-tc-swatch cm-tc-swatch--g', sub: cap(grafite.estado) })}${pk('Branco', { cls: 'cm-tc-swatch cm-tc-swatch--w', sub: cap(branco.estado), on: true })}</span>
         ${field('Avisar no e-mail', PESSOA.email)}${tick('Quero receber só esse aviso')}`)}${foot(cta('Quero ser avisado', 'a'))}`,
       `${top}${body(`${ok('Você está na lista', `Avisamos por e-mail no dia em que o branco chegar: ${dataCurta(branco.chegada)}.`)}
-        ${trilha([['Inscrição feita', PESSOA.email, true], ['Aviso de chegada', `${cap(dataCurta(branco.chegada))}, um e-mail só`], ['Unidade separada para você', 'Por 48 horas depois do aviso']])}
+        ${trilha([['Inscrição feita', PESSOA.email, true], ['Aviso de chegada', `${cap(dataCurta(branco.chegada))}, um e-mail só`], ['Unidade separada para você', 'Por 24 horas depois do aviso']])}
         <div class="cm-tc-alt">${pic('notebookGrafite11', { pos: '50% 50%' })}<span><b>O grafite está disponível</b><small>${esc(cap(V.frete))}. ${esc(cap(V.parcelamento))}.</small></span></div>
         <p class="cm-site-note">${I('mail')}Você pode sair da lista pelo link do próprio e-mail.</p>`, 'cm-site-body--end')}`,
     ]);

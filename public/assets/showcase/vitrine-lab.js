@@ -52,7 +52,11 @@ function mountOne(root) {
   let demo = null, placement = null, list = [], cut = null, screen = null, index = 0, timer = 0, playing = false, started = false, token = 0, modo = 'celular';
   // resume: playback was stopped by the page (out of view, hidden tab, global pause), not by the visitor.
   let resume = false, inView = false;
-  const last = () => cut ? cut.to - cut.from : 0;
+  // ids: the absolute frames shown in this mode. A desktop browser cannot show the phone's bank app,
+  // so Computador keeps only the frames on the site itself.
+  let ids = [];
+  const last = () => Math.max(0, ids.length - 1);
+  const frameIds = () => { const out = []; for (let i = cut.from; i <= cut.to; i++) if (modo === 'celular' || list[i].cena === list[cut.from].cena) out.push(i); return out; };
 
   function thumb() {
     const knob = root.querySelector('.cx-thumb'), on = root.querySelector('[data-formato][aria-pressed="true"]');
@@ -70,11 +74,11 @@ function mountOne(root) {
   }
   /* The list of screens: the steps of the cut and, under each, the screens it shows. */
   function listMarkup() {
-    return cut.passos.map(p => `<li class="vitrine-passo"><b>${esc(p.fase)}</b><small>${esc(p.rotulo)}</small><ol>${p.quadros.map(i => `<li><button type="button" data-tela="${i - cut.from}"><span class="vitrine-n" aria-hidden="true">${i - cut.from + 1}</span><span>${esc(list[i].desc)}</span></button></li>`).join('')}</ol></li>`).join('');
+    return cut.passos.map(p => ({ ...p, quadros: p.quadros.filter(i => ids.includes(i)) })).filter(p => p.quadros.length).map(p => `<li class="vitrine-passo"><b>${esc(p.fase)}</b><small>${esc(p.rotulo)}</small><ol>${p.quadros.map(i => ids.indexOf(i)).map(n => `<li><button type="button" data-tela="${n}"><span class="vitrine-n" aria-hidden="true">${n + 1}</span><span>${esc(list[ids[n]].desc)}</span></button></li>`).join('')}</ol></li>`).join('');
   }
   function show(i, { instant = true } = {}) {
     index = Math.max(0, Math.min(last(), i));
-    const abs = cut.from + index, item = list[abs];
+    const abs = ids[index], item = list[abs];
     applyFrame(screen, list, abs, { instant, playing });
     caption.textContent = item.desc;
     pos.textContent = `${index + 1}/${last() + 1}`;
@@ -132,6 +136,7 @@ function mountOne(root) {
     placement = channelById(demo.channel).placements.find(item => item.id === demo.placement);
     list = placement.quadros;
     cut = recorte(placement);
+    ids = frameIds();
     mountScreen();
     telas.innerHTML = listMarkup();
     root.querySelectorAll('[data-formato]').forEach(button => button.setAttribute('aria-pressed', String(Number(button.dataset.formato) === k)));
@@ -141,12 +146,15 @@ function mountOne(root) {
   }
   function setModo(next) {
     if (next === modo || (next === 'computador' && !desktopQuery.matches)) return;
-    const was = index;
+    const was = ids[index];
     go(false);
     modo = next;
-    root.querySelectorAll('[data-modo]').forEach(button => button.setAttribute('aria-pressed', String(button.dataset.modo === modo)));
+    root.querySelectorAll('.vitrine-modo-b[data-modo]').forEach(button => button.setAttribute('aria-pressed', String(button.dataset.modo === modo)));
+    ids = frameIds();
     mountScreen();
-    show(was);
+    telas.innerHTML = listMarkup();
+    const at = ids.findIndex(i => i >= was);
+    show(at < 0 ? last() : at);
   }
 
   root.addEventListener('click', event => {

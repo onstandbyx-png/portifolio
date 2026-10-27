@@ -450,12 +450,13 @@ function mountOne(root) {
     stage.querySelector('.ch-iphone')?.classList.toggle('ch-iphone--compacto', compacto.matches);
     screen = stage.querySelector('.cm-screen');
     const c = CLIENTES[placement.cliente] || {};
-    stage.setAttribute('aria-label', `${m.label}${falha ? ', com falhas' : ''}. ${c.marca ? c.marca + ', marca fictícia. ' : ''}${placement.frase || ''}`);
+    const caminhos = placementByKey(m.key)?.caminhos || ['Caminho feliz', 'Com falhas'];
+    stage.setAttribute('aria-label', `${m.label}${falha ? `, ${caminhos[1].toLowerCase()}` : ''}. ${c.marca ? c.marca + ', marca fictícia. ' : ''}${placement.frase || ''}`);
     root.dataset.modulo = m.chave; root.dataset.falha = String(falha);
     root.querySelectorAll('[data-at-mod]').forEach(b => b.setAttribute('aria-pressed', String(Number(b.dataset.atMod) === modulo)));
     const path = $('[data-at-path]');
     path.hidden = !m.falha;
-    path.querySelectorAll('[data-at-falha]').forEach(b => b.setAttribute('aria-pressed', String((b.dataset.atFalha === '1') === falha)));
+    path.querySelectorAll('[data-at-falha]').forEach(b => { b.setAttribute('aria-pressed', String((b.dataset.atFalha === '1') === falha)); b.textContent = caminhos[Number(b.dataset.atFalha)]; });
     $('[data-at-cliente]').innerHTML = c.marca ? `${marca(placement.cliente, 'circulo', 'at-marca')}<span><b>${esc(c.marca)}</b><small>${esc(c.tipo)} · marca fictícia</small></span>` : '';
     $('[data-at-objetivo]').innerHTML = placement.objetivo ? `<b>Objetivo</b> ${esc(placement.objetivo)}` : '';
     $('[data-at-base]').textContent = placement.base ? `Baseado em: ${placement.base}` : '';

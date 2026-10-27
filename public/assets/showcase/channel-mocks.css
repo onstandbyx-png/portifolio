@@ -1238,5 +1238,7 @@ body.is-paused :is(#laboratorio,.lab-escopo) .cm-kb{animation:none!important}
 :is(#laboratorio,.lab-escopo) .cm-app-dica{display:flex;align-items:flex-start;gap:calc(var(--u)*8);margin-top:auto;padding:calc(var(--u)*12) calc(var(--u)*14);border-radius:calc(var(--u)*14);background:#fff;color:#6e6476;font-size:calc(var(--u)*13);line-height:1.4}
 :is(#laboratorio,.lab-escopo) .cm-app-dica .cm-i{flex:none;width:calc(var(--u)*17);height:calc(var(--u)*17);margin-top:calc(var(--u)*1)}
 :is(#laboratorio,.lab-escopo) .cm-screen[data-state~="a2"] .cm-app-dica{display:none}
+:is(#laboratorio,.lab-escopo) .cm-app-p2,:is(#laboratorio,.lab-escopo) .cm-screen[data-state~="a2"] .cm-app-p1{display:none}
+:is(#laboratorio,.lab-escopo) .cm-screen[data-state~="a2"] .cm-app-p2{display:inline}
 /* the app switch to the bank: the breadcrumb back to the first app takes the place of the clock */
 :is(#laboratorio,.lab-escopo) .ch-iphone-ui:has(.cm-scene[data-pos="on"] .cm-bk>.cm-crumb) .ch-iphone-hora{opacity:0}

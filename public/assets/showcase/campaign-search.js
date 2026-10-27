@@ -105,9 +105,9 @@ export function makeSearch(ctx = {}) {
       `${top}${body(`${prog('Mais uma pergunta, 2 de 2', 1)}<b class="sb-lf-h" data-hs="3">Qual é o seu momento?</b>
         <div class="cm-radios">${pk('Organizar as contas da empresa e da família', { cls: 'cm-radio' })}${pk('Planejar a sucessão', { cls: 'cm-radio', q: 'q1', tap: 'b' })}${pk('Só quero me informar', { cls: 'cm-radio' })}</div>
         <div class="sb-lf-review"><small>Vai para ${esc(nome)}</small><span>${esc(PESSOA.nome)} · ${esc(PESSOA.cargo)}, ${esc(TERCEIROS.empresaPersona)}</span><span>${esc(PESSOA.email)}</span></div>
-        ${tick(`Quero receber conteúdos da ${nome}`, false)}<p class="cm-legal">Ao enviar, você aceita que ${esc(nome)} use suas informações conforme a política de privacidade dela. Você pode apagar o envio nas configurações do LinkedIn.</p>`)}${foot(cta('Enviar', 'c', ''))}`,
+        <p class="cm-site-tick" data-pick="q2" data-tap="e" data-hs="3"><i>${I('check')}</i>${esc(`Quero receber conteúdos da ${nome}`)}</p><p class="cm-legal">Ao enviar, você aceita que ${esc(nome)} use suas informações conforme a política de privacidade dela. Você pode apagar o envio nas configurações do LinkedIn.</p>`)}${foot(cta('Enviar', 'c', ''))}`,
       `${top}${body(`${ok(`Obrigado, ${PESSOA.primeiro}`, 'O guia completo está liberado no post do feed.')}<div class="sb-lf-file">${I('doc')}<span><b>${esc(guia)}</b><small>PDF, 12 páginas · liberado</small></span>${I('down')}</div>
-        ${trilha([['Formulário enviado', 'Agora', true], ['Guia liberado no feed', 'Página 5 em diante'], ['E-mail da gestora', 'Só se você marcar a opção']])}${legal(k)}`, 'cm-site-body--end')}${foot(cta('Ver documento', 'd', ''))}`,
+        ${trilha([['Formulário enviado', 'Agora', true], ['Guia liberado no feed', 'Página 5 em diante'], ['E-mail da gestora', 'O guia também por e-mail, como você marcou']])}${legal(k)}`, 'cm-site-body--end')}${foot(cta('Ver documento', 'd', ''))}`,
     ], '#0a66c2');
   };
 
@@ -291,7 +291,7 @@ export function makeSearch(ctx = {}) {
       <div class="sb-place" data-out="typing"><span class="sb-grabber"></span>
         <div class="sb-place-peek"><span><small class="sb-sp">Patrocinado</small><b>${esc(nome)}</b><small>Restaurante · 4,2 km</small><small><em>${esc(R.abreHoje)}</em></small></span>${pic('fachada43', { alt: 'Fachada de madeira do restaurante, com flores e mesas na calçada.', pos: '50% 40%' })}</div>
         <div class="sb-place-full"><span class="sb-place-top"><small class="sb-sp">Patrocinado ${I('vdots')}</small><span><i>${I('share')}</i><i>${I('close')}</i></span></span><b class="sb-place-name">${esc(nome)}</b><small>Restaurante · cozinha brasileira · 4,2 km</small><small><em>${esc(R.abreHoje)}</em> · almoço até 15h30</small>
-          <span class="sb-place-ad" data-hs="2"><b>Feijoada no tacho aos sábados</b><small>Almoço de terça a domingo, a partir das 11h30. Mesa sem reserva no almoço.</small><small>${esc(C[kr].dominio)}</small></span>
+          <span class="sb-place-ad" data-hs="2"><b>Feijoada no tacho aos sábados</b><small>Almoço de terça a domingo, a partir das 11h30. Reserve a mesa pelo site ou chegue sem reserva.</small><small>${esc(C[kr].dominio)}</small></span>
           <span class="sb-place-chips"><span class="is-primary" data-tap="cta" data-hs="3">${I('route')}Rotas</span><span>${I('phone')}Ligar</span><span>${ic('site')}Site</span><span>${I('bookmark')}Salvar</span><span>${I('share')}Compartilhar</span></span>
           <span class="sb-place-photos">${pic('fachada43', { pos: '50% 40%' })}${pic('panela11')}${pic('prato11')}</span>
           <span class="sb-place-row">${I('location')}${esc(TERCEIROS.ruas[kr])}</span></div></div>`) +
@@ -367,9 +367,9 @@ export function makeSearch(ctx = {}) {
     'linkedin/feed': { id: 'feed', label: 'Documento', curto: 'Documento', mock: 'liFeed', cliente: 'financas', selo: 'Promovido', frase: 'Uma gestora entrega o guia em troca do contato, sem sair do LinkedIn.',
       objetivo: 'Leads de sócios com o guia liberado no feed',
       base: 'LinkedIn Ads: anúncio de documento e formulário de geração de leads (até 3 perguntas personalizadas, campos preenchidos pelo perfil).',
-      passos: passos3(['A dor do sócio na primeira frase', [0]], ['Páginas 2 e 3 com a lista de verificação', [1, 2, 3]], ['Formulário do perfil e guia liberado', [4, 5, 6, 7, 8, 9, 10, 11, 12]]),
+      passos: passos3(['A dor do sócio na primeira frase', [0]], ['Páginas 2 e 3 com a lista de verificação', [1, 2, 3]], ['Formulário do perfil e guia liberado', [4, 5, 6, 7, 8, 9, 10, 11, 12, 13]]),
       quadros: [
-        { ms: 1800, cena: 'feed', desc: `Post promovido da ${C.financas.marca}: empresa e família no mesmo patrimônio? O guia começa na capa.` },
+        { ms: 1800, cena: 'feed', hora: '08:37', desc: `Post promovido da ${C.financas.marca}: empresa e família no mesmo patrimônio? O guia começa na capa.` },
         { ms: 2200, cena: 'feed', estado: 'p2', desc: 'Página 2: conta PJ pagando despesa da casa, pró-labore e bens da empresa no CPF do sócio.' },
         { ms: 2200, cena: 'feed', estado: 'p3', desc: 'Página 3: quem assume se o sócio faltar, acordo de sócios e quando a holding faz sentido.' },
         { ms: 1800, cena: 'feed', estado: 'p4', desc: 'A página 4 vem desfocada: para continuar lendo, envie suas informações.' },
@@ -378,9 +378,10 @@ export function makeSearch(ctx = {}) {
         { ms: 800, cena: 'form', toque: 'a', desc: 'Toque em Avançar.' },
         { ms: 1800, cena: 'form', estado: 'w2', desc: 'Uma pergunta da gestora: qual é o seu momento? E o resumo do que vai ser enviado.' },
         { ms: 900, cena: 'form', estado: 'w2 q1', toque: 'b', desc: 'Toque em Planejar a sucessão.' },
-        { ms: 800, cena: 'form', estado: 'w2 q1', toque: 'c', desc: 'Toque em Enviar.' },
-        { ms: 2000, cena: 'form', estado: 'w3', hora: t('10'), desc: `Obrigado, ${PESSOA.primeiro}: o guia completo está liberado no post do feed.`,
-          log: [L('10:10:02', 'LinkedIn', 'Lead Gen Form enviado', 'nome, e-mail, cargo, empresa e a resposta da pergunta', 'conversao'), L('10:10:03', 'CRM', 'Lead criado', 'origem: anúncio de documento no LinkedIn', 'dado'), L('10:10:05', 'LinkedIn CAPI', 'lead', 'o CRM devolve o lead à campanha', 'sinal')] },
+        { ms: 900, cena: 'form', estado: 'w2 q1 q2', toque: 'e', desc: `Toque em Quero receber conteúdos da ${C.financas.marca}: sem essa marca, a gestora não manda e-mail.` },
+        { ms: 800, cena: 'form', estado: 'w2 q1 q2', toque: 'c', desc: 'Toque em Enviar.' },
+        { ms: 2000, cena: 'form', estado: 'w3', hora: '08:39', desc: `Obrigado, ${PESSOA.primeiro}: o guia completo está liberado no post do feed e também vai por e-mail.`,
+          log: [L('08:39:52', 'LinkedIn', 'Lead Gen Form enviado', 'nome, e-mail, cargo, empresa, a resposta e o aceite de e-mails', 'conversao'), L('08:39:53', 'CRM', 'Lead criado', 'origem: anúncio de documento no LinkedIn', 'dado'), L('08:39:55', 'LinkedIn CAPI', 'lead', 'o CRM devolve o lead à campanha', 'sinal')] },
         { ms: 800, cena: 'form', estado: 'w3', toque: 'd', desc: 'Toque em Ver documento.' },
         { ms: 2600, cena: 'feed', estado: 'p5 lib done', desc: 'A folha fecha e o guia aparece liberado no feed: página 5 de 12, com o botão Baixar.' },
       ] },

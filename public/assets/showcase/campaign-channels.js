@@ -412,10 +412,10 @@ const mocks = {
       <div class="cm-store-meta"><span><small>Idade</small><b>4+</b></span><span><small>Categoria</small><b>Educação</b></span><span><small>Desenvolvedor</small><b>${esc(C.educacao.marca)}</b></span><span><small>Idioma</small><b>PT</b></span></div>
       <div class="cm-store-shots"><span class="cm-store-shot cm-store-shot--aula"><small>Aula ao vivo</small><i class="cm-store-video"></i><i class="cm-bubble">How was your weekend?</i><i class="cm-bubble cm-bubble--me">Pretty good, thanks!</i></span><span class="cm-store-shot"><small>Teste de nível</small><b>It’s up to you.</b><i class="cm-bubble">Você que decide.</i><span class="cm-store-meter"><i></i><i></i><i class="is-on"></i><i></i><i></i></span></span><span class="cm-store-shot"><small>Sequência</small><b>7 dias seguidos</b><span class="cm-store-dias">${'<i class="is-on"></i>'.repeat(5)}<i></i><i></i></span></span></div>
       <div class="cm-store-face">${I('face')}<b>Clique duas vezes para instalar</b><small>Botão lateral</small></div></div>`, 'cm-scene--part', 'claro') +
-    scene('app', 'switch', 'claro', `<div class="cm-app" style="--brand:${C.educacao.cor}"><div class="cm-app-top">${marca('educacao')}<b>${esc(curta('educacao'))}</b><small>Passo 1 de 2</small></div>
+    scene('app', 'switch', 'claro', `<div class="cm-app" style="--brand:${C.educacao.cor}"><div class="cm-app-top">${marca('educacao')}<b>${esc(curta('educacao'))}</b><small><span class="cm-app-p1">Passo 1 de 2</span><span class="cm-app-p2">Passo 2 de 2</span></small></div>
       <div class="cm-app-corpo"><span class="cm-app-bar"><i></i></span><small class="cm-app-k">Teste de nivelamento</small><b class="cm-app-h">Qual resposta soa natural?</b><p class="cm-app-q">“How long have you lived here?”</p>
         <span class="cm-app-op" data-tap="ans" data-pick="a2">For three years.</span><span class="cm-app-op">Since three years.</span><span class="cm-app-op">Three years ago.</span>
-        <p class="cm-app-dica" data-out="a2">${I('info')}Sem cronômetro. São 8 perguntas curtas e o app ajusta a próxima pela sua resposta.</p>
+        <p class="cm-app-dica" data-out="a2">${I('info')}Sem cronômetro. Teste rápido: o app ajusta cada pergunta pela sua resposta e mostra o nível na hora.</p>
         <div class="cm-app-fim" data-in="a2"><span class="cm-app-nivel"><small>Seu nível</small><b>${esc(E.nivel)} · Intermediário</b></span><p>Plano sugerido: ${esc(E.clube.toLowerCase())}, 19h. A primeira aula experimental é ${esc(dataLonga(E.aulaExperimental.iso))}.</p><span class="cm-app-btn">Começar</span></div></div></div>`));
   },
 
@@ -695,7 +695,7 @@ export const channels = [
         curto: 'Bloco no Explorar → Reels → agendamento', objetivo: 'Avaliações agendadas pelo site',
         passos: passos3(['Bloco do anúncio entre as fotos', [0]], ['Tela cheia, no formato do Reels', [1, 2, 3]], ['Serviço, dia, horário e dados', [4, 5, 6, 7, 8, 9, 10, 11]]),
         quadros: [
-          { ms: 1500, cena: 'grid', desc: `Explorar: fotos de interesse e, entre elas, um bloco da ${curta('clinica')} só com a marca e Anúncio.` },
+          { ms: 1500, cena: 'grid', desc: `Explorar: fotos de interesse e, entre elas, a foto do consultório da ${curta('clinica')}, com o selo de Anúncio no canto.` },
           { ms: 900, cena: 'grid', toque: 'ad', desc: 'Toque no bloco do anúncio.' },
           { ms: 1700, cena: 'reel', video: 1, desc: `O anúncio abre em tela cheia, no formato do Reels: ${C.clinica.assinatura}` },
           { ms: 900, cena: 'reel', estado: 'lit', video: 1, toque: 'cta', desc: 'O botão Solicitar horário ganha cor. Toque nele.' },
@@ -852,7 +852,7 @@ export const channels = [
           { ms: 1700, cena: 'live', estado: 's2 s3', video: 1, desc: `O canal fixa a lista de espera do branco, que chega em ${dataCurta(VA.skus[1].chegada).split(', ')[1]}.` },
           { ms: 900, cena: 'live', estado: 's2 s3', video: 1, toque: 'link', desc: 'Toque em entrar na lista.' },
           { ms: 1800, cena: 'page', toque: 'a', desc: 'A página do branco abre, com a data de chegada e o e-mail já preenchido. Toque em Quero ser avisado.', log: [L('10:09:30', 'Site', 'Visita vinda da live', 'link da mensagem fixada', 'sinal')] },
-          { ms: 2200, cena: 'page', estado: 'w2 done', hora: '10:09', desc: `Você está na lista: um e-mail em ${dataCurta(VA.skus[1].chegada)} e a unidade separada por 48 horas.`, log: [L('10:09:41', 'CRM', 'Lista de espera', `aviso agendado para ${dataCurta(VA.skus[1].chegada)}`, 'conversao')] },
+          { ms: 2200, cena: 'page', estado: 'w2 done', hora: '10:09', desc: `Você está na lista: um e-mail em ${dataCurta(VA.skus[1].chegada)} e a unidade separada por 24 horas.`, log: [L('10:09:41', 'CRM', 'Lista de espera', `aviso agendado para ${dataCurta(VA.skus[1].chegada)}`, 'conversao')] },
         ] },
     ] },
   { id: 'linkedin', name: 'LinkedIn', group: 'social', benefit: 'Falar com quem decide.',

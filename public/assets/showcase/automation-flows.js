@@ -181,7 +181,7 @@ export function makeAutomations(H) {
         <div class="cm-wa-in au-perm" data-hs="1"><span class="au-perm-ico">${I('phone')}</span><b>${esc(nome('automotivo'))} quer ligar para você</b><small>Você pode mudar isso a qualquer momento nos dados da conversa.</small>
           <span class="au-perm-btn" data-tap="allow" data-out="a1">Permitir por 7 dias</span><span class="au-perm-btn au-perm-btn--sec" data-out="a1">Sempre permitir</span><span class="au-perm-btn au-perm-btn--no" data-out="a1">Agora não</span><span class="au-perm-ok" data-in="a1">${I('check', 'cm-i--inline')}Chamadas permitidas por 7 dias</span></div>
         ${sys('a1', `${I('phone', 'cm-i--inline')}Você permitiu que ${esc(nome('automotivo'))} ligue para você por 7 dias.`)}
-        <div class="cm-wa-in au-calllog" data-in="a2"><span class="au-calllog-ico">${I('phone')}</span><span><b>Chamada de voz</b><small>${relogio(duracaoChamada)}</small></span><small>10:11</small></div>
+        <div class="cm-wa-in au-calllog" data-in="a2"><span class="au-calllog-ico">${I('phone')}</span><span><b>Chamada de voz</b><small>${relogio(duracaoChamada)}</small></span><small>10:09</small></div>
         ${inn('a2', `<b>Test drive confirmado</b><br>${esc(cap(dataLonga(td.iso)))}, às ${esc(horaFala(td.hora))}, loja ${esc(td.unidade)}: ${esc(TERCEIROS.ruas.automotivo)}. Leve a carteira de motorista. Te espero lá!`, { who: pessoa(AU.consultor, 'automotivo'), time: '10:12', hs: '3' })}
       </div>${waCompose()}`) +
     scene('ring', 'modal', 'escuro', `<div class="au-ring"><span class="au-ring-id"><b>${esc(nome('automotivo'))}</b><small>WhatsApp Áudio</small></span>
@@ -230,10 +230,9 @@ export function makeAutomations(H) {
     { quem: 'eu', texto: 'Não precisa, obrigada!' },
   ], 900);
   const duracaoVoz = Math.floor(segVoz.at(-1).endMs / 1000);
-  const telefoneDigitado = `${PESSOA.telefone.slice(0, 8)}765-43${PESSOA.telefone.slice(-2)}`;
   const semana = de(25, 31).map(n => `2026-10-${n}`);
   const vozIA = () => screen('voice au', scene('page', 'base', 'claro', `<div class="au-lead" style="--brand:${C.clinica.cor}"><span class="au-lead-hero">${pic('recepcao45', { alt: 'Recepção da clínica com parede terracota, sofá e plantas.', pos: '50% 55%' })}</span><span class="au-lead-brand">${marca('clinica')}<b>${esc(nome('clinica'))}</b></span>
-      <div data-out="a1"><b class="au-lead-h" data-hs="1">Prefere conversar? A gente liga.</b><span class="au-field"><small>Nome</small><b>${esc(PESSOA.nome)}</b></span><span class="au-field"><small>Celular</small><b>${esc(telefoneDigitado)}</b></span><span class="au-field"><small>Interesse</small><b>${esc(cap(CL.interesse))}</b></span>
+      <div data-out="a1"><b class="au-lead-h" data-hs="1">Prefere conversar? A gente liga.</b><span class="au-field"><small>Nome</small><b>${esc(PESSOA.nome)}</b></span><span class="au-field"><small>Celular</small><b>${esc(PESSOA.telefone)}</b></span><span class="au-field"><small>Interesse</small><b>${esc(cap(CL.interesse))}</b></span>
         <span class="au-check is-on"><i>${I('check')}</i>Aceito receber uma ligação agora. Ela pode ser atendida por uma assistente virtual.</span>
         <span class="cm-btn au-lead-go" data-tap="send" data-hs="1">Pedir ligação</span><small class="cm-legal">${esc(LEGAL.clinica)}</small></div>
       <div class="au-lead-ok" data-in="a1" data-hs="1"><span class="cm-done-check">${I('phone')}</span><b>Recebemos. Vamos te ligar em instantes.</b><small>Se não puder atender, a gente manda mensagem no WhatsApp.</small>
@@ -470,13 +469,15 @@ export function makeAutomations(H) {
   ];
   // Turn frames: description, log and the dot.
   const [cIa1, cEu1, cIa2, cEu2, cIa3, cEsp, cRafa] = chamada.slice(6, 13);
-  Object.assign(cIa1, { desc: 'A assistente se apresenta como inteligência artificial e avisa que a ligação é gravada.', log: [ev('10:09:06', 'Agente IA', 'Abre a ligação se identificando', 'avisa a gravação', 'turno', { ia: 'declarada', gravacao: 'avisada' })] });
+  // The log follows the call timer: accepted at 10:09:04, each event at its turn (segChamada).
+  const naChamada = ms => { const t = 9 * 60 + 4 + Math.floor(ms / 1000); return `10:${String(Math.floor(t / 60)).padStart(2, '0')}:${String(t % 60).padStart(2, '0')}`; };
+  Object.assign(cIa1, { desc: 'A assistente se apresenta como inteligência artificial e avisa que a ligação é gravada.', log: [ev(naChamada(segChamada[0].startMs), 'Agente IA', 'Abre a ligação se identificando', 'avisa a gravação', 'turno', { ia: 'declarada', gravacao: 'avisada' })] });
   Object.assign(cEu1, { desc: `${PESSOA.primeiro} pede sábado de manhã. O cronômetro conta a ligação.` });
-  Object.assign(cIa2, { desc: `A assistente oferece ${horaFala(td.hora)} ou ${horaFala(td.alternativa)} e pergunta se ela quer um consultor.`, log: [ev('10:09:26', 'Agente IA', 'Ferramenta: agenda_test_drive', '2 horários', 'ferramenta', { dia: dataCurta(td.iso), unidade: td.unidade })] });
+  Object.assign(cIa2, { desc: `A assistente oferece ${horaFala(td.hora)} ou ${horaFala(td.alternativa)} e pergunta se ela quer um consultor.`, log: [ev(naChamada(segChamada[2].startMs), 'Agente IA', 'Ferramenta: agenda_test_drive', '2 horários', 'ferramenta', { dia: dataCurta(td.iso), unidade: td.unidade })] });
   Object.assign(cEu2, { desc: `Ela escolhe ${horaFala(td.hora)} e quer entender a recarga.` });
-  Object.assign(cIa3, { desc: `A assistente avisa que vai passar para o ${AU.consultor}, com o resumo.`, log: [ev('10:09:41', 'Agente IA', 'Transferência com contexto', 'resumo enviado ao consultor', 'pessoa', { sip: 'REFER' }, { bastidor: { titulo: 'Bastidor · o que o consultor recebe', texto: `${PESSOA.nome} quer test drive do ${AU.modelo} em ${dataCurta(td.iso)}, ${td.hora}, loja ${td.unidade}. Quer entender a recarga em casa. Resumo gerado por IA.` } })] });
-  Object.assign(cEsp, { desc: `Transferindo para ${AU.consultor}: a onda para enquanto a ligação espera.`, log: [ev('10:09:45', 'Humano', `${AU.consultor} aceita a transferência`, 'já com o resumo na tela', 'pessoa')] });
-  Object.assign(cRafa, { desc: `${AU.consultor} assume, confirma ${dataCurta(td.iso)} às ${horaFala(td.hora)} e promete mostrar a recarga.`, log: [ev('10:10:02', 'Agenda', 'Test drive agendado', 'confirmado pelo consultor', 'agenda', { quando: `${dataCurta(td.iso)} ${td.hora}`, unidade: td.unidade })] });
+  Object.assign(cIa3, { desc: `A assistente avisa que vai passar para o ${AU.consultor}, com o resumo.`, log: [ev(naChamada(segChamada[4].endMs), 'Agente IA', 'Transferência com contexto', 'resumo enviado ao consultor', 'pessoa', { sip: 'REFER' }, { bastidor: { titulo: 'Bastidor · o que o consultor recebe', texto: `${PESSOA.nome} quer test drive do ${AU.modelo} em ${dataCurta(td.iso)}, ${td.hora}, loja ${td.unidade}. Quer entender a recarga em casa. Resumo gerado por IA.` } })] });
+  Object.assign(cEsp, { desc: `Transferindo para ${AU.consultor}: a onda para enquanto a ligação espera.`, log: [ev(naChamada(segChamada[5].endMs), 'Humano', `${AU.consultor} aceita a transferência`, 'já com o resumo na tela', 'pessoa')] });
+  Object.assign(cRafa, { desc: `${AU.consultor} assume, confirma ${dataCurta(td.iso)} às ${horaFala(td.hora)} e promete mostrar a recarga.`, log: [ev(naChamada(segChamada[6].endMs), 'Agenda', 'Test drive agendado', 'confirmado pelo consultor', 'agenda', { quando: `${dataCurta(td.iso)} ${td.hora}`, unidade: td.unidade })] });
 
   const direct = [
     { ms: 1600, cena: 'reel', video: 1, desc: `Reel da ${curta('varejo')}: o ${branco.nome} ${branco.cor} chega em ${ddmm(chega)}. Comente BRANCO e receba o aviso.`, log: [ev('10:09:10', 'Anúncio', 'Reel com pedido de comentário', 'palavra-chave BRANCO', 'anuncio', { formato: 'prompt de comentário' })] },
@@ -687,8 +688,8 @@ export function makeAutomations(H) {
       placements: [
         { id: 'conversa', label: 'Conversa', mock: 'rcsChat', cliente: 'varejo', selo: 'Patrocinado',
           objetivo: 'Vender pela conversa verificada e confirmar o pagamento no mesmo lugar.',
-          frase: 'Uma loja abre uma conversa verificada a partir da busca e fecha o pedido com Pix. Botão na busca em piloto no Brasil; no iPhone, não confirmado.',
-          base: 'RCS for Business (Google): remetente verificado, cartões, respostas sugeridas e ações de link; app Mensagens do iOS 26 com RCS comercial; Message Ads em piloto no Brasil.',
+          frase: 'Uma loja abre uma conversa verificada a partir da busca e fecha o pedido com Pix.',
+          base: 'RCS for Business (Google): remetente verificado, cartões, respostas sugeridas e ações de link; app Mensagens do iOS 26 com RCS comercial. Message Ads (o botão Conversar na busca) estão em piloto no Brasil, e a chegada desse botão ao iPhone ainda não foi confirmada.',
           passos: passos3(['Botão Conversar na busca', de(0, 2)], ['Conversa verificada e cartões', de(3, 8)], ['Pix pelo link, banco e confirmação', de(9, rcs.length - 1)]),
           quadros: rcs },
       ] },
@@ -706,6 +707,8 @@ export function makeAutomations(H) {
       art: art('educacao', 'cadernos45', '50% 50%', 'Autorize uma vez. Pause quando precisar.', `Peça da ${nome('educacao')}, escola de idiomas fictícia: cadernos e canetas sobre a mesa e a autorização no banco.`, { formato: 'ui', cta: 'Autorizar Pix', ui: ui.pix }),
       placements: [
         { id: 'recorrencia', label: 'Recorrência', mock: 'pixAuto', cliente: 'educacao', selo: 'Cobrança recorrente, não é anúncio',
+          // Both paths of this module have a failure: the switch names each one (automation-trace.js).
+          caminhos: ['Falta de saldo', 'Cancelado na véspera'],
           objetivo: 'Receber a mensalidade todo mês e, quando o débito falha, manter a aluna com uma pausa.',
           frase: 'Uma escola cobra a mensalidade com Pix Automático e, quando o débito falha, oferece pausa em vez de cancelamento.',
           base: 'Pix Automático (Banco Central): jornada 3 com QR composto, autorização única no app de quem paga, aviso antes de cada cobrança e novas tentativas.',
