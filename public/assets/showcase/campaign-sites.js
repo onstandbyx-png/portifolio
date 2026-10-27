@@ -32,15 +32,15 @@ export function makeSites({ I, pic, marca, esc, CLIENTES }) {
      time, details, ticket) or pickup (bag, pickup window, pay on pickup, order tracker). */
   function tacho({ variant = 'reserva', slot = '13:00', people = '2', area = 'Salão' } = {}) {
     const head = `<header class="cm-tm-head">${marca('restaurante')}<b>Casa Amaro</b>${I('menu')}</header>`;
-    const hero = `<div class="cm-tm-hero">${pic('panela11', { pos: '50% 40%' })}<span><em>Aberto agora</em><b>Sábado tem feijoada no tacho</b><small>Rua Exemplo, 88, Vila Madalena</small></span></div>`;
+    const hero = `<div class="cm-tm-hero">${pic('panela11', { pos: '50% 40%' })}<span><em>Aberto agora</em><b>Sábado tem feijoada completa</b><small>Rua Exemplo, 88, Vila Madalena</small></span></div>`;
     const dish = (img, name, text, tag, add = '') => `<li>${pic(img)}<span><b>${esc(name)}</b><small>${esc(text)}</small><em>${esc(tag)}</em></span>${add}</li>`;
     if (variant === 'retirada') {
       const add = `<span class="cm-tm-add" data-tap="a" data-pick="q1"><i class="cm-tm-plus">${I('plus')}</i><i class="cm-tm-one">1</i></span>`;
       return site('restaurante', 'tacho', [
         `${head}${body(`${hero}<nav class="cm-tm-tabs"><span>Reservas</span><b>Retirada</b><span>Como chegar</span></nav>
-          <ul class="cm-tm-menu">${dish('panela11', 'Feijoada no tacho', 'Carnes separadas, arroz, couve, farofa e laranja.', 'Serve 2', add)}${dish('escondidinho11', 'Escondidinho de carne-seca', 'Gratinado na panelinha.', 'Serve 1', `<span class="cm-tm-add"><i class="cm-tm-plus">${I('plus')}</i></span>`)}${dish('pudim11', 'Pudim de leite', 'Inteiro, feito na casa.', 'Serve 6', `<span class="cm-tm-add"><i class="cm-tm-plus">${I('plus')}</i></span>`)}</ul>`)}
+          <ul class="cm-tm-menu">${dish('panela11', 'Feijoada completa', 'Carnes separadas, arroz, couve, farofa e laranja.', 'Serve 2', add)}${dish('escondidinho11', 'Escondidinho de carne-seca', 'Gratinado na panelinha.', 'Serve 1', `<span class="cm-tm-add"><i class="cm-tm-plus">${I('plus')}</i></span>`)}${dish('pudim11', 'Pudim de leite', 'Inteiro, feito na casa.', 'Serve 6', `<span class="cm-tm-add"><i class="cm-tm-plus">${I('plus')}</i></span>`)}</ul>`)}
           ${show('q1', `<span class="cm-tm-bag" data-tap="b" data-hs="3"><i>1</i><b>Ver sacola</b><small>Retirada no balcão</small></span>`, 'cm-show--foot')}`,
-        `${head}${body(`${back('Sua sacola')}<div class="cm-tm-line">${pic('panela11')}<span><b>Feijoada no tacho</b><small>Serve 2</small></span><span class="cm-stepper cm-stepper--sm"><i>−</i><b>1</b><i>+</i></span></div>
+        `${head}${body(`${back('Sua sacola')}<div class="cm-tm-line">${pic('panela11')}<span><b>Feijoada completa</b><small>Serve 2</small></span><span class="cm-stepper cm-stepper--sm"><i>−</i><b>1</b><i>+</i></span></div>
           ${label('Retirada no balcão, sábado, 24 de outubro')}${slots(['12:00 a 12:30', '12:30 a 13:00', '13:00 a 13:30', '13:30 a 14:00'], '12:30 a 13:00', 'q2', 'c', 'cm-slots--wide')}
           <p class="cm-site-note">${I('info')}A cozinha começa o seu pedido 30 minutos antes da janela escolhida.</p>`)}${foot(cta('Continuar', 'd'))}`,
         `${head}${body(`${back('Finalizar pedido')}${label('Pagamento na retirada')}<div class="cm-radios">${pk('Pix no balcão', { on: true, cls: 'cm-radio' })}${pk('Cartão no balcão', { cls: 'cm-radio' })}</div>
@@ -59,7 +59,7 @@ export function makeSites({ I, pic, marca, esc, CLIENTES }) {
     const done = `${head}${body(`${ok('Reserva solicitada', 'O Casa Amaro confirma pelo WhatsApp.')}${ticket([['Dia', 'Sáb, 24 out'], ['Horário', slot], ['Pessoas', people], ['Mesa', area], ['Ocasião', variant === 'reserva' ? 'Aniversário' : 'Não informada', 2]])}${actions([['calendar', 'Adicionar à agenda'], ['route', 'Como chegar']])}`, 'cm-site-body--end')}`;
     if (variant === 'direto') return site('restaurante', 'tacho', [booking, details, done]);
     return site('restaurante', 'tacho', [
-      `${head}${body(`${hero}<nav class="cm-tm-tabs"><b>Cardápio</b><span>Reservas</span><span>Como chegar</span></nav><ul class="cm-tm-menu">${dish('panela11', 'Feijoada no tacho', 'Carnes separadas, arroz, couve, farofa e laranja.', 'Serve 2')}${dish('escondidinho11', 'Escondidinho de carne-seca', 'Gratinado na panelinha.', 'Serve 1')}${dish('pudim11', 'Pudim de leite', 'Inteiro, feito na casa.', 'Serve 6')}</ul>`)}${foot(cta('Reservar mesa', 'a'))}`,
+      `${head}${body(`${hero}<nav class="cm-tm-tabs"><b>Cardápio</b><span>Reservas</span><span>Como chegar</span></nav><ul class="cm-tm-menu">${dish('panela11', 'Feijoada completa', 'Carnes separadas, arroz, couve, farofa e laranja.', 'Serve 2')}${dish('escondidinho11', 'Escondidinho de carne-seca', 'Gratinado na panelinha.', 'Serve 1')}${dish('pudim11', 'Pudim de leite', 'Inteiro, feito na casa.', 'Serve 6')}</ul>`)}${foot(cta('Reservar mesa', 'a'))}`,
       booking, details, done,
     ]);
   }

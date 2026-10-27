@@ -4,7 +4,7 @@ Fotos dos anunciantes fictícios da seção `#laboratorio` (plano em `docs/plans
 
 Todas as marcas que aparecem com estas fotos são fictícias, e cada exemplo leva "Exemplo ilustrativo, marca fictícia." fora do aparelho. Nenhuma foto mostra pessoa identificável, logotipo, marca ou texto legível, e nenhuma traz preço. Nada aqui indica cliente real, resultado ou parceria com as plataformas.
 
-## Fotos baixadas (8), Pexels License
+## Fotos baixadas, Pexels License (e uma em CC BY-SA, marcada na linha)
 
 Licença: Pexels License, https://www.pexels.com/license/ (uso gratuito, comercial inclusive, sem atribuição obrigatória, edição permitida; não vender a foto sem alteração, não sugerir endosso de pessoa ou marca). Cada página abaixo mostrava "License: Free" em 21/10/2026.
 
@@ -12,8 +12,8 @@ Download em 21/10/2026, direto do CDN do Pexels (`images.pexels.com/photos/<id>/
 
 | Arquivo | O que mostra | Origem (página) | Autor | Data da foto no Pexels | Recorte e edição |
 |---|---|---|---|---|---|
-| `restaurante-feijoada-panela-9x16.webp` (675 x 1200) | Feijoada no tacho de barro, concha erguendo linguiça, arroz e farofa ao fundo | https://www.pexels.com/photo/traditional-brazilian-feijoada-with-sides-34195320/ | José Roberto Oliveira | 07/10/2025 (original 4582 x 3055) | Do arquivo de 2400 x 1600: caixa (1300, 0, 2200, 1600) |
-| `restaurante-feijoada-panela-1x1.webp` (900 x 900) | A mesma panela com arroz, farofa e laranja | mesma foto | José Roberto Oliveira | 07/10/2025 | Caixa (800, 0, 2400, 1600) |
+| `restaurante-feijoada-completa-9x16.webp` (675 x 1200) | Prato de feijoada completa: feijão preto com carnes, linguiça e paio, arroz, farofa e couve, em prato vermelho | https://commons.wikimedia.org/wiki/File:Feijoada_%C3%A0_brasileira_-02.jpg (via Openverse) | Bradleyzm | CC BY-SA 4.0 (https://creativecommons.org/licenses/by-sa/4.0/). Substituiu em 27/10/2026, a pedido do dono, a foto da panela do Pexels 34195320, que tinha cara de imagem gerada e itens que não correspondiam a uma feijoada | Do original de 1080 x 923: caixa (330, 0, 849, 923), ampliada para 675 x 1200. O crédito aparece na nota do exemplo (experience-player.js, CREDITS). Por ser CC BY-SA, estes recortes seguem sob a mesma licença |
+| `restaurante-feijoada-completa-1x1.webp` (900 x 900) | A mesma feijoada completa | mesma foto | Bradleyzm | CC BY-SA 4.0 | Caixa (78, 0, 1001, 923), reduzida para 900 x 900 |
 | `restaurante-feijoada-prato-9x16.webp` (675 x 1200) | Prato de feijoada completa: arroz, couve, farofa, torresmo, linguiça, laranja e vinagrete, sobre jogo americano | https://www.pexels.com/photo/rice-with-vegetables-served-in-restaurant-9494742/ | Dalila Dalprat | 09/09/2021 (original 3648 x 5472) | Do arquivo de 1600 x 2400: caixa (250, 450, 1347, 2400). Corta a garrafa com rótulo no alto da foto |
 | `restaurante-feijoada-prato-1x1.webp` (900 x 900) | O mesmo prato inteiro | mesma foto | Dalila Dalprat | 09/09/2021 | Caixa (0, 620, 1600, 2220), também sem a garrafa |
 | `restaurante-fachada-4x5.webp` (960 x 1200) | Fachada de madeira à noite, vasos suspensos, lanterna, flores e mesas de madeira na calçada, sem ninguém | https://www.pexels.com/photo/tables-on-a-sidewalk-9538606/ | Erik Mclean | 13/09/2021 (original 3648 x 5472) | Do arquivo de 1600 x 2400: caixa (460, 380, 1600, 1805). Edição: a placa da porta (texto em inglês) foi repintada com a cor de fundo dela e ficou lisa; o aviso de papel na vitrine foi apagado (inpaint); os cartazes à esquerda ficaram fora do corte |

@@ -338,7 +338,7 @@ Cada linha resume: onde está o anúncio, o que prende a atenção, o que retém
 | Instagram, Feed | Speak Up | Patrocinado | Pergunta no 1º cartão do carrossel | Desliza: três expressões e a resposta | Teste de nível com uma pergunta, nível B1, horário, dados | Aula marcada (ticket e lista do que preparar) | E-mail |
 | Instagram, Reels | Casa Amaro | Patrocinado | Tacho fervendo | Corte para o prato | Cardápio, reserva (dia, pessoas, horário), dados e ocasião | Reserva solicitada | WhatsApp |
 | Instagram, Story | Speak Up | Patrocinado | Pergunta sobre a foto | Adesivo de link acende | Nível, horário, dados | Aula marcada | E-mail |
-| Instagram, Live | Casa Amaro | Patrocinado | Selo Ao vivo e o tacho | A marca responde um comentário | Retirada: adicionar, sacola, janela, pagamento na retirada | Pedido 0427 com acompanhamento | WhatsApp |
+| Instagram, Live | Casa Amaro | Patrocinado | Selo Ao vivo e a feijoada | A marca responde um comentário | Retirada: adicionar, sacola, janela, pagamento na retirada | Pedido 0427 com acompanhamento | WhatsApp |
 | Instagram, Explorar | Vilela | Patrocinado | Post patrocinado na grade | Abre em tela cheia | Serviço, calendário, horário, dados | Avaliação agendada com mapa | WhatsApp |
 | Facebook, Feed | Atlântica Incorporadora | Patrocinado | Vista do mar no 1º cartão | Sala e planta nos outros cartões | Formulário instantâneo: pergunta, dados do perfil, revisão | Obrigado | WhatsApp do corretor |
 | Facebook, Post | Atlântica Incorporadora | Patrocinado | Sala com vista | Barra do link acende | Galeria, tipo de visita, horário, contato | Visita agendada com mapa | E-mail |

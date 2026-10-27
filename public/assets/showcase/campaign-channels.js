@@ -29,9 +29,9 @@ const A = '/assets/portfolio/';
 export const IMG = {
   escola45: { src: A + 'canais/escola-fones-caderno-4x5.webp', w: 960, h: 1200 },
   escola916: { src: A + 'canais/escola-fones-caderno-9x16.webp', w: 675, h: 1200 },
-  panela916: { src: A + 'canais/restaurante-feijoada-panela-9x16.webp', w: 675, h: 1200 },
+  panela916: { src: A + 'canais/restaurante-feijoada-completa-9x16.webp', w: 675, h: 1200 },
   prato916: { src: A + 'canais/restaurante-feijoada-prato-9x16.webp', w: 675, h: 1200 },
-  panela11: { src: A + 'canais/restaurante-feijoada-panela-1x1.webp', w: 900, h: 900 },
+  panela11: { src: A + 'canais/restaurante-feijoada-completa-1x1.webp', w: 900, h: 900 },
   prato11: { src: A + 'canais/restaurante-feijoada-prato-1x1.webp', w: 900, h: 900 },
   escondidinho11: { src: A + 'canais/restaurante-escondidinho-1x1.webp', w: 900, h: 900 },
   pudim11: { src: A + 'canais/restaurante-pudim-1x1.webp', w: 900, h: 900 },
@@ -199,8 +199,8 @@ const mocks = {
 
   /* 2.4 Instagram Live: a restaurant cooking live with the paid label, comments and the menu sheet. */
   iglive: () => screen('iglive', scene('live', 'base', 'escuro', LAB.liveAd({ key: 'restaurante', cta: { text: 'Ver cardápio de sábado' },
-    media: pic('panela916', { alt: 'Tacho de feijoada no fogão, com a concha erguendo a linguiça.' }),
-    comments: [['bia.rocha', 'Que cheiro daqui!', 0], ['cliente_12', 'Qual o horário do almoço?', 0, '1'], ['casaamaro', 'Sábado, feijoada no tacho a partir das 12h. Dá para retirar no balcão.', 1]] })) + scene('page', 'sheet', 'claro', `${browserBar('Casa Amaro', 'casaamaro.exemplo')}${SITES.tacho({ variant: 'retirada' })}`)),
+    media: pic('panela916', { alt: 'Prato de feijoada completa com carnes, linguiça, arroz, farofa e couve.' }),
+    comments: [['bia.rocha', 'Que cheiro daqui!', 0], ['cliente_12', 'Qual o horário do almoço?', 0, '1'], ['casaamaro', 'Sábado, feijoada completa a partir das 12h. Dá para retirar no balcão.', 1]] })) + scene('page', 'sheet', 'claro', `${browserBar('Casa Amaro', 'casaamaro.exemplo')}${SITES.tacho({ variant: 'retirada' })}`)),
 
   /* 2.5 Instagram Explorar: a grid of photos with one sponsored post that opens full screen, then the booking page. */
   igexplore: () => screen('igexplore', scene('grid', 'base', 'escuro', LAB.explore({ cells: `${pic('prato11', { alt: '' })}${pic('pudim11', { alt: '' })}${pic('panela11', { alt: '' })}
@@ -209,9 +209,9 @@ const mocks = {
     scene('post', 'sheet', 'escuro', LAB.postAberto({ key: 'clinica', cta: { text: 'Agendar avaliação' }, media: pic('consultorio45', { alt: 'Consultório odontológico com cadeira e luz natural.' }), caption: 'Avaliação com dentista, horário marcado. <span class="cm-more">mais</span>' })) + scene('page', 'sheet', 'claro', `${browserBar('Agendamento online', 'vilela.exemplo')}${SITES.seixo()}`)),
 
   /* 2.2 Instagram Reels: a restaurant, two cuts, Instagram browser with the menu and the table booking sheet. */
-  igReels: () => screen('reels', scene('video', 'base', 'escuro', LAB.reelsAd({ key: 'restaurante', caption: 'Feijoada no tacho aos sábados. Mesa para o almoço.', cta: { text: 'Ver cardápio' },
+  igReels: () => screen('reels', scene('video', 'base', 'escuro', LAB.reelsAd({ key: 'restaurante', caption: 'Feijoada completa aos sábados. Mesa para o almoço.', cta: { text: 'Ver cardápio' },
     video: `<div class="cm-shots">
-      <figure class="cm-shot" data-shot="1">${pic('panela916', { alt: 'Tacho de feijoada com a concha erguendo linguiça.' })}<p class="cm-ontext" data-hs="1">Sábado tem feijoada no tacho.</p></figure>
+      <figure class="cm-shot" data-shot="1">${pic('panela916', { alt: 'Prato de feijoada completa com carnes, linguiça, arroz, farofa e couve.' })}<p class="cm-ontext" data-hs="1">Sábado tem feijoada completa.</p></figure>
       <figure class="cm-shot" data-shot="2">${pic('prato916')}<p class="cm-ontext">Fogo baixo desde cedo.</p></figure></div>` })) +
     scene('page', 'sheet', 'claro', `${browserBar('Casa Amaro', 'casaamaro.exemplo')}${SITES.tacho()}`)),
 
@@ -226,13 +226,13 @@ const mocks = {
   fbvid: () => screen('fbvid', scene('video', 'base', 'escuro', `<div class="cm-fbv">
       ${pic('prato916', { alt: 'Prato de feijoada servido com farofa e couve.' })}
       <span class="cm-fbv-play" aria-hidden="true">${I('video')}</span>
-      <div class="cm-fbv-meta" data-hs="1"><span>${marca('restaurante')}<span><b>casaamaro</b><small>Patrocinado</small></span></span><p>Feijoada no tacho aos sábados. Mesa para o almoço.</p></div>
+      <div class="cm-fbv-meta" data-hs="1"><span>${marca('restaurante')}<span><b>casaamaro</b><small>Patrocinado</small></span></span><p>Feijoada completa aos sábados. Mesa para o almoço.</p></div>
       <div class="cm-fbv-cta" data-tap="cta" data-hs="3"><b>Reservar mesa</b>${I('chevron')}</div>
     </div>`) + scene('page', 'sheet', 'claro', `${browserBar('Casa Amaro', 'casaamaro.exemplo')}${SITES.tacho({ variant: 'direto', slot: '12:30', people: '4', area: 'Varanda' })}`)),
 
   /* 3.4 Facebook ad break: a video pauses for an ad card with a skip button, then the course page. */
   fbbreak: () => screen('fbbreak', scene('video', 'base', 'escuro', `<div class="cm-fbb">
-      ${pic('panela916', { alt: 'Tacho de feijoada no fogão, em plano fechado.' })}
+      ${pic('panela916', { alt: 'Feijoada completa em plano fechado.' })}
       <span class="cm-fbb-tag">Vídeo</span></div>`) + scene('ad', 'sheet', 'escuro', `<div class="cm-fbb-ad">
       ${pic('escola916', { alt: 'Fone de ouvido sobre o caderno de anotações.' })}
       <span class="cm-fbb-label">Patrocinado</span>
@@ -355,13 +355,13 @@ const mocks = {
   mapsLocal: () => {
     const area = inner => `<div class="cm-map">${pic('mapa', { cls: 'cm-map-bg' })}<div class="cm-map-area">${inner}</div></div>`;
     const drops = [[86, 150], [178, 118], [130, 360], [300, 420], [60, 290]].map(([x, y]) => `<span class="cm-drop" style="left:${x / 3.6}%;top:${y / 6.4}%">${I('fork')}</span>`).join('');
-    return screen('maps', scene('map', 'base', 'claro', `${area(`${drops}<span class="cm-promo cm-promo--left" style="left:${252 / 3.6}%;top:${224 / 6.4}%"><span class="cm-promo-sq" data-hs="1">${I('fork')}</span><span class="cm-promo-text"><b>Casa Amaro</b><small>Feijoada no tacho aos sábados</small></span></span><span class="cm-me" style="left:${108 / 3.6}%;top:${544 / 6.4}%"></span>`)}
+    return screen('maps', scene('map', 'base', 'claro', `${area(`${drops}<span class="cm-promo cm-promo--left" style="left:${252 / 3.6}%;top:${224 / 6.4}%"><span class="cm-promo-sq" data-hs="1">${I('fork')}</span><span class="cm-promo-text"><b>Casa Amaro</b><small>Feijoada completa aos sábados</small></span></span><span class="cm-me" style="left:${108 / 3.6}%;top:${544 / 6.4}%"></span>`)}
       <div class="cm-maps-search">${I('back')}<span class="cm-typed"><span>feijoada perto de mim</span></span>${I('close')}</div>
       <div class="cm-maps-chips" aria-hidden="true"><span class="is-on">${I('fork')}Restaurantes</span><span>Aberto agora</span><span>Para o almoço</span><span>Mais bem localizados</span></div>
       <div class="cm-place"><span class="cm-grabber"></span>
         <div class="cm-place-row"><span><small class="cm-sp">Patrocinado</small><b>Casa Amaro</b><small>Restaurante · <em>Aberto</em></small></span>${pic('fachada43', { alt: 'Fachada de madeira do restaurante à noite, com flores e mesas na calçada.', pos: '50% 40%' })}</div>
         <div class="cm-place-full"><span class="cm-place-top"><small class="cm-sp">Patrocinado ${I('vdots')}</small><span><i>${I('share')}</i><i>${I('close')}</i></span></span><b class="cm-place-name">Casa Amaro</b><small>Restaurante</small><small><em>Aberto</em> · Fecha às 23:00</small>
-          <span class="cm-place-ad" data-hs="2"><b>Feijoada no tacho aos sábados</b><small>Encomendas e mesa para o almoço.</small><small>casaamaro.exemplo</small><span>Acessar site</span></span>
+          <span class="cm-place-ad" data-hs="2"><b>Feijoada completa aos sábados</b><small>Encomendas e mesa para o almoço.</small><small>casaamaro.exemplo</small><span>Acessar site</span></span>
           <span class="cm-place-chips"><span class="is-primary" data-tap="cta" data-hs="3">${I('route')}Rotas</span><span>${I('calendar')}Reservar</span><span>${I('phone')}Ligar</span><span>${I('share')}Compartilhar</span></span>
           <span class="cm-place-photos">${pic('fachada43', { pos: '50% 40%' })}${pic('prato11')}</span></div></div>`) +
       scene('route', 'fade', 'claro', `${area(`<svg class="cm-route" viewBox="0 0 360 640" preserveAspectRatio="none" aria-hidden="true"><path d="M108,544 L108,464 L180,464 L180,304 L252,304 L252,224" fill="none" stroke="#fff" stroke-width="9" stroke-linejoin="round" stroke-linecap="round"/><path d="M108,544 L108,464 L180,464 L180,304 L252,304 L252,224" fill="none" stroke="#1a73e8" stroke-width="5.5" stroke-linejoin="round" stroke-linecap="round"/></svg><span class="cm-promo cm-promo--end" style="left:${252 / 3.6}%;top:${224 / 6.4}%"><span class="cm-promo-sq">${I('fork')}</span></span><span class="cm-me" style="left:${108 / 3.6}%;top:${544 / 6.4}%"></span>`)}
@@ -405,11 +405,11 @@ const mocks = {
     <div class="cm-wa-shelf"><p><b>Catálogo</b><span data-tap="more">Ver tudo ${I('chevron')}</span></p><span class="cm-wa-thumbs" data-hs="1">${pic('panela11')}${pic('escondidinho11')}${pic('pudim11')}</span></div>
     <div class="cm-wa-rows"><span>${I('bell')}Silenciar notificações</span><span>${I('lock')}Criptografia</span></div></div>`) +
     scene('catalog', 'push', 'claro', `<div class="cm-safe"><div class="cm-wa-bar">${I('back')}<span><b>Catálogo</b><small>Casa Amaro</small></span>${I('share')}</div>
-      <div class="cm-wa-coll"><p><b>Encomendas de sábado</b><span>Ver tudo</span></p><ul data-hs="2"><li data-tap="item">${pic('panela11')}<span><b>Feijoada no tacho para 4</b><small>Carnes separadas, arroz, couve e farofa.</small></span></li><li>${pic('escondidinho11')}<span><b>Escondidinho de carne-seca</b><small>Gratinado na panelinha, para 2.</small></span></li></ul>
+      <div class="cm-wa-coll"><p><b>Encomendas de sábado</b><span>Ver tudo</span></p><ul data-hs="2"><li data-tap="item">${pic('panela11')}<span><b>Feijoada completa para 4</b><small>Carnes separadas, arroz, couve e farofa.</small></span></li><li>${pic('escondidinho11')}<span><b>Escondidinho de carne-seca</b><small>Gratinado na panelinha, para 2.</small></span></li></ul>
       <p><b>Doces</b><span>Ver tudo</span></p><ul><li>${pic('pudim11')}<span><b>Pudim de leite</b><small>Inteiro, feito na casa.</small></span></li></ul></div></div>`) +
-    scene('item', 'push', 'claro', `<div class="cm-safe"><div class="cm-wa-bar">${I('back')}<span></span>${I('share')}</div><span class="cm-wa-photo">${pic('panela11')}</span><div class="cm-wa-item"><b>Feijoada no tacho para 4</b><p>Carnes separadas, arroz, couve e farofa. Encomenda até sexta.</p><span class="cm-wa-qty"><i>−</i><b>1</b><i>+</i></span>${btn('Adicionar ao carrinho', 'add', '3', 'cm-btn--wa')}<span class="cm-wa-msglink">${I('comment', 'cm-i--inline')}Conversar com a empresa</span></div>
+    scene('item', 'push', 'claro', `<div class="cm-safe"><div class="cm-wa-bar">${I('back')}<span></span>${I('share')}</div><span class="cm-wa-photo">${pic('panela11')}</span><div class="cm-wa-item"><b>Feijoada completa para 4</b><p>Carnes separadas, arroz, couve e farofa. Encomenda até sexta.</p><span class="cm-wa-qty"><i>−</i><b>1</b><i>+</i></span>${btn('Adicionar ao carrinho', 'add', '3', 'cm-btn--wa')}<span class="cm-wa-msglink">${I('comment', 'cm-i--inline')}Conversar com a empresa</span></div>
       <span class="cm-wa-cartbar" data-tap="cart">${I('cart')}<b>Ver carrinho</b><small>1 item</small></span></div>`) +
-    scene('cart', 'sheet', 'claro', `<div class="cm-sheet cm-wa-cart"><span class="cm-grabber"></span><p class="cm-wa-sheet-top">${I('close')}<b>Carrinho</b><i></i></p><div class="cm-wa-cartline">${pic('panela11')}<span><b>Feijoada no tacho para 4</b><small>Casa Amaro</small></span><span class="cm-wa-qty cm-wa-qty--sm"><i>−</i><b>1</b><i>+</i></span></div><span class="cm-wa-note">${I('edit', 'cm-i--inline')}Adicionar observação: para sábado</span>${btn('Fazer pedido', 'order', '3', 'cm-btn--wa')}</div>`, 'cm-scene--part') +
+    scene('cart', 'sheet', 'claro', `<div class="cm-sheet cm-wa-cart"><span class="cm-grabber"></span><p class="cm-wa-sheet-top">${I('close')}<b>Carrinho</b><i></i></p><div class="cm-wa-cartline">${pic('panela11')}<span><b>Feijoada completa para 4</b><small>Casa Amaro</small></span><span class="cm-wa-qty cm-wa-qty--sm"><i>−</i><b>1</b><i>+</i></span></div><span class="cm-wa-note">${I('edit', 'cm-i--inline')}Adicionar observação: para sábado</span>${btn('Fazer pedido', 'order', '3', 'cm-btn--wa')}</div>`, 'cm-scene--part') +
     scene('chat', 'push', 'claro', `<div class="cm-wa-head">${I('back')}${marca('restaurante')}<span><b>Casa Amaro</b><small>Conta comercial</small></span>${I('video')}${I('phone')}</div>
       <div class="cm-wa-body"><span class="cm-wa-day">Hoje</span>
         <div class="cm-wa-out cm-wa-orderout"><span class="cm-wa-orderthumb">${pic('panela11')}<span><b>${I('cart', 'cm-i--inline')}1 item</b><small>Pedido para sábado</small></span></span><span class="cm-wa-orderlink">Ver itens enviados</span><small>10:09 ${I('ticks')}</small></div>
@@ -422,7 +422,7 @@ const mocks = {
         <span class="cm-wa-replies cm-wa-replies--row cm-wc2 cm-wcg cm-wr2 cm-arrive cm-arrive--late"><span>11h</span><span data-tap="r2">12h</span><span>13h</span></span>
         <div class="cm-wa-out cm-wc3">12h<small>10:09 ${I('ticks')}</small></div>
 <span class="cm-wa-typing cm-wc3" aria-hidden="true"><i></i><i></i><i></i></span>
-        <div class="cm-wa-in cm-wa-order cm-wc3 cm-arrive"><b>Resumo do pedido</b><span>Feijoada no tacho para 4</span><span>Retirada no balcão, sábado às 12h</span><span class="cm-wa-order-btn cm-wr3" data-tap="ok">Confirmar pedido</span><small>10:09</small></div>
+        <div class="cm-wa-in cm-wa-order cm-wc3 cm-arrive"><b>Resumo do pedido</b><span>Feijoada completa para 4</span><span>Retirada no balcão, sábado às 12h</span><span class="cm-wa-order-btn cm-wr3" data-tap="ok">Confirmar pedido</span><small>10:09</small></div>
 <span class="cm-wa-typing cm-wc4" aria-hidden="true"><i></i><i></i><i></i></span>
         <div class="cm-wa-in cm-wc4 cm-arrive"><em class="cm-wa-auto">Mensagem automática</em>Pedido confirmado. Você recebe um lembrete no sábado às 9h.<small>10:09</small></div>
       </div>
@@ -473,9 +473,9 @@ export const channels = [
           { ms: 2000, cena: 'page', estado: 'w5 done', desc: 'Aula marcada: quinta, 29 de outubro, 19h, online, 30 minutos. Lista do que preparar antes da aula.' },
         ] },
       { id: 'reels', label: 'Reels', mock: 'igReels', cliente: 'restaurante', selo: 'Patrocinado', frase: 'Um restaurante leva do Reels à reserva de mesa.',
-        passos: [P('Atenção', 'Tacho fervendo no primeiro segundo', [0]), P('Retenção', 'Corte curto segura até a mesa', [1]), P('Conversão', 'Cardápio, horário e reserva', [2, 3, 4, 5, 6, 7, 8, 9, 10])],
+        passos: [P('Atenção', 'Feijoada completa no primeiro segundo', [0]), P('Retenção', 'Corte curto segura até a mesa', [1]), P('Conversão', 'Cardápio, horário e reserva', [2, 3, 4, 5, 6, 7, 8, 9, 10])],
         quadros: [
-          { ms: 1400, cena: 'video', video: 1, desc: 'Reels patrocinado do Casa Amaro: o tacho de feijoada e o texto Sábado tem feijoada no tacho.' },
+          { ms: 1400, cena: 'video', video: 1, desc: 'Reels patrocinado do Casa Amaro: o prato de feijoada completa e o texto Sábado tem feijoada completa.' },
           { ms: 1800, cena: 'video', estado: 's2 lit', video: 1, desc: 'Corte para o prato servido: Fogo baixo desde cedo. O botão Ver cardápio ganha cor.' },
           { ms: 900, cena: 'video', estado: 's2 lit', video: 1, toque: 'cta', desc: 'Toque em Ver cardápio.' },
           { ms: 1700, cena: 'page', toque: 'a', desc: 'O navegador do Instagram abre o site do Casa Amaro: aberto agora, cardápio de sábado. Toque em Reservar mesa.' },
@@ -501,13 +501,13 @@ export const channels = [
           { ms: 2000, cena: 'page', estado: 'w3 done', desc: 'Aula marcada: quinta, 29 de outubro, 19h, online.' },
         ] },
       { id: 'live', label: 'Live', mock: 'iglive', cliente: 'restaurante', selo: 'Patrocinado', frase: 'Um restaurante cozinha ao vivo e leva à reserva.',
-        passos: [P('Atenção', 'Selo Ao vivo e o tacho', [0]), P('Retenção', 'Comentário respondido pela marca', [1]), P('Conversão', 'Sacola, retirada e pedido', [2, 3, 4, 5, 6, 7, 8, 9, 10])],
+        passos: [P('Atenção', 'Selo Ao vivo e a feijoada', [0]), P('Retenção', 'Comentário respondido pela marca', [1]), P('Conversão', 'Sacola, retirada e pedido', [2, 3, 4, 5, 6, 7, 8, 9, 10])],
         quadros: [
-          { ms: 1400, cena: 'live', desc: 'Live patrocinada do Casa Amaro: o tacho de feijoada com o selo Ao vivo.' },
+          { ms: 1400, cena: 'live', desc: 'Live patrocinada do Casa Amaro: o prato de feijoada completa com o selo Ao vivo.' },
           { ms: 1600, cena: 'live', estado: 'lit', desc: 'Um comentário pergunta o horário do almoço. O botão Ver cardápio ganha cor.' },
           { ms: 900, cena: 'live', estado: 'lit', toque: 'cta', desc: 'Toque em Ver cardápio.' },
           { ms: 1500, cena: 'page', desc: 'O site do Casa Amaro abre na aba Retirada, com o cardápio de sábado.' },
-          { ms: 1000, cena: 'page', estado: 'q1', toque: 'a', desc: 'Toque em adicionar a feijoada no tacho. A sacola aparece embaixo.' },
+          { ms: 1000, cena: 'page', estado: 'q1', toque: 'a', desc: 'Toque em adicionar a feijoada completa. A sacola aparece embaixo.' },
           { ms: 800, cena: 'page', estado: 'q1', toque: 'b', desc: 'Toque em Ver sacola.' },
           { ms: 1200, cena: 'page', estado: 'w2', desc: 'Sacola com a feijoada para 2 e as janelas de retirada de sábado.' },
           { ms: 900, cena: 'page', estado: 'w2 q2', toque: 'c', desc: 'Toque em 12:30 a 13:00.' },
@@ -567,7 +567,7 @@ export const channels = [
       { id: 'video', label: 'Vídeo', mock: 'fbvid', cliente: 'restaurante', selo: 'Patrocinado', frase: 'Um restaurante leva do vídeo à reserva de mesa.',
         passos: [P('Atenção', 'Feijoada no primeiro quadro', [0]), P('Retenção', 'Convite antes do fim do vídeo', [1]), P('Conversão', 'Reserva direto no horário', [2, 3, 4, 5, 6, 7])],
         quadros: [
-          { ms: 1500, cena: 'video', desc: 'Vídeo patrocinado do Casa Amaro: o prato de feijoada e o texto Feijoada no tacho aos sábados.' },
+          { ms: 1500, cena: 'video', desc: 'Vídeo patrocinado do Casa Amaro: o prato de feijoada e o texto Feijoada completa aos sábados.' },
           { ms: 1800, cena: 'video', estado: 'lit', desc: 'No fim do vídeo, o botão Reservar mesa ganha cor.' },
           { ms: 900, cena: 'video', estado: 'lit', toque: 'cta', desc: 'Toque em Reservar mesa.' },
           { ms: 1500, cena: 'page', desc: 'O site do Casa Amaro abre direto na reserva: sábado, 4 pessoas, varanda.' },
@@ -728,14 +728,14 @@ export const channels = [
         ] },
     ] },
   { id: 'maps', name: 'Google Maps', group: 'local', benefit: 'Ser a escolha no caminho.',
-    art: art('restaurante', 'fachada45', '50% 50%', 'Feijoada no tacho aos sábados', 'Peça do Casa Amaro, restaurante fictício: fachada de madeira à noite, com flores e mesas na calçada.'),
+    art: art('restaurante', 'fachada45', '50% 50%', 'Feijoada completa aos sábados', 'Peça do Casa Amaro, restaurante fictício: fachada de madeira à noite, com flores e mesas na calçada.'),
     placements: [
       { id: 'local', label: 'Local', mock: 'mapsLocal', cliente: 'restaurante', selo: 'Patrocinado', frase: 'Um restaurante aparece no mapa e traça a rota.',
         passos: [P('Atenção', 'Pin destacado no caminho', [0, 1]), P('Retenção', 'Ficha mostra prato e horário', [2]), P('Conversão', 'Rota traçada com um toque', [3, 4, 5])],
         quadros: [
           { ms: 1300, cena: 'map', estado: 'typing', desc: 'Busca no Google Maps: feijoada perto de mim.' },
           { ms: 1500, cena: 'map', desc: 'Busca feijoada perto de mim no Google Maps: alfinete quadrado do Casa Amaro e o resultado Patrocinado.' },
-          { ms: 1900, cena: 'map', estado: 's2', desc: 'A ficha patrocinada sobe: restaurante aberto, fecha às 23h, feijoada no tacho aos sábados.' },
+          { ms: 1900, cena: 'map', estado: 's2', desc: 'A ficha patrocinada sobe: restaurante aberto, fecha às 23h, feijoada completa aos sábados.' },
           { ms: 1000, cena: 'map', estado: 's2', toque: 'cta', desc: 'Toque em Rotas.' },
           { ms: 1700, cena: 'route', toque: 'go', desc: 'A rota de carro aparece no mapa. Toque em Iniciar.' },
           { ms: 1800, cena: 'route', estado: 'done', desc: 'Navegação iniciada até o Casa Amaro.' },
@@ -767,7 +767,7 @@ export const channels = [
         quadros: [
           { ms: 1400, cena: 'profile', desc: 'Perfil comercial do Casa Amaro no WhatsApp, com a faixa Catálogo.' },
           { ms: 900, cena: 'profile', toque: 'more', desc: 'Toque em Ver tudo.' },
-          { ms: 1500, cena: 'catalog', toque: 'item', desc: 'Catálogo com as coleções Encomendas de sábado e Doces. Toque em Feijoada no tacho para 4.' },
+          { ms: 1500, cena: 'catalog', toque: 'item', desc: 'Catálogo com as coleções Encomendas de sábado e Doces. Toque em Feijoada completa para 4.' },
           { ms: 1400, cena: 'item', toque: 'add', desc: 'Página do item, sem preço, com quantidade. Toque em Adicionar ao carrinho.' },
           { ms: 1000, cena: 'item', estado: 'ct', toque: 'cart', desc: 'A barra Ver carrinho, 1 item, aparece embaixo. Toque nela.' },
           { ms: 1400, cena: 'cart', toque: 'order', desc: 'Carrinho com a feijoada e a observação para sábado. Toque em Fazer pedido.' },

@@ -27,6 +27,8 @@ const ICONS = {
 const icon = name => `<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="${ICONS[name]}"/></svg>`;
 /* Fatos studio photos (campaign pieces and scenes) are AI-generated: the fine print says so where they appear. */
 const AI_IMAGES = /(campanha|cena)-(crencas|esportes|negocios|nerd)/;
+/* Photos under CC BY or CC BY-SA need their credit next to the example (public/assets/portfolio/canais/SOURCES.md). */
+const CREDITS = [[/restaurante-feijoada-completa/, 'Foto da feijoada: Bradleyzm, CC BY-SA 4.0, Wikimedia Commons.']];
 const FINE = 'Exemplo ilustrativo, marca fictícia. Interface aproximada.';
 
 export function mountCampaignExperience(lab, underlay) {
@@ -280,7 +282,10 @@ export function mountCampaignExperience(lab, underlay) {
     const note = noteSlot?.querySelector('[data-note-title]');
     if (note) note.textContent = pl.frase;
     const fine = noteSlot?.querySelector('[data-note-fine]');
-    if (fine) fine.textContent = FINE + (AI_IMAGES.test(renderMock(pl)) ? ' Imagens geradas por IA.' : '');
+    if (fine) {
+      const html = renderMock(pl);
+      fine.textContent = FINE + (AI_IMAGES.test(html) ? ' Imagens geradas por IA.' : '') + CREDITS.filter(([re]) => re.test(html)).map(([, text]) => ' ' + text).join('');
+    }
     player.dataset.platform = ch.id; player.dataset.placement = pl.id;
     player.style.setProperty('--ch', id ? LOGOS[id].cor : '#1e4530');
     lab.dataset.placement = String(placementIndex);
