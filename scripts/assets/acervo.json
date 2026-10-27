@@ -600,6 +600,27 @@
    "licenca_url": "https://creativecommons.org/publicdomain/zero/1.0/",
    "original": "5472 x 3648",
    "baixado": "cdn.stocksnap.io, 960 px de largura (img-thumbs/960w)"
+  },
+  {
+   "arquivo": "canais/esporte-estadio-16x9.webp",
+   "fonte": "thumbs/x-stadium/03.jpg",
+   "tamanho": [
+    960,
+    540
+   ],
+   "maxKB": 150,
+   "substitui": "cenaEsportes (miniatura do vídeo seguinte no YouTube, \"Melhores momentos da rodada\")",
+   "mostra": "Estádio de futebol vazio, gramado listrado com a bola no centro, céu lilás ao entardecer",
+   "foco": [
+    0.5,
+    0.55
+   ],
+   "origem": "https://stocksnap.io/photo/soccer-ball-FN9W4V6TK5",
+   "autor": "Michal Jarmoluk",
+   "licenca": "CC0 1.0",
+   "licenca_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+   "original": "3000 x 2000",
+   "baixado": "cdn.stocksnap.io, 960 px de largura (img-thumbs/960w)"
   }
  ],
  "videos": [
@@ -624,6 +645,44 @@
    "crf_webm": 46,
    "crf_mp4": 33,
    "filtro": "hqdn3d=2:2:4:4"
+  },
+  {
+   "origem": "https://commons.wikimedia.org/wiki/File:Hunt_and_peck_typing_%E2%80%94_Monkeytype_benchmark.webm",
+   "autor": "C40115",
+   "licenca": "CC BY 4.0",
+   "licenca_url": "https://creativecommons.org/licenses/by/4.0/",
+   "original": "3840 x 2160, 19 s",
+   "baixado": "versão transcodificada de 1080p (VP9) do Commons",
+   "arquivo": "canais/video/varejo-teclado-grafite-9x16",
+   "fonte": "video/monkeytype.webm",
+   "inicio": 2,
+   "duracao": 4,
+   "recorte": "608:1080:600:0",
+   "tamanho": [
+    720,
+    1280
+   ],
+   "substitui": "TikTok e YouTube Live da Ponto Tech (notebook grafite); hoje é foto parada",
+   "mostra": "Mãos digitando num notebook grafite sobre mesa de madeira, sem rosto e sem tela à vista"
+  },
+  {
+   "origem": "https://commons.wikimedia.org/wiki/File:Hunt_and_peck_typing_%E2%80%94_Monkeytype_benchmark.webm",
+   "autor": "C40115",
+   "licenca": "CC BY 4.0",
+   "licenca_url": "https://creativecommons.org/licenses/by/4.0/",
+   "original": "3840 x 2160, 19 s",
+   "baixado": "versão transcodificada de 1080p (VP9) do Commons",
+   "arquivo": "canais/video/varejo-teclado-grafite-16x9",
+   "fonte": "video/monkeytype.webm",
+   "inicio": 8,
+   "duracao": 4,
+   "recorte": "1920:1080:0:0",
+   "tamanho": [
+    1280,
+    720
+   ],
+   "substitui": "YouTube Live da Ponto Tech (player 16:9)",
+   "mostra": "As mesmas mãos digitando no notebook grafite, quadro horizontal"
   }
  ]
 }

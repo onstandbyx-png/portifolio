@@ -29,6 +29,7 @@ def uso(arquivo, t):
     nome = os.path.basename(arquivo)
     if nome.startswith('explorar-'): return 'grade do Explorar do Instagram'
     if nome.startswith('culinaria-'): return 'vídeo de culinária em que entra o anúncio'
+    if nome.startswith('esporte-'): return 'miniatura de vídeo de futebol no YouTube'
     key = nome.split('-')[0]
     return 'exemplos da ' + t[key] if t.get(key, '').split()[0] in ('loja', 'agência', 'concessionária', 'gestora', 'clínica', 'escola') else 'exemplos do ' + t.get(key, key)
 
