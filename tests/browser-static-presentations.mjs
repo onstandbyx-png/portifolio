@@ -35,7 +35,8 @@ try{
       await page.waitForSelector('html[data-static-presentations="ready"]',{state:'attached'});
       await page.waitForSelector('#laboratorio .cx-player',{state:'attached'});
       await page.evaluate(()=>document.fonts.ready);
-      const toggleMotion=()=>page.locator('#motion-toggle').click({force:reduced});
+      // The header hides on scroll down (nav.js), so the global pause is pressed through the DOM, as a keyboard user would.
+      const toggleMotion=()=>page.locator('#motion-toggle').evaluate(button=>button.click());
 
       const tabs=page.locator('#laboratorio [data-sp-tab]');
       const channelIds=['instagram','facebook','tiktok','youtube','linkedin','google','seo','chatgpt','maps','whatsapp','telegram','rcs','voz','pix','email','blog'];
@@ -103,13 +104,13 @@ try{
         await campaignCard.locator('[data-cx-stage] .ch-iphone[data-cor="laranja"]').count()===1&&
         await page.locator('#laboratorio .cx-brand svg.ch-logo').count()===1&&
         await side.getAttribute('data-mode')==='live'&&
-        /Patrocinado/.test(await side.locator('.cx-label').innerText())&&
+        /Anúncio|Patrocinado/.test(await side.locator('.cx-label').innerText())&&
         /marca fictícia/.test(await side.locator('.cx-side-cliente').innerText())&&
         await side.locator('[data-cx-journey] li').count()===3&&
         await side.locator('[data-cx-journey] [aria-current="step"]').count()===1&&
         /\S/.test(await side.locator('[data-cx-box="tela"] p').innerText())&&
         !/smiile/i.test(await page.locator('#laboratorio .cx-player').innerText()));
-      const labels={tiktok:/Patrocinado/,linkedin:/Promovido/,chatgpt:/Anúncio|Patrocinado/,maps:/Patrocinado/,blog:/Conteúdo patrocinado por Valore Patrimônio|Publicidade/,seo:/atlantica(incorporadora)?\.exemplo/};
+      const labels={tiktok:/Patrocinado/,linkedin:/Promovido/,chatgpt:/Anúncio|Patrocinado/,maps:/Patrocinado/,blog:/Conteúdo patrocinado por Valore Patrimônio|Publicidade/i,seo:/atlantica(incorporadora)?\.exemplo/};
       for(const [id,label] of Object.entries(labels)){
         await page.locator('#tab-'+id).click();
         await page.waitForFunction(id=>document.querySelector('#laboratorio .cx-player')?.dataset.platform===id,id);

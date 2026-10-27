@@ -17,7 +17,8 @@ const PAGES = Object.freeze([
   {route: '/criadores', file: 'pages/criadores.html', kind: 'criadores'},
   {route: '/criadores/ao-vivo', file: 'pages/criadores-ao-vivo.html', kind: 'criadores'},
   {route: '/vagas', file: 'pages/vagas.html', kind: 'vagas'},
-  {route: '/privacidade', file: 'pages/privacidade.html', kind: 'privacidade'}
+  {route: '/privacidade', file: 'pages/privacidade.html', kind: 'privacidade'},
+  {route: '/creditos', file: 'pages/creditos.html', kind: 'creditos'}
 ]);
 const present = PAGES.filter(page => existsSync(join(root, page.file)));
 

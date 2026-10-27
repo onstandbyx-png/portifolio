@@ -36,8 +36,7 @@ const ICONS = {
   ear: 'M4.5 9.5h4l5-4v13l-5-4h-4zM16.5 9a4 4 0 0 1 0 6',
 };
 const icon = name => `<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="${ICONS[name]}"/></svg>`;
-/* Image notices: IMG_META of campaign-channels.js ({chave:{src, credito, ia}}) when it exists; until then the local lists. */
-const AI_IMAGES = /(campanha|cena)-(crencas|esportes|negocios|nerd)/;
+/* Image notices: credits of IMG_META in campaign-channels.js ({chave:{src, credito}}); the local list is the fallback. */
 const CREDITS = [[/restaurante-feijoada-completa/, 'Foto da feijoada: Bradleyzm, CC BY-SA 4.0, Wikimedia Commons.']];
 const FINE = 'Exemplo ilustrativo, marca fictícia. Interface aproximada.';
 function fineFor(html) {
@@ -45,9 +44,9 @@ function fineFor(html) {
   if (meta && typeof meta === 'object') {
     const used = Object.values(meta).filter(item => item?.src && html.includes(item.src));
     const creditos = [...new Set(used.map(item => item.credito).filter(Boolean))];
-    return FINE + (used.some(item => item.ia) ? ' Imagens geradas por IA.' : '') + creditos.map(text => ' ' + text).join('');
+    return FINE + creditos.map(text => ' ' + text).join('');
   }
-  return FINE + (AI_IMAGES.test(html) ? ' Imagens geradas por IA.' : '') + CREDITS.filter(([re]) => re.test(html)).map(([, text]) => ' ' + text).join('');
+  return FINE + CREDITS.filter(([re]) => re.test(html)).map(([, text]) => ' ' + text).join('');
 }
 /* Under 360px the longest channel names shorten. */
 const CURTO = { whatsapp: 'WhatsApp', blog: 'Publi.' };
