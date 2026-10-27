@@ -1,1 +1,75 @@
-/* Shared transition vocabulary of the frame engine (frame-engine.js). */
+/* Shared transition vocabulary of the frame engine (frame-engine.js), after the smiile
+   motion tokens: springs smooth, snappy and bouncy, the Vaul sheet curve
+   cubic-bezier(.32,.72,0,1), press .97 for 120 ms, at most 450 ms per scene change.
+   Scene kinds (data-kind on .cm-scene; the screen repeats it in data-enter):
+   - push: iOS page from the right, 350 ms; the page under it slides 26% left and dims.
+   - sheet: rises from the bottom on the Vaul curve, 450 ms, with a backdrop on the scene under it.
+   - switch: app switch; the new app zooms in from 90% with rounded corners, 420 ms; the old one shrinks and fades.
+   - modal: scales from 94% and fades in, 300 ms, over a dimmed scene.
+   - fade: cross-fade, 240 ms.
+   Inside a screen:
+   - .cm-push and [data-banner]: notification banner that drops in on the bouncy spring;
+   - [data-pressed]: the element the finger presses (scale .97 in 120 ms, then back);
+   - [data-typing]: typing dots (three <i> children, or none), a 1.2 s wave with 180 ms between dots;
+   - [data-stream]: AI text that streams word by word when it appears (the engine sets data-streaming);
+   - [data-pulse]: two rings that pulse around a call that is connecting;
+   - .au [data-in]: a message or block that arrives rises 8u and fades in.
+   --quadro-ms on the screen is the time the frame stays (progress bars of stories and videos).
+   Without motion (reduced motion or the site's pause) every change is instant. */
+:root{
+  --fm-ios:cubic-bezier(.32,.72,0,1);
+  --fm-smooth:linear(0,.087,.256,.431,.582,.701,.79,.856,.902,.934,.956,.97,.981,.987,.992,.995,.996,.998,1);
+  --fm-snappy:linear(0,.09,.275,.47,.64,.771,.864,.927,.966,.988,1,1.005,1.006,1.006,1.005,1.004,1.002,1.002,1);
+  --fm-bouncy:linear(0,.086,.272,.481,.671,.822,.928,.995,1.03,1.044,1.045,1.038,1.029,1.019,1.012,1.006,1.002,.999,1);
+}
+/* Scenes: duration and curve by kind; a scene that leaves stays painted until its exit ends. */
+:is(#laboratorio,.lab-escopo) .cm-scene{--fm-d:.35s;--fm-e:var(--fm-ios);--fm-o:.24s;transition:transform var(--fm-d) var(--fm-e),opacity var(--fm-o) ease,border-radius var(--fm-d) var(--fm-e),visibility 0s var(--fm-d)}
+:is(#laboratorio,.lab-escopo) .cm-scene:is([data-pos="on"],[data-pos="under"]){transition:transform var(--fm-d) var(--fm-e),opacity var(--fm-o) ease,border-radius var(--fm-d) var(--fm-e),visibility 0s}
+:is(#laboratorio,.lab-escopo) .cm-scene[data-kind="sheet"]{--fm-d:.45s;--fm-e:cubic-bezier(.32,.72,0,1)}
+:is(#laboratorio,.lab-escopo) .cm-scene[data-kind="fade"]{--fm-d:.24s;--fm-o:.24s}
+:is(#laboratorio,.lab-escopo) .cm-scene[data-kind="switch"]{--fm-d:.42s;--fm-e:var(--fm-smooth);--fm-o:.26s}
+:is(#laboratorio,.lab-escopo) .cm-scene[data-kind="modal"]{--fm-d:.3s;--fm-e:var(--fm-snappy);--fm-o:.2s}
+:is(#laboratorio,.lab-escopo) .cm-scene[data-kind="switch"]:not([data-pos="on"],[data-pos="under"]){transform:scale(.9);opacity:0;border-radius:calc(var(--u,1px)*56)}
+:is(#laboratorio,.lab-escopo) .cm-scene[data-kind="modal"]:not([data-pos="on"],[data-pos="under"]){transform:scale(.94);opacity:0}
+/* The scene under the new one moves with the entering kind. */
+:is(#laboratorio,.lab-escopo) .cm-screen[data-enter="push"] .cm-scene[data-pos="under"]{--fm-d:.35s;--fm-e:var(--fm-ios)}
+:is(#laboratorio,.lab-escopo) .cm-screen[data-enter="sheet"] .cm-scene[data-pos="under"]{--fm-d:.45s;--fm-e:cubic-bezier(.32,.72,0,1)}
+:is(#laboratorio,.lab-escopo) .cm-screen[data-enter="switch"] .cm-scene[data-pos="under"]{--fm-d:.42s;--fm-e:var(--fm-smooth);transform:scale(.94);opacity:0;border-radius:calc(var(--u,1px)*56)}
+:is(#laboratorio,.lab-escopo) .cm-screen[data-enter="modal"] .cm-scene[data-pos="under"]{--fm-d:.3s;--fm-e:var(--fm-snappy)}
+:is(#laboratorio,.lab-escopo) .cm-scene[data-pos="under"]::after{transition:opacity .35s var(--fm-ios)}
+:is(#laboratorio,.lab-escopo) .cm-screen[data-enter="modal"] .cm-scene[data-pos="under"]::after{opacity:.38}
+/* Notification banner: drops from behind the Dynamic Island on the bouncy spring. */
+:is(#laboratorio,.lab-escopo) .cm-push{transition:transform .45s var(--fm-bouncy),opacity .2s ease,visibility 0s .45s}
+:is(#laboratorio,.lab-escopo) .cm-screen[data-state~="aviso"] .cm-push{transition:transform .45s var(--fm-bouncy),opacity .2s ease,visibility 0s}
+:is(#laboratorio,.lab-escopo) [data-banner]{animation:fm-banner .45s var(--fm-bouncy) both}
+@keyframes fm-banner{from{translate:0 calc(var(--u,1px)*-110);scale:.94;opacity:0}to{translate:0 0;scale:1;opacity:1}}
+/* A message or block that arrives in the reveal mocks. */
+:is(#laboratorio,.lab-escopo) .au [data-in]:not([data-banner]){animation:fm-chega .32s var(--fm-snappy) both}
+@keyframes fm-chega{from{translate:0 calc(var(--u,1px)*8);opacity:0}to{translate:0 0;opacity:1}}
+/* Press: the finger lands at 160 ms; the element sinks to .97 and comes back. */
+:is(#laboratorio,.lab-escopo) [data-pressed]{animation:fm-press .32s ease-out .14s both}
+@keyframes fm-press{0%{scale:1;filter:none}38%{scale:.97;filter:brightness(.92)}100%{scale:1;filter:none}}
+/* Typing dots. */
+:is(#laboratorio,.lab-escopo) [data-typing]{display:inline-flex;align-items:center;gap:calc(var(--u,1px)*4);min-height:calc(var(--u,1px)*18)}
+:is(#laboratorio,.lab-escopo) [data-typing]>i{display:block;width:calc(var(--u,1px)*7);height:calc(var(--u,1px)*7);border-radius:50%;background:currentColor;opacity:.35;animation:fm-ponto 1.2s ease-in-out infinite}
+:is(#laboratorio,.lab-escopo) [data-typing]>i:nth-child(2){animation-delay:.18s}
+:is(#laboratorio,.lab-escopo) [data-typing]>i:nth-child(3){animation-delay:.36s}
+:is(#laboratorio,.lab-escopo) [data-typing]:empty::before{content:"";width:calc(var(--u,1px)*7);height:calc(var(--u,1px)*7);margin-right:calc(var(--u,1px)*22);border-radius:50%;background:currentColor;opacity:.5;animation:fm-pontos 1.2s ease-in-out infinite}
+@keyframes fm-ponto{0%,60%,100%{opacity:.35;translate:0 0}30%{opacity:.95;translate:0 calc(var(--u,1px)*-3)}}
+@keyframes fm-pontos{0%,100%{box-shadow:calc(var(--u,1px)*11) 0 0 currentColor,calc(var(--u,1px)*22) 0 0 currentColor;opacity:.9}33%{box-shadow:calc(var(--u,1px)*11) calc(var(--u,1px)*-3) 0 currentColor,calc(var(--u,1px)*22) 0 0 currentColor;opacity:.45}66%{box-shadow:calc(var(--u,1px)*11) 0 0 currentColor,calc(var(--u,1px)*22) calc(var(--u,1px)*-3) 0 currentColor;opacity:.45}}
+/* Streamed AI text: each word fades in after the one before. */
+:is(#laboratorio,.lab-escopo) [data-stream][data-streaming] .fm-w{animation:fm-palavra .26s ease both;animation-delay:calc(var(--i,0) * var(--fm-passo,55ms))}
+@keyframes fm-palavra{from{opacity:0;filter:blur(2px)}to{opacity:1;filter:none}}
+/* A call that is connecting. */
+:is(#laboratorio,.lab-escopo) [data-pulse]{position:relative}
+:is(#laboratorio,.lab-escopo) [data-pulse]::before,:is(#laboratorio,.lab-escopo) [data-pulse]::after{content:"";position:absolute;inset:0;border-radius:50%;border:calc(var(--u,1px)*2) solid currentColor;opacity:0;pointer-events:none;animation:fm-pulso 1.6s cubic-bezier(.2,.7,.3,1) infinite}
+:is(#laboratorio,.lab-escopo) [data-pulse]::after{animation-delay:.8s}
+@keyframes fm-pulso{0%{scale:1;opacity:.55}100%{scale:1.6;opacity:0}}
+/* A jump between frames and the motion preferences: no transition, no entrance. */
+:is(#laboratorio,.lab-escopo) .cm-screen.is-instant :is([data-in],[data-banner],[data-pressed],.fm-w){animation:none!important}
+@media (prefers-reduced-motion:reduce){
+  :is(#laboratorio,.lab-escopo) :is(.cm-scene,.cm-scene::after,.cm-push){transition:none!important}
+  :is(#laboratorio,.lab-escopo) :is([data-in],[data-banner],[data-pressed],[data-typing]>i,[data-typing]::before,.fm-w,[data-pulse]::before,[data-pulse]::after){animation:none!important}
+}
+body.is-paused :is(#laboratorio,.lab-escopo) :is(.cm-scene,.cm-scene::after,.cm-push){transition:none!important}
+body.is-paused :is(#laboratorio,.lab-escopo) :is([data-in],[data-banner],[data-pressed],[data-typing]>i,[data-typing]::before,.fm-w,[data-pulse]::before,[data-pulse]::after){animation:none!important}
