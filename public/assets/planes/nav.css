@@ -1,7 +1,7 @@
 /* Cabeçalho no modelo Landing Planes (smiile, commit cc19ed2, ShaderNavigation.css), portado sem React.
    Medidas, cores, raios e tempos do original; a variante escura (sn-dark) é a usada sobre o hero preto.
    O bloco final neutraliza as regras do cabeçalho anterior que ainda vivem nas folhas compartilhadas. */
-.sn-header{position:relative;z-index:40;width:min(1200px,calc(100% - 64px));margin:20px auto 0;font-family:inherit;font-weight:420;font-synthesis:none;color:#222}
+.sn-header{position:absolute;z-index:40;top:0;left:0;right:0;width:min(100% - 2 * var(--gutter,32px),var(--page-max,1200px));margin:20px auto 0;font-family:inherit;font-weight:420;font-synthesis:none;color:#222}
 .sn-header svg{flex-shrink:0}
 .sn-bar{min-height:64px;padding:10px 13px 10px 22px;display:flex;align-items:center;gap:28px;border:1px solid #e8e7e5;border-radius:18px;background:#ffffffed;box-shadow:0 2px 3px #15151503,0 0 0 1px #ffffff8c;backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px)}
 .sn-brand{display:flex;align-items:center;gap:7px;flex:none;font-size:26px;letter-spacing:-1.2px;font-weight:620;line-height:1;text-decoration:none;color:#212121}
@@ -139,7 +139,7 @@
 /* Regras do cabeçalho anterior que seguem em portfolio-r6.css, direction.css, portfolio-recovery.css,
    sections.css e editorial-motion.css e alcançam as classes mantidas por outros scripts
    (.site-header, .header-inner, .main-nav, .motion-toggle). */
-.site-header.sn-header,.site-header.sn-header.is-scrolled{position:relative;inset:auto;height:auto;background:transparent;border:0;box-shadow:none;backdrop-filter:none;-webkit-backdrop-filter:none;transition:none}
+.site-header.sn-header,.site-header.sn-header.is-scrolled{position:absolute;inset:0 0 auto;height:auto;background:transparent;border:0;box-shadow:none;backdrop-filter:none;-webkit-backdrop-filter:none;transition:none}
 .sn-header .sn-bar.header-inner{min-height:64px;gap:28px}
 .sn-header .sn-nav.main-nav{display:flex;gap:3px}
 .sn-header .sn-nav.main-nav>a{font-size:13px;min-height:40px}

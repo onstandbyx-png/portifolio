@@ -1,0 +1,90 @@
+{
+  "_": "Jornadas do hero, uma por botão. {CAMINHO|formato} lê marcas.js ($ é o cliente da jornada; formatos: longa, dia, d, dm, h, mail). b é a batida em que o item aparece (0 a 5, frações dentro da batida). log tem 6 linhas, uma por batida, em linguagem simples e sem números. fonte aponta o fluxo de automation-flows.js que a jornada resume.",
+  "agente": {
+    "fonte": "whatsapp/agente", "cliente": "turismo",
+    "card": { "tipo": "ig", "plataforma": "Instagram", "nome": "{$.arroba}", "selo": "Anúncio", "foto": "/assets/portfolio/canais/turismo-pirenopolis-rua-4x5.webp", "alt": "Rua de pedra com casario colonial em Pirenópolis, sem pessoas", "texto": "{OFERTAS.turismo.produto}.", "cta": "Enviar mensagem", "volta": "Compra devolvida ao anúncio" },
+    "app": { "tipo": "wa", "titulo": "{$.marca}", "sub": "Conta comercial", "itens": [
+      { "b": 1, "k": "out", "cita": "{$.marca} · Anúncio", "t": "Olá! Quero saber da Festa do Divino." },
+      { "b": 2, "k": "in", "t": "Oi, {PESSOA.primeiro}! Sou a assistente virtual da {$.curta}. Quem vai viajar com você?" },
+      { "b": 2.55, "k": "out", "t": "Eu, meu marido e as crianças, de 8 e 2 anos." },
+      { "b": 3, "k": "in", "t": "{PESSOA.primeiro}, aqui é a {OFERTAS.turismo.consultora}, consultora. Já li a conversa: a saída de {OFERTAS.turismo.saidas.0.ida|d} a {OFERTAS.turismo.saidas.0.volta|dia} tem assento para os quatro." },
+      { "b": 3.6, "k": "pay", "t": "Pré-reserva · Festa do Divino", "linhas": "4 viajantes|R$ ••••", "cta": "Pagar com Pix", "pago": 4, "feito": "pago" },
+      { "b": 5, "k": "in", "t": "Pagamento confirmado. O roteiro chega por e-mail ainda hoje." }
+    ] },
+    "log": [["Anúncio", "toque em Enviar mensagem"], ["WhatsApp", "conversa aberta com a origem do anúncio"], ["Agente IA", "se apresenta como assistente virtual e entende o pedido"], ["Pessoa", "a consultora assume com o histórico"], ["Pix", "pagamento confirmado (valor oculto)"], ["Conversions API", "evento devolvido ao anúncio"]]
+  },
+  "instagram": {
+    "fonte": "instagram/direct", "cliente": "varejo",
+    "card": { "tipo": "reel", "plataforma": "Instagram", "nome": "{$.arroba}", "selo": "Anúncio", "foto": "/assets/portfolio/canais/varejo-mesa-noite-4x5.webp", "alt": "Mesa de criador à noite com notebook aceso", "texto": "O {OFERTAS.varejo.skus.0.nome} branco volta em novembro. Comente BRANCO e receba o link.", "cta": "Comente BRANCO", "volta": "Interesse devolvido ao anúncio" },
+    "app": { "tipo": "ig", "titulo": "{$.arroba}", "sub": "{$.marca}", "campo": "Mensagem…", "itens": [
+      { "b": 1, "k": "sys", "t": "Você comentou no Reel: BRANCO" },
+      { "b": 2, "k": "in", "t": "Oi, {PESSOA.primeiro}! Aqui é a resposta automática da {$.curta}. O {OFERTAS.varejo.skus.0.nome} branco {OFERTAS.varejo.skus.1.estado}. Quer entrar na lista de espera?", "btns": "Quero o aviso|Agora não" },
+      { "b": 3, "k": "out", "t": "Quero o aviso" },
+      { "b": 3.5, "k": "in", "t": "Pronto, você está na lista. Quando chegar, o aviso vai por e-mail." },
+      { "b": 4, "k": "note", "q": "Mail · {$.marca}", "t": "Chegou! O {OFERTAS.varejo.skus.0.nome} branco já está disponível." }
+    ] },
+    "log": [["Anúncio", "Reel pede um comentário"], ["Instagram", "comentário com a palavra-chave"], ["Direct", "resposta automática com a lista de espera"], ["Cliente", "entra na lista e aceita o aviso"], ["E-mail", "aviso de chegada, fora do Direct"], ["Conversions API", "interesse devolvido ao anúncio"]]
+  },
+  "voz": {
+    "fonte": "voz/ligacao", "cliente": "clinica",
+    "nota": "A transcrição fica fora do celular: o iPhone não mostra legendas de ligação em português.",
+    "card": { "tipo": "site", "plataforma": "Site", "nome": "{$.marca}", "selo": "{$.dominio}", "titulo": "Prefere conversar? A gente liga.", "campos": "{PESSOA.nome}|{PESSOA.telefone}", "aceite": "Aceito a ligação agora. Ela pode ser atendida por uma assistente virtual.", "cta": "Me ligue agora", "volta": "Avaliação confirmada" },
+    "app": { "tipo": "call", "titulo": "{$.marca}", "sub": "São Paulo", "itens": [
+      { "b": 1, "k": "estado", "t": "recebida" },
+      { "b": 2, "k": "fala", "q": "ia", "s": 0, "t": "Olá, {PESSOA.primeiro}. Sou a assistente virtual da {$.curta}. Se preferir, passo para a recepção agora." },
+      { "b": 3, "k": "fala", "q": "pessoa", "s": 9, "t": "Pode ser com você. Quero uma avaliação de manhã." },
+      { "b": 3.55, "k": "fala", "q": "ia", "s": 14, "t": "Um instante, vou ver a agenda." },
+      { "b": 4, "k": "fala", "q": "ia", "s": 21, "t": "Tenho {OFERTAS.clinica.avaliacao.iso|longa}, às {OFERTAS.clinica.avaliacao.hora|h}, na unidade {OFERTAS.clinica.avaliacao.unidade}. Posso marcar?" },
+      { "b": 4.55, "k": "fala", "q": "pessoa", "s": 29, "t": "Pode marcar." },
+      { "b": 5, "k": "estado", "t": "fim", "s": 34 },
+      { "b": 5, "k": "note", "q": "WhatsApp · {$.curta}", "t": "Avaliação confirmada: {OFERTAS.clinica.avaliacao.iso|longa}, às {OFERTAS.clinica.avaliacao.hora|h}. Para remarcar, é só responder." }
+    ] },
+    "log": [["Site", "pedido de ligação com aceite"], ["Telefonia", "a clínica liga em seguida"], ["Agente IA", "se apresenta como assistente virtual e oferece a recepção"], ["Agenda", "horários livres consultados"], ["Agenda", "avaliação marcada na ligação"], ["WhatsApp", "confirmação com o endereço"]]
+  },
+  "rcs": {
+    "fonte": "rcs/conversa", "cliente": "varejo",
+    "nota": "Botão de conversa na busca: piloto do Google no Brasil.",
+    "card": { "tipo": "busca", "plataforma": "Google", "nome": "{$.dominio}", "selo": "Patrocinado", "busca": "notebook para edição de vídeo", "titulo": "{OFERTAS.varejo.skus.0.nome} para edição de vídeo", "texto": "Tela calibrada e entrega rápida em São Paulo.", "cta": "Conversar", "volta": "Conversão devolvida ao anúncio" },
+    "app": { "tipo": "rcs", "titulo": "{$.marca}", "sub": "Empresa verificada", "campo": "Mensagem de texto · RCS", "itens": [
+      { "b": 1, "k": "in", "t": "Oi, {PESSOA.primeiro}! Sou a assistente virtual da {$.curta}. Como posso ajudar?", "btns": "Para edição de vídeo|Falar com vendedor" },
+      { "b": 2, "k": "out", "t": "Para edição de vídeo" },
+      { "b": 2.45, "k": "in", "t": "Separei dois: o {OFERTAS.varejo.skus.0.nome} grafite e o {OFERTAS.varejo.skus.2.nome}. O branco {OFERTAS.varejo.skus.1.estado}.", "btns": "Comprar|Detalhes" },
+      { "b": 3, "k": "pay", "t": "Pedido {PEDIDOS.rcs/conversa}", "linhas": "{OFERTAS.varejo.skus.0.nome} grafite|R$ ••••", "cta": "Pagar com Pix", "pago": 4, "feito": "Pagamento confirmado" },
+      { "b": 5, "k": "in", "t": "Pedido {PEDIDOS.rcs/conversa} confirmado. {OFERTAS.varejo.frete}." }
+    ] },
+    "log": [["Busca", "resultado patrocinado com botão Conversar"], ["Mensagens", "conversa aberta com a empresa verificada"], ["Agente IA", "se apresenta e recomenda pelo catálogo"], ["Pedido", "criado dentro da conversa"], ["Pix", "pago pelo link seguro (valor oculto)"], ["Google Ads", "conversão devolvida ao anúncio"]]
+  },
+  "pix": {
+    "fonte": "pix/recorrencia", "cliente": "educacao",
+    "card": { "tipo": "site", "plataforma": "Site", "nome": "{$.marca}", "selo": "{$.dominio}", "foto": "/assets/portfolio/canais/educacao-cadernos-4x5.webp", "alt": "Cadernos e caneta sobre a mesa de estudo", "titulo": "{OFERTAS.educacao.clube}", "texto": "Mensalidade com Pix Automático, sem cartão nem boleto.", "cta": "Assinar com Pix Automático", "volta": "Assinatura mantida" },
+    "app": { "tipo": "bank", "titulo": "{TERCEIROS.banco.nome}", "sub": "Pix Automático", "itens": [
+      { "b": 1, "k": "pay", "t": "Autorizar Pix Automático", "linhas": "Recebedor|{$.marca};Objeto|{OFERTAS.educacao.mensalidade.objeto};Periodicidade|Mensal;1º pagamento|{OFERTAS.educacao.mensalidade.inicio|dm};Data final|Sem data final", "campo": "Valor máximo|Você define", "cta": "Autorizar com Face ID", "pago": 2, "feito": "Autorizado" },
+      { "b": 3, "k": "note", "q": "{TERCEIROS.banco.nome}", "t": "Amanhã tem Pix Automático para {$.marca}." },
+      { "b": 4, "k": "note", "q": "WhatsApp · {$.curta}", "t": "{PESSOA.primeiro}, o Pix de hoje não passou. Quer pausar um mês? Sua vaga de quinta continua." },
+      { "b": 5, "k": "sys", "t": "Pausado: volta em {OFERTAS.educacao.mensalidade.retomada|dia}" }
+    ] },
+    "log": [["Site", "plano mensal com Pix Automático"], ["Banco", "pedido de autorização no app"], ["Cliente", "autoriza e define o valor máximo"], ["Banco", "aviso na véspera da cobrança"], ["Escola", "cobrança não passou e a escola chama no WhatsApp"], ["CRM", "pausa no lugar do cancelamento"]]
+  },
+  "email": {
+    "fonte": "email/regua", "cliente": "financas",
+    "card": { "tipo": "li", "plataforma": "LinkedIn", "nome": "{$.marca}", "selo": "Promovido", "foto": "/assets/portfolio/canais/financas-mesa-cafe-4x5.webp", "alt": "Mesa com café, caderno e caneta", "titulo": "{OFERTAS.financas.guia.titulo}", "texto": "Um roteiro para separar o que é da empresa e o que é da família.", "cta": "Baixar", "volta": "Reunião devolvida ao anúncio" },
+    "app": { "tipo": "mail", "titulo": "Caixa de Entrada", "itens": [
+      { "b": 1, "k": "row", "q": "{$.marca}", "h": "{OFERTAS.financas.regua.0|mail}", "t": "Seu guia chegou", "p": "{OFERTAS.financas.guia.titulo}, em PDF. Boa leitura!" },
+      { "b": 2, "k": "row", "q": "{$.marca}", "h": "{OFERTAS.financas.regua.1|mail}", "t": "Três perguntas antes de separar o patrimônio", "p": "Comece pela que mais pesa na sua família." },
+      { "b": 3, "k": "row", "q": "{$.marca}", "h": "{OFERTAS.financas.regua.2|mail}", "t": "{PESSOA.primeiro}, quer revisar o seu caso em 30 minutos?", "p": "Escolha um horário. Sem compromisso." },
+      { "b": 4, "k": "note", "q": "Calendário", "t": "Conversa com a {$.curta}: {OFERTAS.financas.conversa.iso|longa}, às {OFERTAS.financas.conversa.hora|h}, por vídeo." }
+    ] },
+    "log": [["LinkedIn", "guia pedido pelo formulário do anúncio"], ["E-mail", "boas-vindas com o guia, remetente autenticado"], ["E-mail", "conteúdo só para quem leu o guia"], ["E-mail", "convite para uma conversa"], ["Agenda", "conversa marcada por vídeo"], ["LinkedIn", "conversão devolvida ao anúncio"]]
+  },
+  "telegram": {
+    "fonte": "telegram/clube", "cliente": "educacao",
+    "card": { "tipo": "tg", "plataforma": "Telegram", "nome": "{$.marca}", "selo": "canal", "titulo": "Desafio da semana", "texto": "Complete a frase: I’m looking forward ___ meeting you.", "opcoes": "to|for|at", "cta": "to", "volta": "Assinante no clube" },
+    "app": { "tipo": "tg", "titulo": "{$.curta} Bot", "sub": "bot", "campo": "Mensagem", "itens": [
+      { "b": 1, "k": "in", "t": "Certo, {PESSOA.primeiro}! “Looking forward to” pede to. Seu nível: {OFERTAS.educacao.nivel}.", "btns": "Ver o plano" },
+      { "b": 2, "k": "sys", "t": "Nível {OFERTAS.educacao.nivel} salvo no seu perfil" },
+      { "b": 3, "k": "pay", "t": "{OFERTAS.educacao.clube}", "linhas": "Mini app|{$.curta};Assinatura|30 dias", "cta": "Assinar com Stars", "pago": 4, "feito": "Pago com Stars" },
+      { "b": 5, "k": "in", "t": "Assinatura ativa. Aqui está o convite para o grupo de conversação.", "btns": "Entrar no grupo" }
+    ] },
+    "log": [["Canal", "desafio com botões no post"], ["Bot", "resposta que só a pessoa vê"], ["Bot", "nível salvo no perfil"], ["Mini app", "clube de conversação aberto"], ["Telegram", "assinatura paga em Stars"], ["Bot", "convite para o grupo do clube"]]
+  }
+}
