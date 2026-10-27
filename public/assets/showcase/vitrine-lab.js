@@ -11,7 +11,7 @@
    plays by itself: the button shows the next frame.
    Markup: index.html, <div class="vitrine lab-escopo" data-vitrine="sites">. */
 import { channelById, renderMock } from './campaign-channels.js';
-import { applyFrame, settle, tempoMinimo, showTap, hideTap, syncMedia, live } from './frame-engine.js';
+import { applyFrame, settle, tempoMinimo, showTap, hideTap, syncMedia, live, seguirFoco } from './frame-engine.js';
 
 const DEMOS = {
   sites: [
@@ -23,7 +23,7 @@ const DEMOS = {
 };
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 const desktopQuery = matchMedia('(min-width:1100px)');
-const compactQuery = matchMedia('(max-width:480px), (max-height:480px)');
+const compactQuery = matchMedia('(max-width:480px), (max-height:480px)'), narrowQuery = matchMedia('(max-width:599px)');
 
 /* The cut of a placement: absolute indexes [from, to] and the steps inside it. */
 export function recorte(placement) {
@@ -95,6 +95,8 @@ function mountOne(root) {
     return settle(screen, item).then(() => {
       if (mine !== token) return null;
       if (modo === 'celular') showTap(stage, screen, item); else if (item.toque) screen.dataset.tap = item.toque;
+      // Phones: a button below the fold comes into view while playing.
+      if (playing && modo === 'celular' && narrowQuery.matches) seguirFoco(stage);
       return tempoMinimo(screen, list, abs);
     });
   }

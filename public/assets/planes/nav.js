@@ -329,7 +329,7 @@ if (header && hero) {
     const visible = hidden ? 0 : fixed ? 12 + bar.offsetHeight : Math.max(0, header.getBoundingClientRect().bottom);
     rootStyle.setProperty('--sn-h-visible', `${Math.round(visible)}px`);
     if (cta) {
-      const show = phone.matches && fixed && !(contact && inView(contact)) && ![...document.querySelectorAll('[data-cx-body], .at-main')].some(inView);
+      const show = phone.matches && fixed && !(contact && inView(contact)) && ![...document.querySelectorAll('[data-cx-body], .at-main, [data-vitrine="sites"]')].some(inView);
       cta.classList.toggle('is-visible', show);
       rootStyle.setProperty('--mobile-cta-h', show ? `${Math.round(cta.offsetHeight + 12)}px` : '0px');
     }

@@ -33,6 +33,9 @@
      before (on frame 0, every visible word). Call it after settle(). It also writes --quadro-ms and, for tests,
      data-palavras and data-quadro-ms on the screen.
    - syncMedia(screen, playing): plays or pauses the videos of the screen.
+   - seguirFoco(stage, {barra, extra}) → boolean. Phones: when the finger, the point or `extra` (selectors inside
+     the scene on screen) sits under the sticky bar (`barra`) or past the bottom of the window, the page scrolls just
+     enough to show it. Only while motion is live and never within 2.5 s of the person scrolling or touching.
    - live() → boolean: motion is allowed (no reduced motion, no global pause, tab visible).
    - stateAt(list, index) → the data-state string of a frame. */
 import { HOJE } from './marcas.js';
@@ -232,6 +235,9 @@ function covered(node, r) {
   if (x < 0 || y < 0 || x > innerWidth || y > innerHeight) return false;
   const hit = document.elementFromPoint(x, y);
   if (!hit) return false;
+  // Bars of the page over the phone (dock, Agora strip, contact bar) do not cover the mock itself.
+  const tela = node.closest('.ch-iphone-tela, .ch-iphone');
+  if (tela && !tela.contains(hit) && !hit.closest('.cx-dot,.cx-tap,.cx-ring')) return false;
   return !(node.contains(hit) || hit.closest('[data-hs]') === node || hit.closest('[data-tap]') === node || hit.closest('.cx-dot,.cx-tap,.cx-ring'));
 }
 function candidatesOf(scene, selector, box) {
@@ -311,6 +317,29 @@ export function positionDot(stage, screen, item, n) {
   dot.textContent = String(n);
   place(stage, dot, spot[0], spot[1]);
   dot.hidden = false;
+  return true;
+}
+
+/* Follow the focus of the frame on phones (see the API above). */
+let mexeu = -1e9;
+if (typeof addEventListener === 'function') ['wheel', 'touchstart', 'touchmove', 'keydown'].forEach(kind => addEventListener(kind, () => { mexeu = performance.now(); }, { passive: true }));
+export function seguirFoco(stage, { barra = null, extra = '' } = {}) {
+  if (!stage || !live() || performance.now() - mexeu < 2500) return false;
+  const sb = stage.getBoundingClientRect();
+  if (sb.bottom < innerHeight * .3 || sb.top > innerHeight * .7) return false;
+  const nodes = [...stage.querySelectorAll('[data-cx-tap]:not([hidden]), [data-cx-dot]:not([hidden]), [data-cx-ring]:not([hidden])')];
+  if (extra) nodes.push(...stage.querySelectorAll(extra.split(',').map(s => `.cm-scene[data-pos="on"] ${s.trim()}`).join(',')));
+  const rs = nodes.map(node => node.getBoundingClientRect()).filter(r => r.width && r.height);
+  if (!rs.length) return false;
+  const top = Math.min(...rs.map(r => r.top)), bottom = Math.max(...rs.map(r => r.bottom));
+  const head = (parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--sn-h-visible')) || 0) + 8;
+  const bt = barra?.getBoundingClientRect();
+  const floor = Math.min(innerHeight, bt && bt.height && bt.top < innerHeight ? bt.top : innerHeight) - 12;
+  let dy = 0;
+  if (bottom > floor) dy = bottom - floor;
+  if (top - dy < head) dy = top - head;
+  if (Math.abs(dy) < 8) return false;
+  scrollBy({ top: dy, behavior: 'smooth' });
   return true;
 }
 

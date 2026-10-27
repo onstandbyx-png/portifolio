@@ -10,7 +10,7 @@
    - Links: #sistemas/<chave> and #sistemas/<chave>/falha open a module (and its failure path).
    Markup: index.html, <div class="vitrine lab-escopo" data-vitrine="sistemas">. */
 import { placementByKey, renderMock, marca } from './campaign-channels.js';
-import { applyFrame, settle, tempoMinimo, positionDot, clearDot, showTap, hideTap, syncMedia, live } from './frame-engine.js';
+import { applyFrame, settle, tempoMinimo, positionDot, clearDot, showTap, hideTap, syncMedia, live, seguirFoco } from './frame-engine.js';
 import { CLIENTES, HOJE } from './marcas.js';
 
 const MODULOS = [
@@ -128,6 +128,7 @@ function mountOne(root) {
   const barra = $('[data-at-barra]'), arq = $('[data-at-arq]'), arqSvg = $('[data-at-arq-svg]'), falaBox = $('[data-at-fala-box]'), fio = $('[data-at-fio]');
   const estreito = matchMedia('(max-width:599px)'), largo = matchMedia('(min-width:900px)'), compacto = matchMedia('(max-width:480px), (max-height:480px)');
   const reduce = matchMedia('(prefers-reduced-motion: reduce)');
+  const deitado = matchMedia('(orientation:landscape) and (max-height:520px)');
 
   let modulo = 0, falha = false, placement = null, frames = [], linhas = [], screen = null, quadro = -1, aba = 'tela';
   let playing = false, pausado = false, visivel = false, timer = 0, geracao = 0, inicio = 0, gasto = 0, duracao = 0;
@@ -393,6 +394,9 @@ function mountOne(root) {
       duracao = tempoMinimo(screen, frames, quadro);
       showTap(stage, screen, item);
       positionDot(stage, screen, item, passoDe(quadro) + 1);
+      // Phones: the sticky dock covers the bottom of the phone; while playing, the page brings the button, the
+      // point or (in a call) the voice wave above it.
+      if (playing && (estreito.matches || deitado.matches)) seguirFoco(stage, { barra: estreito.matches ? $('[data-at-dock]') : null, extra: item.fala ? '.au-onda:not(.au-onda--ilha), .au-wacall-bar, .au-incall-grid' : '' });
       agendar();
     });
   }
