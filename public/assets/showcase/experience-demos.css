@@ -224,9 +224,9 @@
 }
 @media(prefers-reduced-motion:reduce){:is(#laboratorio,.lab-escopo) :is(.cx-player,.cx-side) *,:is(#laboratorio,.lab-escopo) :is(.cx-player,.cx-side) *::after{transition:none!important;animation:none!important}}
 body.is-paused :is(#laboratorio,.lab-escopo) :is(.cx-player,.cx-side) *,body.is-paused :is(#laboratorio,.lab-escopo) :is(.cx-player,.cx-side) *::after{transition:none!important;animation:none!important}
-/* Narrow phones (under 300px of player): tighter formats, and the journey keeps the step names whole without the number circles. */
-@container cx (max-width:300px){
- :is(#laboratorio,.lab-escopo) .cx-placement{padding:0 8px;font-size:12.5px}
+/* Narrow phones (up to 310px of player, the 320px phones): tighter formats, and the journey keeps the step names whole without the number circles. */
+@container cx (max-width:310px){
+ :is(#laboratorio,.lab-escopo) .cx-placement{padding:0 6px;font-size:12.5px}
  :is(#laboratorio,.lab-escopo) .cx-journey{gap:4px}
  :is(#laboratorio,.lab-escopo) .cx-steps .cx-step-n{display:none}
  :is(#laboratorio,.lab-escopo) .cx-step-t b{font-size:12px;letter-spacing:-.01em}
