@@ -347,7 +347,8 @@ const mocks = {
         <span class="fb-ev-local">${I('location')}<span><b>${esc(C.restaurante.marca)}</b><small>${esc(TERCEIROS.ruas.restaurante)}</small></span></span>
         <span class="fb-ev-acoes"><span class="is-on">${I('check')}Interessado</span><span>${I('share')}Compartilhar</span></span>
         <p class="fb-ev-sobre">Feijoada no tacho, carnes separadas, couve, farofa e laranja. Mesas no salão e na varanda.</p>
-        <span class="fb-ev-reserva" data-hs="3"><span><b>Reserva de mesa</b><small>${esc(C.restaurante.dominio)}</small></span><span class="fb-ev-btn" data-tap="rsv">Reservar mesa</span></span></div>`, 'cm-scene--part') +
+        <span class="fb-ev-reserva" data-hs="3"><span><b>Reserva de mesa</b><small>${esc(C.restaurante.dominio)}</small></span><span class="fb-ev-btn" data-tap="rsv">Reservar mesa</span></span>
+        <b class="fb-ev-h">Detalhes</b><span class="fb-ev-det"><span>${I('people')}38 pessoas interessadas</span><span>${I('user')}Evento de ${esc(C.restaurante.marca)}</span><span>${I('globe')}Público · qualquer pessoa, dentro ou fora do Facebook</span><span>${I('bell')}Lembrete no dia, às 9h</span></span></div>`, 'cm-scene--part') +
       scene('page', 'sheet', 'claro', `${browserBar(curta('restaurante'), C.restaurante.dominio)}${SITES.tacho({ variant: 'direto' })}`));
   },
 

@@ -36,6 +36,8 @@ async function open(viewport,{reduced=true}={}){
   page.on('console',m=>{if(m.type()==='error')report.console.push(`${tag}: ${m.text()}`);});
   page.on('response',r=>{if(r.status()>=400)report.missing.push(`${tag}: ${r.status()} ${r.url().replace(base,'')}`);});
   await page.goto(base+'/',{waitUntil:'load'});
+  // The section mounts when it comes near the viewport.
+  await page.evaluate(()=>document.querySelector('#laboratorio')?.scrollIntoView({behavior:'instant'}));
   await page.waitForSelector('#laboratorio .cx-player',{state:'attached'});
   await page.evaluate(()=>document.fonts.ready);
   return {context,page};
