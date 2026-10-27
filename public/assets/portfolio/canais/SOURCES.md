@@ -38,20 +38,20 @@ Copiados sem alteração da pasta de fotos do estúdio Fatos (repositório priva
 
 | Arquivo | O que mostra | Uso nesta seção |
 |---|---|---|
-| `campanha-crencas.webp` (720 x 1273) | Rua histórica com bandeirolas ao pôr do sol, sem pessoas | Bandeirola Viagens (Google Ads Display e ChatGPT) |
-| `campanha-esportes.webp` (720 x 1273) | SUV elétrico carregando no estacionamento de um estádio, placa em branco, sem logotipo | Ondara Elétricos (YouTube, anúncio no vídeo) |
-| `campanha-negocios.webp` (720 x 1273) | Mesa escura com copo, cartão, caneta e notebook; vista da cidade | Arrimo Patrimônio (LinkedIn e publieditorial). A tela do notebook mostra um gráfico subindo: use o recorte abaixo |
+| `campanha-crencas.webp` (720 x 1273) | Rua histórica com bandeirolas ao pôr do sol, sem pessoas | Destino Certo Viagens (Google Ads Display e ChatGPT) |
+| `campanha-esportes.webp` (720 x 1273) | SUV elétrico carregando no estacionamento de um estádio, placa em branco, sem logotipo | EcoDrive Elétricos (YouTube, anúncio no vídeo) |
+| `campanha-negocios.webp` (720 x 1273) | Mesa escura com copo, cartão, caneta e notebook; vista da cidade | Valore Patrimônio (LinkedIn e publieditorial). A tela do notebook mostra um gráfico subindo: use o recorte abaixo |
 | `campanha-negocios-sem-grafico.webp` (720 x 913) | A mesma mesa sem a tela do notebook | Recorte (0, 360, 720, 1273) de `campanha-negocios.webp`, para nenhum enquadramento mostrar gráfico de rendimento |
 
-A foto da Teclaria (`campanha-nerd.webp`, do estúdio Fatos) já está em `public/assets/portfolio/campanha-nerd.webp` e não foi duplicada.
+A foto da Ponto Tech (`campanha-nerd.webp`, do estúdio Fatos) já está em `public/assets/portfolio/campanha-nerd.webp` e não foi duplicada.
 
 Cenas do estúdio Fatos, mapeadas no laboratório (`_lab/fatos-estudio`), copiadas sem alteração em 22/10/2026 (mesmo md5). Fotos geradas, sem pessoas e sem marcas.
 
 | Arquivo | O que mostra | Uso nesta seção |
 |---|---|---|
-| `cena-esportes.webp` (720 x 1273) | Bola, cones e apito num gramado de estádio ao pôr do sol | Miniatura do vídeo seguinte no YouTube (Ondara Elétricos) |
-| `cena-nerd.webp` (720 x 1273) | Controle de videogame, console portátil, foguete e dados sobre fundo amarelo | Segundo corte do vídeo da Teclaria no TikTok |
-| `cena-crencas.webp` (720 x 1273) | Bandeirolas, lanternas e velas numa varanda ao entardecer | Roteiro sugerido no site da Bandeirola Viagens |
+| `cena-esportes.webp` (720 x 1273) | Bola, cones e apito num gramado de estádio ao pôr do sol | Miniatura do vídeo seguinte no YouTube (EcoDrive Elétricos) |
+| `cena-nerd.webp` (720 x 1273) | Controle de videogame, console portátil, foguete e dados sobre fundo amarelo | Segundo corte do vídeo da Ponto Tech no TikTok |
+| `cena-crencas.webp` (720 x 1273) | Destino Certos, lanternas e velas numa varanda ao entardecer | Roteiro sugerido no site da Destino Certo Viagens |
 
 `cena-negocios.webp` do mesmo estúdio não entra: o caderno mostra um gráfico subindo, que não deve aparecer junto da gestora de patrimônio.
 

@@ -53,28 +53,27 @@ export const IMG = {
   cenaCrencas: { src: A + 'canais/cena-crencas.webp', w: 720, h: 1273 },
 };
 
-/* Fictitious advertisers, one per client type. Names checked on 21/10/2026
-   (docs/plans/clientes-canais-20261021.md, 2.2); every mark is a simple shape drawn for this section,
-   except Arrimo, the glyph of the Fatos studio logo (LogosFicticios.tsx). */
+/* Fictitious advertisers, one per client type. Names chosen on 27/10/2026, at the owner's request, to read
+   like real Brazilian businesses (no name search was made). Every mark is a simple shape drawn for this section. */
 export const CLIENTES = {
-  restaurante: { tipo: 'restaurante', marca: 'Tacho Miúdo', arroba: 'tachomiudo', dominio: 'tachomiudo.exemplo', cor: '#a4462a' },
-  clinica: { tipo: 'clínica odontológica', marca: 'Seixo Odontologia', arroba: 'seixoodontologia', dominio: 'seixo.exemplo', cor: '#2f6f73' },
-  incorporadora: { tipo: 'incorporadora', marca: 'Morada Falésia', arroba: 'moradafalesia', dominio: 'moradafalesia.exemplo', cor: '#1f4e5f' },
-  varejo: { tipo: 'loja de tecnologia', marca: 'Teclaria', arroba: 'teclaria', dominio: 'teclaria.exemplo', cor: '#5b3df5' },
-  turismo: { tipo: 'agência de viagens', marca: 'Bandeirola Viagens', arroba: 'bandeirola', dominio: 'bandeirola.exemplo', cor: '#d9822b' },
-  educacao: { tipo: 'escola de idiomas', marca: 'Sotaque Livre Idiomas', curta: 'Sotaque Livre', arroba: 'sotaquelivre', dominio: 'sotaquelivre.exemplo', cor: '#e5533d' },
-  financas: { tipo: 'gestora de patrimônio', marca: 'Arrimo Patrimônio', arroba: 'arrimo', dominio: 'arrimo.exemplo', cor: '#0f1a2c' },
-  automotivo: { tipo: 'concessionária', marca: 'Ondara Elétricos', arroba: 'ondara', dominio: 'ondara.exemplo', cor: '#0f6b5c' },
+  restaurante: { tipo: 'restaurante', marca: 'Casa Amaro', arroba: 'casaamaro', dominio: 'casaamaro.exemplo', cor: '#a4462a' },
+  clinica: { tipo: 'clínica odontológica', marca: 'Vilela Odontologia', arroba: 'vilelaodontologia', dominio: 'vilela.exemplo', cor: '#2f6f73' },
+  incorporadora: { tipo: 'incorporadora', marca: 'Atlântica Incorporadora', curta: 'Atlântica', arroba: 'atlanticaincorporadora', dominio: 'atlantica.exemplo', cor: '#1f4e5f' },
+  varejo: { tipo: 'loja de tecnologia', marca: 'Ponto Tech', arroba: 'pontotech', dominio: 'pontotech.exemplo', cor: '#5b3df5' },
+  turismo: { tipo: 'agência de viagens', marca: 'Destino Certo Viagens', arroba: 'destinocerto', dominio: 'destinocerto.exemplo', cor: '#d9822b' },
+  educacao: { tipo: 'escola de idiomas', marca: 'Speak Up Idiomas', curta: 'Speak Up', arroba: 'speakupidiomas', dominio: 'speakup.exemplo', cor: '#e5533d' },
+  financas: { tipo: 'gestora de patrimônio', marca: 'Valore Patrimônio', arroba: 'valorepatrimonio', dominio: 'valore.exemplo', cor: '#0f1a2c' },
+  automotivo: { tipo: 'concessionária', marca: 'EcoDrive Elétricos', arroba: 'ecodrive', dominio: 'ecodrive.exemplo', cor: '#0f6b5c' },
 };
 const MARCAS = {
-  restaurante: '<svg viewBox="0 0 100 100"><text x="50" y="63" text-anchor="middle" font-family="Inter,Arial,sans-serif" font-weight="700" font-size="40" letter-spacing="-2" fill="#fff">tm</text></svg>',
-  clinica: '<svg viewBox="0 0 100 100"><ellipse cx="50" cy="52" rx="27" ry="18" transform="rotate(-14 50 52)" fill="#fff"/></svg>',
+  restaurante: '<svg viewBox="0 0 100 100"><text x="50" y="62" text-anchor="middle" font-family="Georgia,serif" font-style="italic" font-weight="700" font-size="38" letter-spacing="-1" fill="#fff">CA</text></svg>',
+  clinica: '<svg viewBox="0 0 100 100"><path d="M36 26c-9 0-14 7-14 16 0 9 5 13 7 22 2 8 3 14 8 14 5 0 5-9 8-16 1-3 3-4 5-4s4 1 5 4c3 7 3 16 8 16s6-6 8-14c2-9 7-13 7-22 0-9-5-16-14-16-6 0-9 3-14 3s-8-3-14-3z" fill="#fff"/></svg>',
   incorporadora: '<svg viewBox="0 0 100 100"><path d="M16 64h22l11-22h35" fill="none" stroke="#fff" stroke-width="7" stroke-linejoin="round" stroke-linecap="round"/><path d="M18 76c8-5 14-5 22 0s14 5 22 0 14-5 22 0" fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round" opacity=".75"/></svg>',
-  varejo: '<svg viewBox="0 0 100 100"><rect x="25" y="29" width="50" height="42" rx="9" fill="none" stroke="#fff" stroke-width="6.5"/><path d="M39 57h22" stroke="#fff" stroke-width="6" stroke-linecap="round"/></svg>',
-  turismo: '<svg viewBox="0 0 100 100"><path d="M14 33q36 16 72 0" fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round"/><path d="M24 38l9 25 9-21zM45 43l7 25 9-25zM66 41l7 22 10-25z" fill="#fff"/></svg>',
+  varejo: '<svg viewBox="0 0 100 100"><rect x="25" y="29" width="50" height="42" rx="9" fill="none" stroke="#fff" stroke-width="6.5"/><circle cx="50" cy="50" r="6.5" fill="#fff"/></svg>',
+  turismo: '<svg viewBox="0 0 100 100"><path d="M50 18c-13 0-23 10-23 23 0 17 23 39 23 39s23-22 23-39c0-13-10-23-23-23z" fill="#fff"/><path d="M41 41l6 6 12-12" fill="none" stroke="#d9822b" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/></svg>',
   educacao: '<svg viewBox="0 0 100 100"><path d="M29 28h42a9 9 0 0 1 9 9v21a9 9 0 0 1-9 9H49l-15 12V67h-5a9 9 0 0 1-9-9V37a9 9 0 0 1 9-9z" fill="#fff"/></svg>',
-  financas: '<svg viewBox="24 12 52 50"><path d="M50 19 31 50h7.5L50 30.5 61.5 50H69z" fill="#d8b866"/><path d="M41 44h18" stroke="#d8b866" stroke-width="3.2"/><path d="M33 53.5h34" stroke="#d8b866" stroke-width="1.6"/></svg>',
-  automotivo: '<svg viewBox="0 0 100 100"><path d="M17 60c10-17 22-18 32-6s22 11 34-12" fill="none" stroke="#fff" stroke-width="8" stroke-linecap="round"/></svg>',
+  financas: '<svg viewBox="0 0 100 100"><path d="M27 30h11l12 30 12-30h11L55 72H45z" fill="#d8b866"/><path d="M30 80h40" stroke="#d8b866" stroke-width="3"/></svg>',
+  automotivo: '<svg viewBox="0 0 100 100"><path d="M27 70C27 44 46 28 74 26c2 28-14 46-40 46" fill="#fff"/><path d="M30 72c10-14 20-23 34-31" fill="none" stroke="#0f6b5c" stroke-width="4.5" stroke-linecap="round"/></svg>',
 };
 /* A fictitious brand mark: circle (avatars), square (company page, app icon) or pin. */
 export const marca = (key, forma = 'circulo', cls = '') => `<span class="cm-mark cm-mark--${forma}${cls ? ' ' + cls : ''}" style="--c:${CLIENTES[key].cor}" aria-hidden="true">${MARCAS[key]}</span>`;
@@ -192,44 +191,44 @@ const mocks = {
       <figure class="cm-card cm-card--coral"><small>Três expressões</small><b>Que a legenda traduz errado</b><ol><li>It's up to you</li><li>I'm looking forward to it</li><li>Break a leg</li></ol></figure>
       <figure class="cm-card cm-card--cream"><b>I'm looking forward to it.</b>${I('arrow')}<b class="cm-card-pt">Mal posso esperar.</b><small>Aula experimental com horário marcado</small></figure></div>`,
     caption: { html: 'Aula experimental com horário marcado. Escolha o nível e o horário no link. <span class="cm-more">… mais</span>' } })) +
-    scene('page', 'sheet', 'claro', `${browserBar('Sotaque Livre', 'sotaquelivre.exemplo')}${SITES.sotaque()}`)),
+    scene('page', 'sheet', 'claro', `${browserBar('Speak Up', 'speakup.exemplo')}${SITES.sotaque()}`)),
 
   /* 2.3 Instagram Story: a language school, the sticker that holds the tap, then the course page. */
   igstory: () => screen('igstory', scene('story', 'base', 'escuro', LAB.storyAd({ key: 'educacao', cta: { text: 'Agendar aula' },
-    media: `${pic('escola916', { alt: 'Fone de ouvido sobre o caderno de anotações, em luz de fim de tarde.' })}<p class="igs-texto" data-hs="1">Você entende a série sem legenda?</p>` })) + scene('page', 'sheet', 'claro', `${browserBar('Sotaque Livre', 'sotaquelivre.exemplo')}${SITES.sotaque({ variant: 'agenda' })}`)),
+    media: `${pic('escola916', { alt: 'Fone de ouvido sobre o caderno de anotações, em luz de fim de tarde.' })}<p class="igs-texto" data-hs="1">Você entende a série sem legenda?</p>` })) + scene('page', 'sheet', 'claro', `${browserBar('Speak Up', 'speakup.exemplo')}${SITES.sotaque({ variant: 'agenda' })}`)),
 
   /* 2.4 Instagram Live: a restaurant cooking live with the paid label, comments and the menu sheet. */
   iglive: () => screen('iglive', scene('live', 'base', 'escuro', LAB.liveAd({ key: 'restaurante', cta: { text: 'Ver cardápio de sábado' },
     media: pic('panela916', { alt: 'Tacho de feijoada no fogão, com a concha erguendo a linguiça.' }),
-    comments: [['bia.rocha', 'Que cheiro daqui!', 0], ['cliente_12', 'Qual o horário do almoço?', 0, '1'], ['tachomiudo', 'Sábado, feijoada no tacho a partir das 12h. Dá para retirar no balcão.', 1]] })) + scene('page', 'sheet', 'claro', `${browserBar('Tacho Miúdo', 'tachomiudo.exemplo')}${SITES.tacho({ variant: 'retirada' })}`)),
+    comments: [['bia.rocha', 'Que cheiro daqui!', 0], ['cliente_12', 'Qual o horário do almoço?', 0, '1'], ['casaamaro', 'Sábado, feijoada no tacho a partir das 12h. Dá para retirar no balcão.', 1]] })) + scene('page', 'sheet', 'claro', `${browserBar('Casa Amaro', 'casaamaro.exemplo')}${SITES.tacho({ variant: 'retirada' })}`)),
 
   /* 2.5 Instagram Explorar: a grid of photos with one sponsored post that opens full screen, then the booking page. */
   igexplore: () => screen('igexplore', scene('grid', 'base', 'escuro', LAB.explore({ cells: `${pic('prato11', { alt: '' })}${pic('pudim11', { alt: '' })}${pic('panela11', { alt: '' })}
         ${pic('recepcao45', { alt: '' })}<span class="cm-xp-ad" data-tap="ad" data-hs="1">${pic('consultorio45', { alt: 'Consultório odontológico com cadeira e luz natural, publicação patrocinada.' })}<em>Patrocinado</em></span>${pic('escondidinho11', { alt: '' })}
         ${pic('salaMar11', { alt: '' })}${pic('fachada45', { alt: '' })}${pic('pudim11', { alt: '' })}` })) +
-    scene('post', 'sheet', 'escuro', LAB.postAberto({ key: 'clinica', cta: { text: 'Agendar avaliação' }, media: pic('consultorio45', { alt: 'Consultório odontológico com cadeira e luz natural.' }), caption: 'Avaliação com dentista, horário marcado. <span class="cm-more">mais</span>' })) + scene('page', 'sheet', 'claro', `${browserBar('Agendamento online', 'seixo.exemplo')}${SITES.seixo()}`)),
+    scene('post', 'sheet', 'escuro', LAB.postAberto({ key: 'clinica', cta: { text: 'Agendar avaliação' }, media: pic('consultorio45', { alt: 'Consultório odontológico com cadeira e luz natural.' }), caption: 'Avaliação com dentista, horário marcado. <span class="cm-more">mais</span>' })) + scene('page', 'sheet', 'claro', `${browserBar('Agendamento online', 'vilela.exemplo')}${SITES.seixo()}`)),
 
   /* 2.2 Instagram Reels: a restaurant, two cuts, Instagram browser with the menu and the table booking sheet. */
   igReels: () => screen('reels', scene('video', 'base', 'escuro', LAB.reelsAd({ key: 'restaurante', caption: 'Feijoada no tacho aos sábados. Mesa para o almoço.', cta: { text: 'Ver cardápio' },
     video: `<div class="cm-shots">
       <figure class="cm-shot" data-shot="1">${pic('panela916', { alt: 'Tacho de feijoada com a concha erguendo linguiça.' })}<p class="cm-ontext" data-hs="1">Sábado tem feijoada no tacho.</p></figure>
       <figure class="cm-shot" data-shot="2">${pic('prato916')}<p class="cm-ontext">Fogo baixo desde cedo.</p></figure></div>` })) +
-    scene('page', 'sheet', 'claro', `${browserBar('Tacho Miúdo', 'tachomiudo.exemplo')}${SITES.tacho()}`)),
+    scene('page', 'sheet', 'claro', `${browserBar('Casa Amaro', 'casaamaro.exemplo')}${SITES.tacho()}`)),
 
   /* 2.3 Facebook feed: lead ad carousel of a developer and the Meta instant form. */
   /* 3.2 Facebook feed post: one photo of a development, the link bar that holds the tap, then the visit page. */
   fbpost: () => screen('fbpost', scene('post', 'base', 'escuro', LAB.facebookAd({ key: 'incorporadora', text: 'Casas na falésia com a sala voltada para o mar. Agende uma visita ao decorado.',
     media: `<div class="fb-midia" data-hs="1">${pic('salaMar45', { alt: 'Sala de estar com janela para o mar, em luz de fim de tarde.', pos: '50% 50%' })}</div>`,
-    after: `<div class="fb-link" data-hs="3"><span><small>MORADAFALESIA.EXEMPLO</small><b>Visita ao decorado</b></span><span class="fb-link-btn" data-tap="cta">Agendar agora</span></div>`,
-    next: { name: 'Página que você segue', time: '5 h', text: 'Feira de artesanato neste fim de semana na praça.', media: pic('cenaCrencas', { pos: '50% 60%' }) } })) + scene('page', 'sheet', 'claro', `${browserBar('Morada Falésia', 'moradafalesia.exemplo')}${SITES.falesia()}`)),
+    after: `<div class="fb-link" data-hs="3"><span><small>ATLANTICA.EXEMPLO</small><b>Visita ao decorado</b></span><span class="fb-link-btn" data-tap="cta">Agendar agora</span></div>`,
+    next: { name: 'Página que você segue', time: '5 h', text: 'Feira de artesanato neste fim de semana na praça.', media: pic('cenaCrencas', { pos: '50% 60%' }) } })) + scene('page', 'sheet', 'claro', `${browserBar('Atlântica Incorporadora', 'atlantica.exemplo')}${SITES.falesia()}`)),
 
   /* 3.3 Facebook video: a restaurant video in portrait with the reserve button that lights up. */
   fbvid: () => screen('fbvid', scene('video', 'base', 'escuro', `<div class="cm-fbv">
       ${pic('prato916', { alt: 'Prato de feijoada servido com farofa e couve.' })}
       <span class="cm-fbv-play" aria-hidden="true">${I('video')}</span>
-      <div class="cm-fbv-meta" data-hs="1"><span>${marca('restaurante')}<span><b>tachomiudo</b><small>Patrocinado</small></span></span><p>Feijoada no tacho aos sábados. Mesa para o almoço.</p></div>
+      <div class="cm-fbv-meta" data-hs="1"><span>${marca('restaurante')}<span><b>casaamaro</b><small>Patrocinado</small></span></span><p>Feijoada no tacho aos sábados. Mesa para o almoço.</p></div>
       <div class="cm-fbv-cta" data-tap="cta" data-hs="3"><b>Reservar mesa</b>${I('chevron')}</div>
-    </div>`) + scene('page', 'sheet', 'claro', `${browserBar('Tacho Miúdo', 'tachomiudo.exemplo')}${SITES.tacho({ variant: 'direto', slot: '12:30', people: '4', area: 'Varanda' })}`)),
+    </div>`) + scene('page', 'sheet', 'claro', `${browserBar('Casa Amaro', 'casaamaro.exemplo')}${SITES.tacho({ variant: 'direto', slot: '12:30', people: '4', area: 'Varanda' })}`)),
 
   /* 3.4 Facebook ad break: a video pauses for an ad card with a skip button, then the course page. */
   fbbreak: () => screen('fbbreak', scene('video', 'base', 'escuro', `<div class="cm-fbb">
@@ -238,8 +237,8 @@ const mocks = {
       ${pic('escola916', { alt: 'Fone de ouvido sobre o caderno de anotações.' })}
       <span class="cm-fbb-label">Patrocinado</span>
       <span class="cm-fbb-skip" data-hs="1"><span class="cm-fbb-s1">Pular em 5</span><span class="cm-fbb-s2">Pular</span></span>
-      <div class="cm-fbb-cta" data-tap="cta" data-hs="3"><span><b>Sotaque Livre Idiomas</b><small>Aula experimental</small></span>${I('chevron')}</div>
-    </div>`) + scene('page', 'sheet', 'claro', `${browserBar('Sotaque Livre', 'sotaquelivre.exemplo')}${SITES.sotaque({ variant: 'agenda', pick: 'modalidade' })}`)),
+      <div class="cm-fbb-cta" data-tap="cta" data-hs="3"><span><b>Speak Up Idiomas</b><small>Aula experimental</small></span>${I('chevron')}</div>
+    </div>`) + scene('page', 'sheet', 'claro', `${browserBar('Speak Up', 'speakup.exemplo')}${SITES.sotaque({ variant: 'agenda', pick: 'modalidade' })}`)),
 
   fbFeed: () => screen('fb', scene('ad', 'base', 'escuro', LAB.facebookAd({ key: 'incorporadora', text: 'Casas na falésia com a sala voltada para o mar. Agende uma visita ao decorado.',
     media: `<div class="cm-fb-carousel" data-hs="2"><div class="cm-track">
@@ -251,11 +250,11 @@ const mocks = {
     scene('form', 'sheet', 'escuro', SITES.metaForm(), 'cm-scene--part', 'claro')),
 
   /* 2.4 TikTok In-Feed: a tech store, native text, CTA that takes the brand colour, TikTok browser. */
-  ttFeed: () => screen('tt', scene('video', 'base', 'escuro', LAB.tiktokAd({ key: 'varejo', caption: 'Um notebook para os dois turnos. #setup #edição', sound: 'Música promocional - teclaria', cta: { text: 'Comprar agora' },
+  ttFeed: () => screen('tt', scene('video', 'base', 'escuro', LAB.tiktokAd({ key: 'varejo', caption: 'Um notebook para os dois turnos. #setup #edição', sound: 'Música promocional - pontotech', cta: { text: 'Comprar agora' },
     video: `<div class="cm-shots">
       <figure class="cm-shot" data-shot="1">${pic('nerd', { alt: 'Notebook com a tela acesa numa mesa escura.' })}<p class="cm-tt-text" data-hs="1"><span>Joga à noite</span><span>e edita de dia?</span></p></figure>
       <figure class="cm-shot" data-shot="2">${pic('cenaNerd', { pos: '40% 70%' })}<p class="cm-tt-text"><span>De noite, o jogo.</span><span>De dia, a edição.</span></p></figure></div>` })) +
-    scene('page', 'sheet', 'claro', `${browserBar('teclaria', 'teclaria.exemplo')}${SITES.teclaria()}`)),
+    scene('page', 'sheet', 'claro', `${browserBar('Ponto Tech', 'pontotech.exemplo')}${SITES.teclaria()}`)),
 
   /* 2.5 YouTube in-stream: a car dealer before a chosen video, skip after 5 s, panel CTA, test drive page. */
   ytInstream: () => screen('yt', scene('watch', 'base', 'escuro', LAB.youtubeAd({ key: 'automotivo', title: 'Melhores momentos da rodada', meta: '<span>há 2 dias</span><b>…mais</b>', panel: { title: 'Test drive do SUV elétrico', button: 'Agendar' },
@@ -264,7 +263,7 @@ const mocks = {
       <div class="cm-yt-dash" data-hs="2"><small>Carga para a volta</small><span><i></i></span><b>O painel mostra antes de você sair.</b></div>
       <span class="cm-yt-label">Patrocinado · 0:12 ${I('info')}</span><span class="cm-yt-wait">Pular em 4</span><span class="cm-yt-skip">Pular ${I('skip')}</span>
       <span class="cm-yt-adbar"><i data-cx-progress></i></span>` })) +
-    scene('page', 'push', 'claro', `${browserBar('Test drive', 'ondara.exemplo')}${SITES.ondara()}`)),
+    scene('page', 'push', 'claro', `${browserBar('Test drive', 'ecodrive.exemplo')}${SITES.ondara()}`)),
 
   /* 2.6 YouTube Shorts: the app of a language school, an exercise that holds attention, App Store sheet. */
   ytShorts: () => screen('shorts', scene('video', 'base', 'escuro', `<div class="cm-shots"><figure class="cm-shot" data-shot="1">${pic('escola916', { alt: 'Fone de ouvido sobre a mesa de madeira.' })}<p class="cm-ontext" data-hs="1">Pare de traduzir na cabeça.</p></figure></div>
@@ -272,10 +271,10 @@ const mocks = {
     <div class="cm-quiz" data-hs="2"><small>Complete</small><b>I'm looking forward <span class="cm-blank"><i>to</i></span> it.</b><span class="cm-quiz-ok">${I('check')}Certo</span></div>
     <div class="cm-shorts-top">${I('search')}${I('vdots')}</div>
     <div class="cm-rail cm-rail--yt"><span>${I('thumb')}<small>Gostei</small></span><span>${I('thumb', 'cm-i--flip')}<small>Não gostei</small></span><span>${I('comment')}<small>Comentários</small></span><span>${I('forward')}<small>Compartilhar</small></span><span>${I('remix')}<small>Remixar</small></span><span class="cm-cover cm-cover--sq" style="background-image:url(${IMG.escola45.src})"></span></div>
-    <div class="cm-vmeta cm-vmeta--yt"><span class="cm-who">${marca('educacao')}<b>@sotaquelivre</b><small class="cm-pill">Patrocinado</small></span><p>Conversação em inglês, um pouco por dia.</p></div>
+    <div class="cm-vmeta cm-vmeta--yt"><span class="cm-who">${marca('educacao')}<b>@speakupidiomas</b><small class="cm-pill">Patrocinado</small></span><p>Conversação em inglês, um pouco por dia.</p></div>
     <div class="cm-vcta cm-vcta--yt" data-tap="cta" data-hs="3"><b>Instalar</b></div>
     <div class="cm-vprogress"><i data-cx-progress></i></div>${tabbar(TABS.youtube, 'cm-tabbar--dark')}`) +
-    scene('store', 'sheet', 'escuro', `<div class="cm-sheet cm-store"><span class="cm-grabber"></span><div class="cm-store-head">${marca('educacao', 'app')}<span><b>Sotaque Livre</b><small>Conversação todos os dias</small></span><span class="cm-store-get" data-tap="go" data-hs="3"><b>Obter</b><i class="cm-ring"></i><b>Abrir</b></span></div>
+    scene('store', 'sheet', 'escuro', `<div class="cm-sheet cm-store"><span class="cm-grabber"></span><div class="cm-store-head">${marca('educacao', 'app')}<span><b>Speak Up</b><small>Conversação todos os dias</small></span><span class="cm-store-get" data-tap="go" data-hs="3"><b>Obter</b><i class="cm-ring"></i><b>Abrir</b></span></div>
       <div class="cm-store-shots"><span><i class="cm-bubble">How was your day?</i><i class="cm-bubble cm-bubble--me">Pretty good, thanks!</i></span><span><small>Uma frase por dia</small><b>I'm looking forward to it.</b><i class="cm-bubble">Mal posso esperar.</i></span></div>
       </div>`, 'cm-scene--part', 'claro')),
 
@@ -283,19 +282,19 @@ const mocks = {
   ytLive: () => screen('ytlive', scene('live', 'base', 'escuro', LAB.youtubeLive({ title: 'Montando o setup de edição ao vivo', meta: '<span>Transmitindo agora</span><span>#publi</span><b>…mais</b>',
     player: `${pic('nerd', { alt: 'Setup do criador: notebook com a tela acesa na mesa.', pos: '50% 19%' })}
       <span class="cm-paid" data-hs="1">${I('tag')}Inclui promoção paga${I('chevron')}</span><span class="cm-onair">Ao vivo</span>
-      <span class="cm-lower" data-hs="2"><small>#publi</small><b>Teclaria</b><span>O notebook deste setup</span></span>`,
+      <span class="cm-lower" data-hs="2"><small>#publi</small><b>Ponto Tech</b><span>O notebook deste setup</span></span>`,
     chat: `<div class="cm-chat"><div class="cm-chat-head"><b>Chat ao vivo</b>${I('vdots')}</div>
-      <div class="cm-chat-pin">${I('pin')}<span><b>Canal Exemplo</b> Lista de espera do Teclaria Pro 15 branco: <u data-tap="link" data-hs="3">teclaria.exemplo/branco</u></span></div>
+      <div class="cm-chat-pin">${I('pin')}<span><b>Canal Exemplo</b> Lista de espera do Notebook Creator 15 branco: <u data-tap="link" data-hs="3">pontotech.exemplo/branco</u></span></div>
       <div class="cm-chat-list"><p><i></i><b>bia.rocha</b> boa noite, canal!</p><p><i></i><b>lucas_dev</b> que setup bonito</p><p><i></i><b>marina.t</b> qual programa de edição você usa?</p><p><i></i><b>jogador1</b> qual é esse notebook?</p><p><i></i><b>edita_noite</b> a tela aguenta bem as cores?</p><p class="cm-chat-more"><i></i><b>ana.cortes</b> vai ter branco?</p><p class="cm-chat-more"><i></i><b>pedro_lima</b> curti o teclado</p></div>
       <span class="cm-chat-input">Diga algo…</span></div>` })) +
-    scene('page', 'push', 'claro', `${browserBar('Teclaria Pro 15 branco', 'teclaria.exemplo')}${SITES.teclaria({ variant: 'espera' })}`)),
+    scene('page', 'push', 'claro', `${browserBar('Notebook Creator 15 branco', 'pontotech.exemplo')}${SITES.teclaria({ variant: 'espera' })}`)),
 
   /* 2.8 LinkedIn: document ad with a lead form of a wealth manager. */
   liFeed: () => screen('li', scene('feed', 'base', 'claro', `<div class="cm-safe"><div class="cm-li-top"><i class="cm-tab-me"></i><span class="cm-li-search">${I('search')}Pesquisar</span>${I('comment')}</div>
-    <article class="cm-li-post"><header class="cm-li-head">${marca('financas', 'quadrado')}<span><b>Arrimo Patrimônio</b><small>Promovido</small></span><span class="cm-li-follow">${I('plus')}Seguir</span></header>
+    <article class="cm-li-post"><header class="cm-li-head">${marca('financas', 'quadrado')}<span><b>Valore Patrimônio</b><small>Promovido</small></span><span class="cm-li-follow">${I('plus')}Seguir</span></header>
     <p class="cm-li-text" data-hs="1">Empresa e família no mesmo patrimônio? Três sinais de que é hora de separar. <span>…mais</span></p>
     <div class="cm-doc"><div class="cm-doc-bar">${I('doc')}<b>Guia: patrimônio da empresa e da família</b></div><div class="cm-doc-view" data-hs="2"><div class="cm-track">
-      <figure class="cm-doc-page cm-doc-page--cover">${pic('negocios', { alt: 'Mesa escura com caneta e cartão, capa do guia.', pos: '50% 100%' })}<figcaption><small>Arrimo Patrimônio</small><b>Guia: patrimônio da empresa e da família</b></figcaption></figure>
+      <figure class="cm-doc-page cm-doc-page--cover">${pic('negocios', { alt: 'Mesa escura com caneta e cartão, capa do guia.', pos: '50% 100%' })}<figcaption><small>Valore Patrimônio</small><b>Guia: patrimônio da empresa e da família</b></figcaption></figure>
       <figure class="cm-doc-page"><small>1</small><b>Contas que se misturam</b>${skel(4)}</figure>
       <figure class="cm-doc-page"><small>2</small><b>Sucessão sem plano</b>${skel(4)}</figure>
       <figure class="cm-doc-page cm-doc-page--gate">${skel(5)}<span><b>Para continuar lendo, envie suas informações.</b>${btn('Desbloquear', 'cta')}</span></figure>
@@ -307,33 +306,33 @@ const mocks = {
   gSearch: () => screen('g', scene('serp', 'base', 'claro', `<div class="cm-safe"><div class="cm-g-box" data-hs="1">${logoSvg('google', { altura: 18, classe: 'cm-g-logo' })}<span class="cm-typed"><span>dentista perto de mim</span></span>${I('close')}${I('mic')}${I('lens')}</div>
     <div class="cm-g-tabs"><span>Modo IA</span><b>Todas</b><span>Mapas</span><span>Imagens</span><span>Notícias</span></div>
     <ul class="cm-g-suggest"><li>${I('search')}dentista perto de mim</li><li>${I('search')}dentista perto de mim aberto agora</li><li>${I('search')}dentista perto de mim avaliação</li></ul><div class="cm-g-results"><p class="cm-g-group">Resultado patrocinado</p>
-      <div class="cm-g-ad"><div class="cm-g-site">${marca('clinica', 'fav')}<span><b>Seixo Odontologia</b><small>https://www.seixo.exemplo › avaliacao</small></span>${I('vdots')}</div>
-      <b class="cm-g-title" data-hs="2">Avaliação com hora marcada | Seixo Odontologia</b>
+      <div class="cm-g-ad"><div class="cm-g-site">${marca('clinica', 'fav')}<span><b>Vilela Odontologia</b><small>https://www.vilela.exemplo › avaliacao</small></span>${I('vdots')}</div>
+      <b class="cm-g-title" data-hs="2">Avaliação com hora marcada | Vilela Odontologia</b>
       <p>Consulta de avaliação para planejar o tratamento com calma. Agende pelo site ou ligue. [RT e CRO]</p>
       <span class="cm-g-links"><span>Agendar avaliação</span><span>Especialidades</span><span>Como chegar</span></span>
       <span class="cm-g-call" data-tap="cta" data-hs="3">${I('phone')}Ligar</span></div>
       <span class="cm-g-hide">Ocultar resultados patrocinados ${I('up')}</span>${skel(4, 'cm-skel--result')}${skel(3, 'cm-skel--result')}</div></div>`) +
     scene('call', 'sheet', 'claro', `<div class="cm-ios-sheet"><span class="cm-ios-group"><small>(11) 0000-0000</small><span data-tap="go" data-hs="3">${I('phone')}Ligar</span></span><span class="cm-ios-cancel">Cancelar</span></div>
-      <div class="cm-call"><small>chamando…</small><b data-hs="3">Seixo Odontologia</b><span class="cm-call-keys"><i></i><i></i><i></i><i></i><i></i><i></i></span><span class="cm-call-end">${I('phone')}</span></div>`, 'cm-scene--part')),
+      <div class="cm-call"><small>chamando…</small><b data-hs="3">Vilela Odontologia</b><span class="cm-call-keys"><i></i><i></i><i></i><i></i><i></i><i></i></span><span class="cm-call-end">${I('phone')}</span></div>`, 'cm-scene--part')),
 
   /* 2.16 Google Display: a travel agency banner inside an article; the headline rotates as Google combines assets. */
   gDisplay: () => screen('gd', scene('article', 'base', 'claro', `<div class="cm-safe cm-web"><div class="cm-web-host"><b>Portal Exemplo</b>${I('menu')}</div><small class="cm-web-kicker">Viagem</small><b class="cm-web-title">O que ver nas festas de junho no interior</b>${skel(5)}
     <div class="cm-gd-ad"><span class="cm-gd-flag">Anúncio ${I('close')}</span><span class="cm-gd-img" data-hs="1" data-hs-at="tl">${pic('crencas', { alt: 'Rua de pedra com bandeirolas e igreja ao entardecer.', pos: '50% 9%' })}</span>
-      <div class="cm-gd-body"><span><b class="cm-gd-h" data-hs="2"><span>Festa do Divino em grupo pequeno</span><span>Guia da cidade e hotel no centro</span></b><small>Bandeirola Viagens</small></span><span class="cm-gd-go" data-tap="cta" data-hs="3">${I('chevron')}</span></div></div>${skel(5)}${skel(4)}</div>${safari('portal.exemplo')}`) +
-    scene('page', 'push', 'claro', `${SITES.bandeirola({ variant: 'saida' })}${safari('bandeirola.exemplo')}`, 'cm-scene--web')),
+      <div class="cm-gd-body"><span><b class="cm-gd-h" data-hs="2"><span>Festa do Divino em grupo pequeno</span><span>Guia da cidade e hotel no centro</span></b><small>Destino Certo Viagens</small></span><span class="cm-gd-go" data-tap="cta" data-hs="3">${I('chevron')}</span></div></div>${skel(5)}${skel(4)}</div>${safari('portal.exemplo')}`) +
+    scene('page', 'push', 'claro', `${SITES.bandeirola({ variant: 'saida' })}${safari('destinocerto.exemplo')}`, 'cm-scene--web')),
 
   /* 2.10 SEO: organic result of a developer with sitelinks; the floor plans page trades the PDF for an e-mail. */
   seoOrganic: () => screen('g', scene('serp', 'base', 'claro', `<div class="cm-safe"><div class="cm-g-box">${logoSvg('google', { altura: 18, classe: 'cm-g-logo' })}<span class="cm-typed is-done"><span>casa na falésia à venda</span></span>${I('close')}${I('mic')}${I('lens')}</div>
     <div class="cm-g-tabs"><span>Modo IA</span><b>Todas</b><span>Imagens</span><span>Mapas</span><span>Notícias</span></div>
     <div class="cm-g-faded" aria-hidden="true">${skel(3)}</div>
-    <div class="cm-g-result cm-g-result--organic"><div class="cm-g-site">${marca('incorporadora', 'fav')}<span><b>Morada Falésia</b><small>moradafalesia.exemplo › plantas</small></span>${I('vdots')}</div>
+    <div class="cm-g-result cm-g-result--organic"><div class="cm-g-site">${marca('incorporadora', 'fav')}<span><b>Atlântica Incorporadora</b><small>atlantica.exemplo › plantas</small></span>${I('vdots')}</div>
       <div class="cm-g-main"><b class="cm-g-title" data-hs="1">Casas na falésia com vista para o mar</b>${pic('coast', { cls: 'cm-g-thumb', pos: '30% 50%' })}</div>
       <p>Plantas de 3 e 4 quartos, sala voltada para o mar e visita ao decorado com hora marcada.</p>
       <span class="cm-g-list"><span data-tap="link">Plantas${I('chevron')}</span><span>Localização${I('chevron')}</span><span>Agendar visita${I('chevron')}</span></span></div>${skel(3, 'cm-skel--result')}</div>`) +
-    scene('page', 'push', 'claro', `<div class="cm-lp" style="--brand:${CLIENTES.incorporadora.cor}"><span class="cm-lp-hero">${pic('salaMar45', { pos: '50% 40%' })}</span><div class="cm-lp-body"><span class="cm-lp-brand">${marca('incorporadora')}<b>Morada Falésia</b></span><b class="cm-lp-title">Plantas</b>
+    scene('page', 'push', 'claro', `<div class="cm-lp" style="--brand:${CLIENTES.incorporadora.cor}"><span class="cm-lp-hero">${pic('salaMar45', { pos: '50% 40%' })}</span><div class="cm-lp-body"><span class="cm-lp-brand">${marca('incorporadora')}<b>Atlântica Incorporadora</b></span><b class="cm-lp-title">Plantas</b>
       <span class="cm-seg" data-hs="2"><span class="cm-seg-3">3 quartos</span><span class="cm-seg-4">4 quartos</span></span>${planta('cm-planta--lp')}${btn('Receber as plantas em PDF', 'pdf')}</div>
       <div class="cm-sheet cm-mail"><span class="cm-grabber"></span><b class="cm-lp-title">Receber as plantas</b>${input('Seu e-mail', 'voce@exemplo.com')}${btn('Enviar', 'send')}</div>
-      ${done('Enviamos as plantas para o seu e-mail', 'Plantas de 3 e 4 quartos, em PDF.', '<small class="cm-legal">Imagens ilustrativas. CRECI e registro de incorporação aparecem aqui.</small>')}</div>${safari('moradafalesia.exemplo')}`, 'cm-scene--web')),
+      ${done('Enviamos as plantas para o seu e-mail', 'Plantas de 3 e 4 quartos, em PDF.', '<small class="cm-legal">Imagens ilustrativas. CRECI e registro de incorporação aparecem aqui.</small>')}</div>${safari('atlantica.exemplo')}`, 'cm-scene--web')),
 
   /* 2.14 ChatGPT: the travel agency card below an answer, separated from it, and the in-app browser. */
   gptAnswer: () => screen('gpt', scene('chat', 'base', 'claro', `<div class="cm-gpt-top"><span class="cm-glass">${I('menu2')}</span><b>ChatGPT</b><span class="cm-glass cm-glass--pill">${I('edit')}${I('dots')}</span></div>
@@ -347,28 +346,28 @@ const mocks = {
       <div class="cm-gpt-actions cm-gpt-a2">${I('copy')}${I('thumb', 'cm-i--flip')}${I('share')}${I('regen')}${I('dots')}</div>
       <div class="sf-suggestions cm-gpt-a2" aria-hidden="true"><span class="sf-suggestion">Quando são as cavalhadas?</span><span class="sf-suggestion">Onde ficar em Pirenópolis?</span></div>
       <hr><p class="cm-gpt-lead">Para a sua viagem para ver as cavalhadas, aqui está uma opção para considerar.</p>
-      <div class="cm-gpt-ad" data-tap="cta" data-hs="2 3" data-hs-at="tl">${pic('crencas', { cls: 'cm-gpt-ad-img', pos: '50% 8%' })}<span class="cm-gpt-ad-body"><span class="cm-gpt-ad-top">${marca('turismo', 'fav')}<span>Bandeirola Viagens</span><small class="cm-gpt-chip">Anúncio</small>${I('dots')}</span><b>Festas de junho em grupo pequeno</b><small>Roteiros com guia da cidade e hotel no centro histórico. Saiba mais.</small></span></div>
+      <div class="cm-gpt-ad" data-tap="cta" data-hs="2 3" data-hs-at="tl">${pic('crencas', { cls: 'cm-gpt-ad-img', pos: '50% 8%' })}<span class="cm-gpt-ad-body"><span class="cm-gpt-ad-top">${marca('turismo', 'fav')}<span>Destino Certo Viagens</span><small class="cm-gpt-chip">Anúncio</small>${I('dots')}</span><b>Festas de junho em grupo pequeno</b><small>Roteiros com guia da cidade e hotel no centro histórico. Saiba mais.</small></span></div>
       <span class="cm-gpt-down" aria-hidden="true">${I('up', 'cm-i--flip')}</span></div>
     <div class="cm-gpt-input">${I('plus')}<span class="cm-gpt-ph">Pergunte ao ChatGPT</span><span class="cm-typed cm-gpt-typed"><span>3 dias, saindo de SP, cavalhadas</span></span>${I('mic')}<i class="cm-gpt-wave">${I('wave')}</i><i class="cm-gpt-send" data-tap="gsend">${I('up')}</i></div>`) +
-    scene('page', 'sheet', 'claro', `${browserBar('Bandeirola Viagens', 'bandeirola.exemplo', 'share')}${SITES.bandeirola()}`)),
+    scene('page', 'sheet', 'claro', `${browserBar('Destino Certo Viagens', 'destinocerto.exemplo', 'share')}${SITES.bandeirola()}`)),
 
   /* 2.11 Google Maps: promoted square pin and sponsored place sheet of a restaurant, then the route. */
   mapsLocal: () => {
     const area = inner => `<div class="cm-map">${pic('mapa', { cls: 'cm-map-bg' })}<div class="cm-map-area">${inner}</div></div>`;
     const drops = [[86, 150], [178, 118], [130, 360], [300, 420], [60, 290]].map(([x, y]) => `<span class="cm-drop" style="left:${x / 3.6}%;top:${y / 6.4}%">${I('fork')}</span>`).join('');
-    return screen('maps', scene('map', 'base', 'claro', `${area(`${drops}<span class="cm-promo cm-promo--left" style="left:${252 / 3.6}%;top:${224 / 6.4}%"><span class="cm-promo-sq" data-hs="1">${I('fork')}</span><span class="cm-promo-text"><b>Tacho Miúdo</b><small>Feijoada no tacho aos sábados</small></span></span><span class="cm-me" style="left:${108 / 3.6}%;top:${544 / 6.4}%"></span>`)}
+    return screen('maps', scene('map', 'base', 'claro', `${area(`${drops}<span class="cm-promo cm-promo--left" style="left:${252 / 3.6}%;top:${224 / 6.4}%"><span class="cm-promo-sq" data-hs="1">${I('fork')}</span><span class="cm-promo-text"><b>Casa Amaro</b><small>Feijoada no tacho aos sábados</small></span></span><span class="cm-me" style="left:${108 / 3.6}%;top:${544 / 6.4}%"></span>`)}
       <div class="cm-maps-search">${I('back')}<span class="cm-typed"><span>feijoada perto de mim</span></span>${I('close')}</div>
       <div class="cm-maps-chips" aria-hidden="true"><span class="is-on">${I('fork')}Restaurantes</span><span>Aberto agora</span><span>Para o almoço</span><span>Mais bem localizados</span></div>
       <div class="cm-place"><span class="cm-grabber"></span>
-        <div class="cm-place-row"><span><small class="cm-sp">Patrocinado</small><b>Tacho Miúdo</b><small>Restaurante · <em>Aberto</em></small></span>${pic('fachada43', { alt: 'Fachada de madeira do restaurante à noite, com flores e mesas na calçada.', pos: '50% 40%' })}</div>
-        <div class="cm-place-full"><span class="cm-place-top"><small class="cm-sp">Patrocinado ${I('vdots')}</small><span><i>${I('share')}</i><i>${I('close')}</i></span></span><b class="cm-place-name">Tacho Miúdo</b><small>Restaurante</small><small><em>Aberto</em> · Fecha às 23:00</small>
-          <span class="cm-place-ad" data-hs="2"><b>Feijoada no tacho aos sábados</b><small>Encomendas e mesa para o almoço.</small><small>tachomiudo.exemplo</small><span>Acessar site</span></span>
+        <div class="cm-place-row"><span><small class="cm-sp">Patrocinado</small><b>Casa Amaro</b><small>Restaurante · <em>Aberto</em></small></span>${pic('fachada43', { alt: 'Fachada de madeira do restaurante à noite, com flores e mesas na calçada.', pos: '50% 40%' })}</div>
+        <div class="cm-place-full"><span class="cm-place-top"><small class="cm-sp">Patrocinado ${I('vdots')}</small><span><i>${I('share')}</i><i>${I('close')}</i></span></span><b class="cm-place-name">Casa Amaro</b><small>Restaurante</small><small><em>Aberto</em> · Fecha às 23:00</small>
+          <span class="cm-place-ad" data-hs="2"><b>Feijoada no tacho aos sábados</b><small>Encomendas e mesa para o almoço.</small><small>casaamaro.exemplo</small><span>Acessar site</span></span>
           <span class="cm-place-chips"><span class="is-primary" data-tap="cta" data-hs="3">${I('route')}Rotas</span><span>${I('calendar')}Reservar</span><span>${I('phone')}Ligar</span><span>${I('share')}Compartilhar</span></span>
           <span class="cm-place-photos">${pic('fachada43', { pos: '50% 40%' })}${pic('prato11')}</span></div></div>`) +
       scene('route', 'fade', 'claro', `${area(`<svg class="cm-route" viewBox="0 0 360 640" preserveAspectRatio="none" aria-hidden="true"><path d="M108,544 L108,464 L180,464 L180,304 L252,304 L252,224" fill="none" stroke="#fff" stroke-width="9" stroke-linejoin="round" stroke-linecap="round"/><path d="M108,544 L108,464 L180,464 L180,304 L252,304 L252,224" fill="none" stroke="#1a73e8" stroke-width="5.5" stroke-linejoin="round" stroke-linecap="round"/></svg><span class="cm-promo cm-promo--end" style="left:${252 / 3.6}%;top:${224 / 6.4}%"><span class="cm-promo-sq">${I('fork')}</span></span><span class="cm-me" style="left:${108 / 3.6}%;top:${544 / 6.4}%"></span>`)}
-      <div class="cm-route-top"><span class="cm-route-ends"><span><i class="cm-route-a"></i>Seu local</span><span>${I('location')}Tacho Miúdo</span></span><span class="cm-route-modes"><b>${I('car')}</b>${I('bus')}${I('walk')}</span></div>
+      <div class="cm-route-top"><span class="cm-route-ends"><span><i class="cm-route-a"></i>Seu local</span><span>${I('location')}Casa Amaro</span></span><span class="cm-route-modes"><b>${I('car')}</b>${I('bus')}${I('walk')}</span></div>
       <div class="cm-route-sheet"><span class="cm-grabber"></span><b>De carro</b><small>Pelo caminho indicado no mapa</small>${btn('Iniciar', 'go', '3', 'cm-btn--maps')}</div>
-      <div class="cm-route-nav" data-hs="3"><b>Siga pela avenida</b><small>Navegação iniciada até Tacho Miúdo</small></div>`));
+      <div class="cm-route-nav" data-hs="3"><b>Siga pela avenida</b><small>Navegação iniciada até Casa Amaro</small></div>`));
   },
 
   /* 2.12 WhatsApp click-to-chat: Instagram ad of a dental clinic, app switch, pre-filled message, quick replies. */
@@ -376,11 +375,11 @@ const mocks = {
     media: `<div class="cm-wa-art">${pic('consultorio45', { alt: 'Consultório odontológico claro, com a frase Avaliação com hora marcada.' })}<b data-hs="1">Avaliação com hora marcada</b>${marca('clinica', 'circulo', 'cm-wa-art-mark')}</div>`,
     cta: { text: 'Enviar mensagem pelo WhatsApp', lead: `${logoSvg('whatsapp', { altura: 16, classe: 'cm-wa-glyph' })}${logoSvg('whatsapp', { altura: 16, mono: 'branco', classe: 'cm-wa-glyph cm-wa-glyph--lit' })}` },
     caption: { hs: '2', html: 'Avaliação com hora marcada. <span class="cm-more">mais</span><span class="cm-rest">Conte o que você sente e escolha o horário pela conversa.</span>' } })) +
-    scene('chat', 'push', 'claro', `<span class="cm-crumb">${I('back')}Instagram</span><div class="cm-wa-head">${I('back')}${marca('clinica')}<span><b>Seixo Odontologia</b><small>Conta comercial</small></span>${I('video')}${I('phone')}</div>
+    scene('chat', 'push', 'claro', `<span class="cm-crumb">${I('back')}Instagram</span><div class="cm-wa-head">${I('back')}${marca('clinica')}<span><b>Vilela Odontologia</b><small>Conta comercial</small></span>${I('video')}${I('phone')}</div>
       <div class="cm-wa-body"><span class="cm-wa-sys">As mensagens são protegidas com a criptografia de ponta a ponta.</span><span class="cm-wa-day">Hoje</span>
-        <div class="cm-wa-out cm-wa-msg1"><span class="cm-wa-quote">${pic('consultorio45')}<span><b>Seixo Odontologia</b><small>Avaliação com hora marcada</small></span></span>Olá! Quero agendar uma avaliação.<small>10:09 ${I('ticks')}</small></div>
+        <div class="cm-wa-out cm-wa-msg1"><span class="cm-wa-quote">${pic('consultorio45')}<span><b>Vilela Odontologia</b><small>Avaliação com hora marcada</small></span></span>Olá! Quero agendar uma avaliação.<small>10:09 ${I('ticks')}</small></div>
         <span class="cm-wa-typing cm-wa-msg2" aria-hidden="true"><i></i><i></i><i></i></span>
-        <div class="cm-wa-in cm-wa-msg2 cm-arrive"><em class="cm-wa-auto">Mensagem automática</em>Olá! Aqui é o atendimento da Seixo Odontologia. Como podemos ajudar?<small>10:09</small><span class="cm-wa-listbtn" data-tap="list" data-hs="3">${I('menu')}Ver opções</span></div>
+        <div class="cm-wa-in cm-wa-msg2 cm-arrive"><em class="cm-wa-auto">Mensagem automática</em>Olá! Aqui é o atendimento da Vilela Odontologia. Como podemos ajudar?<small>10:09</small><span class="cm-wa-listbtn" data-tap="list" data-hs="3">${I('menu')}Ver opções</span></div>
         <div class="cm-wa-out cm-wa-msg3">Avaliação odontológica<small>10:09 ${I('ticks')}</small></div>
         <span class="cm-wa-typing cm-wa-msg3" aria-hidden="true"><i></i><i></i><i></i></span>
         <div class="cm-wa-in cm-wa-msg3 cm-arrive"><em class="cm-wa-auto">Mensagem automática</em>Perfeito. Qual período fica melhor para você?<small>10:09</small></div>
@@ -392,30 +391,30 @@ const mocks = {
         <div class="cm-wa-out cm-wa-msg5">Qui, 29 de out, 9h<small>10:10 ${I('ticks')}</small></div>
         <span class="cm-wa-typing cm-wa-msg5" aria-hidden="true"><i></i><i></i><i></i></span>
         <div class="cm-wa-in cm-wa-msg5 cm-arrive cm-wa-confirm" data-hs="3"><b>Avaliação agendada</b><span>Quinta, 29 de outubro, às 9h</span><span>Avaliação odontológica, 30 minutos</span><span>Se precisar remarcar, é só responder aqui.</span><small>10:10</small></div>
-        <div class="cm-wa-in cm-wa-msg5 cm-arrive cm-arrive--late cm-wa-loc"><span class="cm-wa-map">${pic('mapa', { pos: '62% 36%' })}<i>${I('location')}</i></span><b>Seixo Odontologia</b><span>Rua Exemplo, 120, Pinheiros</span><small>10:10</small></div></div>
+        <div class="cm-wa-in cm-wa-msg5 cm-arrive cm-arrive--late cm-wa-loc"><span class="cm-wa-map">${pic('mapa', { pos: '62% 36%' })}<i>${I('location')}</i></span><b>Vilela Odontologia</b><span>Rua Exemplo, 120, Pinheiros</span><small>10:10</small></div></div>
       <div class="cm-wa-sheet" aria-hidden="true"><span class="cm-grabber"></span><p class="cm-wa-sheet-top">${I('close')}<b>Ver opções</b><i></i></p><small>Atendimentos</small>
         <span class="cm-wa-opt cm-wa-opt--pick" data-tap="opt"><span><b>Avaliação odontológica</b><small>Primeira consulta, 30 minutos</small></span><i></i></span>
         <span class="cm-wa-opt"><span><b>Limpeza e prevenção</b><small>45 minutos</small></span><i></i></span>
         <span class="cm-wa-opt"><span><b>Dor ou urgência</b><small>Encaixe no mesmo dia, conforme a agenda</small></span><i></i></span>
         <span class="cm-wa-opt"><span><b>Falar com a recepção</b><small>Horário comercial</small></span><i></i></span>
         <span class="cm-wa-sheet-send" data-tap="lsend">Enviar</span></div>
-      <div class="cm-wa-compose"><span class="cm-wa-preview">${pic('consultorio45')}<span><b>Seixo Odontologia</b><small>Avaliação com hora marcada</small></span></span><span class="cm-wa-row">${I('plus')}<span class="cm-wa-field">Olá! Quero agendar uma avaliação.</span><span class="cm-wa-send" data-tap="send" data-hs="3">${I('send')}</span><span class="cm-wa-idle">${I('camera')}${I('mic')}</span></span></div>`)),
+      <div class="cm-wa-compose"><span class="cm-wa-preview">${pic('consultorio45')}<span><b>Vilela Odontologia</b><small>Avaliação com hora marcada</small></span></span><span class="cm-wa-row">${I('plus')}<span class="cm-wa-field">Olá! Quero agendar uma avaliação.</span><span class="cm-wa-send" data-tap="send" data-hs="3">${I('send')}</span><span class="cm-wa-idle">${I('camera')}${I('mic')}</span></span></div>`)),
 
   /* 2.13 WhatsApp Business catalog (not an ad): profile, collections, item, message with the item attached. */
-  waCatalog: () => screen('wacat', scene('profile', 'base', 'claro', `<div class="cm-safe"><div class="cm-wa-bar">${I('back')}<span></span>${I('dots')}</div><div class="cm-wa-profile">${marca('restaurante', 'circulo', 'cm-mark--xl')}<b>Tacho Miúdo</b><small>Conta comercial</small><span class="cm-wa-tools"><span>${I('phone')}Áudio</span><span>${I('video')}Vídeo</span><span>${I('search')}Pesquisar</span></span><small class="cm-wa-cat">Restaurante · Cozinha brasileira</small></div>
+  waCatalog: () => screen('wacat', scene('profile', 'base', 'claro', `<div class="cm-safe"><div class="cm-wa-bar">${I('back')}<span></span>${I('dots')}</div><div class="cm-wa-profile">${marca('restaurante', 'circulo', 'cm-mark--xl')}<b>Casa Amaro</b><small>Conta comercial</small><span class="cm-wa-tools"><span>${I('phone')}Áudio</span><span>${I('video')}Vídeo</span><span>${I('search')}Pesquisar</span></span><small class="cm-wa-cat">Restaurante · Cozinha brasileira</small></div>
     <div class="cm-wa-shelf"><p><b>Catálogo</b><span data-tap="more">Ver tudo ${I('chevron')}</span></p><span class="cm-wa-thumbs" data-hs="1">${pic('panela11')}${pic('escondidinho11')}${pic('pudim11')}</span></div>
     <div class="cm-wa-rows"><span>${I('bell')}Silenciar notificações</span><span>${I('lock')}Criptografia</span></div></div>`) +
-    scene('catalog', 'push', 'claro', `<div class="cm-safe"><div class="cm-wa-bar">${I('back')}<span><b>Catálogo</b><small>Tacho Miúdo</small></span>${I('share')}</div>
+    scene('catalog', 'push', 'claro', `<div class="cm-safe"><div class="cm-wa-bar">${I('back')}<span><b>Catálogo</b><small>Casa Amaro</small></span>${I('share')}</div>
       <div class="cm-wa-coll"><p><b>Encomendas de sábado</b><span>Ver tudo</span></p><ul data-hs="2"><li data-tap="item">${pic('panela11')}<span><b>Feijoada no tacho para 4</b><small>Carnes separadas, arroz, couve e farofa.</small></span></li><li>${pic('escondidinho11')}<span><b>Escondidinho de carne-seca</b><small>Gratinado na panelinha, para 2.</small></span></li></ul>
       <p><b>Doces</b><span>Ver tudo</span></p><ul><li>${pic('pudim11')}<span><b>Pudim de leite</b><small>Inteiro, feito na casa.</small></span></li></ul></div></div>`) +
     scene('item', 'push', 'claro', `<div class="cm-safe"><div class="cm-wa-bar">${I('back')}<span></span>${I('share')}</div><span class="cm-wa-photo">${pic('panela11')}</span><div class="cm-wa-item"><b>Feijoada no tacho para 4</b><p>Carnes separadas, arroz, couve e farofa. Encomenda até sexta.</p><span class="cm-wa-qty"><i>−</i><b>1</b><i>+</i></span>${btn('Adicionar ao carrinho', 'add', '3', 'cm-btn--wa')}<span class="cm-wa-msglink">${I('comment', 'cm-i--inline')}Conversar com a empresa</span></div>
       <span class="cm-wa-cartbar" data-tap="cart">${I('cart')}<b>Ver carrinho</b><small>1 item</small></span></div>`) +
-    scene('cart', 'sheet', 'claro', `<div class="cm-sheet cm-wa-cart"><span class="cm-grabber"></span><p class="cm-wa-sheet-top">${I('close')}<b>Carrinho</b><i></i></p><div class="cm-wa-cartline">${pic('panela11')}<span><b>Feijoada no tacho para 4</b><small>Tacho Miúdo</small></span><span class="cm-wa-qty cm-wa-qty--sm"><i>−</i><b>1</b><i>+</i></span></div><span class="cm-wa-note">${I('edit', 'cm-i--inline')}Adicionar observação: para sábado</span>${btn('Fazer pedido', 'order', '3', 'cm-btn--wa')}</div>`, 'cm-scene--part') +
-    scene('chat', 'push', 'claro', `<div class="cm-wa-head">${I('back')}${marca('restaurante')}<span><b>Tacho Miúdo</b><small>Conta comercial</small></span>${I('video')}${I('phone')}</div>
+    scene('cart', 'sheet', 'claro', `<div class="cm-sheet cm-wa-cart"><span class="cm-grabber"></span><p class="cm-wa-sheet-top">${I('close')}<b>Carrinho</b><i></i></p><div class="cm-wa-cartline">${pic('panela11')}<span><b>Feijoada no tacho para 4</b><small>Casa Amaro</small></span><span class="cm-wa-qty cm-wa-qty--sm"><i>−</i><b>1</b><i>+</i></span></div><span class="cm-wa-note">${I('edit', 'cm-i--inline')}Adicionar observação: para sábado</span>${btn('Fazer pedido', 'order', '3', 'cm-btn--wa')}</div>`, 'cm-scene--part') +
+    scene('chat', 'push', 'claro', `<div class="cm-wa-head">${I('back')}${marca('restaurante')}<span><b>Casa Amaro</b><small>Conta comercial</small></span>${I('video')}${I('phone')}</div>
       <div class="cm-wa-body"><span class="cm-wa-day">Hoje</span>
         <div class="cm-wa-out cm-wa-orderout"><span class="cm-wa-orderthumb">${pic('panela11')}<span><b>${I('cart', 'cm-i--inline')}1 item</b><small>Pedido para sábado</small></span></span><span class="cm-wa-orderlink">Ver itens enviados</span><small>10:09 ${I('ticks')}</small></div>
 <span class="cm-wa-typing cm-wc1" aria-hidden="true"><i></i><i></i><i></i></span>
-        <div class="cm-wa-in cm-wc1 cm-arrive"><em class="cm-wa-auto">Mensagem automática</em>Oi! Aqui é o atendimento do Tacho Miúdo. Como prefere receber?<small>10:09</small></div>
+        <div class="cm-wa-in cm-wc1 cm-arrive"><em class="cm-wa-auto">Mensagem automática</em>Oi! Aqui é o atendimento do Casa Amaro. Como prefere receber?<small>10:09</small></div>
         <span class="cm-wa-replies cm-wc1 cm-wcg cm-wr1 cm-arrive cm-arrive--late" data-hs="3"><span data-tap="r1">Retirar no balcão</span><span>Entrega</span></span>
         <div class="cm-wa-out cm-wc2">Retirar no balcão<small>10:09 ${I('ticks')}</small></div>
 <span class="cm-wa-typing cm-wc2" aria-hidden="true"><i></i><i></i><i></i></span>
@@ -431,13 +430,13 @@ const mocks = {
 
   /* 2.15 Publieditorial: a wealth manager's sponsored article in a fictitious magazine, identified before the title. */
   blogArticle: () => screen('blog', scene('article', 'base', 'escuro', LAB.blogArticle({ key: 'financas', site: 'Revista Exemplo', domain: 'revista.exemplo', kicker: 'Finanças da família',
-    title: 'Por onde começar a organizar o patrimônio da família', by: 'Redação, em parceria com Arrimo Patrimônio',
+    title: 'Por onde começar a organizar o patrimônio da família', by: 'Redação, em parceria com Valore Patrimônio',
     photo: pic('negocios', { alt: 'Mesa escura com caneta e cartão, imagem de abertura do artigo.', pos: '50% 11%' }),
     body: `<p class="blog-texto">Patrimônio da família e da empresa costumam crescer juntos. Separar os dois evita decisões apressadas.</p>
       <div class="cm-blog-steps" data-hs="2"><b>1. Separe o que é da empresa</b><p class="blog-texto">Contas, bens e despesas em nomes diferentes.</p><b>2. Escreva os objetivos</b><p class="blog-texto">Proteger, transmitir ou investir pedem caminhos diferentes.</p><b>3. Pergunte antes de assinar</b><p class="blog-texto">Cada documento tem consequências para a família.</p></div>`,
     offer: { text: 'Um especialista explica cada decisão antes de você assinar.', button: 'Agendar conversa' },
     tail: `<p class="blog-texto">Na próxima parte: como falar de sucessão com quem vai assumir a empresa.</p><div class="blog-leia"><b>Leia também</b><span>Testamento, doação ou holding: o que muda para a família</span><span>Cinco documentos para guardar num só lugar</span></div>` }), '', 'claro') +
-    scene('page', 'push', 'claro', `${SITES.arrimo()}${safari('arrimo.exemplo')}`, 'cm-scene--web')),
+    scene('page', 'push', 'claro', `${SITES.arrimo()}${safari('valore.exemplo')}`, 'cm-scene--web')),
 };
 
 /* Front of the peel per channel: the piece of the first placement's client. */
@@ -454,16 +453,16 @@ export const groups = [
 const P = (fase, rotulo, quadros) => ({ fase, rotulo, quadros });
 export const channels = [
   { id: 'instagram', name: 'Instagram', group: 'social', benefit: 'Prender no feed e levar à ação.',
-    art: art('educacao', 'escola45', '50% 50%', 'Você entende a série sem legenda?', 'Peça da Sotaque Livre Idiomas, escola de idiomas fictícia: fone de ouvido sobre a mesa e a pergunta Você entende a série sem legenda?'),
+    art: art('educacao', 'escola45', '50% 50%', 'Você entende a série sem legenda?', 'Peça da Speak Up Idiomas, escola de idiomas fictícia: fone de ouvido sobre a mesa e a pergunta Você entende a série sem legenda?'),
     placements: [
       { id: 'feed', label: 'Feed', mock: 'igFeed', cliente: 'educacao', selo: 'Patrocinado', frase: 'Uma escola de idiomas leva do carrossel à aula experimental.',
         passos: [P('Atenção', 'Pergunta que o aluno reconhece', [0]), P('Retenção', 'Deslizar revela a resposta', [1, 2]), P('Conversão', 'Teste de nível e aula marcada', [3, 4, 5, 6, 7, 8, 9, 10, 11, 12])],
         quadros: [
-          { ms: 1300, cena: 'ad', desc: 'Post patrocinado da Sotaque Livre no feed do Instagram: Você entende a série sem legenda?' },
+          { ms: 1300, cena: 'ad', desc: 'Post patrocinado da Speak Up no feed do Instagram: Você entende a série sem legenda?' },
           { ms: 1400, cena: 'ad', estado: 'c2', desc: 'O carrossel desliza: três expressões que a legenda traduz errado.' },
           { ms: 1400, cena: 'ad', estado: 'c3 lit', desc: 'Último cartão: I\'m looking forward to it, mal posso esperar. A barra Inscrever-se agora acende.' },
           { ms: 900, cena: 'ad', estado: 'c3 lit', toque: 'cta', desc: 'Toque em Inscrever-se agora.' },
-          { ms: 1700, cena: 'page', toque: 'a', desc: 'O navegador do Instagram abre o site da Sotaque Livre: descubra seu nível e marque uma aula de 30 minutos. Toque em Fazer o teste de nível.' },
+          { ms: 1700, cena: 'page', toque: 'a', desc: 'O navegador do Instagram abre o site da Speak Up: descubra seu nível e marque uma aula de 30 minutos. Toque em Fazer o teste de nível.' },
           { ms: 1200, cena: 'page', estado: 'w2', desc: 'Teste de nível, pergunta 3 de 3: como se diz mal posso esperar em inglês?' },
           { ms: 1100, cena: 'page', estado: 'w2 q1', toque: 'b', desc: 'Toque em I\'m looking forward to it. A resposta está certa, de nível intermediário.' },
           { ms: 800, cena: 'page', estado: 'w2 q1', toque: 'c', desc: 'Toque em Ver meu resultado.' },
@@ -476,10 +475,10 @@ export const channels = [
       { id: 'reels', label: 'Reels', mock: 'igReels', cliente: 'restaurante', selo: 'Patrocinado', frase: 'Um restaurante leva do Reels à reserva de mesa.',
         passos: [P('Atenção', 'Tacho fervendo no primeiro segundo', [0]), P('Retenção', 'Corte curto segura até a mesa', [1]), P('Conversão', 'Cardápio, horário e reserva', [2, 3, 4, 5, 6, 7, 8, 9, 10])],
         quadros: [
-          { ms: 1400, cena: 'video', video: 1, desc: 'Reels patrocinado do Tacho Miúdo: o tacho de feijoada e o texto Sábado tem feijoada no tacho.' },
+          { ms: 1400, cena: 'video', video: 1, desc: 'Reels patrocinado do Casa Amaro: o tacho de feijoada e o texto Sábado tem feijoada no tacho.' },
           { ms: 1800, cena: 'video', estado: 's2 lit', video: 1, desc: 'Corte para o prato servido: Fogo baixo desde cedo. O botão Ver cardápio ganha cor.' },
           { ms: 900, cena: 'video', estado: 's2 lit', video: 1, toque: 'cta', desc: 'Toque em Ver cardápio.' },
-          { ms: 1700, cena: 'page', toque: 'a', desc: 'O navegador do Instagram abre o site do Tacho Miúdo: aberto agora, cardápio de sábado. Toque em Reservar mesa.' },
+          { ms: 1700, cena: 'page', toque: 'a', desc: 'O navegador do Instagram abre o site do Casa Amaro: aberto agora, cardápio de sábado. Toque em Reservar mesa.' },
           { ms: 1200, cena: 'page', estado: 'w2', desc: 'Reserva: sábado, 24, já escolhido, 2 pessoas, salão. Horários do almoço.' },
           { ms: 900, cena: 'page', estado: 'w2 q1', toque: 'b', desc: 'Toque em 13:00.' },
           { ms: 800, cena: 'page', estado: 'w2 q1', toque: 'c', desc: 'Toque em Continuar.' },
@@ -491,10 +490,10 @@ export const channels = [
       { id: 'story', label: 'Story', mock: 'igstory', cliente: 'educacao', selo: 'Patrocinado', frase: 'Uma escola de idiomas leva da história à aula experimental.',
         passos: [P('Atenção', 'Pergunta sobre a foto', [0]), P('Retenção', 'Adesivo de link aparece', [1]), P('Conversão', 'Nível, horário e aula marcada', [2, 3, 4, 5, 6, 7, 8])],
         quadros: [
-          { ms: 1300, cena: 'story', desc: 'Story patrocinado da Sotaque Livre: foto da escola e a pergunta Você entende a série sem legenda?' },
+          { ms: 1300, cena: 'story', desc: 'Story patrocinado da Speak Up: foto da escola e a pergunta Você entende a série sem legenda?' },
           { ms: 1400, cena: 'story', estado: 'lit', desc: 'O adesivo Agendar aula ganha cor no fim da história.' },
           { ms: 900, cena: 'story', estado: 'lit', toque: 'cta', desc: 'Toque no adesivo.' },
-          { ms: 1500, cena: 'page', desc: 'O site da Sotaque Livre abre na aula experimental: nível, dia e horário.' },
+          { ms: 1500, cena: 'page', desc: 'O site da Speak Up abre na aula experimental: nível, dia e horário.' },
           { ms: 900, cena: 'page', estado: 'q1', toque: 'a', desc: 'Toque em Intermediário.' },
           { ms: 900, cena: 'page', estado: 'q1 q2', toque: 'b', desc: 'Toque em 19:00 de quinta.' },
           { ms: 800, cena: 'page', estado: 'q1 q2', toque: 'c', desc: 'Toque em Continuar.' },
@@ -504,10 +503,10 @@ export const channels = [
       { id: 'live', label: 'Live', mock: 'iglive', cliente: 'restaurante', selo: 'Patrocinado', frase: 'Um restaurante cozinha ao vivo e leva à reserva.',
         passos: [P('Atenção', 'Selo Ao vivo e o tacho', [0]), P('Retenção', 'Comentário respondido pela marca', [1]), P('Conversão', 'Sacola, retirada e pedido', [2, 3, 4, 5, 6, 7, 8, 9, 10])],
         quadros: [
-          { ms: 1400, cena: 'live', desc: 'Live patrocinada do Tacho Miúdo: o tacho de feijoada com o selo Ao vivo.' },
+          { ms: 1400, cena: 'live', desc: 'Live patrocinada do Casa Amaro: o tacho de feijoada com o selo Ao vivo.' },
           { ms: 1600, cena: 'live', estado: 'lit', desc: 'Um comentário pergunta o horário do almoço. O botão Ver cardápio ganha cor.' },
           { ms: 900, cena: 'live', estado: 'lit', toque: 'cta', desc: 'Toque em Ver cardápio.' },
-          { ms: 1500, cena: 'page', desc: 'O site do Tacho Miúdo abre na aba Retirada, com o cardápio de sábado.' },
+          { ms: 1500, cena: 'page', desc: 'O site do Casa Amaro abre na aba Retirada, com o cardápio de sábado.' },
           { ms: 1000, cena: 'page', estado: 'q1', toque: 'a', desc: 'Toque em adicionar a feijoada no tacho. A sacola aparece embaixo.' },
           { ms: 800, cena: 'page', estado: 'q1', toque: 'b', desc: 'Toque em Ver sacola.' },
           { ms: 1200, cena: 'page', estado: 'w2', desc: 'Sacola com a feijoada para 2 e as janelas de retirada de sábado.' },
@@ -519,11 +518,11 @@ export const channels = [
       { id: 'explorar', label: 'Explorar', mock: 'igexplore', cliente: 'clinica', selo: 'Patrocinado', frase: 'Uma clínica aparece entre fotos de interesse e leva ao horário.',
         passos: [P('Atenção', 'Publicação entre as fotos', [0]), P('Retenção', 'Publicação abre em tela cheia', [1, 2]), P('Conversão', 'Serviço, dia, horário e dados', [3, 4, 5, 6, 7, 8, 9, 10, 11, 12])],
         quadros: [
-          { ms: 1300, cena: 'grid', desc: 'Explorar: grade de fotos e uma publicação patrocinada da Seixo Odontologia.' },
+          { ms: 1300, cena: 'grid', desc: 'Explorar: grade de fotos e uma publicação patrocinada da Vilela Odontologia.' },
           { ms: 1100, cena: 'grid', estado: 'lit', toque: 'ad', desc: 'Toque na publicação patrocinada.' },
           { ms: 1500, cena: 'post', desc: 'A publicação abre em tela cheia, com Patrocinado e o botão Agendar avaliação.' },
           { ms: 900, cena: 'post', estado: 'lit', toque: 'cta', desc: 'Toque em Agendar avaliação.' },
-          { ms: 1500, cena: 'page', desc: 'Agendamento online da Seixo, em três etapas: serviço, horário e dados.' },
+          { ms: 1500, cena: 'page', desc: 'Agendamento online da Vilela, em três etapas: serviço, horário e dados.' },
           { ms: 900, cena: 'page', estado: 'q1', toque: 'a', desc: 'Toque em Avaliação odontológica.' },
           { ms: 800, cena: 'page', estado: 'q1', toque: 'b', desc: 'Toque em Ver horários.' },
           { ms: 1100, cena: 'page', estado: 'w2', desc: 'Calendário de outubro com os dias livres marcados.' },
@@ -535,16 +534,16 @@ export const channels = [
         ] },
     ] },
   { id: 'facebook', name: 'Facebook', group: 'social', benefit: 'Receber o pedido sem sair do app.',
-    art: art('incorporadora', 'coast', '30% 50%', 'Casas na falésia com a sala voltada para o mar.', 'Peça da Morada Falésia, incorporadora fictícia: casa de concreto e madeira na falésia, sobre o mar.'),
+    art: art('incorporadora', 'coast', '30% 50%', 'Casas na falésia com a sala voltada para o mar.', 'Peça da Atlântica Incorporadora, incorporadora fictícia: casa de concreto e madeira na falésia, sobre o mar.'),
     placements: [
       { id: 'feed', label: 'Feed', mock: 'fbFeed', cliente: 'incorporadora', selo: 'Patrocinado', frase: 'Uma incorporadora recebe o pedido de visita sem sair do Facebook.',
         passos: [P('Atenção', 'Vista do mar no primeiro cartão', [0]), P('Retenção', 'Deslizar mostra sala e planta', [1, 2]), P('Conversão', 'Formulário em três telas', [3, 4, 5, 6, 7, 8, 9])],
         quadros: [
-          { ms: 1400, cena: 'ad', desc: 'Anúncio patrocinado da Morada Falésia no feed do Facebook: casa na falésia e o botão Agendar agora.' },
+          { ms: 1400, cena: 'ad', desc: 'Anúncio patrocinado da Atlântica Incorporadora no feed do Facebook: casa na falésia e o botão Agendar agora.' },
           { ms: 1400, cena: 'ad', estado: 'c2', desc: 'O carrossel desliza para a sala voltada para o mar.' },
           { ms: 1400, cena: 'ad', estado: 'c3', desc: 'Terceiro cartão: plantas de 3 e 4 quartos.' },
           { ms: 900, cena: 'ad', estado: 'c3', toque: 'cta', desc: 'Toque em Agendar agora.' },
-          { ms: 1700, cena: 'form', toque: 'a', desc: 'O formulário instantâneo abre por cima do feed: visita ao decorado da Morada Falésia. Toque em Continuar.' },
+          { ms: 1700, cena: 'form', toque: 'a', desc: 'O formulário instantâneo abre por cima do feed: visita ao decorado da Atlântica Incorporadora. Toque em Continuar.' },
           { ms: 1200, cena: 'form', estado: 'w2', desc: 'Quando prefere visitar? Nome, e-mail e telefone já vêm do perfil.' },
           { ms: 900, cena: 'form', estado: 'w2 q1', toque: 'b', desc: 'Toque em Fim de semana.' },
           { ms: 800, cena: 'form', estado: 'w2 q1', toque: 'c', desc: 'Toque em Continuar.' },
@@ -554,10 +553,10 @@ export const channels = [
       { id: 'post', label: 'Post', mock: 'fbpost', cliente: 'incorporadora', selo: 'Patrocinado', frase: 'Uma incorporadora leva a foto da sala à visita agendada.',
         passos: [P('Atenção', 'Sala com vista para o mar', [0]), P('Retenção', 'Legenda e link à mostra', [1]), P('Conversão', 'Tipo de visita, horário e contato', [2, 3, 4, 5, 6, 7, 8, 9])],
         quadros: [
-          { ms: 1300, cena: 'post', desc: 'Post patrocinado da Morada Falésia no feed: a sala voltada para o mar e o texto de convite.' },
+          { ms: 1300, cena: 'post', desc: 'Post patrocinado da Atlântica Incorporadora no feed: a sala voltada para o mar e o texto de convite.' },
           { ms: 1200, cena: 'post', estado: 'lit', desc: 'O botão Agendar agora ganha cor na barra do link.' },
           { ms: 900, cena: 'post', estado: 'lit', toque: 'cta', desc: 'Toque em Agendar agora.' },
-          { ms: 1900, cena: 'page', toque: 'a', desc: 'O site da Morada Falésia abre na galeria do decorado: 3 e 4 quartos, sala voltada para o mar. Toque em Agendar visita.' },
+          { ms: 1900, cena: 'page', toque: 'a', desc: 'O site da Atlântica Incorporadora abre na galeria do decorado: 3 e 4 quartos, sala voltada para o mar. Toque em Agendar visita.' },
           { ms: 1100, cena: 'page', estado: 'w2', desc: 'Como você quer conhecer: no decorado ou por vídeo.' },
           { ms: 900, cena: 'page', estado: 'w2 q1', toque: 'b', desc: 'Toque em No decorado.' },
           { ms: 900, cena: 'page', estado: 'w2 q1 q2', toque: 'c', desc: 'Toque em 11:30 de sábado.' },
@@ -568,10 +567,10 @@ export const channels = [
       { id: 'video', label: 'Vídeo', mock: 'fbvid', cliente: 'restaurante', selo: 'Patrocinado', frase: 'Um restaurante leva do vídeo à reserva de mesa.',
         passos: [P('Atenção', 'Feijoada no primeiro quadro', [0]), P('Retenção', 'Convite antes do fim do vídeo', [1]), P('Conversão', 'Reserva direto no horário', [2, 3, 4, 5, 6, 7])],
         quadros: [
-          { ms: 1500, cena: 'video', desc: 'Vídeo patrocinado do Tacho Miúdo: o prato de feijoada e o texto Feijoada no tacho aos sábados.' },
+          { ms: 1500, cena: 'video', desc: 'Vídeo patrocinado do Casa Amaro: o prato de feijoada e o texto Feijoada no tacho aos sábados.' },
           { ms: 1800, cena: 'video', estado: 'lit', desc: 'No fim do vídeo, o botão Reservar mesa ganha cor.' },
           { ms: 900, cena: 'video', estado: 'lit', toque: 'cta', desc: 'Toque em Reservar mesa.' },
-          { ms: 1500, cena: 'page', desc: 'O site do Tacho Miúdo abre direto na reserva: sábado, 4 pessoas, varanda.' },
+          { ms: 1500, cena: 'page', desc: 'O site do Casa Amaro abre direto na reserva: sábado, 4 pessoas, varanda.' },
           { ms: 900, cena: 'page', estado: 'q1', toque: 'b', desc: 'Toque em 12:30.' },
           { ms: 800, cena: 'page', estado: 'q1', toque: 'c', desc: 'Toque em Continuar.' },
           { ms: 1400, cena: 'page', estado: 'w2', toque: 'e', desc: 'Nome e WhatsApp preenchidos. Toque em Confirmar reserva.' },
@@ -580,11 +579,11 @@ export const channels = [
       { id: 'breaks', label: 'Ad breaks', mock: 'fbbreak', cliente: 'educacao', selo: 'Patrocinado', frase: 'Uma escola de idiomas entra na pausa do vídeo e leva à aula.',
         passos: [P('Atenção', 'Vídeo começa e a pausa aparece', [0]), P('Retenção', 'Anúncio com pular em 5 segundos', [1, 2]), P('Conversão', 'Aula na unidade em três toques', [3, 4, 5, 6, 7, 8, 9])],
         quadros: [
-          { ms: 1300, cena: 'video', desc: 'O vídeo do Tacho Miúdo começa; a pausa do anúncio chega com o selo Patrocinado.' },
-          { ms: 1500, cena: 'ad', desc: 'Anúncio da Sotaque Livre na pausa, com o botão Pular em 5 segundos.' },
+          { ms: 1300, cena: 'video', desc: 'O vídeo do Casa Amaro começa; a pausa do anúncio chega com o selo Patrocinado.' },
+          { ms: 1500, cena: 'ad', desc: 'Anúncio da Speak Up na pausa, com o botão Pular em 5 segundos.' },
           { ms: 1500, cena: 'ad', estado: 'skip', desc: 'Depois de cinco segundos, o botão vira Pular.' },
           { ms: 900, cena: 'ad', estado: 'skip lit', toque: 'cta', desc: 'O cartão Aula experimental acende. Toque nele.' },
-          { ms: 1500, cena: 'page', desc: 'O site da Sotaque Livre abre na aula experimental: nível, dia, horário e onde fazer a aula.' },
+          { ms: 1500, cena: 'page', desc: 'O site da Speak Up abre na aula experimental: nível, dia, horário e onde fazer a aula.' },
           { ms: 900, cena: 'page', estado: 'q1', toque: 'a', desc: 'Toque em Na unidade.' },
           { ms: 900, cena: 'page', estado: 'q1 q2', toque: 'b', desc: 'Toque em 19:00 de quinta.' },
           { ms: 800, cena: 'page', estado: 'q1 q2', toque: 'c', desc: 'Toque em Continuar.' },
@@ -593,19 +592,19 @@ export const channels = [
         ] },
     ] },
   { id: 'tiktok', name: 'TikTok', group: 'social', benefit: 'Do vídeo ao carrinho em um toque.',
-    art: art('varejo', 'nerd', '50% 28%', 'Joga à noite e edita de dia?', 'Peça da Teclaria, loja de tecnologia fictícia: notebook com a tela acesa numa mesa escura.'),
+    art: art('varejo', 'nerd', '50% 28%', 'Joga à noite e edita de dia?', 'Peça da Ponto Tech, loja de tecnologia fictícia: notebook com a tela acesa numa mesa escura.'),
     placements: [
       { id: 'infeed', label: 'In-Feed', mock: 'ttFeed', cliente: 'varejo', selo: 'Patrocinado', frase: 'Uma loja de tecnologia leva do vídeo ao carrinho.',
         passos: [P('Atenção', 'Pergunta nativa no primeiro segundo', [0]), P('Retenção', 'Corte mostra os dois usos', [1]), P('Conversão', 'Produto, carrinho e Pix', [2, 3, 4, 5, 6, 7, 8, 9, 10, 11])],
         quadros: [
-          { ms: 1400, cena: 'video', video: 1, desc: 'Vídeo patrocinado da Teclaria no Para você do TikTok: Joga à noite e edita de dia?' },
+          { ms: 1400, cena: 'video', video: 1, desc: 'Vídeo patrocinado da Ponto Tech no Para você do TikTok: Joga à noite e edita de dia?' },
           { ms: 1900, cena: 'video', estado: 's2 lit', video: 1, desc: 'Corte para a tela: De noite, o jogo. De dia, a edição. O botão Comprar agora ganha cor.' },
           { ms: 900, cena: 'video', estado: 's2 lit', video: 1, toque: 'cta', desc: 'Toque em Comprar agora.' },
-          { ms: 1500, cena: 'page', desc: 'O navegador do TikTok abre a página do Teclaria Pro 15: memória, cor e entrega no CEP.' },
+          { ms: 1500, cena: 'page', desc: 'O navegador do TikTok abre a página do Notebook Creator 15: memória, cor e entrega no CEP.' },
           { ms: 900, cena: 'page', estado: 'q1', toque: 'a', desc: 'Toque em 32 GB.' },
           { ms: 1500, cena: 'page', estado: 'q1 q2', toque: 'b', desc: 'Toque em Adicionar ao carrinho. O botão enche, vira No carrinho, e o contador do carrinho sobe para 1.' },
           { ms: 800, cena: 'page', estado: 'q1 q2', toque: 'c', desc: 'Toque no carrinho.' },
-          { ms: 1500, cena: 'page', estado: 'w2 q2', toque: 'd', desc: 'Carrinho: Teclaria Pro 15, 32 GB, grafite, entrega padrão. Toque em Finalizar compra.' },
+          { ms: 1500, cena: 'page', estado: 'w2 q2', toque: 'd', desc: 'Carrinho: Notebook Creator 15, 32 GB, grafite, entrega padrão. Toque em Finalizar compra.' },
           { ms: 1100, cena: 'page', estado: 'w3 q2', desc: 'Pagamento: endereço já preenchido; Pix, cartão ou boleto.' },
           { ms: 900, cena: 'page', estado: 'w3 q2 q3', toque: 'e', desc: 'Toque em Pix.' },
           { ms: 800, cena: 'page', estado: 'w3 q2 q3', toque: 'f', desc: 'Toque em Finalizar pedido.' },
@@ -613,30 +612,30 @@ export const channels = [
         ] },
     ] },
   { id: 'youtube', name: 'YouTube', group: 'social', benefit: 'Ganhar os primeiros segundos.',
-    art: art('automotivo', 'esportes', '50% 58%', 'Saiu do jogo. Quanto de carga sobra?', 'Peça da Ondara Elétricos, concessionária fictícia: SUV elétrico verde carregando no estacionamento do estádio ao pôr do sol.'),
+    art: art('automotivo', 'esportes', '50% 58%', 'Saiu do jogo. Quanto de carga sobra?', 'Peça da EcoDrive Elétricos, concessionária fictícia: SUV elétrico verde carregando no estacionamento do estádio ao pôr do sol.'),
     placements: [
       { id: 'instream', label: 'Anúncio no vídeo', mock: 'ytInstream', cliente: 'automotivo', selo: 'Patrocinado', frase: 'Uma concessionária leva do anúncio ao test drive.',
         passos: [P('Atenção', 'Mensagem antes do Pular', [0]), P('Retenção', 'Painel responde à dúvida', [1]), P('Conversão', 'Versão, loja e horário', [2, 3, 4, 5, 6, 7, 8, 9])],
         quadros: [
-          { ms: 1500, cena: 'watch', video: 1, desc: 'Anúncio patrocinado da Ondara antes de um vídeo no YouTube: Saiu do jogo. Quanto de carga sobra?' },
+          { ms: 1500, cena: 'watch', video: 1, desc: 'Anúncio patrocinado da EcoDrive antes de um vídeo no YouTube: Saiu do jogo. Quanto de carga sobra?' },
           { ms: 2000, cena: 'watch', estado: 's2', video: 1, desc: 'O painel do carro mostra a carga para a volta. O botão Pular aparece, e o vídeo continua.' },
           { ms: 900, cena: 'watch', estado: 's2', video: 1, toque: 'cta', desc: 'Toque em Agendar, no painel abaixo do vídeo.' },
-          { ms: 1400, cena: 'page', desc: 'A página de test drive da Ondara abre: qual versão você quer dirigir?' },
-          { ms: 900, cena: 'page', estado: 'q1', toque: 'a', desc: 'Toque em Ondara S.' },
+          { ms: 1400, cena: 'page', desc: 'A página de test drive da EcoDrive abre: qual versão você quer dirigir?' },
+          { ms: 900, cena: 'page', estado: 'q1', toque: 'a', desc: 'Toque em EcoDrive S.' },
           { ms: 800, cena: 'page', estado: 'q1', toque: 'b', desc: 'Toque em Escolher loja.' },
-          { ms: 1300, cena: 'page', estado: 'w2 q2', toque: 'c', desc: 'Toque em Ondara Pinheiros, a 2,1 km. Sábado de manhã já escolhido.' },
+          { ms: 1300, cena: 'page', estado: 'w2 q2', toque: 'c', desc: 'Toque em EcoDrive Pinheiros, a 2,1 km. Sábado de manhã já escolhido.' },
           { ms: 800, cena: 'page', estado: 'w2 q2', toque: 'd', desc: 'Toque em Continuar.' },
           { ms: 1400, cena: 'page', estado: 'w3', toque: 'e', desc: 'Nome, WhatsApp e carteira de motorista. Toque em Solicitar test drive.' },
-          { ms: 2000, cena: 'page', estado: 'w4 done', desc: 'Pedido enviado: Ondara S, sábado de manhã, na loja de Pinheiros.' },
+          { ms: 2000, cena: 'page', estado: 'w4 done', desc: 'Pedido enviado: EcoDrive S, sábado de manhã, na loja de Pinheiros.' },
         ] },
       { id: 'shorts', label: 'Shorts', mock: 'ytShorts', cliente: 'educacao', selo: 'Patrocinado', frase: 'Uma escola de idiomas leva do Shorts ao app instalado.',
         passos: [P('Atenção', 'Frase curta antes da marca', [0]), P('Retenção', 'Exercício segura até a resposta', [1, 2]), P('Conversão', 'Instalar sem sair do vídeo', [3, 4, 5, 6])],
         quadros: [
-          { ms: 1400, cena: 'video', video: 1, desc: 'Shorts patrocinado da Sotaque Livre: Pare de traduzir na cabeça.' },
+          { ms: 1400, cena: 'video', video: 1, desc: 'Shorts patrocinado da Speak Up: Pare de traduzir na cabeça.' },
           { ms: 1200, cena: 'video', estado: 'q', video: 1, desc: 'Exercício na tela: complete I\'m looking forward, lacuna, it.' },
           { ms: 1100, cena: 'video', estado: 'q ok lit', video: 1, desc: 'A resposta aparece: to. Certo. O botão Instalar fica branco.' },
           { ms: 1000, cena: 'video', estado: 'q ok lit', video: 1, toque: 'cta', desc: 'Toque em Instalar.' },
-          { ms: 1500, cena: 'store', toque: 'go', desc: 'A folha da loja de apps abre com Sotaque Livre. Toque em Obter.' },
+          { ms: 1500, cena: 'store', toque: 'go', desc: 'A folha da loja de apps abre com Speak Up. Toque em Obter.' },
           { ms: 900, cena: 'store', estado: 'load', desc: 'O app está sendo instalado.' },
           { ms: 1700, cena: 'store', estado: 'done', desc: 'App instalado: o botão mostra Abrir.' },
         ] },
@@ -644,19 +643,19 @@ export const channels = [
         passos: [P('Atenção', 'Aviso de publi logo no começo', [0]), P('Retenção', 'Criador mostra o setup em uso', [1]), P('Conversão', 'Link fixado leva à lista', [2, 3, 4])],
         quadros: [
           { ms: 1500, cena: 'live', estado: 'paid', desc: 'Live de um criador no YouTube com o aviso Inclui promoção paga.' },
-          { ms: 1800, cena: 'live', estado: 's2', desc: 'Cartela #publi Teclaria: o notebook deste setup. O chat continua.' },
+          { ms: 1800, cena: 'live', estado: 's2', desc: 'Cartela #publi Ponto Tech: o notebook deste setup. O chat continua.' },
           { ms: 1400, cena: 'live', estado: 's2 s3', toque: 'link', desc: 'Mensagem fixada do criador com a lista de espera. Toque no link.' },
-          { ms: 1800, cena: 'page', toque: 'a', desc: 'A página do Teclaria Pro 15 branco abre: lista de espera, com o e-mail preenchido. Toque em Quero ser avisado.' },
+          { ms: 1800, cena: 'page', toque: 'a', desc: 'A página do Notebook Creator 15 branco abre: lista de espera, com o e-mail preenchido. Toque em Quero ser avisado.' },
           { ms: 2000, cena: 'page', estado: 'w2 done', desc: 'Você está na lista e recebe só o aviso de chegada.' },
         ] },
     ] },
   { id: 'linkedin', name: 'LinkedIn', group: 'social', benefit: 'Falar com quem decide.',
-    art: art('financas', 'negocios', '50% 100%', 'Guia: patrimônio da empresa e da família', 'Peça da Arrimo Patrimônio, gestora de patrimônio fictícia: mesa escura com caneta e cartão, capa do guia.'),
+    art: art('financas', 'negocios', '50% 100%', 'Guia: patrimônio da empresa e da família', 'Peça da Valore Patrimônio, gestora de patrimônio fictícia: mesa escura com caneta e cartão, capa do guia.'),
     placements: [
       { id: 'feed', label: 'Documento', mock: 'liFeed', cliente: 'financas', selo: 'Promovido', frase: 'Uma gestora entrega o guia em troca do contato.',
         passos: [P('Atenção', 'Problema do sócio na primeira frase', [0]), P('Retenção', 'Páginas de amostra no feed', [1, 2]), P('Conversão', 'Dados do perfil, revisão e PDF', [3, 4, 5, 6])],
         quadros: [
-          { ms: 1400, cena: 'feed', desc: 'Post promovido da Arrimo Patrimônio no LinkedIn: Empresa e família no mesmo patrimônio?' },
+          { ms: 1400, cena: 'feed', desc: 'Post promovido da Valore Patrimônio no LinkedIn: Empresa e família no mesmo patrimônio?' },
           { ms: 1300, cena: 'feed', estado: 'p2', desc: 'O documento passa para a página 1: contas que se misturam.' },
           { ms: 1300, cena: 'feed', estado: 'p3', desc: 'Página 2: sucessão sem plano.' },
           { ms: 1300, cena: 'feed', estado: 'p4', toque: 'cta', desc: 'Para continuar lendo, envie suas informações. Toque em Desbloquear.' },
@@ -666,21 +665,21 @@ export const channels = [
         ] },
     ] },
   { id: 'google', name: 'Google Ads', group: 'search', benefit: 'Responder a quem já procura.',
-    art: art('clinica', 'consultorio45', '50% 50%', 'Avaliação com hora marcada', 'Peça da Seixo Odontologia, clínica odontológica fictícia: consultório claro com cadeira e janela.'),
+    art: art('clinica', 'consultorio45', '50% 50%', 'Avaliação com hora marcada', 'Peça da Vilela Odontologia, clínica odontológica fictícia: consultório claro com cadeira e janela.'),
     placements: [
       { id: 'search', label: 'Pesquisa', mock: 'gSearch', cliente: 'clinica', selo: 'Resultado patrocinado', frase: 'Uma clínica responde à busca com uma ligação.',
         passos: [P('Atenção', 'Busca já diz a intenção', [0]), P('Retenção', 'Título responde à busca', [1]), P('Conversão', 'Ligar com um toque', [2, 3, 4])],
         quadros: [
           { ms: 1500, cena: 'serp', estado: 'typing', desc: 'Busca no Google: dentista perto de mim.' },
-          { ms: 1900, cena: 'serp', estado: 'r', desc: 'Resultado patrocinado da Seixo Odontologia: Avaliação com hora marcada, com sitelinks e o botão Ligar.' },
+          { ms: 1900, cena: 'serp', estado: 'r', desc: 'Resultado patrocinado da Vilela Odontologia: Avaliação com hora marcada, com sitelinks e o botão Ligar.' },
           { ms: 1000, cena: 'serp', estado: 'r', toque: 'cta', desc: 'Toque em Ligar.' },
           { ms: 1400, cena: 'call', toque: 'go', desc: 'A folha do iPhone pergunta se quer ligar. Toque em Ligar.' },
-          { ms: 2000, cena: 'call', estado: 'done', desc: 'Chamando Seixo Odontologia.' },
+          { ms: 2000, cena: 'call', estado: 'done', desc: 'Chamando Vilela Odontologia.' },
         ] },
       { id: 'display', label: 'Display', mock: 'gDisplay', cliente: 'turismo', selo: 'Anúncio', frase: 'Uma agência lembra quem já leu sobre o destino.',
         passos: [P('Atenção', 'Banner no assunto da matéria', [0]), P('Retenção', 'Título muda, oferta continua', [1]), P('Conversão', 'Saída escolhida, pré-reserva sem pagar', [2, 3, 4, 5, 6, 7])],
         quadros: [
-          { ms: 1500, cena: 'article', desc: 'Anúncio da Bandeirola Viagens numa matéria sobre festas de junho: Festa do Divino em grupo pequeno.' },
+          { ms: 1500, cena: 'article', desc: 'Anúncio da Destino Certo Viagens numa matéria sobre festas de junho: Festa do Divino em grupo pequeno.' },
           { ms: 1700, cena: 'article', estado: 's2', desc: 'O título do anúncio muda: guia da cidade e hotel no centro.' },
           { ms: 900, cena: 'article', estado: 's2', toque: 'cta', desc: 'Toque na seta do anúncio.' },
           { ms: 1500, cena: 'page', desc: 'A página da agência abre no Safari: Festa do Divino em grupo pequeno, 4 dias, até 12 pessoas.' },
@@ -691,12 +690,12 @@ export const channels = [
         ] },
     ] },
   { id: 'seo', name: 'SEO', group: 'search', benefit: 'Ser encontrado sem pagar pelo clique.',
-    art: art('incorporadora', 'salaMar45', '50% 50%', 'Casas na falésia com vista para o mar', 'Peça da Morada Falésia, incorporadora fictícia: varanda e sala da casa na falésia, com mata ao redor.'),
+    art: art('incorporadora', 'salaMar45', '50% 50%', 'Casas na falésia com vista para o mar', 'Peça da Atlântica Incorporadora, incorporadora fictícia: varanda e sala da casa na falésia, com mata ao redor.'),
     placements: [
       { id: 'organic', label: 'Orgânico', mock: 'seoOrganic', cliente: 'incorporadora', selo: 'Orgânico, sem anúncio', frase: 'Uma incorporadora aparece na busca sem pagar pelo clique.',
         passos: [P('Atenção', 'Título com o que foi buscado', [0]), P('Retenção', 'Plantas que dá para comparar', [1, 2, 3]), P('Conversão', 'PDF em troca do e-mail', [4, 5, 6])],
         quadros: [
-          { ms: 1400, cena: 'serp', desc: 'Resultado orgânico da Morada Falésia para a busca casa na falésia à venda, sem rótulo de anúncio.' },
+          { ms: 1400, cena: 'serp', desc: 'Resultado orgânico da Atlântica Incorporadora para a busca casa na falésia à venda, sem rótulo de anúncio.' },
           { ms: 900, cena: 'serp', toque: 'link', desc: 'Toque no atalho Plantas.' },
           { ms: 1300, cena: 'page', desc: 'A página de plantas abre com 3 quartos.' },
           { ms: 1200, cena: 'page', estado: 'p4', desc: 'A planta muda para 4 quartos.' },
@@ -706,7 +705,7 @@ export const channels = [
         ] },
     ] },
   { id: 'chatgpt', name: 'ChatGPT', group: 'search', benefit: 'Aparecer depois da resposta.',
-    art: art('turismo', 'crencas', '50% 22%', 'Festas tradicionais em grupo pequeno', 'Peça da Bandeirola Viagens, agência de viagens fictícia: rua de pedra com bandeirolas e igreja ao entardecer.'),
+    art: art('turismo', 'crencas', '50% 22%', 'Festas tradicionais em grupo pequeno', 'Peça da Destino Certo Viagens, agência de viagens fictícia: rua de pedra com bandeirolas e igreja ao entardecer.'),
     placements: [
       { id: 'answer', label: 'Resposta', mock: 'gptAnswer', cliente: 'turismo', selo: 'Anúncio', frase: 'Uma agência aparece depois da resposta, separada dela.',
         passos: [P('Atenção', 'Conversa de quem planeja a viagem', [0, 1, 2, 3, 4, 5]), P('Retenção', 'Opção logo abaixo da resposta', [6]), P('Conversão', 'Roteiro montado e consultor', [7, 8, 9, 10, 11, 12, 13, 14])],
@@ -717,9 +716,9 @@ export const channels = [
           { ms: 700, cena: 'chat', estado: 's1 ty', toque: 'gsend', desc: 'Toque em enviar.' },
           { ms: 1100, cena: 'chat', estado: 's1 s3', desc: 'A pergunta sobe para o alto da tela e o ChatGPT pensa.' },
           { ms: 1900, cena: 'chat', estado: 's1 s3 s4', desc: 'A resposta indica Pirenópolis, com mascarados e cavalhadas, e um roteiro de 3 dias.' },
-          { ms: 1900, cena: 'chat', estado: 's1 s3 s4 s2', desc: 'Depois de um divisor, uma frase cinza apresenta a opção e o cartão com a etiqueta Anúncio: Bandeirola Viagens, separado da resposta.' },
+          { ms: 1900, cena: 'chat', estado: 's1 s3 s4 s2', desc: 'Depois de um divisor, uma frase cinza apresenta a opção e o cartão com a etiqueta Anúncio: Destino Certo Viagens, separado da resposta.' },
           { ms: 900, cena: 'chat', estado: 's1 s3 s4 s2', toque: 'cta', desc: 'Toque no cartão do anúncio.' },
-          { ms: 1400, cena: 'page', desc: 'O navegador do ChatGPT abre Monte seu roteiro, da Bandeirola: quantos dias você tem?' },
+          { ms: 1400, cena: 'page', desc: 'O navegador do ChatGPT abre Monte seu roteiro, da Destino Certo: quantos dias você tem?' },
           { ms: 900, cena: 'page', estado: 'q1', toque: 'a', desc: 'Toque em 3 dias.' },
           { ms: 900, cena: 'page', estado: 'q1', toque: 'b', desc: 'Saindo de São Paulo, viagem de casal. Toque em Continuar.' },
           { ms: 1300, cena: 'page', estado: 'w2 q2', toque: 'c', desc: 'O que você quer ver: mascarados já marcado. Toque em Cavalhadas.' },
@@ -729,26 +728,26 @@ export const channels = [
         ] },
     ] },
   { id: 'maps', name: 'Google Maps', group: 'local', benefit: 'Ser a escolha no caminho.',
-    art: art('restaurante', 'fachada45', '50% 50%', 'Feijoada no tacho aos sábados', 'Peça do Tacho Miúdo, restaurante fictício: fachada de madeira à noite, com flores e mesas na calçada.'),
+    art: art('restaurante', 'fachada45', '50% 50%', 'Feijoada no tacho aos sábados', 'Peça do Casa Amaro, restaurante fictício: fachada de madeira à noite, com flores e mesas na calçada.'),
     placements: [
       { id: 'local', label: 'Local', mock: 'mapsLocal', cliente: 'restaurante', selo: 'Patrocinado', frase: 'Um restaurante aparece no mapa e traça a rota.',
         passos: [P('Atenção', 'Pin destacado no caminho', [0, 1]), P('Retenção', 'Ficha mostra prato e horário', [2]), P('Conversão', 'Rota traçada com um toque', [3, 4, 5])],
         quadros: [
           { ms: 1300, cena: 'map', estado: 'typing', desc: 'Busca no Google Maps: feijoada perto de mim.' },
-          { ms: 1500, cena: 'map', desc: 'Busca feijoada perto de mim no Google Maps: alfinete quadrado do Tacho Miúdo e o resultado Patrocinado.' },
+          { ms: 1500, cena: 'map', desc: 'Busca feijoada perto de mim no Google Maps: alfinete quadrado do Casa Amaro e o resultado Patrocinado.' },
           { ms: 1900, cena: 'map', estado: 's2', desc: 'A ficha patrocinada sobe: restaurante aberto, fecha às 23h, feijoada no tacho aos sábados.' },
           { ms: 1000, cena: 'map', estado: 's2', toque: 'cta', desc: 'Toque em Rotas.' },
           { ms: 1700, cena: 'route', toque: 'go', desc: 'A rota de carro aparece no mapa. Toque em Iniciar.' },
-          { ms: 1800, cena: 'route', estado: 'done', desc: 'Navegação iniciada até o Tacho Miúdo.' },
+          { ms: 1800, cena: 'route', estado: 'done', desc: 'Navegação iniciada até o Casa Amaro.' },
         ] },
     ] },
   { id: 'whatsapp', name: 'WhatsApp Business', group: 'local', benefit: 'Transformar interesse em conversa.',
-    art: art('clinica', 'recepcao45', '50% 50%', 'Conte o que sente e escolha o horário', 'Peça da Seixo Odontologia, clínica odontológica fictícia: recepção com parede terracota, sofá e plantas.'),
+    art: art('clinica', 'recepcao45', '50% 50%', 'Conte o que sente e escolha o horário', 'Peça da Vilela Odontologia, clínica odontológica fictícia: recepção com parede terracota, sofá e plantas.'),
     placements: [
       { id: 'ctwa', label: 'Clique para conversar', mock: 'waAd', cliente: 'clinica', selo: 'Patrocinado', frase: 'Uma clínica começa o agendamento numa conversa.',
         passos: [P('Atenção', 'Hora marcada na própria imagem', [0]), P('Retenção', 'Legenda convida a contar mais', [1]), P('Conversão', 'Menu, período, horário e endereço', [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13])],
         quadros: [
-          { ms: 1400, cena: 'ad', desc: 'Anúncio patrocinado da Seixo Odontologia no Instagram: Avaliação com hora marcada.' },
+          { ms: 1400, cena: 'ad', desc: 'Anúncio patrocinado da Vilela Odontologia no Instagram: Avaliação com hora marcada.' },
           { ms: 1700, cena: 'ad', estado: 'open lit', desc: 'A legenda abre: conte o que você sente e escolha o horário pela conversa. A barra Enviar mensagem pelo WhatsApp acende.' },
           { ms: 900, cena: 'ad', estado: 'open lit', toque: 'cta', desc: 'Toque em Enviar mensagem pelo WhatsApp.' },
           { ms: 1500, cena: 'chat', toque: 'send', desc: 'O WhatsApp abre a conversa com a mensagem pronta e a prévia do anúncio: Olá! Quero agendar uma avaliação. Toque em enviar.' },
@@ -766,7 +765,7 @@ export const channels = [
       { id: 'catalog', label: 'Catálogo', mock: 'waCatalog', cliente: 'restaurante', selo: 'Catálogo, não é anúncio', frase: 'Um restaurante recebe a encomenda pelo catálogo e fecha o pedido no atendimento automático.',
         passos: [P('Atenção', 'Vitrine dentro do perfil', [0, 1]), P('Retenção', 'Itens organizados por ocasião', [2, 3]), P('Conversão', 'Carrinho, pedido e atendimento automático', [4, 5, 6, 7, 8, 9, 10, 11, 12, 13])],
         quadros: [
-          { ms: 1400, cena: 'profile', desc: 'Perfil comercial do Tacho Miúdo no WhatsApp, com a faixa Catálogo.' },
+          { ms: 1400, cena: 'profile', desc: 'Perfil comercial do Casa Amaro no WhatsApp, com a faixa Catálogo.' },
           { ms: 900, cena: 'profile', toque: 'more', desc: 'Toque em Ver tudo.' },
           { ms: 1500, cena: 'catalog', toque: 'item', desc: 'Catálogo com as coleções Encomendas de sábado e Doces. Toque em Feijoada no tacho para 4.' },
           { ms: 1400, cena: 'item', toque: 'add', desc: 'Página do item, sem preço, com quantidade. Toque em Adicionar ao carrinho.' },
@@ -783,15 +782,15 @@ export const channels = [
         ] },
     ] },
   { id: 'blog', name: 'Publieditorial', group: 'content', benefit: 'Explicar antes de vender, sempre identificado.',
-    art: art('financas', 'negocios', '50% 100%', 'Por onde começar a organizar o patrimônio da família', 'Peça da Arrimo Patrimônio, gestora de patrimônio fictícia: mesa escura com caneta e cartão.'),
+    art: art('financas', 'negocios', '50% 100%', 'Por onde começar a organizar o patrimônio da família', 'Peça da Valore Patrimônio, gestora de patrimônio fictícia: mesa escura com caneta e cartão.'),
     placements: [
       { id: 'article', label: 'Artigo', mock: 'blogArticle', cliente: 'financas', selo: 'Conteúdo patrocinado', frase: 'Uma gestora explica antes de vender, sempre identificada.',
         passos: [P('Atenção', 'Aviso de patrocínio antes do título', [0]), P('Retenção', 'Leitura útil, marca no fim', [1]), P('Conversão', 'Dia, horário e assunto da conversa', [2, 3, 4, 5, 6, 7, 8, 9])],
         quadros: [
-          { ms: 1500, cena: 'article', desc: 'Artigo na Revista Exemplo com o aviso Conteúdo patrocinado por Arrimo Patrimônio acima do título.' },
+          { ms: 1500, cena: 'article', desc: 'Artigo na Revista Exemplo com o aviso Conteúdo patrocinado por Valore Patrimônio acima do título.' },
           { ms: 1900, cena: 'article', estado: 's2', desc: 'A leitura passa pelos três passos: separe o que é da empresa, escreva os objetivos, pergunte antes de assinar.' },
-          { ms: 1400, cena: 'article', estado: 's3', toque: 'cta', desc: 'Bloco Oferecido por Arrimo Patrimônio. Toque em Agendar conversa.' },
-          { ms: 1400, cena: 'page', desc: 'A agenda da Arrimo abre: conversa de 30 minutos por vídeo, com os dias livres de outubro.' },
+          { ms: 1400, cena: 'article', estado: 's3', toque: 'cta', desc: 'Bloco Oferecido por Valore Patrimônio. Toque em Agendar conversa.' },
+          { ms: 1400, cena: 'page', desc: 'A agenda da Valore abre: conversa de 30 minutos por vídeo, com os dias livres de outubro.' },
           { ms: 1000, cena: 'page', estado: 'q1', toque: 'a', desc: 'Toque em terça, 27. Os horários do dia aparecem.' },
           { ms: 900, cena: 'page', estado: 'q1 q2', toque: 'b', desc: 'Toque em 10:00.' },
           { ms: 800, cena: 'page', estado: 'q1 q2', toque: 'c', desc: 'Toque em Próximo.' },
@@ -824,7 +823,7 @@ const AVISOS = {
   'google/display': { app: 'whatsapp', cliente: 'turismo', texto: 'Recebemos sua pré-reserva da saída de junho.', desc: 'A agência confirma a pré-reserva pelo WhatsApp.' },
   'seo/organic': { app: 'mail', cliente: 'incorporadora', texto: 'Plantas de 3 e 4 quartos, em PDF.', desc: 'O e-mail com as plantas chega na notificação do iPhone.' },
   'tiktok/infeed': { app: 'mail', cliente: 'varejo', texto: 'Pedido 10482 recebido. Pague o Pix para confirmar o envio.', desc: 'O e-mail do pedido chega na notificação do iPhone.' },
-  'facebook/feed': { app: 'whatsapp', cliente: 'incorporadora', texto: 'Olá, Marina! Sou corretor da Morada Falésia. Podemos combinar a visita de sábado?', desc: 'Um corretor da incorporadora chama pelo WhatsApp.' },
+  'facebook/feed': { app: 'whatsapp', cliente: 'incorporadora', texto: 'Olá, Marina! Sou corretor da Atlântica Incorporadora. Podemos combinar a visita de sábado?', desc: 'Um corretor da incorporadora chama pelo WhatsApp.' },
   'blog/article': { app: 'mail', cliente: 'financas', texto: 'Convite: conversa de 30 minutos, terça às 10h.', desc: 'O convite da conversa chega por e-mail.' },
 };
 Object.assign(AVISOS, AUTO.AVISOS);

@@ -83,7 +83,7 @@ Tudo está em `campaign-channels.js`.
 
 ```js
 { id: 'tiktok', name: 'TikTok', group: 'social', benefit: 'Do vídeo ao carrinho em um toque.',
-  art: art('varejo', 'nerd', '50% 28%', 'Joga à noite e edita de dia?', 'Peça da Teclaria, ...'),
+  art: art('varejo', 'nerd', '50% 28%', 'Joga à noite e edita de dia?', 'Peça da Ponto Tech, ...'),
   placements: [ ... ] }
 ```
 
@@ -148,7 +148,7 @@ Um mock devolve um `.cm-screen` com várias `.cm-scene`:
 ```js
 screen('tt',
   scene('video', 'base', 'escuro', LAB.tiktokAd({...})) +
-  scene('page', 'sheet', 'claro', `${browserBar('teclaria', 'teclaria.exemplo')}${SITES.teclaria()}`))
+  scene('page', 'sheet', 'claro', `${browserBar('Ponto Tech', 'pontotech.exemplo')}${SITES.teclaria()}`))
 ```
 
 `scene(id, kind, tema, html, cls, gestos)`:
@@ -312,14 +312,14 @@ Os 8 tipos vêm dos serviços que o portfólio já mostra. A clínica entra como
 
 | Tipo (`CLIENTES`) | Marca | Arroba e domínio | Cor | Símbolo | Formatos | Site | Aviso do setor |
 |---|---|---|---|---|---|---|---|
-| `restaurante` | Tacho Miúdo | tachomiudo, tachomiudo.exemplo | `#a4462a` | "tm" | Instagram Reels e Live, Facebook Vídeo, Maps, WhatsApp Catálogo (e o vídeo antes do intervalo do Facebook) | `tacho` | Nenhum |
-| `clinica` | Seixo Odontologia | seixoodontologia, seixo.exemplo | `#2f6f73` | Seixo (elipse) | Instagram Explorar, Google Pesquisa, WhatsApp clique para conversar | `seixo` | "[RT e CRO]" no anúncio e "Responsável técnico e CRO aparecem aqui." no site |
-| `incorporadora` | Morada Falésia | moradafalesia, moradafalesia.exemplo | `#1f4e5f` | Falésia e ondas | Facebook Feed e Post, SEO | `falesia`, `metaForm` | "Imagens ilustrativas. CRECI e registro de incorporação aparecem aqui." |
-| `varejo` | Teclaria (loja de tecnologia) | teclaria, teclaria.exemplo | `#5b3df5` | Tecla | TikTok, YouTube Live | `teclaria` | Nenhum |
-| `turismo` | Bandeirola Viagens | bandeirola, bandeirola.exemplo | `#d9822b` | Bandeirolas | Google Display, ChatGPT | `bandeirola` | Nenhum |
-| `educacao` | Sotaque Livre Idiomas (curta: Sotaque Livre) | sotaquelivre, sotaquelivre.exemplo | `#e5533d` | Balão de fala | Instagram Feed e Story, Facebook intervalos, YouTube Shorts | `sotaque` | Nenhum |
-| `financas` | Arrimo Patrimônio | arrimo, arrimo.exemplo | `#0f1a2c` | Glifo dourado (logo fictício do estúdio Fatos) | LinkedIn, Publieditorial | `arrimo`, `linkedinForm` | "Investimentos envolvem riscos." e nenhuma imagem de gráfico de rendimento |
-| `automotivo` | Ondara Elétricos | ondara, ondara.exemplo | `#0f6b5c` | Onda | YouTube anúncio no vídeo | `ondara` | Mensagem educativa de trânsito (CTB, art. 77-B), texto oficial a definir |
+| `restaurante` | Casa Amaro | casaamaro, casaamaro.exemplo | `#a4462a` | "tm" | Instagram Reels e Live, Facebook Vídeo, Maps, WhatsApp Catálogo (e o vídeo antes do intervalo do Facebook) | `tacho` | Nenhum |
+| `clinica` | Vilela Odontologia | vilelaodontologia, vilela.exemplo | `#2f6f73` | Vilela (elipse) | Instagram Explorar, Google Pesquisa, WhatsApp clique para conversar | `seixo` | "[RT e CRO]" no anúncio e "Responsável técnico e CRO aparecem aqui." no site |
+| `incorporadora` | Atlântica Incorporadora | atlanticaincorporadora, atlantica.exemplo | `#1f4e5f` | Falésia e ondas | Facebook Feed e Post, SEO | `falesia`, `metaForm` | "Imagens ilustrativas. CRECI e registro de incorporação aparecem aqui." |
+| `varejo` | Ponto Tech (loja de tecnologia) | teclaria, pontotech.exemplo | `#5b3df5` | Tecla | TikTok, YouTube Live | `teclaria` | Nenhum |
+| `turismo` | Destino Certo Viagens | bandeirola, destinocerto.exemplo | `#d9822b` | Destino Certos | Google Display, ChatGPT | `bandeirola` | Nenhum |
+| `educacao` | Speak Up Idiomas (curta: Speak Up) | speakupidiomas, speakup.exemplo | `#e5533d` | Balão de fala | Instagram Feed e Story, Facebook intervalos, YouTube Shorts | `sotaque` | Nenhum |
+| `financas` | Valore Patrimônio | arrimo, valore.exemplo | `#0f1a2c` | Glifo dourado (logo fictício do estúdio Fatos) | LinkedIn, Publieditorial | `arrimo`, `linkedinForm` | "Investimentos envolvem riscos." e nenhuma imagem de gráfico de rendimento |
+| `automotivo` | EcoDrive Elétricos | ondara, ecodrive.exemplo | `#0f6b5c` | Onda | YouTube anúncio no vídeo | `ondara` | Mensagem educativa de trânsito (CTB, art. 77-B), texto oficial a definir |
 
 Dados de exemplo usados nos fluxos:
 
@@ -327,13 +327,7 @@ Dados de exemplo usados nos fluxos:
 - **Endereços:** "Rua Exemplo", "Av. Exemplo", em bairros de São Paulo.
 - **Datas:** hoje é quarta, 21/10/2026, e o relógio marca 10:09. Os agendamentos caem em sábado, 24; terça, 27; quinta, 29; e sexta, 30 de outubro. As viagens são em junho.
 
-Verificação dos nomes (busca de 21/10/2026):
-
-- Os 8 nomes não coincidem com negócios do mesmo ramo no Brasil.
-- Ondara deve aparecer sempre como "Ondara Elétricos", nunca "Ondara Motors", que existe na Espanha.
-- Arco, Rota Viva, Kairo e Casa Costa (como anunciante imobiliário) foram descartados por coincidirem com empresas reais.
-- Também foram descartados Brasa Mansa, Nácar, Calmaria, Orvalho, Moara, Movera, Zênite, Alvor, Voltaia, Ravina e Linguar.
-- A busca no INPI ainda está pendente.
+Nomes atuais (27/10/2026): escolhidos a pedido do dono para soar como negócios brasileiros reais, sem pesquisa de nome. Os nomes anteriores (Tacho Miúdo, Seixo Odontologia, Morada Falésia, Teclaria, Bandeirola Viagens, Sotaque Livre Idiomas, Arrimo Patrimônio, Ondara Elétricos) saíram por soarem estranhos. Os produtos da loja não levam o nome dela: Notebook Creator 15 e Notebook Slim 14.
 
 ## 9. Os 22 fluxos
 
@@ -341,28 +335,28 @@ Cada linha resume: onde está o anúncio, o que prende a atenção, o que retém
 
 | Canal e formato | Cliente | Selo | Atenção | Retenção | Conversão | Fim | Aviso |
 |---|---|---|---|---|---|---|---|
-| Instagram, Feed | Sotaque Livre | Patrocinado | Pergunta no 1º cartão do carrossel | Desliza: três expressões e a resposta | Teste de nível com uma pergunta, nível B1, horário, dados | Aula marcada (ticket e lista do que preparar) | E-mail |
-| Instagram, Reels | Tacho Miúdo | Patrocinado | Tacho fervendo | Corte para o prato | Cardápio, reserva (dia, pessoas, horário), dados e ocasião | Reserva solicitada | WhatsApp |
-| Instagram, Story | Sotaque Livre | Patrocinado | Pergunta sobre a foto | Adesivo de link acende | Nível, horário, dados | Aula marcada | E-mail |
-| Instagram, Live | Tacho Miúdo | Patrocinado | Selo Ao vivo e o tacho | A marca responde um comentário | Retirada: adicionar, sacola, janela, pagamento na retirada | Pedido 0427 com acompanhamento | WhatsApp |
-| Instagram, Explorar | Seixo | Patrocinado | Post patrocinado na grade | Abre em tela cheia | Serviço, calendário, horário, dados | Avaliação agendada com mapa | WhatsApp |
-| Facebook, Feed | Morada Falésia | Patrocinado | Vista do mar no 1º cartão | Sala e planta nos outros cartões | Formulário instantâneo: pergunta, dados do perfil, revisão | Obrigado | WhatsApp do corretor |
-| Facebook, Post | Morada Falésia | Patrocinado | Sala com vista | Barra do link acende | Galeria, tipo de visita, horário, contato | Visita agendada com mapa | E-mail |
-| Facebook, Vídeo | Tacho Miúdo | Patrocinado | Prato no 1º quadro | Botão acende no fim do vídeo | Reserva direta (12:30, 4 pessoas, varanda), dados | Reserva solicitada | WhatsApp |
-| Facebook, Ad breaks | Sotaque Livre | Patrocinado | Vídeo começa e a pausa chega | "Pular em 5" vira "Pular" | Aula na unidade, horário, dados | Aula marcada na unidade | E-mail |
-| TikTok, In-Feed | Teclaria | Patrocinado | Pergunta em texto nativo | 2º corte mostra os dois usos | Produto (32 GB), carrinho, pagamento com Pix | Pedido 10482 com Pix copia e cola | E-mail |
-| YouTube, Anúncio no vídeo | Ondara | Patrocinado | Mensagem antes do Pular | Painel mostra a carga | Versão, loja e dia, dados com carteira de motorista | Pedido de test drive | WhatsApp |
-| YouTube, Shorts | Sotaque Livre | Patrocinado | Frase curta | Exercício com lacuna e resposta | Instalar, folha da loja de apps, Obter | App instalado (Abrir) | Nenhum |
-| YouTube, Live | Teclaria com um criador | Inclui promoção paga | Aviso de promoção paga | Cartela #publi e chat | Link fixado, lista de espera | Na lista | Nenhum |
-| LinkedIn, Documento | Arrimo | Promovido | Problema do sócio na 1ª frase | Páginas de amostra | Desbloquear, formulário com dados do perfil, revisão | Guia em PDF liberado | Nenhum |
-| Google Ads, Pesquisa | Seixo | Resultado patrocinado | "dentista perto de mim" digitando | Título responde à busca | Ligar, folha do iPhone | Chamando | Nenhum |
-| Google Ads, Display | Bandeirola | Anúncio | Banner na matéria sobre festas | Título muda (combinação de recursos) | Saída de junho, pré-reserva sem pagamento | Pré-reserva recebida | WhatsApp |
-| SEO, Orgânico | Morada Falésia | Orgânico, sem anúncio | Resultado com o termo buscado | Plantas de 3 e 4 quartos | PDF em troca do e-mail | E-mail enviado | E-mail |
-| ChatGPT, Resposta | Bandeirola | Anúncio | Conversa em dois turnos | Cartão do anúncio abaixo da resposta, separado dela | Monte seu roteiro (dias, o que ver), roteiro gerado, consultor | Consultor vai chamar | Nenhum |
-| Google Maps, Local | Tacho Miúdo | Patrocinado | Alfinete quadrado no caminho | Ficha com prato e horário | Rotas, Iniciar | Navegação iniciada | Nenhum |
-| WhatsApp, Clique para conversar | Seixo | Patrocinado | Hora marcada na própria arte | Legenda convida a contar mais | Conversa com mensagem pronta, automação, lista, período, horário | Avaliação agendada e localização | Nenhum |
-| WhatsApp, Catálogo | Tacho Miúdo | Catálogo, não é anúncio | Vitrine no perfil | Coleções por ocasião | Item, carrinho, pedido, atendimento automático | Pedido confirmado e lembrete | Nenhum |
-| Publieditorial, Artigo | Arrimo | Conteúdo patrocinado | Aviso de patrocínio antes do título | Leitura útil, marca no fim | Agenda: dia, hora, assunto | Conversa agendada | E-mail |
+| Instagram, Feed | Speak Up | Patrocinado | Pergunta no 1º cartão do carrossel | Desliza: três expressões e a resposta | Teste de nível com uma pergunta, nível B1, horário, dados | Aula marcada (ticket e lista do que preparar) | E-mail |
+| Instagram, Reels | Casa Amaro | Patrocinado | Tacho fervendo | Corte para o prato | Cardápio, reserva (dia, pessoas, horário), dados e ocasião | Reserva solicitada | WhatsApp |
+| Instagram, Story | Speak Up | Patrocinado | Pergunta sobre a foto | Adesivo de link acende | Nível, horário, dados | Aula marcada | E-mail |
+| Instagram, Live | Casa Amaro | Patrocinado | Selo Ao vivo e o tacho | A marca responde um comentário | Retirada: adicionar, sacola, janela, pagamento na retirada | Pedido 0427 com acompanhamento | WhatsApp |
+| Instagram, Explorar | Vilela | Patrocinado | Post patrocinado na grade | Abre em tela cheia | Serviço, calendário, horário, dados | Avaliação agendada com mapa | WhatsApp |
+| Facebook, Feed | Atlântica Incorporadora | Patrocinado | Vista do mar no 1º cartão | Sala e planta nos outros cartões | Formulário instantâneo: pergunta, dados do perfil, revisão | Obrigado | WhatsApp do corretor |
+| Facebook, Post | Atlântica Incorporadora | Patrocinado | Sala com vista | Barra do link acende | Galeria, tipo de visita, horário, contato | Visita agendada com mapa | E-mail |
+| Facebook, Vídeo | Casa Amaro | Patrocinado | Prato no 1º quadro | Botão acende no fim do vídeo | Reserva direta (12:30, 4 pessoas, varanda), dados | Reserva solicitada | WhatsApp |
+| Facebook, Ad breaks | Speak Up | Patrocinado | Vídeo começa e a pausa chega | "Pular em 5" vira "Pular" | Aula na unidade, horário, dados | Aula marcada na unidade | E-mail |
+| TikTok, In-Feed | Ponto Tech | Patrocinado | Pergunta em texto nativo | 2º corte mostra os dois usos | Produto (32 GB), carrinho, pagamento com Pix | Pedido 10482 com Pix copia e cola | E-mail |
+| YouTube, Anúncio no vídeo | EcoDrive | Patrocinado | Mensagem antes do Pular | Painel mostra a carga | Versão, loja e dia, dados com carteira de motorista | Pedido de test drive | WhatsApp |
+| YouTube, Shorts | Speak Up | Patrocinado | Frase curta | Exercício com lacuna e resposta | Instalar, folha da loja de apps, Obter | App instalado (Abrir) | Nenhum |
+| YouTube, Live | Ponto Tech com um criador | Inclui promoção paga | Aviso de promoção paga | Cartela #publi e chat | Link fixado, lista de espera | Na lista | Nenhum |
+| LinkedIn, Documento | Valore | Promovido | Problema do sócio na 1ª frase | Páginas de amostra | Desbloquear, formulário com dados do perfil, revisão | Guia em PDF liberado | Nenhum |
+| Google Ads, Pesquisa | Vilela | Resultado patrocinado | "dentista perto de mim" digitando | Título responde à busca | Ligar, folha do iPhone | Chamando | Nenhum |
+| Google Ads, Display | Destino Certo | Anúncio | Banner na matéria sobre festas | Título muda (combinação de recursos) | Saída de junho, pré-reserva sem pagamento | Pré-reserva recebida | WhatsApp |
+| SEO, Orgânico | Atlântica Incorporadora | Orgânico, sem anúncio | Resultado com o termo buscado | Plantas de 3 e 4 quartos | PDF em troca do e-mail | E-mail enviado | E-mail |
+| ChatGPT, Resposta | Destino Certo | Anúncio | Conversa em dois turnos | Cartão do anúncio abaixo da resposta, separado dela | Monte seu roteiro (dias, o que ver), roteiro gerado, consultor | Consultor vai chamar | Nenhum |
+| Google Maps, Local | Casa Amaro | Patrocinado | Alfinete quadrado no caminho | Ficha com prato e horário | Rotas, Iniciar | Navegação iniciada | Nenhum |
+| WhatsApp, Clique para conversar | Vilela | Patrocinado | Hora marcada na própria arte | Legenda convida a contar mais | Conversa com mensagem pronta, automação, lista, período, horário | Avaliação agendada e localização | Nenhum |
+| WhatsApp, Catálogo | Casa Amaro | Catálogo, não é anúncio | Vitrine no perfil | Coleções por ocasião | Item, carrinho, pedido, atendimento automático | Pedido confirmado e lembrete | Nenhum |
+| Publieditorial, Artigo | Valore | Conteúdo patrocinado | Aviso de patrocínio antes do título | Leitura útil, marca no fim | Agenda: dia, hora, assunto | Conversa agendada | E-mail |
 
 Os formatos sem aviso já terminam numa conversa, numa ligação, numa rota ou num app aberto, que é a confirmação nativa.
 
@@ -433,7 +427,7 @@ Exemplo: pedir a quantidade de pessoas antes do horário na reserva do Reels.
 
 ### 12.4 Acrescentar um formato a um canal
 
-Exemplo: um anúncio de carrossel em Reels para a Teclaria, no Instagram.
+Exemplo: um anúncio de carrossel em Reels para a Ponto Tech, no Instagram.
 
 ```js
 // 1. campaign-channels.js, dentro de mocks:
@@ -442,17 +436,17 @@ igReelsTec: () => screen('reels', scene('video', 'base', 'escuro', LAB.reelsAd({
     video: `<div class="cm-shots">
       <figure class="cm-shot" data-shot="1">${pic('nerd', { alt: 'Notebook com a tela acesa.' })}<p class="cm-ontext" data-hs="1">Joga à noite?</p></figure>
       <figure class="cm-shot" data-shot="2">${pic('cenaNerd')}<p class="cm-ontext">E edita de dia.</p></figure></div>` })) +
-  scene('page', 'sheet', 'claro', `${browserBar('teclaria', 'teclaria.exemplo')}${SITES.teclaria()}`)),
+  scene('page', 'sheet', 'claro', `${browserBar('Ponto Tech', 'pontotech.exemplo')}${SITES.teclaria()}`)),
 
 // 2. No canal instagram, em placements:
 { id: 'reels-loja', label: 'Reels de loja', mock: 'igReelsTec', cliente: 'varejo', selo: 'Patrocinado',
   frase: 'Uma loja de tecnologia leva do Reels ao carrinho.',
   passos: [P('Atenção', 'Pergunta no primeiro segundo', [0]), P('Retenção', 'Corte mostra o uso', [1]), P('Conversão', 'Produto, carrinho e Pix', [2, 3, 4, 5])],
   quadros: [
-    { ms: 1400, cena: 'video', video: 1, desc: 'Reels patrocinado da Teclaria: Joga à noite?' },
+    { ms: 1400, cena: 'video', video: 1, desc: 'Reels patrocinado da Ponto Tech: Joga à noite?' },
     { ms: 1800, cena: 'video', estado: 's2 lit', video: 1, desc: 'Corte para a mesa: E edita de dia. O botão Comprar agora ganha cor.' },
     { ms: 900, cena: 'video', estado: 's2 lit', video: 1, toque: 'cta', desc: 'Toque em Comprar agora.' },
-    { ms: 1500, cena: 'page', desc: 'O navegador do Instagram abre a página do Teclaria Pro 15.' },
+    { ms: 1500, cena: 'page', desc: 'O navegador do Instagram abre a página do Notebook Creator 15.' },
     { ms: 900, cena: 'page', estado: 'q1', toque: 'a', desc: 'Toque em 32 GB.' },
     { ms: 2000, cena: 'page', estado: 'w4 q2 done', desc: 'Pedido feito, com o Pix copia e cola.' },
   ] },
@@ -581,7 +575,7 @@ Publicação:
 - **Quadro de aviso duplicado.** Não escreva o quadro final de aviso: o laço de `AVISOS` acrescenta.
 - **Testes com texto fixo.**
   - A ordem e os ids dos canais estão em `channelIds`.
-  - Os rótulos esperados por canal estão em `labels` (TikTok Patrocinado, LinkedIn Promovido, ChatGPT Anúncio, Maps Patrocinado, blog "Conteúdo patrocinado por Arrimo Patrimônio", SEO com `moradafalesia.exemplo`).
+  - Os rótulos esperados por canal estão em `labels` (TikTok Patrocinado, LinkedIn Promovido, ChatGPT Anúncio, Maps Patrocinado, blog "Conteúdo patrocinado por Valore Patrimônio", SEO com `atlantica.exemplo`).
   - O TikTok precisa terminar com `done`.
 - **Textos com contagem.** "oito tipos de cliente" e "onze canais" aparecem em `index.html` (cartão da galeria, crédito da seção e serviço de campanhas).
 - **Comentário do cabeçalho de `campaign-channels.js`.** Mantenha a contagem atualizada (11 canais, 22 formatos).
@@ -623,14 +617,14 @@ Nos mocks com a classe `au` na tela, `data-in="a3"` só aparece quando o estado 
 
 | Canal e formato | Cliente | O que mostra |
 |---|---|---|
-| WhatsApp, Agente e Pix | Bandeirola Viagens | Anúncio de clique para o WhatsApp, IA que se identifica, ferramenta, Flow, passagem para a consultora com resumo (bastidor), `order_details` com Pix por redirecionamento ao banco, confirmação e e-mail |
-| WhatsApp, Chamada | Ondara Elétricos | Pedido de permissão de chamada, chamada de voz atendida por IA com legendas, transferência ao vendedor, registro da chamada |
-| Instagram, Comentário | Teclaria | Reel com pedido de comentário, palavra-chave, resposta privada no Direct, lista de espera e aviso de chegada |
-| Telegram, Comunidade | Sotaque Livre | Post com botões, mensagem que só a pessoa vê, mini app, assinatura em Stars |
-| RCS, Mensagem de chat | Teclaria | Botão Conversar na busca (piloto no Brasil), empresa verificada, cartões, Pix e entrega; aviso do SMS sem RCS |
-| Voz com IA, Ligação | Seixo Odontologia | Pedido de ligação com consentimento, ligação da IA que se identifica, agenda por ferramenta, confirmação no WhatsApp |
-| Pix Automático, Recorrência | Sotaque Livre | Autorização única no banco fictício, aviso na véspera, falha por saldo, pausa no lugar do cancelamento |
-| E-mail, Régua | Arrimo Patrimônio | Três e-mails com remetente verificado, descadastro em um clique, agenda e saída da régua |
+| WhatsApp, Agente e Pix | Destino Certo Viagens | Anúncio de clique para o WhatsApp, IA que se identifica, ferramenta, Flow, passagem para a consultora com resumo (bastidor), `order_details` com Pix por redirecionamento ao banco, confirmação e e-mail |
+| WhatsApp, Chamada | EcoDrive Elétricos | Pedido de permissão de chamada, chamada de voz atendida por IA com legendas, transferência ao vendedor, registro da chamada |
+| Instagram, Comentário | Ponto Tech | Reel com pedido de comentário, palavra-chave, resposta privada no Direct, lista de espera e aviso de chegada |
+| Telegram, Comunidade | Speak Up | Post com botões, mensagem que só a pessoa vê, mini app, assinatura em Stars |
+| RCS, Mensagem de chat | Ponto Tech | Botão Conversar na busca (piloto no Brasil), empresa verificada, cartões, Pix e entrega; aviso do SMS sem RCS |
+| Voz com IA, Ligação | Vilela Odontologia | Pedido de ligação com consentimento, ligação da IA que se identifica, agenda por ferramenta, confirmação no WhatsApp |
+| Pix Automático, Recorrência | Speak Up | Autorização única no banco fictício, aviso na véspera, falha por saldo, pausa no lugar do cancelamento |
+| E-mail, Régua | Valore Patrimônio | Três e-mails com remetente verificado, descadastro em um clique, agenda e saída da régua |
 
 ### Regras próprias
 

@@ -175,7 +175,7 @@ try{
         await campaignCard.locator('.cx-journey [aria-current="step"]').count()===1&&
         await campaignCard.locator('.cx-positioning,.campaign-facts').count()===0&&
         !/smiile/i.test(await campaignCard.locator('.cx-player').innerText()));
-      const labels={tiktok:/Patrocinado/,linkedin:/Promovido/,chatgpt:/Anúncio/,maps:/Patrocinado/,blog:/Conteúdo patrocinado por Arrimo Patrimônio/,seo:/moradafalesia\.exemplo/};
+      const labels={tiktok:/Patrocinado/,linkedin:/Promovido/,chatgpt:/Anúncio/,maps:/Patrocinado/,blog:/Conteúdo patrocinado por Valore Patrimônio/,seo:/atlanticaincorporadora\.exemplo/};
       for(const [id,label] of Object.entries(labels)){
         await page.locator('#tab-'+id).click();
         await page.waitForFunction(id=>document.querySelector('#laboratorio .cx-player')?.dataset.platform===id,id);

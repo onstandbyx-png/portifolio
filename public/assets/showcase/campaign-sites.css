@@ -107,7 +107,7 @@
 :is(#laboratorio,.lab-escopo) .cm-cal-grid .cm-cal-free{font-weight:700}
 :is(#laboratorio,.lab-escopo) .cm-cal-grid .cm-cal-free::after{content:"";position:absolute;bottom:calc(var(--u)*3);width:calc(var(--u)*4);height:calc(var(--u)*4);border-radius:50%;background:color-mix(in srgb,#fff calc(var(--pk-on)*100%),var(--brand))}
 
-/* Tacho Miúdo, restaurant: warm paper, serif titles. */
+/* Casa Amaro, restaurant: warm paper, serif titles. */
 :is(#laboratorio,.lab-escopo) .cm-site--tacho{--site-bg:#f7f0e6;--site-ink:#2b1b12;--site-line:#e4d6c2;--site-soft:#eee2d0;--site-muted:#7a6553;--site-r:calc(var(--u)*14)}
 :is(#laboratorio,.lab-escopo) .cm-site--tacho .cm-site-back b,:is(#laboratorio,.lab-escopo) .cm-site--tacho .cm-site-h,:is(#laboratorio,.lab-escopo) .cm-tm-hero b,:is(#laboratorio,.lab-escopo) .cm-tm-head b{font-family:Newsreader,Georgia,serif;font-weight:600!important;letter-spacing:-.01em}
 :is(#laboratorio,.lab-escopo) .cm-tm-head{display:flex;flex:none;align-items:center;gap:calc(var(--u)*9);padding:calc(var(--u)*9) calc(var(--u)*18);border-bottom:calc(var(--u)*1) solid var(--site-line)}
@@ -145,7 +145,7 @@
 :is(#laboratorio,.lab-escopo) .cm-tm-line>span:not(.cm-stepper){display:grid;flex:1}
 :is(#laboratorio,.lab-escopo) .cm-tm-line small{color:var(--site-muted);font-size:calc(var(--u)*12.5)}
 
-/* Sotaque Livre, language school: white, coral, round. */
+/* Speak Up, language school: white, coral, round. */
 :is(#laboratorio,.lab-escopo) .cm-site--sotaque{--site-bg:#fff;--site-ink:#1d1a24;--site-line:#ebe5ec;--site-soft:#f7f1ef;--site-muted:#6e6476;--site-r:99px}
 :is(#laboratorio,.lab-escopo) .cm-sl-head{display:flex;flex:none;align-items:center;gap:calc(var(--u)*9);padding:calc(var(--u)*10) calc(var(--u)*18)}
 :is(#laboratorio,.lab-escopo) .cm-sl-head b{flex:1;font-size:calc(var(--u)*16);font-weight:750}
@@ -169,7 +169,7 @@
 :is(#laboratorio,.lab-escopo) .cm-ticket--sl{border-radius:calc(var(--u)*20)}
 :is(#laboratorio,.lab-escopo) .cm-sl-before{display:grid;gap:calc(var(--u)*8);padding:calc(var(--u)*12) calc(var(--u)*14);border-radius:calc(var(--u)*18);background:var(--site-soft)}
 
-/* Seixo Odontologia, dental clinic: white and mint, a step bar. */
+/* Vilela Odontologia, dental clinic: white and mint, a step bar. */
 :is(#laboratorio,.lab-escopo) .cm-site--seixo{--site-bg:#fff;--site-ink:#122426;--site-line:#dbe7e6;--site-soft:#eff6f5;--site-muted:#57696a;--site-r:calc(var(--u)*10)}
 :is(#laboratorio,.lab-escopo) .cm-sx-head{display:flex;flex:none;align-items:center;gap:calc(var(--u)*10);padding:calc(var(--u)*10) calc(var(--u)*18) calc(var(--u)*6)}
 :is(#laboratorio,.lab-escopo) .cm-sx-head>span{display:grid}
@@ -184,7 +184,7 @@
 :is(#laboratorio,.lab-escopo) .cm-sx-steps li.is-done i{border-color:var(--brand);background:var(--brand);color:#fff}
 :is(#laboratorio,.lab-escopo) .cm-ticket--sx{border-radius:calc(var(--u)*10)}
 
-/* Morada Falésia, developer: sand, deep teal, serif, square buttons. */
+/* Atlântica Incorporadora, developer: sand, deep teal, serif, square buttons. */
 :is(#laboratorio,.lab-escopo) .cm-site--falesia{--site-bg:#f4efe7;--site-ink:#16262c;--site-line:#ded4c4;--site-soft:#ebe3d5;--site-muted:#6b685f;--site-r:calc(var(--u)*3)}
 :is(#laboratorio,.lab-escopo) .cm-site--falesia .cm-site-cta{background:var(--site-ink);letter-spacing:.01em}
 :is(#laboratorio,.lab-escopo) .cm-site--falesia .cm-site-back b,:is(#laboratorio,.lab-escopo) .cm-site--falesia .cm-site-h,:is(#laboratorio,.lab-escopo) .cm-mf2-title,:is(#laboratorio,.lab-escopo) .cm-mf2-head b,:is(#laboratorio,.lab-escopo) .cm-mf2-facts b,:is(#laboratorio,.lab-escopo) .cm-mf2-sum b{font-family:Newsreader,Georgia,serif;font-weight:500!important;letter-spacing:-.01em}
@@ -213,7 +213,7 @@
 :is(#laboratorio,.lab-escopo) .cm-mf2-sum b{font-size:calc(var(--u)*17)}
 :is(#laboratorio,.lab-escopo) .cm-ticket--mf{border-radius:calc(var(--u)*3)}
 
-/* Teclaria, tech store: white, violet, product first. */
+/* Ponto Tech, tech store: white, violet, product first. */
 :is(#laboratorio,.lab-escopo) .cm-site--teclaria{--site-bg:#fff;--site-ink:#141320;--site-line:#e7e5ef;--site-soft:#f4f3f8;--site-muted:#62607a;--site-r:calc(var(--u)*12)}
 :is(#laboratorio,.lab-escopo) .cm-tc-head{display:flex;flex:none;align-items:center;gap:calc(var(--u)*12);padding:calc(var(--u)*9) calc(var(--u)*18);border-bottom:calc(var(--u)*1) solid var(--site-line)}
 :is(#laboratorio,.lab-escopo) .cm-tc-head b{flex:1;font-size:calc(var(--u)*18);font-weight:800;letter-spacing:-.03em}
@@ -262,7 +262,7 @@
 :is(#laboratorio,.lab-escopo) .cm-tc-pix em{display:inline-flex;align-items:center;gap:calc(var(--u)*6);margin-top:calc(var(--u)*4);color:var(--brand);font-style:normal;font-weight:650;font-size:calc(var(--u)*13.5)}
 :is(#laboratorio,.lab-escopo) .cm-tc-pix em .cm-i{width:calc(var(--u)*16);height:calc(var(--u)*16)}
 
-/* Bandeirola Viagens, travel agency: ochre, festive, big cards. */
+/* Destino Certo Viagens, travel agency: ochre, festive, big cards. */
 :is(#laboratorio,.lab-escopo) .cm-site--bandeirola{--site-bg:#fffaf2;--site-ink:#2a1c0e;--site-line:#efdfc6;--site-soft:#f8ecd9;--site-muted:#7c6547;--site-r:calc(var(--u)*16)}
 :is(#laboratorio,.lab-escopo) .cm-bd-head{display:flex;flex:none;align-items:center;gap:calc(var(--u)*9);padding:calc(var(--u)*9) calc(var(--u)*18);border-bottom:calc(var(--u)*2) dotted var(--brand)}
 :is(#laboratorio,.lab-escopo) .cm-bd-head b{flex:1;font-size:calc(var(--u)*16.5);font-weight:800;letter-spacing:-.01em}
@@ -294,7 +294,7 @@
 :is(#laboratorio,.lab-escopo) .cm-bd-sum{display:grid;gap:calc(var(--u)*2);padding:calc(var(--u)*11) calc(var(--u)*13);border-radius:calc(var(--u)*14);background:var(--site-soft)}
 :is(#laboratorio,.lab-escopo) .cm-bd-sum small{color:var(--site-muted);font-size:calc(var(--u)*12.5)}
 
-/* Arrimo Patrimônio, wealth manager: navy and paper, serif, quiet. */
+/* Valore Patrimônio, wealth manager: navy and paper, serif, quiet. */
 :is(#laboratorio,.lab-escopo) .cm-site--arrimo{--site-bg:#fbfaf7;--site-ink:#0f1a2c;--site-line:#e3e1da;--site-soft:#f1efe9;--site-muted:#636a76;--site-r:calc(var(--u)*8)}
 :is(#laboratorio,.lab-escopo) .cm-site--arrimo .cm-site-back b,:is(#laboratorio,.lab-escopo) .cm-site--arrimo .cm-site-h,:is(#laboratorio,.lab-escopo) .cm-ar-host b,:is(#laboratorio,.lab-escopo) .cm-ar-head b{font-family:Newsreader,Georgia,serif;font-weight:500!important}
 :is(#laboratorio,.lab-escopo) .cm-site--arrimo .cm-pk,:is(#laboratorio,.lab-escopo) .cm-site--arrimo .cm-site-cta{border-radius:calc(var(--u)*8)}
@@ -311,7 +311,7 @@
 :is(#laboratorio,.lab-escopo) .cm-ar-sum small{color:var(--site-muted);font-size:calc(var(--u)*12.5)}
 :is(#laboratorio,.lab-escopo) .cm-ticket--ar{border-radius:calc(var(--u)*6)}
 
-/* Ondara Elétricos, car dealer: dark green, white, sporty. */
+/* EcoDrive Elétricos, car dealer: dark green, white, sporty. */
 :is(#laboratorio,.lab-escopo) .cm-site--ondara{--site-bg:#fff;--site-ink:#0d1f1b;--site-line:#dfe8e5;--site-soft:#eef4f2;--site-muted:#5a6b67;--site-r:calc(var(--u)*6)}
 :is(#laboratorio,.lab-escopo) .cm-od-head{display:flex;flex:none;align-items:center;gap:calc(var(--u)*9);padding:calc(var(--u)*10) calc(var(--u)*18);background:var(--brand);color:#fff}
 :is(#laboratorio,.lab-escopo) .cm-od-head b{flex:1;font-size:calc(var(--u)*16);font-weight:800;letter-spacing:.01em}
