@@ -60,7 +60,7 @@ const CONTA = {
     C('Confirmações enviadas', l => /webhook|email/.test(l.tipo) && /Confirma/i.test(l.texto)), C('Ligações não atendidas', l => /Não atendida/i.test(l.texto)),
     C('Retornos pelo WhatsApp', l => /Retorno/i.test(l.texto)), C('Novas tentativas', l => l.tipo === 'retentativa' && /Nova tentativa|Segunda tentativa/i.test(l.texto))],
   chamada: [C('Permissões concedidas', l => l.tipo === 'permissao' && /concedida/i.test(l.texto)), TURNOS,
-    C('Transferências para pessoa', l => l.tipo === 'pessoa' && /Transfer/i.test(l.texto)), C('Test drives agendados', l => l.tipo === 'agenda'), C('Sinais ao anúncio', sinal)],
+    C('Transferências para pessoa', l => l.tipo === 'pessoa' && /^Transfer/i.test(l.evento)), C('Test drives agendados', l => l.tipo === 'agenda'), C('Sinais ao anúncio', sinal)],
   instagram: [C('Comentários recebidos', l => l.tipo === 'webhook' && /coment/i.test(l.texto)), C('Respostas privadas', l => /Resposta privada/i.test(l.texto)),
     C('Contatos na lista de espera', l => l.tipo === 'crm' && /lista/i.test(l.texto)), C('Compras reservadas', l => /reserva/i.test(l.evento)), C('Sinais ao anúncio', sinal)],
   pix: [C('Autorizações', l => l.tipo === 'assinatura' && /aprovada/i.test(l.evento)), C('Mensalidades pagas', l => l.tipo === 'webhook' && /recebido|liquidado/i.test(l.evento)),
@@ -107,12 +107,13 @@ function mountOne(root) {
       </div>
       <div class="at-dock" data-at-dock>
         <div class="at-agora" data-at-agora aria-live="polite" aria-atomic="true"><p class="at-agora-ev" data-at-ev></p><p class="at-caption" id="${uid}-cap" data-at-caption></p></div>
+        <span class="at-progresso" aria-hidden="true"><i data-at-barra></i></span>
         <div class="at-controls"><button type="button" class="at-ctl" data-at-prev aria-label="Quadro anterior">←</button><button type="button" class="at-play" data-at-play></button><button type="button" class="at-ctl" data-at-next aria-label="Próximo quadro">→</button><span class="at-pos" data-at-pos></span></div>
       </div>
       <p class="at-objetivo" data-at-objetivo></p>
       <div class="at-rest">
         <ol class="at-steps" data-at-steps aria-label="Jornada em 3 passos"></ol>
-        <dl class="at-count" data-at-count aria-label="Contadores do exemplo"></dl>
+        <dl class="at-count" data-at-count aria-label="Contadores da automação"></dl>
         <p class="at-base" data-at-base></p>
         <p class="at-nota">Marca fictícia e interface aproximada. Eventos, campos e horários são simulados; nenhum número é resultado de cliente.</p>
       </div>
@@ -121,7 +122,7 @@ function mountOne(root) {
   const $ = selector => root.querySelector(selector);
   const main = $('[data-at-main]'), stage = $('[data-at-stage]'), log = $('[data-at-log]'), count = $('[data-at-count]'), caption = $('[data-at-caption]');
   const agora = $('[data-at-agora]'), ev = $('[data-at-ev]'), play = $('[data-at-play]'), steps = $('[data-at-steps]'), pos = $('[data-at-pos]');
-  const arq = $('[data-at-arq]'), arqSvg = $('[data-at-arq-svg]'), falaBox = $('[data-at-fala-box]'), fio = $('[data-at-fio]');
+  const barra = $('[data-at-barra]'), arq = $('[data-at-arq]'), arqSvg = $('[data-at-arq-svg]'), falaBox = $('[data-at-fala-box]'), fio = $('[data-at-fio]');
   const estreito = matchMedia('(max-width:599px)'), largo = matchMedia('(min-width:900px)'), compacto = matchMedia('(max-width:480px), (max-height:480px)');
   const reduce = matchMedia('(prefers-reduced-motion: reduce)');
 
@@ -158,6 +159,12 @@ function mountOne(root) {
     return spec.map((c, j) => ({ r: c.r, v: valores[j] })).filter(c => c.v[c.v.length - 1] > 0).slice(0, 6);
   }
 
+  /* Scrolls a panel (never the page) so el sits at frac of its height. */
+  function rolarAte(box, el, frac) {
+    const b = box.getBoundingClientRect(), r = el.getBoundingClientRect();
+    const top = box.scrollTop + r.top - b.top - (box.clientHeight - r.height) * frac;
+    box.scrollTo({ top: Math.max(0, Math.round(top)), behavior: live() ? 'smooth' : 'auto' });
+  }
   /* Architecture: the customer and the actors in order of first appearance; an edge each time the work passes
      from one actor to another (a tap hands it back to the customer). */
   function montarGrafo() {
@@ -243,7 +250,7 @@ function mountOne(root) {
     const painel = arq.closest('.at-panel');
     if (ativo && painel?.clientHeight && performance.now() - lidoEm > 4000) {
       const r = ativo.getBoundingClientRect(), pr = painel.getBoundingClientRect();
-      if (r.top < pr.top + 8 || r.bottom > pr.bottom - 8) painel.scrollTo({ top: painel.scrollTop + r.top - pr.top - painel.clientHeight / 2 + r.height / 2, behavior: live() ? 'smooth' : 'auto' });
+      if (r.top < pr.top + 8 || r.bottom > pr.bottom - 8) rolarAte(painel, ativo, estreito.matches ? .25 : .5);
     }
   }
 
@@ -264,8 +271,7 @@ function mountOne(root) {
     // The newest line stays in view inside the log, unless the person is reading it.
     if (alvo && performance.now() - lidoEm > 4000 && log.clientHeight) {
       // On phones the dock covers the bottom of the list, so the line sits in the upper part.
-      const top = alvo.offsetTop - (log.clientHeight - alvo.offsetHeight) * (estreito.matches ? .2 : .75);
-      log.scrollTo({ top: Math.max(0, top), behavior: live() ? 'smooth' : 'auto' });
+      rolarAte(log, alvo, estreito.matches ? .2 : .75);
     }
     requestAnimationFrame(desenharFio);
   }
@@ -307,7 +313,8 @@ function mountOne(root) {
       const falas = falasAte(quadro);
       lista.innerHTML = falas.length ? falas.map(f => `<li${f.k === quadro ? ' data-agora' : ''} data-texto="${esc(f.texto)}"><b style="--a:${corFala(f.quem)}">${esc(f.quem)}</b><span>${esc(f.texto)}</span></li>`).join('') : '<li class="at-vazio">A transcrição começa quando a ligação é atendida.</li>';
       const atual = lista.querySelector('[data-agora]');
-      if (atual && performance.now() - lidoEm > 4000) lista.scrollTop = atual.offsetTop - lista.clientHeight / 2;
+      const painel = falaBox.closest('.at-panel');
+      if (atual && painel.clientHeight && performance.now() - lidoEm > 4000) rolarAte(painel, atual, estreito.matches ? .2 : .5);
     }
     const caixa = falaBox.querySelector('[data-at-bastidores]');
     if (caixa) {
@@ -361,6 +368,7 @@ function mountOne(root) {
       play.setAttribute('aria-label', fim ? 'Voltar ao primeiro quadro' : 'Próximo quadro');
     }
     main.dataset.playing = String(playing);
+    main.dataset.live = String(live());
     agora.setAttribute('aria-live', playing ? 'off' : 'polite');
   }
 
@@ -374,6 +382,7 @@ function mountOne(root) {
     clearTimeout(timer);
     clearDot(stage); hideTap(stage);
     inicio = performance.now(); gasto = 0; duracao = 0;
+    pintarBarra();
     settle(screen, item).then(() => {
       if (g !== geracao || !screen) return;
       duracao = tempoMinimo(screen, frames, quadro);
@@ -382,8 +391,19 @@ function mountOne(root) {
       agendar();
     });
   }
+  /* The thin bar of the dock: how much of this frame has passed; it runs to the end while playing. */
+  function pintarBarra() {
+    const feito = duracao ? Math.min(1, (playing ? performance.now() - inicio : gasto) / duracao) : 0;
+    barra.style.transition = 'none';
+    barra.style.transform = `scaleX(${feito.toFixed(3)})`;
+    if (!playing || !duracao) return;
+    void barra.offsetWidth;
+    barra.style.transition = `transform ${Math.round(Math.max(0, duracao - (performance.now() - inicio)))}ms linear`;
+    barra.style.transform = 'scaleX(1)';
+  }
   function agendar() {
     clearTimeout(timer);
+    pintarBarra();
     if (!playing || !duracao) return;
     const resta = Math.max(0, duracao - (performance.now() - inicio));
     timer = setTimeout(() => {
@@ -408,7 +428,7 @@ function mountOne(root) {
     clearTimeout(timer);
     if (manual) pausado = true;
     if (screen) syncMedia(screen, false);
-    rotulo();
+    pintarBarra(); rotulo();
   }
   const podeTocar = () => visivel && !pausado && live();
 
