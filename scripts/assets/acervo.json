@@ -602,5 +602,28 @@
    "baixado": "cdn.stocksnap.io, 960 px de largura (img-thumbs/960w)"
   }
  ],
- "videos": []
+ "videos": [
+  {
+   "arquivo": "canais/video/culinaria-frigideira-16x9",
+   "fonte": "video/sassermaet.webm",
+   "inicio": 21,
+   "duracao": 5,
+   "recorte": "1920:1080:0:0",
+   "tamanho": [
+    1280,
+    720
+   ],
+   "substitui": "vídeo de culinária onde entra o anúncio in-stream do Facebook; hoje é foto parada",
+   "mostra": "Hambúrgueres caseiros dourando numa frigideira de ferro no fogão a gás, mão virando com a espátula",
+   "origem": "https://commons.wikimedia.org/wiki/File:Sassermaet_frying.webm",
+   "autor": "WhirlieWheeter",
+   "licenca": "CC BY 4.0",
+   "licenca_url": "https://creativecommons.org/licenses/by/4.0/",
+   "original": "1920 x 1080, 28 s",
+   "baixado": "versão transcodificada de 1080p (VP9) do Commons",
+   "crf_webm": 46,
+   "crf_mp4": 33,
+   "filtro": "hqdn3d=2:2:4:4"
+  }
+ ]
 }
